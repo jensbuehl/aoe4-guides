@@ -7,4 +7,5 @@ export default {
     vue(),
     vuetify(),
   ],
+  build: { chunkSizeWarningLimit: 1600, }
 }
