@@ -1,10 +1,23 @@
 import { where, orderBy, limit } from "../firebase";
 
-const getAllQueryParameters = (config, userUid) => {
+const getQueryParametersMyBuilds = (config, userUid) => {
   try {
     var queryParams = filterAuthorBy(userUid);
     if (config) {
       queryParams = queryParams.concat(limitWith(config));
+      queryParams = queryParams.concat(filterWith(config));
+      queryParams = queryParams.concat(orderByWith(config));
+    }
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const getQueryParametersAllBuilds = (config,) => {
+  try {
+    if (config) {
+      var queryParams = limitWith(config);
       queryParams = queryParams.concat(filterWith(config));
       queryParams = queryParams.concat(orderByWith(config));
     }
@@ -79,7 +92,8 @@ const filterWith = (config) => {
 };
 
 export default {
-  getAllQueryParameters,
+  getQueryParametersAllBuilds,
+  getQueryParametersMyBuilds,
   filterAuthorBy,
   orderByWith,
   limitWith,

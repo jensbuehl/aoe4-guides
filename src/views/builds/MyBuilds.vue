@@ -58,7 +58,7 @@ export default {
     })
 
     const initData = (async (config) => {
-      const query = getQuery(queryService.getAllQueryParameters(config, user.value.uid));
+      const query = getQuery(queryService.getQueryParametersMyBuilds(config, user.value.uid));
       const res = await getCustom(query);
       builds.value = res;
     })
