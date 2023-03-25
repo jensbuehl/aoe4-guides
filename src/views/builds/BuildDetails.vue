@@ -7,13 +7,13 @@
             <v-img
               v-if="build.civ"
               :src="
-                '../src/' +
+                '/' +
                 civs.find((item) => {
                   return item.shortName === build.civ;
                 }).flagLarge
               "
               :lazy-src="
-                '../src/' +
+                '/' +
                 civs.find((item) => {
                   return item.shortName === build.civ;
                 }).flagSmall
@@ -83,12 +83,12 @@
           </v-card-actions>
         </v-card>
 
-        <v-card rounded="lg" class="mt-4">
+        <v-card v-if="build.description" rounded="lg" class="mt-4">
           <v-card-title>Description</v-card-title>
           <v-card-text>{{ build.description }}</v-card-text>
         </v-card>
 
-        <v-card rounded="lg" class="mt-4">
+        <v-card v-if="build.video" rounded="lg" class="mt-4">
           <v-card-title>Video</v-card-title>
           <div align="center">
             <iframe

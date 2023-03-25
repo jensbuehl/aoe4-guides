@@ -7,13 +7,13 @@
             <v-img
               v-if="build.civ"
               :src="
-                '../src/' +
+                '/' +
                 civs.find((item) => {
                   return item.shortName === build.civ;
                 }).flagLarge
               "
               :lazy-src="
-                '../src/' +
+                '/' +
                 civs.find((item) => {
                   return item.shortName === build.civ;
                 }).flagSmall
