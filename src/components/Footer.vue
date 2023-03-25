@@ -25,7 +25,7 @@
         </v-col>
         <v-col cols="12"
           >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was
-          created under Microsoft's "<a
+          created under Microsoft's "<a :style="{color: $vuetify.theme.themes.customDarkTheme.colors.primary}"
             href="https://www.xbox.com/en-US/developers/rules"
             >Game Content Usage Rules</a
           >" using assets<br />

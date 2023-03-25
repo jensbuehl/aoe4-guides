@@ -23,14 +23,16 @@
           ></v-text-field>
           <v-btn
             size="x-small"
+            color="primary"
             style="background-color: transparent"
             class="ml-2"
             variant="plain"
             to="/resetpassword"
+            
           >
             Forgot Password?
           </v-btn>
-          <v-btn type="submit" block class="mt-2 submit">Login</v-btn>
+          <v-btn type="submit" block class="mt-2 submit" color="primary">Login</v-btn>
         </v-form>
       </v-card>
     </div>

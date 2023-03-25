@@ -54,22 +54,28 @@
       </v-app-bar-nav-icon>
 
       <v-app-bar-title
-        style="cursor: pointer; min-width: 400px"
+        style="cursor: pointer; min-width: 350px"
         @click="$router.push('/')"
       >
-        <div class="font-weight-bold">{{ title }}</div>
+      <div class="title" :style="{color: $vuetify.theme.themes.customDarkTheme.colors.primary}">{{ title }}</div>
+
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <v-app-bar-items v-if="authIsReady" class="hidden-sm-and-down">
         <v-btn flat to="/builds" class="mx-1" prepend-icon="mdi-home">
           Home
         </v-btn>
-        <v-btn flat to="/new" class="mx-1" prepend-icon="mdi-plus">
+        <v-btn
+          flat
+          to="/new"
+          color="primary"
+          class="mx-1"
+          prepend-icon="mdi-plus"
+        >
           New Build
         </v-btn>
         <v-btn
           v-if="user"
-          color="primary"
           flat
           to="/mybuilds"
           class="mx-1"
@@ -115,15 +121,15 @@
           Logout
         </v-btn>
         <v-btn
-            class="mx-1"
-            flat
-            onclick="location.href='https://paypal.me/jensbuehl'"
-          >
-            <template v-slot:prepend>
-              <v-icon color="red">mdi-heart</v-icon>
-            </template>
-            Support Us
-          </v-btn>
+          class="mx-1"
+          flat
+          onclick="location.href='https://paypal.me/jensbuehl'"
+        >
+          <template v-slot:prepend>
+            <v-icon color="red">mdi-heart</v-icon>
+          </template>
+          Support Us
+        </v-btn>
       </v-app-bar-items>
     </v-container>
   </v-app-bar>
@@ -165,5 +171,9 @@ export default {
 <style scoped>
 .v-container {
   max-width: 1400px !important;
+}
+.title {
+  font-size: 1.5rem;
+
 }
 </style>

@@ -13,7 +13,7 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col class="hidden-sm-and-down" cols="4">
+      <v-col cols="4">
         <div style="position: sticky; top: 128px">
           <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
         </div>

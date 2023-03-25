@@ -7,16 +7,6 @@
   font-weight: normal;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: #704d009f;
-  }
-}
-
-.v-form .v-btn {
-  background-color: #704d009f;
-}
-
 table tbody tr td:nth-child(2) {
   background: #ff000034;
 }

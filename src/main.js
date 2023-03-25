@@ -11,15 +11,26 @@ import 'vuetify/dist/vuetify.min.css'
 // import store
 import store from './store'
 
+// theme definition
+const customDarkTheme = {
+  dark: true,
+  colors: {
+    primary: '#cca741',
+    secondary: '#174087',
+  }
+}
+
 // init app
 const vuetify = createVuetify({
   components: {
   },
   theme: {
-    defaultTheme: 'dark',
+    options: {
+      customProperties: true
+    },
+    defaultTheme: 'customDarkTheme',
     themes: {
-      dark: {
-      }
+      customDarkTheme
     }
   }
 })

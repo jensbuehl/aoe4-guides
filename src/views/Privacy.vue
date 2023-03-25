@@ -131,7 +131,7 @@
 
         <p>
           Our Privacy Policy was created with the help of the
-          <a
+          <a :style="{color: $vuetify.theme.themes.customDarkTheme.colors.primary}"
             href="https://www.termsfeed.com/blog/sample-privacy-policy-template/"
             >Privacy Policy Template</a
           >.

@@ -12,7 +12,7 @@
               placeholder="Your e-mail"
               required
             ></v-text-field>
-            <v-btn type="submit" block class="mt-2">Reset Password</v-btn>
+            <v-btn color="primary" type="submit" block class="mt-2">Reset Password</v-btn>
           </v-form>
         </v-card>
       </div>
