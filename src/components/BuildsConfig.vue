@@ -56,14 +56,13 @@
       </v-list-item>
     </v-list>
     <v-card-actions class="justify-center">
-      <v-btn prepend-icon="mdi-check" flat @click="handleApply">Apply</v-btn>
-      <v-btn prepend-icon="mdi-close" flat @click="handleReset">Reset</v-btn>
+      <v-btn prepend-icon="mdi-close" flat @click="handleReset">Reset Filters</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import getCivs from "../composables/getCivs";
 import getMaps from "../composables/getMaps";
 import getDefaultConfig from "../composables/getDefaultConfig";
@@ -79,11 +78,11 @@ export default {
     const sortOptions = ref([
       {
         title: "Title",
-        id: "sortTitle"
+        id: "sortTitle",
       },
       {
         title: "Time Created",
-        id: "timeCreated"
+        id: "timeCreated",
       },
       /*{
         title: "Rating",
@@ -93,10 +92,9 @@ export default {
       },*/
     ]);
 
-    //TODO: Handle state with vuex to maintain filter configuration
-    const handleApply = () => {
+    watch(config, () => {
       context.emit("configChanged", config);
-    };
+    });
 
     const handleReset = () => {
       Object.assign(config, getDefaultConfig());
@@ -109,7 +107,6 @@ export default {
       civs,
       maps,
       strategies,
-      handleApply,
       handleReset,
     };
   },
