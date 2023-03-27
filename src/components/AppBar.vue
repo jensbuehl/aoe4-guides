@@ -7,7 +7,7 @@
             <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list>
-            <v-list-item to="/builds">
+            <v-list-item to="/">
               <v-list-item-icon class="pr-5">
                 <v-icon>mdi-home</v-icon>
               </v-list-item-icon>
@@ -62,7 +62,7 @@
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <v-app-bar-items v-if="authIsReady" class="hidden-sm-and-down">
-        <v-btn flat to="/builds" class="mx-1" prepend-icon="mdi-home">
+        <v-btn flat to="/" class="mx-1" prepend-icon="mdi-home">
           Home
         </v-btn>
         <v-btn

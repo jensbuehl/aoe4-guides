@@ -20,13 +20,7 @@ import About from "../views/About.vue";
 const routes = [
     {
       path: "/",
-      redirect: "/builds",
       name: "Home",
-      component: Builds,
-    },
-    {
-      path: "/builds",
-      name: "Builds",
       component: Builds,
     },
     {
