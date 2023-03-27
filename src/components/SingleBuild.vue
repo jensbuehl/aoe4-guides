@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex" min-width="700" height="96" rounded="lg">
+  <v-card class="d-flex" height="96" rounded="lg">
     <v-col cols="3" class="pa-0 ma-0">
       <v-img
         v-if="build.civ"
