@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="8">
+      <v-col>
         <v-container class="pt-0" v-for="item in builds" :key="item.id">
           <router-link
             style="text-decoration: none"
@@ -12,6 +12,7 @@
         </v-container>
         <div>
           <v-pagination
+            v-if="totalPages > 1"
             v-model="currentPage"
             :length="totalPages"
             total-visible="4"
@@ -21,7 +22,8 @@
       </v-col>
 
       <v-col cols="4">
-        <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
+        <BuildsConfig class="mr-4" @configChanged="configChanged">
+        </BuildsConfig>
       </v-col>
     </v-row>
   </v-container>
