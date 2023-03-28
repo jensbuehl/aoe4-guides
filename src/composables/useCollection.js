@@ -9,7 +9,8 @@ import {
   deleteDoc,
   query,
   doc,
-  Timestamp
+  Timestamp,
+  getCountFromServer,
 } from "../firebase";
 
 // declare the connection & refs inside the function
@@ -113,7 +114,27 @@ const useCollection = (col) => {
     }
   };
 
-  return { error, add, get, del, getAll, getCustom, update, getQuery };
+  const getSize = async (query) => {
+    error.value = null;
+
+    try {
+      var snapshot;
+      if (query) {
+        console.log("query set")
+        snapshot = await getCountFromServer(query);
+      } else {
+        console.log("query not set")
+        const coll = collection(db, col);
+        snapshot = await getCountFromServer(coll);
+      }
+      return snapshot.data().count;
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Collection size could not be retrieved";
+    }
+  };
+
+  return { error, add, get, del, getAll, getCustom, update, getQuery, getSize };
 };
 
 export default useCollection;

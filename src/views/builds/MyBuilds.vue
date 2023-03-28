@@ -10,15 +10,15 @@
             <SingleBuild :build="item"></SingleBuild>
           </router-link>
         </v-container>
-        <div>
-          <v-pagination
-            v-if="totalPages > 1"
-            v-model="currentPage"
-            :length="totalPages"
-            total-visible="4"
-            rounded="lg"
-          ></v-pagination>
-        </div>
+        <v-pagination
+          v-if="paginationConfig.totalPages > 1"
+          @next="nextPage"
+          @prev="previousPage"
+          v-model="paginationConfig.currentPage"
+          :length="paginationConfig.totalPages"
+          total-visible="1"
+          rounded="lg"
+        ></v-pagination>
       </v-col>
 
       <v-col cols="4">
@@ -44,10 +44,18 @@ export default {
   setup() {
     window.scrollTo(0, 0);
 
-    const { getCustom, getQuery } = useCollection("builds");
+    const { getCustom, getQuery, getSize } = useCollection("builds");
     const builds = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
+    const filterAndOrderConfig = ref(getDefaultConfig());
+    const paginationConfig = ref({
+      currentPage: 1,
+      totalPages: null,
+      pageStart: null,
+      pageEnd: null,
+      limit: 20,
+    });
 
     watch(
       () => user.value,
@@ -62,24 +70,97 @@ export default {
       }
     });
 
-    const configChanged = (config) => {
-      console.log("config changed:", config);
-      initData(config);
+    const configChanged = (newConfig) => {
+      console.log("config changed:", newConfig);
+      filterAndOrderConfig.value = newConfig;
+      initData();
     };
 
-    const initData = async (config) => {
+    const initData = async () => {
+      //init page count and current page
+      const allDocsQuery = getQuery(
+        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value, null, user.value.uid)
+      );
+      const size = await getSize(allDocsQuery);
+      paginationConfig.value.totalPages = Math.ceil(
+        size / paginationConfig.value.limit
+      );
+      console.log(user.value.uid)
+      console.log(size)
+      paginationConfig.value.currentPage = 1;
+      console.log("page changed to:", paginationConfig.value.currentPage);
+      console.log("total pages", paginationConfig.value.totalPages);
+
+      //get builds
+      const paginationQuery = getQuery(
+        queryService.getQueryParametersFromConfig(
+          filterAndOrderConfig.value,
+          paginationConfig.value.limit,
+          user.value.uid
+        )
+      );
+      
+      const res = await getCustom(paginationQuery);
+      builds.value = res;
+
+      updatePageBoundaries();
+    };
+
+    const nextPage = async () => {
+      console.log("page changed to:", paginationConfig.value.currentPage);
       const query = getQuery(
-        queryService.getQueryParametersMyBuilds(config, user.value.uid)
+        queryService.getQueryParametersNextPage(
+          filterAndOrderConfig.value,
+          paginationConfig.value.limit,
+          paginationConfig.value.pageEnd,
+          user.value.uid
+        )
       );
       const res = await getCustom(query);
       builds.value = res;
+      getSize(query);
+
+      updatePageBoundaries();
+    };
+
+    const previousPage = async () => {
+      console.log("page changed to:", paginationConfig.value.currentPage);
+      const query = getQuery(
+        queryService.getQueryParametersPreviousPage(
+          filterAndOrderConfig.value,
+          paginationConfig.value.limit,
+          paginationConfig.value.pageStart,
+          user.value.uid
+        )
+      );
+      const res = await getCustom(query);
+      builds.value = res;
+      getSize(query);
+
+      updatePageBoundaries();
+    };
+
+    const updatePageBoundaries = () => {
+      if (builds.value.length) {
+        paginationConfig.value.pageStart =
+          builds.value[0][filterAndOrderConfig.value.orderBy];
+        paginationConfig.value.pageEnd =
+          builds.value[builds.value.length - 1][
+            filterAndOrderConfig.value.orderBy
+          ];
+        console.log("page start", paginationConfig.value.pageStart);
+        console.log("page end", paginationConfig.value.pageEnd);
+      }
     };
 
     return {
       builds,
       user,
       authIsReady: computed(() => store.state.authIsReady),
+      paginationConfig,
       configChanged,
+      nextPage,
+      previousPage
     };
   },
 };

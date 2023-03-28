@@ -254,7 +254,7 @@ export default {
     });
 
     const handleSave = async () => {
-      build.value.sortTitle = build.value.title.toLowerCase();
+      build.value.sortTitle = build.value.title.toLowerCase()+crypto.randomUUID();
       await update(props.id, build.value);
       if (!error.value) {
         router.push("/builds/" + props.id);

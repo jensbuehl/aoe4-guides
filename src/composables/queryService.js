@@ -1,25 +1,61 @@
-import { where, orderBy, limit } from "../firebase";
+import {
+  where,
+  orderBy,
+  limit,
+  endBefore,
+  startAfter,
+  limitToLast,
+} from "../firebase";
 
-const getQueryParametersMyBuilds = (config, userUid) => {
+const getQueryParametersPreviousPage = (
+  config,
+  limitToLast,
+  pageEnd,
+  userUid
+) => {
   try {
-    var queryParams = filterAuthorBy(userUid);
+    var queryParams = limitToLastWith(limitToLast);
     if (config) {
-      queryParams = queryParams.concat(limitWith(config));
-      queryParams = queryParams.concat(filterWith(config));
-      queryParams = queryParams.concat(orderByWith(config));
+      queryParams = queryParams
+        .concat(filterWith(config))
+        .concat(orderByWith(config));
     }
+    if (userUid) {
+      queryParams = queryParams.concat(filterAuthorBy(userUid));
+    }
+    queryParams = queryParams.concat(filterPageWith(null, pageEnd));
+
     return queryParams;
   } catch (err) {
     console.log(err.message);
   }
 };
 
-const getQueryParametersAllBuilds = (config,) => {
+const getQueryParametersNextPage = (config, limit, pageStart, userUid) => {
   try {
+    var queryParams = getQueryParametersFromConfig(config, limit, userUid);
+    queryParams = queryParams.concat(filterPageWith(pageStart, null));
+
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const getQueryParametersFromConfig = (config, pageLimit, userUid) => {
+  try {
+    var queryParams = [];
+    if (pageLimit) {
+      queryParams = limitWith(pageLimit);
+    }
     if (config) {
-      var queryParams = limitWith(config);
-      queryParams = queryParams.concat(filterWith(config));
-      queryParams = queryParams.concat(orderByWith(config));
+      queryParams = queryParams
+        .concat(filterWith(config))
+        .concat(orderByWith(config));
+    }
+    if (userUid) {
+      console.log("filter by auther");
+      queryParams = queryParams.concat(filterAuthorBy(userUid));
     }
     return queryParams;
   } catch (err) {
@@ -38,10 +74,38 @@ const filterAuthorBy = (userUid) => {
   }
 };
 
-const limitWith = (config) => {
+const filterPageWith = (start, end) => {
   try {
     const queryParams = [];
-    const limitOp = limit(config.limit);
+    if (start) {
+      const startAfterOp = startAfter(start);
+      queryParams.push(startAfterOp);
+    }
+    if (end) {
+      const endBeforeOp = endBefore(end);
+      queryParams.push(endBeforeOp);
+    }
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const limitWith = (pageLimit) => {
+  try {
+    const queryParams = [];
+    const limitOp = limit(pageLimit);
+    queryParams.push(limitOp);
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+const limitToLastWith = (pageLimit) => {
+  try {
+    const queryParams = [];
+    const limitOp = limitToLast(pageLimit);
     queryParams.push(limitOp);
     return queryParams;
   } catch (err) {
@@ -92,10 +156,11 @@ const filterWith = (config) => {
 };
 
 export default {
-  getQueryParametersAllBuilds,
-  getQueryParametersMyBuilds,
+  getQueryParametersFromConfig,
   filterAuthorBy,
   orderByWith,
+  getQueryParametersNextPage,
+  getQueryParametersPreviousPage,
   limitWith,
   filterWith,
 };

@@ -23,8 +23,12 @@ import {
   where,
   orderBy,
   limit,
+  limitToLast,
   query,
-  Timestamp
+  startAfter,
+  endBefore,
+  Timestamp,
+  getCountFromServer
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -63,7 +67,11 @@ export {
   deleteDoc,
   where,
   orderBy,
+  limitToLast,
   limit,
   query,
+  startAfter,
+  endBefore,
+  getCountFromServer,
   Timestamp
 };

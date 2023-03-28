@@ -273,7 +273,7 @@ export default {
     });
 
     const handleSubmit = async () => {
-      build.value.sortTitle = build.value.sortTitle.toLowerCase();
+      build.value.sortTitle = build.value.title.toLowerCase()+crypto.randomUUID();
       build.value.authorUid = user.value.uid;
       build.value.author = user.value.displayName;
       const id = await add(build.value);
