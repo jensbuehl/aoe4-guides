@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="lg" class="pt-6">
+  <v-card rounded="lg" class="pt-6 mb-4">
     <v-list>
       <v-list-item>
         <v-autocomplete
@@ -84,12 +84,6 @@ export default {
         title: "Time Created",
         id: "timeCreated",
       },
-      /*{
-        title: "Rating",
-      },
-      {
-        title: "Views",
-      },*/
     ]);
 
     watch(config, () => {
