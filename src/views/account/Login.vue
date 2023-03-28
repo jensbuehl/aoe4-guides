@@ -32,7 +32,7 @@
           >
             Forgot Password?
           </v-btn>
-          <v-btn type="submit" block class="mt-2 submit" color="primary">Login</v-btn>
+          <v-btn variant="text" type="submit" block class="mt-2 submit" color="primary">Login</v-btn>
         </v-form>
       </v-card>
     </div>

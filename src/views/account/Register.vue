@@ -30,7 +30,7 @@
             placeholder="Your password"
             required
           ></v-text-field>
-          <v-btn color="primary" type="submit" block class="mt-2">Register</v-btn>
+          <v-btn variant="text" color="primary" type="submit" block class="mt-2">Register</v-btn>
         </v-form>
       </v-card>
     </div>

@@ -40,7 +40,7 @@
                   content="New password"
                   placeholder="Your new password"
                 ></v-text-field>
-                <v-btn color="primary" type="submit" block class="mt-2">Change Password</v-btn>
+                <v-btn color="primary" variant="text" type="submit" block class="mt-2">Change Password</v-btn>
               </v-form>
             </v-card>
           </v-card>
@@ -50,7 +50,7 @@
             <v-card-title class="mb-4">Delete Account</v-card-title>
             <v-card rounded="lg" style="max-width: 350px; width: 350px" fluid>
               <v-form ref="form" @submit.prevent="dialog = true">
-                <v-btn color="primary" type="submit" block class="mt-2"
+                <v-btn color="primary" variant="text" type="submit" block class="mt-2"
                   >Delete Account</v-btn
                 >
                 <v-dialog v-model="dialog" width="auto">

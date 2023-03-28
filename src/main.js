@@ -16,7 +16,13 @@ const customDarkTheme = {
   dark: true,
   colors: {
     primary: '#cca741',
-    secondary: '#174087',
+    anchor: '#cca741',
+    secondary: '#cca741',
+    accent: '#cca741',
+    error: '#cca741',
+    info: '#cca741',
+    success: '#cca741',
+    warning: '#cca741',
   }
 }
 

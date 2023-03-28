@@ -9,6 +9,6 @@ import Footer from "./components/Footer.vue"
     <v-main>
       <router-view />
     </v-main>
-    <Footer>test</Footer>
+    <Footer></Footer>
   </v-app>
 </template>

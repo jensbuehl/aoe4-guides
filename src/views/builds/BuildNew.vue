@@ -62,7 +62,11 @@
             </v-card-text>
           </v-col>
           <v-card-actions>
-            <v-btn prepend-icon="mdi-content-save" @click="handleSubmit"
+            <v-btn
+              variant="text"
+              color="primary"
+              prepend-icon="mdi-content-save"
+              @click="handleSubmit"
               >Save</v-btn
             >
           </v-card-actions>
@@ -145,8 +149,9 @@
         <v-card rounded="lg" class="mt-4">
           <div v-if="!build.steps.length" class="text-center">
             <v-btn
+              variant="text"
+              color="primary"
               prepend-icon="mdi-plus"
-              variant="plain"
               class="pt-5 pb-10"
               @click="addStep(0)"
               >Add your first build step</v-btn
@@ -215,12 +220,14 @@
                   <v-btn
                     v-show="index === hoverRowIndex"
                     variant="plain"
+                    color="primary"
                     @click="removeStep(index)"
                     icon="mdi-delete"
                   ></v-btn>
                   <v-btn
                     v-show="index === hoverRowIndex"
                     variant="plain"
+                    color="primary"
                     @click="addStep(index)"
                     icon="mdi-plus"
                   ></v-btn>
@@ -273,7 +280,8 @@ export default {
     });
 
     const handleSubmit = async () => {
-      build.value.sortTitle = build.value.title.toLowerCase()+crypto.randomUUID();
+      build.value.sortTitle =
+        build.value.title.toLowerCase() + crypto.randomUUID();
       build.value.authorUid = user.value.uid;
       build.value.author = user.value.displayName;
       const id = await add(build.value);
@@ -314,7 +322,7 @@ export default {
       build.value.steps.splice(index, 1);
     };
     const handleVideoInput = () => {
-      build.value.video = build.value.video.replace(/watch\?v=/, 'embed/')
+      build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
     };
 
     return {

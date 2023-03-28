@@ -53,7 +53,7 @@
             </v-card-text>
           </v-col>
           <v-card-actions>
-            <v-btn prepend-icon="mdi-content-save" @click="handleSave"
+            <v-btn color="primary" prepend-icon="mdi-content-save" @click="handleSave"
               >Save</v-btn
             >
           </v-card-actions>
@@ -138,7 +138,8 @@
           <div v-if="!build.steps.length" class="text-center">
             <v-btn
               prepend-icon="mdi-plus"
-              variant="plain"
+              color="primary"
+              variant="text"
               class="pt-5 pb-10"
               @click="addStep(0)"
               >Add your first build step</v-btn
@@ -207,12 +208,14 @@
                   <v-btn
                     v-show="index === hoverRowIndex"
                     variant="plain"
+                    color="primary"
                     @click="removeStep(index)"
                     icon="mdi-delete"
                   ></v-btn>
                   <v-btn
                     v-show="index === hoverRowIndex"
                     variant="plain"
+                    color="primary"
                     @click="addStep(index)"
                     icon="mdi-plus"
                   ></v-btn>

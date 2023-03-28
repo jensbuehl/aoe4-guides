@@ -54,12 +54,14 @@
           </v-col>
           <v-card-actions v-if="user">
             <v-btn
+              color="primary"
               v-show="user.uid === build.authorUid"
               prepend-icon="mdi-pencil"
               :to="{ name: 'BuildEdit', params: { id: props.id } }"
               >Edit</v-btn
             >
             <v-btn
+              color="primary"
               v-show="user.uid === build.authorUid"
               prepend-icon="mdi-delete"
               @click="dialog = true"

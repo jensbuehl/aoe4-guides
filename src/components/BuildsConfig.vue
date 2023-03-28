@@ -56,7 +56,7 @@
       </v-list-item>
     </v-list>
     <v-card-actions class="justify-center">
-      <v-btn prepend-icon="mdi-close" flat @click="handleReset">Reset Filters</v-btn>
+      <v-btn color="primary" prepend-icon="mdi-close" flat @click="handleReset">Reset Filters</v-btn>
     </v-card-actions>
   </v-card>
 </template>
