@@ -22,8 +22,8 @@
         ></v-pagination>
       </v-col>
 
-      <v-col cols="4">
-        <BuildsConfig class="mr-4" @configChanged="configChanged">
+      <v-col cols="12" md="4">
+        <BuildsConfig class="mr-0 mr-md-4" @configChanged="configChanged">
         </BuildsConfig>
       </v-col>
     </v-row>

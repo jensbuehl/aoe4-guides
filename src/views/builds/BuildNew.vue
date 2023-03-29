@@ -11,10 +11,9 @@
   <v-container v-if="user">
     <v-row class="justify-center">
       <v-col>
-        <v-card class="d-flex" height="96" rounded="lg">
-          <v-col cols="3" class="pa-0 ma-0">
+        <v-card class="d-flex align-center" rounded="lg">
+          <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
             <v-img
-              v-if="build.civ"
               :src="
                 '/' +
                 civs.find((item) => {
@@ -42,24 +41,7 @@
             </v-img>
           </v-col>
           <v-col>
-            <v-card-title class="py-0">{{ build.title }}</v-card-title>
-            <v-card-text class="mt-0">
-              <v-chip-group>
-                <v-chip label size="small" disabled
-                  >Author: {{ build.author }}</v-chip
-                >
-                <v-chip v-if="build.timeCreated" label size="small" disabled
-                  >Created:
-                  {{ build.timeCreated?.toDate().toDateString() }}</v-chip
-                >
-                <v-chip v-if="build.map" label size="small" disabled>{{
-                  build.map
-                }}</v-chip>
-                <v-chip v-if="build.strategy" label size="small" disabled>{{
-                  build.strategy
-                }}</v-chip>
-              </v-chip-group>
-            </v-card-text>
+            <v-card-title>{{ build.title }}</v-card-title>
           </v-col>
           <v-card-actions>
             <v-btn
@@ -73,76 +55,69 @@
         </v-card>
 
         <v-row>
-          <v-col>
+          <v-col cols="12" md="8">
             <v-card rounded="lg" class="mt-4" fluid fill-height>
-              <v-card-title>Title</v-card-title>
               <v-text-field
-                rows="4"
-                auto-grow
+                class="pa-4"
+                label="Title"
                 v-model="build.title"
                 :value="build.title"
               ></v-text-field>
-            </v-card>
-            <v-card rounded="lg" class="mt-4" fluid fill-height>
-              <v-card-title>Description</v-card-title>
+
               <v-textarea
-                rows="4"
+                label="Description"
+                class="pa-4"
+                rows="1"
                 auto-grow
                 v-model="build.description"
                 :value="build.description"
               ></v-textarea>
-            </v-card>
-            <v-card rounded="lg" class="mt-4">
-              <v-card-title>Video</v-card-title>
+
               <v-text-field
+                label="Video"
+                class="pa-4"
                 @input="handleVideoInput($event)"
                 :value="build.video"
                 v-model="build.video"
               ></v-text-field> </v-card
           ></v-col>
-          <v-col cols="4">
-            <v-card rounded="lg" class="mt-4 pt-6" fill-height>
-              <v-list>
-                <v-list-item>
-                  <v-autocomplete
-                    prepend-icon="mdi-filter-variant"
-                    label="Civilization"
-                    :items="civs"
-                    v-model="build.civ"
-                    density="compact"
-                    item-value="shortName"
-                    item-title="title"
-                    clearable
-                  >
-                  </v-autocomplete>
-                </v-list-item>
-                <v-list-item>
-                  <v-autocomplete
-                    prepend-icon="mdi-map"
-                    label="Map"
-                    :items="maps"
-                    v-model="build.map"
-                    density="compact"
-                    item-value="title"
-                    item-title="title"
-                    clearable
-                  >
-                  </v-autocomplete>
-                </v-list-item>
-                <v-list-item>
-                  <v-autocomplete
-                    prepend-icon="mdi-strategy"
-                    label="Strategy"
-                    :items="strategies"
-                    v-model="build.strategy"
-                    density="compact"
-                    item-value="title"
-                    item-title="title"
-                    clearable
-                  >
-                  </v-autocomplete>
-                </v-list-item>
-              </v-list> </v-card
+          <v-col cols="12" md="4">
+            <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
+              <v-card-text>
+                <v-autocomplete
+                  prepend-icon="mdi-filter-variant"
+                  label="Civilization"
+                  :items="civs"
+                  v-model="build.civ"
+                  density="compact"
+                  item-value="shortName"
+                  item-title="title"
+                  clearable
+                >
+                </v-autocomplete>
+                <v-autocomplete
+                  prepend-icon="mdi-map"
+                  label="Map"
+                  :items="maps"
+                  v-model="build.map"
+                  density="compact"
+                  item-value="title"
+                  item-title="title"
+                  clearable
+                >
+                </v-autocomplete>
+                <v-autocomplete
+                  prepend-icon="mdi-strategy"
+                  label="Strategy"
+                  :items="strategies"
+                  v-model="build.strategy"
+                  density="compact"
+                  item-value="title"
+                  item-title="title"
+                  clearable
+                >
+                </v-autocomplete>
+              </v-card-text> </v-card
           ></v-col>
         </v-row>
 
@@ -276,7 +251,8 @@ export default {
       civ: "",
       map: "",
       strategy: "",
-      timeCreated: "",
+      timeCreated: null,
+      timeUpdated: null,
     });
 
     const handleSubmit = async () => {

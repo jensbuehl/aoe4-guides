@@ -1,24 +1,12 @@
 <template>
-  <v-app-bar app height="80">
+  <v-app-bar app height="100">
     <v-container class="fill-height d-flex align-center pr-0">
-      <v-app-bar-nav-icon class="hidden-md-and-up">
+      <v-app-bar-nav-icon color="primary" class="hidden-md-and-up">
         <v-menu v-if="authIsReady">
           <template v-slot:activator="{ props }">
             <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list>
-            <v-list-item to="/">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-home</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> Home </v-list-item-content>
-            </v-list-item>
-            <v-list-item to="/new">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-plus</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> New Build </v-list-item-content>
-            </v-list-item>
             <v-list-item v-if="user" to="/mybuilds">
               <v-list-item-icon class="pr-5">
                 <v-icon>mdi-playlist-edit</v-icon>
@@ -37,24 +25,31 @@
               </v-list-item-icon>
               <v-list-item-content> Login </v-list-item-content>
             </v-list-item>
-            <v-list-item v-if="user" to="/logout">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-logout</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> Logout </v-list-item-content>
-            </v-list-item>
             <v-list-item v-if="user" to="/account">
               <v-list-item-icon class="pr-5">
                 <v-icon>mdi-account-edit</v-icon>
               </v-list-item-icon>
               <v-list-item-content> Profile </v-list-item-content>
             </v-list-item>
+            <v-list-item v-if="user" to="/logout">
+              <v-list-item-icon class="pr-5">
+                <v-icon>mdi-logout</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content> Logout </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-list-item to="/new">
+              <v-list-item-icon class="pr-5">
+                <v-icon color="primary">mdi-plus</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content> New Build </v-list-item-content>
+            </v-list-item>
           </v-list>
         </v-menu>
       </v-app-bar-nav-icon>
 
       <v-app-bar-title
-        style="cursor: pointer; min-width: 350px"
+        style="cursor: pointer; min-width: 150px"
         @click="$router.push('/')"
       >
       <div class="title" :style="{color: $vuetify.theme.themes.customDarkTheme.colors.primary}">{{ title }}</div>
@@ -62,9 +57,6 @@
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <v-app-bar-items v-if="authIsReady" class="hidden-sm-and-down">
-        <v-btn flat to="/" class="mx-1" prepend-icon="mdi-home">
-          Home
-        </v-btn>
         <v-btn
           flat
           to="/new"
@@ -75,31 +67,31 @@
           New Build
         </v-btn>
         <v-btn
-          v-if="user"
-          flat
-          to="/mybuilds"
-          class="mx-1"
-          prepend-icon="mdi-playlist-edit"
+        v-if="user"
+        flat
+        to="/mybuilds"
+        class="mx-1"
+        prepend-icon="mdi-playlist-edit"
         >
-          My Builds
-        </v-btn>
-        <v-btn
-          v-if="!user"
-          flat
-          to="/register"
-          class="mx-1"
-          prepend-icon="mdi-account-edit"
-        >
-          Register
-        </v-btn>
-        <v-btn
-          v-if="!user"
-          flat
-          to="/login"
+        My Builds
+      </v-btn>
+      <v-btn
+      v-if="!user"
+      flat
+      to="/register"
+      class="mx-1"
+      prepend-icon="mdi-account-edit"
+      >
+      Register
+    </v-btn>
+    <v-btn
+    v-if="!user"
+    flat
+    to="/login"
           class="mx-1"
           prepend-icon="mdi-login"
         >
-          Login
+        Login
         </v-btn>
         <v-btn
           v-if="user"
@@ -107,28 +99,18 @@
           to="/account"
           class="mx-1"
           prepend-icon="mdi-account-edit"
-        >
+          >
           Profile
         </v-btn>
         <v-btn
-          v-if="user"
-          flat
-          to="/"
-          class="mx-1"
-          prepend-icon="mdi-logout"
-          @click="logout"
+        v-if="user"
+        flat
+        to="/"
+        class="mx-1"
+        prepend-icon="mdi-logout"
+        @click="logout"
         >
-          Logout
-        </v-btn>
-        <v-btn
-          class="mx-1"
-          flat
-          onclick="location.href='https://paypal.me/jensbuehl'"
-        >
-          <template v-slot:prepend>
-            <v-icon color="red">mdi-heart</v-icon>
-          </template>
-          Support Us
+        Logout
         </v-btn>
       </v-app-bar-items>
     </v-container>

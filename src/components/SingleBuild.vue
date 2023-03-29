@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex" height="96" rounded="lg">
+  <v-card class="d-flex align-center" rounded="lg">
     <v-col cols="3" class="pa-0 ma-0">
       <v-img
         v-if="build.civ"
@@ -30,25 +30,21 @@
       </v-img>
     </v-col>
     <v-col>
-      <v-card-title class="py-0" to="/editbuild">{{
+      <v-card-title class="pt-0 text-subtitle-2 text-md-h6" style="font-family: 'Segoe UI' !important" to="/editbuild">{{
         build.title
       }}</v-card-title>
-      <v-card-text class="mt-0">
-        <v-chip-group>
-          <v-chip label size="small" disabled
-            >Author: {{ build.author }}</v-chip
-          >
-          <v-chip v-if="build.timeCreated" label size="small" disabled
-            >Created: {{ build.timeCreated?.toDate().toDateString() }}</v-chip
-          >
-          <v-chip v-if="build.map" label size="small" disabled>{{
-            build.map
-          }}</v-chip>
-          <v-chip v-if="build.strategy" label size="small" disabled>{{
-            build.strategy
-          }}</v-chip>
-        </v-chip-group>
-      </v-card-text>
+      <v-chip-group class="ml-4 hidden-sm-and-down">
+        <v-chip label size="small" disabled>Author: {{ build.author }}</v-chip>
+        <v-chip v-if="build.timeCreated" label size="small" disabled
+          >Created: {{ build.timeCreated?.toDate().toDateString() }}</v-chip
+        >
+        <v-chip v-if="build.map" label size="small" disabled>{{
+          build.map
+        }}</v-chip>
+        <v-chip v-if="build.strategy" label size="small" disabled>{{
+          build.strategy
+        }}</v-chip>
+      </v-chip-group>
     </v-col>
   </v-card>
 </template>
