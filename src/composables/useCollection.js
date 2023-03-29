@@ -10,6 +10,7 @@ import {
   query,
   doc,
   Timestamp,
+  increment,
   getCountFromServer,
 } from "../firebase";
 
@@ -28,6 +29,7 @@ const useCollection = (col) => {
       const docRef = doc(collectionRef);
       document.id = docRef.id;
       document.timeCreated = Timestamp.fromDate(new Date());
+      document.timeUpdated = Timestamp.fromDate(new Date());
       await setDoc(docRef, document);
 
       console.log("Document created with ID: ", docRef.id);
@@ -46,6 +48,20 @@ const useCollection = (col) => {
       const docSnap = await getDoc(docRef);
       console.log("Document retrieved with ID: ", id);
       return docSnap.data();
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Document could not be retrieved";
+    }
+  };
+
+  const incrementViews = async (id) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        views: increment(1),
+      });
     } catch (err) {
       console.log(err.message);
       error.value = "Document could not be retrieved";
@@ -81,6 +97,7 @@ const useCollection = (col) => {
 
     try {
       const docRef = doc(db, col, id);
+      document.timeUpdated = Timestamp.fromDate(new Date());
       await updateDoc(docRef, document);
       console.log("Document updated with ID: ", id);
     } catch (err) {
@@ -120,10 +137,10 @@ const useCollection = (col) => {
     try {
       var snapshot;
       if (query) {
-        console.log("query set")
+        console.log("query set");
         snapshot = await getCountFromServer(query);
       } else {
-        console.log("query not set")
+        console.log("query not set");
         const coll = collection(db, col);
         snapshot = await getCountFromServer(coll);
       }
@@ -134,7 +151,7 @@ const useCollection = (col) => {
     }
   };
 
-  return { error, add, get, del, getAll, getCustom, update, getQuery, getSize };
+  return { error, add, get, del, getAll, getCustom, update, getQuery, getSize, incrementViews };
 };
 
 export default useCollection;

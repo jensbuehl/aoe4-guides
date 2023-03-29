@@ -28,6 +28,7 @@ import {
   startAfter,
   endBefore,
   Timestamp,
+  increment,
   getCountFromServer
 } from "firebase/firestore";
 
@@ -73,5 +74,6 @@ export {
   startAfter,
   endBefore,
   getCountFromServer,
+  increment,
   Timestamp
 };

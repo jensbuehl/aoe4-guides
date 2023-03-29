@@ -41,7 +41,7 @@
                 >
                 <v-chip v-if="build.timeCreated" label size="small" disabled
                   >Created:
-                  {{ build.timeCreated?.toDate().toDateString() }}</v-chip
+                  {{ build.timeCreated.toDate().toDateString() }}</v-chip
                 >
                 <v-chip v-if="build.map" label size="small" disabled>{{
                   build.map
@@ -151,12 +151,15 @@ export default {
     const civs = getCivs().civs;
     const build = ref(null);
     const dialog = ref(false);
-    const { get, del, error } = useCollection("builds");
+    const { get, del, incrementViews, error } = useCollection("builds");
 
     onMounted(async () => {
       const res = await get(props.id);
       window.scrollTo(0, 0);
-      build.value = res;
+      build.value = res; 
+      //Note: You can update a single document only once per second. 
+      //If you need to update your counter above this rate, see Distributed counters
+      incrementViews(props.id)
     });
 
     const handleDelete = async () => {
