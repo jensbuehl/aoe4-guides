@@ -34,19 +34,20 @@ import {
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY",
-  authDomain: "aoe4-guides.firebaseapp.com",
-  projectId: "aoe4-guides",
-  storageBucket: "aoe4-guides.appspot.com",
-  messagingSenderId: "534079912385",
-  appId: "1:534079912385:web:655c4d6a80e4c8a40bd740",
+  apiKey: "AIzaSyDPH5DcZAte-uY0L6NNSl0FFYcNttqcVBc",
+  authDomain: "aoe4-guides-dev.firebaseapp.com",
+  projectId: "aoe4-guides-dev",
+  storageBucket: "aoe4-guides-dev.appspot.com",
+  messagingSenderId: "409549146868",
+  appId: "1:409549146868:web:ed7eb462db0afffa51aca1"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
 const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider('6LdUH0QlAAAAACp1EF-1DMFrPExLifPmoxZT-tko'),
+  provider: new ReCaptchaV3Provider('6Lc0i0QlAAAAAIMMnWFd9yNtssKCmCuxodeiAjej'),
   isTokenAutoRefreshEnabled: true
 });
 
