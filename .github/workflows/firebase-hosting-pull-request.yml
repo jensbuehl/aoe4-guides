@@ -13,5 +13,5 @@ jobs:
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_AOE4_GUIDES }}'
-          projectId: aoe4-guides
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_AOE4_GUIDES_DEV }}'
+          projectId: aoe4-guides-dev
