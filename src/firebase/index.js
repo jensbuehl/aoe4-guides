@@ -29,8 +29,9 @@ import {
   endBefore,
   Timestamp,
   increment,
-  getCountFromServer
+  getCountFromServer,
 } from "firebase/firestore";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY",
@@ -44,10 +45,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider('6LdUH0QlAAAAACp1EF-1DMFrPExLifPmoxZT-tko'),
+  isTokenAutoRefreshEnabled: true
+});
 
 export {
   auth,
   db,
+  appCheck,
   //Auth
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -75,5 +81,5 @@ export {
   endBefore,
   getCountFromServer,
   increment,
-  Timestamp
+  Timestamp,
 };
