@@ -31,7 +31,7 @@
               </v-list-item-icon>
               <v-list-item-content> Profile </v-list-item-content>
             </v-list-item>
-            <v-list-item v-if="user" to="/logout">
+            <v-list-item @click="logout" v-if="user">
               <v-list-item-icon class="pr-5">
                 <v-icon>mdi-logout</v-icon>
               </v-list-item-icon>
@@ -105,7 +105,6 @@
         <v-btn
         v-if="user"
         flat
-        to="/"
         class="mx-1"
         prepend-icon="mdi-logout"
         @click="logout"
