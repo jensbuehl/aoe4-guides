@@ -1,11 +1,11 @@
 <template>
   <v-container v-if="!user && authIsReady">
-    <v-card class="d-flex" height="96" rounded="lg">
-      <v-row class="justify-center align-center">
-        <v-card-title
-          >Please login to create and share your own build orders.</v-card-title
-        >
-      </v-row>
+    <v-card class="d-flex justify-center align-center" height="96" rounded="lg">
+      <v-card-title
+        class="justify-center align-center pt-0 text-subtitle-2 text-md-h6"
+        style="font-family: 'Segoe UI' !important"
+        >Please login to create and share your own build orders.</v-card-title
+      >
     </v-card>
   </v-container>
   <v-container v-if="user">
@@ -175,7 +175,9 @@
                   ></v-img>
                 </th>
                 <th class="text-left hidden-sm-and-down">Description</th>
-                <th class="text-left hidden-md-and-up" width="100%">Description</th>
+                <th class="text-left hidden-md-and-up" width="100%">
+                  Description
+                </th>
                 <th class="text-right hidden-sm-and-down"></th>
               </tr>
             </thead>
