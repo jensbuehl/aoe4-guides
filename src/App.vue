@@ -1,12 +1,12 @@
 <script setup>
-import AppBar from "./components/AppBar.vue";
+import Header from "./components/Header.vue";
 import Footer from "./components/Footer.vue"
 </script>
 
 <template>
   <v-app id="inspire">
-    <AppBar></AppBar>
-    <v-main>
+    <Header></Header>
+    <v-main class="mt-md-2 mx-md-2">
       <router-view />
     </v-main>
     <Footer></Footer>

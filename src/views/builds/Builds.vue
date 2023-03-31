@@ -2,15 +2,15 @@
   <v-container v-if="builds">
     <v-row>
       <v-col>
-        <v-container class="pt-0" v-for="item in builds" :key="item.id">
+        <div v-for="item in builds" :key="item.id">
           <router-link
             style="text-decoration: none"
             :to="{ name: 'BuildDetails', params: { id: item.id } }"
           >
             <SingleBuild :build="item"></SingleBuild>
           </router-link>
-        </v-container>
-        
+        </div>
+
         <v-pagination
           v-if="paginationConfig.totalPages > 1"
           @next="nextPage"
@@ -23,7 +23,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <BuildsConfig class="mr-0 mr-md-4" @configChanged="configChanged">
+        <BuildsConfig @configChanged="configChanged">
         </BuildsConfig>
       </v-col>
     </v-row>
@@ -146,7 +146,7 @@ export default {
       paginationConfig,
       configChanged,
       nextPage,
-      previousPage
+      previousPage,
     };
   },
 };

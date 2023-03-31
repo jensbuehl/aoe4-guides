@@ -75,7 +75,7 @@
           >
         </v-item-group>
       </v-col>
-      <v-card-actions>
+      <v-card-actions class="hidden-sm-and-down">
         <v-btn
           color="primary"
           prepend-icon="mdi-content-save"
@@ -166,14 +166,45 @@
       <v-table v-if="build.steps.length" style="line-height: 50px" class="ma-2">
         <thead>
           <tr>
-            <th class="text-center" width="70px">Time</th>
-            <th class="text-center" width="70px">Food</th>
-            <th class="text-center" width="70px">Wood</th>
-            <th class="text-center" width="70px">Gold</th>
-            <th class="text-center" width="70px">Stone</th>
-            <th class="text-left">Description</th>
-            <th></th>
-          </tr>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/time.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/food.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/wood.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/gold.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/stone.png"
+                  ></v-img>
+                </th>
+                <th class="text-left hidden-sm-and-down">Description</th>
+                <th class="text-left hidden-md-and-up" width="100%">Description</th>
+                <th class="text-right hidden-sm-and-down"></th>
+              </tr>
         </thead>
         <tbody>
           <tr
@@ -218,7 +249,7 @@
               class="text-left"
               v-html="item.description"
             ></td>
-            <td width="140" class="text-right">
+            <td width="140" class="text-right hidden-sm-and-down">
               <v-btn
                 v-show="index === hoverRowIndex"
                 variant="plain"

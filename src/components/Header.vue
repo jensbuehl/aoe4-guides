@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app height="100">
+  <v-app-bar app height="80">
     <v-container class="fill-height d-flex align-center pr-0">
       <v-app-bar-nav-icon color="primary" class="hidden-md-and-up">
         <v-menu v-if="authIsReady">
@@ -122,7 +122,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 export default {
-  name: "AppBar",
+  name: "Header",
   setup() {
     const title = ref("AoE4 Guides");
     const store = useStore();

@@ -2,14 +2,14 @@
   <v-container>
     <v-row>
       <v-col>
-        <v-container class="pt-0" v-for="item in builds" :key="item.id">
+        <div v-for="item in builds" :key="item.id">
           <router-link
             style="text-decoration: none"
             :to="{ name: 'BuildDetails', params: { id: item.id } }"
           >
             <SingleBuild :build="item"></SingleBuild>
           </router-link>
-        </v-container>
+        </div>
         <v-pagination
           v-if="paginationConfig.totalPages > 1"
           @next="nextPage"
@@ -22,7 +22,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <BuildsConfig class="mr-0 mr-md-4" @configChanged="configChanged">
+        <BuildsConfig @configChanged="configChanged">
         </BuildsConfig>
       </v-col>
     </v-row>
@@ -79,14 +79,18 @@ export default {
     const initData = async () => {
       //init page count and current page
       const allDocsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value, null, user.value.uid)
+        queryService.getQueryParametersFromConfig(
+          filterAndOrderConfig.value,
+          null,
+          user.value.uid
+        )
       );
       const size = await getSize(allDocsQuery);
       paginationConfig.value.totalPages = Math.ceil(
         size / paginationConfig.value.limit
       );
-      console.log(user.value.uid)
-      console.log(size)
+      console.log(user.value.uid);
+      console.log(size);
       paginationConfig.value.currentPage = 1;
       console.log("page changed to:", paginationConfig.value.currentPage);
       console.log("total pages", paginationConfig.value.totalPages);
@@ -99,7 +103,7 @@ export default {
           user.value.uid
         )
       );
-      
+
       const res = await getCustom(paginationQuery);
       builds.value = res;
 
@@ -160,7 +164,7 @@ export default {
       paginationConfig,
       configChanged,
       nextPage,
-      previousPage
+      previousPage,
     };
   },
 };

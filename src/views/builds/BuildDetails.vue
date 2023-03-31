@@ -81,7 +81,7 @@
         </v-item-group>
       </v-col>
 
-      <v-card-actions v-if="user">
+      <v-card-actions v-if="user" class="hidden-sm-and-down">
         <v-btn
           color="primary"
           v-show="user.uid === build.authorUid"
@@ -135,13 +135,45 @@
       <v-table class="ma-2">
         <thead>
           <tr>
-            <th class="text-center" width="70px">Time</th>
-            <th class="text-center" width="70px">Food</th>
-            <th class="text-center" width="70px">Wood</th>
-            <th class="text-center" width="70px">Gold</th>
-            <th class="text-center" width="70px">Stone</th>
-            <th class="text-left">Description</th>
-          </tr>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/time.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/food.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/wood.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/gold.png"
+                  ></v-img>
+                </th>
+                <th class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    src="/assets/resources/stone.png"
+                  ></v-img>
+                </th>
+                <th class="text-left hidden-sm-and-down">Description</th>
+                <th class="text-left hidden-md-and-up" width="100%">Description</th>
+                <th class="text-right hidden-sm-and-down"></th>
+              </tr>
         </thead>
         <tbody>
           <tr v-for="item in build.steps" :key="item.description">
