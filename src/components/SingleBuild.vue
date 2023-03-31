@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex align-center" rounded="lg">
+  <v-card class="d-flex align-center mb-4" rounded="lg">
     <v-col cols="3" class="pa-0 ma-0">
       <v-img
         v-if="build.civ"
