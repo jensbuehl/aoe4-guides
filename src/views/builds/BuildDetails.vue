@@ -114,7 +114,7 @@
 
     <v-card v-if="build.description" rounded="lg" class="mt-4">
       <v-card-title>Description</v-card-title>
-      <v-card-text>{{ build.description }}</v-card-text>
+      <v-card-text style="white-space: pre-line;">{{ build.description }}</v-card-text>
     </v-card>
 
     <v-card v-if="build.video" rounded="lg" class="mt-4">
@@ -172,7 +172,6 @@
                 </th>
                 <th class="text-left hidden-sm-and-down">Description</th>
                 <th class="text-left hidden-md-and-up" width="100%">Description</th>
-                <th class="text-right hidden-sm-and-down"></th>
               </tr>
         </thead>
         <tbody>

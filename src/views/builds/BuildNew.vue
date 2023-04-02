@@ -68,6 +68,7 @@
                 label="Description"
                 class="pa-4"
                 rows="1"
+                multi-line
                 auto-grow
                 v-model="build.description"
                 :value="build.description"
@@ -174,10 +175,7 @@
                     src="/assets/resources/stone.png"
                   ></v-img>
                 </th>
-                <th class="text-left hidden-sm-and-down">Description</th>
-                <th class="text-left hidden-md-and-up" width="100%">
-                  Description
-                </th>
+                <th class="text-left">Description</th>
                 <th class="text-right hidden-sm-and-down"></th>
               </tr>
             </thead>
@@ -185,6 +183,8 @@
               <tr
                 v-for="(item, index) in build.steps"
                 :key="index"
+                v-on:keyup.enter.ctrl="addStep(index)"
+                v-on:keyup.delete.ctrl="removeStep(index)"
                 @mouseover="selectItem(index)"
                 @mouseleave="unSelectItem()"
               >
@@ -225,20 +225,38 @@
                   v-html="item.description"
                 ></td>
                 <td width="140" class="text-right hidden-sm-and-down">
-                  <v-btn
-                    v-show="index === hoverRowIndex"
-                    variant="plain"
-                    color="primary"
-                    @click="removeStep(index)"
-                    icon="mdi-delete"
-                  ></v-btn>
-                  <v-btn
-                    v-show="index === hoverRowIndex"
-                    variant="plain"
-                    color="primary"
-                    @click="addStep(index)"
-                    icon="mdi-plus"
-                  ></v-btn>
+                  <v-tooltip
+                    location="top"
+                    text="Remove current step (CTRL + DEL)"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-if="index === hoverRowIndex"
+                        variant="plain"
+                        color="primary"
+                        @click="removeStep(index)"
+                        icon="mdi-delete"
+                      >
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip
+                    location="top"
+                    text="Add new step below (CTRL + ENTER)"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-show="index === hoverRowIndex"
+                        variant="plain"
+                        color="primary"
+                        @click="addStep(index)"
+                        icon="mdi-plus"
+                      >
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
                 </td>
               </tr>
             </tbody>

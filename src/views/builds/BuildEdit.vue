@@ -91,6 +91,7 @@
           <v-text-field
             class="pa-4"
             label="Title"
+            multi-line
             v-model="build.title"
             :value="build.title"
           ></v-text-field>
@@ -163,53 +164,54 @@
           >Add your first build step</v-btn
         >
       </div>
-      <v-table v-if="build.steps.length" style="line-height: 50px" class="ma-2">
+      <v-table v-if="build.steps.length" style="line-height: 55px" class="ma-2">
         <thead>
           <tr>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/time.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/food.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/wood.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/gold.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/stone.png"
-                  ></v-img>
-                </th>
-                <th class="text-left hidden-sm-and-down">Description</th>
-                <th class="text-left hidden-md-and-up" width="100%">Description</th>
-                <th class="text-right hidden-sm-and-down"></th>
-              </tr>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/time.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/food.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/wood.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/gold.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/stone.png"
+              ></v-img>
+            </th>
+            <th class="text-left">Description</th>
+            <th class="text-right hidden-sm-and-down"></th>
+          </tr>
         </thead>
         <tbody>
           <tr
             v-for="(item, index) in build.steps"
             :key="index"
+            v-on:keyup.enter.ctrl="addStep(index)"
+            v-on:keyup.delete.ctrl="removeStep(index)"
             @mouseover="selectItem(index)"
             @mouseleave="unSelectItem()"
           >
@@ -250,20 +252,35 @@
               v-html="item.description"
             ></td>
             <td width="140" class="text-right hidden-sm-and-down">
-              <v-btn
-                v-show="index === hoverRowIndex"
-                variant="plain"
-                color="primary"
-                @click="removeStep(index)"
-                icon="mdi-delete"
-              ></v-btn>
-              <v-btn
-                v-show="index === hoverRowIndex"
-                variant="plain"
-                color="primary"
-                @click="addStep(index)"
-                icon="mdi-plus"
-              ></v-btn>
+              <v-tooltip location="top" text="Remove current step (CTRL + DEL)">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    v-if="index === hoverRowIndex"
+                    variant="plain"
+                    color="primary"
+                    @click="removeStep(index)"
+                    icon="mdi-delete"
+                  >
+                  </v-btn>
+                </template>
+              </v-tooltip>
+              <v-tooltip
+                location="top"
+                text="Add new step below (CTRL + ENTER)"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    v-show="index === hoverRowIndex"
+                    variant="plain"
+                    color="primary"
+                    @click="addStep(index)"
+                    icon="mdi-plus"
+                  >
+                  </v-btn>
+                </template>
+              </v-tooltip>
             </td>
           </tr>
         </tbody>
