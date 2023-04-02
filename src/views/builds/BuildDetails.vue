@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="build">
     <v-card rounded="lg">
-      <v-row class="d-flex align-center">
+      <v-row class="d-flex align-center flex-nowrap">
         <v-col cols="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             v-if="build.civ"
@@ -31,11 +31,11 @@
             </template>
           </v-img>
         </v-col>
-        <v-col>
-          <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
-          <v-item-group class="ml-4 py-2">
+        <v-col cols="12" md="6">
+          <v-card-title class="py-2 mb-4">{{ build.title }}</v-card-title>
+          <v-item-group class="ml-4 pt-2">
             <v-chip
-              class="mr-2"
+              class="mr-2 mb-2"
               label
               size="small"
               disabled
@@ -43,7 +43,7 @@
               >Views: {{ build.views }}</v-chip
             >
             <v-chip
-              class="mr-2"
+              class="mr-2 mb-2"
               v-if="build.timeCreated"
               label
               size="small"
@@ -51,7 +51,7 @@
               >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
             >
             <v-chip
-              class="mr-2"
+              class="mr-2 mb-2"
               v-if="build.timeCreated"
               label
               size="small"
@@ -59,12 +59,12 @@
               >Updated: {{ build.timeUpdated.toDate().toDateString() }}</v-chip
             >
           </v-item-group>
-          <v-item-group class="ml-4 pb-2">
-            <v-chip color="primary" class="mr-2" label size="small"
+          <v-item-group class="ml-4">
+            <v-chip color="primary" class="mr-2 mb-2" label size="small"
               >Author: {{ build.author }}</v-chip
             >
             <v-chip
-              class="mr-2"
+              class="mr-2 mb-2"
               color="primary"
               v-if="build.map"
               label
@@ -73,7 +73,7 @@
             >
             <v-chip
               color="primary"
-              class="mr-2"
+              class="mr-2 mb-2"
               v-if="build.strategy"
               label
               size="small"
@@ -81,38 +81,40 @@
             >
           </v-item-group>
         </v-col>
-        <v-col cols="auto" align="right">
-          <v-card-actions class="hidden-sm-and-down">
-            <v-btn
-              color="primary"
-              v-show="user.uid === build.authorUid"
-              prepend-icon="mdi-pencil"
-              :to="{ name: 'BuildEdit', params: { id: props.id } }"
-              >Edit</v-btn
-            >
-            <v-btn
-              color="primary"
-              v-show="user.uid === build.authorUid"
-              prepend-icon="mdi-delete"
-              @click="dialog = true"
-              >Delete</v-btn
-            >
-            <v-dialog v-model="dialog" width="auto">
-              <v-card rounded="lg" class="text-center primary">
-                <v-card-title>Delete Build</v-card-title>
-                <v-card-text>
-                  Do you really want to delete this build?<br />
-                  The action cannot be undone.
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="error" block @click="handleDelete"
-                    >Delete</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-card-actions>
-        </v-col>
+        <v-row align="center" justify="end" class="fill-height mr-4">
+          <v-col cols="auto">
+            <v-card-actions class="hidden-sm-and-down">
+              <v-btn
+                color="primary"
+                v-show="user?.uid === build.authorUid"
+                prepend-icon="mdi-pencil"
+                :to="{ name: 'BuildEdit', params: { id: props.id } }"
+                >Edit</v-btn
+              >
+              <v-btn
+                color="primary"
+                v-show="user?.uid === build.authorUid"
+                prepend-icon="mdi-delete"
+                @click="dialog = true"
+                >Delete</v-btn
+              >
+              <v-dialog v-model="dialog" width="auto">
+                <v-card rounded="lg" class="text-center primary">
+                  <v-card-title>Delete Build</v-card-title>
+                  <v-card-text>
+                    Do you really want to delete this build?<br />
+                    The action cannot be undone.
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn color="error" block @click="handleDelete"
+                      >Delete</v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </v-card-actions>
+          </v-col>
+        </v-row>
       </v-row>
     </v-card>
 
