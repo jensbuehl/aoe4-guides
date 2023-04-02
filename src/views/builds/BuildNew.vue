@@ -9,8 +9,8 @@
     </v-card>
   </v-container>
   <v-container v-if="user">
-    <v-card class="d-flex align-center" rounded="lg">
-      <v-row class="d-flex align-center">
+    <v-card rounded="lg">
+      <v-row class="d-flex align-center flex-nowrap">
         <v-col v-if="build.civ" cols="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             :src="
@@ -39,19 +39,21 @@
             </template>
           </v-img>
         </v-col>
-        <v-col>
+        <v-col cols="12" md="6">
           <v-card-title>{{ build.title }}</v-card-title>
         </v-col>
-        <v-col cols="auto" align="right">
-          <v-card-actions class="hidden-sm-and-down">
-            <v-btn
-              color="primary"
-              prepend-icon="mdi-content-save"
-              @click="handleSubmit"
-              >Save</v-btn
-            >
-          </v-card-actions>
-        </v-col>
+        <v-row align="center" justify="end" class="fill-height mr-4">
+          <v-col cols="auto">
+            <v-card-actions class="hidden-sm-and-down">
+              <v-btn
+                color="primary"
+                prepend-icon="mdi-content-save"
+                @click="handleSubmit"
+                >Save</v-btn
+              >
+            </v-card-actions>
+          </v-col>
+        </v-row>
       </v-row>
     </v-card>
 

@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="builds">
     <v-row>
-      <v-col>
+      <v-col cols="12" md="8">
         <div v-for="item in builds" :key="item.id">
           <router-link
             style="text-decoration: none"
