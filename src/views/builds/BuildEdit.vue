@@ -1,88 +1,92 @@
 <template>
   <v-container v-if="user && build">
-    <v-card class="d-flex align-center" rounded="lg">
-      <v-col cols="3" class="pa-0 ma-0">
-        <v-img
-          v-if="build.civ"
-          :src="
-            '/' +
-            civs.find((item) => {
-              return item.shortName === build.civ;
-            }).flagLarge
-          "
-          :lazy-src="
-            '/' +
-            civs.find((item) => {
-              return item.shortName === build.civ;
-            }).flagSmall
-          "
-          gradient="to right, transparent, #222222"
-          alt="{{build.civ}}"
-          cover
-        >
-          <template v-slot:placeholder>
-            <v-row class="fill-height ma-0" align="center" justify="center">
-              <v-progress-circular
-                indeterminate
-                color="grey lighten-5"
-              ></v-progress-circular>
-            </v-row>
-          </template>
-        </v-img>
-      </v-col>
-      <v-col>
-        <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
-        <v-item-group class="ml-4 py-2">
-          <v-chip class="mr-2" label size="small" disabled
-            >Views: {{ build.views }}</v-chip
+    <v-card rounded="lg">
+      <v-row class="d-flex align-center">
+        <v-col cols="3" class="pa-0 ma-0 hidden-sm-and-down">
+          <v-img
+            v-if="build.civ"
+            :src="
+              '/' +
+              civs.find((item) => {
+                return item.shortName === build.civ;
+              }).flagLarge
+            "
+            :lazy-src="
+              '/' +
+              civs.find((item) => {
+                return item.shortName === build.civ;
+              }).flagSmall
+            "
+            gradient="to right, transparent, #222222"
+            alt="{{build.civ}}"
+            cover
           >
-          <v-chip
-            class="mr-2"
-            v-if="build.timeCreated"
-            label
-            size="small"
-            disabled
-            >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
-          >
-          <v-chip
-            class="mr-2"
-            v-if="build.timeCreated"
-            label
-            size="small"
-            disabled
-            >Updated: {{ build.timeUpdated.toDate().toDateString() }}</v-chip
-          >
-        </v-item-group>
-        <v-item-group class="ml-4 pb-2">
-          <v-chip color="primary" class="mr-2" label size="small"
-            >Author: {{ build.author }}</v-chip
-          >
-          <v-chip
-            class="mr-2"
-            color="primary"
-            v-if="build.map"
-            label
-            size="small"
-            >{{ build.map }}</v-chip
-          >
-          <v-chip
-            color="primary"
-            class="mr-2"
-            v-if="build.strategy"
-            label
-            size="small"
-            >{{ build.strategy }}</v-chip
-          >
-        </v-item-group>
-      </v-col>
-      <v-card-actions class="hidden-sm-and-down">
-        <v-btn
-          color="primary"
-          prepend-icon="mdi-content-save"
-          @click="handleSave"
-          >Save</v-btn
-        >
-      </v-card-actions>
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+        </v-col>
+        <v-col>
+          <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
+          <v-item-group class="ml-4 py-2">
+            <v-chip class="mr-2" label size="small" disabled
+              >Views: {{ build.views }}</v-chip
+            >
+            <v-chip
+              class="mr-2"
+              v-if="build.timeCreated"
+              label
+              size="small"
+              disabled
+              >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
+            >
+            <v-chip
+              class="mr-2"
+              v-if="build.timeCreated"
+              label
+              size="small"
+              disabled
+              >Updated: {{ build.timeUpdated.toDate().toDateString() }}</v-chip
+            >
+          </v-item-group>
+          <v-item-group class="ml-4 pb-2">
+            <v-chip color="primary" class="mr-2" label size="small"
+              >Author: {{ build.author }}</v-chip
+            >
+            <v-chip
+              class="mr-2"
+              color="primary"
+              v-if="build.map"
+              label
+              size="small"
+              >{{ build.map }}</v-chip
+            >
+            <v-chip
+              color="primary"
+              class="mr-2"
+              v-if="build.strategy"
+              label
+              size="small"
+              >{{ build.strategy }}</v-chip
+            >
+          </v-item-group>
+        </v-col>
+        <v-col cols="auto" align="right">
+          <v-card-actions class="hidden-sm-and-down">
+            <v-btn
+              color="primary"
+              prepend-icon="mdi-content-save"
+              @click="handleSave"
+              >Save</v-btn
+            >
+          </v-card-actions>
+        </v-col>
+      </v-row>
     </v-card>
 
     <v-row>

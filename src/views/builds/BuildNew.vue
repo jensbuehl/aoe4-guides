@@ -9,261 +9,253 @@
     </v-card>
   </v-container>
   <v-container v-if="user">
-    <v-row class="justify-center">
-      <v-col>
-        <v-card class="d-flex align-center" rounded="lg">
-          <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
-            <v-img
-              :src="
-                '/' +
-                civs.find((item) => {
-                  return item.shortName === build.civ;
-                }).flagLarge
-              "
-              :lazy-src="
-                '/' +
-                civs.find((item) => {
-                  return item.shortName === build.civ;
-                }).flagSmall
-              "
-              gradient="to right, transparent, #222222"
-              alt="{{build.civ}}"
-              cover
-            >
-              <template v-slot:placeholder>
-                <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular
-                    indeterminate
-                    color="grey lighten-5"
-                  ></v-progress-circular>
-                </v-row>
-              </template>
-            </v-img>
-          </v-col>
-          <v-col>
-            <v-card-title>{{ build.title }}</v-card-title>
-          </v-col>
+    <v-card class="d-flex align-center" rounded="lg">
+      <v-row class="d-flex align-center">
+        <v-col v-if="build.civ" cols="3" class="pa-0 ma-0 hidden-sm-and-down">
+          <v-img
+            :src="
+              '/' +
+              civs.find((item) => {
+                return item.shortName === build.civ;
+              }).flagLarge
+            "
+            :lazy-src="
+              '/' +
+              civs.find((item) => {
+                return item.shortName === build.civ;
+              }).flagSmall
+            "
+            gradient="to right, transparent, #222222"
+            alt="{{build.civ}}"
+            cover
+          >
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+        </v-col>
+        <v-col>
+          <v-card-title>{{ build.title }}</v-card-title>
+        </v-col>
+        <v-col cols="auto" align="right">
           <v-card-actions class="hidden-sm-and-down">
             <v-btn
-              variant="text"
               color="primary"
               prepend-icon="mdi-content-save"
               @click="handleSubmit"
               >Save</v-btn
             >
           </v-card-actions>
-        </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
 
-        <v-row>
-          <v-col cols="12" md="8">
-            <v-card rounded="lg" class="mt-4" fluid fill-height>
-              <v-text-field
-                class="pa-4"
-                label="Title"
-                v-model="build.title"
-                :value="build.title"
-              ></v-text-field>
+    <v-row>
+      <v-col cols="12" md="8">
+        <v-card rounded="lg" class="mt-4" fluid fill-height>
+          <v-text-field
+            class="pa-4"
+            label="Title"
+            v-model="build.title"
+            :value="build.title"
+          ></v-text-field>
 
-              <v-textarea
-                label="Description"
-                class="pa-4"
-                rows="1"
-                multi-line
-                auto-grow
-                v-model="build.description"
-                :value="build.description"
-              ></v-textarea>
+          <v-textarea
+            label="Description"
+            class="pa-4"
+            rows="1"
+            multi-line
+            auto-grow
+            v-model="build.description"
+            :value="build.description"
+          ></v-textarea>
 
-              <v-text-field
-                label="Video"
-                class="pa-4"
-                @input="handleVideoInput($event)"
-                :value="build.video"
-                v-model="build.video"
-              ></v-text-field> </v-card
-          ></v-col>
-          <v-col cols="12" md="4">
-            <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
-              <v-card-text>
-                <v-autocomplete
-                  prepend-icon="mdi-filter-variant"
-                  label="Civilization"
-                  :items="civs"
-                  v-model="build.civ"
-                  density="compact"
-                  item-value="shortName"
-                  item-title="title"
-                  clearable
-                >
-                </v-autocomplete>
-                <v-autocomplete
-                  prepend-icon="mdi-map"
-                  label="Map"
-                  :items="maps"
-                  v-model="build.map"
-                  density="compact"
-                  item-value="title"
-                  item-title="title"
-                  clearable
-                >
-                </v-autocomplete>
-                <v-autocomplete
-                  prepend-icon="mdi-strategy"
-                  label="Strategy"
-                  :items="strategies"
-                  v-model="build.strategy"
-                  density="compact"
-                  item-value="title"
-                  item-title="title"
-                  clearable
-                >
-                </v-autocomplete>
-              </v-card-text> </v-card
-          ></v-col>
-        </v-row>
-
-        <v-card rounded="lg" class="mt-4">
-          <div v-if="!build.steps.length" class="text-center">
-            <v-btn
-              variant="text"
-              color="primary"
-              prepend-icon="mdi-plus"
-              class="pt-5 pb-10"
-              @click="addStep(0)"
-              >Add your first build step</v-btn
+          <v-text-field
+            label="Video"
+            class="pa-4"
+            @input="handleVideoInput($event)"
+            :value="build.video"
+            v-model="build.video"
+          ></v-text-field> </v-card
+      ></v-col>
+      <v-col cols="12" md="4">
+        <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
+          <v-card-text>
+            <v-autocomplete
+              prepend-icon="mdi-filter-variant"
+              label="Civilization"
+              :items="civs"
+              v-model="build.civ"
+              density="compact"
+              item-value="shortName"
+              item-title="title"
+              clearable
             >
-          </div>
-          <v-table
-            v-if="build.steps.length"
-            style="line-height: 50px"
-            class="ma-2"
-          >
-            <thead>
-              <tr>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/time.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/food.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/wood.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/gold.png"
-                  ></v-img>
-                </th>
-                <th class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    src="/assets/resources/stone.png"
-                  ></v-img>
-                </th>
-                <th class="text-left">Description</th>
-                <th class="text-right hidden-sm-and-down"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(item, index) in build.steps"
-                :key="index"
-                v-on:keyup.enter.ctrl="addStep(index)"
-                v-on:keyup.delete.ctrl="removeStep(index)"
-                @mouseover="selectItem(index)"
-                @mouseleave="unSelectItem()"
-              >
-                <td
-                  @focusout="updateStepTime($event, index)"
-                  contenteditable="true"
-                  class="text-center"
-                  v-html="item.time"
-                ></td>
-                <td
-                  @focusout="updateStepFood($event, index)"
-                  contenteditable="true"
-                  class="text-center"
-                  v-html="item.food"
-                ></td>
-                <td
-                  @focusout="updateStepWood($event, index)"
-                  contenteditable="true"
-                  class="text-center"
-                  v-html="item.wood"
-                ></td>
-                <td
-                  @focusout="updateStepGold($event, index)"
-                  contenteditable="true"
-                  class="text-center"
-                  v-html="item.gold"
-                ></td>
-                <td
-                  @focusout="updateStepStone($event, index)"
-                  contenteditable="true"
-                  class="text-center"
-                  v-html="item.stone"
-                ></td>
-                <td
-                  @focusout="updateStepDescription($event, index)"
-                  contenteditable="true"
-                  class="text-left"
-                  v-html="item.description"
-                ></td>
-                <td width="140" class="text-right hidden-sm-and-down">
-                  <v-tooltip
-                    location="top"
-                    text="Remove current step (CTRL + DEL)"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        v-bind="props"
-                        v-if="index === hoverRowIndex"
-                        variant="plain"
-                        color="primary"
-                        @click="removeStep(index)"
-                        icon="mdi-delete"
-                      >
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                  <v-tooltip
-                    location="top"
-                    text="Add new step below (CTRL + ENTER)"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        v-bind="props"
-                        v-show="index === hoverRowIndex"
-                        variant="plain"
-                        color="primary"
-                        @click="addStep(index)"
-                        icon="mdi-plus"
-                      >
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </td>
-              </tr>
-            </tbody>
-          </v-table>
-        </v-card>
-      </v-col>
+            </v-autocomplete>
+            <v-autocomplete
+              prepend-icon="mdi-map"
+              label="Map"
+              :items="maps"
+              v-model="build.map"
+              density="compact"
+              item-value="title"
+              item-title="title"
+              clearable
+            >
+            </v-autocomplete>
+            <v-autocomplete
+              prepend-icon="mdi-strategy"
+              label="Strategy"
+              :items="strategies"
+              v-model="build.strategy"
+              density="compact"
+              item-value="title"
+              item-title="title"
+              clearable
+            >
+            </v-autocomplete>
+          </v-card-text> </v-card
+      ></v-col>
     </v-row>
+
+    <v-card rounded="lg" class="mt-4">
+      <div v-if="!build.steps.length" class="text-center">
+        <v-btn
+          variant="text"
+          color="primary"
+          prepend-icon="mdi-plus"
+          class="pt-5 pb-10"
+          @click="addStep(0)"
+          >Add your first build step</v-btn
+        >
+      </div>
+      <v-table v-if="build.steps.length" style="line-height: 50px" class="ma-2">
+        <thead>
+          <tr>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/time.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/food.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/wood.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/gold.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="42"
+                src="/assets/resources/stone.png"
+              ></v-img>
+            </th>
+            <th class="text-left">Description</th>
+            <th class="text-right hidden-sm-and-down"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(item, index) in build.steps"
+            :key="index"
+            v-on:keyup.enter.ctrl="addStep(index)"
+            v-on:keyup.delete.ctrl="removeStep(index)"
+            @mouseover="selectItem(index)"
+            @mouseleave="unSelectItem()"
+          >
+            <td
+              @focusout="updateStepTime($event, index)"
+              contenteditable="true"
+              class="text-center"
+              v-html="item.time"
+            ></td>
+            <td
+              @focusout="updateStepFood($event, index)"
+              contenteditable="true"
+              class="text-center"
+              v-html="item.food"
+            ></td>
+            <td
+              @focusout="updateStepWood($event, index)"
+              contenteditable="true"
+              class="text-center"
+              v-html="item.wood"
+            ></td>
+            <td
+              @focusout="updateStepGold($event, index)"
+              contenteditable="true"
+              class="text-center"
+              v-html="item.gold"
+            ></td>
+            <td
+              @focusout="updateStepStone($event, index)"
+              contenteditable="true"
+              class="text-center"
+              v-html="item.stone"
+            ></td>
+            <td
+              @focusout="updateStepDescription($event, index)"
+              contenteditable="true"
+              class="text-left"
+              v-html="item.description"
+            ></td>
+            <td width="140" class="text-right hidden-sm-and-down">
+              <v-tooltip location="top" text="Remove current step (CTRL + DEL)">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    v-if="index === hoverRowIndex"
+                    variant="plain"
+                    color="primary"
+                    @click="removeStep(index)"
+                    icon="mdi-delete"
+                  >
+                  </v-btn>
+                </template>
+              </v-tooltip>
+              <v-tooltip
+                location="top"
+                text="Add new step below (CTRL + ENTER)"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    v-show="index === hoverRowIndex"
+                    variant="plain"
+                    color="primary"
+                    @click="addStep(index)"
+                    icon="mdi-plus"
+                  >
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+    </v-card>
   </v-container>
 </template>
 
