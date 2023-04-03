@@ -216,8 +216,8 @@
           <tr
             v-for="(item, index) in build.steps"
             :key="index"
-            v-on:keyup.enter.ctrl="addStep(index)"
-            v-on:keyup.delete.ctrl="removeStep(index)"
+            v-on:keyup.enter.alt="addStep(index)"
+            v-on:keyup.delete.alt="removeStep(index)"
             @mouseover="selectItem(index)"
             @mouseleave="unSelectItem()"
           >
@@ -258,7 +258,7 @@
               v-html="item.description"
             ></td>
             <td width="140" class="text-right hidden-sm-and-down">
-              <v-tooltip location="top" text="Remove current step (CTRL + DEL)">
+              <v-tooltip location="top" text="Remove current step (ALT + DEL)">
                 <template v-slot:activator="{ props }">
                   <v-btn
                     v-bind="props"
@@ -273,7 +273,7 @@
               </v-tooltip>
               <v-tooltip
                 location="top"
-                text="Add new step below (CTRL + ENTER)"
+                text="Add new step below (ALT + ENTER)"
               >
                 <template v-slot:activator="{ props }">
                   <v-btn
