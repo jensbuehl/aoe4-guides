@@ -31,14 +31,16 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="6" lg="6">
           <v-card-title class="py-2 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
+            <v-chip class="mr-2 mb-2" label size="small"
+              >Author: {{ build.author }}</v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               label
               size="small"
-              disabled
               v-show="build.views"
               >Views: {{ build.views }}</v-chip
             >
@@ -47,7 +49,6 @@
               v-if="build.timeCreated"
               label
               size="small"
-              disabled
               >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
             >
             <v-chip
@@ -55,13 +56,17 @@
               v-if="build.timeCreated"
               label
               size="small"
-              disabled
               >Updated: {{ build.timeUpdated.toDate().toDateString() }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4">
-            <v-chip color="primary" class="mr-2 mb-2" label size="small"
-              >Author: {{ build.author }}</v-chip
+            <v-chip
+              color="primary"
+              class="mr-2 mb-2"
+              v-if="build.season"
+              label
+              size="small"
+              >{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"

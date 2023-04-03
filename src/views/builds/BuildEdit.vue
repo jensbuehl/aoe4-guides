@@ -34,7 +34,14 @@
         <v-col cols="12" md="6">
           <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
-            <v-chip class="mr-2 mb-2" label size="small" disabled
+            <v-chip class="mr-2 mb-2" label size="small"
+              >Author: {{ build.author }}</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              label
+              size="small"
+              v-show="build.views"
               >Views: {{ build.views }}</v-chip
             >
             <v-chip
@@ -42,21 +49,24 @@
               v-if="build.timeCreated"
               label
               size="small"
-              disabled
               >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.timeCreated"
+              v-if="build.timeUpdated"
               label
               size="small"
-              disabled
               >Updated: {{ build.timeUpdated.toDate().toDateString() }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4">
-            <v-chip color="primary" class="mr-2 mb-2" label size="small"
-              >Author: {{ build.author }}</v-chip
+            <v-chip
+              color="primary"
+              class="mr-2 mb-2"
+              v-if="build.season"
+              label
+              size="small"
+              >{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -123,12 +133,23 @@
         <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
           <v-card-text>
             <v-autocomplete
-              prepend-icon="mdi-filter-variant"
+              prepend-icon="mdi-earth"
               label="Civilization"
               :items="civs"
               v-model="build.civ"
               density="compact"
               item-value="shortName"
+              item-title="title"
+              clearable
+            >
+            </v-autocomplete>
+            <v-autocomplete
+              prepend-icon="mdi-update"
+              label="Season"
+              :items="seasons"
+              v-model="build.season"
+              density="compact"
+              item-value="title"
               item-title="title"
               clearable
             >
@@ -301,6 +322,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
 import getCivs from "../../composables/getCivs";
+import getSeasons from "../../composables/getSeasons";
 import getMaps from "../../composables/getMaps";
 import getStrategies from "../../composables/getStrategies";
 
@@ -313,6 +335,7 @@ export default {
     const user = computed(() => store.state.user);
     const civs = getCivs().civs;
     const maps = getMaps().maps;
+    const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const build = ref(null);
     const { get, update, error } = useCollection("builds");
@@ -372,6 +395,7 @@ export default {
       civs,
       maps,
       strategies,
+      seasons,
       handleSave,
       handleVideoInput,
       updateStepDescription,

@@ -139,6 +139,11 @@ const filterWith = (config) => {
       queryParams.push(civsOp);
     }
 
+    if (config.seasons.length > 0) {
+      const seasonsOp = where("season", "in", config.seasons);
+      queryParams.push(seasonsOp);
+    }
+
     if (config.maps.length > 0) {
       const mapsOp = where("map", "in", config.maps);
       queryParams.push(mapsOp);
