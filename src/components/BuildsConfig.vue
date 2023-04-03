@@ -14,12 +14,24 @@
       >
       </v-autocomplete>
       <v-autocomplete
+        v-model="config.seasons"
+        prepend-icon="mdi-update"
+        label="Season"
+        density="compact"
+        :items="seasons"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-autocomplete>
+      <v-autocomplete
         v-model="config.maps"
         prepend-icon="mdi-map"
         label="Map"
         density="compact"
         :items="maps"
-        item-value="shortName"
+        item-value="title"
         item-title="title"
         clearable
         multiple
@@ -31,7 +43,7 @@
         label="Strategy"
         density="compact"
         :items="strategies"
-        item-value="shortName"
+        item-value="title"
         item-title="title"
         clearable
         multiple
@@ -59,6 +71,7 @@
 import { ref, reactive, watch } from "vue";
 import getCivs from "../composables/getCivs";
 import getMaps from "../composables/getMaps";
+import getSeasons from "../composables/getSeasons";
 import getDefaultConfig from "../composables/getDefaultConfig";
 import getStrategies from "../composables/getStrategies";
 
@@ -67,6 +80,7 @@ export default {
   setup(props, context) {
     const civs = getCivs().civs;
     const maps = getMaps().maps;
+    const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const config = reactive(getDefaultConfig());
     const sortOptions = ref([
@@ -94,6 +108,7 @@ export default {
       sortOptions,
       civs,
       maps,
+      seasons,
       strategies,
       handleReset,
     };

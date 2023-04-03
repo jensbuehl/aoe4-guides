@@ -30,21 +30,26 @@
       </v-img>
     </v-col>
     <v-col>
-      <v-card-title class="pt-0 text-subtitle-2 text-md-h6" style="font-family: 'Segoe UI' !important" to="/editbuild">{{
-        build.title
-      }}</v-card-title>
-      <v-chip-group class="ml-4 hidden-sm-and-down">
-        <v-chip label size="small" disabled>Author: {{ build.author }}</v-chip>
-        <v-chip v-if="build.timeCreated" label size="small" disabled
-          >Created: {{ build.timeCreated?.toDate().toDateString() }}</v-chip
+      <v-card-title
+        class="pt-0 text-subtitle-2 text-md-h6"
+        style="font-family: 'Segoe UI' !important"
+        to="/editbuild"
+        >{{ build.title }}</v-card-title
+      >
+      <v-item-group class="ml-4 hidden-sm-and-down">
+        <v-chip class="mr-2 mb-2" label size="small"
+          >Author: {{ build.author }}</v-chip
         >
-        <v-chip v-if="build.map" label size="small" disabled>{{
+        <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">{{
+          build.season
+        }}</v-chip>
+        <v-chip v-if="build.map" class="mr-2 mb-2" label size="small">{{
           build.map
         }}</v-chip>
-        <v-chip v-if="build.strategy" label size="small" disabled>{{
+        <v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small">{{
           build.strategy
         }}</v-chip>
-      </v-chip-group>
+      </v-item-group>
     </v-col>
   </v-card>
 </template>

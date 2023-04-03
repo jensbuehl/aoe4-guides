@@ -9,7 +9,7 @@
     </v-card>
   </v-container>
   <v-container v-if="user">
-    <v-card rounded="lg">
+    <v-card v-if="build.civ" rounded="lg">
       <v-row class="d-flex align-center flex-nowrap">
         <v-col v-if="build.civ" cols="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
@@ -48,7 +48,7 @@
               <v-btn
                 color="primary"
                 prepend-icon="mdi-content-save"
-                @click="handleSubmit"
+                @click="save"
                 >Save</v-btn
               >
             </v-card-actions>
@@ -89,12 +89,23 @@
         <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
           <v-card-text>
             <v-autocomplete
-              prepend-icon="mdi-filter-variant"
+              prepend-icon="mdi-earth"
               label="Civilization"
               :items="civs"
               v-model="build.civ"
               density="compact"
               item-value="shortName"
+              item-title="title"
+              clearable
+            >
+            </v-autocomplete>
+            <v-autocomplete
+              prepend-icon="mdi-update"
+              label="Season"
+              :items="seasons"
+              v-model="build.season"
+              density="compact"
+              item-value="title"
               item-title="title"
               clearable
             >
@@ -266,7 +277,7 @@ import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import getCivs from "../../composables/getCivs";
-import getSeasons from "../../composables/getMaps";
+import getSeasons from "../../composables/getSeasons";
 import useCollection from "../../composables/useCollection";
 import getMaps from "../../composables/getMaps";
 import getStrategies from "../../composables/getStrategies";
@@ -295,12 +306,13 @@ export default {
       video: "",
       civ: "",
       map: "",
+      season: "",
       strategy: "",
       timeCreated: null,
       timeUpdated: null,
     });
 
-    const handleSubmit = async () => {
+    const save = async () => {
       build.value.sortTitle =
         build.value.title.toLowerCase() + crypto.randomUUID();
       build.value.authorUid = user.value.uid;
@@ -355,7 +367,7 @@ export default {
       seasons,
       user,
       authIsReady: computed(() => store.state.authIsReady),
-      handleSubmit,
+      save,
       handleVideoInput,
       updateStepDescription,
       updateStepStone,
