@@ -1,4 +1,4 @@
-const useStepsEditor = (table) => {
+const buildStepsService = (table) => {
 
   const getSelectedRow = () => {
     //TODO
@@ -12,7 +12,7 @@ const useStepsEditor = (table) => {
     //TODO
   };
 
-  return { createRow, deleteRow};
+  return { createRow, deleteRow, getSelectedRow};
 };
 
-export default useStepsEditor;
+export default buildStepsService;
