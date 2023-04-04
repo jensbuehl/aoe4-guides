@@ -40,6 +40,13 @@
         <v-chip class="mr-2 mb-2" label size="small"
           >Author: {{ build.author }}</v-chip
         >
+        <v-chip
+              class="mr-2 mb-2"
+              v-if="build.timeCreated"
+              label
+              size="small"
+              >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
+            >
         <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">{{
           build.season
         }}</v-chip>
