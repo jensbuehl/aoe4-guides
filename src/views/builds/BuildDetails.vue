@@ -37,11 +37,7 @@
             <v-chip class="mr-2 mb-2" label size="small"
               >Author: {{ build.author }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              label
-              size="small"
-              v-show="build.views"
+            <v-chip class="mr-2 mb-2" label size="small" v-show="build.views"
               >Views: {{ build.views }}</v-chip
             >
             <v-chip
@@ -86,38 +82,39 @@
             >
           </v-item-group>
         </v-col>
-        <v-row align="center" justify="end" class="fill-height mr-4">
+        <v-row justify="end" class="fill-height my-2 mr-2">
           <v-col cols="auto">
-            <v-card-actions class="hidden-sm-and-down">
-              <v-btn
-                color="primary"
-                v-show="user?.uid === build.authorUid"
-                prepend-icon="mdi-pencil"
-                :to="{ name: 'BuildEdit', params: { id: props.id } }"
-                >Edit</v-btn
-              >
-              <v-btn
-                color="primary"
-                v-show="user?.uid === build.authorUid"
-                prepend-icon="mdi-delete"
-                @click="dialog = true"
-                >Delete</v-btn
-              >
-              <v-dialog v-model="dialog" width="auto">
-                <v-card rounded="lg" class="text-center primary">
-                  <v-card-title>Delete Build</v-card-title>
-                  <v-card-text>
-                    Do you really want to delete this build?<br />
-                    The action cannot be undone.
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-btn color="error" block @click="handleDelete"
-                      >Delete</v-btn
-                    >
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </v-card-actions>
+            <Favorite :buildId="build.id" :userId="build.authorUid"></Favorite>
+            <v-btn
+              color="primary"
+              variant="text"
+              block
+              v-show="user?.uid === build.authorUid"
+              icon="mdi-pencil"
+              :to="{ name: 'BuildEdit', params: { id: props.id } }"
+            ></v-btn>
+            <v-btn
+              color="primary"
+              v-show="user?.uid === build.authorUid"
+              variant="text"
+              block
+              icon="mdi-delete"
+              @click="dialog = true"
+            ></v-btn>
+            <v-dialog v-model="dialog" width="auto">
+              <v-card rounded="lg" class="text-center primary">
+                <v-card-title>Delete Build</v-card-title>
+                <v-card-text>
+                  Do you really want to delete this build?<br />
+                  The action cannot be undone.
+                </v-card-text>
+                <v-card-actions>
+                  <v-btn color="error" block @click="handleDelete"
+                    >Delete</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-row>
@@ -203,6 +200,7 @@
 </template>
 
 <script>
+import Favorite from "../../components/Favorite.vue";
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -211,6 +209,7 @@ import getCivs from "../../composables/getCivs";
 
 export default {
   name: "BuildDetails",
+  components: { Favorite },
   props: ["id"],
   setup(props) {
     const store = useStore();
@@ -220,7 +219,6 @@ export default {
     const build = ref(null);
     const dialog = ref(false);
     const { get, del, incrementViews, error } = useCollection("builds");
-
     onMounted(async () => {
       const res = await get(props.id);
       window.scrollTo(0, 0);
@@ -229,7 +227,6 @@ export default {
       //If you need to update your counter above this rate, see Distributed counters
       incrementViews(props.id);
     });
-
     const handleDelete = async () => {
       dialog.value = false;
       await del(props.id);
@@ -237,7 +234,6 @@ export default {
         router.push("/");
       }
     };
-
     return {
       build,
       props,
