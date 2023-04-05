@@ -56,7 +56,7 @@ export default {
       totalPages: null,
       pageStart: null,
       pageEnd: null,
-      limit: 20,
+      limit: 1,
     });
 
     watch(
@@ -88,7 +88,7 @@ export default {
         queryService.getQueryParametersFromConfig(
           filterAndOrderConfig.value,
           null,
-          user.value.uid,
+          null,
           favorites.value
         )
       );
@@ -103,7 +103,7 @@ export default {
         queryService.getQueryParametersFromConfig(
           filterAndOrderConfig.value,
           paginationConfig.value.limit,
-          user.value.uid,
+          null,
           favorites.value
         )
       );
@@ -121,7 +121,7 @@ export default {
           filterAndOrderConfig.value,
           paginationConfig.value.limit,
           paginationConfig.value.pageEnd,
-          user.value.uid,
+          null,
           favorites.value
         )
       );
@@ -139,7 +139,7 @@ export default {
           filterAndOrderConfig.value,
           paginationConfig.value.limit,
           paginationConfig.value.pageStart,
-          user.value.uid,
+          null,
           favorites.value
         )
       );
