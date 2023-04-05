@@ -193,10 +193,8 @@ const useCollection = (col) => {
     try {
       var snapshot;
       if (query) {
-        console.log("query set");
         snapshot = await getCountFromServer(query);
       } else {
-        console.log("query not set");
         const coll = collection(db, col);
         snapshot = await getCountFromServer(coll);
       }

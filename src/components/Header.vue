@@ -7,6 +7,12 @@
             <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list>
+            <v-list-item v-if="user" to="/favorites">
+              <v-list-item-icon class="pr-5">
+                <v-icon>mdi-heart</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content> Favorites </v-list-item-content>
+            </v-list-item>
             <v-list-item v-if="user" to="/mybuilds">
               <v-list-item-icon class="pr-5">
                 <v-icon>mdi-playlist-edit</v-icon>
@@ -52,8 +58,14 @@
         style="cursor: pointer; min-width: 150px"
         @click="$router.push('/')"
       >
-      <div class="title" :style="{color: $vuetify.theme.themes.customDarkTheme.colors.primary}">{{ title }}</div>
-
+        <div
+          class="title"
+          :style="{
+            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+          }"
+        >
+          {{ title }}
+        </div>
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <v-app-bar-items v-if="authIsReady" class="hidden-sm-and-down">
@@ -67,31 +79,40 @@
           New Build
         </v-btn>
         <v-btn
-        v-if="user"
-        flat
-        to="/mybuilds"
-        class="mx-1"
-        prepend-icon="mdi-playlist-edit"
+          v-if="user"
+          flat
+          to="/favorites"
+          class="mx-1"
+          prepend-icon="mdi-heart"
         >
-        My Builds
-      </v-btn>
-      <v-btn
-      v-if="!user"
-      flat
-      to="/register"
-      class="mx-1"
-      prepend-icon="mdi-account-edit"
-      >
-      Register
-    </v-btn>
-    <v-btn
-    v-if="!user"
-    flat
-    to="/login"
+          Favorites
+        </v-btn>
+        <v-btn
+          v-if="user"
+          flat
+          to="/mybuilds"
+          class="mx-1"
+          prepend-icon="mdi-playlist-edit"
+        >
+          My Builds
+        </v-btn>
+        <v-btn
+          v-if="!user"
+          flat
+          to="/register"
+          class="mx-1"
+          prepend-icon="mdi-account-edit"
+        >
+          Register
+        </v-btn>
+        <v-btn
+          v-if="!user"
+          flat
+          to="/login"
           class="mx-1"
           prepend-icon="mdi-login"
         >
-        Login
+          Login
         </v-btn>
         <v-btn
           v-if="user"
@@ -99,17 +120,17 @@
           to="/account"
           class="mx-1"
           prepend-icon="mdi-account-edit"
-          >
+        >
           Profile
         </v-btn>
         <v-btn
-        v-if="user"
-        flat
-        class="mx-1"
-        prepend-icon="mdi-logout"
-        @click="logout"
+          v-if="user"
+          flat
+          class="mx-1"
+          prepend-icon="mdi-logout"
+          @click="logout"
         >
-        Logout
+          Logout
         </v-btn>
       </v-app-bar-items>
     </v-container>
@@ -155,6 +176,5 @@ export default {
 }
 .title {
   font-size: 1.5rem;
-
 }
 </style>
