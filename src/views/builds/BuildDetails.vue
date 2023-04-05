@@ -92,6 +92,16 @@
         <v-row justify="end" class="fill-height my-2 mr-2">
           <v-col cols="auto">
             <Favorite
+              @favoriteAdded="
+                () => {
+                  build.likes++;
+                }
+              "
+              @favoriteRemoved="
+                () => {
+                  build.likes--;
+                }
+              "
               v-if="user"
               :buildId="build.id"
               :userId="build.authorUid"

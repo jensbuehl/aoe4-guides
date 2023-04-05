@@ -24,7 +24,7 @@ import useCollection from "../composables/useCollection";
 export default {
   name: "Favorites",
   props: ["buildId", "userId"],
-  setup(props) {
+  setup(props, context) {
     const { incrementLikes, decrementLikes } = useCollection("builds");
     const { get, add, arrayUnionLikes, arrayRemoveLikes } =
       useCollection("users");
@@ -42,13 +42,13 @@ export default {
       incrementLikes(props.buildId);
       arrayUnionLikes(props.userId, ...[props.buildId]);
       isFavorite.value = !isFavorite.value;
-
-      //todo: array union
+      context.emit("favoriteAdded"); //Only used for live preview        
     };
     const removeFromFavorites = async () => {
       decrementLikes(props.buildId);
       arrayRemoveLikes(props.userId, ...[props.buildId]);
       isFavorite.value = !isFavorite.value;
+      context.emit("favoriteRemoved"); //Only used for live preview  
     };
     return {
       props,
