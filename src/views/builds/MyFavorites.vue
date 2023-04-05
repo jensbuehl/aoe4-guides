@@ -56,7 +56,7 @@ export default {
       totalPages: null,
       pageStart: null,
       pageEnd: null,
-      limit: 2,
+      limit: 20,
     });
 
     watch(
