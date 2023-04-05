@@ -31,7 +31,7 @@
     </v-col>
     <v-col>
       <v-card-title
-        class="pt-0 text-subtitle-2 text-md-h6"
+        class="pt-md-0 pt-2 text-subtitle-2 text-md-h6"
         style="font-family: 'Segoe UI' !important"
         to="/editbuild"
         >{{ build.title }}</v-card-title

@@ -11,7 +11,7 @@
   <v-container v-if="user">
     <v-card v-if="build.civ" rounded="lg">
       <v-row class="d-flex align-center flex-nowrap">
-        <v-col v-if="build.civ" cols="3" class="pa-0 ma-0 hidden-sm-and-down">
+        <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0">
           <v-img
             :src="
               '/' +
@@ -39,7 +39,7 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="8" md="6" lg="6">
           <v-card-title>{{ build.title }}</v-card-title>
         </v-col>
         <v-row align="center" justify="end" class="fill-height mr-4">

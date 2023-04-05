@@ -31,7 +31,7 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="10" md="6" lg="6">
           <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
             <v-chip class="mr-2 mb-2" label size="small"
