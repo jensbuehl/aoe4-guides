@@ -35,24 +35,31 @@
           <v-card-title class="py-2 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
             <v-chip class="mr-2 mb-2" label size="small"
-              >Author: {{ build.author }}</v-chip
+              ><v-icon start icon="mdi-account-edit"></v-icon
+              >{{ build.author }}</v-chip
             >
-            <v-chip class="mr-2 mb-2" label size="small" v-show="build.views"
-              >Views: {{ build.views }}</v-chip
+            <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
+              <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="small"
-              >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
+            <v-chip v-if="build.likes" class="mr-2 mb-2" label size="small">
+              <v-icon start icon="mdi-heart"></v-icon>
+              {{ build.likes }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
               v-if="build.timeCreated"
               label
               size="small"
-              >Updated: {{ build.timeUpdated.toDate().toDateString() }}</v-chip
+              ><v-icon start icon="mdi-alarm-plus"></v-icon
+              >{{ build.timeCreated.toDate().toDateString() }}</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.timeCreated"
+              label
+              size="small"
+              ><v-icon start icon="mdi-update"></v-icon
+              >{{ build.timeUpdated.toDate().toDateString() }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4">
@@ -84,7 +91,11 @@
         </v-col>
         <v-row justify="end" class="fill-height my-2 mr-2">
           <v-col cols="auto">
-            <Favorite v-if="user" :buildId="build.id" :userId="build.authorUid"></Favorite>
+            <Favorite
+              v-if="user"
+              :buildId="build.id"
+              :userId="build.authorUid"
+            ></Favorite>
             <v-btn
               color="primary"
               variant="text"

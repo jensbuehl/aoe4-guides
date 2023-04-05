@@ -38,14 +38,16 @@
       >
       <v-item-group class="ml-4 hidden-sm-and-down">
         <v-chip class="mr-2 mb-2" label size="small"
-          >Author: {{ build.author }}</v-chip
-        >
-        <v-chip
+              ><v-icon start icon="mdi-account-edit"></v-icon
+              >{{ build.author }}</v-chip
+            >
+            <v-chip
               class="mr-2 mb-2"
               v-if="build.timeCreated"
               label
               size="small"
-              >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
+              ><v-icon start icon="mdi-alarm-plus"></v-icon
+              >{{ build.timeCreated.toDate().toDateString() }}</v-chip
             >
         <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">{{
           build.season

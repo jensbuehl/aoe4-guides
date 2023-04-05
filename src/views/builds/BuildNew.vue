@@ -44,14 +44,13 @@
         </v-col>
         <v-row align="center" justify="end" class="fill-height mr-4">
           <v-col cols="auto">
-            <v-card-actions class="hidden-sm-and-down">
-              <v-btn
-                color="primary"
-                prepend-icon="mdi-content-save"
-                @click="save"
-                >Save</v-btn
-              >
-            </v-card-actions>
+            <v-btn
+              color="primary"
+              variant="text"
+              block
+              icon="mdi-content-save"
+              @click="save"
+            ></v-btn>
           </v-col>
         </v-row>
       </v-row>
