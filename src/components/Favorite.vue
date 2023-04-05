@@ -24,6 +24,7 @@ import useCollection from "../composables/useCollection";
 export default {
   name: "Favorites",
   props: ["buildId", "userId"],
+  emits: ["favoriteRemoved", "favoriteAdded"],
   setup(props, context) {
     const { incrementLikes, decrementLikes } = useCollection("builds");
     const { get, add, arrayUnionLikes, arrayRemoveLikes } =
