@@ -31,7 +31,7 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="12" md="6" lg="6">
+        <v-col cols="10" md="6" lg="6">
           <v-card-title class="py-2 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
             <v-chip class="mr-2 mb-2" label size="small"
@@ -41,7 +41,7 @@
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip v-if="build.likes" class="mr-2 mb-2" label size="small">
+            <v-chip v-show="build.likes" class="mr-2 mb-2" label size="small">
               <v-icon start icon="mdi-heart"></v-icon>
               {{ build.likes }}</v-chip
             >
@@ -104,7 +104,7 @@
               "
               v-if="user"
               :buildId="build.id"
-              :userId="build.authorUid"
+              :userId="user?.uid"
             ></Favorite>
             <v-btn
               color="primary"
