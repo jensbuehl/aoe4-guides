@@ -89,11 +89,7 @@ export default {
       paginationConfig.value.totalPages = Math.ceil(
         size / paginationConfig.value.limit
       );
-      console.log(user.value.uid);
-      console.log(size);
       paginationConfig.value.currentPage = 1;
-      console.log("page changed to:", paginationConfig.value.currentPage);
-      console.log("total pages", paginationConfig.value.totalPages);
 
       //get builds
       const paginationQuery = getQuery(

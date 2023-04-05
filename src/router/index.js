@@ -12,6 +12,7 @@ import BuildDetails from "../views/builds/BuildDetails.vue";
 import BuildEdit from "../views/builds/BuildEdit.vue";
 import BuildNew from "../views/builds/BuildNew.vue";
 import MyBuilds from "../views/builds/MyBuilds.vue";
+import MyFavorites from "../views/builds/MyFavorites.vue";
 
 import NotFound from "../views/NotFound.vue";
 import Privacy from "../views/Privacy.vue";
@@ -59,6 +60,11 @@ const routes = [
       path: "/mybuilds",
       name: "MyBuilds",
       component: MyBuilds
+    },
+    {
+      path: "/favorites",
+      name: "MyFavorites",
+      component: MyFavorites
     },
     {
       path: "/about",

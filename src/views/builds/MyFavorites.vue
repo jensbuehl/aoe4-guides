@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="builds">
+  <v-container>
     <v-row>
       <v-col cols="12" md="8">
         <div v-for="item in builds" :key="item.id">
@@ -10,7 +10,6 @@
             <SingleBuild :build="item"></SingleBuild>
           </router-link>
         </div>
-
         <v-pagination
           v-if="paginationConfig.totalPages > 1"
           @next="nextPage"
@@ -46,7 +45,9 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
+    const { get } = useCollection("users");
     const builds = ref(null);
+    const favorites = ref(null)
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = ref(getDefaultConfig());
@@ -55,11 +56,20 @@ export default {
       totalPages: null,
       pageStart: null,
       pageEnd: null,
-      limit: 20,
+      limit: 2,
     });
 
+    watch(
+      () => user.value,
+      () => {
+        initData(getDefaultConfig());
+      }
+    );
+
     onMounted(() => {
-      initData();
+      if (user.value) {
+        initData(getDefaultConfig());
+      }
     });
 
     const configChanged = (newConfig) => {
@@ -69,9 +79,18 @@ export default {
     };
 
     const initData = async () => {
+      //get favorites list
+      favorites.value = await get(user.value.uid).then((user) => {return user.favorites});
+      console.log("favorites", favorites.value)
+
       //init page count and current page
       const allDocsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
+        queryService.getQueryParametersFromConfig(
+          filterAndOrderConfig.value,
+          null,
+          user.value.uid,
+          favorites.value
+        )
       );
       const size = await getSize(allDocsQuery);
       paginationConfig.value.totalPages = Math.ceil(
@@ -83,9 +102,12 @@ export default {
       const paginationQuery = getQuery(
         queryService.getQueryParametersFromConfig(
           filterAndOrderConfig.value,
-          paginationConfig.value.limit
+          paginationConfig.value.limit,
+          user.value.uid,
+          favorites.value
         )
       );
+
       const res = await getAll(paginationQuery);
       builds.value = res;
 
@@ -98,7 +120,9 @@ export default {
         queryService.getQueryParametersNextPage(
           filterAndOrderConfig.value,
           paginationConfig.value.limit,
-          paginationConfig.value.pageEnd
+          paginationConfig.value.pageEnd,
+          user.value.uid,
+          favorites.value
         )
       );
       const res = await getAll(query);
@@ -114,12 +138,14 @@ export default {
         queryService.getQueryParametersPreviousPage(
           filterAndOrderConfig.value,
           paginationConfig.value.limit,
-          paginationConfig.value.pageStart
+          paginationConfig.value.pageStart,
+          user.value.uid,
+          favorites.value
         )
       );
       const res = await getAll(query);
-      getSize(query);
       builds.value = res;
+      getSize(query);
 
       updatePageBoundaries();
     };

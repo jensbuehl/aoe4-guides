@@ -11,13 +11,14 @@ const getQueryParametersPreviousPage = (
   config,
   limitToLast,
   pageEnd,
-  userUid
+  userUid,
+  favorites
 ) => {
   try {
     var queryParams = limitToLastWith(limitToLast);
     if (config) {
       queryParams = queryParams
-        .concat(filterWith(config))
+        .concat(filterWith(config, favorites))
         .concat(orderByWith(config));
     }
     if (userUid) {
@@ -31,9 +32,9 @@ const getQueryParametersPreviousPage = (
   }
 };
 
-const getQueryParametersNextPage = (config, limit, pageStart, userUid) => {
+const getQueryParametersNextPage = (config, limit, pageStart, userUid, favorites) => {
   try {
-    var queryParams = getQueryParametersFromConfig(config, limit, userUid);
+    var queryParams = getQueryParametersFromConfig(config, limit, userUid, favorites);
     queryParams = queryParams.concat(filterPageWith(pageStart, null));
 
     return queryParams;
@@ -42,7 +43,7 @@ const getQueryParametersNextPage = (config, limit, pageStart, userUid) => {
   }
 };
 
-const getQueryParametersFromConfig = (config, pageLimit, userUid) => {
+const getQueryParametersFromConfig = (config, pageLimit, userUid, favorites) => {
   try {
     var queryParams = [];
     if (pageLimit) {
@@ -50,11 +51,10 @@ const getQueryParametersFromConfig = (config, pageLimit, userUid) => {
     }
     if (config) {
       queryParams = queryParams
-        .concat(filterWith(config))
+        .concat(filterWith(config, favorites))
         .concat(orderByWith(config));
     }
     if (userUid) {
-      console.log("filter by auther");
       queryParams = queryParams.concat(filterAuthorBy(userUid));
     }
     return queryParams;
@@ -130,7 +130,7 @@ const orderByWith = (config) => {
   }
 };
 
-const filterWith = (config) => {
+const filterWith = (config, favorites) => {
   try {
     const queryParams = [];
 
@@ -152,6 +152,11 @@ const filterWith = (config) => {
     if (config.strategies.length > 0) {
       const strategiesOp = where("strategy", "in", config.strategies);
       queryParams.push(strategiesOp);
+    }
+
+    if (favorites) {
+      const favoritesOp = where("id", "in", favorites);
+      queryParams.push(favoritesOp);
     }
 
     return queryParams;
