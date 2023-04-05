@@ -44,7 +44,7 @@ export default {
   setup() {
     window.scrollTo(0, 0);
 
-    const { getCustom, getQuery, getSize } = useCollection("builds");
+    const { getAll, getQuery, getSize } = useCollection("builds");
     const builds = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
@@ -104,7 +104,7 @@ export default {
         )
       );
 
-      const res = await getCustom(paginationQuery);
+      const res = await getAll(paginationQuery);
       builds.value = res;
 
       updatePageBoundaries();
@@ -120,7 +120,7 @@ export default {
           user.value.uid
         )
       );
-      const res = await getCustom(query);
+      const res = await getAll(query);
       builds.value = res;
       getSize(query);
 
@@ -137,7 +137,7 @@ export default {
           user.value.uid
         )
       );
-      const res = await getCustom(query);
+      const res = await getAll(query);
       builds.value = res;
       getSize(query);
 

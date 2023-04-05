@@ -35,28 +35,31 @@
           <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
             <v-chip class="mr-2 mb-2" label size="small"
-              >Author: {{ build.author }}</v-chip
+              ><v-icon start icon="mdi-account-edit"></v-icon
+              >{{ build.author }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              label
-              size="small"
-              v-show="build.views"
-              >Views: {{ build.views }}</v-chip
+            <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
+              <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
+            >
+            <v-chip v-if="build.likes" class="mr-2 mb-2" label size="small">
+              <v-icon start icon="mdi-heart"></v-icon>
+              {{ build.likes }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
               v-if="build.timeCreated"
               label
               size="small"
-              >Created: {{ build.timeCreated.toDate().toDateString() }}</v-chip
+              ><v-icon start icon="mdi-alarm-plus"></v-icon
+              >{{ build.timeCreated.toDate().toDateString() }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.timeUpdated"
+              v-if="build.timeCreated"
               label
               size="small"
-              >Updated: {{ build.timeUpdated.toDate().toDateString() }}</v-chip
+              ><v-icon start icon="mdi-update"></v-icon
+              >{{ build.timeUpdated.toDate().toDateString() }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4">
@@ -88,14 +91,13 @@
         </v-col>
         <v-row align="center" justify="end" class="fill-height mr-4">
           <v-col cols="auto">
-            <v-card-actions class="hidden-sm-and-down">
-              <v-btn
-                color="primary"
-                prepend-icon="mdi-content-save"
-                @click="handleSave"
-                >Save</v-btn
-              >
-            </v-card-actions>
+            <v-btn
+              color="primary"
+              variant="text"
+              block
+              icon="mdi-content-save"
+              @click="handleSave"
+            ></v-btn>
           </v-col>
         </v-row>
       </v-row>
