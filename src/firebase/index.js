@@ -29,6 +29,8 @@ import {
   endBefore,
   Timestamp,
   increment,
+  arrayUnion,
+  arrayRemove,
   getCountFromServer,
 } from "firebase/firestore";
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
@@ -83,5 +85,7 @@ export {
   endBefore,
   getCountFromServer,
   increment,
+  arrayUnion,
+  arrayRemove,
   Timestamp,
 };

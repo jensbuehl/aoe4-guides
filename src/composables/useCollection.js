@@ -11,6 +11,8 @@ import {
   doc,
   Timestamp,
   increment,
+  arrayUnion,
+  arrayRemove,
   getCountFromServer,
 } from "../firebase";
 
@@ -21,13 +23,15 @@ import {
 const useCollection = (col) => {
   const error = ref(null);
 
-  const add = async (document) => {
+  const add = async (document, id) => {
     error.value = null;
 
     try {
       const collectionRef = collection(db, col);
-      const docRef = doc(collectionRef);
-      document.id = docRef.id;
+      const docRef = doc(collectionRef, id);
+      if (!id) {
+        document.id = docRef.id;
+      }
       document.timeCreated = Timestamp.fromDate(new Date());
       document.timeUpdated = Timestamp.fromDate(new Date());
       await setDoc(docRef, document);
@@ -68,23 +72,72 @@ const useCollection = (col) => {
     }
   };
 
-  const getAll = async () => {
+  const incrementLikes = async (id) => {
     error.value = null;
 
     try {
-      const snapshot = await getDocs(collection(db, col));
-      return snapshot.docs.map((doc) => doc.data());
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        likes: increment(1),
+      });
     } catch (err) {
       console.log(err.message);
-      error.value = "Collection could not be retrieved";
+      error.value = "Document could not be retrieved";
     }
   };
 
-  const getCustom = async (query) => {
+  const decrementLikes = async (id) => {
     error.value = null;
 
     try {
-      const snapshot = await getDocs(query);
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        likes: increment(-1),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Document could not be retrieved";
+    }
+  };
+
+  const arrayUnionLikes = async (id, array) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        favorites: arrayUnion(array),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Favorite could not be added";
+    }
+  };
+
+  const arrayRemoveLikes = async (id, array) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        favorites: arrayRemove(array),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Favorite could not be removed";
+    }
+  };
+
+  const getAll = async (query) => {
+    error.value = null;
+    var snapshot = null;
+
+    try {
+      if (query) {
+        snapshot = await getDocs(query);
+      } else {
+        snapshot = await getDocs(collection(db, col));
+      }
       return snapshot.docs.map((doc) => doc.data());
     } catch (err) {
       console.log(err.message);
@@ -151,7 +204,21 @@ const useCollection = (col) => {
     }
   };
 
-  return { error, add, get, del, getAll, getCustom, update, getQuery, getSize, incrementViews };
+  return {
+    error,
+    add,
+    get,
+    del,
+    getAll,
+    update,
+    getQuery,
+    getSize,
+    incrementViews,
+    incrementLikes,
+    decrementLikes,
+    arrayUnionLikes,
+    arrayRemoveLikes
+  };
 };
 
 export default useCollection;
