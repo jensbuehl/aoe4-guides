@@ -25,15 +25,18 @@ const useCollection = (col) => {
 
   const add = async (document, id) => {
     error.value = null;
-    var collectionRef = null;
 
     try {
-      if(id){
-        collectionRef = collection(db, col, id);
+      const collectionRef = collection(db, col);
+      var docRef = null;
+      if (id) {
+        docRef = doc(collectionRef, id);
+        console.log(collectionRef);
       } else {
-        collectionRef = collection(db, col);
-      }    
-      const docRef = doc(collectionRef);
+        docRef = doc(collectionRef);
+        console.log(collectionRef);
+      }
+
       document.id = docRef.id;
       document.timeCreated = Timestamp.fromDate(new Date());
       document.timeUpdated = Timestamp.fromDate(new Date());
@@ -218,7 +221,7 @@ const useCollection = (col) => {
     incrementLikes,
     decrementLikes,
     arrayUnionLikes,
-    arrayRemoveLikes
+    arrayRemoveLikes,
   };
 };
 
