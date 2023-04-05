@@ -25,13 +25,16 @@ const useCollection = (col) => {
 
   const add = async (document, id) => {
     error.value = null;
+    var collectionRef = null;
 
     try {
-      const collectionRef = collection(db, col);
-      const docRef = doc(collectionRef, id);
-      if (!id) {
-        document.id = docRef.id;
-      }
+      if(id){
+        collectionRef = collection(db, col, id);
+      } else {
+        collectionRef = collection(db, col);
+      }    
+      const docRef = doc(collectionRef);
+      document.id = docRef.id;
       document.timeCreated = Timestamp.fromDate(new Date());
       document.timeUpdated = Timestamp.fromDate(new Date());
       await setDoc(docRef, document);
