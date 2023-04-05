@@ -84,7 +84,7 @@
         </v-col>
         <v-row justify="end" class="fill-height my-2 mr-2">
           <v-col cols="auto">
-            <Favorite :buildId="build.id" :userId="build.authorUid"></Favorite>
+            <Favorite v-if="user" :buildId="build.id" :userId="build.authorUid"></Favorite>
             <v-btn
               color="primary"
               variant="text"
