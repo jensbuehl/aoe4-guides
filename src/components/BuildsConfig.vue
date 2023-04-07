@@ -3,7 +3,7 @@
     <v-card-text>
       <v-autocomplete
         v-model="config.civs"
-        prepend-icon="mdi-filter-variant"
+        prepend-icon="mdi-earth"
         label="Civilization"
         density="compact"
         :items="civs"
@@ -92,6 +92,14 @@ export default {
         title: "Time Created",
         id: "timeCreated",
       },
+      {
+        title: "Views",
+        id: "views",
+      },
+      {
+        title: "Likes",
+        id: "likes",
+      }
     ]);
 
     watch(config, () => {

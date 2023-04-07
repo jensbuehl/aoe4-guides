@@ -71,7 +71,6 @@ export default {
     });
 
     const configChanged = (newConfig) => {
-      console.log("config changed:", newConfig);
       filterAndOrderConfig.value = newConfig;
       initData();
     };
@@ -148,8 +147,6 @@ export default {
           builds.value[builds.value.length - 1][
             filterAndOrderConfig.value.orderBy
           ];
-        console.log("page start", paginationConfig.value.pageStart);
-        console.log("page end", paginationConfig.value.pageEnd);
       }
     };
 
