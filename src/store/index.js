@@ -16,7 +16,7 @@ import {
 const store = createStore({
   state: {
     user: null,
-    authIsReady: false
+    authIsReady: false,
   },
   mutations: {
     setUser(state, payload) {
@@ -34,10 +34,10 @@ const store = createStore({
   actions: {
     async signup(context, { email, password, displayName }) {
       const actionCodeSettings = {
-        url: "http://localhost:5173/login",
+        url: "http://aoe4guides.com/login",
       };
 
-      createUserWithEmailAndPassword(auth, email, password)
+      await createUserWithEmailAndPassword(auth, email, password)
         .then((data) => {
           sendEmailVerification(auth.currentUser, actionCodeSettings);
           context.commit("setUser", data.user);
@@ -50,8 +50,8 @@ const store = createStore({
         .then(() => {
           context.commit("setDisplayName", displayName);
         })
-        .catch(() => {
-          throw new Error("Could not create account");
+        .catch((error) => {
+          throw new Error("Could not create account: " + error.code);
         });
     },
     async signin(context, { email, password }) {
@@ -59,8 +59,8 @@ const store = createStore({
         .then((data) => {
           context.commit("setUser", data.user);
         })
-        .catch(() => {
-          throw new Error("Could not login");
+        .catch((error) => {
+          throw new Error("Could not signin: " + error.code);
         });
     },
     async logout(context) {
@@ -68,11 +68,15 @@ const store = createStore({
       context.commit("setUser", null);
     },
     async deleteAccount(context) {
-      await deleteUser(auth.currentUser);
+      await deleteUser(auth.currentUser).catch((error) => {
+        throw new Error("Could not delete account: " + error.code);
+      });
       context.commit("setUser", null);
     },
     async changePassword(context, { password }) {
-      await updatePassword(auth.currentUser, password);
+      await updatePassword(auth.currentUser, password).catch((error) => {
+        throw new Error("Could not change password: " + error.code);
+      });
     },
   },
 });
