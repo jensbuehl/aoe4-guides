@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import useCollection from "../composables/useCollection";
 
 // firebase imports
 import {
@@ -48,6 +49,9 @@ const store = createStore({
           });
         })
         .then(() => {
+          //add to users collection
+          const { add } = useCollection("users");
+          add({ favorites: [] }, auth.currentUser.uid);
           context.commit("setDisplayName", displayName);
         })
         .catch((error) => {
@@ -67,11 +71,22 @@ const store = createStore({
       await signOut(auth);
       context.commit("setUser", null);
     },
-    async deleteAccount(context) {
+    async deleteAccount(context) {     
+      //TODO: decrement likes count on all builds
+
+      //remove from users collection
+      const { del } = useCollection("users");
+      await del(auth.currentUser.uid);
+
+      //remove user from auth db
       await deleteUser(auth.currentUser).catch((error) => {
         throw new Error("Could not delete account: " + error.code);
       });
+
+      //clear state
       context.commit("setUser", null);
+
+      
     },
     async changePassword(context, { password }) {
       await updatePassword(auth.currentUser, password).catch((error) => {
