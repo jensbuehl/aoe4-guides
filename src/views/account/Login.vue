@@ -8,6 +8,7 @@
             v-model="email"
             name="email"
             label="E-mail"
+            :rules="[v => !!v || 'Email is required']"
             type="email"
             placeholder="Your e-mail"
             required
@@ -18,6 +19,7 @@
             name="password"
             label="Password"
             type="password"
+            :rules="[v => !!v || 'Password is required']"
             placeholder="Your password"
             required
           ></v-text-field>
@@ -28,11 +30,20 @@
             class="ml-2"
             variant="plain"
             to="/resetpassword"
-            
           >
             Forgot Password?
           </v-btn>
-          <v-btn variant="text" type="submit" block class="mt-2 submit" color="primary">Login</v-btn>
+          <v-btn
+            variant="text"
+            type="submit"
+            block
+            class="mt-2 submit"
+            color="primary"
+            >Login</v-btn
+          >
+          <v-card v-if="error" rounded="lg" color="error">
+            <v-card-text>{{ error }}</v-card-text>
+          </v-card>
         </v-form>
       </v-card>
     </div>
@@ -48,23 +59,28 @@ export default {
   name: "Login",
   setup() {
     window.scrollTo(0, 0);
-    
+
     const store = useStore();
     const email = ref("");
     const password = ref("");
     const router = useRouter();
     const error = ref(null);
+    const form = ref(null);
 
     const login = async () => {
       try {
+        const validation = await form.value.validate();
+        if (!validation.valid) return;
+
         await store.dispatch("signin", {
           email: email.value,
-          password: password.value
+          password: password.value,
         });
+        
         router.push("/");
       } catch (err) {
         error.value = err.message;
-        console.log(error.value)
+        console.log(error.value);
       }
     };
     return {
@@ -72,7 +88,8 @@ export default {
       password,
       router,
       error,
-      login
+      form,
+      login,
     };
   },
 };

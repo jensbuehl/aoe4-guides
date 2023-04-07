@@ -24,6 +24,9 @@
                 placeholder="Your email"
                 readonly
               ></v-text-field>
+              <v-card v-if="error" rounded="lg" color="error">
+                <v-card-text>{{ error }}</v-card-text>
+              </v-card>
             </v-card>
           </v-card>
         </div>
@@ -36,11 +39,19 @@
                   name="new password"
                   label="New password"
                   type="password"
+                  :rules="[(v) => !!v || 'Password is required']"
                   v-model="newPassword"
-                  content="New password"
                   placeholder="Your new password"
+                  required
                 ></v-text-field>
-                <v-btn color="primary" variant="text" type="submit" block class="mt-2">Change Password</v-btn>
+                <v-btn
+                  color="primary"
+                  variant="text"
+                  type="submit"
+                  block
+                  class="mt-2"
+                  >Change Password</v-btn
+                >
               </v-form>
             </v-card>
           </v-card>
@@ -50,7 +61,12 @@
             <v-card-title class="mb-4">Delete Account</v-card-title>
             <v-card rounded="lg" style="max-width: 350px; width: 350px" fluid>
               <v-form ref="form" @submit.prevent="dialog = true">
-                <v-btn color="primary" variant="text" type="submit" block class="mt-2"
+                <v-btn
+                  color="primary"
+                  variant="text"
+                  type="submit"
+                  block
+                  class="mt-2"
                   >Delete Account</v-btn
                 >
                 <v-dialog v-model="dialog" width="auto">
@@ -86,16 +102,21 @@ export default {
   name: "Account",
   setup() {
     window.scrollTo(0, 0);
-    
+
     const newPassword = ref("");
     const router = useRouter();
     const store = useStore();
     const error = ref(null);
+    const form = ref(null);
     const dialog = ref(false);
     const user = computed(() => store.state.user);
-    
+
     const changePassword = async () => {
       try {
+        const validation = await form.value.validate();
+        console.log(validation);
+        if (!validation.valid) return;
+
         await store.dispatch("changePassword", {
           password: newPassword.value,
         });
@@ -122,6 +143,8 @@ export default {
       router,
       user,
       dialog,
+      error,
+      form,
       authIsReady: computed(() => store.state.authIsReady),
       changePassword,
       deleteAccount,
