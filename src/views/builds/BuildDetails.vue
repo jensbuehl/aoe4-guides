@@ -34,6 +34,15 @@
         <v-col cols="10" md="6" lg="6">
           <v-card-title class="py-2 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="isNew(build.timeCreated.toDate())"
+              label
+              color="primary"
+              size="small"
+              ><v-icon start icon="mdi-alert-decagram"></v-icon
+              >NEW</v-chip
+            >
             <v-chip class="mr-2 mb-2" label size="small"
               ><v-icon start icon="mdi-account-edit"></v-icon
               >{{ build.author }}</v-chip
@@ -51,7 +60,7 @@
               label
               size="small"
               ><v-icon start icon="mdi-alarm-plus"></v-icon
-              >{{ build.timeCreated.toDate().toDateString() }}</v-chip
+              >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -59,7 +68,7 @@
               label
               size="small"
               ><v-icon start icon="mdi-update"></v-icon
-              >{{ build.timeUpdated.toDate().toDateString() }}</v-chip
+              >{{ timeSince(build.timeUpdated.toDate()) }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4">
@@ -227,6 +236,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
 import getCivs from "../../composables/getCivs";
+import useTimeSince from "../../composables/useTimeSince";
 
 export default {
   name: "BuildDetails",
@@ -239,6 +249,7 @@ export default {
     const civs = getCivs().civs;
     const build = ref(null);
     const dialog = ref(false);
+    const { timeSince, isNew } = useTimeSince();
     const { get, del, incrementViews, error } = useCollection("builds");
     onMounted(async () => {
       const res = await get(props.id);
@@ -263,6 +274,8 @@ export default {
       error,
       dialog,
       handleDelete,
+      timeSince,
+      isNew
     };
   },
 };

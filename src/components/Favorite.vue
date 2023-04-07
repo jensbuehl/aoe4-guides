@@ -3,7 +3,7 @@
     @click="addToFavorites"
     v-show="!isFavorite"
     block
-    color="red"
+    color="primary"
     variant="text"
     icon="mdi-heart-outline"
   ></v-btn>
@@ -11,7 +11,7 @@
     @click="removeFromFavorites"
     v-show="isFavorite"
     block
-    color="red"
+    color="primary"
     variant="text"
     icon="mdi-heart"
   ></v-btn>

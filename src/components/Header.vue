@@ -9,7 +9,7 @@
           <v-list>
             <v-list-item v-if="user" to="/favorites">
               <v-list-item-icon class="pr-5">
-                <v-icon>mdi-heart</v-icon>
+                <v-icon>mdi-heart-outline</v-icon>
               </v-list-item-icon>
               <v-list-item-content> Favorites </v-list-item-content>
             </v-list-item>
@@ -83,7 +83,7 @@
           flat
           to="/favorites"
           class="mx-1"
-          prepend-icon="mdi-heart"
+          prepend-icon="mdi-heart-outline"
         >
           Favorites
         </v-btn>
