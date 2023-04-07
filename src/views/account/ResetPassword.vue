@@ -44,7 +44,7 @@ export default {
     const error = ref(null);
 
     const actionCodeSettings = {
-      url: "http://aoe4guides.com/login",
+      url: "https://aoe4guides.com/login",
     };
     const reset = async () => {
       await sendPasswordResetEmail(auth, email.value, actionCodeSettings)

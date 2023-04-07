@@ -34,7 +34,7 @@ const store = createStore({
   actions: {
     async signup(context, { email, password, displayName }) {
       const actionCodeSettings = {
-        url: "http://aoe4guides.com/login",
+        url: "https://aoe4guides.com/login",
       };
 
       await createUserWithEmailAndPassword(auth, email, password)
