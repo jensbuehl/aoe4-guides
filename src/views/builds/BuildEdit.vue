@@ -34,6 +34,15 @@
         <v-col cols="10" md="6" lg="6">
           <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="isNew(build.timeCreated.toDate())"
+              label
+              color="primary"
+              size="small"
+              ><v-icon start icon="mdi-alert-decagram"></v-icon
+              >NEW</v-chip
+            >
             <v-chip class="mr-2 mb-2" label size="small"
               ><v-icon start icon="mdi-account-edit"></v-icon
               >{{ build.author }}</v-chip
@@ -41,7 +50,7 @@
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip v-if="build.likes" class="mr-2 mb-2" label size="small">
+            <v-chip v-show="build.likes" class="mr-2 mb-2" label size="small">
               <v-icon start icon="mdi-heart"></v-icon>
               {{ build.likes }}</v-chip
             >
@@ -51,7 +60,7 @@
               label
               size="small"
               ><v-icon start icon="mdi-alarm-plus"></v-icon
-              >{{ build.timeCreated.toDate().toDateString() }}</v-chip
+              >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -59,7 +68,7 @@
               label
               size="small"
               ><v-icon start icon="mdi-update"></v-icon
-              >{{ build.timeUpdated.toDate().toDateString() }}</v-chip
+              >{{ timeSince(build.timeUpdated.toDate()) }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4">
@@ -327,6 +336,7 @@ import getCivs from "../../composables/getCivs";
 import getSeasons from "../../composables/getSeasons";
 import getMaps from "../../composables/getMaps";
 import getStrategies from "../../composables/getStrategies";
+import useTimeSince from "../../composables/useTimeSince";
 
 export default {
   name: "BuildEdit",
@@ -340,6 +350,7 @@ export default {
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const build = ref(null);
+    const { timeSince, isNew } = useTimeSince();
     const { get, update, error } = useCollection("builds");
     onMounted(async () => {
       const res = await get(props.id);
@@ -408,6 +419,8 @@ export default {
       updateStepTime,
       removeStep,
       addStep,
+      timeSince,
+      isNew
     };
   },
   data() {

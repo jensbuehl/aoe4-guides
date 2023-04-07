@@ -35,12 +35,12 @@ export default function useTimeSince() {
         var msPerMinute = 60 * 1000;
         var msPerHour = msPerMinute * 60;
         var msPerDay = msPerHour * 24;
-        var msPerMonth = msPerDay * 30;
       
         var now = new Date();
         var elapsed = now - date;
       
-        if (elapsed < msPerMonth) {
+        //New when created within the past 7 days
+        if (elapsed < msPerDay * 7) {
           return true;
         }
         return false;

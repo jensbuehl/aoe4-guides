@@ -37,18 +37,22 @@
         >{{ build.title }}</v-card-title
       >
       <v-item-group class="ml-4 hidden-sm-and-down">
+        <v-chip
+          class="mr-2 mb-2"
+          v-if="isNew(build.timeCreated.toDate())"
+          label
+          color="primary"
+          size="small"
+          ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+        >
         <v-chip class="mr-2 mb-2" label size="small"
-              ><v-icon start icon="mdi-account-edit"></v-icon
-              >{{ build.author }}</v-chip
-            >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="small"
-              ><v-icon start icon="mdi-alarm-plus"></v-icon
-              >{{ build.timeCreated.toDate().toDateString() }}</v-chip
-            >
+          ><v-icon start icon="mdi-account-edit"></v-icon
+          >{{ build.author }}</v-chip
+        >
+        <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
+          ><v-icon start icon="mdi-alarm-plus"></v-icon
+          >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
+        >
         <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">{{
           build.season
         }}</v-chip>
@@ -65,15 +69,19 @@
 
 <script>
 import getCivs from "../composables/getCivs";
+import useTimeSince from "../composables/useTimeSince";
 
 export default {
   props: ["build"],
   name: "SingleBuild",
   setup() {
     const civs = getCivs().civs;
+    const { timeSince, isNew } = useTimeSince();
 
     return {
       civs,
+      timeSince,
+      isNew,
     };
   },
 };
