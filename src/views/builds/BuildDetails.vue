@@ -59,7 +59,7 @@
               v-if="build.timeCreated"
               label
               size="small"
-              ><v-icon start icon="mdi-alarm-plus"></v-icon
+              ><v-icon start icon="mdi-clock-edit-outline"></v-icon
               >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
             >
             <v-chip

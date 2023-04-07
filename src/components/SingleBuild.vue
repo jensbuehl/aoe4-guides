@@ -50,7 +50,7 @@
           >{{ build.author }}</v-chip
         >
         <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
-          ><v-icon start icon="mdi-alarm-plus"></v-icon
+          ><v-icon start icon="mdi-clock-edit-outline"></v-icon
           >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
         >
         <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">{{
