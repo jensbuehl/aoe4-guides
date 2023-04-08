@@ -2,7 +2,7 @@
   <v-card>
     <v-card-title class="mb-4">Comments</v-card-title>
     <div v-for="comment in comments" :key="comment.id">
-      <SingleComment :comment="comment"></SingleComment>
+      <SingleComment @commentRemoved="init" :comment="comment"></SingleComment>
     </div>
     <v-row align="center">
       <v-col class="mt-4">
@@ -49,12 +49,16 @@ export default {
       })
 
     onMounted(async () => {
+      init();
+    });
+
+    const init = async () => {
       var queryParams = queryService.whereEqual("buildId", props.buildId)
       queryParams = queryParams.concat(queryService.orderByWith({orderBy: "timeCreated"}, "asc"))
       const query = getQuery(queryParams);
       const res = await getAll(query);
       comments.value = res;
-    });
+    }
 
     const post = async () => {
       console.log(newComment.value)
@@ -63,16 +67,13 @@ export default {
       newComment.value.text = null;
 
       //Update comments list
-      var queryParams = queryService.whereEqual("buildId", props.buildId)
-      queryParams = queryParams.concat(queryService.orderByWith({orderBy: "timeCreated"}, "asc"))
-      const query = getQuery(queryParams);
-      const res = await getAll(query);
-      comments.value = res;
+      init();
     };
 
     return {
       comments,
       post,
+      init,
       newComment
     };
   },
