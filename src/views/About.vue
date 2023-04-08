@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="d-flex justify-center">
-      <v-card class="pa-5" rounded="lg" width="1024px" fluid>
+      <v-card class="py-6 px-10" rounded="lg" width="1024px" fluid>
         <h1>About AoE4 Guides</h1><br>
         <h2>Your Home for Age of Empires IV Guides and Build Orders</h2>
         <p>
@@ -22,7 +22,7 @@
           The easiest way is spreading your enthusiasm for the site, create and manage your build orders and share it with the community. 
             The second way is to donate so we can pay the server and other operational costs. 
             If you are a developer with some skill in Vue, Javascript, or Firebase you can contribute to the development of AoE4 Guides.
-        </p><br>
+        </p>
 
       </v-card>
     </div>

@@ -23,8 +23,35 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <BuildsConfig @configChanged="configChanged">
-        </BuildsConfig>
+        <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
+        <v-alert
+          v-if="!user"
+          rounded="lg"
+          outlined
+          color="primary"
+          class="mt-4 pa-1"
+          ><v-card rounded="lg">
+            <v-card-title> Ready for Age Up?</v-card-title>
+
+            <v-list lines="two">
+              <v-list-item
+                title="Create"
+                subtitle="Create new Age of Empires 4 build orders and share them with your friends."
+              ></v-list-item>
+              <v-list-item
+                title="Like"
+                subtitle="Manage your own favorite AoE 4 build orders and find the good ones with ease."
+              ></v-list-item>
+              <v-list-item
+                title="Comment"
+                subtitle="Write build order comments and get in touch with the author and the community."
+              ></v-list-item>
+              <v-list-item
+                title="Sign up"
+                subtitle="Registered villagers gather and manage build orders up to 20% faster. ;)"
+              ></v-list-item>
+            </v-list> </v-card
+        ></v-alert>
       </v-col>
     </v-row>
   </v-container>

@@ -1,12 +1,49 @@
 <template>
   <v-container v-if="!user && authIsReady">
-    <v-card class="d-flex justify-center align-center" height="96" rounded="lg">
-      <v-card-title
-        class="justify-center align-center pt-0 text-subtitle-2 text-md-h6"
-        style="font-family: 'Segoe UI' !important"
-        >Please login to create and share your own build orders.</v-card-title
+    <v-row>
+      <v-col cols="12" md="8"
+        ><v-card
+          class="d-flex justify-center align-center"
+          height="96"
+          rounded="lg"
+        >
+          <v-card-title
+            class="justify-center align-center pt-0 text-subtitle-2 text-md-h6"
+            style="font-family: 'Segoe UI' !important"
+            >Please login to create your own build orders.</v-card-title
+          >
+        </v-card></v-col
       >
-    </v-card>
+      <v-col cols="12" md="4"
+        ><v-alert
+          v-if="!user"
+          rounded="lg"
+          outlined
+          color="primary"
+          class="pa-1"
+          ><v-card rounded="lg">
+            <v-card-title> Ready for Age Up?</v-card-title>
+
+            <v-list lines="two">
+              <v-list-item
+                title="Create"
+                subtitle="Create new Age of Empires 4 build orders and share them with your friends."
+              ></v-list-item>
+              <v-list-item
+                title="Like"
+                subtitle="Manage your own favorite AoE 4 build orders and find the good ones with ease."
+              ></v-list-item>
+              <v-list-item
+                title="Comment"
+                subtitle="Write build order comments and get in touch with the author and the community."
+              ></v-list-item>
+              <v-list-item
+                title="Sign up"
+                subtitle="Registered villagers gather and manage build orders up to 20% faster. ;)"
+              ></v-list-item>
+            </v-list> </v-card></v-alert
+      ></v-col>
+    </v-row>
   </v-container>
   <v-container v-if="user">
     <v-card v-if="build.civ" rounded="lg">
@@ -248,10 +285,7 @@
                   </v-btn>
                 </template>
               </v-tooltip>
-              <v-tooltip
-                location="top"
-                text="Add new step below (ALT + ENTER)"
-              >
+              <v-tooltip location="top" text="Add new step below (ALT + ENTER)">
                 <template v-slot:activator="{ props }">
                   <v-btn
                     v-bind="props"
