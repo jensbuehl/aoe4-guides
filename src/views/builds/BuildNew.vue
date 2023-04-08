@@ -136,6 +136,7 @@
     </v-row>
 
     <v-card rounded="lg" class="mt-4">
+      <v-card-title>Build Order</v-card-title>
       <div v-if="!build.steps.length" class="text-center">
         <v-btn
           variant="text"

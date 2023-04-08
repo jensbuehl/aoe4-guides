@@ -45,7 +45,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { get } = useCollection("users");
+    const { get } = useCollection("favorites");
     const builds = ref(null);
     const favorites = ref(null)
     const store = useStore();

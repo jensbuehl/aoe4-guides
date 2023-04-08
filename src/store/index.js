@@ -49,8 +49,8 @@ const store = createStore({
           });
         })
         .then(() => {
-          //add to users collection
-          const { add } = useCollection("users");
+          //add to favorites collection
+          const { add } = useCollection("favorites");
           add({ favorites: [] }, auth.currentUser.uid);
           context.commit("setDisplayName", displayName);
         })
@@ -75,7 +75,7 @@ const store = createStore({
       //TODO: decrement likes count on all builds
 
       //remove from users collection
-      const { del } = useCollection("users");
+      const { del } = useCollection("favorites");
       await del(auth.currentUser.uid);
 
       //remove user from auth db

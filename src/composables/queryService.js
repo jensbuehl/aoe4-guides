@@ -32,9 +32,20 @@ const getQueryParametersPreviousPage = (
   }
 };
 
-const getQueryParametersNextPage = (config, limit, pageStart, userUid, favorites) => {
+const getQueryParametersNextPage = (
+  config,
+  limit,
+  pageStart,
+  userUid,
+  favorites
+) => {
   try {
-    var queryParams = getQueryParametersFromConfig(config, limit, userUid, favorites);
+    var queryParams = getQueryParametersFromConfig(
+      config,
+      limit,
+      userUid,
+      favorites
+    );
     queryParams = queryParams.concat(filterPageWith(pageStart, null));
 
     return queryParams;
@@ -43,7 +54,12 @@ const getQueryParametersNextPage = (config, limit, pageStart, userUid, favorites
   }
 };
 
-const getQueryParametersFromConfig = (config, pageLimit, userUid, favorites) => {
+const getQueryParametersFromConfig = (
+  config,
+  pageLimit,
+  userUid,
+  favorites
+) => {
   try {
     var queryParams = [];
     if (pageLimit) {
@@ -134,22 +150,22 @@ const filterWith = (config, favorites) => {
   try {
     const queryParams = [];
 
-    if (config.civs.length > 0) {
+    if (config?.civs.length > 0) {
       const civsOp = where("civ", "in", config.civs);
       queryParams.push(civsOp);
     }
 
-    if (config.seasons.length > 0) {
+    if (config?.seasons.length > 0) {
       const seasonsOp = where("season", "in", config.seasons);
       queryParams.push(seasonsOp);
     }
 
-    if (config.maps.length > 0) {
+    if (config?.maps.length > 0) {
       const mapsOp = where("map", "in", config.maps);
       queryParams.push(mapsOp);
     }
 
-    if (config.strategies.length > 0) {
+    if (config?.strategies.length > 0) {
       const strategiesOp = where("strategy", "in", config.strategies);
       queryParams.push(strategiesOp);
     }
@@ -165,6 +181,18 @@ const filterWith = (config, favorites) => {
   }
 };
 
+const whereEqual = (field, value) => {
+  try {
+    const queryParams = [];
+    const whereOp = where(field, "==", value);
+    queryParams.push(whereOp);
+
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getQueryParametersFromConfig,
   filterAuthorBy,
@@ -173,4 +201,5 @@ export default {
   getQueryParametersPreviousPage,
   limitWith,
   filterWith,
+  whereEqual
 };

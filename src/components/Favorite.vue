@@ -28,15 +28,11 @@ export default {
   setup(props, context) {
     const { incrementLikes, decrementLikes } = useCollection("builds");
     const { get, add, arrayUnionLikes, arrayRemoveLikes } =
-      useCollection("users");
+      useCollection("favorites");
 
     const isFavorite = ref(false);
     onMounted(async () => {
       const user = await get(props.userId);
-      if (!user) {
-        //todo: Do this on registration!
-        await add({ builds: [], favorites: [] }, props.userId);
-      }
       isFavorite.value = user.favorites.includes(props.buildId);
     });
     const addToFavorites = async () => {
