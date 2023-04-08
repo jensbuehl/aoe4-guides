@@ -88,7 +88,7 @@ const useCollection = (col) => {
       });
     } catch (err) {
       console.log(err.message);
-      error.value = "Document could not be retrieved";
+      error.value = "Like count could not be incremented";
     }
   };
 
@@ -102,7 +102,7 @@ const useCollection = (col) => {
       });
     } catch (err) {
       console.log(err.message);
-      error.value = "Document could not be retrieved";
+      error.value = "Like count could not be decremented";
     }
   };
 
