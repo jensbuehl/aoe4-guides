@@ -44,8 +44,8 @@ export default {
     const newComment = ref({
         text: "",
         buildId: props.buildId,
-        authorId: user.value.uid,
-        author: user.value.displayName
+        authorId: user.value?.uid,
+        author: user.value?.displayName
       })
 
     onMounted(async () => {
