@@ -715,6 +715,20 @@
           "order": "DESCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "comments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "buildId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timeCreated",
+          "order": "ASCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []
