@@ -49,7 +49,7 @@ export default {
     const { timeSince, isNew } = useTimeSince();
 
     onMounted(async () => {
-      console.log(instance.proxy.$vuetify.theme.themes.dark.colors);
+      //console.log(instance.proxy.$vuetify.theme.themes.dark.colors);
     });
 
     return {

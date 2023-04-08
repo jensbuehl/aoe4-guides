@@ -72,10 +72,18 @@ const store = createStore({
       context.commit("setUser", null);
     },
     async deleteAccount(context) {     
-      //TODO: decrement likes count on all builds
+      const { del, get } = useCollection("favorites");
+      const { decrementLikes } = useCollection("builds");
 
+      //decrement likes on all builds
+      const favorites = await get(auth.currentUser.uid).then((favorites) => {return favorites.favorites});
+      console.log("favorites", favorites)
+
+      await favorites.forEach(element => {
+        decrementLikes(element)
+      });
+      
       //remove from users collection
-      const { del } = useCollection("favorites");
       await del(auth.currentUser.uid);
 
       //remove user from auth db
