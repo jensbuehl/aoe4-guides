@@ -82,6 +82,10 @@ export default {
       //get favorites list
       favorites.value = await get(user.value.uid).then((user) => {return user.favorites});
       console.log("favorites", favorites.value)
+      if (!favorites.value.length > 0){
+        builds.value = null;
+        return;
+      }
 
       //init page count and current page
       const allDocsQuery = getQuery(
@@ -107,6 +111,8 @@ export default {
           favorites.value
         )
       );
+
+      //TODO: if favorites count != received favorites count, then update favorites list in DB (remove deprecated links)
 
       const res = await getAll(paginationQuery);
       builds.value = res;

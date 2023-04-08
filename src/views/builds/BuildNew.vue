@@ -147,7 +147,7 @@
           >Add your first build step</v-btn
         >
       </div>
-      <v-table v-if="build.steps.length" style="line-height: 50px" class="ma-2">
+      <v-table v-if="build.steps.length" class="ma-2">
         <thead>
           <tr>
             <th class="text-center ma-0 pa-0" width="50px">

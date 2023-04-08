@@ -129,15 +129,18 @@ const limitToLastWith = (pageLimit) => {
   }
 };
 
-const orderByWith = (config) => {
+const orderByWith = (config, dir) => {
   try {
     const queryParams = [];
+    var myDir = "desc";
 
-    var dir = "desc";
-    if (config.orderBy === "sortTitle") {
-      dir = "asc";
+    if (dir) {
+      myDir = dir;
     }
-    const orderByOp = orderBy(config.orderBy, dir);
+    if (config.orderBy === "sortTitle") {
+      myDir = "asc";
+    }
+    const orderByOp = orderBy(config.orderBy, myDir);
     queryParams.push(orderByOp);
 
     return queryParams;
@@ -170,7 +173,7 @@ const filterWith = (config, favorites) => {
       queryParams.push(strategiesOp);
     }
 
-    if (favorites) {
+    if (favorites?.length > 0) {
       const favoritesOp = where("id", "in", favorites);
       queryParams.push(favoritesOp);
     }
@@ -201,5 +204,5 @@ export default {
   getQueryParametersPreviousPage,
   limitWith,
   filterWith,
-  whereEqual
+  whereEqual,
 };
