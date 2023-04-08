@@ -4,7 +4,7 @@
       <v-col cols="10">{{ comment }}</v-col>
       <v-row justify="end">
         <v-col cols="auto" class="fill-height mr-1">
-          <v-btn color="primary" variant="text" block icon="mdi-delete"></v-btn>
+          <v-btn v-if="authorId == user?.uid" color="primary" variant="text" block icon="mdi-delete"></v-btn>
         </v-col>
       </v-row>
       <v-row justify="end">
@@ -34,30 +34,31 @@
 </template>
 
 <script>
-import { ref, onMounted, getCurrentInstance } from "vue";
+import { computed } from "vue";
+import { useStore } from "vuex";
 import useTimeSince from "../composables/useTimeSince";
 
 export default {
   name: "SingleComment",
   props: ["comment"],
   setup(props) {
-    const instance = getCurrentInstance();
+    const store = useStore();
+    const user = computed(() => store.state.user);
 
     const comment = props.comment.text;
     const timeCreated = props.comment.timeCreated;
-    const author = props.comment.authorName;
+    const author = props.comment.author;
+    const authorId = props.comment.authorId;
     const { timeSince, isNew } = useTimeSince();
-
-    onMounted(async () => {
-      //console.log(instance.proxy.$vuetify.theme.themes.dark.colors);
-    });
 
     return {
       comment,
       timeCreated,
       author,
+      authorId,
       timeSince,
       isNew,
+      user
     };
   },
 };

@@ -1,22 +1,24 @@
 <template>
-  <v-card v-if="comments" v-for="comment in comments" :key="comment.id">
+  <v-card>
     <v-card-title class="mb-4">Comments</v-card-title>
-    <SingleComment :comment="comment"></SingleComment>
-    <SingleComment :comment="comment"></SingleComment>
-    <SingleComment :comment="comment"></SingleComment>
-    <SingleComment :comment="comment"></SingleComment>
-    <SingleComment :comment="comment"></SingleComment>
-    <SingleComment :comment="comment"></SingleComment>
-    <SingleComment :comment="comment"></SingleComment>
-    <SingleComment :comment="comment"></SingleComment>
+    <div v-for="comment in comments" :key="comment.id">
+      <SingleComment :comment="comment"></SingleComment>
+    </div>
     <v-row align="center">
       <v-col class="mt-4">
-        <v-textarea label="Your new comment" rows="2" auto-grow clearable>
+        <v-textarea label="Write a comment" v-model="newComment.text"
+            :value="newComment.text" rows="1" auto-grow clearable>
         </v-textarea>
       </v-col>
       <v-col cols="auto">
         <v-row justify="end" align="center" class="fill-height my-2 mr-2">
-          <v-btn color="primary" variant="text" block icon="mdi-send"></v-btn>
+          <v-btn
+            color="primary"
+            variant="text"
+            block
+            icon="mdi-send"
+            @click="post"
+          ></v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -26,27 +28,52 @@
 <script>
 import SingleComment from "./SingleComment.vue";
 import useCollection from "../composables/useCollection";
+import { useStore } from "vuex";
 import queryService from "../composables/queryService";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 export default {
   name: "Discussion",
   components: { SingleComment },
   props: ["buildId"],
   setup(props) {
-    const { getAll, getQuery } = useCollection("comments");
+    const { add, getAll, getQuery } = useCollection("comments");
+    const store = useStore();
+    const user = computed(() => store.state.user);
     const comments = ref(null);
+    const newComment = ref({
+        text: "",
+        buildId: props.buildId,
+        authorId: user.value.uid,
+        author: user.value.displayName
+      })
 
     onMounted(async () => {
-      const query = getQuery(queryService.whereEqual("id", props.buildId));
-      console.log(props.buildId);
+      var queryParams = queryService.whereEqual("buildId", props.buildId)
+      queryParams = queryParams.concat(queryService.orderByWith({orderBy: "timeCreated"}, "asc"))
+      const query = getQuery(queryParams);
       const res = await getAll(query);
       comments.value = res;
-      console.log(res);
     });
+
+    const post = async () => {
+      console.log(newComment.value)
+      //Add new comment
+      await add(newComment.value);
+      newComment.value.text = null;
+
+      //Update comments list
+      var queryParams = queryService.whereEqual("buildId", props.buildId)
+      queryParams = queryParams.concat(queryService.orderByWith({orderBy: "timeCreated"}, "asc"))
+      const query = getQuery(queryParams);
+      const res = await getAll(query);
+      comments.value = res;
+    };
 
     return {
       comments,
+      post,
+      newComment
     };
   },
 };
