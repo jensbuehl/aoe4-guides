@@ -266,7 +266,7 @@ export default {
       dialog.value = false;
       await del(props.id);
       if (!error.value) {
-        router.push("/");
+        router.go("-1");
       }
     };
     return {
