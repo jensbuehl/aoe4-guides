@@ -5,7 +5,8 @@ Source code for [aoe4guides.com](https://aoe4guides.com): Yet another Age of Emp
 * share build orders with others
 * browse and filter build orders (e.g. by season or rating)
 * manage your own favorite build orders
-* (more to come, some ideas: comments, icon-based-builds, custom exports/imports, public api,...)
+* write build order comments
+* (more to come, some ideas: icon-based-builds, custom exports/imports, public api,...)
 
 Goals:
 * Build order central for Age of Empires IV/4
