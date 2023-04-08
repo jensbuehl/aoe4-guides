@@ -40,8 +40,7 @@
               label
               color="primary"
               size="small"
-              ><v-icon start icon="mdi-alert-decagram"></v-icon
-              >NEW</v-chip
+              ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip class="mr-2 mb-2" label size="small"
               ><v-icon start icon="mdi-account-edit"></v-icon
@@ -98,7 +97,7 @@
             >
           </v-item-group>
         </v-col>
-        <v-row justify="end" class="fill-height my-2 mr-2">
+        <v-row justify="end" class="my-2 mr-2">
           <v-col cols="auto">
             <Favorite
               @favoriteAdded="
@@ -170,8 +169,8 @@
         ></iframe>
       </div>
     </v-card>
-
     <v-card v-if="build.steps.length" rounded="lg" class="mt-4">
+      <v-card-title>Build Order</v-card-title>
       <v-table class="ma-2">
         <thead>
           <tr>
@@ -226,11 +225,15 @@
         </tbody>
       </v-table>
     </v-card>
+    <div class="mt-4">
+      <Discussion :buildId="build.id"></Discussion>
+    </div>
   </v-container>
 </template>
 
 <script>
 import Favorite from "../../components/Favorite.vue";
+import Discussion from "../../components/Discussion.vue";
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -240,7 +243,7 @@ import useTimeSince from "../../composables/useTimeSince";
 
 export default {
   name: "BuildDetails",
-  components: { Favorite },
+  components: { Favorite, Discussion },
   props: ["id"],
   setup(props) {
     const store = useStore();
@@ -275,7 +278,7 @@ export default {
       dialog,
       handleDelete,
       timeSince,
-      isNew
+      isNew,
     };
   },
 };
