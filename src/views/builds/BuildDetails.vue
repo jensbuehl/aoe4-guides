@@ -226,7 +226,7 @@
       </v-table>
     </v-card>
     <div class="mt-4">
-      <Discussion :buildId="build.id"></Discussion>
+      <Discussion v-if="user" :buildId="build.id"></Discussion>
     </div>
   </v-container>
 </template>
