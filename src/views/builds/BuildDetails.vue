@@ -232,10 +232,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="item in build.steps" :key="item.description">
+          <tr v-for="(item, index) in build.steps" :key="index">
             <td class="text-center">{{ item.time }}</td>
-            <td class="text-center">{{ item.villagers }}</td>
-            <td class="text-center">{{ item.builders }}</td>
+            <td class="text-center">{{ item.villagers ? item.villagers : aggregateVillagers(index) }}</td>
+            <td class="text-center">{{ item.builders ? item.builders : "" }}</td>
             <td class="text-center">{{ item.food }}</td>
             <td class="text-center">{{ item.wood }}</td>
             <td class="text-center">{{ item.gold }}</td>
@@ -274,12 +274,14 @@ export default {
     const dialog = ref(false);
     const { timeSince, isNew } = useTimeSince();
     const { get, del, incrementViews, error } = useCollection("builds");
+
     onMounted(async () => {
       const res = await get(props.id);
       window.scrollTo(0, 0);
       build.value = res;
       incrementViews(props.id);
     });
+
     const handleDelete = async () => {
       dialog.value = false;
       await del(props.id);
@@ -287,6 +289,18 @@ export default {
         router.go("-1");
       }
     };
+
+    const aggregateVillagers = (index) => {
+      const step = build.value.steps[index];
+
+      const food = parseInt(step.food) || 0;
+      const wood = parseInt(step.wood) || 0;
+      const gold = parseInt(step.gold) || 0;
+      const stone = parseInt(step.stone) || 0;
+
+      return food + wood + gold + stone;
+    };
+
     return {
       build,
       props,
@@ -297,6 +311,7 @@ export default {
       handleDelete,
       timeSince,
       isNew,
+      aggregateVillagers
     };
   },
 };
