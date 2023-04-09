@@ -190,8 +190,26 @@
             <th class="text-center ma-0 pa-0" width="50px">
               <v-img
                 class="mx-auto"
-                width="42"
+                width="32"
                 src="/assets/resources/time.png"
+              ></v-img>
+            </th>
+            <v-tooltip text="Aggregated Villager Count">
+              <template v-slot:activator="{ props }">
+                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="32"
+                    src="/assets/resources/villager.png"
+                  ></v-img>
+                </th>
+              </template>
+            </v-tooltip>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="32"
+                src="/assets/resources/repair.png"
               ></v-img>
             </th>
             <th class="text-center ma-0 pa-0" width="50px">
@@ -240,6 +258,18 @@
               contenteditable="true"
               class="text-center"
               v-html="item.time"
+            ></td>
+            <td
+              contenteditable="false"
+              class="text-center"
+              disabled
+              v-html="item.villagers"
+            ></td>
+            <td
+              @focusout="updateStepBuilders($event, index)"
+              contenteditable="true"
+              class="text-center"
+              v-html="item.builders"
             ></td>
             <td
               @focusout="updateStepFood($event, index)"
@@ -329,6 +359,7 @@ export default {
     const store = useStore();
     const user = computed(() => store.state.user);
     const router = useRouter();
+    const hoverRowIndex = ref(null);
 
     const build = ref({
       author: "",
@@ -357,20 +388,38 @@ export default {
       }
     };
 
+    const aggregateVillagers = (index) => {
+      const step = build.value.steps[index];
+      const builders = parseInt(step.builders) || 0;
+      const food = parseInt(step.food) || 0;
+      const wood = parseInt(step.wood) || 0;
+      const gold = parseInt(step.gold) || 0;
+      const stone = parseInt(step.stone) || 0;
+
+      step.villagers = builders + food + wood + gold + stone;
+    };
     const updateStepTime = (event, index) => {
       build.value.steps[index].time = event.target.innerHTML;
     };
+    const updateStepBuilders = (event, index) => {
+      build.value.steps[index].builders = event.target.innerHTML;
+      aggregateVillagers(index);
+    };
     const updateStepFood = (event, index) => {
       build.value.steps[index].food = event.target.innerHTML;
+      aggregateVillagers(index);
     };
     const updateStepWood = (event, index) => {
       build.value.steps[index].wood = event.target.innerHTML;
+      aggregateVillagers(index);
     };
     const updateStepGold = (event, index) => {
       build.value.steps[index].gold = event.target.innerHTML;
+      aggregateVillagers(index);
     };
     const updateStepStone = (event, index) => {
       build.value.steps[index].stone = event.target.innerHTML;
+      aggregateVillagers(index);
     };
     const updateStepDescription = (event, index) => {
       build.value.steps[index].description = event.target.innerHTML;
@@ -378,6 +427,8 @@ export default {
     const addStep = (index) => {
       build.value.steps.splice(++index, 0, {
         time: "",
+        villagers: "",
+        builders: "",
         food: "",
         wood: "",
         gold: "",
@@ -391,6 +442,12 @@ export default {
     const handleVideoInput = () => {
       build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
     };
+    const selectItem = (index) => {
+      hoverRowIndex.value = index;
+    };
+    const unSelectItem = () => {
+      hoverRowIndex.value = null;
+    };
 
     return {
       build,
@@ -400,6 +457,7 @@ export default {
       strategies,
       seasons,
       user,
+      hoverRowIndex,
       authIsReady: computed(() => store.state.authIsReady),
       save,
       handleVideoInput,
@@ -408,23 +466,43 @@ export default {
       updateStepGold,
       updateStepWood,
       updateStepFood,
+      updateStepBuilders,
       updateStepTime,
       removeStep,
       addStep,
+      selectItem,
+      unSelectItem,
     };
-  },
-  data() {
-    return {
-      hoverRowIndex: false,
-    };
-  },
-  methods: {
-    selectItem(index) {
-      this.hoverRowIndex = index;
-    },
-    unSelectItem() {
-      this.hoverRowIndex = null;
-    },
   },
 };
 </script>
+
+<style scoped>
+table tbody tr td:nth-child(2) {
+  color: #828282;
+}
+
+table tbody tr td:nth-child(3) {
+  background: #5b5b5b69;
+}
+
+table tbody tr td:nth-child(4) {
+  background: #ff000034;
+}
+
+table tbody tr td:nth-child(5) {
+  background: #75400c5b;
+}
+
+table tbody tr td:nth-child(6) {
+  background: #edbe003e;
+}
+
+table tbody tr td:nth-child(7) {
+  background: #7a7a7b69;
+}
+
+td:empty {
+  line-height: 55px;
+}
+</style>

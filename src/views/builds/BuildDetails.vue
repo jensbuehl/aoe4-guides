@@ -177,8 +177,26 @@
             <th class="text-center ma-0 pa-0" width="50px">
               <v-img
                 class="mx-auto"
-                width="42"
+                width="32"
                 src="/assets/resources/time.png"
+              ></v-img>
+            </th>
+            <v-tooltip text="Aggregated Villager Count">
+              <template v-slot:activator="{ props }">
+                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto"
+                    width="32"
+                    src="/assets/resources/villager.png"
+                  ></v-img>
+                </th>
+              </template>
+            </v-tooltip>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto"
+                width="32"
+                src="/assets/resources/repair.png"
               ></v-img>
             </th>
             <th class="text-center ma-0 pa-0" width="50px">
@@ -216,6 +234,8 @@
         <tbody>
           <tr v-for="item in build.steps" :key="item.description">
             <td class="text-center">{{ item.time }}</td>
+            <td class="text-center">{{ item.villagers }}</td>
+            <td class="text-center">{{ item.builders }}</td>
             <td class="text-center">{{ item.food }}</td>
             <td class="text-center">{{ item.wood }}</td>
             <td class="text-center">{{ item.gold }}</td>
@@ -258,8 +278,6 @@ export default {
       const res = await get(props.id);
       window.scrollTo(0, 0);
       build.value = res;
-      //Note: You can update a single document only once per second.
-      //If you need to update your counter above this rate, see Distributed counters
       incrementViews(props.id);
     });
     const handleDelete = async () => {
@@ -283,3 +301,33 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+table tbody tr td:nth-child(2) {
+  color: #828282;
+}
+
+table tbody tr td:nth-child(3) {
+  background: #5b5b5b69;
+}
+
+table tbody tr td:nth-child(4) {
+  background: #ff000034;
+}
+
+table tbody tr td:nth-child(5) {
+  background: #75400c5b;
+}
+
+table tbody tr td:nth-child(6) {
+  background: #edbe003e;
+}
+
+table tbody tr td:nth-child(7) {
+  background: #7a7a7b69;
+}
+
+td:empty {
+  line-height: 55px;
+}
+</style>

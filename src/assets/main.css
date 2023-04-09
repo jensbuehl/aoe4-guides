@@ -6,23 +6,3 @@
   font-weight: normal;
 }
 
-table tbody tr td:nth-child(2) {
-  background: #ff000034;
-}
-
-table tbody tr td:nth-child(3) {
-  background: #75400c5b;
-}
-
-table tbody tr td:nth-child(4) {
-  background: #edbe003e;
-}
-
-table tbody tr td:nth-child(5) {
-  background: #7a7a7b69;
-}
-
-td:empty{
-  line-height: 55px;
-}
-
