@@ -132,7 +132,7 @@
                 ></v-btn>
               </template>
               <v-list>
-                <v-list-item v-if="user" @click="handleCopyOverlayFormat">
+                <v-list-item @click="handleCopyOverlayFormat">
                   <v-icon color="primary" class="mr-4">mdi-content-copy</v-icon>
                   Overlay Tool
                 </v-list-item>
