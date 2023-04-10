@@ -8,47 +8,33 @@
           </template>
           <v-list>
             <v-list-item v-if="user" to="/favorites">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-heart-outline</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> Favorites </v-list-item-content>
+              <v-icon class="mr-4">mdi-heart-outline</v-icon>
+              Favorites
             </v-list-item>
             <v-list-item v-if="user" to="/mybuilds">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-playlist-edit</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> My Builds </v-list-item-content>
+              <v-icon class="mr-4">mdi-playlist-edit</v-icon>
+              My Builds
             </v-list-item>
             <v-list-item v-if="!user" to="/register">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-account-edit</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> Register </v-list-item-content>
+              <v-icon class="mr-4">mdi-account-edit</v-icon>
+              Register
             </v-list-item>
             <v-list-item v-if="!user" to="/login">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-login</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> Login </v-list-item-content>
+              <v-icon class="mr-4">mdi-login</v-icon>
+              Login
             </v-list-item>
             <v-list-item v-if="user" to="/account">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-account-edit</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> Profile </v-list-item-content>
+              <v-icon class="mr-4">mdi-account-edit</v-icon>
+              Profile
             </v-list-item>
             <v-list-item @click="logout" v-if="user">
-              <v-list-item-icon class="pr-5">
-                <v-icon>mdi-logout</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> Logout </v-list-item-content>
+              <v-icon class="mr-4">mdi-logout</v-icon>
+              Logout
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item to="/new">
-              <v-list-item-icon class="pr-5">
-                <v-icon color="primary">mdi-plus</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content> New Build </v-list-item-content>
+              <v-icon class="mr-4" color="primary">mdi-plus</v-icon>
+              New Build
             </v-list-item>
           </v-list>
         </v-menu>
@@ -68,7 +54,7 @@
         </div>
       </v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-app-bar-items v-if="authIsReady" class="hidden-sm-and-down">
+      <div v-if="authIsReady" class="hidden-sm-and-down">
         <v-btn
           flat
           to="/new"
@@ -132,7 +118,7 @@
         >
           Logout
         </v-btn>
-      </v-app-bar-items>
+      </div>
     </v-container>
   </v-app-bar>
 </template>

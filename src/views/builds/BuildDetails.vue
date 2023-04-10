@@ -122,14 +122,26 @@
               icon="mdi-pencil"
               :to="{ name: 'BuildEdit', params: { id: props.id } }"
             ></v-btn>
-            <v-btn
-              color="primary"
-              v-show="user?.uid === build.authorUid"
-              variant="text"
-              block
-              icon="mdi-delete"
-              @click="dialog = true"
-            ></v-btn>
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon="mdi-dots-horizontal"
+                  color="primary"
+                  variant="text"
+                  v-bind="props"
+                ></v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-if="user" @click="handleCopyOverlayFormat">
+                  <v-icon color="primary" class="mr-4">mdi-content-copy</v-icon>
+                  Overlay Tool
+                </v-list-item>
+                <v-list-item v-show="user?.uid === build.authorUid" @click="dialog = true">
+                  <v-icon color="primary" class="mr-4">mdi-delete</v-icon>
+                  Delete
+                </v-list-item>
+              </v-list>
+            </v-menu>
             <v-dialog v-model="dialog" width="auto">
               <v-card rounded="lg" class="text-center primary">
                 <v-card-title>Delete Build</v-card-title>
@@ -234,8 +246,12 @@
         <tbody>
           <tr v-for="(item, index) in build.steps" :key="index">
             <td class="text-center">{{ item.time }}</td>
-            <td class="text-center">{{ item.villagers ? item.villagers : aggregateVillagers(index) }}</td>
-            <td class="text-center">{{ item.builders ? item.builders : "" }}</td>
+            <td class="text-center">
+              {{ item.villagers ? item.villagers : aggregateVillagers(index) }}
+            </td>
+            <td class="text-center">
+              {{ item.builders ? item.builders : "" }}
+            </td>
             <td class="text-center">{{ item.food }}</td>
             <td class="text-center">{{ item.wood }}</td>
             <td class="text-center">{{ item.gold }}</td>
@@ -260,24 +276,26 @@ import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
 import getCivs from "../../composables/getCivs";
 import useTimeSince from "../../composables/useTimeSince";
+import useOverlayConversion from "../../composables/useOverlayConversion";
 
 export default {
   name: "BuildDetails",
   components: { Favorite, Discussion },
   props: ["id"],
   setup(props) {
+    window.scrollTo(0, 0);
     const store = useStore();
     const user = computed(() => store.state.user);
     const router = useRouter();
     const civs = getCivs().civs;
     const build = ref(null);
     const dialog = ref(false);
+    const { convertToOverlayFormat, copyToClipboard } = useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
     const { get, del, incrementViews, error } = useCollection("builds");
 
     onMounted(async () => {
       const res = await get(props.id);
-      window.scrollTo(0, 0);
       build.value = res;
       incrementViews(props.id);
     });
@@ -288,6 +306,13 @@ export default {
       if (!error.value) {
         router.go("-1");
       }
+    };
+
+    const handleCopyOverlayFormat = () => {
+      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
+      copyToClipboard(overlayBuildString);
+      //TODO: Snackbar?
     };
 
     const aggregateVillagers = (index) => {
@@ -309,9 +334,10 @@ export default {
       error,
       dialog,
       handleDelete,
+      handleCopyOverlayFormat,
       timeSince,
       isNew,
-      aggregateVillagers
+      aggregateVillagers,
     };
   },
 };
