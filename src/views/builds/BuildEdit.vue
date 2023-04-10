@@ -142,7 +142,7 @@
       <v-col cols="12" md="4">
         <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
           <v-card-text>
-            <v-autocomplete
+            <v-select
               prepend-icon="mdi-earth"
               label="Civilization"
               :items="civs"
@@ -152,8 +152,8 @@
               item-title="title"
               clearable
             >
-            </v-autocomplete>
-            <v-autocomplete
+            </v-select>
+            <v-select
               prepend-icon="mdi-update"
               label="Season"
               :items="seasons"
@@ -163,8 +163,8 @@
               item-title="title"
               clearable
             >
-            </v-autocomplete>
-            <v-autocomplete
+            </v-select>
+            <v-select
               prepend-icon="mdi-map"
               label="Map"
               :items="maps"
@@ -174,8 +174,8 @@
               item-title="title"
               clearable
             >
-            </v-autocomplete>
-            <v-autocomplete
+            </v-select>
+            <v-select
               prepend-icon="mdi-strategy"
               label="Strategy"
               :items="strategies"
@@ -185,7 +185,7 @@
               item-title="title"
               clearable
             >
-            </v-autocomplete>
+            </v-select>
           </v-card-text> </v-card
       ></v-col>
     </v-row>
