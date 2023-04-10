@@ -1,7 +1,7 @@
 <template>
   <v-card rounded="lg">
     <v-card-text>
-      <v-autocomplete
+      <v-select
         v-model="config.civs"
         prepend-icon="mdi-earth"
         label="Civilization"
@@ -12,8 +12,8 @@
         clearable
         multiple
       >
-      </v-autocomplete>
-      <v-autocomplete
+      </v-select>
+      <v-select
         v-model="config.seasons"
         prepend-icon="mdi-update"
         label="Season"
@@ -24,8 +24,8 @@
         clearable
         multiple
       >
-      </v-autocomplete>
-      <v-autocomplete
+      </v-select>
+      <v-select
         v-model="config.maps"
         prepend-icon="mdi-map"
         label="Map"
@@ -36,8 +36,8 @@
         clearable
         multiple
       >
-      </v-autocomplete>
-      <v-autocomplete
+      </v-select>
+      <v-select
         v-model="config.strategies"
         prepend-icon="mdi-strategy"
         label="Strategy"
@@ -48,7 +48,7 @@
         clearable
         multiple
       >
-      </v-autocomplete>
+      </v-select>
       <v-select
         v-model="config.orderBy"
         prepend-icon="mdi-sort"
