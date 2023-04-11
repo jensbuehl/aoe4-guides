@@ -46,7 +46,7 @@
     </v-row>
   </v-container>
   <v-container v-if="user">
-    <v-card v-if="build.civ" rounded="lg">
+    <v-card rounded="lg">
       <v-row class="d-flex align-center flex-nowrap">
         <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0">
           <v-img
@@ -62,6 +62,24 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
+            gradient="to right, transparent, #222222"
+            alt="{{build.civ}}"
+            cover
+          >
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+        </v-col>
+        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0">
+          <v-img
+            src="/assets/flags/any-large.png"
+            lazy-src="/assets/flags/any-small.png"
             gradient="to right, transparent, #222222"
             alt="{{build.civ}}"
             cover
@@ -242,7 +260,7 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       save,
-      handleVideoInput
+      handleVideoInput,
     };
   },
 };
