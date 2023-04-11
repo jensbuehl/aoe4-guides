@@ -256,7 +256,7 @@
             <td class="text-center">{{ item.wood }}</td>
             <td class="text-center">{{ item.gold }}</td>
             <td class="text-center">{{ item.stone }}</td>
-            <td class="text-left">{{ item.description }}</td>
+            <td class="text-left" v-html="item.description"></td>
           </tr>
         </tbody>
       </v-table>
