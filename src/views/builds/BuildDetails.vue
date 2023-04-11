@@ -230,86 +230,9 @@
         ></iframe>
       </div>
     </v-card>
-    <v-card v-if="build.steps.length" rounded="lg" class="mt-4">
-      <v-card-title>Build Order</v-card-title>
-      <v-table class="ma-2">
-        <thead>
-          <tr>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="32"
-                src="/assets/resources/time.png"
-              ></v-img>
-            </th>
-            <v-tooltip location="top" text="Aggregated Villager Count">
-              <template v-slot:activator="{ props }">
-                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="32"
-                    src="/assets/resources/villager.png"
-                  ></v-img>
-                </th>
-              </template>
-            </v-tooltip>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="32"
-                src="/assets/resources/repair.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/food.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/wood.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/gold.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/stone.png"
-              ></v-img>
-            </th>
-            <th class="text-left hidden-sm-and-down">Description</th>
-            <th class="text-left hidden-md-and-up" width="100%">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(item, index) in build.steps" :key="index">
-            <td class="text-center">{{ item.time }}</td>
-            <td class="text-center">
-              {{ item.villagers ? item.villagers : aggregateVillagers(index) }}
-            </td>
-            <td class="text-center">
-              {{ item.builders ? item.builders : "" }}
-            </td>
-            <td class="text-center">{{ item.food }}</td>
-            <td class="text-center">{{ item.wood }}</td>
-            <td class="text-center">{{ item.gold }}</td>
-            <td class="text-center">{{ item.stone }}</td>
-            <td class="text-left" v-html="item.description"></td>
-          </tr>
-        </tbody>
-      </v-table>
-    </v-card>
+
+    <StepsEditor :steps="build.steps" :readonly="true"></StepsEditor>
+
     <div class="mt-4">
       <Discussion v-if="user" :buildId="build.id"></Discussion>
     </div>
@@ -318,6 +241,7 @@
 
 <script>
 import Favorite from "../../components/Favorite.vue";
+import StepsEditor from "../../components/StepsEditor.vue";
 import Discussion from "../../components/Discussion.vue";
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
@@ -329,7 +253,7 @@ import useOverlayConversion from "../../composables/useOverlayConversion";
 
 export default {
   name: "BuildDetails",
-  components: { Favorite, Discussion },
+  components: { Favorite, Discussion, StepsEditor },
   props: ["id"],
   setup(props) {
     window.scrollTo(0, 0);
@@ -387,39 +311,11 @@ export default {
       handleDelete,
       handleCopyOverlayFormat,
       timeSince,
-      isNew,
-      aggregateVillagers,
+      isNew
     };
   },
 };
 </script>
 
 <style scoped>
-table tbody tr td:nth-child(2) {
-  color: #828282;
-}
-
-table tbody tr td:nth-child(3) {
-  background: #5b5b5b69;
-}
-
-table tbody tr td:nth-child(4) {
-  background: #ff000034;
-}
-
-table tbody tr td:nth-child(5) {
-  background: #75400c5b;
-}
-
-table tbody tr td:nth-child(6) {
-  background: #edbe003e;
-}
-
-table tbody tr td:nth-child(7) {
-  background: #7a7a7b69;
-}
-
-td:empty {
-  line-height: 50px;
-}
 </style>
