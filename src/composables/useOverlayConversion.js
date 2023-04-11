@@ -20,12 +20,12 @@ export default function useOverlayConversion() {
       ...(step.time && {time: step.time}),
       villager_count: parseInt(step.villagers) || -1,
       resources: {
-        food: parseInt(step.food) || -1,
-        wood: parseInt(step.wood) || -1,
-        gold: parseInt(step.gold) || -1,
-        stone: parseInt(step.stone) || -1,
-      },
-      builders: parseInt(step.builders) || -1,
+        food: parseInt(step.food) || 0,
+        wood: parseInt(step.wood) || 0,
+        gold: parseInt(step.gold) || 0,
+        stone: parseInt(step.stone) || 0,
+        builders: parseInt(step.builders) || -1,
+      },     
       notes: [step.description],
     };
   };
