@@ -509,6 +509,6 @@ table tbody tr td:nth-child(7) {
 }
 
 td:empty {
-  line-height: 55px;
+  line-height: 50px;
 }
 </style>
