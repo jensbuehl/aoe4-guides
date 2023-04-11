@@ -17,7 +17,7 @@ export default function useOverlayConversion() {
     return {
       age: -1, //not supported
       population_count: -1, //not supported
-      time: step.time,
+      ...(step.time && {time: step.time}),
       villager_count: parseInt(step.villagers) || -1,
       resources: {
         food: parseInt(step.food) || -1,
