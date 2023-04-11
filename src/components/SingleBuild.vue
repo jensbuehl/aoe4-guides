@@ -1,8 +1,7 @@
 <template>
   <v-card class="d-flex align-center mb-4" rounded="lg">
-    <v-col cols="3" class="pa-0 ma-0">
+    <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0">
       <v-img
-        v-if="build.civ"
         :src="
           '/' +
           civs.find((item) => {
@@ -29,6 +28,24 @@
         </template>
       </v-img>
     </v-col>
+    <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0">
+          <v-img
+            src="/assets/flags/any-large.png"
+            lazy-src="/assets/flags/any-small.png"
+            gradient="to right, transparent, #222222"
+            alt="{{build.civ}}"
+            cover
+          >
+            <template v-slot:placeholder>
+              <v-row class="fill-height ma-0" align="center" justify="center">
+                <v-progress-circular
+                  indeterminate
+                  color="grey lighten-5"
+                ></v-progress-circular>
+              </v-row>
+            </template>
+          </v-img>
+        </v-col>
     <v-col>
       <v-card-title
         class="pt-md-0 pt-2 text-subtitle-2 text-md-h6"
