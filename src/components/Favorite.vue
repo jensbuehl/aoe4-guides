@@ -1,20 +1,31 @@
 <template>
-  <v-btn
-    @click="addToFavorites"
-    v-show="!isFavorite"
-    block
-    color="primary"
-    variant="text"
-    icon="mdi-heart-outline"
-  ></v-btn>
-  <v-btn
-    @click="removeFromFavorites"
-    v-show="isFavorite"
-    block
-    color="primary"
-    variant="text"
-    icon="mdi-heart"
-  ></v-btn>
+  <v-tooltip location="top" text="Add to Favorites">
+    <template v-slot:activator="{ props }">
+      <v-btn
+        @click="addToFavorites"
+        v-bind="props"
+        v-show="!isFavorite"
+        block
+        color="primary"
+        variant="text"
+        icon="mdi-heart-outline"
+      ></v-btn>
+    </template>
+  </v-tooltip>
+
+  <v-tooltip location="top" text="Remove from Favorites">
+    <template v-slot:activator="{ props }">
+      <v-btn
+        @click="removeFromFavorites"
+        v-show="isFavorite"
+        v-bind="props"
+        block
+        color="primary"
+        variant="text"
+        icon="mdi-heart"
+      ></v-btn>
+    </template>
+  </v-tooltip>
 </template>
 
 <script>
@@ -39,13 +50,13 @@ export default {
       incrementLikes(props.buildId);
       arrayUnionLikes(props.userId, ...[props.buildId]);
       isFavorite.value = !isFavorite.value;
-      context.emit("favoriteAdded"); //Only used for live preview        
+      context.emit("favoriteAdded"); //Only used for live preview
     };
     const removeFromFavorites = async () => {
       decrementLikes(props.buildId);
       arrayRemoveLikes(props.userId, ...[props.buildId]);
       isFavorite.value = !isFavorite.value;
-      context.emit("favoriteRemoved"); //Only used for live preview  
+      context.emit("favoriteRemoved"); //Only used for live preview
     };
     return {
       props,

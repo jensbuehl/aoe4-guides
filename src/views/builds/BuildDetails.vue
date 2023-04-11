@@ -114,14 +114,20 @@
               :buildId="build.id"
               :userId="user?.uid"
             ></Favorite>
-            <v-btn
-              color="primary"
-              variant="text"
-              block
-              v-show="user?.uid === build.authorUid"
-              icon="mdi-pencil"
-              :to="{ name: 'BuildEdit', params: { id: props.id } }"
-            ></v-btn>
+            <v-tooltip location="top" text="Edit Build Order">
+              <template :props="props" v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  color="primary"
+                  variant="text"
+                  block
+                  v-show="user?.uid === build.authorUid"
+                  icon="mdi-pencil"
+                  :to="{ name: 'BuildEdit', params: { id: id } }"
+                ></v-btn>
+              </template>
+            </v-tooltip>
+
             <v-menu>
               <template v-slot:activator="{ props }">
                 <v-btn
@@ -134,12 +140,55 @@
               <v-list>
                 <v-list-item @click="handleCopyOverlayFormat">
                   <v-icon color="primary" class="mr-4">mdi-content-copy</v-icon>
-                  Overlay Tool
+                  <v-tooltip
+                    location="top"
+                    text="Copy RTS_Overlay / AoE4_Overlay Format to Clipboard"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-list-item-content v-bind="props"
+                        >Overlay Tool</v-list-item-content
+                      >
+                    </template>
+                  </v-tooltip>
+
+                  <v-tooltip
+                    location="top"
+                    text="Visit AoE4_Overlay Project Page"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-bind="props"
+                        size="small"
+                        @click="
+                          (e) => {
+                            e.stopPropagation();
+                            window
+                              .open(
+                                'https://github.com/FluffyMaguro/AoE4_Overlay',
+                                '_blank'
+                              )
+                              .focus();
+                          }
+                        "
+                        color="primary"
+                        class="ml-2"
+                        >mdi-information-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip>
                 </v-list-item>
-                <v-list-item v-show="user?.uid === build.authorUid" @click="dialog = true">
-                  <v-icon color="primary" class="mr-4">mdi-delete</v-icon>
-                  Delete
-                </v-list-item>
+                <v-tooltip text="Delete Build Order">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                      v-bind="props"
+                      v-show="user?.uid === build.authorUid"
+                      @click="dialog = true"
+                    >
+                      <v-icon color="primary" class="mr-4">mdi-delete</v-icon>
+                      Delete
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
               </v-list>
             </v-menu>
             <v-dialog v-model="dialog" width="auto">
@@ -193,7 +242,7 @@
                 src="/assets/resources/time.png"
               ></v-img>
             </th>
-            <v-tooltip text="Aggregated Villager Count">
+            <v-tooltip location="top" text="Aggregated Villager Count">
               <template v-slot:activator="{ props }">
                 <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
                   <v-img
@@ -309,6 +358,7 @@ export default {
     };
 
     const handleCopyOverlayFormat = () => {
+      console.log("click on button");
       const overlayBuild = convertToOverlayFormat(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       copyToClipboard(overlayBuildString);
@@ -333,6 +383,7 @@ export default {
       civs,
       error,
       dialog,
+      window,
       handleDelete,
       handleCopyOverlayFormat,
       timeSince,

@@ -212,7 +212,7 @@
                 src="/assets/resources/time.png"
               ></v-img>
             </th>
-            <v-tooltip text="Aggregated Villager Count">
+            <v-tooltip location="top" text="Aggregated Villager Count">
               <template v-slot:activator="{ props }">
                 <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
                   <v-img

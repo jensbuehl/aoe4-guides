@@ -6,19 +6,30 @@
     </div>
     <v-row align="center">
       <v-col class="mt-4">
-        <v-textarea label="Write a comment" v-model="newComment.text"
-            :value="newComment.text" rows="1" auto-grow clearable>
+        <v-textarea
+          label="Write a comment"
+          v-model="newComment.text"
+          :value="newComment.text"
+          rows="1"
+          auto-grow
+          clearable
+        >
         </v-textarea>
       </v-col>
       <v-col cols="auto">
         <v-row justify="end" align="center" class="fill-height my-2 mr-2">
-          <v-btn
-            color="primary"
-            variant="text"
-            block
-            icon="mdi-send"
-            @click="post"
-          ></v-btn>
+          <v-tooltip location="top" text="Post Comment">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                v-bind="props"
+                color="primary"
+                variant="text"
+                block
+                icon="mdi-send"
+                @click="post"
+              ></v-btn>
+            </template>
+          </v-tooltip>
         </v-row>
       </v-col>
     </v-row>
@@ -42,26 +53,28 @@ export default {
     const user = computed(() => store.state.user);
     const comments = ref(null);
     const newComment = ref({
-        text: "",
-        buildId: props.buildId,
-        authorId: user.value?.uid,
-        author: user.value?.displayName
-      })
+      text: "",
+      buildId: props.buildId,
+      authorId: user.value?.uid,
+      author: user.value?.displayName,
+    });
 
     onMounted(async () => {
       init();
     });
 
     const init = async () => {
-      var queryParams = queryService.whereEqual("buildId", props.buildId)
-      queryParams = queryParams.concat(queryService.orderByWith({orderBy: "timeCreated"}, "asc"))
+      var queryParams = queryService.whereEqual("buildId", props.buildId);
+      queryParams = queryParams.concat(
+        queryService.orderByWith({ orderBy: "timeCreated" }, "asc")
+      );
       const query = getQuery(queryParams);
       const res = await getAll(query);
       comments.value = res;
-    }
+    };
 
     const post = async () => {
-      console.log(newComment.value)
+      console.log(newComment.value);
       //Add new comment
       await add(newComment.value);
       newComment.value.text = null;
@@ -74,7 +87,7 @@ export default {
       comments,
       post,
       init,
-      newComment
+      newComment,
     };
   },
 };
