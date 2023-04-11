@@ -1,7 +1,7 @@
 <template>
   <v-card rounded="lg" class="mt-4">
     <v-card-title>Build Order</v-card-title>
-    <div v-if="!steps.length" class="text-center">
+    <div v-if="!steps.length && !readonly" class="text-center">
       <v-btn
         variant="text"
         color="primary"
