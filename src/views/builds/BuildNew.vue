@@ -171,173 +171,13 @@
           </v-card-text> </v-card
       ></v-col>
     </v-row>
-
-    <v-card rounded="lg" class="mt-4">
-      <v-card-title>Build Order</v-card-title>
-      <div v-if="!build.steps.length" class="text-center">
-        <v-btn
-          variant="text"
-          color="primary"
-          prepend-icon="mdi-plus"
-          class="pt-5 pb-10"
-          @click="addStep(0)"
-          >Add your first build step</v-btn
-        >
-      </div>
-      <v-table v-if="build.steps.length" class="ma-2">
-        <thead>
-          <tr>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="32"
-                src="/assets/resources/time.png"
-              ></v-img>
-            </th>
-            <v-tooltip location="top" text="Aggregated Villager Count">
-              <template v-slot:activator="{ props }">
-                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
-                  <v-img
-                    class="mx-auto"
-                    width="32"
-                    src="/assets/resources/villager.png"
-                  ></v-img>
-                </th>
-              </template>
-            </v-tooltip>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="32"
-                src="/assets/resources/repair.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/food.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/wood.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/gold.png"
-              ></v-img>
-            </th>
-            <th class="text-center ma-0 pa-0" width="50px">
-              <v-img
-                class="mx-auto"
-                width="42"
-                src="/assets/resources/stone.png"
-              ></v-img>
-            </th>
-            <th class="text-left">Description</th>
-            <th class="text-right hidden-sm-and-down"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(item, index) in build.steps"
-            :key="index"
-            v-on:keyup.enter.alt="addStep(index)"
-            v-on:keyup.delete.alt="removeStep(index)"
-            @mouseover="selectItem(index)"
-            @mouseleave="unSelectItem()"
-          >
-            <td
-              @focusout="updateStepTime($event, index)"
-              contenteditable="true"
-              class="text-center"
-              v-html="item.time"
-            ></td>
-            <td
-              contenteditable="false"
-              class="text-center"
-              disabled
-              v-html="item.villagers"
-            ></td>
-            <td
-              @focusout="updateStepBuilders($event, index)"
-              contenteditable="true"
-              class="text-center"
-              v-html="item.builders"
-            ></td>
-            <td
-              @focusout="updateStepFood($event, index)"
-              contenteditable="true"
-              class="text-center"
-              v-html="item.food"
-            ></td>
-            <td
-              @focusout="updateStepWood($event, index)"
-              contenteditable="true"
-              class="text-center"
-              v-html="item.wood"
-            ></td>
-            <td
-              @focusout="updateStepGold($event, index)"
-              contenteditable="true"
-              class="text-center"
-              v-html="item.gold"
-            ></td>
-            <td
-              @focusout="updateStepStone($event, index)"
-              contenteditable="true"
-              class="text-center"
-              v-html="item.stone"
-            ></td>
-            <td
-              @focusout="updateStepDescription($event, index)"
-              contenteditable="true"
-              class="text-left"
-              v-html="item.description"
-            ></td>
-            <td width="140" class="text-right hidden-sm-and-down">
-              <v-tooltip location="top" text="Remove current step (ALT + DEL)">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    v-bind="props"
-                    v-if="index === hoverRowIndex"
-                    variant="plain"
-                    color="primary"
-                    @click="removeStep(index)"
-                    icon="mdi-delete"
-                  >
-                  </v-btn>
-                </template>
-              </v-tooltip>
-              <v-tooltip location="top" text="Add new step below (ALT + ENTER)">
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    v-bind="props"
-                    v-show="index === hoverRowIndex"
-                    variant="plain"
-                    color="primary"
-                    @click="addStep(index)"
-                    icon="mdi-plus"
-                  >
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-    </v-card>
+    <StepsEditor :steps="build.steps"></StepsEditor>
   </v-container>
 </template>
 
 <script>
-import { ref, computed, watch } from "vue";
+import StepsEditor from "../../components/StepsEditor.vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import getCivs from "../../composables/getCivs";
@@ -348,6 +188,7 @@ import getStrategies from "../../composables/getStrategies";
 
 export default {
   name: "BuildNew",
+  components: { StepsEditor },
   setup() {
     window.scrollTo(0, 0);
 
@@ -359,7 +200,6 @@ export default {
     const store = useStore();
     const user = computed(() => store.state.user);
     const router = useRouter();
-    const hoverRowIndex = ref(null);
 
     const build = ref({
       author: "",
@@ -388,65 +228,8 @@ export default {
       }
     };
 
-    const aggregateVillagers = (index) => {
-      const step = build.value.steps[index];
-      const builders = parseInt(step.builders) || 0;
-      const food = parseInt(step.food) || 0;
-      const wood = parseInt(step.wood) || 0;
-      const gold = parseInt(step.gold) || 0;
-      const stone = parseInt(step.stone) || 0;
-
-      step.villagers = builders + food + wood + gold + stone;
-    };
-    const updateStepTime = (event, index) => {
-      build.value.steps[index].time = event.target.innerHTML;
-    };
-    const updateStepBuilders = (event, index) => {
-      build.value.steps[index].builders = event.target.innerHTML;
-      aggregateVillagers(index);
-    };
-    const updateStepFood = (event, index) => {
-      build.value.steps[index].food = event.target.innerHTML;
-      aggregateVillagers(index);
-    };
-    const updateStepWood = (event, index) => {
-      build.value.steps[index].wood = event.target.innerHTML;
-      aggregateVillagers(index);
-    };
-    const updateStepGold = (event, index) => {
-      build.value.steps[index].gold = event.target.innerHTML;
-      aggregateVillagers(index);
-    };
-    const updateStepStone = (event, index) => {
-      build.value.steps[index].stone = event.target.innerHTML;
-      aggregateVillagers(index);
-    };
-    const updateStepDescription = (event, index) => {
-      build.value.steps[index].description = event.target.innerHTML;
-    };
-    const addStep = (index) => {
-      build.value.steps.splice(++index, 0, {
-        time: "",
-        villagers: "",
-        builders: "",
-        food: "",
-        wood: "",
-        gold: "",
-        stone: "",
-        description: "",
-      });
-    };
-    const removeStep = (index) => {
-      build.value.steps.splice(index, 1);
-    };
     const handleVideoInput = () => {
       build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
-    };
-    const selectItem = (index) => {
-      hoverRowIndex.value = index;
-    };
-    const unSelectItem = () => {
-      hoverRowIndex.value = null;
     };
 
     return {
@@ -457,52 +240,10 @@ export default {
       strategies,
       seasons,
       user,
-      hoverRowIndex,
       authIsReady: computed(() => store.state.authIsReady),
       save,
-      handleVideoInput,
-      updateStepDescription,
-      updateStepStone,
-      updateStepGold,
-      updateStepWood,
-      updateStepFood,
-      updateStepBuilders,
-      updateStepTime,
-      removeStep,
-      addStep,
-      selectItem,
-      unSelectItem,
+      handleVideoInput
     };
   },
 };
 </script>
-
-<style scoped>
-table tbody tr td:nth-child(2) {
-  color: #828282;
-}
-
-table tbody tr td:nth-child(3) {
-  background: #5b5b5b69;
-}
-
-table tbody tr td:nth-child(4) {
-  background: #ff000034;
-}
-
-table tbody tr td:nth-child(5) {
-  background: #75400c5b;
-}
-
-table tbody tr td:nth-child(6) {
-  background: #edbe003e;
-}
-
-table tbody tr td:nth-child(7) {
-  background: #7a7a7b69;
-}
-
-td:empty {
-  line-height: 50px;
-}
-</style>
