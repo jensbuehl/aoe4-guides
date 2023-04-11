@@ -8,7 +8,7 @@ export default function useOverlayConversion() {
       civilization: mapCivilizations[build.civ],
       name: build.title,
       author: build.author,
-      source: "undefined", //not supported
+      source: window.location.href,
       build_order: overlay_steps,
     };
   };
