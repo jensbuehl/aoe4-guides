@@ -11,6 +11,7 @@ import Builds from '../views/builds/Builds.vue'
 import BuildDetails from "../views/builds/BuildDetails.vue";
 import BuildEdit from "../views/builds/BuildEdit.vue";
 import BuildNew from "../views/builds/BuildNew.vue";
+import BuildImport from "../views/builds/BuildImport.vue";
 import MyBuilds from "../views/builds/MyBuilds.vue";
 import MyFavorites from "../views/builds/MyFavorites.vue";
 
@@ -80,6 +81,11 @@ const routes = [
       path: "/new",
       name: "BuildNew",
       component: BuildNew
+    },
+    {
+      path: "/import",
+      name: "BuildImport",
+      component: BuildImport
     },
     {
       path: "/:catchAll(.*)",

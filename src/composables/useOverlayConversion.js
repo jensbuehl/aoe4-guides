@@ -1,4 +1,30 @@
 export default function useOverlayConversion() {
+  const convertFromOverlayFormat = (build) => {
+    const buildSteps = build.build_order?.map((step) =>
+      convertStepFromOverlayFormat(step)
+    );
+
+    return {
+      civ: mapCivilizations[build.civilization],
+      title: build.name,
+      author: build.author,
+      steps: buildSteps,
+    };
+  };
+
+  const convertStepFromOverlayFormat = (step) => {
+    return {
+      ...(step.time && { time: step.time }),
+      villagers: step.villager_count?.toString(),
+      food: step.resources.food?.toString(),
+      wood: step.resources.wood?.toString(),
+      gold: step.resources.gold?.toString(),
+      stone: step.resources.stone?.toString(),
+      builders: step.resources.builders?.toString() || "",
+      description: step.notes.join("<br>")
+    };
+  };
+
   const convertToOverlayFormat = (build) => {
     const overlay_steps = build.steps?.map((step) =>
       convertStepToOverlayFormat(step)
@@ -17,7 +43,7 @@ export default function useOverlayConversion() {
     return {
       age: -1, //not supported
       population_count: -1, //not supported
-      ...(step.time && {time: step.time}),
+      ...(step.time && { time: step.time }),
       villager_count: parseInt(step.villagers) || -1,
       resources: {
         food: parseInt(step.food) || 0,
@@ -25,7 +51,7 @@ export default function useOverlayConversion() {
         gold: parseInt(step.gold) || 0,
         stone: parseInt(step.stone) || 0,
         builders: parseInt(step.builders) || -1,
-      },     
+      },
       notes: [step.description],
     };
   };
@@ -59,7 +85,17 @@ export default function useOverlayConversion() {
     OTT: "Ottomans",
     CHI: "Chinese",
     MON: "Mongols",
+    English: "ENG",
+    French: "FRE",
+    Rus: "RUS",
+    Malians: "MAL",
+    'Delhi Sultanate': "DEL",
+    'Holy Roman Empire': "HRE",
+    'Abbasid Dynasty': "ABB",
+    Ottomans: "OTT",
+    Chinese: "CHI",
+    Mongols: "MON",
   };
 
-  return { convertToOverlayFormat, copyToClipboard };
+  return { convertToOverlayFormat, copyToClipboard, convertFromOverlayFormat };
 }
