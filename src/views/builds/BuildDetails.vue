@@ -2,7 +2,12 @@
   <v-container v-if="build">
     <v-card rounded="lg">
       <v-row class="d-flex align-center flex-nowrap">
-        <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
+        <v-col
+          v-if="build.civ"
+          cols="2"
+          md="3"
+          class="pa-0 ma-0 hidden-sm-and-down"
+        >
           <v-img
             :src="
               '/' +
@@ -30,7 +35,12 @@
             </template>
           </v-img>
         </v-col>
-        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
+        <v-col
+          v-if="!build.civ"
+          cols="2"
+          md="3"
+          class="pa-0 ma-0 hidden-sm-and-down"
+        >
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
@@ -328,11 +338,10 @@ export default {
       handleDelete,
       handleCopyOverlayFormat,
       timeSince,
-      isNew
+      isNew,
     };
   },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

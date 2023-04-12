@@ -102,7 +102,6 @@
             <v-btn
               color="primary"
               variant="text"
-              class="ma-2"
               block
               icon="mdi-content-save"
               @click="save"

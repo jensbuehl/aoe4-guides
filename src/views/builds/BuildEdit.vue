@@ -2,7 +2,12 @@
   <v-container v-if="user && build">
     <v-card rounded="lg">
       <v-row class="d-flex align-center flex-nowrap">
-        <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
+        <v-col
+          v-if="build.civ"
+          cols="2"
+          md="3"
+          class="pa-0 ma-0 hidden-sm-and-down"
+        >
           <v-img
             :src="
               '/' +
@@ -30,7 +35,12 @@
             </template>
           </v-img>
         </v-col>
-        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
+        <v-col
+          v-if="!build.civ"
+          cols="2"
+          md="3"
+          class="pa-0 ma-0 hidden-sm-and-down"
+        >
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
@@ -49,7 +59,7 @@
           </v-img>
         </v-col>
         <v-col cols="10" md="6" lg="6">
-          <v-card-title class="py-0 mb-4">{{ build.title }}</v-card-title>
+          <v-card-title class="py-2 mb-4">{{ build.title }}</v-card-title>
           <v-item-group class="ml-4 pt-2">
             <v-chip
               class="mr-2 mb-2"
@@ -114,16 +124,20 @@
             >
           </v-item-group>
         </v-col>
-        <v-row align="center" justify="end" class="fill-height mr-4">
+        <v-row justify="end" class="my-2 mr-2">
           <v-col cols="auto">
-            <v-btn
-              color="primary"
-              variant="text"
-              block
-              class="ma-2"
-              icon="mdi-content-save"
-              @click="handleSave"
-            ></v-btn>
+            <v-tooltip location="top" text="Save Build Order">
+              <template :props="props" v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  color="primary"
+                  variant="text"
+                  block
+                  icon="mdi-content-save"
+                  @click="handleSave"
+                ></v-btn>
+              </template>
+            </v-tooltip>
           </v-col>
         </v-row>
       </v-row>
@@ -269,11 +283,10 @@ export default {
       handleSave,
       handleVideoInput,
       timeSince,
-      isNew
+      isNew,
     };
   },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
