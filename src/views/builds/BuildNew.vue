@@ -48,7 +48,7 @@
   <v-container v-if="user">
     <v-card rounded="lg">
       <v-row class="d-flex align-center flex-nowrap">
-        <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0">
+        <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             :src="
               '/' +
@@ -76,7 +76,7 @@
             </template>
           </v-img>
         </v-col>
-        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0">
+        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
@@ -102,6 +102,7 @@
             <v-btn
               color="primary"
               variant="text"
+              class="ma-2"
               block
               icon="mdi-content-save"
               @click="save"
