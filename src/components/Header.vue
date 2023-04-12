@@ -34,7 +34,7 @@
             <v-divider></v-divider>
             <v-list-item to="/new">
               <v-icon class="mr-4" color="primary">mdi-plus</v-icon>
-              New Build
+              Create New Build
             </v-list-item>
           </v-list>
         </v-menu>
@@ -55,15 +55,31 @@
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <div v-if="authIsReady" class="hidden-sm-and-down">
-        <v-btn
-          flat
-          to="/new"
-          color="primary"
-          class="mx-1"
-          prepend-icon="mdi-plus"
-        >
-          New Build
-        </v-btn>
+        <v-menu v-if="authIsReady">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              flat
+              color="primary"
+              class="mx-1"
+              prepend-icon="mdi-plus"
+              append-icon="mdi-menu-down"
+            >
+              Add Build
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item v-if="user" to="/new">
+              <v-icon class="mr-4">mdi-pencil</v-icon>
+              Create New Build
+            </v-list-item>
+            <v-list-item v-if="user" to="/import">
+              <v-icon class="mr-4">mdi-import</v-icon>
+              Import Build
+            </v-list-item>
+          </v-list>
+        </v-menu>
+
         <v-btn
           v-if="user"
           flat

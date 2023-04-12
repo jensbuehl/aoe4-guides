@@ -30,7 +30,7 @@
             </template>
           </v-img>
         </v-col>
-        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0">
+        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
@@ -120,6 +120,7 @@
               color="primary"
               variant="text"
               block
+              class="ma-2"
               icon="mdi-content-save"
               @click="handleSave"
             ></v-btn>
