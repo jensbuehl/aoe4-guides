@@ -1,6 +1,6 @@
 <template>
   <v-card class="d-flex align-center mb-4" rounded="lg">
-    <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0">
+    <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
       <v-img
         :src="
           '/' +
@@ -28,32 +28,35 @@
         </template>
       </v-img>
     </v-col>
-    <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0">
-          <v-img
-            src="/assets/flags/any-large.png"
-            lazy-src="/assets/flags/any-small.png"
-            gradient="to right, transparent, #222222"
-            alt="{{build.civ}}"
-            cover
-          >
-            <template v-slot:placeholder>
-              <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular
-                  indeterminate
-                  color="grey lighten-5"
-                ></v-progress-circular>
-              </v-row>
-            </template>
-          </v-img>
-        </v-col>
-    <v-col>
-      <v-card-title
-        class="pt-md-0 pt-2 text-subtitle-2 text-md-h6"
-        style="font-family: 'Segoe UI' !important"
-        to="/editbuild"
-        >{{ build.title }}</v-card-title
+    <v-col v-if="!build.civ" cols="3" class="pa-0 ma-0">
+      <v-img
+        src="/assets/flags/any-large.png"
+        lazy-src="/assets/flags/any-small.png"
+        gradient="to right, transparent, #222222"
+        alt="{{build.civ}}"
+        cover
       >
-      <v-item-group class="ml-4 hidden-sm-and-down">
+        <template v-slot:placeholder>
+          <v-row class="fill-height ma-0" align="center" justify="center">
+            <v-progress-circular
+              indeterminate
+              color="grey lighten-5"
+            ></v-progress-circular>
+          </v-row>
+        </template>
+      </v-img>
+    </v-col>
+    <v-col>
+      <div
+        class="text-subtitle-2 hidden-md-and-up"
+        style="font-family: 'Segoe UI' !important"
+      >
+        {{ build.title }}
+      </div>
+      <v-card-title class="pt-0 hidden-sm-and-down">
+        {{ build.title }}
+      </v-card-title>
+      <v-item-group class="ml-md-4 hidden-sm-and-down">
         <v-chip
           class="mr-2 mb-2"
           v-if="isNew(build.timeCreated.toDate())"
