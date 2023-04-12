@@ -69,11 +69,11 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item v-if="user" to="/new">
+            <v-list-item to="/new">
               <v-icon class="mr-4">mdi-pencil</v-icon>
               Create New Build
             </v-list-item>
-            <v-list-item v-if="user" to="/import">
+            <v-list-item to="/import">
               <v-icon class="mr-4">mdi-import</v-icon>
               Import Build
             </v-list-item>
