@@ -40,6 +40,7 @@ export default function useOverlayConversion() {
   };
 
   const convertStepToOverlayFormat = (step) => {
+    const notes = step.description.split('<br>').map(it => it.trim());
     return {
       age: -1, //not supported
       population_count: -1, //not supported
@@ -52,7 +53,7 @@ export default function useOverlayConversion() {
         stone: parseInt(step.stone) || 0,
         builders: parseInt(step.builders) || -1,
       },
-      notes: [step.description],
+      notes: notes,
     };
   };
 
