@@ -11,7 +11,10 @@
         >Add your first build step</v-btn
       >
     </div>
-    <v-table v-if="steps.length" class="ma-2">
+    <v-table
+      v-if="steps.length"
+      class="ma-2"
+    >
       <thead>
         <tr>
           <th class="text-center ma-0 pa-0" width="50px">
@@ -91,7 +94,7 @@
             :contenteditable="!readonly"
             class="text-center"
             disabled
-            v-html = "item.villagers ? item.villagers : aggregateVillagers(index)"
+            v-html="item.villagers ? item.villagers : aggregateVillagers(index)"
           ></td>
           <td
             @focusout="updateStepBuilders($event, index)"
@@ -124,11 +127,21 @@
             v-html="item.stone"
           ></td>
           <td
+  
             @focusout="updateStepDescription($event, index)"
             :contenteditable="!readonly"
             class="text-left"
-            v-html="item.description"
-          ></td>
+          >
+            <div>
+              <img
+                style="
+                  cursor: move;
+                  vertical-align: middle;
+                "
+                src="/assets/resources/villager.png"
+              />Hi Ho
+            </div>
+          </td>
           <td
             v-if="!readonly"
             width="140"
