@@ -11,7 +11,7 @@
         >Add your first build step</v-btn
       >
     </div>
-    <v-table v-if="steps.length" class="ma-2">
+    <v-table v-if="steps.length" class="ma-4">
       <thead>
         <tr>
           <th class="text-center ma-0 pa-0" width="50px">
@@ -256,10 +256,7 @@ export default {
       console.log(dirty);
       console.log(clean);
 
-      //sanitize HTML
-      //steps.value[0].description = clean;
       document.execCommand("insertHTML", false, clean);
-
       e.stopPropagation();
       e.preventDefault();
     };
@@ -287,7 +284,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 table tbody tr td:nth-child(2) {
   color: #828282;
 }
@@ -319,5 +316,7 @@ td:empty {
 .icon {
   cursor: move;
   vertical-align: middle;
+  height: auto;
+  width: 48px;
 }
 </style>

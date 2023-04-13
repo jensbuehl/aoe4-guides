@@ -13,6 +13,18 @@ export default function useOverlayConversion() {
   };
 
   const convertStepFromOverlayFormat = (step) => {
+    //TODO: Parse and add images to description
+    const regex = /@([^@]*)@/g
+    const joinedNotes = step.notes.join("<br>")
+    const matches = joinedNotes.match(regex);
+    console.log("matches", matches)
+
+    //console.log("joinedNotes", joinedNotes)
+    const convertedNotes = joinedNotes.replace(regex, function replacer(match, p1, p2, /* …, */ pN, offset, string, groups) {
+      //console.log(match)
+      const replacement = convertTextToImg(match);
+      return replacement;
+    })
     return {
       ...(step.time && { time: step.time }),
       villagers: step.villager_count?.toString(),
@@ -21,7 +33,7 @@ export default function useOverlayConversion() {
       gold: step.resources.gold?.toString(),
       stone: step.resources.stone?.toString(),
       builders: step.resources.builders?.toString() || "",
-      description: step.notes.join("<br>")
+      description: convertedNotes,
     };
   };
 
@@ -39,8 +51,23 @@ export default function useOverlayConversion() {
     };
   };
 
+  function convertImageToText(imagePath) {
+    //TODO
+  }
+
+  function convertImagePathToText(imagePath) {
+
+    return " @" + imagePath + "@ ";
+  }
+
+  function convertTextToImg(imageText) {
+    return "<img class=\"icon\" src=/assets/pictures/"+imageText.replaceAll('@', '')+"></img>";
+  }
+
   const convertStepToOverlayFormat = (step) => {
-    const notes = step.description.split('<br>').map(it => it.trim());
+    //TODO: Parse and replace images from notes
+
+    const notes = step.description.split("<br>").map((it) => it.trim());
     return {
       age: -1, //not supported
       population_count: -1, //not supported
@@ -90,9 +117,9 @@ export default function useOverlayConversion() {
     French: "FRE",
     Rus: "RUS",
     Malians: "MAL",
-    'Delhi Sultanate': "DEL",
-    'Holy Roman Empire': "HRE",
-    'Abbasid Dynasty': "ABB",
+    "Delhi Sultanate": "DEL",
+    "Holy Roman Empire": "HRE",
+    "Abbasid Dynasty": "ABB",
     Ottomans: "OTT",
     Chinese: "CHI",
     Mongols: "MON",
