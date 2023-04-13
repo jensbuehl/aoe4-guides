@@ -11,10 +11,7 @@
         >Add your first build step</v-btn
       >
     </div>
-    <v-table
-      v-if="steps.length"
-      class="ma-2"
-    >
+    <v-table v-if="steps.length" class="ma-2">
       <thead>
         <tr>
           <th class="text-center ma-0 pa-0" width="50px">
@@ -127,21 +124,12 @@
             v-html="item.stone"
           ></td>
           <td
-  
+            @paste="handlePaste"
             @focusout="updateStepDescription($event, index)"
             :contenteditable="!readonly"
             class="text-left"
-          >
-            <div>
-              <img
-                style="
-                  cursor: move;
-                  vertical-align: middle;
-                "
-                src="/assets/resources/villager.png"
-              />Hi Ho
-            </div>
-          </td>
+            v-html="item.description"
+          ></td>
           <td
             v-if="!readonly"
             width="140"
@@ -182,6 +170,7 @@
 
 <script>
 import { ref } from "vue";
+import sanitizeHtml from "sanitize-html";
 
 export default {
   name: "StepsEditor",
@@ -248,11 +237,39 @@ export default {
     const unSelectItem = () => {
       hoverRowIndex.value = null;
     };
+    const handlePaste = async (e) => {
+      const dirty = e.clipboardData.getData("text/html");
+      const clean = sanitizeHtml(dirty, {
+        allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+        allowedClasses: {
+          img: ["icon"],
+        },
+        allowedAttributes: {
+          img: ["style", "class", "src"],
+        },
+        allowedStyles: {
+          "*": {
+            "vertical-align": [/^middle$/],
+          },
+        },
+      });
+      console.log(dirty);
+      console.log(clean);
+
+      //sanitize HTML
+      //steps.value[0].description = clean;
+      document.execCommand("insertHTML", false, clean);
+
+      e.stopPropagation();
+      e.preventDefault();
+    };
 
     return {
       steps,
       readonly,
       hoverRowIndex,
+      sanitizeHtml,
+      handlePaste,
       aggregateVillagers,
       updateStepDescription,
       updateStepStone,
@@ -297,5 +314,10 @@ table tbody tr td:nth-child(7) {
 
 td:empty {
   line-height: 50px;
+}
+
+.icon {
+  cursor: move;
+  vertical-align: middle;
 }
 </style>
