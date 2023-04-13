@@ -8,13 +8,7 @@ export default {
     vuetify(),
   ],
   resolve: {
-    //ignore sanitize-html dependencies
-    alias: {
-      path: "",
-      url: "",
-      fs: "",
-      'source-map-js': "",
-    },
+
   },
   build: { chunkSizeWarningLimit: 1600, }
 }
