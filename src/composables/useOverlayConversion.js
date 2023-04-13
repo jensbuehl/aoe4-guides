@@ -13,18 +13,14 @@ export default function useOverlayConversion() {
   };
 
   const convertStepFromOverlayFormat = (step) => {
-    //TODO: Parse and add images to description
-    const regex = /@([^@]*)@/g
-    const joinedNotes = step.notes.join("<br>")
-    const matches = joinedNotes.match(regex);
-    console.log("matches", matches)
+    //Filter @imagePath@
+    const regex = /@([^@]*)@/g;
+    const joinedNotes = step.notes.join("<br>");
 
-    //console.log("joinedNotes", joinedNotes)
-    const convertedNotes = joinedNotes.replace(regex, function replacer(match, p1, p2, /* …, */ pN, offset, string, groups) {
-      //console.log(match)
-      const replacement = convertTextToImg(match);
-      return replacement;
-    })
+    const convertedNotes = joinedNotes.replace(regex, function replacer(match) {
+      return convertTextToImg(match);
+    });
+
     return {
       ...(step.time && { time: step.time }),
       villagers: step.villager_count?.toString(),
@@ -43,6 +39,7 @@ export default function useOverlayConversion() {
     );
 
     return {
+      description: build.description,
       civilization: mapCivilizations[build.civ],
       name: build.title,
       author: build.author,
@@ -51,23 +48,40 @@ export default function useOverlayConversion() {
     };
   };
 
-  function convertImageToText(imagePath) {
-    //TODO
-  }
+  function convertImagePathToText(imageElement) {
+    //Get src
+    const regex = /src\s*=\s*"(.+?)"/g;
+    const matches = imageElement.match(regex)
 
-  function convertImagePathToText(imagePath) {
-
-    return " @" + imagePath + "@ ";
+    //Remove internal path extensions, ", and src=
+    var imageSource = matches[0].replaceAll('"', "")
+    imageSource = imageSource.replaceAll("src=", "")
+    imageSource = imageSource.replace("/assets/pictures/", "")
+    //Wrap with@
+    return "@" + imageSource + "@";
   }
 
   function convertTextToImg(imageText) {
-    return "<img class=\"icon\" src=/assets/pictures/"+imageText.replaceAll('@', '')+"></img>";
+    imageText = imageText.replaceAll("@", "");
+    return (
+      '<img class="icon" src="/assets/pictures/' +
+      imageText +
+      '"></img>'
+    );
   }
 
   const convertStepToOverlayFormat = (step) => {
-    //TODO: Parse and replace images from notes
+    //Filter img elements
+    const regex = /<img([\w\W]+?)img>/g
+    const convertedDescription = step.description.replace(
+      regex,
+      function replacer(match) {
+        return convertImagePathToText(match);
+      }
+    );
 
-    const notes = step.description.split("<br>").map((it) => it.trim());
+    const notes = convertedDescription.split("<br>").map((it) => it.trim());
+
     return {
       age: -1, //not supported
       population_count: -1, //not supported

@@ -309,7 +309,6 @@ export default {
     };
 
     const handleCopyOverlayFormat = () => {
-      console.log("click on button");
       const overlayBuild = convertToOverlayFormat(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       copyToClipboard(overlayBuildString);
