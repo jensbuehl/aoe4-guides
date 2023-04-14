@@ -189,7 +189,10 @@
           </v-card-text> </v-card
       ></v-col>
     </v-row>
-    <StepsEditor :steps="build.steps"></StepsEditor>
+    <StepsEditor
+      @stepsChanged="handleStepsChanged"
+      :steps="build.steps"
+    ></StepsEditor>
   </v-container>
 </template>
 
@@ -235,7 +238,12 @@ export default {
       timeUpdated: null,
     });
 
+    const stepsCopy = ref(null);
     const save = async () => {
+      //Hack, since using the reference in step editor broke the selection which is needed of adding icons
+      build.value.steps.forEach(
+        (step, index) => (step.description = stepsCopy.value[index].description)
+      );
       build.value.sortTitle =
         build.value.title.toLowerCase() + crypto.randomUUID();
       build.value.authorUid = user.value.uid;
@@ -245,7 +253,9 @@ export default {
         router.push("/builds/" + id);
       }
     };
-
+    const handleStepsChanged = (steps) => {
+      stepsCopy.value = steps;
+    };
     const handleVideoInput = () => {
       build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
     };
@@ -261,6 +271,7 @@ export default {
       authIsReady: computed(() => store.state.authIsReady),
       save,
       handleVideoInput,
+      handleStepsChanged
     };
   },
 };

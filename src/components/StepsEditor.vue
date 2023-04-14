@@ -1,7 +1,7 @@
 <template>
   <v-card rounded="lg" class="mt-4">
     <v-card-title>Build Order</v-card-title>
-    <div v-if="!steps.length && !readonly" class="text-center">
+    <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn
         variant="text"
         color="primary"
@@ -11,7 +11,7 @@
         >Add your first build step</v-btn
       >
     </div>
-    <v-table v-if="steps.length" class="ma-4">
+    <v-table v-if="steps?.length" class="ma-4">
       <thead>
         <tr>
           <th class="text-center ma-0 pa-0" width="50px">
@@ -69,7 +69,26 @@
           </th>
           <th class="text-left hidden-sm-and-down">Description</th>
           <th class="text-left hidden-md-and-up" width="100%">Description</th>
-          <th v-if="!readonly" class="text-right hidden-sm-and-down"></th>
+          <th v-if="!readonly" class="text-right hidden-sm-and-down">
+            <v-menu :close-on-content-click="false" location="bottom">
+              <template v-slot:activator="{ props }">
+                <v-btn class="mr-n4"
+                  prepend-icon="mdi-image-plus"
+                  color="primary"
+                  variant="text"
+                  v-bind="props"
+                  append-icon="mdi-menu-down"
+                  >Add Icon</v-btn
+                >
+              </template>
+              <v-card rounded="lg" class="mt-4" width="350px">
+                <IconSelector
+                  @iconSelected="(iconPath) => handleIconSelected(iconPath)"
+                  :civ="civ"
+                ></IconSelector>
+              </v-card>
+            </v-menu>
+          </th>
         </tr>
       </thead>
       <tbody>
@@ -82,48 +101,54 @@
           @mouseleave="unSelectItem()"
         >
           <td
+            @paste="handlePaste"
             @focusout="updateStepTime($event, index)"
             :contenteditable="!readonly"
             class="text-center"
             v-html="item.time"
           ></td>
           <td
-            :contenteditable="!readonly"
             class="text-center"
             disabled
             v-html="item.villagers ? item.villagers : aggregateVillagers(index)"
           ></td>
           <td
+            @paste="handlePaste"
             @focusout="updateStepBuilders($event, index)"
             :contenteditable="!readonly"
             class="text-center"
             v-html="item.builders ? item.builders : ''"
           ></td>
           <td
+            @paste="handlePaste"
             @focusout="updateStepFood($event, index)"
             :contenteditable="!readonly"
             class="text-center"
             v-html="item.food"
           ></td>
           <td
+            @paste="handlePaste"
             @focusout="updateStepWood($event, index)"
             :contenteditable="!readonly"
             class="text-center"
             v-html="item.wood"
           ></td>
           <td
+            @paste="handlePaste"
             @focusout="updateStepGold($event, index)"
             :contenteditable="!readonly"
             class="text-center"
             v-html="item.gold"
           ></td>
           <td
+            @paste="handlePaste"
             @focusout="updateStepStone($event, index)"
             :contenteditable="!readonly"
             class="text-center"
             v-html="item.stone"
           ></td>
           <td
+            @mouseleave="saveSelection"
             @paste="handlePaste"
             @focusout="updateStepDescription($event, index)"
             :contenteditable="!readonly"
@@ -132,7 +157,7 @@
           ></td>
           <td
             v-if="!readonly"
-            width="140"
+            width="180"
             class="text-right hidden-sm-and-down"
           >
             <v-tooltip location="top" text="Remove current step (ALT + DEL)">
@@ -148,6 +173,7 @@
                 </v-btn>
               </template>
             </v-tooltip>
+
             <v-tooltip location="top" text="Add new step below (ALT + ENTER)">
               <template v-slot:activator="{ props }">
                 <v-btn
@@ -171,14 +197,51 @@
 <script>
 import { ref } from "vue";
 import sanitizeHtml from "sanitize-html";
+import IconSelector from "../components/IconSelector.vue";
 
 export default {
   name: "StepsEditor",
-  props: ["steps", "readonly"],
-  setup(props) {
+  props: ["steps", "readonly", "civ"],
+  emits: ["stepsChanged"],
+  components: { IconSelector },
+  setup(props, context) {
     const steps = ref(props.steps);
+    //Hacky deep copy of object since working on the reference broke the current selection
+    const stepsCopy = ref(JSON.parse(JSON.stringify(props.steps)));
     const readonly = props.readonly;
+    const civ = ref(props.civ);
     const hoverRowIndex = ref(null);
+    const selection = ref(null);
+
+    const saveSelection = () => {
+      if (window.getSelection) {
+        var sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+          selection.value = sel.getRangeAt(0);
+        }
+      } else if (document.selection && document.selection.createRange) {
+        selection.value = document.selection.createRange();
+      }
+    };
+
+    const restoreSelection = () => {
+      if (selection.value) {
+        if (window.getSelection) {
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(selection.value);
+        } else if (document.selection && selection.value.select) {
+          selection.value.select();
+        }
+      }
+    };
+
+    const handleIconSelected = (iconPath) => {
+      console.log(iconPath);
+      restoreSelection();
+      const img = '<img src="' + iconPath + '" class="icon"></img>';
+      document.execCommand("insertHTML", false, img);
+    };
 
     const aggregateVillagers = (index) => {
       const step = steps.value[index];
@@ -214,7 +277,9 @@ export default {
       aggregateVillagers(index);
     };
     const updateStepDescription = (event, index) => {
-      steps.value[index].description = event.target.innerHTML;
+      console.log(event.target.innerHTML);
+      stepsCopy.value[index].description = event.target.innerHTML;
+      context.emit("stepsChanged", stepsCopy.value);
     };
     const addStep = (index) => {
       steps.value.splice(++index, 0, {
@@ -227,9 +292,20 @@ export default {
         stone: "",
         description: "",
       });
+      stepsCopy.value.splice(++index, 0, {
+        time: "",
+        villagers: "",
+        builders: "",
+        food: "",
+        wood: "",
+        gold: "",
+        stone: "",
+        description: "",
+      });
     };
     const removeStep = (index) => {
       steps.value.splice(index, 1);
+      stepsCopy.value.splice(index, 1);
     };
     const selectItem = (index) => {
       hoverRowIndex.value = index;
@@ -253,8 +329,6 @@ export default {
           },
         },
       });
-      console.log(dirty);
-      console.log(clean);
 
       document.execCommand("insertHTML", false, clean);
       e.stopPropagation();
@@ -263,9 +337,12 @@ export default {
 
     return {
       steps,
+      stepsCopy,
+      civ,
       readonly,
       hoverRowIndex,
       sanitizeHtml,
+      selection,
       handlePaste,
       aggregateVillagers,
       updateStepDescription,
@@ -279,6 +356,9 @@ export default {
       addStep,
       selectItem,
       unSelectItem,
+      saveSelection,
+      restoreSelection,
+      handleIconSelected,
     };
   },
 };
@@ -317,6 +397,6 @@ td:empty {
   cursor: move;
   vertical-align: middle;
   height: auto;
-  width: 48px;
+  width: 42px;
 }
 </style>
