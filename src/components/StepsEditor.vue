@@ -75,7 +75,6 @@
                 <v-btn class="mr-n4"
                   prepend-icon="mdi-image-plus"
                   color="primary"
-                  variant="text"
                   v-bind="props"
                   append-icon="mdi-menu-down"
                   >Add Icon</v-btn
@@ -241,6 +240,7 @@ export default {
       restoreSelection();
       const img = '<img src="' + iconPath + '" class="icon"></img>';
       document.execCommand("insertHTML", false, img);
+      saveSelection();
     };
 
     const aggregateVillagers = (index) => {
