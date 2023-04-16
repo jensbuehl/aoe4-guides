@@ -70,14 +70,15 @@
           <th class="text-left hidden-sm-and-down">Description</th>
           <th class="text-left hidden-md-and-up" width="100%">Description</th>
           <th v-if="!readonly" class="text-right hidden-sm-and-down">
-            <v-menu :close-on-content-click="false" location="bottom">
+            <v-menu v-if="selection" :close-on-content-click="false" location="bottom">
               <template v-slot:activator="{ props }">
                 <v-btn class="mr-n4"
                   prepend-icon="mdi-image-plus"
                   color="primary"
                   v-bind="props"
+                  variant="text"
                   append-icon="mdi-menu-down"
-                  >Add Icon</v-btn
+                  >Add Image</v-btn
                 >
               </template>
               <v-card rounded="lg" class="mt-4" width="350px">
@@ -149,6 +150,7 @@
           <td
             @mouseleave="saveSelection"
             @paste="handlePaste"
+            @click="saveSelection"
             @focusout="updateStepDescription($event, index)"
             :contenteditable="!readonly"
             class="text-left"
@@ -277,7 +279,6 @@ export default {
       aggregateVillagers(index);
     };
     const updateStepDescription = (event, index) => {
-      console.log(event.target.innerHTML);
       stepsCopy.value[index].description = event.target.innerHTML;
       context.emit("stepsChanged", stepsCopy.value);
     };

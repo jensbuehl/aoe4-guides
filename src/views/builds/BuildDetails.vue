@@ -258,7 +258,7 @@
       </div>
     </v-card>
 
-    <StepsEditor :steps="build.steps" :readonly="true"></StepsEditor>
+    <StepsEditor :steps="build.steps" :readonly="true" :civ="build.civ"></StepsEditor>
 
     <div class="mt-4">
       <Discussion v-if="user" :buildId="build.id"></Discussion>

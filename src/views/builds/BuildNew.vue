@@ -48,7 +48,12 @@
   <v-container v-if="user">
     <v-card rounded="lg">
       <v-row class="d-flex align-center flex-nowrap">
-        <v-col v-if="build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
+        <v-col
+          v-if="build.civ"
+          cols="2"
+          md="3"
+          class="pa-0 ma-0 hidden-sm-and-down"
+        >
           <v-img
             :src="
               '/' +
@@ -76,7 +81,12 @@
             </template>
           </v-img>
         </v-col>
-        <v-col v-if="!build.civ" cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
+        <v-col
+          v-if="!build.civ"
+          cols="2"
+          md="3"
+          class="pa-0 ma-0 hidden-sm-and-down"
+        >
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
@@ -192,6 +202,7 @@
     <StepsEditor
       @stepsChanged="handleStepsChanged"
       :steps="build.steps"
+      :civ="build.civ"
     ></StepsEditor>
   </v-container>
 </template>
@@ -241,9 +252,12 @@ export default {
     const stepsCopy = ref(null);
     const save = async () => {
       //Hack, since using the reference in step editor broke the selection which is needed of adding icons
-      build.value.steps.forEach(
-        (step, index) => (step.description = stepsCopy.value[index].description)
-      );
+      if (stepsCopy.value) {
+        build.value.steps.forEach(
+          (step, index) =>
+            (step.description = stepsCopy.value[index].description)
+        );
+      }
       build.value.sortTitle =
         build.value.title.toLowerCase() + crypto.randomUUID();
       build.value.authorUid = user.value.uid;
@@ -271,7 +285,7 @@ export default {
       authIsReady: computed(() => store.state.authIsReady),
       save,
       handleVideoInput,
-      handleStepsChanged
+      handleStepsChanged,
     };
   },
 };

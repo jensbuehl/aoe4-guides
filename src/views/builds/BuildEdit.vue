@@ -224,6 +224,7 @@
     <StepsEditor
       @stepsChanged="handleStepsChanged"
       :steps="build.steps"
+      :civ="build.civ"
     ></StepsEditor>
   </v-container>
 </template>
@@ -266,9 +267,12 @@ export default {
 
     const handleSave = async () => {
       //Hack, since using the reference in step editor broke the selection which is needed of adding icons
-      build.value.steps.forEach(
-        (step, index) => (step.description = stepsCopy.value[index].description)
-      );
+      if (stepsCopy.value) {
+        build.value.steps.forEach(
+          (step, index) =>
+            (step.description = stepsCopy.value[index].description)
+        );
+      }
       build.value.sortTitle =
         build.value.title.toLowerCase() + crypto.randomUUID();
       await update(props.id, build.value);
