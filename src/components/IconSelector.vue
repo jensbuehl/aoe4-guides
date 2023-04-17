@@ -10,6 +10,74 @@
       </v-col>
     </v-row>
     <v-card fluid class="overflow-y-auto pb-2" max-height="600">
+      <v-row v-show="filteredGeneral.length" no-gutters align="center">
+        <v-col cols="12">
+          <v-card flat subtitle="Workers & Resources"></v-card>
+        </v-col>
+        <v-col
+          class="mt-n2 mb-2"
+          cols="3"
+          v-for="icon in filteredGeneral"
+          :key="icon.imgSrc"
+        >
+          <v-hover>
+            <template v-slot:default="{ isHovering, props }">
+              <v-card
+                flat
+                width="50"
+                height="50"
+                class="mx-4 my-1"
+                v-bind="props"
+                :color="isHovering ? 'primary' : undefined"
+              >
+                <v-container>
+                  <v-row align="center" justify="center">
+                    <v-img
+                      @click="imageSelected"
+                      style="height: 42px; width: 42px;"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-row>
+                </v-container>
+              </v-card>
+            </template>
+          </v-hover>
+        </v-col>
+      </v-row>
+      <v-row v-show="filteredLandmarks.length" no-gutters align="center">
+        <v-col cols="12">
+          <v-card flat subtitle="Landmarks"></v-card>
+        </v-col>
+        <v-col
+          class="mt-n2 mb-2"
+          cols="3"
+          v-for="icon in filteredLandmarks"
+          :key="icon.imgSrc"
+        >
+          <v-hover>
+            <template v-slot:default="{ isHovering, props }">
+              <v-card
+                flat
+                width="50"
+                height="50"
+                class="mx-4 my-1"
+                v-bind="props"
+                :color="isHovering ? 'primary' : undefined"
+              >
+                <v-container>
+                  <v-row align="center" justify="center">
+                    <v-img
+                      @click="imageSelected"
+                      style="height: auto; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-row>
+                </v-container>
+              </v-card>
+            </template>
+          </v-hover>
+        </v-col>
+      </v-row>
       <v-row v-show="filteredEcoBuildings.length" no-gutters align="center">
         <v-col cols="12">
           <v-card flat subtitle="Economic & Religious Buildings"></v-card>
@@ -56,40 +124,6 @@
           class="mt-n2 mb-2"
           cols="3"
           v-for="icon in filteredMilitaryBuildings"
-          :key="icon.imgSrc"
-        >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
-        </v-col>
-      </v-row>
-      <v-row v-show="filteredEcoUnits.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Economic & Religious Units"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredEcoUnits"
           :key="icon.imgSrc"
         >
           <v-hover>
@@ -222,40 +256,6 @@
           </v-hover>
         </v-col>
       </v-row>
-      <v-row v-show="filteredGeneral.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Landmarks & General"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredGeneral"
-          :key="icon.imgSrc"
-        >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
-        </v-col>
-      </v-row>
     </v-card>
   </v-card>
 </template>
@@ -277,11 +277,13 @@ export default {
     const militaryBuildings = getIcons("building_military").concat(
       getIcons("building_tech")
     );
-    const ecoUnits = getIcons("unit_eco").concat(getIcons("unit_religious"));
+    const general = getIcons("unit_eco").concat(
+      getIcons("unit_religious").concat(getIcons("resource"))
+    );
     const militaryUnits = getIcons("unit_military");
     const ecoTechnologies = getIcons("tech_eco");
     const militaryTechnologies = getIcons("tech_military");
-    const general = getIcons("landmark").concat(getIcons("general"));
+    const landmarks = getIcons("landmark").concat(getIcons("general"));
 
     const filteredEcoBuildings = computed(() =>
       ecoBuildings.filter((item) =>
@@ -293,8 +295,8 @@ export default {
         item.title.toLowerCase().includes(searchText.value?.toLowerCase())
       )
     );
-    const filteredEcoUnits = computed(() =>
-      ecoUnits.filter((item) =>
+    const filteredGeneral = computed(() =>
+      general.filter((item) =>
         item.title.toLowerCase().includes(searchText.value?.toLowerCase())
       )
     );
@@ -313,8 +315,8 @@ export default {
         item.title.toLowerCase().includes(searchText.value?.toLowerCase())
       )
     );
-    const filteredGeneral = computed(() =>
-      general.filter((item) =>
+    const filteredLandmarks = computed(() =>
+      landmarks.filter((item) =>
         item.title.toLowerCase().includes(searchText.value?.toLowerCase())
       )
     );
@@ -326,11 +328,11 @@ export default {
     return {
       filteredEcoBuildings,
       filteredMilitaryBuildings,
-      filteredEcoUnits,
+      filteredGeneral,
       filteredMilitaryUnits,
       filteredEcoTechnologies,
       filteredMilitaryTechnologies,
-      filteredGeneral,
+      filteredLandmarks,
       searchText,
       imageSelected,
     };
