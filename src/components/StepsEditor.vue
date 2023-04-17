@@ -70,9 +70,14 @@
           <th class="text-left hidden-sm-and-down">Description</th>
           <th class="text-left hidden-md-and-up" width="100%">Description</th>
           <th v-if="!readonly" class="text-right hidden-sm-and-down">
-            <v-menu v-if="selection" :close-on-content-click="false" location="bottom">
+            <v-menu
+              v-if="selection"
+              :close-on-content-click="false"
+              location="bottom"
+            >
               <template v-slot:activator="{ props }">
-                <v-btn class="mr-n4"
+                <v-btn
+                  class="mr-n4"
                   prepend-icon="mdi-image-plus"
                   color="primary"
                   v-bind="props"
@@ -196,7 +201,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import sanitizeHtml from "sanitize-html";
 import IconSelector from "../components/IconSelector.vue";
 
@@ -210,9 +215,12 @@ export default {
     //Hacky deep copy of object since working on the reference broke the current selection
     const stepsCopy = ref(JSON.parse(JSON.stringify(props.steps)));
     const readonly = props.readonly;
-    const civ = ref(props.civ);
     const hoverRowIndex = ref(null);
     const selection = ref(null);
+
+    const civ = computed(() => {
+      return props.civ;
+    });
 
     const saveSelection = () => {
       if (window.getSelection) {
