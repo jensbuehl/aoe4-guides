@@ -152,7 +152,7 @@ export default function useIconService(civArg) {
       ],
     },
   ];
-  
+
   const resource = [
     {
       title: "Sheep",
@@ -341,8 +341,7 @@ export default function useIconService(civArg) {
         "DEL",
         "HRE",
       ],
-    }
-    ,
+    },
     {
       title: "Build or Repair",
       age: "1",
@@ -359,7 +358,7 @@ export default function useIconService(civArg) {
         "DEL",
         "HRE",
       ],
-    }
+    },
   ];
 
   const landmark = [
@@ -804,89 +803,165 @@ export default function useIconService(civArg) {
       title: "Improved Processing",
       age: "1",
       imgSrc: "/assets/pictures/technology_abbasid/improved-processing.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Agriculture",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/agriculture.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Preservation of Knowledge",
       age: "2",
-      imgSrc: "/assets/pictures/technology_abbasid/preservation-of-knowledge.png",
-      civ: [
-        "ABB"
-      ],
+      imgSrc:
+        "/assets/pictures/technology_abbasid/preservation-of-knowledge.png",
+      civ: ["ABB"],
     },
     {
       title: "Armored Caravans",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/armored-caravans.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Grand Bazaar",
       age: "2",
       imgSrc: "/assets/pictures/technology_abbasid/grand-bazaar.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Spice Roads",
       age: "4",
       imgSrc: "/assets/pictures/technology_abbasid/spice-roads.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Fresh Foodstuffs",
       age: "2",
       imgSrc: "/assets/pictures/technology_abbasid/fresh-foodstuffs.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Fertile Crescent",
       age: "2",
-      imgSrc: "/assets/pictures/age/age_unknown.png",
-      civ: [
-        "ABB"
-      ],
+      imgSrc: "/assets/pictures/technology_abbasid/fertile-crescent-2.png",
+      civ: ["ABB"],
     },
     {
       title: "Extra Materials",
       age: "3",
       imgSrc: "/assets/pictures/technology_chinese/extra-materials.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
     {
       title: "Ancient Techniques",
       age: "4",
       imgSrc: "/assets/pictures/technology_chinese/ancient-techniques.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
     {
       title: "Imperial Examinations",
       age: "2",
       imgSrc: "/assets/pictures/technology_chinese/imperial-examination.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
+    },
+    {
+      title: "Village Fortresses",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/village-fortresses.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Reinforced Foundations",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/reinforced-foundations.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "All-Seeing Eye",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_delhi/all-seeing-eye.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Sanctity",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_delhi/sanctity.png",
+      civ: ["DEL"],
+    },  
+    {
+      title: "Swiftness",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/swiftness.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Hearty Rations",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/hearty-rations.png",
+      civ: ["DEL"],
+    },
+    //military
+    {
+      title: "Armored Beasts",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_delhi/armored-beasts.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Efficient Production",
+      age: "1",
+      imgSrc: "/assets/pictures/technology_delhi/efficient-production.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Howdahs",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_delhi/siege-elephant.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Forced March",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/forced-march.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Zeal",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_delhi/zeal.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Honed Blades",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/honed-blades.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Tranquil Venue",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/tranquil-venue.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Lookout Towers",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_delhi/lookout-towers.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Slow-Burning Defenses",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_delhi/slow-burning-defenses.png",
+      civ: ["DEL"],
+    },
+    {
+      title: "Manuscript Trade",
+      age: "1",
+      imgSrc: "/assets/pictures/technology_delhi/manuscript-trade-1.png",
+      civ: ["DEL"],
     },
   ];
 
@@ -980,32 +1055,13 @@ export default function useIconService(civArg) {
       title: "Court Architects",
       age: "4",
       imgSrc: "/assets/pictures/technology_defensive/court-architects.png",
-      civ: [
-        "ENG",
-        "FRE",
-        "RUS",
-        "MAL",
-        "ABB",
-        "OTT",
-        "CHI",
-        "DEL",
-        "HRE",
-      ],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Fortify Outpost",
       age: "2",
       imgSrc: "/assets/pictures/technology_defensive/fortify-outpost.png",
-      civ: [
-        "ENG",
-        "FRE",
-        "MAL",
-        "ABB",
-        "OTT",
-        "CHI",
-        "DEL",
-        "HRE",
-      ],
+      civ: ["ENG", "FRE", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Extra Hammocks",
@@ -1045,129 +1101,97 @@ export default function useIconService(civArg) {
       title: "Composite Bows",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/composite-bows.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Camel Rider Barding",
       age: "4",
       imgSrc: "/assets/pictures/technology_abbasid/camel-rider-barding-4.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Camel Handling",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/camel-handling.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Camel Support",
       age: "4",
       imgSrc: "/assets/pictures/technology_abbasid/camel-support.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Camel Rider Shields",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/camel-rider-shields.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Medical Centers",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/medical-centers.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Boot Camp",
       age: "2",
       imgSrc: "/assets/pictures/technology_abbasid/boot-camp.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Teak Masts",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/teak-masts.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Proselytization",
       age: "4",
       imgSrc: "/assets/pictures/technology_abbasid/faith.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Phalanx",
       age: "2",
       imgSrc: "/assets/pictures/technology_abbasid/phalanx.png",
-      civ: [
-        "ABB"
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Pyrotechnics",
       age: "4",
       imgSrc: "/assets/pictures/technology_chinese/pyrotechnics.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
     {
       title: "Reload Drills",
       age: "4",
       imgSrc: "/assets/pictures/technology_chinese/reload-drills.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
     {
       title: "Reusable Barrels",
       age: "4",
       imgSrc: "/assets/pictures/technology_chinese/reusable-barrels.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
     {
       title: "Battle Hardened",
       age: "4",
       imgSrc: "/assets/pictures/technology_chinese/battle-hardened.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
     {
       title: "Handcannon Slits",
       age: "2",
       imgSrc: "/assets/pictures/technology_chinese/handcannon-slits.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
     {
       title: "Thunderclap Bombs",
       age: "4",
       imgSrc: "/assets/pictures/technology_chinese/thunderclap-bombs-4.png",
-      civ: [
-        "CHI"
-      ],
+      civ: ["CHI"],
     },
   ];
 
