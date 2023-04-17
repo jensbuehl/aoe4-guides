@@ -135,7 +135,7 @@
           <v-textarea
             label="Description"
             class="pa-4"
-            rows="2"
+            rows="1"
             density="compact"
             multi-line
             auto-grow
@@ -152,8 +152,8 @@
             v-model="build.video"
           ></v-text-field> </v-card
       ></v-col>
-      <v-col cols="12" md="4">
-        <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
+      <v-col cols="12" md="4" class="d-flex">
+        <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2 flex-grow-1">
           <v-card-text class="pb-0">
             <v-select
               prepend-icon="mdi-earth"
