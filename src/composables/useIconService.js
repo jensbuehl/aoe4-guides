@@ -1025,6 +1025,23 @@ export default function useIconService(civArg) {
       ],
     },
     {
+      title: "Naval Arrowslits",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_defensive/arrow-slits.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
       title: "Composite Bows",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/composite-bows.png",
