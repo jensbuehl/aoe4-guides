@@ -28,6 +28,9 @@ export default function useIconService(civArg) {
       case "building_tech":
         allIcons = building_tech;
         break;
+      case "resource":
+        allIcons = resource;
+        break;
       case "building_military":
         allIcons = building_military;
         break;
@@ -52,7 +55,7 @@ export default function useIconService(civArg) {
           .concat(unit_religious)
           .concat(unit_military)
           .concat(unit_eco);
-          break;
+        break;
     }
 
     if (civ.value) {
@@ -67,32 +70,296 @@ export default function useIconService(civArg) {
       title: "Dark Age",
       age: "1",
       imgSrc: "/assets/pictures/age/age_1.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Feudal Age",
       age: "2",
       imgSrc: "/assets/pictures/age/age_2.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Castle Age",
       age: "3",
       imgSrc: "/assets/pictures/age/age_3.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Imperial Age",
       age: "4",
       imgSrc: "/assets/pictures/age/age_4.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Unknown Age",
       age: "1",
       imgSrc: "/assets/pictures/age/age_unknown.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
+  ];
+  
+  const resource = [
+    {
+      title: "Sheep",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/sheep.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Deer",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/deer.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Food",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/resource_food.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Wood",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/resource_wood.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Gold",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/resource_gold.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Stone",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/resource_stone.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Berries",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/berrybush.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Boar",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/boar.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Fish",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/fish.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Straggler Tree",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/gaiatreeprototypetree.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    ,
+    {
+      title: "Wolf",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/wolf.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    }
+    ,
+    {
+      title: "Build or Repair",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/repair.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    }
   ];
 
   const landmark = [
@@ -303,7 +570,8 @@ export default function useIconService(civArg) {
     {
       title: "Monument of the Great Khan",
       age: "4",
-      imgSrc: "/assets/pictures/landmark_mongols/monument-of-the-great-khan.png",
+      imgSrc:
+        "/assets/pictures/landmark_mongols/monument-of-the-great-khan.png",
       civ: ["MON"],
     },
     {
@@ -315,13 +583,15 @@ export default function useIconService(civArg) {
     {
       title: "Sultanhani Trade Network",
       age: "1",
-      imgSrc: "/assets/pictures/landmark_ottomans/sultanhani-trade-network-1.png",
+      imgSrc:
+        "/assets/pictures/landmark_ottomans/sultanhani-trade-network-1.png",
       civ: ["OTT"],
     },
     {
       title: "Istanbul Imperial Palace",
       age: "2",
-      imgSrc: "/assets/pictures/landmark_ottomans/istanbul-imperial-palace-2.png",
+      imgSrc:
+        "/assets/pictures/landmark_ottomans/istanbul-imperial-palace-2.png",
       civ: ["OTT"],
     },
     {
@@ -517,7 +787,106 @@ export default function useIconService(civArg) {
       title: "Wheelbarrow",
       age: "1",
       imgSrc: "/assets/pictures/technology_economy/wheelbarrow.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Improved Processing",
+      age: "1",
+      imgSrc: "/assets/pictures/technology_abbasid/improved-processing.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Agriculture",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_abbasid/agriculture.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Preservation of Knowledge",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_abbasid/preservation-of-knowledge.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Armored Caravans",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_abbasid/armored-caravans.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Grand Bazaar",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_abbasid/grand-bazaar.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Spice Roads",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_abbasid/spice-roads.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Fresh Foodstuffs",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_abbasid/fresh-foodstuffs.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Fertile Crescent",
+      age: "2",
+      imgSrc: "/assets/pictures/age/age_unknown.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Extra Materials",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_chinese/extra-materials.png",
+      civ: [
+        "CHI"
+      ],
+    },
+    {
+      title: "Ancient Techniques",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_chinese/ancient-techniques.png",
+      civ: [
+        "CHI"
+      ],
+    },
+    {
+      title: "Imperial Examinations",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_chinese/imperial-examination.png",
+      civ: [
+        "CHI"
+      ],
     },
   ];
 
@@ -526,7 +895,262 @@ export default function useIconService(civArg) {
       title: "Angled Surfaces",
       age: "1",
       imgSrc: "/assets/pictures/technology_military/angled-surfaces.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Arrowslits",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_defensive/arrow-slits.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Springald Emplacement",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_defensive/springald-emplacement.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Cannon Emplacement",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_defensive/cannon-emplacement.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Boiling Oil",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_defensive/boiling-oil.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Court Architects",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_defensive/court-architects.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Fortify Outpost",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_defensive/fortify-outpost.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "MAL",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Extra Hammocks",
+      age: "31",
+      imgSrc: "/assets/pictures/technology_chinese/extra-hammocks.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Composite Bows",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_abbasid/composite-bows.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Camel Rider Barding",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_abbasid/camel-rider-barding-4.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Camel Handling",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_abbasid/camel-handling.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Camel Support",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_abbasid/camel-support.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Camel Rider Shields",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_abbasid/camel-rider-shields.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Medical Centers",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_abbasid/medical-centers.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Boot Camp",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_abbasid/boot-camp.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Teak Masts",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_abbasid/teak-masts.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Proselytization",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_abbasid/faith.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Phalanx",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_abbasid/phalanx.png",
+      civ: [
+        "ABB"
+      ],
+    },
+    {
+      title: "Pyrotechnics",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_chinese/pyrotechnics.png",
+      civ: [
+        "CHI"
+      ],
+    },
+    {
+      title: "Reload Drills",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_chinese/reload-drills.png",
+      civ: [
+        "CHI"
+      ],
+    },
+    {
+      title: "Reusable Barrels",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_chinese/reusable-barrels.png",
+      civ: [
+        "CHI"
+      ],
+    },
+    {
+      title: "Battle Hardened",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_chinese/battle-hardened.png",
+      civ: [
+        "CHI"
+      ],
+    },
+    {
+      title: "Handcannon Slits",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_chinese/handcannon-slits.png",
+      civ: [
+        "CHI"
+      ],
+    },
+    {
+      title: "Thunderclap Bombs",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_chinese/thunderclap-bombs-4.png",
+      civ: [
+        "CHI"
+      ],
     },
   ];
 
@@ -535,13 +1159,13 @@ export default function useIconService(civArg) {
       title: "Monastery",
       age: "3",
       imgSrc: "/assets/pictures/building_religious/monastery.png",
-      civ: ["ENG","FRE","RUS","CHI","HRE"],
+      civ: ["ENG", "FRE", "RUS", "CHI", "HRE"],
     },
     {
       title: "Mosque",
       age: "3",
       imgSrc: "/assets/pictures/building_religious/mosque.png",
-      civ: ["ABB","DEL","MAL","OTT"],
+      civ: ["ABB", "DEL", "MAL", "OTT"],
     },
     {
       title: "Prayer Tent",
@@ -562,31 +1186,31 @@ export default function useIconService(civArg) {
       title: "Farm",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/farm.png",
-      civ: ["ENG","FRE","RUS","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "House",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/house.png",
-      civ: ["ENG","FRE","RUS","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Lumber Camp",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/lumber-camp.png",
-      civ: ["ENG","FRE","RUS","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Mining Camp",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/mining-camp.png",
-      civ: ["ENG","FRE","RUS","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Mill",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/mill.png",
-      civ: ["ENG","FRE","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Pit Mine",
@@ -622,13 +1246,35 @@ export default function useIconService(civArg) {
       title: "Town Center",
       age: "2",
       imgSrc: "/assets/pictures/building_economy/town-center.png",
-      civ: ["ENG","FRE","RUS","MON","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MON",
+        "MAL",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Market",
       age: "2",
       imgSrc: "/assets/pictures/building_economy/market.png",
-      civ: ["ENG","FRE","RUS","MON","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MON",
+        "MAL",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Village",
@@ -661,19 +1307,30 @@ export default function useIconService(civArg) {
       title: "Blacksmith",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/blacksmith.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "University",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/university.png",
-      civ: ["ENG","FRE","RUS","OTT","CHI","HRE"],
+      civ: ["ENG", "FRE", "RUS", "OTT", "CHI", "HRE"],
     },
     {
       title: "Madrasa",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/madrasa.png",
-      civ: ["MAL","ABB","DEL"],
+      civ: ["MAL", "ABB", "DEL"],
     },
   ];
 
@@ -682,7 +1339,18 @@ export default function useIconService(civArg) {
       title: "Barracks",
       age: "1",
       imgSrc: "/assets/pictures/building_military/barracks.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Military School",
@@ -694,37 +1362,81 @@ export default function useIconService(civArg) {
       title: "Dock",
       age: "1",
       imgSrc: "/assets/pictures/building_military/dock.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Archery Range",
       age: "2",
       imgSrc: "/assets/pictures/building_military/archery-range.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Stable",
       age: "2",
       imgSrc: "/assets/pictures/building_military/stable.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Siege Workshop",
       age: "3",
       imgSrc: "/assets/pictures/building_military/siege-workshop.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
     {
       title: "Keep",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/keep.png",
-      civ: ["ENG","FRE","RUS","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Outpost",
       age: "1",
       imgSrc: "/assets/pictures/building_defensive/outpost.png",
-      civ: ["ENG","FRE","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "MON", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Toll Outpost",
@@ -736,13 +1448,13 @@ export default function useIconService(civArg) {
       title: "Palisade Gate",
       age: "1",
       imgSrc: "/assets/pictures/building_defensive/palisade-gate.png",
-      civ: ["ENG","FRE","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Palisade Wall",
       age: "1",
       imgSrc: "/assets/pictures/building_defensive/palisade-wall.png",
-      civ: ["ENG","FRE","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Wooden Fortress",
@@ -766,13 +1478,13 @@ export default function useIconService(civArg) {
       title: "Stone Wall Gate",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/stone-wall-gate.png",
-      civ: ["ENG","FRE","RUS","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
     {
       title: "Stone Wall Tower",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/stone-wall-tower.png",
-      civ: ["ENG","FRE","RUS","MAL","ABB","OTT","CHI","DEL","HRE"],
+      civ: ["ENG", "FRE", "RUS", "MAL", "ABB", "OTT", "CHI", "DEL", "HRE"],
     },
   ];
 
@@ -781,7 +1493,18 @@ export default function useIconService(civArg) {
       title: "Monk",
       age: "3",
       imgSrc: "/assets/pictures/unit_religious/monk-3.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
   ];
 
@@ -790,7 +1513,18 @@ export default function useIconService(civArg) {
       title: "Archer",
       age: "2",
       imgSrc: "/assets/pictures/unit_infantry/archer-2.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
   ];
 
@@ -799,7 +1533,35 @@ export default function useIconService(civArg) {
       title: "Villager",
       age: "1",
       imgSrc: "/assets/pictures/unit_worker/villager.png",
-      civ: ["ENG","FRE","RUS","MAL","MON","ABB","OTT","CHI","DEL","HRE"],
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Trader",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_worker/trader.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
     },
   ];
 
