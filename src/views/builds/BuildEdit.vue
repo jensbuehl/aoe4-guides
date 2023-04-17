@@ -149,7 +149,7 @@
           <v-text-field
             class="pa-4"
             label="Title"
-            multi-line
+            density="compact"
             v-model="build.title"
             :value="build.title"
           ></v-text-field>
@@ -157,7 +157,9 @@
           <v-textarea
             label="Description"
             class="pa-4"
-            rows="1"
+            rows="2"
+            density="compact"
+            multi-line
             auto-grow
             v-model="build.description"
             :value="build.description"
@@ -165,7 +167,8 @@
 
           <v-text-field
             label="Video"
-            class="pa-4"
+            class="px-4 pt-4"
+            density="compact"
             @input="handleVideoInput($event)"
             :value="build.video"
             v-model="build.video"
@@ -173,7 +176,7 @@
       ></v-col>
       <v-col cols="12" md="4">
         <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2">
-          <v-card-text>
+          <v-card-text class="pb-0">
             <v-select
               prepend-icon="mdi-earth"
               label="Civilization"
