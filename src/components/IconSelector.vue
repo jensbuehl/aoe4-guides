@@ -80,7 +80,7 @@
       </v-row>
       <v-row v-show="filteredEcoBuildings.length" no-gutters align="center">
         <v-col cols="12">
-          <v-card flat subtitle="Economic & Religious Buildings"></v-card>
+          <v-card flat subtitle="Civil Buildings"></v-card>
         </v-col>
         <v-col
           class="mt-n2 mb-2"

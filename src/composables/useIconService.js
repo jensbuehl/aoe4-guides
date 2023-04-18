@@ -1533,7 +1533,7 @@ export default function useIconService(civArg) {
     {
       title: "Roller Shutter Triggers",
       age: "4",
-      imgSrc: "/assets/pictures/technology_military/roller-shutter-triggers.png",
+      imgSrc: "/assets/pictures/technology_units/roller-shutter-triggers.png",
       civ: [
         "ENG",
         "RUS",
@@ -2658,15 +2658,62 @@ export default function useIconService(civArg) {
         "HRE",
       ],
     },
+    {
+      title: "Imam",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_abbasid/imam.png",
+      civ: [
+        "ABB",
+      ],
+    },
+    {
+      title: "Scholar",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_delhi/scholar.png",
+      civ: [
+        "DEL",
+      ],
+    },
+    {
+      title: "Prelate",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_hre/prelate.png",
+      civ: [
+        "HRE",
+      ],
+    },
+    {
+      title: "Shaman",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_mongols/shaman.png",
+      civ: [
+        "MON",
+      ],
+    },
   ];
 
   const unit_military = [
+    {
+      title: "Scout",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_cavalry/scout.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
     {
       title: "Archer",
       age: "2",
       imgSrc: "/assets/pictures/unit_infantry/archer-2.png",
       civ: [
-        "ENG",
         "FRE",
         "RUS",
         "MAL",
@@ -2676,6 +2723,360 @@ export default function useIconService(civArg) {
         "CHI",
         "DEL",
         "HRE",
+      ],
+    },
+    {
+      title: "Crossbowman",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_cavalry/crossbowman-3.png",
+      civ: [
+        "ENG",
+        "RUS",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Handcannoneer",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_cavalry/handcannoneer-4.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "MON",
+        "ABB",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Spearman",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_infantry/spearman-1.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Man-at-Arms (MAA)",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_infantry/man-at-arms-1.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MON",
+        "ABB",
+        "OTT",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Horseman",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_cavalry/horseman-1.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Knight",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_cavalry/knight-2.png",
+      civ: [
+        "ENG",
+        "RUS",
+        "HRE",
+      ],
+    },
+    {
+      title: "Lancer",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_cavalry/lancer-3.png",
+      civ: [
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+      ],
+    },
+    {
+      title: "Camel Rider",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_abbasid/camel-rider-3.png",
+      civ: [
+        "ABB",
+      ],
+    },
+    {
+      title: "Camel Archer",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_abbasid/camel-archer-2.png",
+      civ: [
+        "ABB",
+      ],
+    },
+    {
+      title: "Zhuge Nu",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_chinese/zhuge-nu-2.png",
+      civ: [
+        "CHI",
+      ],
+    },
+    {
+      title: "Palace Guard",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_chinese/palace-guard-3.png",
+      civ: [
+        "CHI",
+      ],
+    },
+    {
+      title: "Nest of Bees",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_chinese/nest-of-bees.png",
+      civ: [
+        "CHI",
+      ],
+    },
+    {
+      title: "Fire Lancer",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_chinese/fire-lancer-3.png",
+      civ: [
+        "CHI",
+      ],
+    },
+    {
+      title: "Grenadier",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_chinese/grenadier-4.png",
+      civ: [
+        "CHI",
+      ],
+    },
+    {
+      title: "Tower Elephant",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_delhi/tower-elephant-3.png",
+      civ: [
+        "DEL",
+      ],
+    },
+    {
+      title: "Sultan's Elite Tower Elephant",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_delhi/sultans-elite-tower-elephant-4.png",
+      civ: [
+        "DEL",
+      ],
+    },
+    {
+      title: "War Elephant",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_delhi/war-elephant.png",
+      civ: [
+        "DEL",
+      ],
+    },
+    {
+      title: "Longbowman",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_english/longbowman-2.png",
+      civ: [
+        "ENG",
+      ],
+    },
+    {
+      title: "King",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_english/king-2.png",
+      civ: [
+        "ENG",
+      ],
+    },
+    {
+      title: "Wynguard Ranger",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_english/wynguard-ranger-4.png",
+      civ: [
+        "ENG",
+      ],
+    },
+    {
+      title: "Wynguard Footmen",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_english/wynguard-footmen-1.png",
+      civ: [
+        "ENG",
+      ],
+    },
+    {
+      title: "Wynguard Army",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_english/wynguard-army-1.png",
+      civ: [
+        "ENG",
+      ],
+    },
+    {
+      title: "Wynguard Raiders",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_english/wynguard-raiders-1.png",
+      civ: [
+        "ENG",
+      ],
+    },
+    {
+      title: "Royal Knight",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_french/royal-knight-2.png",
+      civ: [
+        "FRE",
+      ],
+    },
+    {
+      title: "Arbalétrier",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_french/arbaletrier-3.png",
+      civ: [
+        "FRE",
+      ],
+    },
+    {
+      title: "Royal Knight",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_french/royal-knight-2.png",
+      civ: [
+        "FRE",
+      ],
+    },
+    {
+      title: "Galleass",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_french/galleass.png",
+      civ: [
+        "FRE",
+      ],
+    },
+    {
+      title: "Cannon",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_french/cannon-4.png",
+      civ: [
+        "FRE",
+      ],
+    },
+    {
+      title: "Landsknecht",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_hre/landsknecht-3.png",
+      civ: [
+        "HRE",
+      ],
+    },
+    {
+      title: "Donso",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_malians/donso-1.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
+      title: "Musofadi Warrior",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_malians/musofadi-warrior-2.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
+      title: "Javelin Thrower",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_malians/javelin-thrower-2.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
+      title: "Warrior Scout",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_malians/warrior-scout-2.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
+      title: "Sofa",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_malians/sofa-2.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
+      title: "Musofadi Gunner",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_malians/musofadi-gunner-4.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
+      title: "Khan",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_mongols/khan-1.png",
+      civ: [
+        "MON",
+      ],
+    },
+    {
+      title: "Mangudai",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_mongols/mangudai.png",
+      civ: [
+        "MON",
+      ],
+    },
+    {
+      title: "Traction Trebuchet",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_mongols/traction-trebuchet.png",
+      civ: [
+        "MON",
+      ],
+    },
+    {
+      title: "Huihui Pao",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_mongols/huihui-pao-1.png",
+      civ: [
+        "MON",
       ],
     },
   ];
@@ -2715,6 +3116,14 @@ export default function useIconService(civArg) {
         "HRE",
       ],
     },
+    {
+      title: "Imperial Official",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_chinese/imperial-official.png",
+      civ: [
+        "CHI",
+      ],
+    }
   ];
 
   return { getIcons };
