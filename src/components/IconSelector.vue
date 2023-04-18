@@ -32,11 +32,16 @@
               >
                 <v-container>
                   <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: 42px; width: 42px;"
-                      :src="icon.imgSrc"
-                    ></v-img>
+                    <v-tooltip location="top" :text="icon.title">
+                      <template v-slot:activator="{ props }">
+                        <v-img
+                          v-bind="props"
+                          @click="imageSelected"
+                          style="height: 42px; width: 42px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </template>
+                    </v-tooltip>
                   </v-row>
                 </v-container>
               </v-card>
@@ -66,11 +71,16 @@
               >
                 <v-container>
                   <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
+                    <v-tooltip location="top" :text="icon.title">
+                      <template v-slot:activator="{ props }">
+                        <v-img
+                          v-bind="props"
+                          @click="imageSelected"
+                          style="height: 42px; width: 42px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </template>
+                    </v-tooltip>
                   </v-row>
                 </v-container>
               </v-card>
@@ -100,11 +110,16 @@
               >
                 <v-container>
                   <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
+                    <v-tooltip location="top" :text="icon.title">
+                      <template v-slot:activator="{ props }">
+                        <v-img
+                          v-bind="props"
+                          @click="imageSelected"
+                          style="height: 42px; width: 42px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </template>
+                    </v-tooltip>
                   </v-row>
                 </v-container>
               </v-card>
@@ -138,11 +153,16 @@
               >
                 <v-container>
                   <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
+                    <v-tooltip location="top" :text="icon.title">
+                      <template v-slot:activator="{ props }">
+                        <v-img
+                          v-bind="props"
+                          @click="imageSelected"
+                          style="height: 42px; width: 42px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </template>
+                    </v-tooltip>
                   </v-row>
                 </v-container>
               </v-card>
@@ -172,11 +192,16 @@
               >
                 <v-container>
                   <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
+                    <v-tooltip location="top" :text="icon.title">
+                      <template v-slot:activator="{ props }">
+                        <v-img
+                          v-bind="props"
+                          @click="imageSelected"
+                          style="height: 42px; width: 42px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </template>
+                    </v-tooltip>
                   </v-row>
                 </v-container>
               </v-card>
@@ -206,11 +231,16 @@
               >
                 <v-container>
                   <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
+                    <v-tooltip location="top" :text="icon.title">
+                      <template v-slot:activator="{ props }">
+                        <v-img
+                          v-bind="props"
+                          @click="imageSelected"
+                          style="height: 42px; width: 42px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </template>
+                    </v-tooltip>
                   </v-row>
                 </v-container>
               </v-card>
@@ -244,11 +274,16 @@
               >
                 <v-container>
                   <v-row align="center" justify="center">
-                    <v-img
-                      @click="imageSelected"
-                      style="height: auto; width: 42px"
-                      :src="icon.imgSrc"
-                    ></v-img>
+                    <v-tooltip location="top" :text="icon.title">
+                      <template v-slot:activator="{ props }">
+                        <v-img
+                          v-bind="props"
+                          @click="imageSelected"
+                          style="height: 42px; width: 42px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </template>
+                    </v-tooltip>
                   </v-row>
                 </v-container>
               </v-card>
@@ -285,40 +320,37 @@ export default {
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
 
-    const filteredEcoBuildings = computed(() =>
-      ecoBuildings.filter((item) =>
-        item.title.toLowerCase().includes(searchText.value?.toLowerCase())
-      )
+    const filter = (unfiltered) => {
+      if (searchText.value.length > 2) {
+        return unfiltered.filter((item) =>
+          item.title.toLowerCase().includes(searchText.value?.toLowerCase())
+        );
+      } else {
+        return unfiltered;
+      } 
+    }
+    
+    const filteredEcoBuildings = computed(() => 
+      filter(ecoBuildings)
     );
+
     const filteredMilitaryBuildings = computed(() =>
-      militaryBuildings.filter((item) =>
-        item.title.toLowerCase().includes(searchText.value?.toLowerCase())
-      )
+      filter(militaryBuildings)
     );
     const filteredGeneral = computed(() =>
-      general.filter((item) =>
-        item.title.toLowerCase().includes(searchText.value?.toLowerCase())
-      )
+      filter(general)
     );
     const filteredMilitaryUnits = computed(() =>
-      militaryUnits.filter((item) =>
-        item.title.toLowerCase().includes(searchText.value?.toLowerCase())
-      )
+      filter(militaryUnits)
     );
     const filteredEcoTechnologies = computed(() =>
-      ecoTechnologies.filter((item) =>
-        item.title.toLowerCase().includes(searchText.value?.toLowerCase())
-      )
+      filter(ecoTechnologies)
     );
     const filteredMilitaryTechnologies = computed(() =>
-      militaryTechnologies.filter((item) =>
-        item.title.toLowerCase().includes(searchText.value?.toLowerCase())
-      )
+      filter(militaryTechnologies)
     );
     const filteredLandmarks = computed(() =>
-      landmarks.filter((item) =>
-        item.title.toLowerCase().includes(searchText.value?.toLowerCase())
-      )
+      filter(landmarks)
     );
 
     const imageSelected = (e) => {
@@ -334,6 +366,7 @@ export default {
       filteredMilitaryTechnologies,
       filteredLandmarks,
       searchText,
+      filter,
       imageSelected,
     };
   },
