@@ -154,6 +154,7 @@
           ></td>
           <td
             @mouseleave="saveSelection"
+            @input="saveSelection"
             @paste="handlePaste"
             @click="saveSelection"
             @focusout="updateStepDescription($event, index)"
