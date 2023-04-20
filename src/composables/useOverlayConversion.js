@@ -12,6 +12,16 @@ export default function useOverlayConversion() {
     };
   };
 
+  const convertResourceFromOverlayFormat = (resource) => {
+    if(resource){
+      if(resource < 0){
+        //convert -1 to 0 
+        return ""
+      }
+      return resource.toString()
+    }
+  }
+
   const convertStepFromOverlayFormat = (step) => {
     //Filter @imagePath@
     const regex = /@([^@]*)@/g;
@@ -23,11 +33,11 @@ export default function useOverlayConversion() {
 
     return {
       ...(step.time && { time: step.time }),
-      villagers: step.villager_count?.toString(),
-      food: step.resources.food?.toString(),
-      wood: step.resources.wood?.toString(),
-      gold: step.resources.gold?.toString(),
-      stone: step.resources.stone?.toString(),
+      villagers: convertResourceFromOverlayFormat(step.villager_count),
+      food: convertResourceFromOverlayFormat(step.resources.food),
+      wood: convertResourceFromOverlayFormat(step.resources.wood),
+      gold: convertResourceFromOverlayFormat(step.resources.gold),
+      stone: convertResourceFromOverlayFormat(step.resources.stone),
       builders: step.resources.builders?.toString() || "",
       description: convertedNotes,
     };
