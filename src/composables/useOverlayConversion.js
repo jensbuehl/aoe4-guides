@@ -20,6 +20,9 @@ export default function useOverlayConversion() {
       }
       return resource.toString()
     }
+    else{
+      return ""
+    }
   }
 
   const convertStepFromOverlayFormat = (step) => {
@@ -38,7 +41,7 @@ export default function useOverlayConversion() {
       wood: convertResourceFromOverlayFormat(step.resources.wood),
       gold: convertResourceFromOverlayFormat(step.resources.gold),
       stone: convertResourceFromOverlayFormat(step.resources.stone),
-      builders: step.resources.builders?.toString() || "",
+      builders: convertResourceFromOverlayFormat(step.builders),
       description: convertedNotes,
     };
   };
