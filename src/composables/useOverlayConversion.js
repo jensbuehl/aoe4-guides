@@ -5,10 +5,12 @@ export default function useOverlayConversion() {
     );
 
     return {
+      description: build.description || "",
       civ: mapCivilizations[build.civilization],
       title: build.name,
       author: build.author,
       steps: buildSteps,
+      video: build.video || ""
     };
   };
 
@@ -58,6 +60,7 @@ export default function useOverlayConversion() {
       author: build.author,
       source: window.location.href,
       build_order: overlay_steps,
+      video: build.video,
     };
   };
 
