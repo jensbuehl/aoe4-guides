@@ -9,7 +9,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-card fluid class="overflow-y-auto pb-2" max-height="600">
+    <v-card fluid class="overflow-y-auto pb-2" max-height="400">
       <v-row v-show="filteredGeneral.length" no-gutters align="center">
         <v-col cols="12">
           <v-card flat subtitle="Workers & Resources"></v-card>
@@ -306,20 +306,25 @@ export default {
   setup(props, context) {
     const { getIcons } = useIconService(props.civ);
     const searchText = ref("");
-    const ecoBuildings = getIcons("building_eco").concat(
-      getIcons("building_religious")
-    );
-    const militaryBuildings = getIcons("building_military").concat(
-      getIcons("building_tech")
-    );
-    const general = getIcons("unit_eco").concat(
-      getIcons("unit_religious").concat(getIcons("resource"))
-    );
+    
+    //unfiltered raw data
+    const ecoBuildings = getIcons("building_eco").concat(getIcons("building_religious")).concat(getIcons("building_tech"));
+    const militaryBuildings = getIcons("building_military");
+    const general = getIcons("unit_eco").concat(getIcons("unit_religious").concat(getIcons("resource")));
     const militaryUnits = getIcons("unit_military");
     const ecoTechnologies = getIcons("tech_eco");
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
 
+    //filtered data
+    const filteredEcoBuildings = computed(() => filter(ecoBuildings));
+    const filteredMilitaryBuildings = computed(() => filter(militaryBuildings));
+    const filteredGeneral = computed(() => filter(general));
+    const filteredMilitaryUnits = computed(() => filter(militaryUnits));
+    const filteredEcoTechnologies = computed(() => filter(ecoTechnologies));
+    const filteredMilitaryTechnologies = computed(() =>filter(militaryTechnologies));
+    const filteredLandmarks = computed(() => filter(landmarks));
+    
     const filter = (unfiltered) => {
       if (searchText.value.length > 2) {
         return unfiltered.filter((item) =>
@@ -327,31 +332,8 @@ export default {
         );
       } else {
         return unfiltered;
-      } 
-    }
-    
-    const filteredEcoBuildings = computed(() => 
-      filter(ecoBuildings)
-    );
-
-    const filteredMilitaryBuildings = computed(() =>
-      filter(militaryBuildings)
-    );
-    const filteredGeneral = computed(() =>
-      filter(general)
-    );
-    const filteredMilitaryUnits = computed(() =>
-      filter(militaryUnits)
-    );
-    const filteredEcoTechnologies = computed(() =>
-      filter(ecoTechnologies)
-    );
-    const filteredMilitaryTechnologies = computed(() =>
-      filter(militaryTechnologies)
-    );
-    const filteredLandmarks = computed(() =>
-      filter(landmarks)
-    );
+      }
+    };
 
     const imageSelected = (e) => {
       context.emit("iconSelected", e.target.src);
