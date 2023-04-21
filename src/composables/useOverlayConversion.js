@@ -43,7 +43,7 @@ export default function useOverlayConversion() {
       wood: convertResourceFromOverlayFormat(step.resources.wood),
       gold: convertResourceFromOverlayFormat(step.resources.gold),
       stone: convertResourceFromOverlayFormat(step.resources.stone),
-      builders: convertResourceFromOverlayFormat(step.builders),
+      builders: convertResourceFromOverlayFormat(step.builder),
       description: convertedNotes,
     };
   };
@@ -108,7 +108,7 @@ export default function useOverlayConversion() {
         wood: parseInt(step.wood) || 0,
         gold: parseInt(step.gold) || 0,
         stone: parseInt(step.stone) || 0,
-        builders: parseInt(step.builders) || -1,
+        builder: parseInt(step.builders) || -1,
       },
       notes: notes,
     };
