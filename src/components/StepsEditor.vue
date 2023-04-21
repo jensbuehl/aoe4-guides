@@ -1,5 +1,327 @@
 <template>
-  <v-card rounded="lg" class="mt-4">
+  <!--Mobile UI (XS)-->
+  <v-card rounded="lg" class="mt-4 hidden-sm-and-up">
+    <v-card-title>Build Order</v-card-title>
+    <div v-if="!steps?.length && !readonly" class="text-center">
+      <v-btn
+        variant="text"
+        color="primary"
+        prepend-icon="mdi-plus"
+        class="pt-5 pb-10"
+        @click="addStep(0)"
+        >Add your first build step</v-btn
+      >
+    </div>
+    <v-row v-if="steps?.length" no-gutters align="center" justify="center">
+      <v-col cols="12">
+        <v-row no-gutters align="center" justify="center">
+          <v-col>
+            <v-card variant="flat" height="50">
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-img
+                    class="mx-auto"
+                    height="32"
+                    src="/assets/resources/time.png"
+                  ></v-img>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card variant="flat" height="50">
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-img
+                    class="mx-auto"
+                    height="32"
+                    src="/assets/resources/villager.png"
+                  ></v-img>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card variant="flat" height="50">
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-img
+                    class="mx-auto"
+                    width="42"
+                    height="32"
+                    src="/assets/resources/repair.png"
+                  ></v-img>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card variant="flat" height="50">
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-img
+                    class="mx-auto"
+                    height="32"
+                    width="42"
+                    src="/assets/resources/food.png"
+                  ></v-img>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card variant="flat" height="50">
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-img
+                    class="mx-auto"
+                    height="32"
+                    width="42"
+                    src="/assets/resources/wood.png"
+                  ></v-img>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card variant="flat" height="50">
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-img
+                    class="mx-auto"
+                    height="32"
+                    width="42"
+                    src="/assets/resources/gold.png"
+                  ></v-img>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card variant="flat" height="50"
+              ><v-container>
+                <v-row align="center" justify="center">
+                  <v-img
+                    class="mx-auto"
+                    height="32"
+                    width="42"
+                    src="/assets/resources/stone.png"
+                  ></v-img>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="9" class="hidden-sm-and-down">
+        <v-card variant="flat" height="50">Description</v-card>
+      </v-col>
+      <v-col v-if="!readonly" cols="12">
+        <v-card variant="flat" height="50"
+          ><div v-if="!readonly" class="text-right pr-4">
+            <v-menu
+              v-if="selection"
+              :close-on-content-click="false"
+              location="bottom"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  class="mr-n4"
+                  prepend-icon="mdi-image-plus"
+                  color="primary"
+                  v-bind="props"
+                  variant="text"
+                  append-icon="mdi-menu-down"
+                  >Add Image</v-btn
+                >
+              </template>
+              <v-card rounded="lg" class="mt-4" width="350px">
+                <IconSelector
+                  @iconSelected="(iconPath) => handleIconSelected(iconPath)"
+                  :civ="civ"
+                ></IconSelector>
+              </v-card>
+            </v-menu></div
+        ></v-card>
+      </v-col>
+    </v-row>
+    <v-row
+      no-gutters
+      justify="center"
+      v-for="(item, index) in steps"
+      :key="index"
+      v-on:keyup.enter.alt="addStep(index)"
+      v-on:keyup.delete.alt="removeStep(index)"
+      @mouseover="selectItem(index)"
+      @mouseleave="unSelectItem()"
+    >
+      <v-divider></v-divider>
+      <v-col cols="12">
+        <v-row no-gutters justify="center">
+          <v-col cols="2">
+            <v-card variant="flat" rounded="0"
+              ><v-card-text
+                @paste="handlePaste"
+                @focusout="updateStepTime($event, index)"
+                :contenteditable="!readonly"
+                class="text-center"
+                v-html="item.time"
+              ></v-card-text
+            ></v-card>
+          </v-col>
+          <v-col>
+            <v-card align="center" variant="flat" rounded="0"
+              ><v-card-text
+                class="text-center villager"
+                disabled
+                v-html="
+                  item.villagers ? item.villagers : aggregateVillagers(index)
+                "
+              ></v-card-text
+            ></v-card>
+          </v-col>
+          <v-col>
+            <v-card
+              variant="flat"
+              rounded="0"
+              class="fill-height"
+              style="background-color: #5b5b5b69"
+              ><v-card-text
+                @paste="handlePaste"
+                @focusout="updateStepBuilders($event, index)"
+                :contenteditable="!readonly"
+                class="text-center"
+                v-html="item.builders ? item.builders : ''"
+              ></v-card-text
+            ></v-card>
+          </v-col>
+          <v-col>
+            <v-card
+              variant="flat"
+              rounded="0"
+              class="fill-height"
+              style="background-color: #ff000034"
+              ><v-card-text
+                @paste="handlePaste"
+                @focusout="updateStepFood($event, index)"
+                :contenteditable="!readonly"
+                class="text-center"
+                v-html="item.food"
+              ></v-card-text
+            ></v-card>
+          </v-col>
+          <v-col>
+            <v-card
+              variant="flat"
+              rounded="0"
+              class="fill-height"
+              style="background-color: #75400c5b"
+              ><v-card-text
+                @paste="handlePaste"
+                @focusout="updateStepWood($event, index)"
+                :contenteditable="!readonly"
+                class="text-center"
+                v-html="item.wood"
+              ></v-card-text
+            ></v-card>
+          </v-col>
+          <v-col>
+            <v-card
+              variant="flat"
+              rounded="0"
+              class="fill-height"
+              style="background-color: #edbe003e"
+              ><v-card-text
+                @paste="handlePaste"
+                @focusout="updateStepGold($event, index)"
+                :contenteditable="!readonly"
+                class="text-center"
+                v-html="item.gold"
+              ></v-card-text
+            ></v-card>
+          </v-col>
+          <v-col>
+            <v-card
+              variant="flat"
+              rounded="0"
+              class="fill-height"
+              style="background-color: #7a7a7b69"
+              ><v-card-text
+                @paste="handlePaste"
+                @focusout="updateStepStone($event, index)"
+                :contenteditable="!readonly"
+                class="text-center"
+                v-html="item.stone"
+              ></v-card-text
+            ></v-card>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-divider></v-divider>
+      <v-col v-if="readonly" cols="12">
+        <v-card variant="flat" rounded="0" class="pa-2">
+          <div
+            @mouseleave="saveSelection"
+            @input="saveSelection"
+            @paste="handlePaste"
+            @click="saveSelection"
+            @focusout="updateStepDescription($event, index)"
+            :contenteditable="!readonly"
+            class="text-left tablecell px-4 mb-1"
+            v-html="item.description"
+          ></div
+        ></v-card>
+      </v-col>
+      <v-col v-if="!readonly" cols="8">
+        <v-card variant="flat" rounded="0" class="pa-2">
+          <div
+            @mouseleave="saveSelection"
+            @input="saveSelection"
+            @paste="handlePaste"
+            @click="saveSelection"
+            @focusout="updateStepDescription($event, index)"
+            :contenteditable="!readonly"
+            class="text-left tablecell px-4 mb-1"
+            v-html="item.description"
+          ></div
+        ></v-card>
+      </v-col>
+      <v-col v-if="!readonly" cols="4">
+        <v-card variant="flat" class="pa-2">
+          <div class="text-right">
+            <v-tooltip location="top" text="Remove current step (ALT + DEL)">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  v-if="index === hoverRowIndex"
+                  variant="plain"
+                  color="primary"
+                  @click="removeStep(index)"
+                  icon="mdi-delete"
+                >
+                </v-btn>
+              </template>
+            </v-tooltip>
+
+            <v-tooltip location="top" text="Add new step below (ALT + ENTER)">
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  v-show="index === hoverRowIndex"
+                  variant="plain"
+                  color="primary"
+                  @click="addStep(index)"
+                  icon="mdi-plus"
+                >
+                </v-btn>
+              </template>
+            </v-tooltip></div
+        ></v-card>
+      </v-col>
+    </v-row>
+  </v-card>
+  <!--Desktop UI-->
+  <v-card rounded="lg" class="mt-4 hidden-xs">
     <v-card-title>Build Order</v-card-title>
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn
@@ -17,7 +339,8 @@
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
               class="mx-auto"
-              width="32"
+              width="auto"
+              height="42"
               src="/assets/resources/time.png"
             ></v-img>
           </th>
@@ -67,9 +390,8 @@
               src="/assets/resources/stone.png"
             ></v-img>
           </th>
-          <th class="text-left hidden-sm-and-down">Description</th>
-          <th class="text-left hidden-md-and-up" width="100%">Description</th>
-          <th v-if="!readonly" class="text-right hidden-sm-and-down">
+          <th class="text-left hidden">Description</th>
+          <th v-if="!readonly" class="text-right">
             <v-menu
               v-if="selection"
               :close-on-content-click="false"
@@ -162,11 +484,7 @@
             class="text-left"
             v-html="item.description"
           ></td>
-          <td
-            v-if="!readonly"
-            width="180"
-            class="text-right hidden-sm-and-down"
-          >
+          <td v-if="!readonly" width="180" class="text-right">
             <v-tooltip location="top" text="Remove current step (ALT + DEL)">
               <template v-slot:activator="{ props }">
                 <v-btn
@@ -399,8 +717,17 @@ table tbody tr td:nth-child(7) {
   background: #7a7a7b69;
 }
 
+.villager {
+  color: #828282;
+}
+
 td:empty {
   line-height: 50px;
+}
+
+.tablecell {
+  line-height: 50px;
+  vertical-align: middle;
 }
 
 .icon {
