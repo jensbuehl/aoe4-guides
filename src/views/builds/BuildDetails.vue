@@ -249,7 +249,7 @@
       <div align="center">
         <iframe
           width="100%"
-          height="300px"
+          height="250px"
           :src="build.video"
           frameborder="0"
           class="mb-3"
