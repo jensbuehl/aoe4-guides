@@ -93,6 +93,7 @@ export default function useOverlayConversion() {
   const convertStepToOverlayFormat = (step) => {
     //Filter img elements
     step.description = step.description.replaceAll('&nbsp;', ' ')
+    step.description = step.description.replaceAll('</img>', '')
     const regex = /<img([\w\W]+?)>/g
     const convertedDescription = step.description.replace(
       regex,
