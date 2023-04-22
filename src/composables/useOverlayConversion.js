@@ -80,7 +80,6 @@ export default function useOverlayConversion() {
     //Get src
     const regex = /src\s*=\s*"(.+?)"/g;
     const matches = imageElement.match(regex)
-    console.log(matches)
 
     //Remove internal path extensions, ", and src=
     var imageSource = matches[0].replaceAll('"', "")
@@ -94,12 +93,10 @@ export default function useOverlayConversion() {
   const convertStepToOverlayFormat = (step) => {
     //Filter img elements
     step.description = step.description.replaceAll('&nbsp;', ' ')
-    console.log(step)
     const regex = /<img([\w\W]+?)>/g
     const convertedDescription = step.description.replace(
       regex,
       function replacer(match) {
-        console.log(match)
         return convertImagePathToText(match);
       }
     );
