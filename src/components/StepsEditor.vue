@@ -15,7 +15,7 @@
     <v-row v-if="steps?.length" no-gutters align="center" justify="center">
       <v-col cols="12">
         <v-row no-gutters align="center" justify="center">
-          <v-col>
+          <v-col cols="2">
             <v-card variant="flat" height="50">
               <v-container>
                 <v-row align="center" justify="center">
@@ -724,9 +724,12 @@ table tbody tr td:nth-child(7) {
 td:empty {
   line-height: 50px;
 }
+div:empty {
+  line-height: 50px;
+}
 
 .tablecell {
-  line-height: 50px;
+  min-height: 50px;
   vertical-align: middle;
 }
 
