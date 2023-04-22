@@ -1,4 +1,5 @@
 export default function useOverlayConversion() {
+  //Import AoE4_Overlay format
   const convertFromOverlayFormat = (build) => {
     const buildSteps = build.build_order?.map((step) =>
       convertStepFromOverlayFormat(step)
@@ -48,6 +49,7 @@ export default function useOverlayConversion() {
     };
   };
 
+  //Export AoE4_Overlay format
   const convertToOverlayFormat = (build) => {
     const overlay_steps = build.steps?.map((step) =>
       convertStepToOverlayFormat(step)
@@ -96,8 +98,8 @@ export default function useOverlayConversion() {
       }
     );
 
-    const notes = convertedDescription.split("<br>").map((it) => it.trim());
-
+    const notes = convertedDescription.split("<br>").map((it) => it.trim().replaceAll('&nbsp;', ' '));
+    console.log(notes)
     return {
       age: -1, //not supported
       population_count: -1, //not supported
