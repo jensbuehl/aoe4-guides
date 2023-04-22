@@ -49,8 +49,18 @@ export default function useOverlayConversion() {
     };
   };
 
+  function convertTextToImg(imageText) {
+    imageText = imageText.replaceAll("@", "");
+    return (
+      '<img class="icon" src="/assets/pictures/' +
+      imageText +
+      '"></img>'
+    );
+  }
+
   //Export AoE4_Overlay format
   const convertToOverlayFormat = (build) => {
+
     const overlay_steps = build.steps?.map((step) =>
       convertStepToOverlayFormat(step)
     );
@@ -70,36 +80,31 @@ export default function useOverlayConversion() {
     //Get src
     const regex = /src\s*=\s*"(.+?)"/g;
     const matches = imageElement.match(regex)
+    console.log(matches)
 
     //Remove internal path extensions, ", and src=
     var imageSource = matches[0].replaceAll('"', "")
     imageSource = imageSource.replaceAll("src=", "")
+    imageSource = imageSource.replace("https://aoe4guides.com", "")
     imageSource = imageSource.replace("/assets/pictures/", "")
     //Wrap with@
     return "@" + imageSource + "@";
   }
 
-  function convertTextToImg(imageText) {
-    imageText = imageText.replaceAll("@", "");
-    return (
-      '<img class="icon" src="/assets/pictures/' +
-      imageText +
-      '"></img>'
-    );
-  }
-
   const convertStepToOverlayFormat = (step) => {
     //Filter img elements
-    const regex = /<img([\w\W]+?)img>/g
+    step.description = step.description.replaceAll('&nbsp;', ' ')
+    console.log(step)
+    const regex = /<img([\w\W]+?)>/g
     const convertedDescription = step.description.replace(
       regex,
       function replacer(match) {
+        console.log(match)
         return convertImagePathToText(match);
       }
     );
 
-    const notes = convertedDescription.split("<br>").map((it) => it.trim().replaceAll('&nbsp;', ' '));
-    console.log(notes)
+    const notes = convertedDescription.split("<br>").map((it) => it.trim());
     return {
       age: -1, //not supported
       population_count: -1, //not supported

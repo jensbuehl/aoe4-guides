@@ -567,7 +567,7 @@ export default {
     const handleIconSelected = (iconPath) => {
       console.log(iconPath);
       restoreSelection();
-      const img = '<img src="' + iconPath + '" class="icon"></img>';
+      const img = '<img src="' + iconPath + '" class="icon"><\/img>';
       document.execCommand("insertHTML", false, img);
       saveSelection();
     };
