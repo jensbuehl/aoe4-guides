@@ -11,22 +11,21 @@ export default function useOverlayConversion() {
       title: build.name,
       author: build.author,
       steps: buildSteps,
-      video: build.video || ""
+      video: build.video || "",
     };
   };
 
   const convertResourceFromOverlayFormat = (resource) => {
-    if(resource){
-      if(resource < 0){
-        //convert -1 to 0 
-        return ""
+    if (resource) {
+      if (resource < 0) {
+        //convert -1 to 0
+        return "";
       }
-      return resource.toString()
+      return resource.toString();
+    } else {
+      return "";
     }
-    else{
-      return ""
-    }
-  }
+  };
 
   const convertStepFromOverlayFormat = (step) => {
     //Filter @imagePath@
@@ -51,16 +50,11 @@ export default function useOverlayConversion() {
 
   function convertTextToImg(imageText) {
     imageText = imageText.replaceAll("@", "");
-    return (
-      '<img class="icon" src="/assets/pictures/' +
-      imageText +
-      '"></img>'
-    );
+    return '<img class="icon" src="/assets/pictures/' + imageText + '"></img>';
   }
 
   //Export AoE4_Overlay format
   const convertToOverlayFormat = (build) => {
-
     const overlay_steps = build.steps?.map((step) =>
       convertStepToOverlayFormat(step)
     );
@@ -79,22 +73,22 @@ export default function useOverlayConversion() {
   function convertImagePathToText(imageElement) {
     //Get src
     const regex = /src\s*=\s*"(.+?)"/g;
-    const matches = imageElement.match(regex)
+    const matches = imageElement.match(regex);
 
     //Remove internal path extensions, ", and src=
-    var imageSource = matches[0].replaceAll('"', "")
-    imageSource = imageSource.replaceAll("src=", "")
-    imageSource = imageSource.replace("https://aoe4guides.com", "")
-    imageSource = imageSource.replace("/assets/pictures/", "")
+    var imageSource = matches[0].replaceAll('"', "");
+    imageSource = imageSource.replaceAll("src=", "");
+    imageSource = imageSource.replace("https://aoe4guides.com", "");
+    imageSource = imageSource.replace("/assets/pictures/", "");
     //Wrap with@
     return "@" + imageSource + "@";
   }
 
   const convertStepToOverlayFormat = (step) => {
     //Filter img elements
-    step.description = step.description.replaceAll('&nbsp;', ' ')
-    step.description = step.description.replaceAll('</img>', '')
-    const regex = /<img([\w\W]+?)>/g
+    step.description = step.description.replaceAll("&nbsp;", " ");
+    step.description = step.description.replaceAll("</img>", "");
+    const regex = /<img([\w\W]+?)>/g;
     const convertedDescription = step.description.replace(
       regex,
       function replacer(match) {
@@ -119,7 +113,36 @@ export default function useOverlayConversion() {
     };
   };
 
+  const saveFile = (text) => {
+    const type = "text/plain";
+    const blob = new Blob([text], { type });
+    const e = document.createEvent("MouseEvents"),
+      a = document.createElement("a");
+    a.download = "test.json";
+    a.href = window.URL.createObjectURL(blob);
+    a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
+    e.initEvent(
+      "click",
+      true,
+      false,
+      window,
+      0,
+      0,
+      0,
+      0,
+      0,
+      false,
+      false,
+      false,
+      false,
+      0,
+      null
+    );
+    a.dispatchEvent(e);
+  };
+
   const copyToClipboard = (text) => {
+    saveFile(text)
     navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
       if (result.state === "granted") {
         const type = "text/plain";
