@@ -113,12 +113,13 @@ export default function useOverlayConversion() {
     };
   };
 
-  const saveFile = (text) => {
+  const download = (text, filename) => {
+    //TODO: Set proper name, Add button
     const type = "text/plain";
     const blob = new Blob([text], { type });
     const e = document.createEvent("MouseEvents"),
       a = document.createElement("a");
-    a.download = "test.json";
+    a.download = filename+".bo";
     a.href = window.URL.createObjectURL(blob);
     a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
     e.initEvent(
@@ -142,7 +143,6 @@ export default function useOverlayConversion() {
   };
 
   const copyToClipboard = (text) => {
-    saveFile(text)
     navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
       if (result.state === "granted") {
         const type = "text/plain";
@@ -183,5 +183,5 @@ export default function useOverlayConversion() {
     Mongols: "MON",
   };
 
-  return { convertToOverlayFormat, copyToClipboard, convertFromOverlayFormat };
+  return { convertToOverlayFormat, copyToClipboard, download, convertFromOverlayFormat };
 }
