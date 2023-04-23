@@ -24,12 +24,8 @@
         <priority>0.1</priority>
     </url>
     <url>
-        <loc>https://aoe4guides.com/builds/jnjPSa9OKNYeuWZZtTru</loc>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>https://aoe4guides.com/builds/oDaFvZ803wCLmRTqY2p8</loc>
-        <priority>1.0</priority>
+        <loc>https://aoe4guides.com/import</loc>
+        <priority>0.1</priority>
     </url>
     <url>
         <loc>https://www.aoe4guides.com/</loc>
@@ -52,11 +48,7 @@
         <priority>0.1</priority>
     </url>
     <url>
-        <loc>https://www.aoe4guides.com/builds/jnjPSa9OKNYeuWZZtTru</loc>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>https://www.aoe4guides.com/builds/oDaFvZ803wCLmRTqY2p8</loc>
-        <priority>1.0</priority>
+        <loc>https://www.aoe4guides.com/import</loc>
+        <priority>0.1</priority>
     </url>
 </urlset>
