@@ -166,18 +166,18 @@
               </template>
               <v-list>
                 <v-list-item @click="handleCopyOverlayFormat">
-                  <v-icon color="primary" class="mr-4">mdi-content-copy</v-icon>
                   <v-tooltip
-                    location="top"
                     text="Copy RTS_Overlay / AoE4_Overlay Format to Clipboard"
                   >
                     <template v-slot:activator="{ props }">
+                      <v-icon color="primary" class="mr-5" v-bind="props"
+                        >mdi-content-copy
+                      </v-icon>
                       <v-list-item-content v-bind="props"
                         >Overlay Tool</v-list-item-content
                       >
                     </template>
                   </v-tooltip>
-
                   <v-tooltip
                     location="top"
                     text="Visit AoE4_Overlay Project Page"
@@ -204,6 +204,18 @@
                     </template>
                   </v-tooltip>
                 </v-list-item>
+                <v-tooltip text="Download RTS_Overlay / AoE4_Overlay File">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                      v-bind="props"
+                      @click="handleDownloadOverlayFormat"
+                    >
+                      <v-icon color="primary" class="mr-4">mdi-download</v-icon>
+                      Download
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
+                <v-divider></v-divider>
                 <v-tooltip text="Delete Build Order">
                   <template v-slot:activator="{ props }">
                     <v-list-item
@@ -258,7 +270,11 @@
       </div>
     </v-card>
 
-    <StepsEditor :steps="build.steps" :readonly="true" :civ="build.civ"></StepsEditor>
+    <StepsEditor
+      :steps="build.steps"
+      :readonly="true"
+      :civ="build.civ"
+    ></StepsEditor>
 
     <div class="mt-4">
       <Discussion v-if="user" :buildId="build.id"></Discussion>
@@ -290,7 +306,8 @@ export default {
     const civs = getCivs().civs;
     const build = ref(null);
     const dialog = ref(false);
-    const { convertToOverlayFormat, copyToClipboard } = useOverlayConversion();
+    const { convertToOverlayFormat, download, copyToClipboard } =
+      useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
     const { get, del, incrementViews, error } = useCollection("builds");
 
@@ -312,18 +329,12 @@ export default {
       const overlayBuild = convertToOverlayFormat(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       copyToClipboard(overlayBuildString);
-      //TODO: Snackbar?
     };
 
-    const aggregateVillagers = (index) => {
-      const step = build.value.steps[index];
-
-      const food = parseInt(step.food) || 0;
-      const wood = parseInt(step.wood) || 0;
-      const gold = parseInt(step.gold) || 0;
-      const stone = parseInt(step.stone) || 0;
-
-      return food + wood + gold + stone;
+    const handleDownloadOverlayFormat = () => {
+      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
+      download(overlayBuildString, build.value.title);
     };
 
     return {
@@ -336,6 +347,7 @@ export default {
       window,
       handleDelete,
       handleCopyOverlayFormat,
+      handleDownloadOverlayFormat,
       timeSince,
       isNew,
     };
