@@ -65,21 +65,25 @@
         @change="onChange()"
         accept=".json"
       />
-      <v-card-title class="file-label" block>
-        <div v-if="isDragging">Release to drop file here.</div>
-        <div v-else>
-          Drop AoE4_Overlay build order file here or
-          <label
-            for="fileInput"
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            style="cursor: pointer"
-            ><u>click here</u></label
-          >
-          to upload.
-        </div>
-      </v-card-title>
+      <v-row>
+        <v-col>
+          <v-card-text class="file-label">
+            <div v-if="isDragging">Release to drop file here.</div>
+            <div v-else>
+              Drop AoE4_Overlay build order file here or
+              <label
+                for="fileInput"
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                style="cursor: pointer"
+                ><u>click here</u></label
+              >
+              to upload.
+            </div>
+          </v-card-text>
+        </v-col>
+      </v-row>
     </v-card>
   </v-container>
 </template>
@@ -138,7 +142,6 @@ export default {
         const importedFileObject = JSON.parse(importedFileString);
         build.value = convertFromOverlayFormat(importedFileObject);
         save();
-
       } catch (err) {
         error.value = err;
         alert(err);
@@ -182,7 +185,7 @@ export default {
   display: flex;
   flex-grow: 1;
   align-items: center;
-  height: 50vh;
+  height: 30vh;
   justify-content: center;
   text-align: center;
 }
