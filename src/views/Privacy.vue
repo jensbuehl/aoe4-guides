@@ -141,7 +141,7 @@
 
         <p>
           If you have any questions or suggestions about our Privacy Policy, do
-          not hesitate to contact us. (via mail: jens (.) buehl (at) outlook (.) com)
+          not hesitate to contact us.<br>(via mail: info (at) aoe4guides (dot) com)
         </p>
       </v-card>
     </div>
