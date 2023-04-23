@@ -23,7 +23,7 @@
           <v-btn class="mx-1" flat to="/privacy">Privacy Policy </v-btn>
           <v-btn class="mx-1" flat to="/about">About </v-btn>
         </v-col>
-        <v-col cols="12"
+        <v-col cols="12" md="8"
           >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was
           created under Microsoft's "<a
             :style="{
@@ -31,11 +31,15 @@
             }"
             href="https://www.xbox.com/en-US/developers/rules"
             >Game Content Usage Rules</a
-          >" using assets<br />
+          >" using assets
           from
-          <a href="https://www.ageofempires.com/games/age-of-empires-iv/"></a
-          >Age of Empires IV, and it is not endorsed by or affiliated with
-          Microsoft.</v-col
+          <a
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+            href="https://www.ageofempires.com/games/age-of-empires-iv/"
+            >Age of Empires IV</a
+          >, and it is not endorsed by or affiliated with Microsoft.</v-col
         >
       </v-row>
     </v-footer>
@@ -44,6 +48,6 @@
 
 <script>
 export default {
-  name: "Footer"
+  name: "Footer",
 };
 </script>
