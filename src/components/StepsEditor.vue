@@ -540,7 +540,6 @@ export default {
     });
 
     const saveSelection = () => {
-      console.log("Selection Saved");
       if (window.getSelection) {
         var sel = window.getSelection();
         if (sel.getRangeAt && sel.rangeCount) {
