@@ -3,6 +3,7 @@
     <v-row>
       <v-col cols="12">
         <v-text-field
+          autofocus
           v-model="searchText"
           label="Search..."
           clearable
@@ -20,33 +21,26 @@
           v-for="icon in filteredGeneral"
           :key="icon.imgSrc"
         >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-tooltip location="top" :text="icon.title">
-                      <template v-slot:activator="{ props }">
-                        <v-img
-                          v-bind="props"
-                          @click="imageSelected"
-                          style="height: 42px; width: 42px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </template>
-                    </v-tooltip>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top" :text="icon.title">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    flat
+                    @click="imageSelected(icon.imgSrc)"
+                    height="60"
+                    width="60"
+                  >
+                    <v-img
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
       <v-row v-show="filteredLandmarks.length" no-gutters align="center">
@@ -59,33 +53,26 @@
           v-for="icon in filteredLandmarks"
           :key="icon.imgSrc"
         >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-tooltip location="top" :text="icon.title">
-                      <template v-slot:activator="{ props }">
-                        <v-img
-                          v-bind="props"
-                          @click="imageSelected"
-                          style="height: 42px; width: 42px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </template>
-                    </v-tooltip>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top" :text="icon.title">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    flat
+                    @click="imageSelected(icon.imgSrc)"
+                    height="60"
+                    width="60"
+                  >
+                    <v-img
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
       <v-row v-show="filteredEcoBuildings.length" no-gutters align="center">
@@ -98,33 +85,26 @@
           v-for="icon in filteredEcoBuildings"
           :key="icon.imgSrc"
         >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-tooltip location="top" :text="icon.title">
-                      <template v-slot:activator="{ props }">
-                        <v-img
-                          v-bind="props"
-                          @click="imageSelected"
-                          style="height: 42px; width: 42px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </template>
-                    </v-tooltip>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top" :text="icon.title">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    flat
+                    @click="imageSelected(icon.imgSrc)"
+                    height="60"
+                    width="60"
+                  >
+                    <v-img
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
       <v-row
@@ -141,33 +121,26 @@
           v-for="icon in filteredMilitaryBuildings"
           :key="icon.imgSrc"
         >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-tooltip location="top" :text="icon.title">
-                      <template v-slot:activator="{ props }">
-                        <v-img
-                          v-bind="props"
-                          @click="imageSelected"
-                          style="height: 42px; width: 42px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </template>
-                    </v-tooltip>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top" :text="icon.title">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    flat
+                    @click="imageSelected(icon.imgSrc)"
+                    height="60"
+                    width="60"
+                  >
+                    <v-img
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
       <v-row v-show="filteredMilitaryUnits.length" no-gutters align="center">
@@ -180,33 +153,26 @@
           v-for="icon in filteredMilitaryUnits"
           :key="icon.imgSrc"
         >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-tooltip location="top" :text="icon.title">
-                      <template v-slot:activator="{ props }">
-                        <v-img
-                          v-bind="props"
-                          @click="imageSelected"
-                          style="height: 42px; width: 42px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </template>
-                    </v-tooltip>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top" :text="icon.title">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    flat
+                    @click="imageSelected(icon.imgSrc)"
+                    height="60"
+                    width="60"
+                  >
+                    <v-img
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
       <v-row v-show="filteredEcoTechnologies.length" no-gutters align="center">
@@ -219,33 +185,26 @@
           v-for="icon in filteredEcoTechnologies"
           :key="icon.imgSrc"
         >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-tooltip location="top" :text="icon.title">
-                      <template v-slot:activator="{ props }">
-                        <v-img
-                          v-bind="props"
-                          @click="imageSelected"
-                          style="height: 42px; width: 42px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </template>
-                    </v-tooltip>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top" :text="icon.title">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    flat
+                    @click="imageSelected(icon.imgSrc)"
+                    height="60"
+                    width="60"
+                  >
+                    <v-img
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
       <v-row
@@ -262,33 +221,26 @@
           v-for="icon in filteredMilitaryTechnologies"
           :key="icon.imgSrc"
         >
-          <v-hover>
-            <template v-slot:default="{ isHovering, props }">
-              <v-card
-                flat
-                width="50"
-                height="50"
-                class="mx-4 my-1"
-                v-bind="props"
-                :color="isHovering ? 'primary' : undefined"
-              >
-                <v-container>
-                  <v-row align="center" justify="center">
-                    <v-tooltip location="top" :text="icon.title">
-                      <template v-slot:activator="{ props }">
-                        <v-img
-                          v-bind="props"
-                          @click="imageSelected"
-                          style="height: 42px; width: 42px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </template>
-                    </v-tooltip>
-                  </v-row>
-                </v-container>
-              </v-card>
-            </template>
-          </v-hover>
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top" :text="icon.title">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    v-bind="props"
+                    flat
+                    @click="imageSelected(icon.imgSrc)"
+                    height="60"
+                    width="60"
+                  >
+                    <v-img
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
         </v-col>
       </v-row>
     </v-card>
@@ -306,11 +258,15 @@ export default {
   setup(props, context) {
     const { getIcons } = useIconService(props.civ);
     const searchText = ref("");
-    
+
     //unfiltered raw data
-    const ecoBuildings = getIcons("building_eco").concat(getIcons("building_religious")).concat(getIcons("building_tech"));
+    const ecoBuildings = getIcons("building_eco")
+      .concat(getIcons("building_religious"))
+      .concat(getIcons("building_tech"));
     const militaryBuildings = getIcons("building_military");
-    const general = getIcons("unit_eco").concat(getIcons("unit_religious").concat(getIcons("resource")));
+    const general = getIcons("unit_eco").concat(
+      getIcons("unit_religious").concat(getIcons("resource"))
+    );
     const militaryUnits = getIcons("unit_military");
     const ecoTechnologies = getIcons("tech_eco");
     const militaryTechnologies = getIcons("tech_military");
@@ -322,9 +278,11 @@ export default {
     const filteredGeneral = computed(() => filter(general));
     const filteredMilitaryUnits = computed(() => filter(militaryUnits));
     const filteredEcoTechnologies = computed(() => filter(ecoTechnologies));
-    const filteredMilitaryTechnologies = computed(() =>filter(militaryTechnologies));
+    const filteredMilitaryTechnologies = computed(() =>
+      filter(militaryTechnologies)
+    );
     const filteredLandmarks = computed(() => filter(landmarks));
-    
+
     const filter = (unfiltered) => {
       if (searchText.value.length > 2) {
         return unfiltered.filter((item) =>
@@ -335,8 +293,8 @@ export default {
       }
     };
 
-    const imageSelected = (e) => {
-      context.emit("iconSelected", e.target.src);
+    const imageSelected = (imgSrc) => {
+      context.emit("iconSelected", imgSrc);
     };
 
     return {
