@@ -291,7 +291,7 @@ export default {
     const filteredLandmarks = computed(() => filter(landmarks));
 
     const filter = (unfiltered) => {
-      if (searchText.value.length > 2) {
+      if (searchText.value.length >= 2) {
         return unfiltered.filter((item) =>
           item.title.toLowerCase().includes(searchText.value?.toLowerCase())
         );
