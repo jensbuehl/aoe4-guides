@@ -215,7 +215,7 @@
                     </v-list-item>
                   </template>
                 </v-tooltip>
-                <v-divider></v-divider>
+                <v-divider v-show="user?.uid === build.authorUid"></v-divider>
                 <v-tooltip text="Delete Build Order">
                   <template v-slot:activator="{ props }">
                     <v-list-item
