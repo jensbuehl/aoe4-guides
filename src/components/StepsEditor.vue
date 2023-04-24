@@ -261,10 +261,9 @@
       <v-col v-if="readonly" cols="12">
         <v-card variant="flat" rounded="0" class="pa-2">
           <div
-            @mouseleave="saveSelection"
-            @input="saveSelection"
-            @paste="handlePaste"
+            @keyup="saveSelection"
             @click="saveSelection"
+            @paste="handlePaste"
             @focusout="updateStepDescription($event, index)"
             :contenteditable="!readonly"
             class="text-left tablecell px-4 mb-1"
@@ -475,10 +474,9 @@
             v-html="item.stone"
           ></td>
           <td
-            @mouseleave="saveSelection"
-            @input="saveSelection"
-            @paste="handlePaste"
+            @keyup="saveSelection"
             @click="saveSelection"
+            @paste="handlePaste"
             @focusout="updateStepDescription($event, index)"
             :contenteditable="!readonly"
             class="text-left"
@@ -542,6 +540,7 @@ export default {
     });
 
     const saveSelection = () => {
+      console.log("Selection Saved");
       if (window.getSelection) {
         var sel = window.getSelection();
         if (sel.getRangeAt && sel.rangeCount) {
