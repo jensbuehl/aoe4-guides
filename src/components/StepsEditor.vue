@@ -132,7 +132,7 @@
                   v-bind="props"
                   variant="text"
                   append-icon="mdi-menu-down"
-                  >Add Image</v-btn
+                  >Add Icon</v-btn
                 >
               </template>
               <v-card rounded="lg" class="mt-4" width="350px">
@@ -404,7 +404,7 @@
                   v-bind="props"
                   variant="text"
                   append-icon="mdi-menu-down"
-                  >Add Image</v-btn
+                  >Add Icon</v-btn
                 >
               </template>
               <v-card rounded="lg" class="mt-4" width="350px">

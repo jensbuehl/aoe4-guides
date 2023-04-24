@@ -26,8 +26,9 @@
               <v-tooltip location="top" :text="icon.title">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    color="primary"
                     v-bind="props"
-                    flat
+                    variant="text"
                     @click="imageSelected(icon.imgSrc)"
                     height="60"
                     width="60"
@@ -58,8 +59,9 @@
               <v-tooltip location="top" :text="icon.title">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    color="primary"
                     v-bind="props"
-                    flat
+                    variant="text"
                     @click="imageSelected(icon.imgSrc)"
                     height="60"
                     width="60"
@@ -90,8 +92,9 @@
               <v-tooltip location="top" :text="icon.title">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    color="primary"
                     v-bind="props"
-                    flat
+                    variant="text"
                     @click="imageSelected(icon.imgSrc)"
                     height="60"
                     width="60"
@@ -126,8 +129,9 @@
               <v-tooltip location="top" :text="icon.title">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    color="primary"
                     v-bind="props"
-                    flat
+                    variant="text"
                     @click="imageSelected(icon.imgSrc)"
                     height="60"
                     width="60"
@@ -158,8 +162,9 @@
               <v-tooltip location="top" :text="icon.title">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    color="primary"
                     v-bind="props"
-                    flat
+                    variant="text"
                     @click="imageSelected(icon.imgSrc)"
                     height="60"
                     width="60"
@@ -190,8 +195,9 @@
               <v-tooltip location="top" :text="icon.title">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    color="primary"
                     v-bind="props"
-                    flat
+                    variant="text"
                     @click="imageSelected(icon.imgSrc)"
                     height="60"
                     width="60"
@@ -226,8 +232,9 @@
               <v-tooltip location="top" :text="icon.title">
                 <template v-slot:activator="{ props }">
                   <v-btn
+                    color="primary"
                     v-bind="props"
-                    flat
+                    variant="text"
                     @click="imageSelected(icon.imgSrc)"
                     height="60"
                     width="60"
