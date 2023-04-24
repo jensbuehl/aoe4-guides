@@ -185,7 +185,6 @@
               variant="flat"
               rounded="0"
               class="fill-height"
-              style="background-color: #5b5b5b69"
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepBuilders($event, index)"
@@ -693,10 +692,6 @@ export default {
 <style>
 table tbody tr td:nth-child(2) {
   color: #828282;
-}
-
-table tbody tr td:nth-child(3) {
-  background: #5b5b5b69;
 }
 
 table tbody tr td:nth-child(4) {
