@@ -151,6 +151,30 @@ export default function useIconService(civArg) {
         "HRE",
       ],
     },
+    {
+      title: "Golde Age Tier 1",
+      age: "1",
+      imgSrc: "/assets/pictures/age/goldenagetier1.png",
+      civ: [
+        "ABB",
+      ],
+    },
+    {
+      title: "Golde Age Tier 2",
+      age: "4",
+      imgSrc: "/assets/pictures/age/goldenagetier2.png",
+      civ: [
+        "ABB",
+      ],
+    },
+    {
+      title: "Golde Age Tier 3",
+      age: "1",
+      imgSrc: "/assets/pictures/age/goldenagetier3.png",
+      civ: [
+        "ABB",
+      ],
+    },
   ];
 
   const resource = [
@@ -291,6 +315,40 @@ export default function useIconService(civArg) {
       ],
     },
     {
+      title: "Build or Repair",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/repair.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Rally",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/rally.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
       title: "Fish",
       age: "1",
       imgSrc: "/assets/pictures/resource/fish.png",
@@ -329,23 +387,6 @@ export default function useIconService(civArg) {
       title: "Wolf",
       age: "1",
       imgSrc: "/assets/pictures/resource/wolf.png",
-      civ: [
-        "ENG",
-        "FRE",
-        "RUS",
-        "MAL",
-        "MON",
-        "ABB",
-        "OTT",
-        "CHI",
-        "DEL",
-        "HRE",
-      ],
-    },
-    {
-      title: "Build or Repair",
-      age: "1",
-      imgSrc: "/assets/pictures/resource/repair.png",
       civ: [
         "ENG",
         "FRE",
@@ -2357,7 +2398,7 @@ export default function useIconService(civArg) {
       civ: ["RUS"],
     },
     {
-      title: "Town Center",
+      title: "Town Center (TC)",
       age: "2",
       imgSrc: "/assets/pictures/building_economy/town-center.png",
       civ: [
@@ -2613,10 +2654,8 @@ export default function useIconService(civArg) {
         "RUS",
         "MAL",
         "MON",
-        "ABB",
         "OTT",
         "CHI",
-        "DEL",
         "HRE",
       ],
     },
