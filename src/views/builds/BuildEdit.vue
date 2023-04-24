@@ -259,7 +259,6 @@ export default {
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const build = ref(null);
-    const stepsCopy = ref(null);
     const { timeSince, isNew } = useTimeSince();
     const { get, update, error } = useCollection("builds");
 
@@ -269,13 +268,6 @@ export default {
     });
 
     const handleSave = async () => {
-      //Hack, since using the reference in step editor broke the selection which is needed of adding icons
-      if (stepsCopy.value) {
-        build.value.steps.forEach(
-          (step, index) =>
-            (step.description = stepsCopy.value[index].description)
-        );
-      }
       build.value.sortTitle =
         build.value.title.toLowerCase() + crypto.randomUUID();
       await update(props.id, build.value);
@@ -284,7 +276,7 @@ export default {
       }
     };
     const handleStepsChanged = (steps) => {
-      stepsCopy.value = steps;
+      build.value.steps = steps;
     };
     const handleVideoInput = () => {
       build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
@@ -297,7 +289,6 @@ export default {
       maps,
       strategies,
       seasons,
-      stepsCopy,
       handleSave,
       handleStepsChanged,
       handleVideoInput,

@@ -252,15 +252,7 @@ export default {
       timeUpdated: null,
     });
 
-    const stepsCopy = ref(null);
     const save = async () => {
-      //Hack, since using the reference in step editor broke the selection which is needed of adding icons
-      if (stepsCopy.value) {
-        build.value.steps.forEach(
-          (step, index) =>
-            (step.description = stepsCopy.value[index].description)
-        );
-      }
       build.value.sortTitle =
         build.value.title.toLowerCase() + crypto.randomUUID();
       build.value.authorUid = user.value.uid;
@@ -271,7 +263,7 @@ export default {
       }
     };
     const handleStepsChanged = (steps) => {
-      stepsCopy.value = steps;
+      build.value.steps = steps;
     };
     const handleVideoInput = () => {
       build.value.video = build.value.video.replace(/watch\?v=/, "embed/");

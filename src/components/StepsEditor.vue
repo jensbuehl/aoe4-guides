@@ -181,10 +181,7 @@
             ></v-card>
           </v-col>
           <v-col>
-            <v-card
-              variant="flat"
-              rounded="0"
-              class="fill-height"
+            <v-card variant="flat" rounded="0" class="fill-height"
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepBuilders($event, index)"
@@ -416,7 +413,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody ref="stepsTable">
         <tr
           v-for="(item, index) in steps"
           :key="index"
@@ -517,7 +514,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, reactive } from "vue";
 import sanitizeHtml from "sanitize-html";
 import IconSelector from "../components/IconSelector.vue";
 
@@ -527,12 +524,14 @@ export default {
   emits: ["stepsChanged"],
   components: { IconSelector },
   setup(props, context) {
-    const steps = ref(props.steps);
     //Hacky deep copy of object since working on the reference broke the current selection
-    const stepsCopy = ref(JSON.parse(JSON.stringify(props.steps)));
+    //Copy needs to be kepts in sync and is used only for the description field :(
+    const steps = reactive(JSON.parse(JSON.stringify(props.steps)));
+    const stepsCopy = reactive(JSON.parse(JSON.stringify(props.steps)));
     const readonly = props.readonly;
     const hoverRowIndex = ref(null);
     const selection = ref(null);
+    const stepsTable = ref(null);
 
     const civ = computed(() => {
       return props.civ;
@@ -562,7 +561,6 @@ export default {
     };
 
     const handleIconSelected = (iconPath) => {
-      console.log(iconPath);
       restoreSelection();
       const img = '<img src="' + iconPath + '" class="icon"><\/img>';
       document.execCommand("insertHTML", false, img);
@@ -570,7 +568,7 @@ export default {
     };
 
     const aggregateVillagers = (index) => {
-      const step = steps.value[index];
+      const step = steps[index];
       const builders = parseInt(step.builders) || 0;
       const food = parseInt(step.food) || 0;
       const wood = parseInt(step.wood) || 0;
@@ -580,34 +578,62 @@ export default {
       step.villagers = builders + food + wood + gold + stone;
     };
     const updateStepTime = (event, index) => {
-      steps.value[index].time = event.target.innerHTML;
+      steps[index].time = event.target.innerHTML;
+      stepsCopy[index].time = event.target.innerHTML;
+
+      context.emit("stepsChanged", steps);
     };
     const updateStepBuilders = (event, index) => {
-      steps.value[index].builders = event.target.innerHTML;
+      steps[index].builders = event.target.innerHTML;
+      stepsCopy[index].builders = event.target.innerHTML;
+
       aggregateVillagers(index);
+      context.emit("stepsChanged", steps);
     };
     const updateStepFood = (event, index) => {
-      steps.value[index].food = event.target.innerHTML;
+      steps[index].food = event.target.innerHTML;
+      stepsCopy[index].food = event.target.innerHTML;
+
       aggregateVillagers(index);
+      context.emit("stepsChanged", steps);
     };
     const updateStepWood = (event, index) => {
-      steps.value[index].wood = event.target.innerHTML;
+      steps[index].wood = event.target.innerHTML;
+      stepsCopy[index].wood = event.target.innerHTML;
+
       aggregateVillagers(index);
+      context.emit("stepsChanged", steps);
     };
     const updateStepGold = (event, index) => {
-      steps.value[index].gold = event.target.innerHTML;
+      steps[index].gold = event.target.innerHTML;
+      stepsCopy[index].gold = event.target.innerHTML;
+
       aggregateVillagers(index);
+      context.emit("stepsChanged", steps);
     };
     const updateStepStone = (event, index) => {
-      steps.value[index].stone = event.target.innerHTML;
+      steps[index].stone = event.target.innerHTML;
+      stepsCopy[index].stone = event.target.innerHTML;
+
       aggregateVillagers(index);
+      context.emit("stepsChanged", steps);
     };
     const updateStepDescription = (event, index) => {
-      stepsCopy.value[index].description = event.target.innerHTML;
-      context.emit("stepsChanged", stepsCopy.value);
+      stepsCopy[index].description = event.target.innerHTML;
+      context.emit("stepsChanged", stepsCopy);
     };
     const addStep = (index) => {
-      steps.value.splice(++index, 0, {
+      var table = stepsTable.value;
+
+      if (table) {
+        //Pull display text into model
+        for (var i = 0, row; (row = table.rows[i]); i++) {
+          steps[i].description = row.cells[7].innerHTML;
+        }
+      }
+
+      const addIndex = index + 1;
+      stepsCopy.splice(addIndex, 0, {
         time: "",
         villagers: "",
         builders: "",
@@ -617,7 +643,7 @@ export default {
         stone: "",
         description: "",
       });
-      stepsCopy.value.splice(++index, 0, {
+      steps.splice(++index, 0, {
         time: "",
         villagers: "",
         builders: "",
@@ -627,11 +653,22 @@ export default {
         stone: "",
         description: "",
       });
+
+      if (table) {
+        //Sync display text again with model
+        for (var i = 0, row; (row = table.rows[i]); i++) {
+          row.cells[7].innerHTML = steps[i].description;
+        }
+      }
+      context.emit("stepsChanged", steps);
     };
-    const removeStep = (index) => {
-      steps.value.splice(index, 1);
-      stepsCopy.value.splice(index, 1);
+
+    const removeStep = (currentIndex) => {
+      stepsCopy.splice(currentIndex, 1);
+      steps.splice(currentIndex, 1);
+      context.emit("stepsChanged", steps);
     };
+
     const selectItem = (index) => {
       hoverRowIndex.value = index;
     };
@@ -661,8 +698,9 @@ export default {
     };
 
     return {
-      steps,
       stepsCopy,
+      steps,
+      stepsTable,
       civ,
       readonly,
       hoverRowIndex,
