@@ -18,8 +18,10 @@ const store = createStore({
   state: {
     user: null,
     authIsReady: false,
+    filterConfig: null,
   },
   mutations: {
+    //User module
     setUser(state, payload) {
       state.user = payload;
       console.log("user state changed:", state.user);
@@ -31,8 +33,14 @@ const store = createStore({
     setAuthIsReady(state, payload) {
       state.authIsReady = payload;
     },
+    //Config module
+    setFilterConfig(state, payload) {
+      state.filterConfig = payload;
+      console.log("filter config state changed:", state.filterConfig);
+    },
   },
   actions: {
+    //User module
     async signup(context, { email, password, displayName }) {
       const actionCodeSettings = {
         url: "https://aoe4guides.com/login",
@@ -101,6 +109,11 @@ const store = createStore({
         throw new Error("Could not change password: " + error.code);
       });
     },
+
+    //Config module
+    async setFilterConfig(context, { config }){
+      context.commit("setFilterConfig", config);
+    }
   },
 });
 
