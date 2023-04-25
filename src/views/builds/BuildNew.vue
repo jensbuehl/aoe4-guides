@@ -248,6 +248,8 @@ export default {
       map: "",
       season: "",
       strategy: "",
+      views: 0,
+      likes: 0,
       timeCreated: null,
       timeUpdated: null,
     });
