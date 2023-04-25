@@ -40,18 +40,20 @@
         </v-menu>
       </v-app-bar-nav-icon>
 
-      <v-app-bar-title
-        style="cursor: pointer; min-width: 150px"
-        @click="$router.push('/')"
-      >
-        <div
-          class="title"
-          :style="{
-            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-          }"
+      <v-app-bar-title style="min-width: 150px">
+        <router-link
+          style="text-decoration: none"
+          to="/"
         >
-          {{ title }}
-        </div>
+          <div
+            class="title"
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+          >
+            {{ title }}
+          </div>
+        </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <div v-if="authIsReady" class="hidden-sm-and-down">
