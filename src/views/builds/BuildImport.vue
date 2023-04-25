@@ -63,7 +63,7 @@
         id="fileInput"
         class="hidden-input"
         @change="onChange()"
-        accept=".json"
+        accept=".json .bo"
       />
       <v-row>
         <v-col>
