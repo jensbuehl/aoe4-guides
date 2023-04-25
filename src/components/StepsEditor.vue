@@ -16,95 +16,71 @@
       <v-col cols="12">
         <v-row no-gutters align="center" justify="center">
           <v-col cols="2">
-            <v-card variant="flat" height="50">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-img
-                    class="mx-auto"
-                    height="32"
-                    src="/assets/resources/time.png"
-                  ></v-img>
-                </v-row>
-              </v-container>
-            </v-card>
+            <v-container class="pa-6">
+              <v-row align="center" justify="center">
+                <v-img
+                  class="titleIconSmaller"
+                  src="/assets/resources/time.png"
+                ></v-img>
+              </v-row>
+            </v-container>
           </v-col>
           <v-col>
-            <v-card variant="flat" height="50">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-img
-                    class="mx-auto"
-                    height="32"
-                    src="/assets/resources/villager.png"
-                  ></v-img>
-                </v-row>
-              </v-container>
-            </v-card>
+            <v-container>
+              <v-row align="center" justify="center">
+                <v-img
+                  class="titleIcon"
+                  src="/assets/resources/villager.png"
+                ></v-img>
+              </v-row>
+            </v-container>
           </v-col>
           <v-col>
-            <v-card variant="flat" height="50">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-img
-                    class="mx-auto"
-                    width="42"
-                    height="32"
-                    src="/assets/resources/repair.png"
-                  ></v-img>
-                </v-row>
-              </v-container>
-            </v-card>
+            <v-container>
+              <v-row align="center" justify="center">
+                <v-img
+                  class="titleIcon"
+                  src="/assets/resources/repair.png"
+                ></v-img>
+              </v-row>
+            </v-container>
           </v-col>
           <v-col>
-            <v-card variant="flat" height="50">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-img
-                    class="mx-auto"
-                    height="32"
-                    width="42"
-                    src="/assets/resources/food.png"
-                  ></v-img>
-                </v-row>
-              </v-container>
-            </v-card>
+            <v-container>
+              <v-row align="center" justify="center">
+                <v-img
+                  class="titleIcon"
+                  src="/assets/resources/food.png"
+                ></v-img>
+              </v-row>
+            </v-container>
           </v-col>
           <v-col>
-            <v-card variant="flat" height="50">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-img
-                    class="mx-auto"
-                    height="32"
-                    width="42"
-                    src="/assets/resources/wood.png"
-                  ></v-img>
-                </v-row>
-              </v-container>
-            </v-card>
+            <v-container>
+              <v-row align="center" justify="center">
+                <v-img
+                  class="titleIcon"
+                  src="/assets/resources/wood.png"
+                ></v-img>
+              </v-row>
+            </v-container>
           </v-col>
           <v-col>
-            <v-card variant="flat" height="50">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-img
-                    class="mx-auto"
-                    height="32"
-                    width="42"
-                    src="/assets/resources/gold.png"
-                  ></v-img>
-                </v-row>
-              </v-container>
-            </v-card>
+            <v-container>
+              <v-row align="center" justify="center">
+                <v-img
+                  class="titleIcon"
+                  src="/assets/resources/gold.png"
+                ></v-img>
+              </v-row>
+            </v-container>
           </v-col>
           <v-col>
             <v-card variant="flat" height="50"
               ><v-container>
                 <v-row align="center" justify="center">
                   <v-img
-                    class="mx-auto"
-                    height="32"
-                    width="42"
+                    class="titleIcon"
                     src="/assets/resources/stone.png"
                   ></v-img>
                 </v-row>
@@ -333,55 +309,47 @@
         <tr>
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
-              class="mx-auto"
-              width="auto"
-              height="42"
+              class="mx-auto titleIconSmaller"
               src="/assets/resources/time.png"
             ></v-img>
           </th>
           <v-tooltip location="top" text="Aggregated Villager Count">
             <template v-slot:activator="{ props }">
-              <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
+              <th v-bind="props" class="text-center ma-0 pa-0" width="56px">
                 <v-img
-                  class="mx-auto"
-                  width="32"
+                  class="mx-auto titleIcon"
                   src="/assets/resources/villager.png"
                 ></v-img>
               </th>
             </template>
           </v-tooltip>
-          <th class="text-center ma-0 pa-0" width="50px">
+          <th class="text-center ma-0 pa-0" width="56px">
             <v-img
-              class="mx-auto"
-              width="32"
+              class="mx-auto titleIcon"
               src="/assets/resources/repair.png"
             ></v-img>
           </th>
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
-              class="mx-auto"
-              width="42"
+              class="mx-auto titleIcon"
               src="/assets/resources/food.png"
             ></v-img>
           </th>
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
-              class="mx-auto"
-              width="42"
+              class="mx-auto titleIcon"
               src="/assets/resources/wood.png"
             ></v-img>
           </th>
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
-              class="mx-auto"
-              width="42"
+              class="mx-auto titleIcon"
               src="/assets/resources/gold.png"
             ></v-img>
           </th>
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
-              class="mx-auto"
-              width="42"
+              class="mx-auto titleIcon"
               src="/assets/resources/stone.png"
             ></v-img>
           </th>
@@ -765,9 +733,18 @@ div:empty {
 }
 
 .icon {
-  cursor: move;
   vertical-align: middle;
   height: auto;
   width: 42px;
+}
+.titleIcon {
+  vertical-align: middle;
+  width: auto;
+  height: 40px;
+}
+.titleIconSmaller {
+  vertical-align: middle;
+  width: auto;
+  height: 24px;
 }
 </style>
