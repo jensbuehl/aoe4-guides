@@ -231,34 +231,43 @@
       </v-col>
       <v-divider></v-divider>
       <v-col v-if="readonly" cols="12">
-        <v-card variant="flat" rounded="0" class="pa-2">
-          <div
-            @keyup="saveSelection"
-            @click="saveSelection"
-            @paste="handlePaste"
-            @focusout="updateStepDescription($event, index)"
-            :contenteditable="!readonly"
-            class="text-left tablecell px-4 mb-1"
-            v-html="item.description"
-          ></div
+        <v-card variant="flat" rounded="0" class="my-2 mx-2">
+          <v-table width="100%">
+            <tbody>
+              <tr>
+                <td
+                  @keyup="saveSelection"
+                  @click="saveSelection"
+                  @paste="handlePaste"
+                  @focusout="updateStepDescription($event, index)"
+                  :contenteditable="!readonly"
+                  class="text-left py-1"
+                  v-html="item.description"
+                ></td>
+              </tr>
+            </tbody> </v-table
         ></v-card>
       </v-col>
       <v-col v-if="!readonly" cols="8">
-        <v-card variant="flat" rounded="0" class="pa-2">
-          <div
-            @mouseleave="saveSelection"
-            @input="saveSelection"
-            @paste="handlePaste"
-            @click="saveSelection"
-            @focusout="updateStepDescription($event, index)"
-            :contenteditable="!readonly"
-            class="text-left tablecell px-4 mb-1"
-            v-html="item.description"
-          ></div
+        <v-card variant="flat" rounded="0" class="my-2 mx-2">
+          <v-table width="100%">
+            <tbody>
+              <tr>
+                <td
+                  @keyup="saveSelection"
+                  @click="saveSelection"
+                  @paste="handlePaste"
+                  @focusout="updateStepDescription($event, index)"
+                  :contenteditable="!readonly"
+                  class="text-left py-1"
+                  v-html="item.description"
+                ></td>
+              </tr>
+            </tbody> </v-table
         ></v-card>
       </v-col>
       <v-col v-if="!readonly" cols="4">
-        <v-card variant="flat" class="pa-2">
+        <v-card variant="flat" class="my-2">
           <div class="text-right">
             <v-tooltip location="top" text="Remove current step (ALT + DEL)">
               <template v-slot:activator="{ props }">
@@ -443,7 +452,7 @@
             @paste="handlePaste"
             @focusout="updateStepDescription($event, index)"
             :contenteditable="!readonly"
-            class="text-left"
+            class="text-left py-1"
             v-html="item.description"
           ></td>
           <td v-if="!readonly" width="180" class="text-right">
@@ -721,15 +730,14 @@ table tbody tr td:nth-child(7) {
 }
 
 td:empty {
-  line-height: 50px;
-}
-div:empty {
-  line-height: 50px;
+  line-height: 44px;
 }
 
 .tablecell {
-  min-height: 50px;
+  height: 50px;
   vertical-align: middle;
+  display: table-cell;
+  align-items: center;
 }
 
 .icon {
