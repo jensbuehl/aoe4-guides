@@ -38,6 +38,26 @@ const store = createStore({
       state.filterConfig = payload;
       console.log("filter config state changed:", state.filterConfig);
     },
+    setCivs(state, payload) {
+      state.filterConfig.civs = payload;
+      console.log("civs state changed:", state.filterConfig.civs);
+    },
+    setMaps(state, payload) {
+      state.filterConfig.maps = payload;
+      console.log("maps state changed:", state.filterConfig.maps);
+    },
+    setStrategies(state, payload) {
+      state.filterConfig.strategies = payload;
+      console.log("strategies state changed:", state.filterConfig.strategies);
+    },
+    setSeasons(state, payload) {
+      state.filterConfig.seasons = payload;
+      console.log("seasons state changed:", state.filterConfig.seasons);
+    },
+    setOrderBy(state, payload) {
+      state.filterConfig.orderBy = payload;
+      console.log("orderBy state changed:", state.filterConfig.orderBy);
+    },
   },
   actions: {
     //User module
@@ -109,11 +129,6 @@ const store = createStore({
         throw new Error("Could not change password: " + error.code);
       });
     },
-
-    //Config module
-    async setFilterConfig(context, { config }){
-      context.commit("setFilterConfig", config);
-    }
   },
 });
 

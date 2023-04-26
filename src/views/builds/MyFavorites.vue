@@ -22,8 +22,7 @@
       </v-col>
 
       <v-col cols="12" md="4">
-        <BuildsConfig @configChanged="configChanged">
-        </BuildsConfig>
+        <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
       </v-col>
     </v-row>
   </v-container>
@@ -47,10 +46,10 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { get } = useCollection("favorites");
     const builds = ref(null);
-    const favorites = ref(null)
+    const favorites = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
-    const filterAndOrderConfig = ref(getDefaultConfig());
+    const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -62,27 +61,33 @@ export default {
     watch(
       () => user.value,
       () => {
-        initData(getDefaultConfig());
+        if (!filterAndOrderConfig.value) {
+          store.commit("setFilterConfig", getDefaultConfig());
+        }
+        initData();
       }
     );
 
     onMounted(() => {
       if (user.value) {
-        initData(getDefaultConfig());
+        if (!filterAndOrderConfig.value) {
+          store.commit("setFilterConfig", getDefaultConfig());
+        }
+        initData();
       }
     });
 
-    const configChanged = (newConfig) => {
-      console.log("config changed:", newConfig);
-      filterAndOrderConfig.value = newConfig;
+    const configChanged = () => {
       initData();
     };
 
     const initData = async () => {
       //get favorites list
-      favorites.value = await get(user.value.uid).then((user) => {return user.favorites});
-      console.log("favorites", favorites.value)
-      if (!favorites.value.length > 0){
+      favorites.value = await get(user.value.uid).then((user) => {
+        return user.favorites;
+      });
+      console.log("favorites", favorites.value);
+      if (!favorites.value.length > 0) {
         builds.value = null;
         return;
       }

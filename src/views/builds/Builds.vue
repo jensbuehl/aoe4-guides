@@ -76,7 +76,7 @@ export default {
     const builds = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
-    const filterAndOrderConfig = ref(getDefaultConfig());
+    const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -86,12 +86,13 @@ export default {
     });
 
     onMounted(() => {
+      if (!filterAndOrderConfig.value) {
+        store.commit("setFilterConfig", getDefaultConfig());
+      }
       initData();
     });
 
-    const configChanged = (newConfig) => {
-      console.log("config changed:", newConfig);
-      filterAndOrderConfig.value = newConfig;
+    const configChanged = () => {
       initData();
     };
 
@@ -169,6 +170,7 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       paginationConfig,
+      filterAndOrderConfig,
       configChanged,
       nextPage,
       previousPage,

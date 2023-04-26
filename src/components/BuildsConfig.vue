@@ -2,7 +2,7 @@
   <v-card rounded="lg">
     <v-card-text>
       <v-select
-        v-model="config.civs"
+        v-model="selectedCivs"
         prepend-icon="mdi-earth"
         label="Civilization"
         density="compact"
@@ -14,7 +14,7 @@
       >
       </v-select>
       <v-select
-        v-model="config.seasons"
+        v-model="selectedSeasons"
         prepend-icon="mdi-update"
         label="Season"
         density="compact"
@@ -26,7 +26,7 @@
       >
       </v-select>
       <v-select
-        v-model="config.maps"
+        v-model="selectedMaps"
         prepend-icon="mdi-map"
         label="Map"
         density="compact"
@@ -38,7 +38,7 @@
       >
       </v-select>
       <v-select
-        v-model="config.strategies"
+        v-model="selectedStrategies"
         prepend-icon="mdi-strategy"
         label="Strategy"
         density="compact"
@@ -50,7 +50,7 @@
       >
       </v-select>
       <v-select
-        v-model="config.orderBy"
+        v-model="selectedOrderBy"
         prepend-icon="mdi-sort"
         density="compact"
         label="Order by"
@@ -68,7 +68,8 @@
 </template>
 
 <script>
-import { ref, reactive, watch } from "vue";
+import { ref, watch, computed } from "vue";
+import { useStore } from "vuex";
 import getCivs from "../composables/getCivs";
 import getMaps from "../composables/getMaps";
 import getSeasons from "../composables/getSeasons";
@@ -78,11 +79,11 @@ import getStrategies from "../composables/getStrategies";
 export default {
   name: "BuildsConfig",
   setup(props, context) {
+    const store = useStore();
     const civs = getCivs().civs;
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
-    const config = reactive(getDefaultConfig());
     const sortOptions = ref([
       {
         title: "Title",
@@ -99,25 +100,76 @@ export default {
       {
         title: "Likes",
         id: "likes",
-      }
+      },
     ]);
 
-    watch(config, () => {
-      context.emit("configChanged", config);
+    const selectedCivs = computed({
+      get() {
+        return store.state.filterConfig.civs;
+      },
+      set(value) {
+        store.commit("setCivs", value);
+        context.emit("configChanged");
+      },
+    });
+
+    const selectedMaps = computed({
+      get() {
+        return store.state.filterConfig.maps;
+      },
+      set(value) {
+        store.commit("setMaps", value);
+        context.emit("configChanged");
+      },
+    });
+
+    const selectedStrategies = computed({
+      get() {
+        return store.state.filterConfig.strategies;
+      },
+      set(value) {
+        store.commit("setStrategies", value);
+        context.emit("configChanged");
+      },
+    });
+
+    const selectedSeasons = computed({
+      get() {
+        return store.state.filterConfig.seasons;
+      },
+      set(value) {
+        store.commit("setSeasons", value);
+        context.emit("configChanged");
+
+      },
+    });
+
+    const selectedOrderBy = computed({
+      get() {
+        return store.state.filterConfig.orderBy;
+      },
+      set(value) {
+        store.commit("setOrderBy", value);
+        context.emit("configChanged");
+      },
     });
 
     const handleReset = () => {
-      Object.assign(config, getDefaultConfig());
-      context.emit("configChanged", config);
+      store.commit("setFilterConfig", getDefaultConfig());
+      context.emit("configChanged");
     };
 
     return {
-      config,
       sortOptions,
       civs,
       maps,
       seasons,
       strategies,
+      selectedCivs,
+      selectedMaps,
+      selectedStrategies,
+      selectedSeasons,
+      selectedOrderBy,
       handleReset,
     };
   },

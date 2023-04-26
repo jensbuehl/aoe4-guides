@@ -114,7 +114,6 @@ export default function useOverlayConversion() {
   };
 
   const download = (text, filename) => {
-    //TODO: Set proper name, Add button
     const type = "text/plain";
     const blob = new Blob([text], { type });
     const e = document.createEvent("MouseEvents"),
