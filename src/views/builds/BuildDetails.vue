@@ -165,6 +165,17 @@
                 ></v-btn>
               </template>
               <v-list>
+                <v-tooltip text="Duplicate and Edit Build Order">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                    v-show="user"
+                      v-bind="props"
+                    >
+                      <v-icon color="primary" class="mr-4">mdi-content-duplicate</v-icon>
+                      Duplicate Build
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
                 <v-list-item @click="handleCopyOverlayFormat">
                   <v-tooltip
                     text="Copy RTS_Overlay / AoE4_Overlay Format to Clipboard"
