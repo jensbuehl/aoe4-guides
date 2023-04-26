@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import getCivs from "../composables/getCivs";
 import getMaps from "../composables/getMaps";
@@ -105,7 +105,7 @@ export default {
 
     const selectedCivs = computed({
       get() {
-        return store.state.filterConfig.civs;
+        return store.state.filterConfig?.civs;
       },
       set(value) {
         store.commit("setCivs", value);
@@ -115,7 +115,7 @@ export default {
 
     const selectedMaps = computed({
       get() {
-        return store.state.filterConfig.maps;
+        return store.state.filterConfig?.maps;
       },
       set(value) {
         store.commit("setMaps", value);
@@ -125,7 +125,7 @@ export default {
 
     const selectedStrategies = computed({
       get() {
-        return store.state.filterConfig.strategies;
+        return store.state.filterConfig?.strategies;
       },
       set(value) {
         store.commit("setStrategies", value);
@@ -135,7 +135,7 @@ export default {
 
     const selectedSeasons = computed({
       get() {
-        return store.state.filterConfig.seasons;
+        return store.state.filterConfig?.seasons;
       },
       set(value) {
         store.commit("setSeasons", value);
@@ -146,7 +146,7 @@ export default {
 
     const selectedOrderBy = computed({
       get() {
-        return store.state.filterConfig.orderBy;
+        return store.state.filterConfig?.orderBy;
       },
       set(value) {
         store.commit("setOrderBy", value);

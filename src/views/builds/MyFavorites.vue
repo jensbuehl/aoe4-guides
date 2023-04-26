@@ -69,10 +69,10 @@ export default {
     );
 
     onMounted(() => {
+      if (!filterAndOrderConfig.value) {
+        store.commit("setFilterConfig", getDefaultConfig());
+      }
       if (user.value) {
-        if (!filterAndOrderConfig.value) {
-          store.commit("setFilterConfig", getDefaultConfig());
-        }
         initData();
       }
     });
