@@ -19,6 +19,7 @@ const store = createStore({
     user: null,
     authIsReady: false,
     filterConfig: null,
+    template: null,
   },
   mutations: {
     //User module
@@ -58,6 +59,11 @@ const store = createStore({
       state.filterConfig.orderBy = payload;
       console.log("orderBy state changed:", state.filterConfig.orderBy);
     },
+    //Template module
+    setTemplate(state, payload) {
+      state.template = payload;
+      console.log("template state changed:", state.template);
+    }
   },
   actions: {
     //User module

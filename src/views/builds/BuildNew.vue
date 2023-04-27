@@ -203,6 +203,7 @@
       ></v-col>
     </v-row>
     <StepsEditor
+      v-if="build"
       @stepsChanged="handleStepsChanged"
       :steps="build.steps"
       :civ="build.civ"
@@ -224,7 +225,7 @@ import getStrategies from "../../composables/getStrategies";
 export default {
   name: "BuildNew",
   components: { StepsEditor },
-  setup() {
+  setup(props) {
     window.scrollTo(0, 0);
 
     const { add, error } = useCollection("builds");
@@ -234,25 +235,32 @@ export default {
     const seasons = getSeasons().seasons;
     const store = useStore();
     const user = computed(() => store.state.user);
+    const template = computed(() => store.state.template);
     const router = useRouter();
+    const build = ref(null);
 
-    const build = ref({
-      author: "",
-      authorUid: "",
-      description: "",
-      title: "",
-      sortTitle: "", //Since firestore does not support case-insensitive sorting
-      steps: [],
-      video: "",
-      civ: "",
-      map: "",
-      season: "",
-      strategy: "",
-      views: 0,
-      likes: 0,
-      timeCreated: null,
-      timeUpdated: null,
-    });
+    if (template.value) {
+      build.value = template.value;
+      store.commit("setTemplate", null)
+    } else {
+      build.value = {
+        author: "",
+        authorUid: "",
+        description: "",
+        title: "",
+        sortTitle: "", //firestore does not support case-insensitive sorting
+        steps: [],
+        video: "",
+        civ: "",
+        map: "",
+        season: "",
+        strategy: "",
+        views: 0,
+        likes: 0,
+        timeCreated: null,
+        timeUpdated: null,
+      };
+    }
 
     const save = async () => {
       build.value.sortTitle =

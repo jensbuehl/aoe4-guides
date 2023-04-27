@@ -168,10 +168,13 @@
                 <v-tooltip text="Duplicate and Edit Build Order">
                   <template v-slot:activator="{ props }">
                     <v-list-item
-                    v-show="user"
+                      v-show="user"
+                      @click="handleDuplicate"
                       v-bind="props"
                     >
-                      <v-icon color="primary" class="mr-4">mdi-content-duplicate</v-icon>
+                      <v-icon color="primary" class="mr-4"
+                        >mdi-content-duplicate</v-icon
+                      >
                       Duplicate Build
                     </v-list-item>
                   </template>
@@ -311,9 +314,10 @@ export default {
   props: ["id"],
   setup(props) {
     window.scrollTo(0, 0);
+
     const store = useStore();
-    const user = computed(() => store.state.user);
     const router = useRouter();
+    const user = computed(() => store.state.user);
     const civs = getCivs().civs;
     const build = ref(null);
     const dialog = ref(false);
@@ -327,6 +331,29 @@ export default {
       build.value = res;
       incrementViews(props.id);
     });
+
+    const handleDuplicate = async () => {
+      var template = {
+        author: "",
+        authorUid: "",
+        description: build.value.description,
+        title: build.value.title + " - copy",
+        sortTitle: "", //firestore does not support case-insensitive sorting
+        steps: build.value.steps,
+        video: build.value.video,
+        civ: build.value.civ,
+        map: build.value.map,
+        season: build.value.season,
+        strategy: build.value.strategy,
+        views: 0,
+        likes: 0,
+        timeCreated: null,
+        timeUpdated: null,
+      };
+      
+      store.commit("setTemplate", template)
+      router.push({ name: 'BuildNew' })
+    }
 
     const handleDelete = async () => {
       dialog.value = false;
@@ -357,6 +384,7 @@ export default {
       dialog,
       window,
       handleDelete,
+      handleDuplicate,
       handleCopyOverlayFormat,
       handleDownloadOverlayFormat,
       timeSince,

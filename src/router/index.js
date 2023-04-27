@@ -80,7 +80,7 @@ const routes = [
     {
       path: "/new",
       name: "BuildNew",
-      component: BuildNew
+      component: BuildNew,
     },
     {
       path: "/import",
