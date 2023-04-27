@@ -69,6 +69,32 @@
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
+            <v-chip
+              color="primary"
+              class="mr-2 mb-2"
+              v-if="build.season"
+              label
+              size="small"
+              >{{ build.season }}</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              color="primary"
+              v-if="build.map"
+              label
+              size="small"
+              >{{ build.map }}</v-chip
+            >
+            <v-chip
+              color="primary"
+              class="mr-2 mb-2"
+              v-if="build.strategy"
+              label
+              size="small"
+              >{{ build.strategy }}</v-chip
+            >
+          </v-item-group>
+          <v-item-group class="ml-4">
             <v-chip class="mr-2 mb-2" label size="small"
               ><v-icon start icon="mdi-account-edit"></v-icon
               >{{ build.author }}</v-chip
@@ -95,32 +121,6 @@
               size="small"
               ><v-icon start icon="mdi-update"></v-icon
               >{{ timeSince(build.timeUpdated.toDate()) }}</v-chip
-            >
-          </v-item-group>
-          <v-item-group class="ml-4">
-            <v-chip
-              color="primary"
-              class="mr-2 mb-2"
-              v-if="build.season"
-              label
-              size="small"
-              >{{ build.season }}</v-chip
-            >
-            <v-chip
-              class="mr-2 mb-2"
-              color="primary"
-              v-if="build.map"
-              label
-              size="small"
-              >{{ build.map }}</v-chip
-            >
-            <v-chip
-              color="primary"
-              class="mr-2 mb-2"
-              v-if="build.strategy"
-              label
-              size="small"
-              >{{ build.strategy }}</v-chip
             >
           </v-item-group>
         </v-col>
