@@ -167,10 +167,13 @@
                 <v-tooltip text="Duplicate and Edit Build Order">
                   <template v-slot:activator="{ props }">
                     <v-list-item
-                    v-show="user"
+                      v-show="user"
+                      @click="handleDuplicate"
                       v-bind="props"
                     >
-                      <v-icon color="primary" class="mr-4">mdi-content-duplicate</v-icon>
+                      <v-icon color="primary" class="mr-4"
+                        >mdi-content-duplicate</v-icon
+                      >
                       Duplicate Build
                     </v-list-item>
                   </template>
@@ -360,6 +363,29 @@ export default {
       build.value = res;
     });
 
+    const handleDuplicate = async () => {
+      var template = {
+        author: "",
+        authorUid: "",
+        description: build.value.description,
+        title: build.value.title + " - copy",
+        sortTitle: "", //firestore does not support case-insensitive sorting
+        steps: build.value.steps,
+        video: build.value.video,
+        civ: build.value.civ,
+        map: build.value.map,
+        season: build.value.season,
+        strategy: build.value.strategy,
+        views: 0,
+        likes: 0,
+        timeCreated: null,
+        timeUpdated: null,
+      };
+
+      store.commit("setTemplate", template);
+      router.push({ name: "BuildNew" });
+    };
+
     const handleSave = async () => {
       build.value.sortTitle =
         build.value.title.toLowerCase() + crypto.randomUUID();
@@ -396,6 +422,7 @@ export default {
       strategies,
       seasons,
       handleSave,
+      handleDuplicate,
       handleCopyOverlayFormat,
       handleDownloadOverlayFormat,
       handleStepsChanged,
