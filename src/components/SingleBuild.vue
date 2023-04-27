@@ -69,10 +69,26 @@
           ><v-icon start icon="mdi-account-edit"></v-icon
           >{{ build.author }}</v-chip
         >
-        <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
+        <v-chip
+          class="mr-2 mb-2"
+          v-if="build.timeCreated && orderBy == 'timeCreated'"
+          label
+          size="small"
           ><v-icon start icon="mdi-clock-edit-outline"></v-icon
           >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
         >
+        <v-chip
+          class="mr-2 mb-2"
+          label
+          size="small"
+          v-show="build.views && orderBy == 'views'"
+        >
+          <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
+        >
+        <v-chip v-show="build.likes && orderBy == 'likes'" class="mr-2 mb-2" label size="small">
+              <v-icon start icon="mdi-heart"></v-icon>
+              {{ build.likes }}</v-chip
+            >
         <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">{{
           build.season
         }}</v-chip>
@@ -90,16 +106,25 @@
 <script>
 import getCivs from "../composables/getCivs";
 import useTimeSince from "../composables/useTimeSince";
+import { useStore } from "vuex";
+import { computed, onMounted } from "vue";
 
 export default {
   props: ["build"],
   name: "SingleBuild",
   setup() {
     const civs = getCivs().civs;
+    const store = useStore();
+    const orderBy = computed(() => store.state.filterConfig.orderBy);
     const { timeSince, isNew } = useTimeSince();
+
+    onMounted(() => {
+      console.log(orderBy.value);
+    });
 
     return {
       civs,
+      orderBy,
       timeSince,
       isNew,
     };

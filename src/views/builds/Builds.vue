@@ -64,7 +64,7 @@ import SingleBuild from "../../components/SingleBuild.vue";
 import useCollection from "../../composables/useCollection";
 import queryService from "../../composables/queryService";
 import { useStore } from "vuex";
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 export default {
   name: "Builds",
