@@ -110,8 +110,8 @@ import { useStore } from "vuex";
 import { computed, onMounted } from "vue";
 
 export default {
-  props: ["build"],
   name: "SingleBuild",
+  props: ["build"],
   setup() {
     const civs = getCivs().civs;
     const store = useStore();
