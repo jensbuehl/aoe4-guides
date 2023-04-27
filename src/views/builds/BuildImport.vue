@@ -125,15 +125,27 @@ export default {
       timeUpdated: null,
     });
 
-    const save = async () => {
-      build.value.sortTitle =
-        build.value.title.toLowerCase() + crypto.randomUUID();
-      build.value.authorUid = user.value.uid;
-      build.value.author = user.value.displayName;
-      const id = await add(build.value);
-      if (!error.value) {
-        router.push("/builds/" + id);
-      }
+    const newFromTemplate = async () => {
+      var template = {
+        author: "",
+        authorUid: "",
+        description: build.value.description,
+        title: build.value.title + " - copy",
+        sortTitle: "", //firestore does not support case-insensitive sorting
+        steps: build.value.steps,
+        video: build.value.video,
+        civ: build.value.civ,
+        map: build.value.map,
+        season: build.value.season,
+        strategy: build.value.strategy,
+        views: 0,
+        likes: 0,
+        timeCreated: null,
+        timeUpdated: null,
+      };
+
+      store.commit("setTemplate", template);
+      router.push({ name: "BuildNew" });
     };
 
     const onChange = async () => {
@@ -141,7 +153,7 @@ export default {
         const importedFileString = await files.value[0].text();
         const importedFileObject = JSON.parse(importedFileString);
         build.value = convertFromOverlayFormat(importedFileObject);
-        save();
+        newFromTemplate();
       } catch (err) {
         error.value = err;
         alert(err);
@@ -175,7 +187,7 @@ export default {
       dragleave,
       drop,
       authIsReady: computed(() => store.state.authIsReady),
-      save,
+      newFromTemplate,
     };
   },
 };
