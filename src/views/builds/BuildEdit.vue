@@ -126,6 +126,21 @@
         </v-col>
         <v-row justify="end" class="my-2 mr-2">
           <v-col cols="auto">
+            <Favorite
+              @favoriteAdded="
+                () => {
+                  build.likes++;
+                }
+              "
+              @favoriteRemoved="
+                () => {
+                  build.likes--;
+                }
+              "
+              v-if="user"
+              :buildId="build.id"
+              :userId="user?.uid"
+            ></Favorite>
             <v-tooltip location="top" text="Save Build Order">
               <template :props="props" v-slot:activator="{ props }">
                 <v-btn
@@ -138,6 +153,80 @@
                 ></v-btn>
               </template>
             </v-tooltip>
+
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon="mdi-dots-horizontal"
+                  color="primary"
+                  variant="text"
+                  v-bind="props"
+                ></v-btn>
+              </template>
+              <v-list>
+                <v-tooltip text="Duplicate and Edit Build Order">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                    v-show="user"
+                      v-bind="props"
+                    >
+                      <v-icon color="primary" class="mr-4">mdi-content-duplicate</v-icon>
+                      Duplicate Build
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
+                <v-list-item @click="handleCopyOverlayFormat">
+                  <v-tooltip
+                    text="Copy RTS_Overlay / AoE4_Overlay Format to Clipboard"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-icon color="primary" class="mr-5" v-bind="props"
+                        >mdi-content-copy
+                      </v-icon>
+                      <v-list-item-content v-bind="props"
+                        >Overlay Tool</v-list-item-content
+                      >
+                    </template>
+                  </v-tooltip>
+                  <v-tooltip
+                    location="top"
+                    text="Visit AoE4_Overlay Project Page"
+                  >
+                    <template v-slot:activator="{ props }">
+                      <v-icon
+                        v-bind="props"
+                        size="small"
+                        @click="
+                          (e) => {
+                            e.stopPropagation();
+                            window
+                              .open(
+                                'https://github.com/FluffyMaguro/AoE4_Overlay',
+                                '_blank'
+                              )
+                              .focus();
+                          }
+                        "
+                        color="primary"
+                        class="ml-2"
+                        >mdi-information-outline</v-icon
+                      >
+                    </template>
+                  </v-tooltip>
+                </v-list-item>
+                <v-tooltip text="Download RTS_Overlay / AoE4_Overlay File">
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                      v-bind="props"
+                      @click="handleDownloadOverlayFormat"
+                    >
+                      <v-icon color="primary" class="mr-4">mdi-download</v-icon>
+                      Download
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
+              </v-list>
+            </v-menu>
           </v-col>
         </v-row>
       </v-row>
@@ -233,6 +322,7 @@
 </template>
 
 <script>
+import Favorite from "../../components/Favorite.vue";
 import StepsEditor from "../../components/StepsEditor.vue";
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -243,10 +333,11 @@ import getSeasons from "../../composables/getSeasons";
 import getMaps from "../../composables/getMaps";
 import getStrategies from "../../composables/getStrategies";
 import useTimeSince from "../../composables/useTimeSince";
+import useOverlayConversion from "../../composables/useOverlayConversion";
 
 export default {
   name: "BuildEdit",
-  components: { StepsEditor },
+  components: { Favorite, StepsEditor },
   props: ["id"],
   setup(props) {
     window.scrollTo(0, 0);
@@ -259,6 +350,8 @@ export default {
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const build = ref(null);
+    const { convertToOverlayFormat, download, copyToClipboard } =
+      useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
     const { get, update, error } = useCollection("builds");
 
@@ -275,6 +368,19 @@ export default {
         router.push("/builds/" + props.id);
       }
     };
+
+    const handleCopyOverlayFormat = () => {
+      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
+      copyToClipboard(overlayBuildString);
+    };
+
+    const handleDownloadOverlayFormat = () => {
+      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
+      download(overlayBuildString, build.value.title);
+    };
+
     const handleStepsChanged = (steps) => {
       build.value.steps = steps;
     };
@@ -290,6 +396,8 @@ export default {
       strategies,
       seasons,
       handleSave,
+      handleCopyOverlayFormat,
+      handleDownloadOverlayFormat,
       handleStepsChanged,
       handleVideoInput,
       timeSince,
