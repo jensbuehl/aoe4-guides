@@ -57,12 +57,11 @@
       @drop="drop"
     >
       <input
-        ref="files"
         type="file"
         name="file"
         id="fileInput"
         class="hidden-input"
-        @change="onChange()"
+        @change="onChange"
         accept=".json, .bo"
       />
       <v-row>
@@ -109,21 +108,7 @@ export default {
     const isDragging = ref(false);
 
     const files = ref(null);
-    const build = ref({
-      author: "",
-      authorUid: "",
-      description: "",
-      title: "",
-      sortTitle: "", //Since firestore does not support case-insensitive sorting
-      steps: [],
-      video: "",
-      civ: "",
-      map: "",
-      season: "",
-      strategy: "",
-      timeCreated: null,
-      timeUpdated: null,
-    });
+    const build = ref(null);
 
     const newFromTemplate = async () => {
       var template = {
@@ -148,7 +133,7 @@ export default {
       router.push({ name: "BuildNew" });
     };
 
-    const onChange = async () => {
+    const importAndCreateFromTemplate = async () => {
       try {
         const importedFileString = await files.value[0].text();
         const importedFileObject = JSON.parse(importedFileString);
@@ -158,6 +143,11 @@ export default {
         error.value = err;
         alert(err);
       }
+    }
+
+    const onChange = async (e) => {
+        files.value = e.target.files || e.dataTransfer.files;
+        importAndCreateFromTemplate();
     };
 
     const dragover = async (e) => {
@@ -172,7 +162,7 @@ export default {
     const drop = async (e) => {
       e.preventDefault();
       files.value = e.dataTransfer.files;
-      onChange();
+      importAndCreateFromTemplate();
       isDragging.value = false;
     };
 
