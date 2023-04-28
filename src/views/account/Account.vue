@@ -24,6 +24,15 @@
                 placeholder="Your email"
                 readonly
               ></v-text-field>
+              <v-text-field
+                class="text-grey"
+                name="user id"
+                label="User ID"
+                type="text"
+                v-model="user.uid"
+                placeholder="Your user id"
+                readonly
+              ></v-text-field>
               <v-card v-if="error" rounded="lg" color="error">
                 <v-card-text>{{ error }}</v-card-text>
               </v-card>
