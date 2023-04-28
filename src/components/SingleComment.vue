@@ -1,25 +1,29 @@
 <template>
+  <v-dialog v-model="dialog" width="auto">
+    <v-card rounded="lg" class="text-center primary">
+      <v-card-title>Delete Comment</v-card-title>
+      <v-card-text>
+        Do you really want to delete this comment?<br />
+        The action cannot be undone.
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="error" block @click="handleDelete">Delete</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
   <v-card-text style="white-space: pre-line">
     <v-row>
       <v-col cols="10">{{ comment }}</v-col>
       <v-row justify="end">
         <v-col cols="auto" class="fill-height mr-1">
-          <v-btn v-if="authorId == user?.uid" color="primary" variant="text" block icon="mdi-delete" @click="dialog = true"
-            ></v-btn>
-            <v-dialog v-model="dialog" width="auto">
-              <v-card rounded="lg" class="text-center primary">
-                <v-card-title>Delete Comment</v-card-title>
-                <v-card-text>
-                  Do you really want to delete this comment?<br />
-                  The action cannot be undone.
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="error" block @click="handleDelete"
-                    >Delete</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
+          <v-btn
+            v-if="authorId == user?.uid"
+            color="primary"
+            variant="text"
+            block
+            icon="mdi-delete"
+            @click="dialog = true"
+          ></v-btn>
         </v-col>
       </v-row>
       <v-row justify="end">
@@ -73,8 +77,8 @@ export default {
 
     const handleDelete = async () => {
       dialog.value = false;
-      context.emit("commentRemoved"); 
       await del(id);
+      context.emit("commentRemoved");
     };
 
     return {
@@ -86,7 +90,7 @@ export default {
       timeSince,
       isNew,
       handleDelete,
-      user
+      user,
     };
   },
 };
