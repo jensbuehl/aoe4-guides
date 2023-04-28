@@ -601,7 +601,6 @@ export default {
     };
     const addStep = (index) => {
       var table = stepsTable.value;
-
       if (table) {
         //Pull display text into model
         for (var i = 0, row; (row = table.rows[i]); i++) {
@@ -609,6 +608,7 @@ export default {
         }
       }
 
+      //Add row
       const addIndex = index + 1;
       stepsCopy.splice(addIndex, 0, {
         time: "",
@@ -620,7 +620,7 @@ export default {
         stone: "",
         description: "",
       });
-      steps.splice(++index, 0, {
+      steps.splice(addIndex, 0, {
         time: "",
         villagers: "",
         builders: "",
@@ -641,9 +641,17 @@ export default {
     };
 
     const removeStep = (currentIndex) => {
+      var table = stepsTable.value;
+      if (table) {
+        //Pull display text into model
+        for (var i = 0, row; (row = table.rows[i]); i++) {
+          steps[i].description = row.cells[7].innerHTML;
+        }
+      }
+
+      //remove row
       stepsCopy.splice(currentIndex, 1);
       steps.splice(currentIndex, 1);
-      context.emit("stepsChanged", steps);
     };
 
     const selectItem = (index) => {
