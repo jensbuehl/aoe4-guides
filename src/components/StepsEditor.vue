@@ -1,4 +1,17 @@
 <template>
+  <!--Common delete confirmation dialog)-->
+  <v-dialog v-model="dialog" width="auto">
+    <v-card rounded="lg" class="text-center primary">
+      <v-card-title>Delete Comment</v-card-title>
+      <v-card-text>
+        Do you really want to delete this build step?<br />
+        The action cannot be undone.
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="error" block @click="removeStep(delteRowIndex)">Delete</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
   <!--Mobile UI (XS)-->
   <v-card rounded="lg" class="mt-4 hidden-sm-and-up">
     <v-card-title>Build Order</v-card-title>
@@ -127,7 +140,7 @@
       v-for="(item, index) in steps"
       :key="index"
       v-on:keyup.enter.alt="addStep(index)"
-      v-on:keyup.delete.alt="removeStep(index)"
+      v-on:keyup.delete.alt="dialog = true; delteRowIndex = index; delteRowIndex = index"
       @mouseover="selectItem(index)"
       @mouseleave="unSelectItem()"
     >
@@ -276,7 +289,7 @@
                   v-if="index === hoverRowIndex"
                   variant="plain"
                   color="primary"
-                  @click="removeStep(index)"
+                  @click="dialog = true; delteRowIndex = index"
                   icon="mdi-delete"
                 >
                 </v-btn>
@@ -395,7 +408,7 @@
           v-for="(item, index) in steps"
           :key="index"
           v-on:keyup.enter.alt="addStep(index)"
-          v-on:keyup.delete.alt="removeStep(index)"
+          v-on:keyup.delete.alt="dialog = true; delteRowIndex = index"
           @mouseover="selectItem(index)"
           @mouseleave="unSelectItem()"
         >
@@ -463,7 +476,7 @@
                   v-if="index === hoverRowIndex"
                   variant="plain"
                   color="primary"
-                  @click="removeStep(index)"
+                  @click="dialog = true; delteRowIndex = index"
                   icon="mdi-delete"
                 >
                 </v-btn>
@@ -507,8 +520,10 @@ export default {
     const stepsCopy = reactive(JSON.parse(JSON.stringify(props.steps)));
     const readonly = props.readonly;
     const hoverRowIndex = ref(null);
+    const delteRowIndex = ref(null)
     const selection = ref(null);
     const stepsTable = ref(null);
+    const dialog = ref(false);
 
     const civ = computed(() => {
       return props.civ;
@@ -654,6 +669,7 @@ export default {
       steps.splice(currentIndex, 1);
 
       context.emit("stepsChanged", steps);
+      dialog.value = false;
     };
 
     const selectItem = (index) => {
@@ -693,6 +709,8 @@ export default {
       hoverRowIndex,
       sanitizeHtml,
       selection,
+      delteRowIndex,
+      dialog,
       handlePaste,
       aggregateVillagers,
       updateStepDescription,
