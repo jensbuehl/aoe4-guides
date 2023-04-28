@@ -1715,7 +1715,7 @@ export default function useIconService(civArg) {
     {
       title: "Naval Arrowslits",
       age: "2",
-      imgSrc: "/assets/pictures/technology_defensive/arrow-slits.png",
+      imgSrc: "/assets/pictures/technology_naval/naval-arrow-slits.png",
       civ: [
         "ENG",
         "FRE",
