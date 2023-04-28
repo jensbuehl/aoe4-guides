@@ -2849,12 +2849,6 @@ export default function useIconService(civArg) {
       civ: ["FRE"],
     },
     {
-      title: "Royal Knight",
-      age: "2",
-      imgSrc: "/assets/pictures/unit_french/royal-knight-2.png",
-      civ: ["FRE"],
-    },
-    {
       title: "Galleass",
       age: "3",
       imgSrc: "/assets/pictures/unit_french/galleass.png",
