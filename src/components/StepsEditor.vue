@@ -652,6 +652,8 @@ export default {
       //remove row
       stepsCopy.splice(currentIndex, 1);
       steps.splice(currentIndex, 1);
+
+      context.emit("stepsChanged", steps);
     };
 
     const selectItem = (index) => {
