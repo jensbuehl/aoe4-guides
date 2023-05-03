@@ -2,7 +2,7 @@
   <!--Common delete confirmation dialog)-->
   <v-dialog v-model="dialog" width="auto">
     <v-card rounded="lg" class="text-center primary">
-      <v-card-title>Delete Comment</v-card-title>
+      <v-card-title>Delete Step</v-card-title>
       <v-card-text>
         Do you really want to delete this build step?<br />
         The action cannot be undone.
