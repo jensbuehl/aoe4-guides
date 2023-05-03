@@ -7,7 +7,7 @@
             <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list>
-            <v-list-item v-if="user" to="/">
+            <v-list-item to="/">
               <v-icon class="mr-4">mdi-home</v-icon>
               Home
             </v-list-item>
@@ -86,7 +86,6 @@
           </v-list>
         </v-menu>
         <v-btn
-          v-if="user"
           flat
           to="/"
           class="mx-1"
