@@ -423,18 +423,18 @@ export default {
       score = score + 5 * (build.value.upvotes ? build.value.upvotes : 0);
       score = score - 10 * (build.value.downvotes ? build.value.downvotes : 0);
       score = score + 50 * (build.value.likes ? build.value.likes : 0);
-      
+
       //elapsed time in weeks
       var msPerMinute = 60 * 1000;
       var msPerHour = msPerMinute * 60;
       var msPerDay = msPerHour * 24;
       var msPerWeek = msPerDay * 7;
       var baseScore = Math.log(Math.max(score, 1));
-      
+
       var now = new Date();
       var elapsed = now - build.value.timeUpdated.toDate();
       var timeDiff = Math.floor(elapsed / msPerWeek);
-      
+
       //slowly decay after 4 weeks
       if (timeDiff > 4) {
         var x = timeDiff - 4;

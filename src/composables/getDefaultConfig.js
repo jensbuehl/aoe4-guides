@@ -3,7 +3,7 @@ const getDefaultConfig = () => ({
   maps: [],
   strategies: [],
   seasons: [],
-  orderBy: "timeCreated"
+  orderBy: "score"
 });
 
 export default getDefaultConfig;

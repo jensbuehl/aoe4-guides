@@ -86,8 +86,8 @@ export default {
     const strategies = getStrategies().strategies;
     const sortOptions = ref([
       {
-        title: "Title",
-        id: "sortTitle",
+        title: "Popularity",
+        id: "score",
       },
       {
         title: "Time Created",
@@ -98,8 +98,12 @@ export default {
         id: "views",
       },
       {
-        title: "Likes",
+        title: "Favorites",
         id: "likes",
+      },
+      {
+        title: "Title",
+        id: "sortTitle",
       },
     ]);
 
