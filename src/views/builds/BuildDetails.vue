@@ -44,7 +44,8 @@
         <v-col
           v-if="!build.civ"
           cols="2"
-          md="3"
+          md="4"
+          lg="3"
           class="pa-0 ma-0 hidden-sm-and-down"
         >
           <v-img

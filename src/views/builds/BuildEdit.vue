@@ -1,11 +1,17 @@
 <template>
   <v-container v-if="user && build">
     <v-card rounded="lg">
-      <v-row class="d-flex align-center flex-nowrap">
+      <v-row
+        no-gutters
+        align="center"
+        justify="center"
+        class="fill-height d-flex flex-nowrap"
+      >
         <v-col
           v-if="build.civ"
           cols="2"
-          md="3"
+          md="4"
+          lg="3"
           class="pa-0 ma-0 hidden-sm-and-down"
         >
           <v-img
@@ -38,7 +44,8 @@
         <v-col
           v-if="!build.civ"
           cols="2"
-          md="3"
+          md="4"
+          lg="3"
           class="pa-0 ma-0 hidden-sm-and-down"
         >
           <v-img
@@ -58,9 +65,45 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="10" md="6" lg="6">
-          <v-card-title class="py-2 mb-4">{{ build.title }}</v-card-title>
-          <v-item-group class="ml-4 pt-2">
+        <v-col cols="9" md="6">
+          <v-card-title class="py-2 mb-4">
+            {{ build.title }}
+          </v-card-title>
+          <v-item-group class="ml-4 pt-2 hidden-sm-and-up">
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="isNew(build.timeCreated.toDate())"
+              label
+              color="primary"
+              size="x-small"
+              ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+            >
+            <v-chip
+              color="primary"
+              class="mr-2 mb-2"
+              v-if="build.season"
+              label
+              size="x-small"
+              >{{ build.season }}</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              color="primary"
+              v-if="build.map"
+              label
+              size="x-small"
+              >{{ build.map }}</v-chip
+            >
+            <v-chip
+              color="primary"
+              class="mr-2 mb-2"
+              v-if="build.strategy"
+              label
+              size="x-small"
+              >{{ build.strategy }}</v-chip
+            >
+          </v-item-group>
+          <v-item-group class="ml-4 pt-2 hidden-xs">
             <v-chip
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
@@ -94,7 +137,41 @@
               >{{ build.strategy }}</v-chip
             >
           </v-item-group>
-          <v-item-group class="ml-4">
+          <v-item-group class="ml-4 hidden-sm-and-up">
+            <v-chip class="mr-2 mb-2" label size="x-small"
+              ><v-icon start icon="mdi-account-edit"></v-icon
+              >{{ build.author }}</v-chip
+            >
+            <v-chip class="mr-2 mb-2" label size="x-small" v-show="build.views">
+              <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
+            >
+            <v-chip
+              v-show="build.upvotes"
+              class="mr-2 mb-2"
+              label
+              size="x-small"
+            >
+              <v-icon start icon="mdi-thumb-up"></v-icon>
+              {{ build.upvotes }}</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.timeCreated"
+              label
+              size="x-small"
+              ><v-icon start icon="mdi-clock-edit-outline"></v-icon
+              >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.timeCreated"
+              label
+              size="x-small"
+              ><v-icon start icon="mdi-update"></v-icon
+              >{{ timeSince(build.timeUpdated.toDate()) }}</v-chip
+            >
+          </v-item-group>
+          <v-item-group class="ml-4 hidden-xs">
             <v-chip class="mr-2 mb-2" label size="small"
               ><v-icon start icon="mdi-account-edit"></v-icon
               >{{ build.author }}</v-chip
@@ -102,9 +179,9 @@
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip v-show="build.likes" class="mr-2 mb-2" label size="small">
-              <v-icon start icon="mdi-heart"></v-icon>
-              {{ build.likes }}</v-chip
+            <v-chip v-show="build.upvotes" class="mr-2 mb-2" label size="small">
+              <v-icon start icon="mdi-thumb-up"></v-icon>
+              {{ build.upvotes }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
