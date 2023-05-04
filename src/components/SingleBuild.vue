@@ -83,12 +83,12 @@
             class="mr-2"
             label
             size="x-small"
-            v-show="build.views && orderBy == 'views'"
+            v-show="build.views && orderBy == 'views' || 'score'"
           >
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip
-            v-show="build.likes && orderBy == 'likes'"
+            v-show="build.likes && orderBy == 'likes' || 'score'"
             class="mr-2"
             label
             size="x-small"
@@ -136,12 +136,12 @@
             class="mr-2 mb-2"
             label
             size="small"
-            v-show="build.views && orderBy == 'views'"
+            v-show="build.views && orderBy == 'views' || 'score'"
           >
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip
-            v-show="build.likes && orderBy == 'likes'"
+            v-show="build.likes && orderBy == 'likes' || 'score'"
             class="mr-2 mb-2"
             label
             size="small"
