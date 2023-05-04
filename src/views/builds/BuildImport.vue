@@ -125,6 +125,9 @@ export default {
         strategy: build.value.strategy,
         views: 0,
         likes: 0,
+        upvotes: 0,
+        downvotes: 0,
+        score: 0,
         timeCreated: null,
         timeUpdated: null,
       };

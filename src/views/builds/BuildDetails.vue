@@ -144,7 +144,12 @@
             <v-chip class="mr-2 mb-2" label size="x-small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip v-show="build.upvotes" class="mr-2 mb-2" label size="x-small">
+            <v-chip
+              v-show="build.upvotes"
+              class="mr-2 mb-2"
+              label
+              size="x-small"
+            >
               <v-icon start icon="mdi-thumb-up"></v-icon>
               {{ build.upvotes }}</v-chip
             >
@@ -408,12 +413,41 @@ export default {
     const { convertToOverlayFormat, download, copyToClipboard } =
       useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
-    const { get, del, incrementViews, error } = useCollection("builds");
+    const { get, del, incrementViews, updateScore, error } =
+      useCollection("builds");
+
+    //TODO: Use server-side functions, instead!
+    const calculateAndUpdateScore = async () => {
+      //score calculation
+      var score = build.value.views;
+      score = score + 5 * (build.value.upvotes ? build.value.upvotes : 0);
+      score = score - 10 * (build.value.downvotes ? build.value.downvotes : 0);
+      score = score + 50 * (build.value.likes ? build.value.likes : 0);
+      
+      //elapsed time in weeks
+      var msPerMinute = 60 * 1000;
+      var msPerHour = msPerMinute * 60;
+      var msPerDay = msPerHour * 24;
+      var msPerWeek = msPerDay * 7;
+      var baseScore = Math.log(Math.max(score, 1));
+      
+      var now = new Date();
+      var elapsed = now - build.value.timeUpdated.toDate();
+      var timeDiff = Math.floor(elapsed / msPerWeek);
+      
+      //slowly decay after 4 weeks
+      if (timeDiff > 4) {
+        var x = timeDiff - 4;
+        baseScore = baseScore * Math.exp(-0.05 * x * x);
+      }
+      updateScore(props.id, baseScore);
+    };
 
     onMounted(async () => {
       const res = await get(props.id);
       build.value = res;
       incrementViews(props.id);
+      calculateAndUpdateScore();
     });
 
     const handleDuplicate = async () => {

@@ -79,8 +79,6 @@ export default {
 
     onMounted(async () => {
       const user = await get(props.userId);
-      console.log(user)
-
       if(user.upvotes?.includes(props.buildId)){
         upVote.value = user.upvotes?.includes(props.buildId);
       }
@@ -88,9 +86,6 @@ export default {
       if(user.downvotes?.includes(props.buildId)){
         downVote.value = user.downvotes?.includes(props.buildId);
       }
-
-      console.log(upVote.value)
-      console.log(downVote.value)
     });
     const handleAddVoteUp = async () => {
       incrementUps(props.buildId);
