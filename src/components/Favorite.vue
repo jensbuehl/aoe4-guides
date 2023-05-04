@@ -5,7 +5,6 @@
         @click="addToFavorites"
         v-bind="props"
         v-show="!isFavorite"
-        block
         color="primary"
         variant="text"
         icon="mdi-heart-outline"
@@ -19,7 +18,6 @@
         @click="removeFromFavorites"
         v-show="isFavorite"
         v-bind="props"
-        block
         color="primary"
         variant="text"
         icon="mdi-heart"
