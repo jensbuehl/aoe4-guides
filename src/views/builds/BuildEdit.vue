@@ -126,21 +126,6 @@
         </v-col>
         <v-row justify="end" class="my-2 mr-2">
           <v-col cols="auto">
-            <Favorite
-              @favoriteAdded="
-                () => {
-                  build.likes++;
-                }
-              "
-              @favoriteRemoved="
-                () => {
-                  build.likes--;
-                }
-              "
-              v-if="user"
-              :buildId="build.id"
-              :userId="user?.uid"
-            ></Favorite>
             <v-tooltip location="top" text="Save Build Order">
               <template :props="props" v-slot:activator="{ props }">
                 <v-btn

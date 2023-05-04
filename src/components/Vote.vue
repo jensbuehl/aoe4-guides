@@ -11,7 +11,7 @@
       ></v-btn>
     </template>
   </v-tooltip>
-  <v-tooltip location="top" text="Remove your like.">
+  <v-tooltip location="top" text="Remove your like">
     <template v-slot:activator="{ props }">
       <v-btn
         @click="handleRemoveVoteUp"

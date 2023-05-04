@@ -16,10 +16,6 @@ import {
   getCountFromServer,
 } from "../firebase";
 
-// declare the connection & refs inside the function
-// because the collection state is not global (like a user)
-// different collections may be used at once this way
-
 const useCollection = (col) => {
   const error = ref(null);
 
@@ -78,6 +74,62 @@ const useCollection = (col) => {
     }
   };
 
+  const incrementUps = async (id) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        upvotes: increment(1),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Upvote count could not be incremented";
+    }
+  };
+
+  const decrementUps = async (id) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        upvotes: increment(-1),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Upvote count could not be decremented";
+    }
+  };
+
+  const incrementDowns = async (id) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        downvotes: increment(1),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Upvote count could not be incremented";
+    }
+  };
+
+  const decrementDowns = async (id) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        downvotes: increment(-1),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Upvote count could not be decremented";
+    }
+  };
+
   const incrementLikes = async (id) => {
     error.value = null;
 
@@ -120,6 +172,34 @@ const useCollection = (col) => {
     }
   };
 
+  const arrayUnionUps = async (id, array) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        upvotes: arrayUnion(array),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Upvote could not be added";
+    }
+  };
+
+  const arrayUnionDowns = async (id, array) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        downvotes: arrayUnion(array),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Downvote could not be added";
+    }
+  };
+
   const arrayRemoveLikes = async (id, array) => {
     error.value = null;
 
@@ -131,6 +211,34 @@ const useCollection = (col) => {
     } catch (err) {
       console.log(err.message);
       error.value = "Favorite could not be removed";
+    }
+  };
+
+  const arrayRemoveUps = async (id, array) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        upvotes: arrayRemove(array),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Upvote could not be removed";
+    }
+  };
+
+  const arrayRemoveDowns = async (id, array) => {
+    error.value = null;
+
+    try {
+      const docRef = doc(db, col, id);
+      await updateDoc(docRef, {
+        downvotes: arrayRemove(array),
+      });
+    } catch (err) {
+      console.log(err.message);
+      error.value = "Downvote could not be removed";
     }
   };
 
@@ -217,11 +325,22 @@ const useCollection = (col) => {
     update,
     getQuery,
     getSize,
+    //Views
     incrementViews,
+    //Favorites
     incrementLikes,
     decrementLikes,
     arrayUnionLikes,
     arrayRemoveLikes,
+    //Votes
+    incrementUps,
+    decrementUps,
+    incrementDowns,
+    decrementDowns,
+    arrayUnionUps,
+    arrayRemoveUps,
+    arrayUnionDowns,
+    arrayRemoveDowns,
   };
 };
 

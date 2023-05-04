@@ -144,9 +144,9 @@
             <v-chip class="mr-2 mb-2" label size="x-small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip v-show="build.likes" class="mr-2 mb-2" label size="x-small">
-              <v-icon start icon="mdi-heart"></v-icon>
-              {{ build.likes }}</v-chip
+            <v-chip v-show="build.upvotes" class="mr-2 mb-2" label size="x-small">
+              <v-icon start icon="mdi-thumb-up"></v-icon>
+              {{ build.upvotes }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -173,9 +173,9 @@
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip v-show="build.likes" class="mr-2 mb-2" label size="small">
-              <v-icon start icon="mdi-heart"></v-icon>
-              {{ build.likes }}</v-chip
+            <v-chip v-show="build.upvotes" class="mr-2 mb-2" label size="small">
+              <v-icon start icon="mdi-thumb-up"></v-icon>
+              {{ build.upvotes }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -202,20 +202,24 @@
           class="my-2 mr-4 flex-nowrap"
         >
           <v-col cols="auto" class="mr-4">
-            <Vote :buildId="build.id" :userId="user?.uid"></Vote>
+            <Vote
+              v-if="user"
+              :buildId="build.id"
+              :userId="user?.uid"
+              @voteUpAdded="
+                () => {
+                  build.upvotes++;
+                }
+              "
+              @voteUpRemoved="
+                () => {
+                  build.upvotes--;
+                }
+              "
+            ></Vote>
           </v-col>
           <v-col cols="auto">
             <Favorite
-              @favoriteAdded="
-                () => {
-                  build.likes++;
-                }
-              "
-              @favoriteRemoved="
-                () => {
-                  build.likes--;
-                }
-              "
               v-if="user"
               :buildId="build.id"
               :userId="user?.uid"
