@@ -1,7 +1,12 @@
 <template>
   <v-container v-if="build">
     <v-card rounded="lg">
-      <v-row no-gutters align="center" justify="center" class="fill-height d-flex flex-nowrap">
+      <v-row
+        no-gutters
+        align="center"
+        justify="center"
+        class="fill-height d-flex flex-nowrap"
+      >
         <v-col
           v-if="build.civ"
           cols="2"
@@ -197,31 +202,7 @@
           class="my-2 mr-4 flex-nowrap"
         >
           <v-col cols="auto" class="mr-4">
-            <v-tooltip location="top" text="Edit Build Order">
-              <template :props="props" v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  color="primary"
-                  variant="text"
-                  block
-                  v-show="user"
-                  icon="mdi-thumb-up"
-                  :to="{ name: 'BuildEdit', params: { id: id } }"
-                ></v-btn>
-              </template>
-            </v-tooltip>
-            <v-tooltip location="top" text="Edit Build Order">
-              <template :props="props" v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  color="primary"
-                  variant="text"
-                  v-show="user"
-                  icon="mdi-thumb-down"
-                  :to="{ name: 'BuildEdit', params: { id: id } }"
-                ></v-btn>
-              </template>
-            </v-tooltip>
+            <Vote :buildId="build.id" :userId="user?.uid"></Vote>
           </v-col>
           <v-col cols="auto">
             <Favorite
@@ -396,6 +377,7 @@
 
 <script>
 import Favorite from "../../components/Favorite.vue";
+import Vote from "../../components/Vote.vue";
 import StepsEditor from "../../components/StepsEditor.vue";
 import Discussion from "../../components/Discussion.vue";
 import { ref, onMounted, computed } from "vue";
@@ -408,7 +390,7 @@ import useOverlayConversion from "../../composables/useOverlayConversion";
 
 export default {
   name: "BuildDetails",
-  components: { Favorite, Discussion, StepsEditor },
+  components: { Favorite, Vote, Discussion, StepsEditor },
   props: ["id"],
   setup(props) {
     window.scrollTo(0, 0);
