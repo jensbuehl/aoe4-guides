@@ -45,9 +45,26 @@
       ></v-col>
     </v-row>
   </v-container>
+
   <v-container v-if="user">
-    <v-card rounded="lg">
-      <v-row class="d-flex align-center flex-nowrap">
+
+    <v-card rounded="lg" class="hidden-md-and-up">
+      <v-card-title>{{ build.title }}</v-card-title>
+      <v-card-actions
+        ><v-spacer></v-spacer
+        ><v-tooltip location="top" text="Save Build Order">
+          <template :props="props" v-slot:activator="{ props }">
+            <v-btn
+              color="primary"
+              variant="text"
+              icon="mdi-content-save"
+              @click="save"
+            ></v-btn>
+          </template> </v-tooltip
+      ></v-card-actions>
+    </v-card>
+    <v-card rounded="lg" class="hidden-sm-and-down">
+      <v-row class="d-flex align-center flex-nowrap hidden-sm-and-down">
         <v-col
           v-if="build.civ"
           cols="2"
@@ -104,10 +121,14 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="8" md="6" lg="6">
+        <v-col cols="8" md="6" lg="6" class="hidden-sm-and-down">
           <v-card-title>{{ build.title }}</v-card-title>
         </v-col>
-        <v-row align="center" justify="end" class="fill-height mr-4">
+        <v-row
+          align="center"
+          justify="end"
+          class="fill-height mr-4 hidden-sm-and-down"
+        >
           <v-col cols="auto">
             <v-btn
               color="primary"
@@ -127,7 +148,9 @@
           <v-text-field
             class="pa-4"
             label="Title"
+            autofocus=""
             density="compact"
+            placeholder="Add your Title here"
             v-model="build.title"
             :value="build.title"
           ></v-text-field>
@@ -241,7 +264,7 @@ export default {
 
     if (template.value) {
       build.value = template.value;
-      store.commit("setTemplate", null)
+      store.commit("setTemplate", null);
     } else {
       build.value = {
         author: "",
