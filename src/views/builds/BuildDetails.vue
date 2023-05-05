@@ -437,11 +437,13 @@
             ></Vote>
           </v-col>
           <v-col cols="auto">
-            <Favorite
-              v-if="user"
-              :buildId="build.id"
-              :userId="user?.uid"
-            ></Favorite>
+            <div>
+              <Favorite
+                v-if="user"
+                :buildId="build.id"
+                :userId="user?.uid"
+              ></Favorite>
+            </div>
             <v-tooltip location="top" text="Edit Build Order">
               <template :props="props" v-slot:activator="{ props }">
                 <v-btn
