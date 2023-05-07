@@ -513,6 +513,17 @@
             >
             </v-select>
             <v-select
+              prepend-icon="mdi-sword-cross"
+              label="Matchup"
+              :items="matchups"
+              v-model="build.matchup"
+              density="compact"
+              item-value="shortName"
+              item-title="title"
+              clearable
+            >
+            </v-select>
+            <v-select
               prepend-icon="mdi-update"
               label="Season"
               :items="seasons"
