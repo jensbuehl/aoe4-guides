@@ -14,35 +14,23 @@
       >
       </v-select>
       <v-select
+        v-model="selectedMatchups"
+        prepend-icon="mdi-sword-cross"
+        label="Matchup"
+        density="compact"
+        :items="matchups"
+        item-value="shortName"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
+      <v-select
         v-model="selectedSeasons"
         prepend-icon="mdi-update"
         label="Season"
         density="compact"
         :items="seasons"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-select
-        v-model="selectedMaps"
-        prepend-icon="mdi-map"
-        label="Map"
-        density="compact"
-        :items="maps"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-select
-        v-model="selectedStrategies"
-        prepend-icon="mdi-strategy"
-        label="Strategy"
-        density="compact"
-        :items="strategies"
         item-value="title"
         item-title="title"
         clearable
@@ -58,6 +46,38 @@
         item-title="title"
         :items="sortOptions"
       ></v-select>
+      <v-divider></v-divider>
+      <!--TODO: Figure out how to override SASS variable for desired height and padding-->
+      <v-expansion-panels variant="accordion">
+        <v-expansion-panel elevation="0" rounded="lg" title="More Filters...">
+          <v-expansion-panel-text>
+            <v-select
+              v-model="selectedMaps"
+              prepend-icon="mdi-map"
+              label="Map"
+              density="compact"
+              :items="maps"
+              item-value="title"
+              item-title="title"
+              clearable
+              multiple
+            >
+            </v-select>
+            <v-select
+              v-model="selectedStrategies"
+              prepend-icon="mdi-strategy"
+              label="Strategy"
+              density="compact"
+              :items="strategies"
+              item-value="title"
+              item-title="title"
+              clearable
+              multiple
+            >
+            </v-select>
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-card-text>
     <v-card-actions class="justify-center">
       <v-btn color="primary" prepend-icon="mdi-close" flat @click="handleReset"
@@ -144,7 +164,6 @@ export default {
       set(value) {
         store.commit("setSeasons", value);
         context.emit("configChanged");
-
       },
     });
 
