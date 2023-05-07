@@ -2,6 +2,12 @@ import { ref } from "vue";
 
 const civs = ref([
   {
+    title: "Any Civilization",
+    shortName: "ANY",
+    flagLarge: "assets/flags/any-large.png",
+    flagSmall: "assets/flags/any-small.png",
+  },
+  {
     title: "Abbasid Dynasty",
     shortName: "ABB",
     flagLarge: "assets/flags/abb-large.png",

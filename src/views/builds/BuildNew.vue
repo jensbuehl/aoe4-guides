@@ -185,7 +185,6 @@
               density="compact"
               item-value="shortName"
               item-title="title"
-              clearable
             >
             </v-select>
             <v-select
@@ -196,18 +195,17 @@
               density="compact"
               item-value="shortName"
               item-title="title"
-              clearable
+              multiple
             >
             </v-select>
             <v-select
-              prepend-icon="mdi-update"
+              prepend-icon="mdi-trophy"
               label="Season"
               :items="seasons"
               v-model="build.season"
               density="compact"
               item-value="title"
               item-title="title"
-              clearable
             >
             </v-select>
             <v-select
@@ -285,11 +283,11 @@ export default {
         sortTitle: "", //firestore does not support case-insensitive sorting
         steps: [],
         video: "",
-        civ: "",
+        civ: "ANY",
         map: "",
-        season: "",
+        season: "Season 4",
         strategy: "",
-        matchup: "",
+        matchup: ["ANY"],
         views: 0,
         likes: 0,
         upvotes: 0,
