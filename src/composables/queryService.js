@@ -159,7 +159,7 @@ const filterWith = (config, favorites) => {
     }
 
     if (config?.matchups) {
-      const matchupsOp = where("matchup", "in", [config.matchups]);
+      const matchupsOp = where("matchup", "array-contains", [config.matchups]);
       queryParams.push(matchupsOp);
     }
 
