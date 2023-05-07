@@ -28,7 +28,7 @@
               v-if="build.season"
               label
               size="x-small"
-              >{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -36,7 +36,7 @@
               v-if="build.map"
               label
               size="x-small"
-              >{{ build.map }}</v-chip
+              ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
             <v-chip
               color="primary"
@@ -44,14 +44,14 @@
               v-if="build.strategy"
               label
               size="x-small"
-              >{{ build.strategy }}</v-chip
+              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"><v-chip
               class="mr-2 mb-2"
               color="primary"
               label
               size="x-small"
-              >{{ item }}</v-chip
+              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
             ></span>
             
           </v-item-group>
@@ -105,7 +105,7 @@
               v-if="build.season"
               label
               size="small"
-              >{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -113,7 +113,7 @@
               v-if="build.map"
               label
               size="small"
-              >{{ build.map }}</v-chip
+              ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
             <v-chip
               color="primary"
@@ -121,14 +121,14 @@
               v-if="build.strategy"
               label
               size="small"
-              >{{ build.strategy }}</v-chip
+              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"><v-chip
               class="mr-2 mb-2"
               color="primary"
               label
               size="small"
-              >{{ item }}</v-chip
+              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
             ></span>
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
@@ -379,7 +379,7 @@
               v-if="build.season"
               label
               size="small"
-              >{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -387,7 +387,7 @@
               v-if="build.map"
               label
               size="small"
-              >{{ build.map }}</v-chip
+              ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
             <v-chip
               color="primary"
@@ -395,14 +395,14 @@
               v-if="build.strategy"
               label
               size="small"
-              >{{ build.strategy }}</v-chip
+              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"><v-chip
               class="mr-2 mb-2"
               color="primary"
               label
               size="small"
-              >{{ item }}</v-chip
+              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
             ></span>
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
