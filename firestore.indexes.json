@@ -159,12 +159,12 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "matchup",
+          "fieldPath": "civ",
           "order": "ASCENDING"
         },
         {
           "fieldPath": "likes",
-          "order": "ASCENDING"
+          "order": "DESCENDING"
         }
       ]
     },
@@ -187,63 +187,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "matchup",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "score",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "civ",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likes",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "matchup",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "likes",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "civ",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "score",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "matchup",
           "order": "ASCENDING"
         },
         {
@@ -271,35 +215,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "matchup",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "sortTitle",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "civ",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "sortTitle",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "matchup",
           "order": "ASCENDING"
         },
         {
@@ -327,35 +243,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "matchup",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "timeCreated",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "civ",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "timeCreated",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "matchup",
           "order": "ASCENDING"
         },
         {
@@ -383,35 +271,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "matchup",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "views",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "civ",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "views",
-          "order": "DESCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "builds",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "matchup",
           "order": "ASCENDING"
         },
         {
@@ -693,6 +553,146 @@
         {
           "fieldPath": "map",
           "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "views",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "likes",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "likes",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "score",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "sortTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "sortTitle",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "timeCreated",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "timeCreated",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "views",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "matchup",
+          "arrayConfig": "CONTAINS"
         },
         {
           "fieldPath": "views",
