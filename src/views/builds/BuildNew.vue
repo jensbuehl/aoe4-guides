@@ -47,7 +47,6 @@
   </v-container>
 
   <v-container v-if="user">
-
     <v-card rounded="lg" class="hidden-md-and-up">
       <v-card-title>{{ build.title }}</v-card-title>
       <v-card-actions
@@ -190,6 +189,17 @@
             >
             </v-select>
             <v-select
+              prepend-icon="mdi-sword-cross"
+              label="Matchup"
+              :items="matchups"
+              v-model="build.matchup"
+              density="compact"
+              item-value="shortName"
+              item-title="title"
+              clearable
+            >
+            </v-select>
+            <v-select
               prepend-icon="mdi-update"
               label="Season"
               :items="seasons"
@@ -253,6 +263,7 @@ export default {
 
     const { add, error } = useCollection("builds");
     const civs = getCivs().civs;
+    const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const strategies = getStrategies().strategies;
     const seasons = getSeasons().seasons;
@@ -278,6 +289,7 @@ export default {
         map: "",
         season: "",
         strategy: "",
+        matchup: "",
         views: 0,
         likes: 0,
         upvotes: 0,
@@ -309,6 +321,7 @@ export default {
       build,
       error,
       civs,
+      matchups,
       maps,
       strategies,
       seasons,
