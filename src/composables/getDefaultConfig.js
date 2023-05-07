@@ -1,6 +1,6 @@
 const getDefaultConfig = () => ({
-  civs: "",
-  matchups: "",
+  civs: null,
+  matchups: null,
   maps: [],
   strategies: [],
   seasons: [],

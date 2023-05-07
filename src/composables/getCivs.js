@@ -2,7 +2,7 @@ import { ref } from "vue";
 
 const civs = ref([
   {
-    title: "Any Civilization",
+    title: "Unspecified Civilization",
     shortName: "ANY",
     flagLarge: "assets/flags/any-large.png",
     flagSmall: "assets/flags/any-small.png",
