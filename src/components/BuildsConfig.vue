@@ -3,13 +3,13 @@
     <v-card-text>
       <v-select
         v-model="selectedCivs"
-        prepend-icon="mdi-earth"
         label="Civilization"
         density="compact"
         :items="civs"
         item-value="shortName"
         item-title="title"
         clearable
+        prepend-icon="mdi-earth"
       >
       </v-select>
       <v-select

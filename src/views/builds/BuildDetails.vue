@@ -46,6 +46,14 @@
               size="x-small"
               >{{ build.strategy }}</v-chip
             >
+            <span v-for="(item, index) in build.matchup"><v-chip
+              class="mr-2 mb-2"
+              color="primary"
+              label
+              size="x-small"
+              >{{ item }}</v-chip
+            ></span>
+            
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
             <v-chip class="mr-2 mb-2" label size="x-small"
@@ -115,6 +123,13 @@
               size="small"
               >{{ build.strategy }}</v-chip
             >
+            <span v-for="(item, index) in build.matchup"><v-chip
+              class="mr-2 mb-2"
+              color="primary"
+              label
+              size="small"
+              >{{ item }}</v-chip
+            ></span>
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
             <v-chip class="mr-2 mb-2" label size="small"
@@ -382,6 +397,13 @@
               size="small"
               >{{ build.strategy }}</v-chip
             >
+            <span v-for="(item, index) in build.matchup"><v-chip
+              class="mr-2 mb-2"
+              color="primary"
+              label
+              size="small"
+              >{{ item }}</v-chip
+            ></span>
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip class="mr-2 mb-2" label size="small"

@@ -153,9 +153,14 @@ const filterWith = (config, favorites) => {
   try {
     const queryParams = [];
 
-    if (config?.civs.length > 0) {
-      const civsOp = where("civ", "in", config.civs);
+    if (config?.civs) {
+      const civsOp = where("civ", "in", [config.civs]);
       queryParams.push(civsOp);
+    }
+
+    if (config?.matchups) {
+      const matchupsOp = where("matchup", "in", [config.matchups]);
+      queryParams.push(matchupsOp);
     }
 
     if (config?.seasons.length > 0) {
