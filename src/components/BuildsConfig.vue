@@ -10,7 +10,6 @@
         item-value="shortName"
         item-title="title"
         clearable
-        multiple
       >
       </v-select>
       <v-select
@@ -22,12 +21,11 @@
         item-value="shortName"
         item-title="title"
         clearable
-        multiple
       >
       </v-select>
       <v-select
         v-model="selectedSeasons"
-        prepend-icon="mdi-update"
+        prepend-icon="mdi-trophy"
         label="Season"
         density="compact"
         :items="seasons"
@@ -101,6 +99,7 @@ export default {
   setup(props, context) {
     const store = useStore();
     const civs = getCivs().civs;
+    const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
@@ -133,6 +132,16 @@ export default {
       },
       set(value) {
         store.commit("setCivs", value);
+        context.emit("configChanged");
+      },
+    });
+
+    const selectedMatchups = computed({
+      get() {
+        return store.state.filterConfig?.matchups;
+      },
+      set(value) {
+        store.commit("setMatchups", value);
         context.emit("configChanged");
       },
     });
@@ -185,10 +194,12 @@ export default {
     return {
       sortOptions,
       civs,
+      matchups,
       maps,
       seasons,
       strategies,
       selectedCivs,
+      selectedMatchups,
       selectedMaps,
       selectedStrategies,
       selectedSeasons,

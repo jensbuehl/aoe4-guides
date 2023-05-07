@@ -100,7 +100,7 @@ export default {
   setup() {
     window.scrollTo(0, 0);
 
-    const { add, error } = useCollection("builds");
+    const { error } = useCollection("builds");
     const { convertFromOverlayFormat } = useOverlayConversion();
     const store = useStore();
     const user = computed(() => store.state.user);
@@ -115,7 +115,7 @@ export default {
         author: "",
         authorUid: "",
         description: build.value.description,
-        title: build.value.title + " - copy",
+        title: build.value.title + " - import",
         sortTitle: "", //firestore does not support case-insensitive sorting
         steps: build.value.steps,
         video: build.value.video,

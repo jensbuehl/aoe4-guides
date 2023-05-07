@@ -509,7 +509,6 @@
               density="compact"
               item-value="shortName"
               item-title="title"
-              clearable
             >
             </v-select>
             <v-select
@@ -520,18 +519,16 @@
               density="compact"
               item-value="shortName"
               item-title="title"
-              clearable
             >
             </v-select>
             <v-select
-              prepend-icon="mdi-update"
+              prepend-icon="mdi-trophy"
               label="Season"
               :items="seasons"
               v-model="build.season"
               density="compact"
               item-value="title"
               item-title="title"
-              clearable
             >
             </v-select>
             <v-select
@@ -592,6 +589,7 @@ export default {
     const router = useRouter();
     const user = computed(() => store.state.user);
     const civs = getCivs().civs;
+    const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
@@ -661,6 +659,7 @@ export default {
       build,
       user,
       civs,
+      matchups,
       maps,
       strategies,
       seasons,

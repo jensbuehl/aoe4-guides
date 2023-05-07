@@ -43,6 +43,10 @@ const store = createStore({
       state.filterConfig.civs = payload;
       console.log("civs state changed:", state.filterConfig.civs);
     },
+    setMatchups(state, payload) {
+      state.filterConfig.matchups = payload;
+      console.log("matchups state changed:", state.filterConfig.matchups);
+    },
     setMaps(state, payload) {
       state.filterConfig.maps = payload;
       console.log("maps state changed:", state.filterConfig.maps);
