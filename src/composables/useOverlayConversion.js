@@ -5,16 +5,21 @@ export default function useOverlayConversion() {
       convertStepFromOverlayFormat(step)
     );
 
+    const match_ups = build.matchup?.map(
+      (matchup) => mapCivilizations[matchup]
+    );
+
     return {
       description: build.description || "",
       civ: mapCivilizations[build.civilization],
+      matchup: match_ups,
       title: build.name,
       author: build.author,
       steps: buildSteps,
       video: build.video || "",
       season: build.season || null,
       map: build.map || null,
-      strategy: build.strategy || null
+      strategy: build.strategy || null,
     };
   };
 
@@ -62,9 +67,14 @@ export default function useOverlayConversion() {
       convertStepToOverlayFormat(step)
     );
 
+    const match_ups = build.matchup?.map(
+      (matchup) => mapCivilizations[matchup]
+    );
+
     return {
       description: build.description,
       civilization: mapCivilizations[build.civ],
+      matchup: match_ups,
       name: build.title,
       author: build.author,
       source: window.location.href,
@@ -72,7 +82,7 @@ export default function useOverlayConversion() {
       video: build.video,
       season: build.season || null,
       map: build.map || null,
-      strategy: build.strategy || null
+      strategy: build.strategy || null,
     };
   };
 
@@ -124,7 +134,7 @@ export default function useOverlayConversion() {
     const blob = new Blob([text], { type });
     const e = document.createEvent("MouseEvents"),
       a = document.createElement("a");
-    a.download = filename+".bo";
+    a.download = filename + ".bo";
     a.href = window.URL.createObjectURL(blob);
     a.dataset.downloadurl = ["text/json", a.download, a.href].join(":");
     e.initEvent(
@@ -166,6 +176,7 @@ export default function useOverlayConversion() {
   };
 
   const mapCivilizations = {
+    //export
     ENG: "English",
     FRE: "French",
     RUS: "Rus",
@@ -176,6 +187,7 @@ export default function useOverlayConversion() {
     OTT: "Ottomans",
     CHI: "Chinese",
     MON: "Mongols",
+    //import
     English: "ENG",
     French: "FRE",
     Rus: "RUS",
@@ -188,5 +200,10 @@ export default function useOverlayConversion() {
     Mongols: "MON",
   };
 
-  return { convertToOverlayFormat, copyToClipboard, download, convertFromOverlayFormat };
+  return {
+    convertToOverlayFormat,
+    copyToClipboard,
+    download,
+    convertFromOverlayFormat,
+  };
 }
