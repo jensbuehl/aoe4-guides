@@ -714,7 +714,8 @@ export default {
       dialog.value = false;
       await del(props.id);
       if (!error.value) {
-        router.go("-1");
+        //TODO: Navigate Home when back would result in import or new, navigate back otherwise.
+        router.push({ name: "Home" });
       }
     };
 
