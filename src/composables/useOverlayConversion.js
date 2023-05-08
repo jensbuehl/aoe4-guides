@@ -12,6 +12,9 @@ export default function useOverlayConversion() {
       author: build.author,
       steps: buildSteps,
       video: build.video || "",
+      season: build.season || null,
+      map: build.map || null,
+      strategy: build.strategy || null
     };
   };
 
@@ -67,6 +70,9 @@ export default function useOverlayConversion() {
       source: window.location.href,
       build_order: overlay_steps,
       video: build.video,
+      season: build.season || null,
+      map: build.map || null,
+      strategy: build.strategy || null
     };
   };
 
