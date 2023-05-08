@@ -5,14 +5,16 @@ export default function useOverlayConversion() {
       convertStepFromOverlayFormat(step)
     );
 
-    const match_ups = build.matchup?.map(
+    var match_ups = [];
+    match_ups = build.matchup?.map(
       (matchup) => mapCivilizations[matchup]
     );
 
+    console.log(match_ups)
     return {
       description: build.description || "",
       civ: mapCivilizations[build.civilization],
-      matchup: match_ups,
+      matchup: match_ups || [],
       title: build.name,
       author: build.author,
       steps: buildSteps,
@@ -103,6 +105,7 @@ export default function useOverlayConversion() {
   const convertStepToOverlayFormat = (step) => {
     //Filter img elements
     step.description = step.description.replaceAll("&nbsp;", " ");
+    step.description = step.description.replaceAll("&gt;", ">");
     step.description = step.description.replaceAll("</img>", "");
     const regex = /<img([\w\W]+?)>/g;
     const convertedDescription = step.description.replace(
