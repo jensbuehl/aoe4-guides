@@ -1,6 +1,6 @@
 <template>
   <v-card rounded="lg">
-    <v-card-text>
+    <v-card-text class="pb-0 mb-4">
       <v-select
         v-model="selectedCivs"
         label="Civilization"
@@ -44,41 +44,53 @@
         item-title="title"
         :items="sortOptions"
       ></v-select>
-      <v-divider></v-divider>
-      <!--TODO: Figure out how to override SASS variable for desired height and padding-->
-      <v-expansion-panels variant="accordion">
-        <v-expansion-panel elevation="0" rounded="lg" title="More Filters...">
-          <v-expansion-panel-text>
-            <v-select
-              v-model="selectedMaps"
-              prepend-icon="mdi-map"
-              label="Map"
-              density="compact"
-              :items="maps"
-              item-value="title"
-              item-title="title"
-              clearable
-              multiple
-            >
-            </v-select>
-            <v-select
-              v-model="selectedStrategies"
-              prepend-icon="mdi-strategy"
-              label="Strategy"
-              density="compact"
-              :items="strategies"
-              item-value="title"
-              item-title="title"
-              clearable
-              multiple
-            >
-            </v-select>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
+      <v-btn
+        v-if="!showAdditionalFilters"
+        variant="text"
+        block
+        append-icon="mdi-menu-down"
+        @click="showAdditionalFilters = true"
+        >More Filter Options</v-btn
+      >
+      <v-btn
+        v-if="showAdditionalFilters"
+        variant="text"
+        block
+        class="mb-4"
+        append-icon="mdi-menu-up"
+        @click="showAdditionalFilters = false"
+        >Hide Filter Options</v-btn
+      >
+      <v-select
+        v-if="showAdditionalFilters"
+        v-model="selectedMaps"
+        prepend-icon="mdi-map"
+        label="Map"
+        density="compact"
+        :items="maps"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
+      <v-select
+        v-if="showAdditionalFilters"
+        v-model="selectedStrategies"
+        prepend-icon="mdi-strategy"
+        label="Strategy"
+        density="compact"
+        :items="strategies"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
     </v-card-text>
-    <v-card-actions class="justify-center">
-      <v-btn color="primary" prepend-icon="mdi-close" flat @click="handleReset"
+    <v-divider class="pb-2"></v-divider>
+    <v-card-actions class="justify-center pt-0 mt-0">
+      <v-btn color="primary" prepend-icon="mdi-close" block @click="handleReset"
         >Reset Filters</v-btn
       >
     </v-card-actions>
@@ -103,6 +115,7 @@ export default {
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
+    const showAdditionalFilters = ref(false);
     const sortOptions = ref([
       {
         title: "Popularity",
@@ -204,6 +217,7 @@ export default {
       selectedStrategies,
       selectedSeasons,
       selectedOrderBy,
+      showAdditionalFilters,
       handleReset,
     };
   },
