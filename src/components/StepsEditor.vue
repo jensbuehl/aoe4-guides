@@ -681,7 +681,7 @@ export default {
     const handlePaste = async (e) => {
       const dirty = e.clipboardData.getData("text/html");
       const clean = sanitizeHtml(dirty, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+        allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
         allowedClasses: {
           img: ["icon"],
         },
