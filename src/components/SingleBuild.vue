@@ -88,7 +88,7 @@
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip
-            v-show="build.likes > 0 && (orderBy == 'likes' || 'score')"
+            v-show="build.likes > 0 && orderBy == 'likes'"
             class="mr-2"
             label
             size="x-small"
@@ -96,15 +96,24 @@
             <v-icon start icon="mdi-heart"></v-icon>
             {{ build.likes }}</v-chip
           >
-          <v-chip v-if="build.season" class="mr-2" label size="x-small">{{
-            build.season
-          }}</v-chip>
-          <v-chip v-if="build.map" class="mr-2" label size="x-small">{{
-            build.map
-          }}</v-chip>
-          <v-chip v-if="build.strategy" class="mr-2" label size="x-small">{{
-            build.strategy
-          }}</v-chip>
+          <v-chip
+            v-show="build.upvotes > 0 && orderBy == 'score'"
+            class="mr-2"
+            label
+            size="x-small"
+          >
+            <v-icon start icon="mdi-thumb-up"></v-icon>
+            {{ build.upvotes }}</v-chip
+          >
+          <v-chip v-if="build.season" class="mr-2" label size="x-small"
+            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+          >
+          <v-chip v-if="build.map" class="mr-2" label size="x-small"
+            ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
+          >
+          <v-chip v-if="build.strategy" class="mr-2" label size="x-small"
+            ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
+          >
         </v-item-group>
         <!--large title-->
         <v-card-title class="pt-0 pb-2 hidden-md-and-down">
@@ -141,7 +150,7 @@
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip
-            v-show="build.likes && (orderBy == 'likes' || 'score')"
+            v-show="build.likes > 0 && orderBy == 'likes'"
             class="mr-2 mb-2"
             label
             size="small"
@@ -149,15 +158,24 @@
             <v-icon start icon="mdi-heart"></v-icon>
             {{ build.likes }}</v-chip
           >
-          <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">{{
-            build.season
-          }}</v-chip>
-          <v-chip v-if="build.map" class="mr-2 mb-2" label size="small">{{
-            build.map
-          }}</v-chip>
-          <v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small">{{
-            build.strategy
-          }}</v-chip>
+          <v-chip
+            v-show="build.upvotes > 0 && orderBy == 'score'"
+            class="mr-2 mb-2"
+            label
+            size="small"
+          >
+            <v-icon start icon="mdi-thumb-up"></v-icon>
+            {{ build.upvotes }}</v-chip
+          >
+          <v-chip v-if="build.season" class="mr-2 mb-2" label size="small">
+            <v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+          >
+          <v-chip v-if="build.map" class="mr-2 mb-2" label size="small"
+            ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
+          >
+          <v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small"
+            ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
+          >
         </v-item-group>
       </v-col>
     </v-row>
