@@ -155,25 +155,19 @@ export default function useIconService(civArg) {
       title: "Golde Age Tier 1",
       age: "1",
       imgSrc: "/assets/pictures/age/goldenagetier1.png",
-      civ: [
-        "ABB",
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Golde Age Tier 2",
       age: "4",
       imgSrc: "/assets/pictures/age/goldenagetier2.png",
-      civ: [
-        "ABB",
-      ],
+      civ: ["ABB"],
     },
     {
       title: "Golde Age Tier 3",
       age: "1",
       imgSrc: "/assets/pictures/age/goldenagetier3.png",
-      civ: [
-        "ABB",
-      ],
+      civ: ["ABB"],
     },
   ];
 
@@ -1212,6 +1206,12 @@ export default function useIconService(civArg) {
       civ: ["FRE"],
     },
     {
+      title: "Merchant Guilds",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_french/merchant-guilds.png",
+      civ: ["FRE"],
+    },
+    {
       title: "Benediction",
       age: "3",
       imgSrc: "/assets/pictures/technology_hre/benediction.png",
@@ -1730,6 +1730,23 @@ export default function useIconService(civArg) {
       ],
     },
     {
+      title: "Spyglasses",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_military/Spyglasses.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
       title: "Composite Bows",
       age: "3",
       imgSrc: "/assets/pictures/technology_abbasid/composite-bows.png",
@@ -2067,9 +2084,27 @@ export default function useIconService(civArg) {
       civ: ["MON"],
     },
     {
+      title: "Improved Yam Network",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_mongols/improved-yam-network.png",
+      civ: ["MON"],
+    },
+    {
       title: "Additional Torches",
       age: "3",
       imgSrc: "/assets/pictures/technology_mongols/additional-torches.png",
+      civ: ["MON"],
+    },
+    {
+      title: "Steppe Lancers",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_mongols/steppe-lancers.png",
+      civ: ["MON"],
+    },
+    {
+      title: "Improved Steppe Lancers",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_mongols/improved-steppe-lancers.png",
       civ: ["MON"],
     },
     {
@@ -2236,9 +2271,9 @@ export default function useIconService(civArg) {
       civ: ["RUS"],
     },
     {
-      title: "Mounted Precision",
+      title: "Mounted Training",
       age: "4",
-      imgSrc: "/assets/pictures/technology_rus/mounted-precision.png",
+      imgSrc: "/assets/pictures/technology_rus/mounted-training.png",
       civ: ["RUS"],
     },
     {
@@ -2648,16 +2683,7 @@ export default function useIconService(civArg) {
       title: "Monk",
       age: "3",
       imgSrc: "/assets/pictures/unit_religious/monk-3.png",
-      civ: [
-        "ENG",
-        "FRE",
-        "RUS",
-        "MAL",
-        "MON",
-        "OTT",
-        "CHI",
-        "HRE",
-      ],
+      civ: ["ENG", "FRE", "RUS", "MAL", "MON", "OTT", "CHI", "HRE"],
     },
     {
       title: "Imam",
@@ -2720,13 +2746,25 @@ export default function useIconService(civArg) {
       title: "Man-at-Arms (MAA)",
       age: "3",
       imgSrc: "/assets/pictures/unit_infantry/man-at-arms-1.png",
-      civ: ["ENG", "FRE", "RUS", "MON", "ABB", "OTT", "DEL", "HRE"],
+      civ: ["ENG", "FRE", "RUS", "MON", "OTT", "DEL", "HRE"],
+    },
+    {
+      title: "Ghulam",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_abbasid/ghulam.png",
+      civ: ["ABB"],
     },
     {
       title: "Horseman",
       age: "2",
       imgSrc: "/assets/pictures/unit_cavalry/horseman-1.png",
-      civ: ["ENG", "FRE", "RUS", "MON", "ABB", "OTT", "CHI", "DEL", "HRE"],
+      civ: ["ENG", "FRE", "RUS", "MON", "OTT", "CHI", "DEL", "HRE"],
+    },
+    {
+      title: "Ghazi Raider",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_abbasid/ghazi-raider.png",
+      civ: ["ABB"],
     },
     {
       title: "Knight",
@@ -2738,7 +2776,7 @@ export default function useIconService(civArg) {
       title: "Lancer",
       age: "3",
       imgSrc: "/assets/pictures/unit_cavalry/lancer-3.png",
-      civ: ["MON", "ABB", "OTT", "CHI", "DEL"],
+      civ: ["ABB", "OTT", "CHI", "DEL"],
     },
     {
       title: "Camel Rider",
@@ -2912,6 +2950,12 @@ export default function useIconService(civArg) {
       title: "Mangudai",
       age: "2",
       imgSrc: "/assets/pictures/unit_mongols/mangudai.png",
+      civ: ["MON"],
+    },
+    {
+      title: "Keshik",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_cavalry/keshik.png",
       civ: ["MON"],
     },
     {
@@ -3137,7 +3181,13 @@ export default function useIconService(civArg) {
       title: "Hulk",
       age: "2",
       imgSrc: "/assets/pictures/unit_ship/baghlah.png",
-      civ: ["ENG", "FRE", "HRE", "OTT"],
+      civ: ["ENG", "HRE", "OTT"],
+    },
+    {
+      title: "War Cog",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_ship/war-cog.png",
+      civ: ["FRE"],
     },
     {
       title: "War Junk",
