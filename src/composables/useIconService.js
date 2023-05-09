@@ -2141,12 +2141,6 @@ export default function useIconService(civArg) {
       civ: ["MON"],
     },
     {
-      title: "Improved Steppe Lancers",
-      age: "4",
-      imgSrc: "/assets/pictures/technology_mongols/improved-steppe-lancers.png",
-      civ: ["MON"],
-    },
-    {
       title: "Monastic Shrines",
       age: "4",
       imgSrc: "/assets/pictures/technology_mongols/monastic-shrines.png",
@@ -2295,6 +2289,12 @@ export default function useIconService(civArg) {
       title: "Siege Crews",
       age: "1",
       imgSrc: "/assets/pictures/technology_ottomans/siege-crews-1.png",
+      civ: ["OTT"],
+    },
+    {
+      title: "Great Bombard Emplacement",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_ottomans/great-bombard-emplacement.png",
       civ: ["OTT"],
     },
     {
@@ -2790,20 +2790,20 @@ export default function useIconService(civArg) {
     {
       title: "Ghulam",
       age: "3",
-      imgSrc: "/assets/pictures/unit_abbasid/ghulam.png",
+      imgSrc: "/assets/pictures/unit_abbasid/ghulam-3.png",
       civ: ["ABB"],
     },
     {
       title: "Horseman",
       age: "2",
       imgSrc: "/assets/pictures/unit_cavalry/horseman-1.png",
-      civ: ["ENG", "FRE", "RUS", "MON", "OTT", "CHI", "DEL", "HRE"],
+      civ: ["ENG", "FRE", "RUS", "MON", "OTT", "CHI", "HRE"],
     },
     {
       title: "Ghazi Raider",
       age: "2",
-      imgSrc: "/assets/pictures/unit_abbasid/ghazi-raider.png",
-      civ: ["ABB"],
+      imgSrc: "/assets/pictures/unit_delhi/ghazi-raider-2.png",
+      civ: ["DEL"],
     },
     {
       title: "Knight",
@@ -2994,7 +2994,7 @@ export default function useIconService(civArg) {
     {
       title: "Keshik",
       age: "3",
-      imgSrc: "/assets/pictures/unit_cavalry/keshik.png",
+      imgSrc: "/assets/pictures/unit_mongols/keshik-2.png",
       civ: ["MON"],
     },
     {
