@@ -3287,7 +3287,6 @@ export default function useIconService(civArg) {
         "ENG",
         "FRE",
         "RUS",
-        "DEL",
         "HRE",
       ],
     },
