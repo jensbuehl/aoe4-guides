@@ -45,16 +45,16 @@
         :items="sortOptions"
       ></v-select>
       <v-btn
-        v-if="!showAdditionalFilters"
-        variant="text"
+        v-show="!showAdditionalFilters"
+        variant="plain"
         block
         append-icon="mdi-menu-down"
         @click="showAdditionalFilters = true"
         >More Filter Options</v-btn
       >
       <v-btn
-        v-if="showAdditionalFilters"
-        variant="text"
+        v-show="showAdditionalFilters"
+        variant="plain"
         block
         class="mb-4"
         append-icon="mdi-menu-up"
@@ -90,7 +90,7 @@
     </v-card-text>
     <v-divider class="pb-2"></v-divider>
     <v-card-actions class="justify-center pt-0 mt-0">
-      <v-btn color="primary" prepend-icon="mdi-close" block @click="handleReset"
+      <v-btn color="primary" prepend-icon="mdi-close" variant="text" block @click="handleReset"
         >Reset Filters</v-btn
       >
     </v-card-actions>
