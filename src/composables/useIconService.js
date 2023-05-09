@@ -173,7 +173,7 @@ export default function useIconService(civArg) {
       title: "Vizier Point",
       age: "1",
       imgSrc: "/assets/pictures/age/vizier_point.png",
-      civ: ["ABB"],
+      civ: ["OTT"],
     },
   ];
 
