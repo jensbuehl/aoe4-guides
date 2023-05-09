@@ -152,21 +152,27 @@ export default function useIconService(civArg) {
       ],
     },
     {
-      title: "Golde Age Tier 1",
+      title: "Golden Age Tier 1",
       age: "1",
       imgSrc: "/assets/pictures/age/goldenagetier1.png",
       civ: ["ABB"],
     },
     {
-      title: "Golde Age Tier 2",
+      title: "Golden Age Tier 2",
       age: "4",
       imgSrc: "/assets/pictures/age/goldenagetier2.png",
       civ: ["ABB"],
     },
     {
-      title: "Golde Age Tier 3",
+      title: "Golden Age Tier 3",
       age: "1",
       imgSrc: "/assets/pictures/age/goldenagetier3.png",
+      civ: ["ABB"],
+    },
+    {
+      title: "Vizier Point",
+      age: "1",
+      imgSrc: "/assets/pictures/age/vizier_point.png",
       civ: ["ABB"],
     },
   ];
@@ -241,6 +247,14 @@ export default function useIconService(civArg) {
       ],
     },
     {
+      title: "Cattle",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/cattle.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
       title: "Sheep",
       age: "1",
       imgSrc: "/assets/pictures/resource/sheep.png",
@@ -306,6 +320,14 @@ export default function useIconService(civArg) {
         "CHI",
         "DEL",
         "HRE",
+      ],
+    },
+    {
+      title: "Bounty",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/bounty.png",
+      civ: [
+        "RUS"
       ],
     },
     {
@@ -381,6 +403,23 @@ export default function useIconService(civArg) {
       title: "Wolf",
       age: "1",
       imgSrc: "/assets/pictures/resource/wolf.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Attack",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/attack_move.png",
       civ: [
         "ENG",
         "FRE",
@@ -3248,13 +3287,56 @@ export default function useIconService(civArg) {
         "ENG",
         "FRE",
         "RUS",
-        "MAL",
-        "MON",
-        "ABB",
-        "OTT",
-        "CHI",
         "DEL",
         "HRE",
+      ],
+    },
+    {
+      title: "Villager",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_worker/villager_del.png",
+      civ: [
+        "DEL",
+      ],
+    },
+    {
+      title: "Villager",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_worker/villager_mal.png",
+      civ: [
+        "MAL",
+      ],
+    },
+    {
+      title: "Villager",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_worker/villager_chi.png",
+      civ: [
+        "CHI",
+      ],
+    },
+    {
+      title: "Villager",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_worker/villager_abb.png",
+      civ: [
+        "ABB",
+      ],
+    },
+    {
+      title: "Villager",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_worker/villager_ott.png",
+      civ: [
+        "OTT",
+      ],
+    },
+    {
+      title: "Villager",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_worker/villager_mon.png",
+      civ: [
+        "MON",
       ],
     },
     {
