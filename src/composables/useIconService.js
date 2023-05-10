@@ -175,6 +175,40 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/age/vizier_point.png",
       civ: ["OTT"],
     },
+    {
+      title: "Build or Repair",
+      age: "1",
+      imgSrc: "/assets/pictures/abilities/repair.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
+      title: "Attack",
+      age: "1",
+      imgSrc: "/assets/pictures/abilities/attack-move.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "RUS",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    }
   ];
 
   const resource = [
@@ -331,23 +365,6 @@ export default function useIconService(civArg) {
       ],
     },
     {
-      title: "Build or Repair",
-      age: "1",
-      imgSrc: "/assets/pictures/resource/repair.png",
-      civ: [
-        "ENG",
-        "FRE",
-        "RUS",
-        "MAL",
-        "MON",
-        "ABB",
-        "OTT",
-        "CHI",
-        "DEL",
-        "HRE",
-      ],
-    },
-    {
       title: "Rally",
       age: "1",
       imgSrc: "/assets/pictures/resource/rally.png",
@@ -415,24 +432,7 @@ export default function useIconService(civArg) {
         "DEL",
         "HRE",
       ],
-    },
-    {
-      title: "Attack",
-      age: "1",
-      imgSrc: "/assets/pictures/resource/attack_move.png",
-      civ: [
-        "ENG",
-        "FRE",
-        "RUS",
-        "MAL",
-        "MON",
-        "ABB",
-        "OTT",
-        "CHI",
-        "DEL",
-        "HRE",
-      ],
-    },
+    }
   ];
 
   const landmark = [
@@ -3225,7 +3225,7 @@ export default function useIconService(civArg) {
     {
       title: "War Cog",
       age: "2",
-      imgSrc: "/assets/pictures/unit_ship/war-cog.png",
+      imgSrc: "/assets/pictures/unit_french/war-cog.png",
       civ: ["FRE"],
     },
     {
@@ -3293,7 +3293,7 @@ export default function useIconService(civArg) {
     {
       title: "Villager",
       age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager_del.png",
+      imgSrc: "/assets/pictures/unit_worker/villager-delhi.png",
       civ: [
         "DEL",
       ],
@@ -3301,7 +3301,7 @@ export default function useIconService(civArg) {
     {
       title: "Villager",
       age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager_mal.png",
+      imgSrc: "/assets/pictures/unit_worker/villager-malians.png",
       civ: [
         "MAL",
       ],
@@ -3309,7 +3309,7 @@ export default function useIconService(civArg) {
     {
       title: "Villager",
       age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager_chi.png",
+      imgSrc: "/assets/pictures/unit_worker/villager-china.png",
       civ: [
         "CHI",
       ],
@@ -3317,7 +3317,7 @@ export default function useIconService(civArg) {
     {
       title: "Villager",
       age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager_abb.png",
+      imgSrc: "/assets/pictures/unit_worker/villager-abbasid.png",
       civ: [
         "ABB",
       ],
@@ -3325,7 +3325,7 @@ export default function useIconService(civArg) {
     {
       title: "Villager",
       age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager_ott.png",
+      imgSrc: "/assets/pictures/unit_worker/villager-ottomans.png",
       civ: [
         "OTT",
       ],
@@ -3333,7 +3333,7 @@ export default function useIconService(civArg) {
     {
       title: "Villager",
       age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager_mon.png",
+      imgSrc: "/assets/pictures/unit_worker/villager-mongols.png",
       civ: [
         "MON",
       ],
