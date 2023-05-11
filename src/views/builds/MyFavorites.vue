@@ -141,6 +141,7 @@ export default {
       getSize(query);
 
       updatePageBoundaries();
+      window.scrollTo(0, 0);
     };
 
     const previousPage = async () => {
@@ -159,6 +160,7 @@ export default {
       getSize(query);
 
       updatePageBoundaries();
+      window.scrollTo(0, 0);
     };
 
     const updatePageBoundaries = () => {
