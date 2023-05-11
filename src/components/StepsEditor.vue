@@ -8,7 +8,9 @@
         The action cannot be undone.
       </v-card-text>
       <v-card-actions>
-        <v-btn color="error" block @click="removeStep(delteRowIndex)">Delete</v-btn>
+        <v-btn color="error" block @click="removeStep(delteRowIndex)"
+          >Delete</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -140,9 +142,13 @@
       v-for="(item, index) in steps"
       :key="index"
       v-on:keyup.enter.alt="addStep(index)"
-      v-on:keyup.delete.alt="dialog = true; delteRowIndex = index; delteRowIndex = index"
-      @mouseover="selectItem(index)"
-      @mouseleave="unSelectItem()"
+      v-on:keyup.delete.alt="
+        dialog = true;
+        delteRowIndex = index;
+        delteRowIndex = index;
+      "
+      @mouseover="hoverItem(index)"
+      @mouseleave="unhoverItem()"
     >
       <v-divider></v-divider>
       <v-col cols="12">
@@ -289,7 +295,10 @@
                   v-if="index === hoverRowIndex"
                   variant="plain"
                   color="primary"
-                  @click="dialog = true; delteRowIndex = index"
+                  @click="
+                    dialog = true;
+                    delteRowIndex = index;
+                  "
                   icon="mdi-delete"
                 >
                 </v-btn>
@@ -375,32 +384,9 @@
               src="/assets/resources/stone.png"
             ></v-img>
           </th>
-          <th class="text-left hidden">Description</th>
-          <th v-if="!readonly" class="text-right">
-            <v-menu
-              v-if="selection"
-              :close-on-content-click="false"
-              location="bottom"
-            >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  class="mr-n4"
-                  prepend-icon="mdi-image-plus"
-                  color="primary"
-                  v-bind="props"
-                  variant="text"
-                  append-icon="mdi-menu-down"
-                  >Add Icon</v-btn
-                >
-              </template>
-              <v-card rounded="lg" class="mt-4" width="350px">
-                <IconSelector
-                  @iconSelected="(iconPath) => handleIconSelected(iconPath)"
-                  :civ="civ"
-                ></IconSelector>
-              </v-card>
-            </v-menu>
-          </th>
+          <th class="text-left">Description</th>
+          <th v-if="!readonly" width="50px" class="text-right"></th>
+          <th v-if="!readonly" class="text-right"></th>
         </tr>
       </thead>
       <tbody ref="stepsTable">
@@ -408,19 +394,23 @@
           v-for="(item, index) in steps"
           :key="index"
           v-on:keyup.enter.alt="addStep(index)"
-          v-on:keyup.delete.alt="dialog = true; delteRowIndex = index"
-          @mouseover="selectItem(index)"
-          @mouseleave="unSelectItem()"
+          v-on:keyup.delete.alt="
+            dialog = true;
+            delteRowIndex = index;
+          "
+          @mousedown="selectRow(index)"
+          @mouseover="hoverItem(index)"
+          @mouseleave="unhoverItem()"
         >
           <td
             @paste="handlePaste"
             @focusout="updateStepTime($event, index)"
             :contenteditable="!readonly"
-            class="text-center"
+            class="text-center py-1"
             v-html="item.time"
           ></td>
           <td
-            class="text-center"
+            class="text-center py-1"
             disabled
             v-html="item.villagers ? item.villagers : aggregateVillagers(index)"
           ></td>
@@ -428,35 +418,35 @@
             @paste="handlePaste"
             @focusout="updateStepBuilders($event, index)"
             :contenteditable="!readonly"
-            class="text-center"
+            class="text-center py-1"
             v-html="item.builders ? item.builders : ''"
           ></td>
           <td
             @paste="handlePaste"
             @focusout="updateStepFood($event, index)"
             :contenteditable="!readonly"
-            class="text-center"
+            class="text-center py-1"
             v-html="item.food"
           ></td>
           <td
             @paste="handlePaste"
             @focusout="updateStepWood($event, index)"
             :contenteditable="!readonly"
-            class="text-center"
+            class="text-center py-1"
             v-html="item.wood"
           ></td>
           <td
             @paste="handlePaste"
             @focusout="updateStepGold($event, index)"
             :contenteditable="!readonly"
-            class="text-center"
+            class="text-center py-1"
             v-html="item.gold"
           ></td>
           <td
             @paste="handlePaste"
             @focusout="updateStepStone($event, index)"
             :contenteditable="!readonly"
-            class="text-center"
+            class="text-center py-1"
             v-html="item.stone"
           ></td>
           <td
@@ -468,7 +458,38 @@
             class="text-left py-1"
             v-html="item.description"
           ></td>
-          <td v-if="!readonly" width="180" class="text-right">
+          <td v-if="!readonly" class="text-right">
+            <div style="min-width: 50px">
+              <v-menu
+                v-if="selection && index === selectedRowIndex"
+                :close-on-content-click="false"
+                location="bottom"
+              >
+                <template v-slot:activator="{ props: menu }">
+                  <v-tooltip
+                    location="top"
+                    text="Add icon at current selection or cursor position"
+                  >
+                    <template v-slot:activator="{ props: tooltip }">
+                      <v-btn
+                        icon="mdi-image-plus"
+                        color="primary"
+                        v-bind="mergeProps(menu, tooltip)"
+                        variant="plain"
+                      ></v-btn>
+                    </template>
+                  </v-tooltip>
+                </template>
+                <v-card rounded="lg" class="mt-4" width="350px">
+                  <IconSelector
+                    @iconSelected="(iconPath) => handleIconSelected(iconPath)"
+                    :civ="civ"
+                  ></IconSelector>
+                </v-card>
+              </v-menu>
+            </div>
+          </td>
+          <td v-if="!readonly" width="130" class="text-right">
             <v-tooltip location="top" text="Remove current step (ALT + DEL)">
               <template v-slot:activator="{ props }">
                 <v-btn
@@ -476,7 +497,10 @@
                   v-if="index === hoverRowIndex"
                   variant="plain"
                   color="primary"
-                  @click="dialog = true; delteRowIndex = index"
+                  @click="
+                    dialog = true;
+                    delteRowIndex = index;
+                  "
                   icon="mdi-delete"
                 >
                 </v-btn>
@@ -504,7 +528,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, mergeProps } from "vue";
 import sanitizeHtml from "sanitize-html";
 import IconSelector from "../components/IconSelector.vue";
 
@@ -520,7 +544,8 @@ export default {
     const stepsCopy = reactive(JSON.parse(JSON.stringify(props.steps)));
     const readonly = props.readonly;
     const hoverRowIndex = ref(null);
-    const delteRowIndex = ref(null)
+    const selectedRowIndex = ref(null);
+    const delteRowIndex = ref(null);
     const selection = ref(null);
     const stepsTable = ref(null);
     const dialog = ref(false);
@@ -672,10 +697,13 @@ export default {
       dialog.value = false;
     };
 
-    const selectItem = (index) => {
+    const selectRow = (index) => {
+      selectedRowIndex.value = index;
+    };
+    const hoverItem = (index) => {
       hoverRowIndex.value = index;
     };
-    const unSelectItem = () => {
+    const unhoverItem = () => {
       hoverRowIndex.value = null;
     };
     const handlePaste = async (e) => {
@@ -707,10 +735,12 @@ export default {
       civ,
       readonly,
       hoverRowIndex,
+      selectedRowIndex,
       sanitizeHtml,
       selection,
       delteRowIndex,
       dialog,
+      mergeProps,
       handlePaste,
       aggregateVillagers,
       updateStepDescription,
@@ -722,8 +752,9 @@ export default {
       updateStepTime,
       removeStep,
       addStep,
-      selectItem,
-      unSelectItem,
+      selectRow,
+      hoverItem,
+      unhoverItem,
       saveSelection,
       restoreSelection,
       handleIconSelected,
@@ -758,14 +789,7 @@ table tbody tr td:nth-child(7) {
 }
 
 td:empty {
-  line-height: 44px;
-}
-
-.tablecell {
-  height: 50px;
-  vertical-align: middle;
-  display: table-cell;
-  align-items: center;
+  line-height: 43px;
 }
 
 .icon {
