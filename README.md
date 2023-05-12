@@ -46,11 +46,11 @@ npm run dev
 npm run build
 ```
 
-# License
+## License
 
 With the exception of all visual assets (`/public/pictures/*.png`), the project is licensed under MIT.
 
-# Disclaimer
+## Disclaimer
 
 Age of Empires IV © Microsoft Corporation.
 
