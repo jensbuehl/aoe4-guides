@@ -1,5 +1,8 @@
 <template>
   <v-container v-if="user && build">
+    <v-card v-if="error" class="mb-4" rounded="lg" color="error">
+      <v-card-text>{{ error }}</v-card-text>
+    </v-card>
     <v-card rounded="lg">
       <v-card-title class="hidden-md-and-up">
         {{ build.title }}
@@ -593,6 +596,7 @@ import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
+import useBuildValidator from "../../composables/useBuildValidator";
 import getCivs from "../../composables/getCivs";
 import getSeasons from "../../composables/getSeasons";
 import getMaps from "../../composables/getMaps";
@@ -620,6 +624,7 @@ export default {
       useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
     const { get, update, error } = useCollection("builds");
+    const { validateBuild, validateVideo } = useBuildValidator();
 
     onMounted(async () => {
       const res = await get(props.id);
@@ -651,11 +656,18 @@ export default {
     };
 
     const handleSave = async () => {
-      build.value.sortTitle =
-        build.value.title.toLowerCase() + crypto.randomUUID();
-      await update(props.id, build.value);
+      error.value = validateBuild(build.value)
+      console.log(error.value)
+
+      //Write to database
       if (!error.value) {
-        router.push("/builds/" + props.id);
+        build.value.sortTitle = build.value.title.toLowerCase() + crypto.randomUUID();
+
+        await update(props.id, build.value);
+        //Navigate to new build order
+        if (!error.value) {
+          router.push("/builds/" + props.id);
+        }
       }
     };
 
@@ -674,12 +686,18 @@ export default {
     const handleStepsChanged = (steps) => {
       build.value.steps = steps;
     };
+
     const handleVideoInput = () => {
-      build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
+      error.value = validateVideo(build.value.video)
+      if(!error.value){
+        //Convert to embed url
+        build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
+      }
     };
 
     return {
       build,
+      error,
       user,
       civs,
       matchups,

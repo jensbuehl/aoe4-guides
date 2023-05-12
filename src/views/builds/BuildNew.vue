@@ -47,6 +47,9 @@
   </v-container>
 
   <v-container v-if="user">
+    <v-card v-if="error" class="mb-4" rounded="lg" color="error">
+      <v-card-text>{{ error }}</v-card-text>
+    </v-card>
     <v-card rounded="lg" class="hidden-md-and-up">
       <v-card-title>{{ build.title }}</v-card-title>
       <v-card-actions
@@ -149,7 +152,6 @@
             label="Title"
             autofocus=""
             density="compact"
-            placeholder="Add your Title here"
             v-model="build.title"
             :value="build.title"
           ></v-text-field>
@@ -250,6 +252,7 @@ import { useRouter } from "vue-router";
 import getCivs from "../../composables/getCivs";
 import getSeasons from "../../composables/getSeasons";
 import useCollection from "../../composables/useCollection";
+import useBuildValidator from "../../composables/useBuildValidator";
 import getMaps from "../../composables/getMaps";
 import getStrategies from "../../composables/getStrategies";
 
@@ -260,6 +263,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { add, error } = useCollection("builds");
+    const { validateBuild, validateVideo } = useBuildValidator();
     const civs = getCivs().civs;
     const matchups = getCivs().civs;
     const maps = getMaps().maps;
@@ -299,20 +303,33 @@ export default {
     }
 
     const save = async () => {
-      build.value.sortTitle =
-        build.value.title.toLowerCase() + crypto.randomUUID();
-      build.value.authorUid = user.value.uid;
-      build.value.author = user.value.displayName;
-      const id = await add(build.value);
+      error.value = validateBuild(build.value);
+
+      //Write to database
       if (!error.value) {
-        router.push("/builds/" + id);
+        build.value.sortTitle =
+          build.value.title.toLowerCase() + crypto.randomUUID();
+        build.value.authorUid = user.value.uid;
+        build.value.author = user.value.displayName;
+
+        const id = await add(build.value);
+        //Navigate to new build order
+        if (!error.value) {
+          router.push("/builds/" + id);
+        }
       }
     };
+
     const handleStepsChanged = (steps) => {
       build.value.steps = steps;
     };
+
     const handleVideoInput = () => {
-      build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
+      error.value = validateVideo(build.value.video);
+      if (!error.value) {
+        //Convert to embed url
+        build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
+      }
     };
 
     return {
