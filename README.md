@@ -1,4 +1,4 @@
-# aoe4-guides | Your Home for Age of Empires IV Guides and Build Orders 
+# aoe4-guides
 
 Source code for [aoe4guides.com](https://aoe4guides.com): Yet another Age of Empires IV build order page to:
 * create your own build orders (including video link, description, other meta information)
@@ -45,3 +45,13 @@ npm run dev
 ```sh
 npm run build
 ```
+
+# License
+
+With the exception of all visual assets (`/public/pictures/*.png`), the project is licensed under MIT.
+
+# Disclaimer
+
+Age of Empires IV © Microsoft Corporation.
+
+This project was created under Microsoft's ["Game Content Usage Rules"](https://www.xbox.com/en-US/developers/rules) using assets from Age of Empires IV, and it is not endorsed by or affiliated with Microsoft.
