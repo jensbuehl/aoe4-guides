@@ -6,12 +6,12 @@
           <v-btn
             class="mx-1"
             flat
-            onclick="location.href='https://paypal.me/jensbuehl'"
+            onclick="location.href='https://ko-fi.com/jensbuehl'"
           >
             <template v-slot:prepend>
               <v-icon color="red">mdi-heart</v-icon>
             </template>
-            Support Us
+            Support me
           </v-btn>
           <v-btn
             class="mx-1"
