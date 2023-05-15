@@ -41,6 +41,7 @@
         </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
+      <span v-if="authIsReady">
         <v-menu open-on-hover v-if="authIsReady">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -128,6 +129,7 @@
             </v-list-item>
           </v-list>
         </v-menu>
+      </span>
     </v-container>
   </v-app-bar>
 </template>
