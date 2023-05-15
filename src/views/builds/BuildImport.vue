@@ -22,9 +22,18 @@
           color="primary"
           class="pa-1"
           ><v-card rounded="lg">
-            <v-card-title> Ready for Age Up?</v-card-title>
-
             <v-list lines="two">
+              <v-list-item to="/register">
+                <v-label>New villager?</v-label>
+                <span
+                  :style="{
+                    color:
+                      $vuetify.theme.themes.customDarkTheme.colors.secondary,
+                  }"
+                >
+                  Register now!
+                </span>
+              </v-list-item>
               <v-list-item
                 title="Create"
                 subtitle="Create new Age of Empires 4 build orders and share them with your friends."
@@ -147,11 +156,11 @@ export default {
         error.value = err;
         alert(err);
       }
-    }
+    };
 
     const onChange = async (e) => {
-        files.value = e.target.files || e.dataTransfer.files;
-        importAndCreateFromTemplate();
+      files.value = e.target.files || e.dataTransfer.files;
+      importAndCreateFromTemplate();
     };
 
     const dragover = async (e) => {
