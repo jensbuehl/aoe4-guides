@@ -88,12 +88,24 @@
       >
       </v-select>
     </v-card-text>
-    <v-divider class="pb-2"></v-divider>
-    <v-card-actions class="justify-center pt-0 mt-0">
-      <v-btn color="primary" prepend-icon="mdi-close" variant="text" block @click="handleReset"
-        >Reset Filters</v-btn
-      >
-    </v-card-actions>
+    <v-divider></v-divider>
+      <v-container class="fill-height">
+      <v-row align="center" justify="center" class="fill-height">
+        <v-col class="d-flex justify-center" cols="12" lg="6">
+          <v-label>762 build orders</v-label>
+        </v-col>
+        <v-col class="d-flex justify-center" cols="12" lg="6">
+          <v-btn
+            color="primary"
+            prepend-icon="mdi-close"
+            variant="text"
+            flat
+            @click="handleReset"
+            >Reset Filters</v-btn
+          ></v-col
+        >
+      </v-row>
+    </v-container>
   </v-card>
 </template>
 
