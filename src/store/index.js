@@ -19,6 +19,7 @@ const store = createStore({
     user: null,
     authIsReady: false,
     filterConfig: null,
+    resultsCount: 0,
     template: null,
   },
   mutations: {
@@ -62,6 +63,10 @@ const store = createStore({
     setOrderBy(state, payload) {
       state.filterConfig.orderBy = payload;
       console.log("orderBy state changed:", state.filterConfig.orderBy);
+    },
+    setResultsCount(state, payload){
+      state.resultsCount = payload;
+      console.log("results count state changed:", state.resultsCount);
     },
     //Template module
     setTemplate(state, payload) {

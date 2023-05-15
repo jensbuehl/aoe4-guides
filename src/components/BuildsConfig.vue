@@ -92,7 +92,7 @@
       <v-container class="fill-height">
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center" cols="12" lg="6">
-          <v-label>762 build orders</v-label>
+          <v-label>{{count}} build order</v-label><v-label v-if="count > 1 || count == 0" >s</v-label>
         </v-col>
         <v-col class="d-flex justify-center" cols="12" lg="6">
           <v-btn
@@ -128,6 +128,8 @@ export default {
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const showAdditionalFilters = ref(false);
+    const count = computed(() => store.state.resultsCount);
+
     const sortOptions = ref([
       {
         title: "Popularity",
@@ -230,6 +232,7 @@ export default {
       selectedSeasons,
       selectedOrderBy,
       showAdditionalFilters,
+      count,
       handleReset,
     };
   },

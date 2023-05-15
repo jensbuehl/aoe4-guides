@@ -102,6 +102,7 @@ export default {
         )
       );
       const size = await getSize(allDocsQuery);
+      store.commit("setResultsCount", size)
       paginationConfig.value.totalPages = Math.ceil(
         size / paginationConfig.value.limit
       );
@@ -171,8 +172,6 @@ export default {
           builds.value[builds.value.length - 1][
             filterAndOrderConfig.value.orderBy
           ];
-        console.log("page start", paginationConfig.value.pageStart);
-        console.log("page end", paginationConfig.value.pageEnd);
       }
     };
 

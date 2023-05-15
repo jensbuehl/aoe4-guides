@@ -89,6 +89,7 @@ export default {
         )
       );
       const size = await getSize(allDocsQuery);
+      store.commit("setResultsCount", size)
       paginationConfig.value.totalPages = Math.ceil(
         size / paginationConfig.value.limit
       );
