@@ -707,21 +707,29 @@ export default {
       hoverRowIndex.value = null;
     };
     const handlePaste = async (e) => {
+      //Check html content first
       const dirty = e.clipboardData.getData("text/html");
-      const clean = sanitizeHtml(dirty, {
-        allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
-        allowedClasses: {
-          img: ["icon"],
-        },
-        allowedAttributes: {
-          img: ["style", "class", "src"],
-        },
-        allowedStyles: {
-          "*": {
-            "vertical-align": [/^middle$/],
+      var clean = "";
+      if(dirty){
+        clean = sanitizeHtml(dirty, {
+          allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
+          allowedClasses: {
+            img: ["icon"],
           },
-        },
-      });
+          allowedAttributes: {
+            img: ["style", "class", "src"],
+          },
+          allowedStyles: {
+            "*": {
+              "vertical-align": [/^middle$/],
+            },
+          },
+        });
+      }
+      else{
+        //Fallback to plain text otherwise
+        clean = e.clipboardData.getData("text/plain")
+      }
 
       document.execCommand("insertHTML", false, clean);
       e.stopPropagation();
