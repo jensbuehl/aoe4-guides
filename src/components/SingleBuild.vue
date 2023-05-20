@@ -49,7 +49,7 @@
           </template>
         </v-img>
       </v-col>
-      <v-col>
+      <v-col cols="9">
         <!--small title-->
         <div
           :style="{
@@ -86,7 +86,7 @@
             class="mr-2"
             label
             size="x-small"
-            v-show="build.views && (orderBy == 'views' || 'score')"
+            v-show="build.views && (orderBy == 'views' || orderBy == 'score')"
           >
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
@@ -111,10 +111,10 @@
           <v-chip v-if="build.season" class="mr-2" label size="x-small"
             ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
           >
-          <v-chip v-if="build.map" class="mr-2" label size="x-small"
+          <v-chip v-if="build.map" class="mr-2 hidden-xs" label size="x-small"
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
-          <v-chip v-if="build.strategy" class="mr-2" label size="x-small"
+          <v-chip v-if="build.strategy" class="mr-2 hidden-xs" label size="x-small"
             ><v-icon start icon="mdi-strategy"></v-icon
             >{{ build.strategy }}</v-chip
           >
@@ -151,7 +151,7 @@
             class="mr-2 mb-2"
             label
             size="small"
-            v-show="build.views && (orderBy == 'views' || 'score')"
+            v-show="build.views && (orderBy == 'views' || orderBy == 'score')"
           >
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
@@ -209,11 +209,11 @@ export default {
     const height = computed(() => {
       switch (name.value) {
         case "xs":
-          return 60;
+          return 80;
         case "sm":
-          return 60;
+          return 80;
         case "md":
-          return 60;
+          return 80;
         case "lg":
           return 112;
         case "xl":
