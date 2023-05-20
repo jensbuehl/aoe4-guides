@@ -28,10 +28,9 @@
         </v-menu>
       </v-app-bar-nav-icon>
 
-      <v-app-bar-title style="min-width: 150px">
-        
+      <v-app-bar-title style="min-width: 220px">  
         <router-link style="text-decoration: none" to="/">
-          <v-btn color="primary" class="title" flat>{{ title }}</v-btn>
+          <v-btn color="primary" class="title px-0" flat>{{ title }}</v-btn>
         </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
