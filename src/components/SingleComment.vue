@@ -16,7 +16,7 @@
       <v-col cols="auto">
         <v-avatar v-if="user" color="primary" v-bind="props" con>{{author.slice(0,2).toUpperCase()}}</v-avatar>
       </v-col>
-      <v-col cols="9">{{ comment }}</v-col>
+      <v-col cols="8" sm="10">{{ comment }}</v-col>
       <v-row justify="end">
         <v-col cols="auto" class="fill-height mr-1">
           <v-btn
