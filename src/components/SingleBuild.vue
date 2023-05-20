@@ -63,19 +63,19 @@
         <!--small chips-->
         <v-item-group class="ml-4 mb-1 hidden-lg-and-up">
           <v-chip
-            class="mr-2 mt-2"
+            class="mr-1 mt-1"
             v-if="isNew(build.timeCreated.toDate())"
             label
             color="primary"
             size="x-small"
             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
           >
-          <v-chip class="mr-2 mt-2" label size="x-small"
+          <v-chip class="mr-1 mt-1" label size="x-small"
             ><v-icon start icon="mdi-account-edit"></v-icon
             >{{ build.author }}</v-chip
           >
           <v-chip
-            class="mr-2 mt-2"
+            class="mr-1 mt-1"
             v-if="build.timeCreated && orderBy == 'timeCreated'"
             label
             size="x-small"
@@ -83,7 +83,7 @@
             >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
           >
           <v-chip
-            class="mr-2 mt-2"
+            class="mr-1 mt-1"
             label
             size="x-small"
             v-show="build.views && (orderBy == 'views' || orderBy == 'score')"
@@ -92,7 +92,7 @@
           >
           <v-chip
             v-show="build.likes > 0 && orderBy == 'likes'"
-            class="mr-2 mt-2"
+            class="mr-1 mt-1"
             label
             size="x-small"
           >
@@ -101,20 +101,20 @@
           >
           <v-chip
             v-show="build.upvotes > 0 && orderBy == 'score'"
-            class="mr-2 mt-2"
+            class="mr-1 mt-1"
             label
             size="x-small"
           >
             <v-icon start icon="mdi-thumb-up"></v-icon>
             {{ build.upvotes }}</v-chip
           >
-          <v-chip v-if="build.season" class="mr-2 mt-2" label size="x-small"
+          <v-chip v-if="build.season" class="mr-1 mt-1" label size="x-small"
             ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
           >
-          <v-chip v-if="build.map" class="mr-2 mt-2 hidden-xs" label size="x-small"
+          <v-chip v-if="build.map" class="mr-1 mt-1 hidden-xs" label size="x-small"
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
-          <v-chip v-if="build.strategy" class="mr-2 mt-2 hidden-xs" label size="x-small"
+          <v-chip v-if="build.strategy" class="mr-1 mt-1 hidden-xs" label size="x-small"
             ><v-icon start icon="mdi-strategy"></v-icon
             >{{ build.strategy }}</v-chip
           >
