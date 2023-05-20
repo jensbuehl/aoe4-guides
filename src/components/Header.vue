@@ -8,15 +8,15 @@
           </template>
           <v-list v-if="authIsReady">
             <v-list-item to="/">
-              <v-icon class="mr-4">mdi-home</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-home</v-icon>
               All Builds
             </v-list-item>
             <v-list-item v-if="user" to="/favorites">
-              <v-icon class="mr-4">mdi-heart-outline</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-heart-outline</v-icon>
               Favorites
             </v-list-item>
             <v-list-item v-if="user" to="/mybuilds">
-              <v-icon class="mr-4">mdi-playlist-edit</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-playlist-edit</v-icon>
               My Builds
             </v-list-item>
             <v-divider></v-divider>
@@ -29,15 +29,9 @@
       </v-app-bar-nav-icon>
 
       <v-app-bar-title style="min-width: 150px">
+        
         <router-link style="text-decoration: none" to="/">
-          <div
-            class="title"
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-          >
-            {{ title }}
-          </div>
+          <v-btn color="primary" class="title" flat>{{ title }}</v-btn>
         </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
@@ -57,18 +51,27 @@
           </template>
           <v-list>
             <v-list-item to="/new">
-              <v-icon class="mr-4">mdi-pencil</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-pencil</v-icon>
               Create New Build
             </v-list-item>
             <v-list-item to="/import">
-              <v-icon class="mr-4">mdi-import</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-import</v-icon>
               Import Build
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-btn flat to="/" class="mr-2 hidden-sm-and-down" prepend-icon="mdi-home"> All Builds </v-btn>
+        <v-btn
+          flat
+          to="/"
+          class="mr-2 hidden-sm-and-down"
+          prepend-icon="mdi-home"
+          color="primary"
+        >
+          All Builds
+        </v-btn>
         <v-btn
           v-if="user"
+          color="primary"
           flat
           to="/favorites"
           class="mr-2 hidden-sm-and-down"
@@ -78,6 +81,7 @@
         </v-btn>
         <v-btn
           v-if="user"
+          color="primary"
           flat
           to="/mybuilds"
           class="mr-2 hidden-sm-and-down"
@@ -88,9 +92,12 @@
         <v-menu open-on-hover class="mx-4">
           <template v-slot:activator="{ props }">
             <v-btn class="mr-2" icon>
-              <v-avatar v-if="user" color="primary" v-bind="props" con>{{user.displayName.slice(0,2)}}</v-avatar>
+              <v-avatar v-if="user" color="primary" v-bind="props" con>{{
+                user.displayName.slice(0, 2)
+              }}</v-avatar>
               <v-avatar v-if="!user" color="primary" v-bind="props" con>
-                <v-icon icon="mdi-account"></v-icon></v-avatar>
+                <v-icon icon="mdi-account"></v-icon
+              ></v-avatar>
             </v-btn>
           </template>
           <v-list v-if="!user">
@@ -106,7 +113,7 @@
             </v-list-item>
             <VDivider></VDivider>
             <v-list-item v-if="!user" to="/login">
-              <v-icon class="mr-4">mdi-login</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-login</v-icon>
               Login
             </v-list-item>
           </v-list>
@@ -120,11 +127,11 @@
             </v-list-item>
             <VDivider></VDivider>
             <v-list-item v-if="user" to="/account">
-              <v-icon class="mr-4">mdi-account-edit</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-account-edit</v-icon>
               Your Profile
             </v-list-item>
             <v-list-item @click="logout">
-              <v-icon class="mr-4">mdi-logout</v-icon>
+              <v-icon class="mr-4" color="primary">mdi-logout</v-icon>
               Logout
             </v-list-item>
           </v-list>
