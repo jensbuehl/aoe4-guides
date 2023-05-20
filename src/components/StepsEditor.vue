@@ -288,7 +288,13 @@
       <v-col v-if="!readonly" cols="4">
         <v-card variant="flat" class="my-2">
           <div class="text-right">
-            <v-tooltip location="top" text="Remove current step (ALT + DEL)">
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Remove current step (ALT + DEL)</span
+              >
               <template v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
@@ -305,7 +311,13 @@
               </template>
             </v-tooltip>
 
-            <v-tooltip location="top" text="Add new step below (ALT + ENTER)">
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Add new step below (ALT + ENTER)</span
+              >
               <template v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
@@ -344,7 +356,13 @@
               src="/assets/resources/time.png"
             ></v-img>
           </th>
-          <v-tooltip location="top" text="Aggregated Villager Count">
+          <v-tooltip location="top">
+            <span
+              :style="{
+                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              }"
+              >Villager Count</span
+            >
             <template v-slot:activator="{ props }">
               <th v-bind="props" class="text-center ma-0 pa-0" width="56px">
                 <v-img
@@ -466,10 +484,14 @@
                 location="bottom"
               >
                 <template v-slot:activator="{ props: menu }">
-                  <v-tooltip
-                    location="top"
-                    text="Add icon at current selection or cursor position"
-                  >
+                  <v-tooltip location="top">
+                    <span
+                      :style="{
+                        color:
+                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      }"
+                      >Add icon at current selection or cursor position</span
+                    >
                     <template v-slot:activator="{ props: tooltip }">
                       <v-btn
                         icon="mdi-image-plus"
@@ -490,7 +512,13 @@
             </div>
           </td>
           <td v-if="!readonly" width="130" class="text-right">
-            <v-tooltip location="top" text="Remove current step (ALT + DEL)">
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Remove current step (ALT + DEL)</span
+              >
               <template v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
@@ -507,7 +535,13 @@
               </template>
             </v-tooltip>
 
-            <v-tooltip location="top" text="Add new step below (ALT + ENTER)">
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Add new step below (ALT + ENTER)</span
+              >
               <template v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
@@ -710,7 +744,7 @@ export default {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
       var clean = "";
-      if(dirty){
+      if (dirty) {
         clean = sanitizeHtml(dirty, {
           allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
           allowedClasses: {
@@ -725,10 +759,9 @@ export default {
             },
           },
         });
-      }
-      else{
+      } else {
         //Fallback to plain text otherwise
-        clean = e.clipboardData.getData("text/plain")
+        clean = e.clipboardData.getData("text/plain");
       }
 
       document.execCommand("insertHTML", false, clean);

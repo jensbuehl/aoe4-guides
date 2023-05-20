@@ -16,7 +16,7 @@
               return item.shortName === build.civ;
             }).flagSmall
           "
-          gradient="to right, transparent, #222222"
+          gradient="to right, transparent, #1D2432"
           alt="{{build.civ}}"
           cover
         >
@@ -35,7 +35,7 @@
           :min-height="height"
           src="/assets/flags/any-large.png"
           lazy-src="/assets/flags/any-small.png"
-          gradient="to right, transparent, #222222"
+          gradient="to right, transparent, #1D2432"
           alt="{{build.civ}}"
           cover
         >
@@ -52,13 +52,16 @@
       <v-col>
         <!--small title-->
         <div
-          class="pb-1 ml-4 text-subtitle-2 hidden-lg-and-up"
+          :style="{
+            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+          }"
+          class="ml-4 text-subtitle-2 hidden-lg-and-up"
           style="font-family: 'Segoe UI' !important"
         >
           {{ build.title }}
         </div>
         <!--small chips-->
-        <v-item-group class="ml-4 pt-1 hidden-sm-and-down hidden-lg-and-up">
+        <v-item-group class="ml-4 mb-1 hidden-lg-and-up">
           <v-chip
             class="mr-2"
             v-if="isNew(build.timeCreated.toDate())"
@@ -112,11 +115,14 @@
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
           <v-chip v-if="build.strategy" class="mr-2" label size="x-small"
-            ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
+            ><v-icon start icon="mdi-strategy"></v-icon
+            >{{ build.strategy }}</v-chip
           >
         </v-item-group>
         <!--large title-->
-        <v-card-title class="pt-0 pb-2 hidden-md-and-down">
+        <v-card-title class="pt-0 pb-2 hidden-md-and-down" :style="{
+            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+          }">
           {{ build.title }}
         </v-card-title>
         <!--large chips-->
@@ -174,7 +180,8 @@
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
           <v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small"
-            ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
+            ><v-icon start icon="mdi-strategy"></v-icon
+            >{{ build.strategy }}</v-chip
           >
         </v-item-group>
       </v-col>

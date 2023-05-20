@@ -18,7 +18,13 @@
       </v-col>
       <v-col cols="auto">
         <v-row justify="end" align="center" class="fill-height my-2 mr-2">
-          <v-tooltip location="top" text="Post Comment">
+          <v-tooltip location="top">
+            <span
+              :style="{
+                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              }"
+              >Post Comment</span
+            >
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"

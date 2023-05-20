@@ -1,5 +1,11 @@
 <template>
-  <v-tooltip location="top" text="Add to Favorites">
+  <v-tooltip location="top">
+    <span
+      :style="{
+        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+      }"
+      >Add to Favorites</span
+    >
     <template v-slot:activator="{ props }">
       <v-btn
         @click="addToFavorites"
@@ -12,7 +18,13 @@
     </template>
   </v-tooltip>
 
-  <v-tooltip location="top" text="Remove from Favorites">
+  <v-tooltip location="top">
+    <span
+      :style="{
+        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+      }"
+      >Remove from Favorites</span
+    >
     <template v-slot:activator="{ props }">
       <v-btn
         @click="removeFromFavorites"

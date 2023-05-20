@@ -23,7 +23,13 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top" :text="icon.title">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"
@@ -56,7 +62,13 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top" :text="icon.title">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"
@@ -89,7 +101,13 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top" :text="icon.title">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"
@@ -126,7 +144,13 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top" :text="icon.title">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"
@@ -159,7 +183,13 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top" :text="icon.title">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"
@@ -192,7 +222,13 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top" :text="icon.title">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"
@@ -229,7 +265,13 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top" :text="icon.title">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"

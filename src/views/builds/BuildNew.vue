@@ -27,8 +27,7 @@
                 <v-label>New villager?</v-label>
                 <span
                   :style="{
-                    color:
-                      $vuetify.theme.themes.customDarkTheme.colors.secondary,
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
                 >
                   Register now!
@@ -63,7 +62,13 @@
       <v-card-title>{{ build.title }}</v-card-title>
       <v-card-actions
         ><v-spacer></v-spacer
-        ><v-tooltip location="top" text="Save Build Order">
+        ><v-tooltip location="top">
+          <span
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+            >Save Build Order</span
+          >
           <template :props="props" v-slot:activator="{ props }">
             <v-btn
               color="primary"
@@ -95,7 +100,7 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            gradient="to right, transparent, #222222"
+            gradient="to right, transparent, #1D2432"
             alt="{{build.civ}}"
             cover
           >
@@ -118,7 +123,7 @@
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            gradient="to right, transparent, #222222"
+            gradient="to right, transparent, #1D2432"
             alt="{{build.civ}}"
             cover
           >

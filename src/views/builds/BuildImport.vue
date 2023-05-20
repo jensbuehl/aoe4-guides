@@ -28,7 +28,7 @@
                 <span
                   :style="{
                     color:
-                      $vuetify.theme.themes.customDarkTheme.colors.secondary,
+                      $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
                 >
                   Register now!

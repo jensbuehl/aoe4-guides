@@ -15,14 +15,19 @@ import store from './store'
 const customDarkTheme = {
   dark: true,
   colors: {
-    primary: '#cca741',
-    anchor: '#cca741',
-    secondary: '#cca741',
-    accent: '#cca741',
-    error: '#cca741',
-    info: '#cca741',
-    success: '#cca741',
-    warning: '#cca741',
+    accent: '#e7c05e',
+    anchor: '#e7c05e',
+    background: '#161925',
+    surface: '#1D2432',
+    'surface-variant': '#47587F', //tooltips
+    primary: '#e7c05e',
+    'primary-darken-1': '#cca741',
+    secondary: '#e7c05e',
+    'secondary-darken-1': '#cca741',
+    success: '#e7c05e',
+    warning: '#e7c05e',
+    error: '#e7c05e',
+    info: '#e7c05e',
   }
 }
 

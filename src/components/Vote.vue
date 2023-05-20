@@ -1,5 +1,11 @@
 <template>
-  <v-tooltip location="top" text="I like! This is a good one!">
+  <v-tooltip location="top">
+    <span
+      :style="{
+        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+      }"
+      >I like! This is a good one!</span
+    >
     <template v-slot:activator="{ props }">
       <v-btn
         @click="handleAddVoteUp"
@@ -11,7 +17,13 @@
       ></v-btn>
     </template>
   </v-tooltip>
-  <v-tooltip location="top" text="Remove your like">
+  <v-tooltip location="top">
+    <span
+      :style="{
+        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+      }"
+      >Remove your like</span
+    >
     <template v-slot:activator="{ props }">
       <v-btn
         @click="handleRemoveVoteUp"
@@ -23,10 +35,13 @@
       ></v-btn>
     </template>
   </v-tooltip>
-  <v-tooltip
-    location="top"
-    text="Downvote! Villagers need to improve this build!"
-  >
+  <v-tooltip location="top">
+    <span
+      :style="{
+        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+      }"
+      >Downvote! Villagers need to improve this build!</span
+    >
     <template v-slot:activator="{ props }">
       <v-btn
         @click="handleAddVoteDown"
@@ -38,10 +53,13 @@
       ></v-btn>
     </template>
   </v-tooltip>
-  <v-tooltip
-    location="top"
-    text="I changed my mind. This build is pretty neat!"
-  >
+  <v-tooltip location="top">
+    <span
+      :style="{
+        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+      }"
+      >I changed my mind. This build is pretty neat!</span
+    >
     <template v-slot:activator="{ props }">
       <v-btn
         @click="handleRemoveVoteDown"
@@ -79,11 +97,11 @@ export default {
 
     onMounted(async () => {
       const user = await get(props.userId);
-      if(user.upvotes?.includes(props.buildId)){
+      if (user.upvotes?.includes(props.buildId)) {
         upVote.value = user.upvotes?.includes(props.buildId);
       }
 
-      if(user.downvotes?.includes(props.buildId)){
+      if (user.downvotes?.includes(props.buildId)) {
         downVote.value = user.downvotes?.includes(props.buildId);
       }
     });

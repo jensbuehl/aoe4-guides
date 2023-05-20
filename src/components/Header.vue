@@ -98,7 +98,7 @@
               <v-label>New villager?</v-label>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.secondary,
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                 }"
               >
                 Register now!
@@ -113,7 +113,7 @@
           <v-list v-if="user">
             <v-list-item
               :style="{
-                color: $vuetify.theme.themes.customDarkTheme.colors.secondary,
+                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
               }"
             >
               Logged in as {{ user.displayName }}

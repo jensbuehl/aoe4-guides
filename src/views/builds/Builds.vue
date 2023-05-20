@@ -38,7 +38,7 @@
                 <span
                   :style="{
                     color:
-                      $vuetify.theme.themes.customDarkTheme.colors.secondary,
+                      $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
                 >
                   Register now!
@@ -74,7 +74,7 @@ import SingleBuild from "../../components/SingleBuild.vue";
 import useCollection from "../../composables/useCollection";
 import queryService from "../../composables/queryService";
 import { useStore } from "vuex";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, getCurrentInstance } from "vue";
 
 export default {
   name: "Builds",
@@ -99,6 +99,8 @@ export default {
       if (!filterAndOrderConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
+      const instance = getCurrentInstance()
+      console.log(instance.proxy.$vuetify.theme.themes)
       initData();
     });
 

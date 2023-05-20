@@ -31,7 +31,8 @@
               v-if="build.season"
               label
               size="x-small"
-              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon
+              >{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -47,15 +48,15 @@
               v-if="build.strategy"
               label
               size="x-small"
-              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
+              ><v-icon start icon="mdi-strategy"></v-icon
+              >{{ build.strategy }}</v-chip
             >
-            <span v-for="(item, index) in build.matchup"><v-chip
-              class="mr-2 mb-2"
-              color="primary"
-              label
-              size="x-small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
-            ></span>
+            <span v-for="(item, index) in build.matchup"
+              ><v-chip class="mr-2 mb-2" color="primary" label size="x-small"
+                ><v-icon start icon="mdi-sword-cross"></v-icon
+                >{{ item }}</v-chip
+              ></span
+            >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
             <v-chip class="mr-2 mb-2" label size="x-small"
@@ -107,7 +108,8 @@
               v-if="build.season"
               label
               size="small"
-              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon
+              >{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -123,15 +125,15 @@
               v-if="build.strategy"
               label
               size="small"
-              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
+              ><v-icon start icon="mdi-strategy"></v-icon
+              >{{ build.strategy }}</v-chip
             >
-            <span v-for="(item, index) in build.matchup"><v-chip
-              class="mr-2 mb-2"
-              color="primary"
-              label
-              size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
-            ></span>
+            <span v-for="(item, index) in build.matchup"
+              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+                ><v-icon start icon="mdi-sword-cross"></v-icon
+                >{{ item }}</v-chip
+              ></span
+            >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
             <v-chip class="mr-2 mb-2" label size="small"
@@ -167,93 +169,118 @@
       <v-card-actions class="hidden-md-and-up">
         <v-spacer></v-spacer>
         <v-tooltip location="top" text="Save Build Order">
-              <template :props="props" v-slot:activator="{ props }">
-                <v-btn
+          <span
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+            >Save Build Order</span
+          >
+          <template :props="props" v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              color="primary"
+              variant="text"
+              icon="mdi-content-save"
+              @click="handleSave"
+            ></v-btn>
+          </template>
+        </v-tooltip>
+
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn
+              icon="mdi-dots-horizontal"
+              color="primary"
+              variant="text"
+              v-bind="props"
+            ></v-btn>
+          </template>
+          <v-list>
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Duplicate and Edit Build Order</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-list-item
+                  v-show="user"
+                  @click="handleDuplicate"
                   v-bind="props"
-                  color="primary"
-                  variant="text"
-                  icon="mdi-content-save"
-                  @click="handleSave"
-                ></v-btn>
+                >
+                  <v-icon color="primary" class="mr-4"
+                    >mdi-content-duplicate</v-icon
+                  >
+                  Duplicate Build
+                </v-list-item>
               </template>
             </v-tooltip>
-
-            <v-menu>
+            <v-list-item @click="handleCopyOverlayFormat">
+              <v-tooltip>
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-icon color="primary" class="mr-5" v-bind="props"
+                    >mdi-content-copy
+                  </v-icon>
+                  <v-list-item-content v-bind="props"
+                    >Overlay Tool</v-list-item-content
+                  >
+                </template>
+              </v-tooltip>
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >Visit AoE4_Overlay Project Page</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-icon
+                    v-bind="props"
+                    size="small"
+                    @click="
+                      (e) => {
+                        e.stopPropagation();
+                        window
+                          .open(
+                            'https://github.com/FluffyMaguro/AoE4_Overlay',
+                            '_blank'
+                          )
+                          .focus();
+                      }
+                    "
+                    color="primary"
+                    class="ml-2"
+                    >mdi-information-outline</v-icon
+                  >
+                </template>
+              </v-tooltip>
+            </v-list-item>
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Download RTS_Overlay / AoE4_Overlay File</span
+              >
               <template v-slot:activator="{ props }">
-                <v-btn
-                  icon="mdi-dots-horizontal"
-                  color="primary"
-                  variant="text"
+                <v-list-item
                   v-bind="props"
-                ></v-btn>
-              </template>
-              <v-list>
-                <v-tooltip text="Duplicate and Edit Build Order">
-                  <template v-slot:activator="{ props }">
-                    <v-list-item
-                      v-show="user"
-                      @click="handleDuplicate"
-                      v-bind="props"
-                    >
-                      <v-icon color="primary" class="mr-4"
-                        >mdi-content-duplicate</v-icon
-                      >
-                      Duplicate Build
-                    </v-list-item>
-                  </template>
-                </v-tooltip>
-                <v-list-item @click="handleCopyOverlayFormat">
-                  <v-tooltip
-                    text="Copy RTS_Overlay / AoE4_Overlay Format to Clipboard"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-icon color="primary" class="mr-5" v-bind="props"
-                        >mdi-content-copy
-                      </v-icon>
-                      <v-list-item-content v-bind="props"
-                        >Overlay Tool</v-list-item-content
-                      >
-                    </template>
-                  </v-tooltip>
-                  <v-tooltip
-                    location="top"
-                    text="Visit AoE4_Overlay Project Page"
-                  >
-                    <template v-slot:activator="{ props }">
-                      <v-icon
-                        v-bind="props"
-                        size="small"
-                        @click="
-                          (e) => {
-                            e.stopPropagation();
-                            window
-                              .open(
-                                'https://github.com/FluffyMaguro/AoE4_Overlay',
-                                '_blank'
-                              )
-                              .focus();
-                          }
-                        "
-                        color="primary"
-                        class="ml-2"
-                        >mdi-information-outline</v-icon
-                      >
-                    </template>
-                  </v-tooltip>
+                  @click="handleDownloadOverlayFormat"
+                >
+                  <v-icon color="primary" class="mr-4">mdi-download</v-icon>
+                  Download
                 </v-list-item>
-                <v-tooltip text="Download RTS_Overlay / AoE4_Overlay File">
-                  <template v-slot:activator="{ props }">
-                    <v-list-item
-                      v-bind="props"
-                      @click="handleDownloadOverlayFormat"
-                    >
-                      <v-icon color="primary" class="mr-4">mdi-download</v-icon>
-                      Download
-                    </v-list-item>
-                  </template>
-                </v-tooltip>
-              </v-list>
-            </v-menu>
+              </template>
+            </v-tooltip>
+          </v-list>
+        </v-menu>
       </v-card-actions>
       <!--md and up-->
       <v-row
@@ -282,7 +309,7 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            gradient="to right, transparent, #222222"
+            gradient="to right, transparent, #1D2432"
             alt="{{build.civ}}"
             cover
           >
@@ -306,7 +333,7 @@
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            gradient="to right, transparent, #222222"
+            gradient="to right, transparent, #1D2432"
             alt="{{build.civ}}"
             cover
           >
@@ -339,7 +366,8 @@
               v-if="build.season"
               label
               size="small"
-              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon
+              >{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -355,15 +383,15 @@
               v-if="build.strategy"
               label
               size="small"
-              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
+              ><v-icon start icon="mdi-strategy"></v-icon
+              >{{ build.strategy }}</v-chip
             >
-            <span v-for="(item, index) in build.matchup"><v-chip
-              class="mr-2 mb-2"
-              color="primary"
-              label
-              size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
-            ></span>
+            <span v-for="(item, index) in build.matchup"
+              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+                ><v-icon start icon="mdi-sword-cross"></v-icon
+                >{{ item }}</v-chip
+              ></span
+            >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip class="mr-2 mb-2" label size="small"
@@ -397,7 +425,13 @@
         </v-col>
         <v-row justify="end" class="my-2 mr-2 hidden-sm-and-down">
           <v-col cols="auto">
-            <v-tooltip location="top" text="Save Build Order">
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Save Build Order</span
+              >
               <template :props="props" v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
@@ -420,7 +454,14 @@
                 ></v-btn>
               </template>
               <v-list>
-                <v-tooltip text="Duplicate and Edit Build Order">
+                <v-tooltip>
+                  <span
+                    :style="{
+                      color:
+                        $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    }"
+                    >Duplicate and Edit Build Order</span
+                  >
                   <template v-slot:activator="{ props }">
                     <v-list-item
                       v-show="user"
@@ -435,9 +476,14 @@
                   </template>
                 </v-tooltip>
                 <v-list-item @click="handleCopyOverlayFormat">
-                  <v-tooltip
-                    text="Copy RTS_Overlay / AoE4_Overlay Format to Clipboard"
-                  >
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color:
+                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      }"
+                      >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
+                    >
                     <template v-slot:activator="{ props }">
                       <v-icon color="primary" class="mr-5" v-bind="props"
                         >mdi-content-copy
@@ -447,10 +493,14 @@
                       >
                     </template>
                   </v-tooltip>
-                  <v-tooltip
-                    location="top"
-                    text="Visit AoE4_Overlay Project Page"
-                  >
+                  <v-tooltip location="top">
+                    <span
+                      :style="{
+                        color:
+                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      }"
+                      >Visit AoE4_Overlay Project Page</span
+                    >
                     <template v-slot:activator="{ props }">
                       <v-icon
                         v-bind="props"
@@ -473,7 +523,14 @@
                     </template>
                   </v-tooltip>
                 </v-list-item>
-                <v-tooltip text="Download RTS_Overlay / AoE4_Overlay File">
+                <v-tooltip>
+                  <span
+                    :style="{
+                      color:
+                        $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    }"
+                    >Download RTS_Overlay / AoE4_Overlay File</span
+                  >
                   <template v-slot:activator="{ props }">
                     <v-list-item
                       v-bind="props"
@@ -656,12 +713,13 @@ export default {
     };
 
     const handleSave = async () => {
-      error.value = validateBuild(build.value)
-      console.log(error.value)
+      error.value = validateBuild(build.value);
+      console.log(error.value);
 
       //Write to database
       if (!error.value) {
-        build.value.sortTitle = build.value.title.toLowerCase() + crypto.randomUUID();
+        build.value.sortTitle =
+          build.value.title.toLowerCase() + crypto.randomUUID();
 
         await update(props.id, build.value);
         //Navigate to new build order
@@ -688,8 +746,8 @@ export default {
     };
 
     const handleVideoInput = () => {
-      error.value = validateVideo(build.value.video)
-      if(!error.value){
+      error.value = validateVideo(build.value.video);
+      if (!error.value) {
         //Convert to embed url
         build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
       }
