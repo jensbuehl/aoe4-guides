@@ -1,51 +1,66 @@
 <template>
   <v-container>
     <div class="d-flex justify-center">
-      <v-card rounded="lg" style="max-width: 350px; width: 350px">
-        <v-card-title class="mb-4">Login</v-card-title>
-        <v-form ref="form" @submit.prevent="login()">
-          <v-text-field
-            v-model="email"
-            name="email"
-            label="E-mail"
-            :rules="[v => !!v || 'Email is required']"
-            type="email"
-            placeholder="Your e-mail"
-            required
-          ></v-text-field>
+      <v-row no-gutters class="fill-height" align="center" justify="center">
+        <v-col cols="12" sm="6" lg="4">
+          <v-card rounded="lg" class="d-flex align-center mb-4">
+            <v-row
+              no-gutters
+              class="fill-height"
+              align="center"
+              justify="center"
+            >
+              <v-col cols="12">
+                <v-card-title class="mb-4">Login</v-card-title>
+              </v-col>
+              <v-col cols="12">
+                <v-form ref="form" @submit.prevent="login()">
+                  <v-text-field
+                    v-model="email"
+                    name="email"
+                    label="E-mail"
+                    :rules="[(v) => !!v || 'Email is required']"
+                    type="email"
+                    placeholder="Your e-mail"
+                    required
+                  ></v-text-field>
 
-          <v-text-field
-            v-model="password"
-            name="password"
-            label="Password"
-            type="password"
-            :rules="[v => !!v || 'Password is required']"
-            placeholder="Your password"
-            required
-          ></v-text-field>
-          <v-btn
-            size="x-small"
-            color="primary"
-            style="background-color: transparent"
-            class="ml-2"
-            variant="plain"
-            to="/resetpassword"
-          >
-            Forgot Password?
-          </v-btn>
-          <v-btn
-            variant="text"
-            type="submit"
-            block
-            class="mt-2 submit"
-            color="primary"
-            >Login</v-btn
-          >
-          <v-card v-if="error" rounded="lg" color="error">
-            <v-card-text>{{ error }}</v-card-text>
+                  <v-text-field
+                    v-model="password"
+                    name="password"
+                    label="Password"
+                    type="password"
+                    :rules="[(v) => !!v || 'Password is required']"
+                    placeholder="Your password"
+                    required
+                  ></v-text-field>
+                  <v-btn
+                    size="x-small"
+                    color="primary"
+                    style="background-color: transparent"
+                    class="ml-2"
+                    variant="plain"
+                    to="/resetpassword"
+                  >
+                    Forgot Password?
+                  </v-btn>
+                  <v-btn
+                    variant="text"
+                    type="submit"
+                    block
+                    class="mt-2 submit"
+                    color="primary"
+                    >Login</v-btn
+                  >
+                  <v-card v-if="error" rounded="lg" color="error">
+                    <v-card-text>{{ error }}</v-card-text>
+                  </v-card>
+                </v-form>
+              </v-col>
+            </v-row>
           </v-card>
-        </v-form>
-      </v-card>
+        </v-col></v-row
+      >
     </div>
   </v-container>
 </template>
@@ -76,7 +91,7 @@ export default {
           email: email.value,
           password: password.value,
         });
-        
+
         router.push("/");
       } catch (err) {
         error.value = err.message;
