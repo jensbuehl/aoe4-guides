@@ -24,9 +24,9 @@ const customDarkTheme = {
     'primary-darken-1': '#cca741',
     secondary: '#e7c05e',
     'secondary-darken-1': '#cca741',
-    success: '#e7c05e',
-    warning: '#e7c05e',
-    error: '#e7c05e',
+    //success: '#e7c05e',
+    //warning: '#e7c05e',
+    //error: '#e7c05e',
     info: '#e7c05e',
   }
 }

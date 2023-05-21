@@ -5,18 +5,21 @@
       <SingleComment @commentRemoved="init" :comment="comment"></SingleComment>
     </div>
     <v-row align="center">
-      <v-col v-if="!user" align="center">
-        <v-list-item to="/register">
-        <v-label>Would you like to leave messages for other villagers?</v-label>
-        <br>
-        <span
-          :style="{
-            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-          }"
-        >
-          Register now!
-        </span>
-        </v-list-item>
+      <v-col v-if="!user" align="center" class="pa-2 ma-2">
+        <div>
+          <v-label
+            >Would you like to leave messages for other villagers?</v-label
+          >
+          <v-btn
+            class="pb-1"
+            color="primary"
+            style="background-color: transparent"
+            variant="plain"
+            to="/register"
+          >
+            Register now!
+          </v-btn>
+        </div>
       </v-col>
       <v-col v-if="user" class="mt-4">
         <v-textarea

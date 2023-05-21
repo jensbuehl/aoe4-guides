@@ -100,16 +100,19 @@
             </v-btn>
           </template>
           <v-list v-if="!user">
-            <v-list-item to="/register">
-              <v-label>New villager?</v-label>
-              <span
-                :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-                }"
-              >
-                Register now!
-              </span>
-            </v-list-item>
+            <v-list-item>
+                <v-label>New Villager?</v-label>
+                <v-btn
+                size="small"
+                  class="pb-1"
+                  color="primary"
+                  style="background-color: transparent"
+                  variant="plain"
+                  to="/register"
+                >
+                  Register now!
+                </v-btn>
+              </v-list-item>
             <VDivider></VDivider>
             <v-list-item v-if="!user" to="/login">
               <v-icon class="mr-4" color="primary">mdi-login</v-icon>

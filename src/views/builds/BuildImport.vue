@@ -7,17 +7,18 @@
           height="96"
           rounded="lg"
         >
-          <v-list-item to="/register">
-            <v-label>Would you like to import existing build orders?</v-label>
-            <br />
-            <span
-              :style="{
-                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-              }"
+          <div>
+            <v-label>Would you like to import build orders?</v-label>
+            <v-btn
+              class="pb-1"
+              color="primary"
+              style="background-color: transparent"
+              variant="plain"
+              to="/register"
             >
               Register now!
-            </span>
-          </v-list-item>
+            </v-btn>
+          </div>
         </v-card></v-col
       >
       <v-col cols="12" md="4"
@@ -29,16 +30,17 @@
           class="pa-1"
           ><v-card rounded="lg">
             <v-list lines="two">
-              <v-list-item to="/register">
-                <v-label>New villager?</v-label>
-                <span
-                  :style="{
-                    color:
-                      $vuetify.theme.themes.customDarkTheme.colors.primary,
-                  }"
+              <v-list-item>
+                <v-label>New Villager?</v-label>
+                <v-btn
+                  class="pb-1"
+                  color="primary"
+                  style="background-color: transparent"
+                  variant="plain"
+                  to="/register"
                 >
                   Register now!
-                </span>
+                </v-btn>
               </v-list-item>
               <v-list-item
                 title="Create"
