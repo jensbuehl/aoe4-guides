@@ -107,6 +107,7 @@ export default {
 
     return {
       comments,
+      user,
       post,
       init,
       newComment,
