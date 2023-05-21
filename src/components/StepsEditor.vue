@@ -30,7 +30,7 @@
     <v-row v-if="steps?.length" no-gutters align="center" justify="center">
       <v-col cols="12">
         <v-row no-gutters align="center" justify="center">
-          <v-col cols="2">
+          <v-col cols="3">
             <v-container class="pa-6">
               <v-row align="center" justify="center">
                 <v-img
@@ -153,7 +153,7 @@
       <v-divider></v-divider>
       <v-col cols="12">
         <v-row no-gutters justify="center">
-          <v-col cols="2">
+          <v-col cols="3">
             <v-card variant="flat" rounded="0"
               ><v-card-text
                 @paste="handlePaste"
