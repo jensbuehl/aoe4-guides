@@ -1,17 +1,23 @@
 <template>
   <v-container v-if="!user && authIsReady">
     <v-row>
-      <v-col cols="12" md="8"
+      <v-col cols="12" md="8" align="center"
         ><v-card
           class="d-flex justify-center align-center"
           height="96"
           rounded="lg"
         >
-          <v-card-title
-            class="justify-center align-center pt-0 text-subtitle-2 text-md-h6"
-            style="font-family: 'Segoe UI' !important"
-            >Please login to create your own build orders.</v-card-title
-          >
+          <v-list-item to="/register">
+            <v-label>Would you like to craft your own build orders?</v-label>
+            <br />
+            <span
+              :style="{
+                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              }"
+            >
+              Register now!
+            </span>
+          </v-list-item>
         </v-card></v-col
       >
       <v-col cols="12" md="4"
@@ -27,7 +33,8 @@
                 <v-label>New villager?</v-label>
                 <span
                   :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color:
+                      $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
                 >
                   Register now!

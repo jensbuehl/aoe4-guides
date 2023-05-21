@@ -688,7 +688,7 @@
     ></StepsEditor>
 
     <div class="mt-4">
-      <Discussion v-if="user" :buildId="build.id"></Discussion>
+      <Discussion :buildId="build.id"></Discussion>
     </div>
   </v-container>
 </template>

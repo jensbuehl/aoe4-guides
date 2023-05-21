@@ -1,11 +1,24 @@
 <template>
-  <v-card>
+  <v-card rounded="lg">
     <v-card-title class="mb-4">Comments</v-card-title>
     <div v-for="comment in comments" :key="comment.id">
       <SingleComment @commentRemoved="init" :comment="comment"></SingleComment>
     </div>
     <v-row align="center">
-      <v-col class="mt-4">
+      <v-col v-if="!user" align="center">
+        <v-list-item to="/register">
+        <v-label>Would you like to leave messages for other villagers?</v-label>
+        <br>
+        <span
+          :style="{
+            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+          }"
+        >
+          Register now!
+        </span>
+        </v-list-item>
+      </v-col>
+      <v-col v-if="user" class="mt-4">
         <v-textarea
           label="Write a comment"
           v-model="newComment.text"
@@ -16,7 +29,7 @@
         >
         </v-textarea>
       </v-col>
-      <v-col cols="auto">
+      <v-col v-if="user" cols="auto">
         <v-row justify="end" align="center" class="fill-height my-2 mr-2">
           <v-tooltip location="top">
             <span
