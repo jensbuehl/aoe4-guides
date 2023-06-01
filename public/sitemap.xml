@@ -27,28 +27,4 @@
         <loc>https://aoe4guides.com/import</loc>
         <priority>0.1</priority>
     </url>
-    <url>
-        <loc>https://www.aoe4guides.com/</loc>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>https://www.aoe4guides.com/register</loc>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.aoe4guides.com/login</loc>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.aoe4guides.com/about</loc>
-        <priority>1.0</priority>
-    </url>
-    <url>
-        <loc>https://www.aoe4guides.com/privacy</loc>
-        <priority>0.1</priority>
-    </url>
-    <url>
-        <loc>https://www.aoe4guides.com/import</loc>
-        <priority>0.1</priority>
-    </url>
 </urlset>
