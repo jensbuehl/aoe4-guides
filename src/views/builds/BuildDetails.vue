@@ -1,5 +1,17 @@
 <template>
   <v-container v-if="build">
+    <v-dialog v-model="dialog" width="auto">
+      <v-card rounded="lg" class="text-center primary">
+        <v-card-title>Delete Build</v-card-title>
+        <v-card-text>
+          Do you really want to delete this build?<br />
+          The action cannot be undone.
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="error" block @click="handleDelete">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-card rounded="lg">
       <v-card-title class="hidden-md-and-up">
         {{ build.title }}
@@ -317,18 +329,6 @@
             </v-tooltip>
           </v-list>
         </v-menu>
-        <v-dialog v-model="dialog" width="auto">
-          <v-card rounded="lg" class="text-center primary">
-            <v-card-title>Delete Build</v-card-title>
-            <v-card-text>
-              Do you really want to delete this build?<br />
-              The action cannot be undone.
-            </v-card-text>
-            <v-card-actions>
-              <v-btn color="error" block @click="handleDelete">Delete</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
       </v-card-actions>
       <!--md and up-->
       <v-row
@@ -641,20 +641,6 @@
                 </v-tooltip>
               </v-list>
             </v-menu>
-            <v-dialog v-model="dialog" width="auto">
-              <v-card rounded="lg" class="text-center primary">
-                <v-card-title>Delete Build</v-card-title>
-                <v-card-text>
-                  Do you really want to delete this build?<br />
-                  The action cannot be undone.
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="error" block @click="handleDelete"
-                    >Delete</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
           </v-col>
         </v-row>
       </v-row>
