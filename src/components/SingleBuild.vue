@@ -118,6 +118,12 @@
             ><v-icon start icon="mdi-strategy"></v-icon
             >{{ build.strategy }}</v-chip
           >
+          <span v-for="(item, index) in build.matchup"
+              ><v-chip class="mr-1 mt-1 hidden-xs" color="primary" label size="x-small"
+                ><v-icon start icon="mdi-sword-cross"></v-icon
+                >{{ item }}</v-chip
+              ></span
+            >
         </v-item-group>
         <!--large title-->
         <v-card-title class="pt-0 pb-2 hidden-md-and-down" :style="{
@@ -183,6 +189,12 @@
             ><v-icon start icon="mdi-strategy"></v-icon
             >{{ build.strategy }}</v-chip
           >
+          <span v-for="(item, index) in build.matchup"
+              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+                ><v-icon start icon="mdi-sword-cross"></v-icon
+                >{{ item }}</v-chip
+              ></span
+            >
         </v-item-group>
       </v-col>
     </v-row>
