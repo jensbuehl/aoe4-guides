@@ -3046,6 +3046,22 @@ export default function useIconService(civArg) {
       civ: ["RUS"],
     },
     {
+      title: "Fishing Boat",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_ship/fishing-boat.png",
+      civ: [
+        "ENG",
+        "FRE",
+        "MAL",
+        "MON",
+        "ABB",
+        "OTT",
+        "CHI",
+        "DEL",
+        "HRE",
+      ],
+    },
+    {
       title: "Lodya Transport Ship",
       age: "1",
       imgSrc: "/assets/pictures/unit_rus/lodya-transport-ship.png",
