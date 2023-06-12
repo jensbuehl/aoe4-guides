@@ -24,79 +24,128 @@ const routes = [
       path: "/",
       name: "Home",
       component: Builds,
+      meta: {
+        title: "Create and share build orders for Age of Empires IV"
+      }
     },
     {
       path: "/login",
       name: "Login",
       component: Login,
+      meta: {
+        title: "Login"
+      }
     },
     {
       path: "/register",
       name: "Register",
       component: Register,
+      meta: {
+        title: "Register"
+      }
     },
     {
       path: "/resetpassword",
       name: "ResetPassword",
       component: ResetPassword,
+      meta: {
+        title: "Reset Password"
+      }
     },
     {
       path: "/builds/:id",
       name: "BuildDetails",
       component: BuildDetails,
-      props: true
+      props: true,
+      meta: {
+        title: "View"
+      }
     },
     {
       path: "/account",
       name: "Account",
       component: Account,
+      meta: {
+        title: "Account"
+      }
     },
     {
       path: "/edit/:id",
       name: "BuildEdit",
       component: BuildEdit,
-      props: true
+      props: true,
+      meta: {
+        title: "Edit"
+      }
     },
     {
       path: "/mybuilds",
       name: "MyBuilds",
-      component: MyBuilds
+      component: MyBuilds,
+      meta: {
+        title: "My Build Orders"
+      }
     },
     {
       path: "/favorites",
       name: "MyFavorites",
-      component: MyFavorites
+      component: MyFavorites,
+      meta: {
+        title: "My Favorites"
+      }
     },
     {
       path: "/about",
       name: "About",
-      component: About
+      component: About,
+      meta: {
+        title: "About"
+      }
     },
     {
       path: "/privacy",
       name: "Privacy",
-      component: Privacy
+      component: Privacy,
+      meta: {
+        title: "Privacy Policy"
+      }
     },
     {
       path: "/new",
       name: "BuildNew",
       component: BuildNew,
+      meta: {
+        title: "Create Build Order"
+      }
     },
     {
       path: "/import",
       name: "BuildImport",
-      component: BuildImport
+      component: BuildImport,
+      meta: {
+        title: "Import Build Order"
+      }
     },
     {
       path: "/:catchAll(.*)",
       name: "NotFound",
-      component: NotFound
+      component: NotFound,
+      meta: {
+        title: "Page Not Found"
+      }
     }
   ];
   
   const router = createRouter({
     history: createWebHistory(),
     routes,
+  });
+
+
+  router.afterEach(to => {
+    if (to.meta.title) {
+      document.title = `${to.meta.title}` + " | AoE4 Guides"
+    }
   });
   
   export default router;

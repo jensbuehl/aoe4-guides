@@ -741,6 +741,7 @@ export default {
     onMounted(async () => {
       const res = await get(props.id);
       build.value = res;
+      document.title = build.value.title + " - " + document.title
       incrementViews(props.id);
       calculateAndUpdateScore();
     });
