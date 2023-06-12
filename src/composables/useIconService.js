@@ -212,7 +212,7 @@ export default function useIconService(civArg) {
     {
       title: "Abbasid Dynasty",
       age: "1",
-      imgSrc: "/assets/pictures/flags/abb.png",
+      imgSrc: "/assets/pictures/civilization_flag/abb.png",
       civ: [
         "ENG",
         "FRE",
@@ -229,7 +229,7 @@ export default function useIconService(civArg) {
     {
       title: "China",
       age: "1",
-      imgSrc: "/assets/pictures/flags/chi.png",
+      imgSrc: "/assets/pictures/civilization_flag/chi.png",
       civ: [
         "ENG",
         "FRE",
@@ -246,7 +246,7 @@ export default function useIconService(civArg) {
     {
       title: "Delhi Sultanate",
       age: "1",
-      imgSrc: "/assets/pictures/flags/del.png",
+      imgSrc: "/assets/pictures/civilization_flag/del.png",
       civ: [
         "ENG",
         "FRE",
@@ -263,7 +263,7 @@ export default function useIconService(civArg) {
     {
       title: "English",
       age: "1",
-      imgSrc: "/assets/pictures/flags/eng.png",
+      imgSrc: "/assets/pictures/civilization_flag/eng.png",
       civ: [
         "ENG",
         "FRE",
@@ -280,7 +280,7 @@ export default function useIconService(civArg) {
     {
       title: "French",
       age: "1",
-      imgSrc: "/assets/pictures/flags/fre.png",
+      imgSrc: "/assets/pictures/civilization_flag/fre.png",
       civ: [
         "ENG",
         "FRE",
@@ -297,7 +297,7 @@ export default function useIconService(civArg) {
     {
       title: "Holy Roman Empire",
       age: "1",
-      imgSrc: "/assets/pictures/flags/hre.png",
+      imgSrc: "/assets/pictures/civilization_flag/hre.png",
       civ: [
         "ENG",
         "FRE",
@@ -314,7 +314,7 @@ export default function useIconService(civArg) {
     {
       title: "Malians",
       age: "1",
-      imgSrc: "/assets/pictures/flags/mal.png",
+      imgSrc: "/assets/pictures/civilization_flag/mal.png",
       civ: [
         "ENG",
         "FRE",
@@ -331,7 +331,7 @@ export default function useIconService(civArg) {
     {
       title: "Mongols",
       age: "1",
-      imgSrc: "/assets/pictures/flags/mon.png",
+      imgSrc: "/assets/pictures/civilization_flag/mon.png",
       civ: [
         "ENG",
         "FRE",
@@ -348,7 +348,7 @@ export default function useIconService(civArg) {
     {
       title: "Ottomans",
       age: "1",
-      imgSrc: "/assets/pictures/flags/ott.png",
+      imgSrc: "/assets/pictures/civilization_flag/ott.png",
       civ: [
         "ENG",
         "FRE",
@@ -365,7 +365,7 @@ export default function useIconService(civArg) {
     {
       title: "Rus",
       age: "1",
-      imgSrc: "/assets/pictures/flags/rus.png",
+      imgSrc: "/assets/pictures/civilization_flag/rus.png",
       civ: [
         "ENG",
         "FRE",
