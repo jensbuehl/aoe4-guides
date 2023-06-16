@@ -29,83 +29,54 @@
     </div>
     <v-row v-if="steps?.length" no-gutters align="center" justify="center">
       <v-col cols="12">
-        <v-row no-gutters align="center" justify="center">
-          <v-col cols="3">
-            <v-container class="pa-6">
-              <v-row align="center" justify="center">
+          <v-row no-gutters align="center" justify="center">
+            <v-col cols="3">
                 <v-img
-                  class="titleIconSmaller"
+                  class="timeIconXs"
                   src="/assets/resources/time.png"
                 ></v-img>
-              </v-row>
-            </v-container>
-          </v-col>
-          <v-col>
-            <v-container>
-              <v-row align="center" justify="center">
+            </v-col>
+            <v-col>
                 <v-img
-                  class="titleIcon"
+                  class="titleIconXs ma-2"
                   src="/assets/resources/villager.png"
                 ></v-img>
-              </v-row>
-            </v-container>
-          </v-col>
-          <v-col>
-            <v-container>
-              <v-row align="center" justify="center">
+            </v-col>
+            <v-col>
                 <v-img
-                  class="titleIcon"
+                  class="titleIconXs ma-2"
                   src="/assets/resources/repair.png"
                 ></v-img>
-              </v-row>
-            </v-container>
-          </v-col>
-          <v-col>
-            <v-container>
-              <v-row align="center" justify="center">
+            </v-col>
+            <v-col>
                 <v-img
-                  class="titleIcon"
+                  class="titleIconXs ma-2"
                   src="/assets/resources/food.png"
                 ></v-img>
-              </v-row>
-            </v-container>
-          </v-col>
-          <v-col>
-            <v-container>
-              <v-row align="center" justify="center">
+            </v-col>
+            <v-col>
                 <v-img
-                  class="titleIcon"
+                  class="titleIconXs ma-2"
                   src="/assets/resources/wood.png"
                 ></v-img>
-              </v-row>
-            </v-container>
-          </v-col>
-          <v-col>
-            <v-container>
+            </v-col>
+            <v-col>
               <v-row align="center" justify="center">
                 <v-img
-                  class="titleIcon"
+                  class="titleIconXs ma-2"
                   src="/assets/resources/gold.png"
                 ></v-img>
               </v-row>
-            </v-container>
-          </v-col>
-          <v-col>
-            <v-card variant="flat" height="50"
-              ><v-container>
-                <v-row align="center" justify="center">
-                  <v-img
-                    class="titleIcon"
-                    src="/assets/resources/stone.png"
-                  ></v-img>
-                </v-row>
-              </v-container>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col cols="9" class="hidden-sm-and-down">
-        <v-card variant="flat" height="50">Description</v-card>
+            </v-col>
+            <v-col>
+              <v-row align="center" justify="center">
+                <v-img
+                  class="titleIconXs ma-2"
+                  src="/assets/resources/stone.png"
+                ></v-img>
+              </v-row>
+            </v-col>
+          </v-row>
       </v-col>
       <v-col v-if="!readonly" cols="12">
         <v-card variant="flat" height="50"
@@ -250,7 +221,7 @@
       </v-col>
       <v-divider></v-divider>
       <v-col v-if="readonly" cols="12">
-        <v-card variant="flat" rounded="0" class="my-2 mx-2">
+        <v-card variant="flat" rounded="0" class="my-2">
           <v-table width="100%">
             <tbody>
               <tr>
@@ -268,7 +239,7 @@
         ></v-card>
       </v-col>
       <v-col v-if="!readonly" cols="8">
-        <v-card variant="flat" rounded="0" class="my-2 mx-2">
+        <v-card variant="flat" rounded="0" class="my-2">
           <v-table width="100%">
             <tbody>
               <tr>
@@ -352,7 +323,7 @@
         <tr>
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
-              class="mx-auto titleIconSmaller"
+              class="mx-auto titleIconXs"
               src="/assets/resources/time.png"
             ></v-img>
           </th>
@@ -843,9 +814,14 @@ td:empty {
   width: auto;
   height: 40px;
 }
-.titleIconSmaller {
+.titleIconXs {
   vertical-align: middle;
   width: auto;
   height: 24px;
+}
+.timeIconXs {
+  vertical-align: middle;
+  width: auto;
+  height: 20px;
 }
 </style>
