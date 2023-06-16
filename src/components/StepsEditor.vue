@@ -584,7 +584,7 @@ export default {
 
     const handleIconSelected = (iconPath, tooltipText) => {
       restoreSelection();
-      const img = '<img src="' + iconPath + '" class="icon"><\/img>';
+      const img = '<img src="' + iconPath + '" class="icon" title='+ tooltipText +'><\/img>';
       document.execCommand("insertHTML", false, img);
       saveSelection();
     };
