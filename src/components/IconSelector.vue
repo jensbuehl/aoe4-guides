@@ -35,7 +35,7 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc)"
+                    @click="imageSelected(icon.imgSrc, icon.title)"
                     height="60"
                     width="60"
                   >
@@ -74,7 +74,7 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc)"
+                    @click="imageSelected(icon.imgSrc, icon.title)"
                     height="60"
                     width="60"
                   >
@@ -113,7 +113,7 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc)"
+                    @click="imageSelected(icon.imgSrc, icon.title)"
                     height="60"
                     width="60"
                   >
@@ -156,7 +156,7 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc)"
+                    @click="imageSelected(icon.imgSrc, icon.title)"
                     height="60"
                     width="60"
                   >
@@ -195,7 +195,7 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc)"
+                    @click="imageSelected(icon.imgSrc, icon.title)"
                     height="60"
                     width="60"
                   >
@@ -234,7 +234,7 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc)"
+                    @click="imageSelected(icon.imgSrc, icon.title)"
                     height="60"
                     width="60"
                   >
@@ -277,7 +277,7 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc)"
+                    @click="imageSelected(icon.imgSrc, icon.title)"
                     height="60"
                     width="60"
                   >
@@ -342,8 +342,8 @@ export default {
       }
     };
 
-    const imageSelected = (imgSrc) => {
-      context.emit("iconSelected", imgSrc);
+    const imageSelected = (imgSrc, tooltip) => {
+      context.emit("iconSelected", imgSrc, tooltip);
     };
 
     return {

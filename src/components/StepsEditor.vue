@@ -99,7 +99,7 @@
               </template>
               <v-card rounded="lg" class="mt-4" width="350px">
                 <IconSelector
-                  @iconSelected="(iconPath) => handleIconSelected(iconPath)"
+                  @iconSelected="(iconPath, tooltip) => handleIconSelected(iconPath, tooltip)"
                   :civ="civ"
                 ></IconSelector>
               </v-card>
@@ -475,7 +475,7 @@
                 </template>
                 <v-card rounded="lg" class="mt-4" width="350px">
                   <IconSelector
-                    @iconSelected="(iconPath) => handleIconSelected(iconPath)"
+                    @iconSelected="(iconPath, tooltip) => handleIconSelected(iconPath, tooltip)"
                     :civ="civ"
                   ></IconSelector>
                 </v-card>
@@ -582,7 +582,7 @@ export default {
       }
     };
 
-    const handleIconSelected = (iconPath) => {
+    const handleIconSelected = (iconPath, tooltipText) => {
       restoreSelection();
       const img = '<img src="' + iconPath + '" class="icon"><\/img>';
       document.execCommand("insertHTML", false, img);
