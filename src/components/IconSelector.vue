@@ -52,7 +52,7 @@
       </v-row>
       <v-row v-show="filteredLandmarks.length" no-gutters align="center">
         <v-col cols="12">
-          <v-card flat subtitle="Landmarks"></v-card>
+          <v-card flat subtitle="Landmarks, Actions, and Flags"></v-card>
         </v-col>
         <v-col
           class="mt-n2 mb-2"
