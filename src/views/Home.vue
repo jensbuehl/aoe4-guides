@@ -32,7 +32,7 @@
                         color="primary"
                         v-bind="props"
                         variant="text"
-                        @click="civSelected(civ.shortName, civ.title)"
+                        @click="civSelected(civ.shortName)"
                         height="auto"
                         width="120"
                       >
@@ -207,7 +207,7 @@ export default {
       initData();
     });
 
-    const civSelected = (id, title) => {
+    const civSelected = (id) => {
       filterAndOrderConfig.value.civs=id;
       store.commit("setFilterConfig", filterAndOrderConfig.value);
       router.push({ name: "Builds" });

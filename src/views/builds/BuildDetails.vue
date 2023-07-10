@@ -727,12 +727,12 @@ export default {
       var baseScore = Math.log(Math.max(score, 1));
 
       var now = new Date();
-      var elapsed = now - build.value.timeUpdated.toDate();
+      var elapsed = now - build.value.timeCreated.toDate();
       var timeDiff = Math.floor(elapsed / msPerWeek);
 
-      //slowly decay after 4 weeks
-      if (timeDiff > 4) {
-        var x = timeDiff - 4;
+      //slowly decay after 6 weeks
+      if (timeDiff > 6) {
+        var x = timeDiff - 6;
         baseScore = baseScore * Math.exp(-0.05 * x * x);
       }
       updateScore(props.id, baseScore);
