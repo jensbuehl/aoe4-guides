@@ -110,6 +110,16 @@ export default {
     };
 
     const initData = async () => {
+      //get builds
+      const paginationQuery = getQuery(
+        queryService.getQueryParametersFromConfig(
+          filterAndOrderConfig.value,
+          paginationConfig.value.limit
+        )
+      );
+      const res = await getAll(paginationQuery);
+      builds.value = res;
+      
       //init page count and current page
       const allDocsQuery = getQuery(
         queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
@@ -120,16 +130,6 @@ export default {
         size / paginationConfig.value.limit
       );
       paginationConfig.value.currentPage = 1;
-
-      //get builds
-      const paginationQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit
-        )
-      );
-      const res = await getAll(paginationQuery);
-      builds.value = res;
 
       updatePageBoundaries();
     };

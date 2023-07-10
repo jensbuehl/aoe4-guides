@@ -9,6 +9,10 @@
           <v-list v-if="authIsReady">
             <v-list-item to="/">
               <v-icon class="mr-4" color="primary">mdi-home</v-icon>
+              Home
+            </v-list-item>
+            <v-list-item to="/builds">
+              <v-icon class="mr-4" color="primary">mdi-hammer</v-icon>
               All Builds
             </v-list-item>
             <v-list-item v-if="user" to="/favorites">
@@ -35,35 +39,20 @@
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <span v-if="authIsReady">
-        <v-menu open-on-hover v-if="authIsReady">
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              flat
-              color="primary"
-              class="mr-2 hidden-sm-and-down"
-              prepend-icon="mdi-plus"
-              append-icon="mdi-menu-down"
-            >
-              Add Build
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item to="/new">
-              <v-icon class="mr-4" color="primary">mdi-pencil</v-icon>
-              Create New Build
-            </v-list-item>
-            <v-list-item to="/import">
-              <v-icon class="mr-4" color="primary">mdi-import</v-icon>
-              Import Build
-            </v-list-item>
-          </v-list>
-        </v-menu>
         <v-btn
           flat
           to="/"
           class="mr-2 hidden-sm-and-down"
           prepend-icon="mdi-home"
+          color="primary"
+        >
+          Home
+        </v-btn>
+        <v-btn
+          flat
+          to="/builds"
+          class="mr-2 hidden-sm-and-down"
+          prepend-icon="mdi-hammer"
           color="primary"
         >
           All Builds
@@ -88,6 +77,30 @@
         >
           My Builds
         </v-btn>
+        <v-menu open-on-hover v-if="authIsReady">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              flat
+              color="primary"
+              class="mr-2 hidden-sm-and-down"
+              prepend-icon="mdi-plus"
+              append-icon="mdi-menu-down"
+            >
+              Add Build
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item to="/new">
+              <v-icon class="mr-4" color="primary">mdi-pencil</v-icon>
+              Create New Build
+            </v-list-item>
+            <v-list-item to="/import">
+              <v-icon class="mr-4" color="primary">mdi-import</v-icon>
+              Import Build
+            </v-list-item>
+          </v-list>
+        </v-menu>
         <v-menu open-on-hover class="mx-4">
           <template v-slot:activator="{ props }">
             <v-btn class="mr-2" icon>

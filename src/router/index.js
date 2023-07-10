@@ -15,6 +15,7 @@ import BuildImport from "../views/builds/BuildImport.vue";
 import MyBuilds from "../views/builds/MyBuilds.vue";
 import MyFavorites from "../views/builds/MyFavorites.vue";
 
+import Home from "../views/Home.vue";
 import NotFound from "../views/NotFound.vue";
 import Privacy from "../views/Privacy.vue";
 import About from "../views/About.vue";
@@ -23,9 +24,17 @@ const routes = [
     {
       path: "/",
       name: "Home",
+      component: Home,
+      meta: {
+        title: "Home - Create and share build orders for Age of Empires IV"
+      }
+    },
+    {
+      path: "/builds",
+      name: "Builds",
       component: Builds,
       meta: {
-        title: "Create and share build orders for Age of Empires IV"
+        title: "All Build Orders - Create and share build orders for Age of Empires IV"
       }
     },
     {
