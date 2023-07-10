@@ -32,51 +32,96 @@
         </v-menu>
       </v-app-bar-nav-icon>
 
-      <v-app-bar-title style="min-width: 220px">  
+      <v-app-bar-title style="min-width: 220px">
         <router-link style="text-decoration: none" to="/">
           <v-btn color="primary" class="title px-0" flat>{{ title }}</v-btn>
         </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <span v-if="authIsReady">
-        <v-btn
-          flat
-          to="/"
-          class="mr-2 hidden-sm-and-down"
-          prepend-icon="mdi-home"
-          color="primary"
-        >
-          Home
-        </v-btn>
-        <v-btn
-          flat
-          to="/builds"
-          class="mr-2 hidden-sm-and-down"
-          prepend-icon="mdi-hammer"
-          color="primary"
-        >
-          All Builds
-        </v-btn>
-        <v-btn
-          v-if="user"
-          color="primary"
-          flat
-          to="/favorites"
-          class="mr-2 hidden-sm-and-down"
-          prepend-icon="mdi-heart-outline"
-        >
-          Favorites
-        </v-btn>
-        <v-btn
-          v-if="user"
-          color="primary"
-          flat
-          to="/mybuilds"
-          class="mr-2 hidden-sm-and-down"
-          prepend-icon="mdi-playlist-edit"
-        >
-          My Builds
-        </v-btn>
+        <v-tooltip location="top">
+          <span
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+            >Browse by civilization, top lists and more...</span
+          >
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              flat
+              to="/"
+              class="mr-2 hidden-sm-and-down"
+              prepend-icon="mdi-home"
+              color="primary"
+            >
+              Home
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip location="top">
+          <span
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+            >Browse and filter all build orders</span
+          >
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              flat
+              to="/builds"
+              class="mr-2 hidden-sm-and-down"
+              prepend-icon="mdi-hammer"
+              color="primary"
+            >
+              All Builds
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip location="top">
+          <span
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+            >Your favorites: Build orders that you have liked</span
+          >
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-if="user"
+              v-bind="props"
+              color="primary"
+              flat
+              to="/favorites"
+              class="mr-2 hidden-sm-and-down"
+              prepend-icon="mdi-heart-outline"
+            >
+              Favorites
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip location="top">
+          <span
+            :style="{
+              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+            }"
+            >Build orders that you have created</span
+          >
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-if="user"
+              v-bind="props"
+              color="primary"
+              flat
+              to="/mybuilds"
+              class="mr-2 hidden-sm-and-down"
+              prepend-icon="mdi-playlist-edit"
+            >
+              My Builds
+            </v-btn>
+          </template>
+        </v-tooltip>
+
         <v-menu open-on-hover v-if="authIsReady">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -91,14 +136,34 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item to="/new">
-              <v-icon class="mr-4" color="primary">mdi-pencil</v-icon>
-              Create New Build
-            </v-list-item>
-            <v-list-item to="/import">
-              <v-icon class="mr-4" color="primary">mdi-import</v-icon>
-              Import Build
-            </v-list-item>
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Create new build order from scratch</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-list-item to="/new" v-bind="props">
+                  <v-icon class="mr-4" color="primary">mdi-pencil</v-icon>
+                  Create New Build
+                </v-list-item>
+              </template>
+            </v-tooltip>
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Import build order from file (e.g. from overlay tool)</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-list-item to="/import" v-bind="props">
+                  <v-icon class="mr-4" color="primary">mdi-import</v-icon>
+                  Import Build
+                </v-list-item>
+              </template>
+            </v-tooltip>
           </v-list>
         </v-menu>
         <v-menu open-on-hover class="mx-4">
@@ -114,18 +179,18 @@
           </template>
           <v-list v-if="!user">
             <v-list-item>
-                <v-label>New Villager?</v-label>
-                <v-btn
+              <v-label>New Villager?</v-label>
+              <v-btn
                 size="small"
-                  class="pb-1"
-                  color="primary"
-                  style="background-color: transparent"
-                  variant="plain"
-                  to="/register"
-                >
-                  Register now!
-                </v-btn>
-              </v-list-item>
+                class="pb-1"
+                color="primary"
+                style="background-color: transparent"
+                variant="plain"
+                to="/register"
+              >
+                Register now!
+              </v-btn>
+            </v-list-item>
             <VDivider></VDivider>
             <v-list-item v-if="!user" to="/login">
               <v-icon class="mr-4" color="primary">mdi-login</v-icon>
