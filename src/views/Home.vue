@@ -37,7 +37,7 @@
                     @click="civSelected(civ.shortName)"
                   >
                     <v-row align="center" justify="center">
-                      <v-col cols="4">
+                      <v-col cols="3" sm="4">
                         <v-img
                           :src="civ.flagLarge"
                           :lazy-src="civ.flagSmall"
@@ -59,7 +59,7 @@
                           </template>
                         </v-img>
                       </v-col>
-                      <v-col cols="8">
+                      <v-col cols="9" sm="8">
                         <!--small title-->
                         <div
                           :style="{
