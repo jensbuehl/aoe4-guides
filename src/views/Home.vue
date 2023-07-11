@@ -2,53 +2,104 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="8">
-        <v-card flat color="background" class="mb-6">
-          <v-row no-gutters align="center">
+        <!-- Civilization browser -->
+        <v-card rounded="lg" flat color="background" class="mb-6">
+          <v-row align="center">
             <v-col cols="12">
-              <v-card color="background" flat>
+              <v-card class="mb-n4" rounded="lg" color="background" flat>
                 <v-card-title
                   :style="{
                     color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
                 >
-                  Browse by Civilization
+                  Explore your Civilization
                 </v-card-title>
               </v-card>
             </v-col>
-            <v-col cols="4" sm="3" xl="2" v-for="civ in civs" :key="civ.title">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color:
-                          $vuetify.theme.themes.customDarkTheme.colors.primary,
-                      }"
-                      >{{ civ.title }}</span
-                    >
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        class="pb-4"
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="civSelected(civ.shortName)"
-                        height="auto"
-                        width="120"
-                      >
+            <v-col
+              class="mt-n2"
+              cols="12"
+              sm="6"
+              v-for="civ in civs"
+              :key="civ.title"
+            >
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  >Explore all {{ civ.title }} build orders</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-card
+                    rounded="lg"
+                    v-bind="props"
+                    @click="civSelected(civ.shortName)"
+                  >
+                    <v-row align="center" justify="center">
+                      <v-col cols="4">
                         <v-img
-                          style="width: 120px"
                           :src="civ.flagLarge"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
+                          :lazy-src="civ.flagSmall"
+                          gradient="to right, transparent, #1D2432"
+                          alt="{{civ.title}}"
+                          cover
+                        >
+                          <template v-slot:placeholder>
+                            <v-row
+                              class="fill-height"
+                              align="center"
+                              justify="center"
+                            >
+                              <v-progress-circular
+                                indeterminate
+                                color="grey lighten-5"
+                              ></v-progress-circular>
+                            </v-row>
+                          </template>
+                        </v-img>
+                      </v-col>
+                      <v-col cols="8">
+                        <!--small title-->
+                        <div
+                          :style="{
+                            color:
+                              $vuetify.theme.themes.customDarkTheme.colors
+                                .primary,
+                          }"
+                          class="text-subtitle-2 hidden-lg-and-up"
+                          style="font-family: 'Segoe UI' !important"
+                        >
+                          {{ civ.title }}
+                        </div>
+                        <!--large title-->
+                        <v-card-title
+                          class="hidden-md-and-down"
+                          :style="{
+                            color:
+                              $vuetify.theme.themes.customDarkTheme.colors
+                                .primary,
+                          }"
+                        >
+                          {{ civ.title }}
+                        </v-card-title>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </template>
+              </v-tooltip>
             </v-col>
           </v-row>
         </v-card>
-        <v-card v-if="mostRecentBuilds" color="background" class="mb-6">
+
+        <!-- Most Recent Builds -->
+        <v-card
+          rounded="lg"
+          flat
+          v-if="mostRecentBuilds"
+          color="background"
+          class="mb-6"
+        >
           <v-card-title
             :style="{
               color: $vuetify.theme.themes.customDarkTheme.colors.primary,
@@ -65,22 +116,22 @@
           </div>
         </v-card>
 
-        <v-card v-if="popularBuilds" color="background">
+        <!-- Popular Builds -->
+        <v-card rounded="lg" flat v-if="popularBuilds" color="background">
           <v-card-title
             :style="{
               color: $vuetify.theme.themes.customDarkTheme.colors.primary,
             }"
             >Popular Build Orders</v-card-title
-          ></v-card
-        >
-        <div v-for="item in popularBuilds" :key="item.id">
-          <router-link
-            style="text-decoration: none"
-            :to="{ name: 'BuildDetails', params: { id: item.id } }"
           >
-            <SingleBuild :build="item"></SingleBuild>
-          </router-link>
-        </div>
+          <div v-for="item in popularBuilds" :key="item.id">
+            <router-link
+              style="text-decoration: none"
+              :to="{ name: 'BuildDetails', params: { id: item.id } }"
+            >
+              <SingleBuild :build="item"></SingleBuild>
+            </router-link></div
+        ></v-card>
       </v-col>
 
       <v-col cols="12" md="4">
@@ -122,8 +173,9 @@
             >Ilalu and 80 Bunti</v-card-title
           >
           <v-card-text
-            >Scout new build orders and guides every day. Learn, improve and master your
-            build orders. And most importantly: Have fun!</v-card-text
+            >Scout new build orders and guides every day. Learn, improve and
+            master your build orders. And most importantly: Have
+            fun!</v-card-text
           >
         </v-card>
         <v-alert
@@ -196,7 +248,7 @@ export default {
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const popularConfig = ref(getDefaultConfig());
     const mostRecentConfig = ref(getDefaultConfig());
-    mostRecentConfig.value.orderBy = "timeCreated"
+    mostRecentConfig.value.orderBy = "timeCreated";
 
     onMounted(() => {
       if (!filterAndOrderConfig.value) {
@@ -208,7 +260,7 @@ export default {
     });
 
     const civSelected = (id) => {
-      filterAndOrderConfig.value.civs=id;
+      filterAndOrderConfig.value.civs = id;
       store.commit("setFilterConfig", filterAndOrderConfig.value);
       router.push({ name: "Builds" });
     };
@@ -216,22 +268,15 @@ export default {
     const initData = async () => {
       //get most recent
       const mostRecentQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          mostRecentConfig.value,
-          5
-        )
+        queryService.getQueryParametersFromConfig(mostRecentConfig.value, 5)
       );
       mostRecentBuilds.value = await getAll(mostRecentQuery);
-      
+
       //get popular
       const popularBuildsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          popularConfig.value,
-          5
-          )
-          );
-          popularBuilds.value = await getAll(popularBuildsQuery);
-          
+        queryService.getQueryParametersFromConfig(popularConfig.value, 5)
+      );
+      popularBuilds.value = await getAll(popularBuildsQuery);
     };
 
     return {
@@ -240,7 +285,7 @@ export default {
       civs,
       mostRecentBuilds,
       popularBuilds,
-      civSelected
+      civSelected,
     };
   },
 };
