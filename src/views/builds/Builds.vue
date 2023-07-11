@@ -1,6 +1,49 @@
 <template>
   <v-container v-if="builds">
     <v-row>
+      <v-col cols="12" md="4" class="hidden-md-and-up">
+        <BuildsConfig class="mb-2" @configChanged="configChanged"> </BuildsConfig>
+        <v-alert
+          v-if="!user"
+          rounded="lg"
+          outlined
+          color="primary"
+          class="mt-4 mb-2 pa-1"
+          ><v-card rounded="lg">
+
+            <v-list lines="two">
+              <v-list-item>
+                <v-label>New Villager?</v-label>
+                <v-btn
+                  class="pb-1"
+                  color="primary"
+                  style="background-color: transparent"
+                  variant="plain"
+                  to="/register"
+                >
+                  Register now!
+                </v-btn>
+              </v-list-item>
+              <v-list-item
+                title="Create"
+                subtitle="Create new Age of Empires 4 build orders and share them with your friends."
+              ></v-list-item>
+              <v-list-item
+                title="Like"
+                subtitle="Manage your own favorite AoE 4 build orders and find the good ones with ease."
+              ></v-list-item>
+              <v-list-item
+                title="Comment"
+                subtitle="Write build order comments and get in touch with the author and the community."
+              ></v-list-item>
+              <v-list-item
+                title="Sign up"
+                subtitle="Registered villagers gather and manage build orders up to 20% faster. ;)"
+              ></v-list-item>
+            </v-list> </v-card
+        ></v-alert>
+      </v-col>
+
       <v-col cols="12" md="8">
         <div v-for="item in builds" :key="item.id">
           <router-link
@@ -22,7 +65,7 @@
         ></v-pagination>
       </v-col>
 
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="4" class="hidden-xs">
         <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
         <v-alert
           v-if="!user"
