@@ -214,13 +214,12 @@
                 style="text-decoration: none"
                 :to="{ name: 'BuildDetails', params: { id: item.id } }"
               >
-                <SingleBuild :build="item"></SingleBuild>
+                <SingleBuild @click="" :build="item"></SingleBuild>
               </router-link>
             </div> </v-col
         ></v-row>
 
         <!-- Popular Builds -->
-
         <v-row align="center" no-gutters>
           <v-col cols="12">
             <div
@@ -243,7 +242,7 @@
         ></v-row>
       </v-col>
 
-      <v-col cols="12" md="4" class="hidden-xs">
+      <v-col cols="12" md="4" class="hidden-sm-and-down">
         <v-card rounded="lg">
           <v-card-title
             v-if="!user"

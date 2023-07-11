@@ -65,7 +65,7 @@
         ></v-pagination>
       </v-col>
 
-      <v-col cols="12" md="4" class="hidden-xs">
+      <v-col cols="12" md="4" class="hidden-sm-and-down">
         <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
         <v-alert
           v-if="!user"
