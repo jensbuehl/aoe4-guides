@@ -7,10 +7,6 @@
             <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list v-if="authIsReady">
-            <v-list-item to="/">
-              <v-icon class="mr-4" color="primary">mdi-home</v-icon>
-              Home
-            </v-list-item>
             <v-list-item to="/builds">
               <v-icon class="mr-4" color="primary">mdi-hammer</v-icon>
               All Builds
@@ -32,33 +28,13 @@
         </v-menu>
       </v-app-bar-nav-icon>
 
-      <v-app-bar-title style="min-width: 220px">
+      <v-app-bar-title style="min-width: 200px">
         <router-link style="text-decoration: none" to="/">
           <v-btn color="primary" class="title px-0" flat>{{ title }}</v-btn>
         </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <span v-if="authIsReady">
-        <v-tooltip location="top">
-          <span
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            >Browse by civilization, top lists and more...</span
-          >
-          <template v-slot:activator="{ props }">
-            <v-btn
-              v-bind="props"
-              flat
-              to="/"
-              class="mr-2 hidden-sm-and-down"
-              prepend-icon="mdi-home"
-              color="primary"
-            >
-              Home
-            </v-btn>
-          </template>
-        </v-tooltip>
         <v-tooltip location="top">
           <span
             :style="{

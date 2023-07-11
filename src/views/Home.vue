@@ -3,26 +3,16 @@
     <v-row>
       <v-col cols="12" md="8">
         <!-- Civilization browser -->
-        <v-card rounded="lg" flat color="background" class="mb-6">
-          <v-row align="center">
-            <v-col cols="12">
-              <v-card class="mb-n4" rounded="lg" color="background" flat>
-                <v-card-title
-                  :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-                  }"
-                >
-                  Explore your Civilization
-                </v-card-title>
-              </v-card>
-            </v-col>
-            <v-col
-              class="mt-n2"
-              cols="12"
-              sm="6"
-              v-for="civ in civs"
-              :key="civ.title"
-            >
+        <span
+          class="text-h6"
+          :style="{
+            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+          }"
+          style="font-family: 'Segoe UI' !important"
+          >Explore by Civilization</span
+        >
+          <v-row align="center" no-gutters>
+            <v-col cols="12" sm="6" v-for="(civ, index) in civs" :key="civ.title" class="mt-2">
               <v-tooltip location="top">
                 <span
                   :style="{
@@ -32,6 +22,54 @@
                 >
                 <template v-slot:activator="{ props }">
                   <v-card
+                  class="hidden-xs"
+                  v-bind:class="{'mb-2': index % 2 == 0,  'mb-2 ml-4': index % 2 != 0}"
+                    min-height="50"
+                    rounded="lg"
+                    v-bind="props"
+                    @click="civSelected(civ.shortName)"
+                  >
+                    <v-row align="center" justify="center">
+                      <v-col cols="3" sm="4">
+                        <v-img
+                          min-height="50"
+                          :src="civ.flagLarge"
+                          :lazy-src="civ.flagSmall"
+                          gradient="to right, transparent, #1D2432"
+                          alt="{{civ.title}}"
+                          cover
+                        >
+                        </v-img>
+                      </v-col>
+                      <v-col cols="9" sm="8">
+                        <!--small title-->
+                        <div
+                          :style="{
+                            color:
+                              $vuetify.theme.themes.customDarkTheme.colors
+                                .primary,
+                          }"
+                          class="text-subtitle-2 hidden-lg-and-up"
+                          style="font-family: 'Segoe UI' !important"
+                        >
+                          {{ civ.title }}
+                        </div>
+                        <!--large title-->
+                        <v-card-title
+                          class="hidden-md-and-down"
+                          :style="{
+                            color:
+                              $vuetify.theme.themes.customDarkTheme.colors
+                                .primary,
+                          }"
+                        >
+                          {{ civ.title }}
+                        </v-card-title>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                  <v-card
+                    class="mb-2 hidden-sm-and-up"
                     min-height="50"
                     rounded="lg"
                     v-bind="props"
@@ -80,48 +118,42 @@
               </v-tooltip>
             </v-col>
           </v-row>
-        </v-card>
 
         <!-- Most Recent Builds -->
-        <v-card
-          rounded="lg"
-          flat
-          v-if="mostRecentBuilds"
-          color="background"
-          class="mb-6"
-        >
-          <v-card-title
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            >New Build Orders</v-card-title
+        <span
+          class="text-h6"
+          :style="{
+            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+          }"
+          style="font-family: 'Segoe UI' !important"
+          >New Build Orders
+        </span>
+        <div class="mt-2" v-for="item in mostRecentBuilds" :key="item.id">
+          <router-link
+            style="text-decoration: none"
+            :to="{ name: 'BuildDetails', params: { id: item.id } }"
           >
-          <div v-for="item in mostRecentBuilds" :key="item.id">
-            <router-link
-              style="text-decoration: none"
-              :to="{ name: 'BuildDetails', params: { id: item.id } }"
-            >
-              <SingleBuild :build="item"></SingleBuild>
-            </router-link>
-          </div>
-        </v-card>
+            <SingleBuild :build="item"></SingleBuild>
+          </router-link>
+        </div>
 
         <!-- Popular Builds -->
-        <v-card rounded="lg" flat v-if="popularBuilds" color="background">
-          <v-card-title
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            >Popular Build Orders</v-card-title
+        <span
+          class="text-h6"
+          :style="{
+            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+          }"
+          style="font-family: 'Segoe UI' !important"
+          >Popular Build Orders
+        </span>
+        <div class="mt-2" v-for="item in popularBuilds" :key="item.id">
+          <router-link
+            style="text-decoration: none"
+            :to="{ name: 'BuildDetails', params: { id: item.id } }"
           >
-          <div v-for="item in popularBuilds" :key="item.id">
-            <router-link
-              style="text-decoration: none"
-              :to="{ name: 'BuildDetails', params: { id: item.id } }"
-            >
-              <SingleBuild :build="item"></SingleBuild>
-            </router-link></div
-        ></v-card>
+            <SingleBuild :build="item"></SingleBuild>
+          </router-link>
+        </div>
       </v-col>
 
       <v-col cols="12" md="4">
