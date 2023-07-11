@@ -77,7 +77,7 @@
             :key="civ.title"
             class="mt-2"
           >
-            <v-tooltip location="top">
+            <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
                   color: $vuetify.theme.themes.customDarkTheme.colors.primary,
@@ -135,6 +135,16 @@
                     </v-col>
                   </v-row>
                 </v-card>
+              </template>
+            </v-tooltip>
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Explore all {{ civ.title }} build orders</span
+              >
+              <template v-slot:activator="{ props }">
                 <v-card
                   class="mb-2 hidden-sm-and-up"
                   min-height="50"
