@@ -1,5 +1,5 @@
 <template>
-  <v-card class="d-flex align-center mb-4" rounded="lg" :min-height="height">
+  <v-card @click="" class="d-flex align-center mb-4" rounded="lg" :min-height="height">
     <v-row no-gutters class="fill-height" align="center" justify="center">
       <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
         <v-img

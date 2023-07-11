@@ -214,7 +214,7 @@
                 style="text-decoration: none"
                 :to="{ name: 'BuildDetails', params: { id: item.id } }"
               >
-                <SingleBuild @click="" :build="item"></SingleBuild>
+                <SingleBuild :build="item"></SingleBuild>
               </router-link>
             </div> </v-col
         ></v-row>
