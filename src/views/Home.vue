@@ -32,6 +32,7 @@
                 >
                 <template v-slot:activator="{ props }">
                   <v-card
+                    min-height="50"
                     rounded="lg"
                     v-bind="props"
                     @click="civSelected(civ.shortName)"
@@ -39,24 +40,13 @@
                     <v-row align="center" justify="center">
                       <v-col cols="3" sm="4">
                         <v-img
+                          min-height="50"
                           :src="civ.flagLarge"
                           :lazy-src="civ.flagSmall"
                           gradient="to right, transparent, #1D2432"
                           alt="{{civ.title}}"
                           cover
                         >
-                          <template v-slot:placeholder>
-                            <v-row
-                              class="fill-height"
-                              align="center"
-                              justify="center"
-                            >
-                              <v-progress-circular
-                                indeterminate
-                                color="grey lighten-5"
-                              ></v-progress-circular>
-                            </v-row>
-                          </template>
                         </v-img>
                       </v-col>
                       <v-col cols="9" sm="8">
