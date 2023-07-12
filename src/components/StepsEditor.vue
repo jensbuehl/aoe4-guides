@@ -802,13 +802,37 @@ table tbody tr td:nth-child(7) {
 }
 
 td:empty {
-  line-height: 43px;
+  line-height: 46px;
 }
 
 .icon {
   vertical-align: middle;
   height: auto;
   width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+.iconTech {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #469586, #266d5b);
+}
+.iconMilitary {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #8b5d44, #683a22);
+}
+.iconLandmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
 .titleIcon {
   vertical-align: middle;
