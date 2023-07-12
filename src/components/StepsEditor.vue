@@ -93,7 +93,8 @@
               <v-card rounded="lg" class="mt-4" width="350px">
                 <IconSelector
                   @iconSelected="
-                    (iconPath, tooltip) => handleIconSelected(iconPath, tooltip)
+                    (iconPath, tooltip, iconClass) =>
+                      handleIconSelected(iconPath, tooltip, iconClass)
                   "
                   :civ="civ"
                 ></IconSelector>
@@ -471,8 +472,8 @@
                 <v-card rounded="lg" class="mt-4" width="350px">
                   <IconSelector
                     @iconSelected="
-                      (iconPath, tooltip) =>
-                        handleIconSelected(iconPath, tooltip)
+                      (iconPath, tooltip, iconClass) =>
+                        handleIconSelected(iconPath, tooltip, iconClass)
                     "
                     :civ="civ"
                   ></IconSelector>
@@ -580,13 +581,14 @@ export default {
       }
     };
 
-    const handleIconSelected = (iconPath, tooltipText) => {
+    const handleIconSelected = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
-      console.log(tooltipText);
+      iconClass = iconClass ? "icon-"+iconClass : "icon"
+
       const img =
         '<img src="' +
         iconPath +
-        '" class="icon" title="' +
+        '" class=' + iconClass + ' title="' +
         tooltipText +
         '"><\/img>';
       document.execCommand("insertHTML", false, img);
@@ -816,26 +818,44 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #3d516b, #23303f);
 }
-.iconTech {
+.icon-tech {
   vertical-align: middle;
   height: auto;
   width: 42px;
+  margin: 2px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
 }
-.iconMilitary {
+.icon-military {
   vertical-align: middle;
   height: auto;
   width: 42px;
+  margin: 2px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
 }
-.iconLandmark {
+.icon-landmark {
   vertical-align: middle;
   height: auto;
   width: 42px;
+  margin: 2px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+.icon-none {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+}
+.icon-default {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
 }
 .titleIcon {
   vertical-align: middle;

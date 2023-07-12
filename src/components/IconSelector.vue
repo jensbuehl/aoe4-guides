@@ -35,11 +35,19 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title)"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
                     height="60"
                     width="60"
                   >
                     <v-img
+                      v-bind:class="{
+                        'icon-landmark': icon.class == 'landmark',
+                        'icon-tech': icon.class == 'tech',
+                        'icon-military': icon.class == 'military',
+                        'icon-default': icon.class == 'default',
+                        'icon-none': icon.class == 'none',
+                        'icon': !icon.class,
+                      }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
                     ></v-img>
@@ -74,11 +82,19 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title)"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
                     height="60"
                     width="60"
                   >
-                    <v-img
+                  <v-img
+                      v-bind:class="{
+                        'icon-landmark': icon.class == 'landmark',
+                        'icon-tech': icon.class == 'tech',
+                        'icon-military': icon.class == 'military',
+                        'icon-default': icon.class == 'default',
+                        'icon-none': icon.class == 'none',
+                        'icon': !icon.class,
+                      }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
                     ></v-img>
@@ -113,11 +129,19 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title)"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
                     height="60"
                     width="60"
                   >
-                    <v-img
+                  <v-img
+                      v-bind:class="{
+                        'icon-landmark': icon.class == 'landmark',
+                        'icon-tech': icon.class == 'tech',
+                        'icon-military': icon.class == 'military',
+                        'icon-default': icon.class == 'default',
+                        'icon-none': icon.class == 'none',
+                        'icon': !icon.class,
+                      }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
                     ></v-img>
@@ -156,11 +180,19 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title)"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
                     height="60"
                     width="60"
                   >
-                    <v-img
+                  <v-img
+                      v-bind:class="{
+                        'icon-landmark': icon.class == 'landmark',
+                        'icon-tech': icon.class == 'tech',
+                        'icon-military': icon.class == 'military',
+                        'icon-default': icon.class == 'default',
+                        'icon-none': icon.class == 'none',
+                        'icon': !icon.class,
+                      }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
                     ></v-img>
@@ -195,11 +227,19 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title)"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
                     height="60"
                     width="60"
                   >
-                    <v-img
+                  <v-img
+                      v-bind:class="{
+                        'icon-landmark': icon.class == 'landmark',
+                        'icon-tech': icon.class == 'tech',
+                        'icon-military': icon.class == 'military',
+                        'icon-default': icon.class == 'default',
+                        'icon-none': icon.class == 'none',
+                        'icon': !icon.class,
+                      }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
                     ></v-img>
@@ -234,11 +274,19 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title)"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
                     height="60"
                     width="60"
                   >
-                    <v-img
+                  <v-img
+                      v-bind:class="{
+                        'icon-landmark': icon.class == 'landmark',
+                        'icon-tech': icon.class == 'tech',
+                        'icon-military': icon.class == 'military',
+                        'icon-default': icon.class == 'default',
+                        'icon-none': icon.class == 'none',
+                        'icon': !icon.class,
+                      }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
                     ></v-img>
@@ -277,11 +325,19 @@
                     color="primary"
                     v-bind="props"
                     variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title)"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
                     height="60"
                     width="60"
                   >
-                    <v-img
+                  <v-img
+                      v-bind:class="{
+                        'icon-landmark': icon.class == 'landmark',
+                        'icon-tech': icon.class == 'tech',
+                        'icon-military': icon.class == 'military',
+                        'icon-default': icon.class == 'default',
+                        'icon-none': icon.class == 'none',
+                        'icon': !icon.class,
+                      }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
                     ></v-img>
@@ -316,7 +372,7 @@ export default {
     const general = getIcons("unit_eco").concat(
       getIcons("unit_religious").concat(getIcons("resource"))
     );
-    const militaryUnits = getIcons("unit_military");
+    const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious"));
     const ecoTechnologies = getIcons("tech_eco");
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
@@ -342,8 +398,8 @@ export default {
       }
     };
 
-    const imageSelected = (imgSrc, tooltip) => {
-      context.emit("iconSelected", imgSrc, tooltip);
+    const imageSelected = (imgSrc, tooltip, imgClass) => {
+      context.emit("iconSelected", imgSrc, tooltip, imgClass);
     };
 
     return {
@@ -361,3 +417,46 @@ export default {
   },
 };
 </script>
+<style>
+.icon {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+.icon-tech {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #469586, #266d5b);
+}
+.icon-military {
+  vertical-align: middle;
+  height: 42px;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #8b5d44, #683a22);
+}
+.icon-landmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+.icon-none {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+}
+.icon-default {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+</style>
