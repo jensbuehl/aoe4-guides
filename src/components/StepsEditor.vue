@@ -29,54 +29,47 @@
     </div>
     <v-row v-if="steps?.length" no-gutters align="center" justify="center">
       <v-col cols="12">
-          <v-row no-gutters align="center" justify="center">
-            <v-col cols="3">
-                <v-img
-                  class="timeIconXs"
-                  src="/assets/resources/time.png"
-                ></v-img>
-            </v-col>
-            <v-col>
-                <v-img
-                  class="titleIconXs ma-2"
-                  src="/assets/resources/villager.png"
-                ></v-img>
-            </v-col>
-            <v-col>
-                <v-img
-                  class="titleIconXs ma-2"
-                  src="/assets/resources/repair.png"
-                ></v-img>
-            </v-col>
-            <v-col>
-                <v-img
-                  class="titleIconXs ma-2"
-                  src="/assets/resources/food.png"
-                ></v-img>
-            </v-col>
-            <v-col>
-                <v-img
-                  class="titleIconXs ma-2"
-                  src="/assets/resources/wood.png"
-                ></v-img>
-            </v-col>
-            <v-col>
-              <v-row align="center" justify="center">
-                <v-img
-                  class="titleIconXs ma-2"
-                  src="/assets/resources/gold.png"
-                ></v-img>
-              </v-row>
-            </v-col>
-            <v-col>
-              <v-row align="center" justify="center">
-                <v-img
-                  class="titleIconXs ma-2"
-                  src="/assets/resources/stone.png"
-                ></v-img>
-              </v-row>
-            </v-col>
-          </v-row>
+        <v-row no-gutters align="center" justify="center">
+          <v-col cols="3">
+            <v-img class="timeIconXs" src="/assets/resources/time.png"></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs ma-2"
+              src="/assets/resources/villager.png"
+            ></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs ma-2"
+              src="/assets/resources/repair.png"
+            ></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs ma-2"
+              src="/assets/resources/food.png"
+            ></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs ma-2"
+              src="/assets/resources/wood.png"
+            ></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs ma-2"
+              src="/assets/resources/gold.png"
+            ></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs ma-2"
+              src="/assets/resources/stone.png"
+            ></v-img>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col v-if="!readonly" cols="12">
         <v-card variant="flat" height="50"
@@ -99,7 +92,9 @@
               </template>
               <v-card rounded="lg" class="mt-4" width="350px">
                 <IconSelector
-                  @iconSelected="(iconPath, tooltip) => handleIconSelected(iconPath, tooltip)"
+                  @iconSelected="
+                    (iconPath, tooltip) => handleIconSelected(iconPath, tooltip)
+                  "
                   :civ="civ"
                 ></IconSelector>
               </v-card>
@@ -475,7 +470,10 @@
                 </template>
                 <v-card rounded="lg" class="mt-4" width="350px">
                   <IconSelector
-                    @iconSelected="(iconPath, tooltip) => handleIconSelected(iconPath, tooltip)"
+                    @iconSelected="
+                      (iconPath, tooltip) =>
+                        handleIconSelected(iconPath, tooltip)
+                    "
                     :civ="civ"
                   ></IconSelector>
                 </v-card>
@@ -584,8 +582,13 @@ export default {
 
     const handleIconSelected = (iconPath, tooltipText) => {
       restoreSelection();
-      console.log(tooltipText)
-      const img = '<img src="' + iconPath + '" class="icon" title="'+tooltipText+'"><\/img>';
+      console.log(tooltipText);
+      const img =
+        '<img src="' +
+        iconPath +
+        '" class="icon" title="' +
+        tooltipText +
+        '"><\/img>';
       document.execCommand("insertHTML", false, img);
       saveSelection();
     };
