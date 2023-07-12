@@ -736,7 +736,7 @@ export default {
         clean = e.clipboardData.getData("text/plain");
       }
 
-      document.execCommand("insertHTML", false, clean);
+      document.execCommand("insertHTML", false, clean.trim());
       e.stopPropagation();
       e.preventDefault();
     };
