@@ -816,7 +816,6 @@ td:empty {
   width: 42px;
   margin: 2px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #3d516b, #23303f);
 }
 .icon-tech {
   vertical-align: middle;
