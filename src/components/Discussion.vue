@@ -96,7 +96,6 @@ export default {
     };
 
     const post = async () => {
-      console.log(newComment.value);
       //Add new comment
       await add(newComment.value);
       newComment.value.text = null;
