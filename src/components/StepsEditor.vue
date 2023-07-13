@@ -591,6 +591,7 @@ export default {
         '" class=' + iconClass + ' title="' +
         tooltipText +
         '"><\/img>';
+        
       document.execCommand("insertHTML", false, img);
       saveSelection();
     };

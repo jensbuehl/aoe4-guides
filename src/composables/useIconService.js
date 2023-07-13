@@ -46,6 +46,7 @@ export default function useIconService(civArg) {
         break;
       default:
         allIcons = general
+          .concat(resource)
           .concat(landmark)
           .concat(tech_eco)
           .concat(tech_military)
@@ -70,6 +71,7 @@ export default function useIconService(civArg) {
     var allIcons = getIcons();
     const match = allIcons.find(icon => icon.imgSrc == imgPath);
     console.log(match)
+    console.log(imgPath)
     return match;
   };
 

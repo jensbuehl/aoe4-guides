@@ -8,9 +8,7 @@ export default function useOverlayConversion() {
     );
 
     var match_ups = [];
-    match_ups = build.matchup?.map(
-      (matchup) => mapCivilizations[matchup]
-    );
+    match_ups = build.matchup?.map((matchup) => mapCivilizations[matchup]);
 
     return {
       description: build.description || "",
@@ -63,14 +61,29 @@ export default function useOverlayConversion() {
     imageText = imageText.replaceAll("@", "");
 
     //Convert to aoe4guides path
-    const imagePath = "/assets/pictures/" + imageText
+    const imagePath = "/assets/pictures/" + imageText;
 
     //Get meta data
     const { getIconFromImgPath } = useIconService();
     const iconMetaData = getIconFromImgPath(imagePath);
 
-    //Create image element (TODO: incl. meta data)
-    return '<img class="icon" src="' + imagePath + '"></img>';
+    //Create image element
+    const iconPath = iconMetaData.imgSrc;
+    const tooltipText = iconMetaData.title;
+    const iconClass = iconMetaData.class
+      ? "icon-" + iconMetaData.class
+      : "icon";
+
+    const img =
+      '<img src="' +
+      iconPath +
+      '" class=' +
+      iconClass +
+      ' title="' +
+      tooltipText +
+      '"></img>';
+
+    return img;
   }
 
   //Export AoE4_Overlay format
@@ -202,7 +215,7 @@ export default function useOverlayConversion() {
     CHI: "Chinese",
     MON: "Mongols",
     //import
-    'Any Civilization': "ANY",
+    "Any Civilization": "ANY",
     English: "ENG",
     French: "FRE",
     Rus: "RUS",
