@@ -1,3 +1,5 @@
+import useIconService from "../composables/useIconService.js";
+
 export default function useOverlayConversion() {
   //Import AoE4_Overlay format
   const convertFromOverlayFormat = (build) => {
@@ -10,7 +12,6 @@ export default function useOverlayConversion() {
       (matchup) => mapCivilizations[matchup]
     );
 
-    console.log(match_ups)
     return {
       description: build.description || "",
       civ: mapCivilizations[build.civilization],
@@ -60,7 +61,16 @@ export default function useOverlayConversion() {
 
   function convertTextToImg(imageText) {
     imageText = imageText.replaceAll("@", "");
-    return '<img class="icon" src="/assets/pictures/' + imageText + '"></img>';
+
+    //Convert to aoe4guides path
+    const imagePath = "/assets/pictures/" + imageText
+
+    //Get meta data
+    const { getIconFromImgPath } = useIconService();
+    const iconMetaData = getIconFromImgPath(imagePath);
+
+    //Create image element (TODO: incl. meta data)
+    return '<img class="icon" src="' + imagePath + '"></img>';
   }
 
   //Export AoE4_Overlay format
@@ -69,7 +79,6 @@ export default function useOverlayConversion() {
       convertStepToOverlayFormat(step)
     );
 
-    console.log(build.matchup)
     const match_ups = build.matchup?.map(
       (matchup) => mapCivilizations[matchup]
     );

@@ -3,6 +3,7 @@ import { ref } from "vue";
 export default function useIconService(civArg) {
   const civ = ref(civArg);
 
+  //Exported methods
   const getIcons = (category) => {
     var allIcons = [];
 
@@ -65,6 +66,14 @@ export default function useIconService(civArg) {
     }
   };
 
+  const getIconFromImgPath = (imgPath) => {
+    var allIcons = getIcons();
+    const match = allIcons.find(icon => icon.imgSrc == imgPath);
+    console.log(match)
+    return match;
+  };
+
+  //Internal methods
   const general = [
     {
       title: "Dark Age",
@@ -3963,5 +3972,5 @@ export default function useIconService(civArg) {
     },
   ];
 
-  return { getIcons };
+  return { getIcons, getIconFromImgPath };
 }
