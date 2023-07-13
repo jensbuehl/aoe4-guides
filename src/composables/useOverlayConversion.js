@@ -69,6 +69,7 @@ export default function useOverlayConversion() {
       convertStepToOverlayFormat(step)
     );
 
+    console.log(build.matchup)
     const match_ups = build.matchup?.map(
       (matchup) => mapCivilizations[matchup]
     );
@@ -180,6 +181,7 @@ export default function useOverlayConversion() {
 
   const mapCivilizations = {
     //export
+    ANY: "Any Civilization",
     ENG: "English",
     FRE: "French",
     RUS: "Rus",
@@ -191,6 +193,7 @@ export default function useOverlayConversion() {
     CHI: "Chinese",
     MON: "Mongols",
     //import
+    'Any Civilization': "ANY",
     English: "ENG",
     French: "FRE",
     Rus: "RUS",
