@@ -727,7 +727,7 @@ export default {
         clean = sanitizeHtml(dirty, {
           allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
           allowedClasses: {
-            img: ["icon"],
+            img: ["icon", "icon-none", "icon-military", "icon-tech", "icon-default"],
           },
           allowedAttributes: {
             img: ["style", "class", "src"],
