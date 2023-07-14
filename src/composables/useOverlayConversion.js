@@ -66,7 +66,7 @@ export default function useOverlayConversion() {
     imageText = imageText.replaceAll("@", "");
 
     //Convert to aoe4guides path, if not from aoe4guides, then keep path as is. (e.g. from age4builder)
-    const imagePath = !imageText.contains("https") ? "/assets/pictures/" + imageText : imageText;
+    const imagePath = imageText.includes("https") ? imageText : ("/assets/pictures/" + imageText);
 
     //Get meta data
     const { getIconFromImgPath } = useIconService();
