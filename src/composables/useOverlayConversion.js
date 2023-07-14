@@ -52,7 +52,7 @@ export default function useOverlayConversion() {
 
   function convertOverlayNotesToDescription(overlayNotes) {
     //Filter @imagePath@
-    const regex = /@([^@]*)@/g;
+    const regex = /@([^@]*)png@/g;
     const joinedNotes = overlayNotes.join("<br>");
 
     const convertedNotes = joinedNotes.replace(regex, function replacer(match) {
