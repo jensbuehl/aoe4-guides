@@ -277,7 +277,12 @@ const useCollection = (col) => {
     error.value = null;
 
     try {
+      console.log("Ich bin da!")
+      console.log(db)
+      console.log(col)
+      console.log(id)
       const docRef = doc(db, col, id);
+      console.log(docRef)
       document.timeUpdated = Timestamp.fromDate(new Date());
       await updateDoc(docRef, document);
       console.log("Document updated with ID: ", id);

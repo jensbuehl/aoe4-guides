@@ -85,8 +85,9 @@
 import getDefaultConfig from "../composables/getDefaultConfig";
 import useCollection from "../composables/useCollection";
 import queryService from "../composables/queryService";
+import useOverlayConversion from "../composables/useOverlayConversion";
 import { useStore } from "vuex";
-import { ref, computed, onMounted, reactive } from "vue";
+import { ref, computed, onMounted } from "vue";
 
 export default {
   name: "Admin",
@@ -95,7 +96,11 @@ export default {
 
     var builds = null;
 
-    const { getAll, getQuery, getSize } = useCollection("builds");
+    const { getAll, getQuery, getSize, update } = useCollection("builds");
+    const {
+      convertOverlayNotesToDescription,
+      convertDescriptionToOverlayNotes,
+    } = useOverlayConversion();
     const error = ref(null);
     const buildsCount = ref(null);
     const store = useStore();
@@ -110,29 +115,33 @@ export default {
     });
 
     const updateDescription = (description) => {
-      // 
-      return description +  "edited";
+      //roundtrip export/re-import to update entire description
+      const notes = convertDescriptionToOverlayNotes(description);
+      const migrated = convertOverlayNotesToDescription(notes);
+      return migrated;
     };
 
-    const rewriteImagesUpdateBuild = (build) => {
-      console.log("Steps: \n" + build.steps);
+    const rewriteImagesUpdateBuild = async (build) => {
+      if (build.steps.getSize > 0) console.log("Steps: \n" + build.steps);
 
       //Update step descriptions
       build.steps?.forEach((element) => {
         console.log("Description (before): \n" + element.description);
-        element.description = updateDescription(element.description)
+        element.description = updateDescription(element.description);
         console.log("Description (after): \n" + element.description);
-        //roundtrip export/re-import to update entire description
       });
 
       //Save to database
+      if (!error.value) {
+        await update(build.id, build);
+      }
     };
 
     const rewriteImages = () => {
       console.log("Builds count: \n" + buildsCount.value);
 
       builds.forEach((element) => {
-        console.log("Build: \n" + element.title);
+        console.log("Build: \n" + element.id);
         rewriteImagesUpdateBuild(element);
       });
     };
@@ -140,7 +149,7 @@ export default {
     const initData = async () => {
       //get builds
       const allDocuments = getQuery(
-        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
+        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value, 1)
       );
 
       buildsCount.value = await getSize(allDocuments);

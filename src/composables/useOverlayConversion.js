@@ -53,7 +53,7 @@ export default function useOverlayConversion() {
   function convertOverlayNotesToDescription(overlayNotes) {
     //Filter @imagePath@
     const regex = /@([^@]*)@/g;
-    const joinedNotes = step.notes.join("<br>");
+    const joinedNotes = overlayNotes.join("<br>");
 
     const convertedNotes = joinedNotes.replace(regex, function replacer(match) {
       return convertTextToImg(match);
