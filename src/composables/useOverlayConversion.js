@@ -65,26 +65,20 @@ export default function useOverlayConversion() {
   function convertTextToImg(imageText) {
     imageText = imageText.replaceAll("@", "");
 
-    //Convert to aoe4guides path
-    const imagePath = "/assets/pictures/" + imageText;
+    //Convert to aoe4guides path, if not from aoe4guides, then keep path as is. (e.g. from age4builder)
+    const imagePath = !imageText.contains("https") ? "/assets/pictures/" + imageText : imageText;
 
     //Get meta data
     const { getIconFromImgPath } = useIconService();
     const iconMetaData = getIconFromImgPath(imagePath);
 
     //Initialize image data with fallback values, so that broken images do get messed up (e.g. Valdemar used to copy from age4builder)
-    const iconPath = imagePath;
-    const tooltipText = "Image not found. Please make sure that you do not copy and past images from other sources.";
-    const iconClass = "icon-default"
-
-    if(iconMetaData){
     //Create image element
-    iconPath = iconMetaData.imgSrc;
-    tooltipText = iconMetaData.title;
-    iconClass = iconMetaData.class
+    const iconPath = iconMetaData.imgSrc ? iconMetaData.imgSrc : imagePath;
+    const tooltipText = iconMetaData.title ? iconMetaData.title : "Image not found. Please make sure that you do not copy and past images from other sources.";
+    const iconClass = iconMetaData.class
       ? "icon-" + iconMetaData.class
       : "icon";
-    }
 
     const img =
       '<img src="' +
