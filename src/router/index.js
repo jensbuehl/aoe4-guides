@@ -31,14 +31,14 @@ const routes = [
         title: "Home - Create and share build orders for Age of Empires IV"
       }
     },
-    {
+    /*{
       path: "/admin",
       name: "Admin",
       component: Admin,
       meta: {
         title: "Admin Console"
       }
-    },
+    },*/
     {
       path: "/builds",
       name: "Builds",
