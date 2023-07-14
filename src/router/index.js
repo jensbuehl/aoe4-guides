@@ -20,6 +20,8 @@ import NotFound from "../views/NotFound.vue";
 import Privacy from "../views/Privacy.vue";
 import About from "../views/About.vue";
 
+import Admin from "../views/Admin.vue";
+
 const routes = [
     {
       path: "/",
@@ -27,6 +29,14 @@ const routes = [
       component: Home,
       meta: {
         title: "Home - Create and share build orders for Age of Empires IV"
+      }
+    },
+    {
+      path: "/admin",
+      name: "Admin",
+      component: Admin,
+      meta: {
+        title: "Admin Console"
       }
     },
     {
