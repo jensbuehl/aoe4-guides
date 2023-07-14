@@ -75,7 +75,7 @@ export default function useOverlayConversion() {
     //Initialize image data with fallback values, so that broken images do get messed up (e.g. Valdemar used to copy from age4builder)
     //Create image element
     const iconPath = iconMetaData.imgSrc ? iconMetaData.imgSrc : imagePath;
-    const tooltipText = iconMetaData.title ? iconMetaData.title : "Image not found. Please make sure that you do not copy and past images from other sources.";
+    const tooltipText = iconMetaData.title ? iconMetaData.title : "Image not found. Please make sure to not copy and paste images from other sources.";
     const iconClass = iconMetaData.class
       ? "icon-" + iconMetaData.class
       : "icon";
