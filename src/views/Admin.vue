@@ -149,7 +149,7 @@ export default {
     const initData = async () => {
       //get builds
       const allDocuments = getQuery(
-        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value, 1)
+        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value, 2)
       );
 
       buildsCount.value = await getSize(allDocuments);
