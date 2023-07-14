@@ -37,14 +37,7 @@ export default function useOverlayConversion() {
   };
 
   const convertStepFromOverlayFormat = (step) => {
-    //Filter @imagePath@
-    const regex = /@([^@]*)@/g;
-    const joinedNotes = step.notes.join("<br>");
-
-    const convertedNotes = joinedNotes.replace(regex, function replacer(match) {
-      return convertTextToImg(match);
-    });
-
+    const convertedNotes = convertOverlayNotesToDescription(step.notes)
     return {
       ...(step.time && { time: step.time }),
       villagers: convertResourceFromOverlayFormat(step.villager_count),
@@ -56,6 +49,18 @@ export default function useOverlayConversion() {
       description: convertedNotes,
     };
   };
+
+  function convertOverlayNotesToDescription(overlayNotes) {
+    //Filter @imagePath@
+    const regex = /@([^@]*)@/g;
+    const joinedNotes = step.notes.join("<br>");
+
+    const convertedNotes = joinedNotes.replace(regex, function replacer(match) {
+      return convertTextToImg(match);
+    });
+
+    return convertedNotes;
+  }
 
   function convertTextToImg(imageText) {
     imageText = imageText.replaceAll("@", "");
@@ -126,19 +131,7 @@ export default function useOverlayConversion() {
   }
 
   const convertStepToOverlayFormat = (step) => {
-    //Filter img elements
-    step.description = step.description.replaceAll("&nbsp;", " ");
-    step.description = step.description.replaceAll("&gt;", ">");
-    step.description = step.description.replaceAll("</img>", "");
-    const regex = /<img([\w\W]+?)>/g;
-    const convertedDescription = step.description.replace(
-      regex,
-      function replacer(match) {
-        return convertImagePathToText(match);
-      }
-    );
-
-    const notes = convertedDescription.split("<br>").map((it) => it.trim());
+    const notes = convertDescriptionToOverlayNotes(step.description);
     return {
       age: -1, //not supported
       population_count: -1, //not supported
@@ -154,6 +147,23 @@ export default function useOverlayConversion() {
       notes: notes,
     };
   };
+
+  function convertDescriptionToOverlayNotes(description) {
+    //Filter img elements
+    description = description.replaceAll("&nbsp;", " ");
+    description = description.replaceAll("&gt;", ">");
+    description = description.replaceAll("</img>", "");
+    const regex = /<img([\w\W]+?)>/g;
+    const convertedDescription = description.replace(
+      regex,
+      function replacer(match) {
+        return convertImagePathToText(match);
+      }
+    );
+
+    const notes = convertedDescription.split("<br>").map((it) => it.trim());
+    return notes;
+  }
 
   const download = (text, filename) => {
     const type = "text/plain";
@@ -229,9 +239,11 @@ export default function useOverlayConversion() {
   };
 
   return {
+    convertOverlayNotesToDescription,
+    convertDescriptionToOverlayNotes,
     convertToOverlayFormat,
+    convertFromOverlayFormat,
     copyToClipboard,
     download,
-    convertFromOverlayFormat,
   };
 }
