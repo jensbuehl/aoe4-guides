@@ -213,6 +213,14 @@ export default function useIconService(civArg) {
       ],
       class: "none",
     },
+    //deprecated element, keep for export/import compatibility
+    {
+      title: "Build or Repair",
+      age: "1",
+      imgSrc: "/assets/pictures/resource/repair.png",
+      civ: [],
+      class: "none",
+    },
     {
       title: "Attack",
       age: "1",
@@ -3326,6 +3334,14 @@ export default function useIconService(civArg) {
       age: "3",
       imgSrc: "/assets/pictures/unit_cavalry/lancer-3.png",
       civ: ["ABB", "OTT", "CHI", "DEL"],
+      class: "military",
+    },
+    //deprecated element, keep for export/import compatibility
+    {
+      title: "Lancer",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_cavalry/lancer-4.png",
+      civ: [],
       class: "military",
     },
     {
