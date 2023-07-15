@@ -28,7 +28,7 @@ const routes = [
       name: "Home",
       component: Home,
       meta: {
-        title: "Home - Create and share build orders for Age of Empires IV"
+        title: "Age of Empires IV Build Orders"
       }
     },
     /*{
@@ -44,7 +44,7 @@ const routes = [
       name: "Builds",
       component: Builds,
       meta: {
-        title: "All Build Orders - Create and share build orders for Age of Empires IV"
+        title: "All Build Orders - Age of Empires IV Build Orders"
       }
     },
     {
@@ -77,7 +77,7 @@ const routes = [
       component: BuildDetails,
       props: true,
       meta: {
-        title: "View"
+        title: "Age of Empires IV Build Orders"
       }
     },
     {
@@ -94,7 +94,7 @@ const routes = [
       component: BuildEdit,
       props: true,
       meta: {
-        title: "Edit"
+        title: "Edit Build Order - Age of Empires IV Build Orders"
       }
     },
     {
@@ -102,7 +102,7 @@ const routes = [
       name: "MyBuilds",
       component: MyBuilds,
       meta: {
-        title: "My Build Orders"
+        title: "My Build Orders - Age of Empires IV Build Orders"
       }
     },
     {
@@ -110,7 +110,7 @@ const routes = [
       name: "MyFavorites",
       component: MyFavorites,
       meta: {
-        title: "My Favorites"
+        title: "My Favorites - Age of Empires IV Build Orders"
       }
     },
     {
@@ -134,7 +134,7 @@ const routes = [
       name: "BuildNew",
       component: BuildNew,
       meta: {
-        title: "Create Build Order"
+        title: "Create Build Order - Age of Empires IV Build Orders"
       }
     },
     {
@@ -142,7 +142,7 @@ const routes = [
       name: "BuildImport",
       component: BuildImport,
       meta: {
-        title: "Import Build Order"
+        title: "Import Build Order - Age of Empires IV Build Orders"
       }
     },
     {
@@ -163,7 +163,7 @@ const routes = [
 
   router.afterEach(to => {
     if (to.meta.title) {
-      document.title = `${to.meta.title}` + " | AoE4 Guides"
+      document.title = `${to.meta.title}` + " | AOE4 GUIDES"
     }
   });
   
