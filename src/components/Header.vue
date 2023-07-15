@@ -1,10 +1,10 @@
 <template>
-  <v-app-bar app height="80">
-    <v-container class="fill-height d-flex align-center pr-0">
+  <v-app-bar app height="100">
+    <v-container class="fill-height d-flex align-center my-0 py-0">
       <v-app-bar-nav-icon color="primary" class="hidden-md-and-up">
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-menu" v-bind="props"></v-btn>
+            <v-btn icon="mdi-menu" variant="plain" v-bind="props"></v-btn>
           </template>
           <v-list v-if="authIsReady">
             <v-list-item to="/builds">
@@ -28,9 +28,22 @@
         </v-menu>
       </v-app-bar-nav-icon>
 
-      <v-app-bar-title style="min-width: 200px">
+      <v-app-bar-title style="min-width: 240px">
         <router-link style="text-decoration: none" to="/">
-          <v-btn color="primary" class="title px-0" flat>{{ title }}</v-btn>
+          <v-row no-gutters class="fill-height" align="center" justify="start">
+            <v-col cols="12">
+              <v-card @click="" flat width="240">
+                <v-card-title
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  class="title pt-1"
+                  >{{title}}</v-card-title
+                >
+                <v-card-subtitle class="subtitle pb-2">{{subtitle}}</v-card-subtitle>
+              </v-card>
+            </v-col>
+          </v-row>
         </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
@@ -45,7 +58,7 @@
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
-              flat
+              variant="plain"
               to="/builds"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-hammer"
@@ -67,7 +80,7 @@
               v-if="user"
               v-bind="props"
               color="primary"
-              flat
+              variant="plain"
               to="/favorites"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-heart-outline"
@@ -88,7 +101,7 @@
               v-if="user"
               v-bind="props"
               color="primary"
-              flat
+              variant="plain"
               to="/mybuilds"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-playlist-edit"
@@ -102,7 +115,7 @@
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
-              flat
+              variant="plain"
               color="primary"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-plus"
@@ -144,7 +157,7 @@
         </v-menu>
         <v-menu open-on-hover class="mx-4">
           <template v-slot:activator="{ props }">
-            <v-btn class="mr-2" icon>
+            <v-btn class="mr-2" icon variant="plain">
               <v-avatar v-if="user" color="primary" v-bind="props" con>{{
                 user.displayName.slice(0, 2)
               }}</v-avatar>
@@ -205,7 +218,8 @@ import { useRouter } from "vue-router";
 export default {
   name: "Header",
   setup() {
-    const title = ref("AoE4 Guides");
+    const title = ref("AOE4 GUIDES");
+    const subtitle = ref("Age of Empires IV Build Orders");
     const store = useStore();
     const user = computed(() => store.state.user);
     const error = ref(null);
@@ -222,6 +236,7 @@ export default {
 
     return {
       title,
+      subtitle,
       user,
       authIsReady: computed(() => store.state.authIsReady),
       logout,
@@ -236,5 +251,13 @@ export default {
 }
 .title {
   font-size: 1.5rem;
+  font-family: 'Segoe UI';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.subtitle {
+  font-size: 0.8rem;
+  font-family: 'Segoe UI';
+  text-transform: uppercase;
 }
 </style>
