@@ -32,11 +32,12 @@
           <v-row no-gutters class="fill-height" align="center" justify="start">
             <v-col cols="12">
               <v-card to="/" flat width="240">
+                <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
                 <v-card-title
                   :style="{
                     color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
-                  class="title my-0 py-0"
+                  class="title mb-0 mt-1 mt-sm-0 pb-0 pt-0"
                   >{{ title }}</v-card-title
                 >
                 <v-card-subtitle
