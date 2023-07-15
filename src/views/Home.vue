@@ -352,6 +352,7 @@ export default {
     const civs = getCivs().civs;
     const router = useRouter();
     const store = useStore();
+    const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const popularConfig = ref(getDefaultConfig());
@@ -385,12 +386,20 @@ export default {
         queryService.getQueryParametersFromConfig(popularConfig.value, 5)
       );
       popularBuilds.value = await getAll(popularBuildsQuery);
+
+      //get count
+      const allDocsQuery = getQuery(
+        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
+      );
+      const size = await getSize(allDocsQuery);
+      store.commit("setResultsCount", size);
     };
 
     return {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       civs,
+      count,
       mostRecentBuilds,
       popularBuilds,
       civSelected,

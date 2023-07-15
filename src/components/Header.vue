@@ -38,9 +38,15 @@
                     color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
                   class="title pt-1"
-                  >{{title}}</v-card-title
+                  >{{ title }}</v-card-title
                 >
-                <v-card-subtitle class="subtitle pb-2">{{subtitle}}</v-card-subtitle>
+                <v-card-subtitle
+                  :style="{
+                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  }"
+                  class="subtitle pb-2"
+                  >{{ subtitle }}</v-card-subtitle
+                >
               </v-card>
             </v-col>
           </v-row>
@@ -251,13 +257,13 @@ export default {
 }
 .title {
   font-size: 1.5rem;
-  font-family: 'Segoe UI';
+  font-family: "Segoe UI";
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 .subtitle {
   font-size: 0.8rem;
-  font-family: 'Segoe UI';
+  font-family: "Segoe UI";
   text-transform: uppercase;
 }
 </style>
