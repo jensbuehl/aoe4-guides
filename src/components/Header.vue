@@ -29,28 +29,26 @@
       </v-app-bar-nav-icon>
 
       <v-app-bar-title style="min-width: 240px">
-        <router-link style="text-decoration: none" to="/">
           <v-row no-gutters class="fill-height" align="center" justify="start">
             <v-col cols="12">
-              <v-card @click="" flat width="240">
+              <v-card to="/" flat width="240">
                 <v-card-title
                   :style="{
                     color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
-                  class="title pt-1"
+                  class="title my-0 py-0"
                   >{{ title }}</v-card-title
                 >
                 <v-card-subtitle
                   :style="{
                     color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                   }"
-                  class="subtitle pb-2"
+                  class="subtitle mb-1"
                   >{{ subtitle }}</v-card-subtitle
                 >
               </v-card>
             </v-col>
           </v-row>
-        </router-link>
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <span v-if="authIsReady">
