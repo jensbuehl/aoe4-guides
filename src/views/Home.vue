@@ -69,10 +69,11 @@
         >
           Explore by Civilization
         </div>
-        <v-row align="center" no-gutters>
+
+        <!-- xs-->
+        <v-row align="center" no-gutters class="hidden-sm-and-up">
           <v-col
-            cols="12"
-            sm="6"
+            cols="6"
             v-for="(civ, index) in civs"
             :key="civ.title"
             class="mt-2"
@@ -86,8 +87,7 @@
               >
               <template v-slot:activator="{ props }">
                 <v-card
-                  class="hidden-xs"
-                  v-bind:class="{
+                v-bind:class="{
                     'mb-2': index % 2 == 0,
                     'mb-2 ml-4': index % 2 != 0,
                   }"
@@ -96,8 +96,8 @@
                   v-bind="props"
                   @click="civSelected(civ.shortName)"
                 >
-                  <v-row align="center" justify="center">
-                    <v-col cols="3" sm="4">
+                  <v-row no-gutters align="center" justify="center">
+                    <v-col cols="4">
                       <v-img
                         min-height="50"
                         :src="civ.flagLarge"
@@ -108,7 +108,65 @@
                       >
                       </v-img>
                     </v-col>
-                    <v-col cols="9" sm="8">
+                    <v-col cols="8">
+                      <!--small title-->
+                      <div
+                        :style="{
+                          color:
+                            $vuetify.theme.themes.customDarkTheme.colors
+                              .primary,
+                        }"
+                        class="text-subtitle-2 mx-2"
+                        style="font-family: 'Segoe UI' !important; font-size: 0.8rem !important;"
+                      >
+                        {{ civ.title }}
+                      </div> 
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+        <!--sm and up-->
+        <v-row align="center" no-gutters class="hidden-xs">
+          <v-col
+            cols="6"
+            v-for="(civ, index) in civs"
+            :key="civ.title"
+            class="mt-2"
+          >
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                }"
+                >Explore all {{ civ.title }} build orders</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-card
+                  v-bind:class="{
+                    'mb-2': index % 2 == 0,
+                    'mb-2 ml-4': index % 2 != 0,
+                  }"
+                  min-height="50"
+                  rounded="lg"
+                  v-bind="props"
+                  @click="civSelected(civ.shortName)"
+                >
+                  <v-row align="center" justify="center">
+                    <v-col cols="4">
+                      <v-img
+                        min-height="50"
+                        :src="civ.flagLarge"
+                        :lazy-src="civ.flagSmall"
+                        gradient="to right, transparent, #1D2432"
+                        alt="{{civ.title}}"
+                        cover
+                      >
+                      </v-img>
+                    </v-col>
+                    <v-col cols="8">
                       <!--small title-->
                       <div
                         :style="{
@@ -153,7 +211,7 @@
                   @click="civSelected(civ.shortName)"
                 >
                   <v-row align="center" justify="center">
-                    <v-col cols="3" sm="4">
+                    <v-col cols="4">
                       <v-img
                         min-height="50"
                         :src="civ.flagLarge"
@@ -164,7 +222,7 @@
                       >
                       </v-img>
                     </v-col>
-                    <v-col cols="9" sm="8">
+                    <v-col cols="8">
                       <!--small title-->
                       <div
                         :style="{
@@ -349,7 +407,7 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const popularBuilds = ref(null);
     const mostRecentBuilds = ref(null);
-    const civs = getCivs().civs;
+    const civs = getCivs().civs.value.filter(element => element.shortName != "ANY");
     const router = useRouter();
     const store = useStore();
     const count = computed(() => store.state.resultsCount);
