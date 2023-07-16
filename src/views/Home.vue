@@ -88,8 +88,8 @@
               <template v-slot:activator="{ props }">
                 <v-card
                 v-bind:class="{
-                    'mb-2': index % 2 == 0,
-                    'mb-2 ml-4': index % 2 != 0,
+                    'mb-2 mr-2': index % 2 == 0,
+                    'mb-2 ml-2': index % 2 != 0,
                   }"
                   min-height="50"
                   rounded="lg"
@@ -146,8 +146,8 @@
               <template v-slot:activator="{ props }">
                 <v-card
                   v-bind:class="{
-                    'mb-2': index % 2 == 0,
-                    'mb-2 ml-4': index % 2 != 0,
+                    'mb-2 mr-2': index % 2 == 0,
+                    'mb-2 ml-2': index % 2 != 0,
                   }"
                   min-height="50"
                   rounded="lg"
