@@ -700,7 +700,7 @@ export default {
         video: build.value.video,
         civ: build.value.civ,
         matchup: build.value.matchup || [],
-        map: build.value.map,
+        map: build.value.map || "",
         season: build.value.season,
         strategy: build.value.strategy,
         views: 0,
