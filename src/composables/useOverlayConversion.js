@@ -137,7 +137,7 @@ export default function useOverlayConversion() {
     const gold = parseInt(step.gold) || 0;
     const stone = parseInt(step.stone) || 0;
 
-    return builders + food + wood + gold + stone;
+    return (builders + food + wood + gold + stone) || -1;
   };
 
   const convertStepToOverlayFormat = (step) => {
@@ -146,7 +146,7 @@ export default function useOverlayConversion() {
       age: -1, //not supported
       population_count: -1, //not supported
       ...(step.time && { time: step.time }),
-      villager_count: step.villagers ? step.villagers : aggregateVillagers(step) || -1,
+      villager_count: aggregateVillagers(step),
       resources: {
         food: parseInt(step.food) || 0,
         wood: parseInt(step.wood) || 0,
