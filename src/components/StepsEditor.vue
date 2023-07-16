@@ -604,8 +604,7 @@ export default {
       const gold = parseInt(step.gold) || 0;
       const stone = parseInt(step.stone) || 0;
 
-      step.villagers = builders + food + wood + gold + stone;
-      step.villagers = step.villagers ? step.villagers : "-"
+      return (builders + food + wood + gold + stone) || "-";
     };
     const updateStepTime = (event, index) => {
       steps[index].time = event.target.innerHTML;
