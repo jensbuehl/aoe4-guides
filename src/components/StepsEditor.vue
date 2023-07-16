@@ -137,7 +137,7 @@
                 class="text-center villager"
                 disabled
                 v-html="
-                  item.villagers ? item.villagers : aggregateVillagers(index)
+                  aggregateVillagers(index)
                 "
               ></v-card-text
             ></v-card>
@@ -397,7 +397,7 @@
           <td
             class="text-center py-1"
             disabled
-            v-html="item.villagers ? item.villagers : aggregateVillagers(index)"
+            v-html="aggregateVillagers(index)"
           ></td>
           <td
             @paste="handlePaste"
