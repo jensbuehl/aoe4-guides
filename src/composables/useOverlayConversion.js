@@ -40,7 +40,6 @@ export default function useOverlayConversion() {
     const convertedNotes = convertOverlayNotesToDescription(step.notes)
     return {
       ...(step.time && { time: step.time }),
-      villagers: convertResourceFromOverlayFormat(step.villager_count),
       food: convertResourceFromOverlayFormat(step.resources.food),
       wood: convertResourceFromOverlayFormat(step.resources.wood),
       gold: convertResourceFromOverlayFormat(step.resources.gold),
@@ -131,13 +130,23 @@ export default function useOverlayConversion() {
     return "@" + imageSource + "@";
   }
 
+  const aggregateVillagers = (step) => {
+    const builders = parseInt(step.builders) || 0;
+    const food = parseInt(step.food) || 0;
+    const wood = parseInt(step.wood) || 0;
+    const gold = parseInt(step.gold) || 0;
+    const stone = parseInt(step.stone) || 0;
+
+    return builders + food + wood + gold + stone;
+  };
+
   const convertStepToOverlayFormat = (step) => {
     const notes = convertDescriptionToOverlayNotes(step.description);
     return {
       age: -1, //not supported
       population_count: -1, //not supported
       ...(step.time && { time: step.time }),
-      villager_count: parseInt(step.villagers) || -1,
+      villager_count: step.villagers ? step.villagers : aggregateVillagers(step) || -1,
       resources: {
         food: parseInt(step.food) || 0,
         wood: parseInt(step.wood) || 0,
