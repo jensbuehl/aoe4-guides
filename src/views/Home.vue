@@ -2,7 +2,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <v-card rounded="lg">
+        <v-card rounded="lg" class="mb-2">
           <v-card-title
             v-if="!user"
             :style="{
@@ -59,25 +59,12 @@
       </v-col>
 
       <v-col cols="12" md="8">
-        <!-- Civilization browser -->
-        <div
-          class="text-h6"
-          :style="{
-            color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-          }"
-          style="font-family: 'Segoe UI' !important"
-        >
-          Explore by Civilization
-        </div>
-
         <!-- xs-->
         <v-row align="center" no-gutters class="hidden-sm-and-up">
           <v-col
             cols="6"
             v-for="(civ, index) in civs"
-            :key="civ.title"
-            class="mt-2"
-          >
+            :key="civ.title">
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
@@ -134,7 +121,6 @@
             cols="6"
             v-for="(civ, index) in civs"
             :key="civ.title"
-            class="mt-2"
           >
             <v-tooltip location="top" open-delay="1000">
               <span
