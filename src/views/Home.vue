@@ -267,10 +267,10 @@
             >
               New Build Orders
             </div>
-            <div class="mt-2" v-for="item in mostRecentBuilds" :key="item.id">
+            <div class="mt-2" v-for="item in mostRecentBuilds">
               <router-link
                 style="text-decoration: none"
-                :to="{ name: 'BuildDetails', params: { id: item.id } }"
+                :to="{ name: item.loading ? 'Home' : 'BuildDetails', params: { id: !item.loading ? item.id : null } }"
               >
                 <SingleBuild :build="item"></SingleBuild>
               </router-link>
@@ -289,10 +289,10 @@
             >
               Popular Build Orders
             </div>
-            <div class="mt-2" v-for="item in popularBuilds" :key="item.id">
+            <div class="mt-2" v-for="item in popularBuilds">
               <router-link
                 style="text-decoration: none"
-                :to="{ name: 'BuildDetails', params: { id: item.id } }"
+                :to="{ name: item.loading ? 'Home' : 'BuildDetails', params: { id: !item.loading ? item.id : null } }"
               >
                 <SingleBuild :build="item"></SingleBuild>
               </router-link>
@@ -405,8 +405,8 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const popularBuilds = ref(null);
-    const mostRecentBuilds = ref(null);
+    const popularBuilds = ref(Array(5).fill({loading: true}));
+    const mostRecentBuilds = ref(Array(5).fill({loading: true}));
     const civs = getCivs().civs.value.filter(element => element.shortName != "ANY");
     const router = useRouter();
     const store = useStore();

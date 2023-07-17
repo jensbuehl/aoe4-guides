@@ -1,6 +1,10 @@
 <template>
-  <v-card @click="" class="d-flex align-center mb-4" rounded="lg" :min-height="height">
-    <v-row no-gutters class="fill-height" align="center" justify="center">
+  <v-card @click="" class="mb-4" rounded="lg">
+    <v-skeleton-loader
+      :loading="build.loading"
+      :height="height"
+    >
+    <v-row  no-gutters class="fill-height" align="center" justify="center">
       <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
         <v-img
           :min-height="height"
@@ -111,24 +115,38 @@
           <v-chip v-if="build.season" class="mr-1 mt-1" label size="x-small"
             ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
           >
-          <v-chip v-if="build.map" class="mr-1 mt-1 hidden-xs" label size="x-small"
+          <v-chip
+            v-if="build.map"
+            class="mr-1 mt-1 hidden-xs"
+            label
+            size="x-small"
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
-          <v-chip v-if="build.strategy" class="mr-1 mt-1 hidden-xs" label size="x-small"
+          <v-chip
+            v-if="build.strategy"
+            class="mr-1 mt-1 hidden-xs"
+            label
+            size="x-small"
             ><v-icon start icon="mdi-strategy"></v-icon
             >{{ build.strategy }}</v-chip
           >
           <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-1 mt-1 hidden-xs" color="primary" label size="x-small"
-                ><v-icon start icon="mdi-sword-cross"></v-icon
-                >{{ item }}</v-chip
-              ></span
-            >
+            ><v-chip
+              class="mr-1 mt-1 hidden-xs"
+              color="primary"
+              label
+              size="x-small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
+            ></span
+          >
         </v-item-group>
         <!--large title-->
-        <v-card-title class="pt-0 pb-2 hidden-md-and-down" :style="{
+        <v-card-title
+          class="pt-0 pb-2 hidden-md-and-down"
+          :style="{
             color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-          }">
+          }"
+        >
           {{ build.title }}
         </v-card-title>
         <!--large chips-->
@@ -190,14 +208,13 @@
             >{{ build.strategy }}</v-chip
           >
           <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
-                ><v-icon start icon="mdi-sword-cross"></v-icon
-                >{{ item }}</v-chip
-              ></span
-            >
+            ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon>{{ item }}</v-chip
+            ></span
+          >
         </v-item-group>
       </v-col>
-    </v-row>
+    </v-row></v-skeleton-loader>
   </v-card>
 </template>
 
@@ -207,8 +224,12 @@ import useTimeSince from "../composables/useTimeSince";
 import { useStore } from "vuex";
 import { computed, getCurrentInstance } from "vue";
 import { useDisplay } from "vuetify";
+import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 
 export default {
+  components: {
+    VSkeletonLoader,
+  },
   name: "SingleBuild",
   props: ["build"],
   setup() {
@@ -223,15 +244,15 @@ export default {
         case "xs":
           return 80;
         case "sm":
-          return 80;
+          return 125;
         case "md":
           return 80;
         case "lg":
           return 112;
         case "xl":
-          return 112;
+          return 125;
         case "xxl":
-          return 112;
+          return 125;
       }
     });
 
