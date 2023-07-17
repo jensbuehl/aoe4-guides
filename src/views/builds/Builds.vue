@@ -2,7 +2,8 @@
   <v-container v-if="builds">
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <BuildsConfig class="mb-2" @configChanged="configChanged"> </BuildsConfig>
+        <BuildsConfig class="mb-2" @configChanged="configChanged">
+        </BuildsConfig>
         <v-alert
           v-if="!user"
           rounded="lg"
@@ -10,7 +11,6 @@
           color="primary"
           class="mt-4 mb-2 pa-1"
           ><v-card rounded="lg">
-
             <v-list lines="two">
               <v-list-item>
                 <v-label>New Villager?</v-label>
@@ -45,10 +45,13 @@
       </v-col>
 
       <v-col cols="12" md="8">
-        <div v-for="item in builds" :key="item.id">
+        <div v-for="item in builds">
           <router-link
             style="text-decoration: none"
-            :to="{ name: 'BuildDetails', params: { id: item.id } }"
+            :to="{
+              name: item.loading ? 'Builds' : 'BuildDetails',
+              params: { id: !item.loading ? item.id : null },
+            }"
           >
             <SingleBuild :build="item"></SingleBuild>
           </router-link>
@@ -74,7 +77,6 @@
           color="primary"
           class="mt-4 pa-1"
           ><v-card rounded="lg">
-
             <v-list lines="two">
               <v-list-item>
                 <v-label>New Villager?</v-label>
@@ -143,8 +145,8 @@ export default {
       if (!filterAndOrderConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
-      const instance = getCurrentInstance()
-      console.log(instance.proxy.$vuetify.theme.themes)
+      const instance = getCurrentInstance();
+      console.log(instance.proxy.$vuetify.theme.themes);
       initData();
     });
 
@@ -160,15 +162,19 @@ export default {
           paginationConfig.value.limit
         )
       );
+      const currentPageSize = Math.min(await getSize(paginationQuery), paginationConfig.value.limit)
+      builds.value = Array(currentPageSize).fill({
+        loading: true,
+      });
       const res = await getAll(paginationQuery);
       builds.value = res;
-      
+
       //init page count and current page
       const allDocsQuery = getQuery(
         queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
       );
       const size = await getSize(allDocsQuery);
-      store.commit("setResultsCount", size)
+      store.commit("setResultsCount", size);
       paginationConfig.value.totalPages = Math.ceil(
         size / paginationConfig.value.limit
       );
