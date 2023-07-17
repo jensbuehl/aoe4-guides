@@ -5,7 +5,8 @@
         <v-col cols="12">
           <v-btn
             class="mx-1"
-            flat
+            variant="plain"
+            color="primary"
             onclick="location.href='https://ko-fi.com/jensbuehl'"
           >
             <template v-slot:prepend>
@@ -16,12 +17,17 @@
           <v-btn
             class="mx-1"
             prepend-icon="mdi-github"
-            flat
+            variant="plain"
+            color="primary"
             onclick="location.href='https://github.com/jensbuehl/aoe4-guides'"
             >Contribute
           </v-btn>
-          <v-btn class="mx-1" flat to="/privacy">Privacy Policy </v-btn>
-          <v-btn class="mx-1" flat to="/about">About </v-btn>
+          <v-btn class="mx-1" variant="plain" color="primary" to="/privacy"
+            >Privacy Policy
+          </v-btn>
+          <v-btn class="mx-1" variant="plain" color="primary" to="/about"
+            >About
+          </v-btn>
         </v-col>
         <v-col cols="12" md="8"
           >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was
@@ -31,8 +37,7 @@
             }"
             href="https://www.xbox.com/en-US/developers/rules"
             >Game Content Usage Rules</a
-          >" using assets
-          from
+          >" using assets from
           <a
             :style="{
               color: $vuetify.theme.themes.customDarkTheme.colors.primary,
