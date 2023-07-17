@@ -45,10 +45,13 @@
       </v-col>
 
       <v-col cols="12" md="8">
-        <div v-for="item in builds" :key="item.id">
+        <div v-for="item in builds">
           <router-link
             style="text-decoration: none"
-            :to="{ name: 'BuildDetails', params: { id: item.id } }"
+            :to="{
+              name: item.loading ? 'MyFavorites' : 'BuildDetails',
+              params: { id: !item.loading ? item.id : null },
+            }"
           >
             <SingleBuild :build="item"></SingleBuild>
           </router-link>
@@ -189,7 +192,7 @@ export default {
       );
       paginationConfig.value.currentPage = 1;
 
-      //get builds
+      //get builds that match the filter
       const paginationQuery = getQuery(
         queryService.getQueryParametersFromConfig(
           filterAndOrderConfig.value,
@@ -198,9 +201,12 @@ export default {
           favorites.value
         )
       );
-
       //TODO: if favorites count != received favorites count, then update favorites list in DB (remove deprecated links)
-
+      //Preferably, fix in cloud function, whenever a build is removed.
+      const currentPageSize = Math.min(await getSize(paginationQuery), paginationConfig.value.limit)
+      builds.value = Array(currentPageSize).fill({
+        loading: true,
+      });
       const res = await getAll(paginationQuery);
       builds.value = res;
 
