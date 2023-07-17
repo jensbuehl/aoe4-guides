@@ -155,7 +155,7 @@ export default {
     };
 
     const initData = async () => {
-      //get builds
+      //get builds that match the filter
       const paginationQuery = getQuery(
         queryService.getQueryParametersFromConfig(
           filterAndOrderConfig.value,
@@ -169,7 +169,7 @@ export default {
       const res = await getAll(paginationQuery);
       builds.value = res;
 
-      //init page count and current page
+      //init page count, current page, and commit overall results count
       const allDocsQuery = getQuery(
         queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
       );
