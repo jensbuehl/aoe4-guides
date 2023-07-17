@@ -3,18 +3,8 @@
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
         <v-card rounded="lg" class="mb-2">
-          <v-card-title
-            v-if="!user"
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            >Welcome, Villager!</v-card-title
-          >
-          <v-card-title
-            v-if="user"
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
+          <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
+          <v-card-title v-if="user"
             >Welcome, {{ user.displayName }}!</v-card-title
           >
         </v-card>
@@ -24,47 +14,51 @@
           outlined
           color="primary"
           class="mt-4 pa-1"
-          ><v-card rounded="lg">
-            <v-list lines="two">
-              <v-list-item>
-                <v-label>New Villager?</v-label>
-                <v-btn
-                  class="pb-1"
-                  color="primary"
-                  style="background-color: transparent"
-                  variant="plain"
-                  to="/register"
-                >
-                  Register now!
-                </v-btn>
-              </v-list-item>
-              <v-list-item
-                title="Create"
-                subtitle="Create new Age of Empires 4 build orders and share them with your friends."
-              ></v-list-item>
-              <v-list-item
-                title="Like"
-                subtitle="Manage your own favorite AoE 4 build orders and find the good ones with ease."
-              ></v-list-item>
-              <v-list-item
-                title="Comment"
-                subtitle="Write build order comments and get in touch with the author and the community."
-              ></v-list-item>
-              <v-list-item
-                title="Sign up"
-                subtitle="Registered villagers gather and manage build orders up to 20% faster. ;)"
-              ></v-list-item>
-            </v-list> </v-card
-        ></v-alert>
+        >
+          <v-card rounded="lg">
+            <v-card-title v-if="!user">Create</v-card-title>
+            <v-card-text
+              >Create new Age of Empires 4 build orders and share them with your
+              friends.</v-card-text
+            >
+
+            <v-card-title>Like</v-card-title>
+            <v-card-text
+              >Manage your own favorite AoE 4 build orders and find the good
+              ones with ease.</v-card-text
+            >
+
+            <v-card-title>Comment</v-card-title>
+            <v-card-text
+              >Write build order comments and get in touch with the author and
+              the community.</v-card-text
+            >
+
+            <v-card-title>Sign up</v-card-title>
+            <v-card-text
+              >Registered villagers gather and manage build orders up to 20%
+              faster. ;)</v-card-text
+            >
+            <v-list-item>
+              <v-label>New Villager?</v-label>
+              <v-btn
+                class="pb-1"
+                color="primary"
+                style="background-color: transparent"
+                variant="plain"
+                to="/register"
+              >
+                Register now!
+              </v-btn>
+            </v-list-item>
+          </v-card></v-alert
+        >
       </v-col>
 
       <v-col cols="12" md="8">
         <!-- xs-->
         <v-row align="center" no-gutters class="hidden-sm-and-up">
-          <v-col
-            cols="6"
-            v-for="(civ, index) in civs"
-            :key="civ.title">
+          <v-col cols="6" v-for="(civ, index) in civs" :key="civ.title">
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
@@ -74,7 +68,7 @@
               >
               <template v-slot:activator="{ props }">
                 <v-card
-                v-bind:class="{
+                  v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
                   }"
@@ -104,10 +98,13 @@
                               .primary,
                         }"
                         class="text-subtitle-2 mx-2"
-                        style="font-family: 'Segoe UI' !important; font-size: 0.8rem !important;"
+                        style="
+                          font-family: 'Segoe UI' !important;
+                          font-size: 0.8rem !important;
+                        "
                       >
                         {{ civ.title }}
-                      </div> 
+                      </div>
                     </v-col>
                   </v-row>
                 </v-card>
@@ -117,11 +114,7 @@
         </v-row>
         <!--sm and up-->
         <v-row align="center" no-gutters class="hidden-xs">
-          <v-col
-            cols="6"
-            v-for="(civ, index) in civs"
-            :key="civ.title"
-          >
+          <v-col cols="6" v-for="(civ, index) in civs" :key="civ.title">
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
@@ -246,9 +239,6 @@
           <v-col cols="12">
             <div
               class="text-h6 mt-4"
-              :style="{
-                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-              }"
               style="font-family: 'Segoe UI' !important"
             >
               New Build Orders
@@ -256,7 +246,10 @@
             <div class="mt-2" v-for="item in mostRecentBuilds">
               <router-link
                 style="text-decoration: none"
-                :to="{ name: item.loading ? 'Home' : 'BuildDetails', params: { id: !item.loading ? item.id : null } }"
+                :to="{
+                  name: item.loading ? 'Home' : 'BuildDetails',
+                  params: { id: !item.loading ? item.id : null },
+                }"
               >
                 <SingleBuild :build="item"></SingleBuild>
               </router-link>
@@ -268,9 +261,6 @@
           <v-col cols="12">
             <div
               class="text-h6 mt-2"
-              :style="{
-                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-              }"
               style="font-family: 'Segoe UI' !important"
             >
               Popular Build Orders
@@ -278,7 +268,10 @@
             <div class="mt-2" v-for="item in popularBuilds">
               <router-link
                 style="text-decoration: none"
-                :to="{ name: item.loading ? 'Home' : 'BuildDetails', params: { id: !item.loading ? item.id : null } }"
+                :to="{
+                  name: item.loading ? 'Home' : 'BuildDetails',
+                  params: { id: !item.loading ? item.id : null },
+                }"
               >
                 <SingleBuild :build="item"></SingleBuild>
               </router-link>
@@ -288,46 +281,13 @@
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <v-card rounded="lg">
-          <v-card-title
-            v-if="!user"
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            >Welcome, Villager!</v-card-title
-          >
-          <v-card-title
-            v-if="user"
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
+          <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
+          <v-card-title v-if="user"
             >Welcome, {{ user.displayName }}!</v-card-title
           >
           <v-card-text
             >Create new Age of Empires 4 build orders and share them with your
             friends and the community.</v-card-text
-          >
-
-          <v-card-title
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            >Try new Civilizations</v-card-title
-          >
-          <v-card-text
-            >Get started with new civilizations and find the right build order
-            and play style for you.</v-card-text
-          >
-
-          <v-card-title
-            :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-            }"
-            >Ilalu and 80 Bunti</v-card-title
-          >
-          <v-card-text
-            >Scout new build orders and guides every day. Learn, improve and
-            master your build orders. And most importantly: Have
-            fun!</v-card-text
           >
         </v-card>
         <v-alert
@@ -336,38 +296,45 @@
           outlined
           color="primary"
           class="mt-4 pa-1"
-          ><v-card rounded="lg">
-            <v-list lines="two">
-              <v-list-item>
-                <v-label>New Villager?</v-label>
-                <v-btn
-                  class="pb-1"
-                  color="primary"
-                  style="background-color: transparent"
-                  variant="plain"
-                  to="/register"
-                >
-                  Register now!
-                </v-btn>
-              </v-list-item>
-              <v-list-item
-                title="Create"
-                subtitle="Create new Age of Empires 4 build orders and share them with your friends."
-              ></v-list-item>
-              <v-list-item
-                title="Like"
-                subtitle="Manage your own favorite AoE 4 build orders and find the good ones with ease."
-              ></v-list-item>
-              <v-list-item
-                title="Comment"
-                subtitle="Write build order comments and get in touch with the author and the community."
-              ></v-list-item>
-              <v-list-item
-                title="Sign up"
-                subtitle="Registered villagers gather and manage build orders up to 20% faster. ;)"
-              ></v-list-item>
-            </v-list> </v-card
-        ></v-alert>
+        >
+          <v-card rounded="lg">
+            <v-card-title v-if="!user">Create</v-card-title>
+            <v-card-text
+              >Create new Age of Empires 4 build orders and share them with your
+              friends.</v-card-text
+            >
+
+            <v-card-title>Like</v-card-title>
+            <v-card-text
+              >Manage your own favorite AoE 4 build orders and find the good
+              ones with ease.</v-card-text
+            >
+
+            <v-card-title>Comment</v-card-title>
+            <v-card-text
+              >Write build order comments and get in touch with the author and
+              the community.</v-card-text
+            >
+
+            <v-card-title>Sign up</v-card-title>
+            <v-card-text
+              >Registered villagers gather and manage build orders up to 20%
+              faster. ;)</v-card-text
+            >
+            <v-list-item>
+              <v-label>New Villager?</v-label>
+              <v-btn
+                class="pb-1"
+                color="primary"
+                style="background-color: transparent"
+                variant="plain"
+                to="/register"
+              >
+                Register now!
+              </v-btn>
+            </v-list-item>
+          </v-card></v-alert
+        >
       </v-col>
     </v-row>
   </v-container>
@@ -391,9 +358,11 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const popularBuilds = ref(Array(5).fill({loading: true}));
-    const mostRecentBuilds = ref(Array(5).fill({loading: true}));
-    const civs = getCivs().civs.value.filter(element => element.shortName != "ANY");
+    const popularBuilds = ref(Array(5).fill({ loading: true }));
+    const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
+    const civs = getCivs().civs.value.filter(
+      (element) => element.shortName != "ANY"
+    );
     const router = useRouter();
     const store = useStore();
     const count = computed(() => store.state.resultsCount);

@@ -5,43 +5,50 @@
         <BuildsConfig class="mb-2" @configChanged="configChanged">
         </BuildsConfig>
         <v-alert
-          v-if="!user"
+          v-if="!user && authIsReady"
           rounded="lg"
           outlined
           color="primary"
-          class="mt-4 mb-2 pa-1"
-          ><v-card rounded="lg">
-            <v-list lines="two">
-              <v-list-item>
-                <v-label>New Villager?</v-label>
-                <v-btn
-                  class="pb-1"
-                  color="primary"
-                  style="background-color: transparent"
-                  variant="plain"
-                  to="/register"
-                >
-                  Register now!
-                </v-btn>
-              </v-list-item>
-              <v-list-item
-                title="Create"
-                subtitle="Create new Age of Empires 4 build orders and share them with your friends."
-              ></v-list-item>
-              <v-list-item
-                title="Like"
-                subtitle="Manage your own favorite AoE 4 build orders and find the good ones with ease."
-              ></v-list-item>
-              <v-list-item
-                title="Comment"
-                subtitle="Write build order comments and get in touch with the author and the community."
-              ></v-list-item>
-              <v-list-item
-                title="Sign up"
-                subtitle="Registered villagers gather and manage build orders up to 20% faster. ;)"
-              ></v-list-item>
-            </v-list> </v-card
-        ></v-alert>
+          class="mt-4 pa-1"
+        >
+          <v-card rounded="lg">
+            <v-card-title v-if="!user">Create</v-card-title>
+            <v-card-text
+              >Create new Age of Empires 4 build orders and share them with your
+              friends.</v-card-text
+            >
+
+            <v-card-title>Like</v-card-title>
+            <v-card-text
+              >Manage your own favorite AoE 4 build orders and find the good
+              ones with ease.</v-card-text
+            >
+
+            <v-card-title>Comment</v-card-title>
+            <v-card-text
+              >Write build order comments and get in touch with the author and
+              the community.</v-card-text
+            >
+
+            <v-card-title>Sign up</v-card-title>
+            <v-card-text
+              >Registered villagers gather and manage build orders up to 20%
+              faster. ;)</v-card-text
+            >
+            <v-list-item>
+              <v-label>New Villager?</v-label>
+              <v-btn
+                class="pb-1"
+                color="primary"
+                style="background-color: transparent"
+                variant="plain"
+                to="/register"
+              >
+                Register now!
+              </v-btn>
+            </v-list-item>
+          </v-card></v-alert
+        >
       </v-col>
 
       <v-col cols="12" md="8">
@@ -71,43 +78,50 @@
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
         <v-alert
-          v-if="!user"
+          v-if="!user && authIsReady"
           rounded="lg"
           outlined
           color="primary"
           class="mt-4 pa-1"
-          ><v-card rounded="lg">
-            <v-list lines="two">
-              <v-list-item>
-                <v-label>New Villager?</v-label>
-                <v-btn
-                  class="pb-1"
-                  color="primary"
-                  style="background-color: transparent"
-                  variant="plain"
-                  to="/register"
-                >
-                  Register now!
-                </v-btn>
-              </v-list-item>
-              <v-list-item
-                title="Create"
-                subtitle="Create new Age of Empires 4 build orders and share them with your friends."
-              ></v-list-item>
-              <v-list-item
-                title="Like"
-                subtitle="Manage your own favorite AoE 4 build orders and find the good ones with ease."
-              ></v-list-item>
-              <v-list-item
-                title="Comment"
-                subtitle="Write build order comments and get in touch with the author and the community."
-              ></v-list-item>
-              <v-list-item
-                title="Sign up"
-                subtitle="Registered villagers gather and manage build orders up to 20% faster. ;)"
-              ></v-list-item>
-            </v-list> </v-card
-        ></v-alert>
+        >
+          <v-card rounded="lg">
+            <v-card-title v-if="!user">Create</v-card-title>
+            <v-card-text
+              >Create new Age of Empires 4 build orders and share them with your
+              friends.</v-card-text
+            >
+
+            <v-card-title>Like</v-card-title>
+            <v-card-text
+              >Manage your own favorite AoE 4 build orders and find the good
+              ones with ease.</v-card-text
+            >
+
+            <v-card-title>Comment</v-card-title>
+            <v-card-text
+              >Write build order comments and get in touch with the author and
+              the community.</v-card-text
+            >
+
+            <v-card-title>Sign up</v-card-title>
+            <v-card-text
+              >Registered villagers gather and manage build orders up to 20%
+              faster. ;)</v-card-text
+            >
+            <v-list-item>
+              <v-label>New Villager?</v-label>
+              <v-btn
+                class="pb-1"
+                color="primary"
+                style="background-color: transparent"
+                variant="plain"
+                to="/register"
+              >
+                Register now!
+              </v-btn>
+            </v-list-item>
+          </v-card></v-alert
+        >
       </v-col>
     </v-row>
   </v-container>
