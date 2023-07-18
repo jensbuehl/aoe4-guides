@@ -10,6 +10,7 @@
   "dependencies": {
     "@firebase/app-check": "^0.6.4",
     "@mdi/font": "^7.1.96",
+    "axios": "^1.4.0",
     "firebase": "^9.17.2",
     "json-server": "^0.17.2",
     "sanitize-html": "^2.10.0",
