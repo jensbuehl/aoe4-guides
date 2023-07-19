@@ -4,7 +4,7 @@ export default function useYoutube() {
   const extractVideoId = (videoUrl) => {
     if (videoUrl) {
       var regExp =
-        /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\??v?=?))([^#\&\?]*).*/;
       return videoUrl.match(regExp)[7];
     }
     throw new Error(`Could not extract video id from ${videoUrl}`)
