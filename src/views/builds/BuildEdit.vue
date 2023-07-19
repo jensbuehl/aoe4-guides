@@ -681,13 +681,14 @@ export default {
     const { convertToOverlayFormat, download, copyToClipboard } =
       useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
-    const { get, update, error } = useCollection("builds");
+    const { get:getBuild, update:updateBuild, error } = useCollection("builds");
+    const { get:getCreator, add:addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData } = useYoutube();
 
 
     onMounted(async () => {
-      const res = await get(props.id);
+      const res = await getBuild(props.id);
       build.value = res;
       document.title = build.value.title + " - " + document.title;
     });
@@ -725,12 +726,15 @@ export default {
           build.value.title.toLowerCase() + crypto.randomUUID();
 
         //Update build order document
-        await update(props.id, build.value);
+        await updateBuild(props.id, build.value);
 
-        //Update content creator document
+        //Add content creator document
         const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
-        console.log(creatorDoc);
-        //TODO: Update videoCreators collection
+        const res = await getCreator(creatorDoc.creatorId);
+        console.log(creatorDoc)
+        if(!res){
+          await addCreator(creatorDoc, creatorDoc.creatorId)
+        }
 
         //Navigate to new build order
         if (!error.value) {
