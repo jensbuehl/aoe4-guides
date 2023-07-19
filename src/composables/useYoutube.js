@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const API_KEY = "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY"
+
 export default function useYoutube() {
   const extractVideoId = (videoUrl) => {
     if (videoUrl) {
@@ -21,7 +23,7 @@ export default function useYoutube() {
     return await axios
       .get("https://www.googleapis.com/youtube/v3/videos", {
         params: {
-          key: "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY",
+          key: API_KEY,
           part: "snippet",
           id: videoId,
         },
@@ -42,7 +44,7 @@ export default function useYoutube() {
     return await axios
       .get("https://www.googleapis.com/youtube/v3/videos", {
         params: {
-          key: "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY",
+          key: API_KEY,
           part: "snippet",
           id: videoId,
         },
@@ -50,9 +52,9 @@ export default function useYoutube() {
       .then((response) => {
         if (response.data.items.length > 0) {
           return {
-            channelId: response.data.items[0].snippet.channelId,
-            channelTitle: response.data.items[0].snippet.channelTitle,
-            displayTitle: response.data.items[0].snippet.channelTitle
+            creatorId: response.data.items[0].snippet.channelId,
+            creatorTitle: response.data.items[0].snippet.channelTitle,
+            creatorDisplayTitle: "", //override when needed
           }
         } else {
           throw new Error(`No video with id ${videoId} found.`);
@@ -63,5 +65,26 @@ export default function useYoutube() {
       });
   };
 
-  return { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData };
+  const getChannelIcon = async (channelId) => {
+    return await axios
+    .get("https://www.googleapis.com/youtube/v3/channels", {
+      params: {
+        key: API_KEY,
+        part: "snippet",
+        id: channelId,
+      },
+    })
+    .then((response) => {
+      if (response.data.items.length > 0) {
+        return response.data.items[0].snippet.thumbnails.default.url
+      } else {
+        throw new Error(`No video with id ${videoId} found.`);
+      }
+    })
+    .catch((error) => {
+      console.log("Could not retrive youtube video meta data: ", error);
+    });
+  };
+
+  return { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon };
 }
