@@ -73,7 +73,10 @@
                   update icons to color-coded variants.
                 </div>
                 <v-divider></v-divider>
-                <v-btn color="primary" variant="plain" @click="sanitizeVideoPaths()"
+                <v-btn
+                  color="primary"
+                  variant="plain"
+                  @click="sanitizeVideoPaths()"
                   >Sanitize video paths</v-btn
                 >
                 <div class="ml-4 mb-3">
@@ -114,7 +117,12 @@ export default {
     const store = useStore();
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const user = computed(() => store.state.user);
-    const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData } = useYoutube();
+    const {
+      extractVideoId,
+      buildEmbedUrl,
+      getVideoCreatorId,
+      getVideoMetaData,
+    } = useYoutube();
 
     onMounted(() => {
       if (!filterAndOrderConfig.value) {
@@ -158,14 +166,19 @@ export default {
     const sanitizeVideoPaths = () => {
       console.log("Builds count:", buildsCount.value);
 
-      const buildsWithVideo = builds.filter(element => element.video);
+      const buildsWithVideo = builds.filter((element) => element.video);
       console.log("Builds with video count:", buildsWithVideo.length);
 
       buildsWithVideo.forEach((element) => {
         console.log("Build id:", element.id);
-        console.log("Video url:", element.video);
-        console.log("Video id:", extractVideoId(element.video));
-        console.log("Sanitized url:", buildEmbedUrl(extractVideoId(element.video)));
+        console.log("dirty url:", element.video);
+
+        //update video url
+        element.video = buildEmbedUrl(extractVideoId(element.video));
+        console.log("clean url:", element.video);
+
+        //Save to database
+        update(element.id, element);
       });
     };
 
@@ -187,7 +200,7 @@ export default {
       authIsReady: computed(() => store.state.authIsReady),
       error,
       rewriteImages,
-      sanitizeVideoPaths
+      sanitizeVideoPaths,
     };
   },
 };
