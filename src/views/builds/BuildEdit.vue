@@ -654,6 +654,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/useBuildValidator";
+import useYoutube from "../../composables/useYoutube";
 import getCivs from "../../composables/getCivs";
 import getSeasons from "../../composables/getSeasons";
 import getMaps from "../../composables/getMaps";
@@ -682,11 +683,13 @@ export default {
     const { timeSince, isNew } = useTimeSince();
     const { get, update, error } = useCollection("builds");
     const { validateBuild, validateVideo } = useBuildValidator();
+    const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData } = useYoutube();
+
 
     onMounted(async () => {
       const res = await get(props.id);
       build.value = res;
-      document.title = build.value.title + " - " + document.title
+      document.title = build.value.title + " - " + document.title;
     });
 
     const handleDuplicate = async () => {
@@ -715,14 +718,20 @@ export default {
 
     const handleSave = async () => {
       error.value = validateBuild(build.value);
-      console.log(error.value);
 
       //Write to database
       if (!error.value) {
         build.value.sortTitle =
           build.value.title.toLowerCase() + crypto.randomUUID();
 
+        //Update build order document
         await update(props.id, build.value);
+
+        //Update content creator document
+        const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
+        console.log(creatorDoc);
+        //TODO: Update videoCreators collection
+
         //Navigate to new build order
         if (!error.value) {
           router.push("/builds/" + props.id);
@@ -746,11 +755,12 @@ export default {
       build.value.steps = steps;
     };
 
-    const handleVideoInput = () => {
+    const handleVideoInput = async () => {
       error.value = validateVideo(build.value.video);
       if (!error.value) {
-        //Convert to embed url
-        build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
+        const videoId = extractVideoId(build.value.video)
+        build.value.video = buildEmbedUrl(videoId);
+        build.value.creatorId = await getVideoCreatorId(videoId);
       }
     };
 
