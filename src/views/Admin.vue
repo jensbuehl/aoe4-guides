@@ -64,7 +64,7 @@
             >
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
-                <v-btn color="primary" variant="plain" @click="rewriteImages()"
+                <v-btn disabled color="primary" variant="plain" @click="rewriteImages()"
                   >Re-write images in build step</v-btn
                 >
                 <div class="ml-4 mb-3">
@@ -77,10 +77,11 @@
                   color="primary"
                   variant="plain"
                   @click="sanitizeVideoPaths()"
-                  >Sanitize video paths</v-btn
+                  >Sanitize video and Extract Creator</v-btn
                 >
                 <div class="ml-4 mb-3">
                   Validate video URLs, extract video id and re-write embed URL.
+                  Extract video creator ID and update build accordingly.
                 </div>
               </v-col>
             </v-row>
@@ -163,13 +164,13 @@ export default {
       });
     };
 
-    const sanitizeVideoPaths = () => {
+    const sanitizeVideoPaths = async () => {
       console.log("Builds count:", buildsCount.value);
 
       const buildsWithVideo = builds.filter((element) => element.video);
       console.log("Builds with video count:", buildsWithVideo.length);
 
-      buildsWithVideo.forEach((element) => {
+      for (const element of buildsWithVideo) {
         console.log("Build id:", element.id);
         console.log("dirty url:", element.video);
 
@@ -177,9 +178,12 @@ export default {
         element.video = buildEmbedUrl(extractVideoId(element.video));
         console.log("clean url:", element.video);
 
+        element.creatorId = await getVideoCreatorId(extractVideoId(element.video));
+        console.log(element.creatorId);
+
         //Save to database
         update(element.id, element);
-      });
+      }
     };
 
     const initData = async () => {
