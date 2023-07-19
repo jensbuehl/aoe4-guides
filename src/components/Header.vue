@@ -173,10 +173,9 @@
           </template>
           <v-list v-if="!user">
             <v-list-item>
-              <v-label>New Villager?</v-label>
+              <span>New Villager?</span>
               <v-btn
                 size="small"
-                class="pb-1"
                 color="primary"
                 style="background-color: transparent"
                 variant="plain"

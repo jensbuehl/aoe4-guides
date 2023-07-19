@@ -36,9 +36,9 @@
               faster. ;)</v-card-text
             >
             <v-list-item>
-              <v-label>New Villager?</v-label>
+              <span>New Villager?</span>
               <v-btn
-                class="pb-1"
+                size="small"
                 color="primary"
                 style="background-color: transparent"
                 variant="plain"
@@ -109,9 +109,9 @@
               faster. ;)</v-card-text
             >
             <v-list-item>
-              <v-label>New Villager?</v-label>
+              <span>New Villager?</span>
               <v-btn
-                class="pb-1"
+                size="small"
                 color="primary"
                 style="background-color: transparent"
                 variant="plain"
