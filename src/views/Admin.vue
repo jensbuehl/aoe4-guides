@@ -72,6 +72,13 @@
                   description. E.g. add tooltips to all existing images or
                   update icons to color-coded variants.
                 </div>
+                <v-divider></v-divider>
+                <v-btn color="primary" variant="plain" @click="sanitizeVideoPaths()"
+                  >Sanitize video paths</v-btn
+                >
+                <div class="ml-4 mb-3">
+                  Validate video URLs, extract video id and re-write embed URL.
+                </div>
               </v-col>
             </v-row>
           </v-card>
@@ -88,6 +95,7 @@ import queryService from "../composables/queryService";
 import useOverlayConversion from "../composables/useOverlayConversion";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
+import useYoutube from "../composables/useYoutube";
 
 export default {
   name: "Admin",
@@ -106,6 +114,7 @@ export default {
     const store = useStore();
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const user = computed(() => store.state.user);
+    const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData } = useYoutube();
 
     onMounted(() => {
       if (!filterAndOrderConfig.value) {
@@ -138,11 +147,25 @@ export default {
     };
 
     const rewriteImages = () => {
-      console.log("Builds count: \n" + buildsCount.value);
+      console.log("Builds count:", buildsCount.value);
 
       builds.forEach((element) => {
-        console.log("Build: \n" + element.id);
+        console.log("Build:", element.id);
         rewriteImagesUpdateBuild(element);
+      });
+    };
+
+    const sanitizeVideoPaths = () => {
+      console.log("Builds count:", buildsCount.value);
+
+      const buildsWithVideo = builds.filter(element => element.video);
+      console.log("Builds with video count:", buildsWithVideo.length);
+
+      buildsWithVideo.forEach((element) => {
+        console.log("Build id:", element.id);
+        console.log("Video url:", element.video);
+        console.log("Video id:", extractVideoId(element.video));
+        console.log("Sanitized url:", buildEmbedUrl(extractVideoId(element.video)));
       });
     };
 
@@ -164,6 +187,7 @@ export default {
       authIsReady: computed(() => store.state.authIsReady),
       error,
       rewriteImages,
+      sanitizeVideoPaths
     };
   },
 };
