@@ -116,7 +116,7 @@
           </template>
         </v-tooltip>
 
-        <v-menu open-on-hover v-if="authIsReady">
+        <v-menu open-on-hover>
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
@@ -160,7 +160,7 @@
             </v-tooltip>
           </v-list>
         </v-menu>
-        <v-menu open-on-hover class="mx-4">
+        <v-menu class="mx-4">
           <template v-slot:activator="{ props }">
             <v-btn class="mr-2" icon variant="plain">
               <v-avatar v-if="user" color="primary" v-bind="props" con>{{
