@@ -64,7 +64,11 @@
             >
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
-                <v-btn disabled color="primary" variant="plain" @click="rewriteImages()"
+                <v-btn
+                  disabled
+                  color="primary"
+                  variant="plain"
+                  @click="rewriteImages()"
                   >Re-write images in build step</v-btn
                 >
                 <div class="ml-4 mb-3">
@@ -165,24 +169,24 @@ export default {
     };
 
     const sanitizeVideoPaths = async () => {
-      console.log("Builds count:", buildsCount.value);
-
       const buildsWithVideo = builds.filter((element) => element.video);
-      console.log("Builds with video count:", buildsWithVideo.length);
 
       for (const element of buildsWithVideo) {
         console.log("Build id:", element.id);
-        console.log("dirty url:", element.video);
 
         //update video url
         element.video = buildEmbedUrl(extractVideoId(element.video));
         console.log("clean url:", element.video);
 
-        element.creatorId = await getVideoCreatorId(extractVideoId(element.video));
-        console.log(element.creatorId);
+        if (!element.creatorId) {
+          element.creatorId = await getVideoCreatorId(
+            extractVideoId(element.video)
+          );
+          console.log(element.creatorId);
 
-        //Save to database
-        update(element.id, element);
+          //Save to database
+          update(element.id, element);
+        }
       }
     };
 
