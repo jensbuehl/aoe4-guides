@@ -65,6 +65,16 @@
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
                 <v-btn
+                  color="primary"
+                  variant="plain"
+                  @click="createCreatorsCollection()"
+                  >Create creators collection</v-btn
+                >
+                <div class="ml-4 mb-3">
+                  Create creators collection based on creatorIds in build orders.
+                </div>
+                <v-divider></v-divider>
+                <v-btn
                   disabled
                   color="primary"
                   variant="plain"
@@ -78,6 +88,7 @@
                 </div>
                 <v-divider></v-divider>
                 <v-btn
+                  disabled
                   color="primary"
                   variant="plain"
                   @click="sanitizeVideoPaths()"
@@ -159,6 +170,18 @@ export default {
       }
     };
 
+    const createCreatorsCollection = async () => {
+      const buildsWithVideo = builds.filter((element) => element.video);
+
+      for (const element of buildsWithVideo) {
+        console.log("Build id:", element.id);
+
+        //update video url
+        const metaData = await getVideoMetaData(extractVideoId(element.video));
+        console.log("Creator document:", metaData);
+      }
+    };
+
     const rewriteImages = () => {
       console.log("Builds count:", buildsCount.value);
 
@@ -209,6 +232,7 @@ export default {
       error,
       rewriteImages,
       sanitizeVideoPaths,
+      createCreatorsCollection,
     };
   },
 };
