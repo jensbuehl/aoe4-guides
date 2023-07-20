@@ -124,6 +124,7 @@ export default {
     var builds = null;
 
     const { getAll, getQuery, getSize, update } = useCollection("builds");
+    const { get:getCreator, add:addCreator } = useCollection("creators");
     const {
       convertOverlayNotesToDescription,
       convertDescriptionToOverlayNotes,
@@ -176,9 +177,16 @@ export default {
       for (const element of buildsWithVideo) {
         console.log("Build id:", element.id);
 
-        //update video url
-        const metaData = await getVideoMetaData(extractVideoId(element.video));
-        console.log("Creator document:", metaData);
+        //Get creator document
+        const creatorDoc = await getVideoMetaData(extractVideoId(element.video))
+        console.log("Creator document:", creatorDoc);
+
+        //Add content creator document
+        const res = await getCreator(creatorDoc.creatorId);
+        console.log(creatorDoc)
+        if(!res){
+          await addCreator(creatorDoc, creatorDoc.creatorId)
+        }
       }
     };
 
