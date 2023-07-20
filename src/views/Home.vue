@@ -343,7 +343,7 @@
                   params: { id: !item.loading ? item.id : null },
                 }"
               >
-                <SingleBuild :build="item"></SingleBuild>
+                <SingleBuild :build="item" :creatorName="getCreatorName(item.creatorId)"></SingleBuild>
               </router-link>
             </div> </v-col
         ></v-row>
@@ -535,6 +535,7 @@ export default {
     const popularBuilds = ref(Array(5).fill({ loading: true }));
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
     const creators = ref(Array(6).fill({ loading: true }));
+    const allCreators = ref(null);
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
@@ -551,8 +552,6 @@ export default {
       if (!filterAndOrderConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
-      const instance = getCurrentInstance();
-      //console.log(instance.proxy.$vuetify.theme.themes);
       initData();
     });
 
@@ -568,16 +567,29 @@ export default {
       router.push({ name: "Builds" });
     };
 
+    const getCreatorName = (id) => {
+      if (allCreators.value){
+        const currentCreator = allCreators.value.find((element) => element.id === id)
+        console.log("Current Creator",currentCreator);
+        if(currentCreator){
+          return currentCreator.creatorDisplayTitle ? currentCreator.creatorDisplayTitle : currentCreator.creatorTitle
+        }
+      }
+    };
+
     const initData = async () => {
-      //Limit to "featured creators"
+      //get featured creators
       const creatorsQuery = getQueryCreators(
         queryService.getQueryParametersForCreators(6)
       );
-      creators.value = await getAllCreators(creatorsQuery);
-      
+      creators.value = await getAllCreators(creatorsQuery);  
       for (const creator of creators.value) {
         creator.image = await getChannelIcon(creator.creatorId);
       }
+
+      //get all creators
+      allCreators.value = await getAllCreators();  
+      console.log(allCreators.value);
 
       //get most recent
       const mostRecentQuery = getQuery(
@@ -609,6 +621,7 @@ export default {
       creators,
       civSelected,
       creatorSelected,
+      getCreatorName
     };
   },
 };
