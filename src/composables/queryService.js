@@ -54,6 +54,18 @@ const getQueryParametersNextPage = (
   }
 };
 
+const getQueryParametersForCreators = (limit) => {
+  try {
+    var queryParams = [];
+    if (limit) {
+      queryParams = limitWith(limit);
+    }
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 const getQueryParametersFromConfig = (
   config,
   pageLimit,
@@ -208,6 +220,7 @@ const whereEqual = (field, value) => {
 
 export default {
   getQueryParametersFromConfig,
+  getQueryParametersForCreators,
   filterAuthorBy,
   orderByWith,
   getQueryParametersNextPage,

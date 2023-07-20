@@ -433,7 +433,7 @@
                                   $vuetify.theme.themes.customDarkTheme.colors
                                     .primary,
                               }"
-                              class="text-subtitle-2 mx-2 hidden-lg-and-up"
+                              class="text-subtitle-2 ml-4 hidden-lg-and-up"
                               style="font-family: 'Segoe UI' !important"
                             >
                               {{ creator.creatorTitle }}
@@ -530,7 +530,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { getAll: getAllCreators } = useCollection("creators");
+    const { getAll: getAllCreators, getQuery: getQueryCreators } = useCollection("creators");
     const { getChannelIcon } = useYoutube();
     const popularBuilds = ref(Array(5).fill({ loading: true }));
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
@@ -570,10 +570,11 @@ export default {
 
     const initData = async () => {
       //Limit to "featured creators"
-      //const creatorsQuery = getQuery(
-      //  queryService.getQueryParametersForCreators(6)
-      //);
-      creators.value = await getAllCreators();
+      const creatorsQuery = getQueryCreators(
+        queryService.getQueryParametersForCreators(6)
+      );
+      creators.value = await getAllCreators(creatorsQuery);
+      
       for (const creator of creators.value) {
         creator.image = await getChannelIcon(creator.creatorId);
       }
