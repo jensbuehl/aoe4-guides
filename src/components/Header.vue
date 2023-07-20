@@ -163,10 +163,10 @@
         <v-menu class="mx-4">
           <template v-slot:activator="{ props }">
             <v-btn class="mr-2" icon variant="plain">
-              <v-avatar v-if="user" color="primary" v-bind="props" con>{{
+              <v-avatar v-if="user" color="primary" v-bind="props">{{
                 user.displayName.slice(0, 2)
               }}</v-avatar>
-              <v-avatar v-if="!user" color="primary" v-bind="props" con>
+              <v-avatar v-if="!user" color="primary" v-bind="props">
                 <v-icon icon="mdi-account"></v-icon
               ></v-avatar>
             </v-btn>
