@@ -26,6 +26,15 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip
+              class="mr-2 mb-2"
+              v-if="build.creatorId && creatorName"
+              label
+              color="primary"
+              size="x-small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+              >{{ creatorName }}</v-chip
+            >
+            <v-chip
               color="primary"
               class="mr-2 mb-2"
               v-if="build.season"
@@ -52,7 +61,12 @@
               >{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-2 mb-2" color="primary" label size="x-small"
+              ><v-chip
+                v-show="item != 'ANY'"
+                class="mr-2 mb-2"
+                color="primary"
+                label
+                size="x-small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
                 >{{ item }}</v-chip
               ></span
@@ -103,6 +117,15 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip
+              class="mr-2 mb-2"
+              v-if="build.creatorId && creatorName"
+              label
+              color="primary"
+              size="small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+              >{{ creatorName }}</v-chip
+            >
+            <v-chip
               color="primary"
               class="mr-2 mb-2"
               v-if="build.season"
@@ -129,7 +152,12 @@
               >{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+              ><v-chip
+                v-show="item != 'ANY'"
+                class="mr-2 mb-2"
+                color="primary"
+                label
+                size="small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
                 >{{ item }}</v-chip
               ></span
@@ -361,6 +389,15 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip
+              class="mr-2 mb-2"
+              v-if="build.creatorId && creatorName"
+              label
+              color="primary"
+              size="small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+              >{{ creatorName }}</v-chip
+            >
+            <v-chip
               color="primary"
               class="mr-2 mb-2"
               v-if="build.season"
@@ -387,7 +424,12 @@
               >{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+              ><v-chip
+                v-show="item != 'ANY'"
+                class="mr-2 mb-2"
+                color="primary"
+                label
+                size="small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
                 >{{ item }}</v-chip
               ></span
@@ -674,6 +716,7 @@ export default {
     const user = computed(() => store.state.user);
     const civs = getCivs().civs;
     const matchups = getCivs().civs;
+    const creatorName = ref("");
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
@@ -681,15 +724,30 @@ export default {
     const { convertToOverlayFormat, download, copyToClipboard } =
       useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
-    const { get:getBuild, update:updateBuild, error } = useCollection("builds");
-    const { get:getCreator, add:addCreator } = useCollection("creators");
+    const {
+      get: getBuild,
+      update: updateBuild,
+      error,
+    } = useCollection("builds");
+    const { get: getCreator, add: addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();
-    const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData } = useYoutube();
-
+    const {
+      extractVideoId,
+      buildEmbedUrl,
+      getVideoCreatorId,
+      getVideoMetaData,
+    } = useYoutube();
 
     onMounted(async () => {
-      const res = await getBuild(props.id);
-      build.value = res;
+      const resBuild = await getBuild(props.id);
+      if (resBuild.creatorId) {
+        const resCreator = await getCreator(resBuild.creatorId);
+        creatorName.value = resCreator.creatorDisplayTitle
+          ? resCreator.creatorDisplayTitle
+          : resCreator.creatorTitle;
+      }
+
+      build.value = resBuild;
       document.title = build.value.title + " - " + document.title;
     });
 
@@ -728,13 +786,15 @@ export default {
         //Update build order document
         await updateBuild(props.id, build.value);
 
-        if(build.value.video){
+        if (build.value.video) {
           //Add content creator document
-          const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
+          const creatorDoc = await getVideoMetaData(
+            extractVideoId(build.value.video)
+          );
           const res = await getCreator(creatorDoc.creatorId);
-          console.log(creatorDoc)
-          if(!res){
-            await addCreator(creatorDoc, creatorDoc.creatorId)
+          console.log(creatorDoc);
+          if (!res) {
+            await addCreator(creatorDoc, creatorDoc.creatorId);
           }
         }
 
@@ -764,9 +824,12 @@ export default {
     const handleVideoInput = async () => {
       error.value = validateVideo(build.value.video);
       if (!error.value) {
-        const videoId = extractVideoId(build.value.video)
+        const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
+        creatorName.value = (await getVideoMetaData(videoId)).creatorTitle;
+      } else {
+        creatorName.value = "";
       }
     };
 
@@ -787,6 +850,7 @@ export default {
       handleVideoInput,
       timeSince,
       isNew,
+      creatorName,
     };
   },
 };

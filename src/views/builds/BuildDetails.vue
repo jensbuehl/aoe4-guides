@@ -36,7 +36,7 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId"
+              v-if="build.creatorId && creatorName"
               label
               color="primary"
               size="x-small"
@@ -127,7 +127,7 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId"
+              v-if="build.creatorId && creatorName"
               label
               color="primary"
               size="small"
@@ -438,7 +438,7 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId"
+              v-if="build.creatorId && creatorName"
               label
               color="primary"
               size="small"
@@ -790,8 +790,6 @@ export default {
           ? resCreator.creatorDisplayTitle
           : resCreator.creatorTitle;
       }
-
-      //console.log(resCreator);
 
       build.value = resBuild;
       document.title = build.value.title + " - " + document.title;
