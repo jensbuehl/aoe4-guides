@@ -1,5 +1,5 @@
 <template>
-  <v-card @click="" class="mb-4" rounded="lg">
+  <v-card @click="" class="mb-2" rounded="lg">
     <v-skeleton-loader
       :loading="build.loading"
       :height="height"
@@ -262,6 +262,7 @@ export default {
       height,
       timeSince,
       isNew,
+      name,
     };
   },
 };
