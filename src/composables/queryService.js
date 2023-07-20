@@ -153,6 +153,11 @@ const filterWith = (config, favorites) => {
   try {
     const queryParams = [];
 
+    if (config?.creator) {
+      const civsOp = where("creatorId", "in", [config.creator]);
+      queryParams.push(civsOp);
+    }
+
     if (config?.civs) {
       const civsOp = where("civ", "in", [config.civs]);
       queryParams.push(civsOp);
