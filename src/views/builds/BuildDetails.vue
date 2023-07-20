@@ -35,6 +35,15 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip
+              class="mr-2 mb-2"
+              v-if="build.creatorId"
+              label
+              color="primary"
+              size="x-small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+              >{{ creatorName }}</v-chip
+            >
+            <v-chip
               color="primary"
               class="mr-2 mb-2"
               v-if="build.season"
@@ -61,7 +70,12 @@
               >{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-2 mb-2" color="primary" label size="x-small"
+              ><v-chip
+                v-show="item != 'ANY'"
+                class="mr-2 mb-2"
+                color="primary"
+                label
+                size="x-small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
                 >{{ item }}</v-chip
               ></span
@@ -112,6 +126,15 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip
+              class="mr-2 mb-2"
+              v-if="build.creatorId"
+              label
+              color="primary"
+              size="small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+              >{{ creatorName }}</v-chip
+            >
+            <v-chip
               color="primary"
               class="mr-2 mb-2"
               v-if="build.season"
@@ -138,7 +161,12 @@
               >{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+              ><v-chip
+                v-show="item != 'ANY'"
+                class="mr-2 mb-2"
+                color="primary"
+                label
+                size="small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
                 >{{ item }}</v-chip
               ></span
@@ -409,6 +437,15 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip
+              class="mr-2 mb-2"
+              v-if="build.creatorId"
+              label
+              color="primary"
+              size="small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+              >{{ creatorName }}</v-chip
+            >
+            <v-chip
               color="primary"
               class="mr-2 mb-2"
               v-if="build.season"
@@ -435,7 +472,12 @@
               >{{ build.strategy }}</v-chip
             >
             <span v-for="(item, index) in build.matchup"
-              ><v-chip class="mr-2 mb-2" color="primary" label size="small"
+              ><v-chip
+                v-show="item != 'ANY'"
+                class="mr-2 mb-2"
+                color="primary"
+                label
+                size="small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
                 >{{ item }}</v-chip
               ></span
@@ -705,11 +747,13 @@ export default {
     const civs = getCivs().civs;
     const build = ref(null);
     const dialog = ref(false);
+    const creatorName = ref("");
     const { convertToOverlayFormat, download, copyToClipboard } =
       useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
     const { get, del, incrementViews, updateScore, error } =
       useCollection("builds");
+    const { get: getCreator } = useCollection("creators");
 
     //TODO: Use server-side functions, instead!
     const calculateAndUpdateScore = async () => {
@@ -739,9 +783,18 @@ export default {
     };
 
     onMounted(async () => {
-      const res = await get(props.id);
-      build.value = res;
-      document.title = build.value.title + " - " + document.title
+      const resBuild = await get(props.id);
+      if (resBuild.creatorId) {
+        const resCreator = await getCreator(resBuild.creatorId);
+        creatorName.value = resCreator.creatorDisplayTitle
+          ? resCreator.creatorDisplayTitle
+          : resCreator.creatorTitle;
+      }
+
+      //console.log(resCreator);
+
+      build.value = resBuild;
+      document.title = build.value.title + " - " + document.title;
       incrementViews(props.id);
       calculateAndUpdateScore();
     });
@@ -806,6 +859,7 @@ export default {
       handleDownloadOverlayFormat,
       timeSince,
       isNew,
+      creatorName,
     };
   },
 };
