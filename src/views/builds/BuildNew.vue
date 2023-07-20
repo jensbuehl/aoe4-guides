@@ -351,12 +351,14 @@ export default {
           router.push("/builds/" + id);
         }
 
-        //Add content creator document
-        const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
-        const res = await getCreator(creatorDoc.creatorId);
-        console.log(creatorDoc)
-        if(!res){
-          await addCreator(creatorDoc, creatorDoc.creatorId)
+        if(build.value.video){
+          //Add content creator document
+          const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
+          const res = await getCreator(creatorDoc.creatorId);
+          console.log(creatorDoc)
+          if(!res){
+            await addCreator(creatorDoc, creatorDoc.creatorId)
+          }
         }
       }
     };
