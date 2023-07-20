@@ -65,6 +65,7 @@
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
                 <v-btn
+                  disabled
                   color="primary"
                   variant="plain"
                   @click="createCreatorsCollection()"
