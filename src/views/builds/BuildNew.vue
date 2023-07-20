@@ -283,6 +283,7 @@ import getCivs from "../../composables/getCivs";
 import getSeasons from "../../composables/getSeasons";
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/useBuildValidator";
+import useYoutube from "../../composables/useYoutube";
 import getMaps from "../../composables/getMaps";
 import getStrategies from "../../composables/getStrategies";
 
@@ -293,7 +294,9 @@ export default {
     window.scrollTo(0, 0);
 
     const { add, error } = useCollection("builds");
+    const { get:getCreator, add:addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();
+    const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData } = useYoutube();
     const civs = getCivs().civs;
     const matchups = getCivs().civs;
     const maps = getMaps().maps;
@@ -347,6 +350,14 @@ export default {
         if (!error.value) {
           router.push("/builds/" + id);
         }
+
+        //Add content creator document
+        const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
+        const res = await getCreator(creatorDoc.creatorId);
+        console.log(creatorDoc)
+        if(!res){
+          await addCreator(creatorDoc, creatorDoc.creatorId)
+        }
       }
     };
 
@@ -354,11 +365,12 @@ export default {
       build.value.steps = steps;
     };
 
-    const handleVideoInput = () => {
+    const handleVideoInput = async () => {
       error.value = validateVideo(build.value.video);
       if (!error.value) {
-        //Convert to embed url
-        build.value.video = build.value.video.replace(/watch\?v=/, "embed/");
+        const videoId = extractVideoId(build.value.video)
+        build.value.video = buildEmbedUrl(videoId);
+        build.value.creatorId = await getVideoCreatorId(videoId);
       }
     };
 
