@@ -411,7 +411,7 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "civ",
+          "fieldPath": "creatorId",
           "order": "ASCENDING"
         },
         {
