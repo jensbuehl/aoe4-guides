@@ -1,7 +1,19 @@
 <template>
   <v-card rounded="lg">
     <v-card-text class="pb-0 mb-4">
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedCivs"
+        label="Civilization"
+        density="compact"
+        :items="civs"
+        item-value="shortName"
+        item-title="title"
+        clearable
+        prepend-icon="mdi-earth"
+      ></v-autocomplete>
       <v-select
+        class="hidden-sm-and-up"
         v-model="selectedCivs"
         label="Civilization"
         density="compact"
@@ -12,18 +24,43 @@
         prepend-icon="mdi-earth"
       >
       </v-select>
-      <v-select
-        v-model="selectedMatchups"
-        prepend-icon="mdi-sword-cross"
-        label="Matchup"
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedVideoCreator"
+        prepend-icon="mdi-youtube"
+        label="Video Creator"
         density="compact"
-        :items="matchups"
-        item-value="shortName"
-        item-title="title"
+        :items="creators"
+        item-value="creatorId"
+        item-title="creatorTitle"
+        clearable
+      ></v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
+        v-model="selectedVideoCreator"
+        prepend-icon="mdi-youtube"
+        label="Video Creator"
+        density="compact"
+        :items="creators"
+        item-value="creatorId"
+        item-title="creatorTitle"
         clearable
       >
       </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedSeasons"
+        prepend-icon="mdi-trophy"
+        label="Season"
+        density="compact"
+        :items="seasons"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      ></v-autocomplete>
       <v-select
+        class="hidden-sm-and-up"
         v-model="selectedSeasons"
         prepend-icon="mdi-trophy"
         label="Season"
@@ -35,7 +72,18 @@
         multiple
       >
       </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedOrderBy"
+        prepend-icon="mdi-sort"
+        density="compact"
+        label="Order by"
+        item-value="id"
+        item-title="title"
+        :items="sortOptions"
+      ></v-autocomplete>
       <v-select
+        class="hidden-sm-and-up"
         v-model="selectedOrderBy"
         prepend-icon="mdi-sort"
         density="compact"
@@ -61,7 +109,47 @@
         @click="showAdditionalFilters = false"
         >Hide Filter Options</v-btn
       >
+      <v-autocomplete
+        class="hidden-xs"
+        v-if="showAdditionalFilters"
+        v-model="selectedMatchups"
+        prepend-icon="mdi-sword-cross"
+        label="Matchup"
+        density="compact"
+        :items="matchups"
+        item-value="shortName"
+        item-title="title"
+        clearable
+      ></v-autocomplete>
       <v-select
+        class="hidden-sm-and-up"
+        v-if="showAdditionalFilters"
+        v-model="selectedMatchups"
+        prepend-icon="mdi-sword-cross"
+        label="Matchup"
+        density="compact"
+        :items="matchups"
+        item-value="shortName"
+        item-title="title"
+        clearable
+      >
+      </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-if="showAdditionalFilters"
+        v-model="selectedMaps"
+        prepend-icon="mdi-map"
+        label="Map"
+        density="compact"
+        :items="maps"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
         v-if="showAdditionalFilters"
         v-model="selectedMaps"
         prepend-icon="mdi-map"
@@ -74,7 +162,22 @@
         multiple
       >
       </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-if="showAdditionalFilters"
+        v-model="selectedStrategies"
+        prepend-icon="mdi-strategy"
+        label="Strategy"
+        density="compact"
+        :items="strategies"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-autocomplete>
       <v-select
+        class="hidden-sm-and-up"
         v-if="showAdditionalFilters"
         v-model="selectedStrategies"
         prepend-icon="mdi-strategy"
@@ -89,10 +192,11 @@
       </v-select>
     </v-card-text>
     <v-divider></v-divider>
-      <v-container class="fill-height">
+    <v-container class="fill-height">
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center" cols="12" lg="6">
-          <v-label>{{count}} build order</v-label><v-label v-if="count > 1 || count == 0" >s</v-label>
+          <v-label>{{ count }} build order</v-label
+          ><v-label v-if="count > 1 || count == 0">s</v-label>
         </v-col>
         <v-col class="d-flex justify-center" cols="12" lg="6">
           <v-btn
@@ -110,25 +214,32 @@
 </template>
 
 <script>
-import { ref, watch, computed, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import getCivs from "../composables/getCivs";
 import getMaps from "../composables/getMaps";
 import getSeasons from "../composables/getSeasons";
 import getDefaultConfig from "../composables/getDefaultConfig";
 import getStrategies from "../composables/getStrategies";
+import useCollection from "../composables/useCollection";
 
 export default {
   name: "BuildsConfig",
   setup(props, context) {
+    const { getAll } = useCollection("creators");
     const store = useStore();
     const civs = getCivs().civs;
     const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
+    const creators = ref([]);
     const showAdditionalFilters = ref(false);
     const count = computed(() => store.state.resultsCount);
+
+    onMounted(async () => {
+      creators.value = await getAll();
+    });
 
     const sortOptions = ref([
       {
@@ -153,6 +264,19 @@ export default {
       },
     ]);
 
+    const getCreatorName = (id) => {
+      if (creators.value) {
+        const currentCreator = creators.value.find(
+          (element) => element.id === id
+        );
+        if (currentCreator) {
+          return currentCreator.creatorDisplayTitle
+            ? currentCreator.creatorDisplayTitle
+            : currentCreator.creatorTitle;
+        }
+      }
+    };
+
     const selectedCivs = computed({
       get() {
         return store.state.filterConfig?.civs;
@@ -169,6 +293,16 @@ export default {
       },
       set(value) {
         store.commit("setMatchups", value);
+        context.emit("configChanged");
+      },
+    });
+
+    const selectedVideoCreator = computed({
+      get() {
+        return getCreatorName(store.state.filterConfig?.creator);
+      },
+      set(value) {
+        store.commit("setCreator", value);
         context.emit("configChanged");
       },
     });
@@ -224,6 +358,7 @@ export default {
       matchups,
       maps,
       seasons,
+      creators,
       strategies,
       selectedCivs,
       selectedMatchups,
@@ -231,9 +366,11 @@ export default {
       selectedStrategies,
       selectedSeasons,
       selectedOrderBy,
+      selectedVideoCreator,
       showAdditionalFilters,
       count,
       handleReset,
+      getCreatorName
     };
   },
 };
