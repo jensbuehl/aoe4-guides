@@ -40,7 +40,7 @@ const store = createStore({
       state.filterConfig = payload;
       console.log("filter config state changed:", state.filterConfig);
     },
-    setCivs(state, payload) {
+    setCreator(state, payload) {
       state.filterConfig.creator = payload;
       console.log("creator state changed:", state.filterConfig.creator);
     },
