@@ -259,8 +259,9 @@
                 :style="{
                   color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                 }"
-                >Explore all build orders from {{ creator.creatorTitle }}</span
-              >
+                >Explore all build orders from
+                {{ getCreatorName(creator.creatorId) }}
+              </span>
               <template v-slot:activator="{ props }">
                 <v-card
                   height="56"
@@ -301,7 +302,7 @@
                                 font-size: 0.8rem !important;
                               "
                             >
-                              {{ creator.creatorTitle }}
+                              {{ getCreatorName(creator.creatorId) }}
                             </div>
                             <!--sm title-->
                             <div
@@ -313,7 +314,7 @@
                               class="text-subtitle-2 hidden-xs mx-2"
                               style="font-family: 'Segoe UI' !important"
                             >
-                              {{ creator.creatorTitle }}
+                              {{ getCreatorName(creator.creatorId) }}
                             </div>
                           </v-col>
                         </v-row>
@@ -343,7 +344,10 @@
                   params: { id: !item.loading ? item.id : null },
                 }"
               >
-                <SingleBuild :build="item" :creatorName="getCreatorName(item.creatorId)"></SingleBuild>
+                <SingleBuild
+                  :build="item"
+                  :creatorName="getCreatorName(item.creatorId)"
+                ></SingleBuild>
               </router-link>
             </div> </v-col
         ></v-row>
@@ -365,7 +369,10 @@
                   params: { id: !item.loading ? item.id : null },
                 }"
               >
-                <SingleBuild :build="item"></SingleBuild>
+                <SingleBuild
+                  :build="item"
+                  :creatorName="getCreatorName(item.creatorId)"
+                ></SingleBuild>
               </router-link>
             </div> </v-col
         ></v-row>
@@ -398,8 +405,9 @@
                 :style="{
                   color: $vuetify.theme.themes.customDarkTheme.colors.primary,
                 }"
-                >Explore all build orders from {{ creator.creatorTitle }}</span
-              >
+                >Explore all build orders from
+                {{ getCreatorName(creator.creatorId) }}
+              </span>
               <template v-slot:activator="{ props }">
                 <v-card
                   height="56"
@@ -436,7 +444,7 @@
                               class="text-subtitle-2 ml-4 hidden-lg-and-up"
                               style="font-family: 'Segoe UI' !important"
                             >
-                              {{ creator.creatorTitle }}
+                              {{ getCreatorName(creator.creatorId) }}
                             </div>
                             <!--large title-->
                             <v-card-title
@@ -447,7 +455,7 @@
                                     .primary,
                               }"
                             >
-                              {{ creator.creatorTitle }}
+                              {{ getCreatorName(creator.creatorId) }}
                             </v-card-title>
                           </v-col>
                         </v-row>
@@ -519,7 +527,7 @@ import { useRouter } from "vue-router";
 import useCollection from "../composables/useCollection";
 import queryService from "../composables/queryService";
 import { useStore } from "vuex";
-import { ref, computed, onMounted, getCurrentInstance } from "vue";
+import { ref, computed, onMounted } from "vue";
 import useYoutube from "../composables/useYoutube";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 
@@ -530,7 +538,8 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { getAll: getAllCreators, getQuery: getQueryCreators } = useCollection("creators");
+    const { getAll: getAllCreators, getQuery: getQueryCreators } =
+      useCollection("creators");
     const { getChannelIcon } = useYoutube();
     const popularBuilds = ref(Array(5).fill({ loading: true }));
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
@@ -568,11 +577,15 @@ export default {
     };
 
     const getCreatorName = (id) => {
-      if (allCreators.value){
-        const currentCreator = allCreators.value.find((element) => element.id === id)
-        console.log("Current Creator",currentCreator);
-        if(currentCreator){
-          return currentCreator.creatorDisplayTitle ? currentCreator.creatorDisplayTitle : currentCreator.creatorTitle
+      if (allCreators.value) {
+        const currentCreator = allCreators.value.find(
+          (element) => element.id === id
+        );
+        console.log("Current Creator", currentCreator);
+        if (currentCreator) {
+          return currentCreator.creatorDisplayTitle
+            ? currentCreator.creatorDisplayTitle
+            : currentCreator.creatorTitle;
         }
       }
     };
@@ -582,14 +595,13 @@ export default {
       const creatorsQuery = getQueryCreators(
         queryService.getQueryParametersForCreators(6)
       );
-      creators.value = await getAllCreators(creatorsQuery);  
+      creators.value = await getAllCreators(creatorsQuery);
       for (const creator of creators.value) {
         creator.image = await getChannelIcon(creator.creatorId);
       }
 
       //get all creators
-      allCreators.value = await getAllCreators();  
-      console.log(allCreators.value);
+      allCreators.value = await getAllCreators();
 
       //get most recent
       const mostRecentQuery = getQuery(
@@ -621,7 +633,7 @@ export default {
       creators,
       civSelected,
       creatorSelected,
-      getCreatorName
+      getCreatorName,
     };
   },
 };

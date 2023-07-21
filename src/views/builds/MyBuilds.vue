@@ -2,7 +2,8 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <BuildsConfig class="mb-2" @configChanged="configChanged"> </BuildsConfig>
+        <BuildsConfig class="mb-2" @configChanged="configChanged">
+        </BuildsConfig>
         <v-alert
           v-if="!user && authIsReady"
           rounded="lg"
@@ -59,8 +60,10 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <SingleBuild :build="item"></SingleBuild>
-          </router-link>
+          <SingleBuild
+              :build="item"
+              :creatorName="getCreatorName(item.creatorId)"
+            ></SingleBuild>          </router-link>
         </div>
         <v-pagination
           v-if="paginationConfig.totalPages > 1"
@@ -141,7 +144,10 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
+    const { getAll: getAllCreators, getQuery: getQueryCreators } =
+      useCollection("creators");
     const builds = ref(null);
+    const creators = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
@@ -176,7 +182,24 @@ export default {
       initData();
     };
 
+    const getCreatorName = (id) => {
+      if (creators.value) {
+        const currentCreator = creators.value.find(
+          (element) => element.id === id
+        );
+        console.log("Current Creator", currentCreator);
+        if (currentCreator) {
+          return currentCreator.creatorDisplayTitle
+            ? currentCreator.creatorDisplayTitle
+            : currentCreator.creatorTitle;
+        }
+      }
+    };
+
     const initData = async () => {
+      //get all creators
+      creators.value = await getAllCreators();
+
       //get builds that match the filter
       const paginationQuery = getQuery(
         queryService.getQueryParametersFromConfig(
@@ -185,7 +208,10 @@ export default {
           user.value.uid
         )
       );
-      const currentPageSize = Math.min(await getSize(paginationQuery), paginationConfig.value.limit)
+      const currentPageSize = Math.min(
+        await getSize(paginationQuery),
+        paginationConfig.value.limit
+      );
       builds.value = Array(currentPageSize).fill({
         loading: true,
       });
@@ -201,7 +227,7 @@ export default {
         )
       );
       const size = await getSize(allDocsQuery);
-      store.commit("setResultsCount", size)
+      store.commit("setResultsCount", size);
       paginationConfig.value.totalPages = Math.ceil(
         size / paginationConfig.value.limit
       );
@@ -265,6 +291,7 @@ export default {
       configChanged,
       nextPage,
       previousPage,
+      getCreatorName
     };
   },
 };
