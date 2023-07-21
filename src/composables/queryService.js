@@ -54,11 +54,16 @@ const getQueryParametersNextPage = (
   }
 };
 
-const getQueryParametersForCreators = (limit) => {
+const getQueryParametersForCreators = (isFeatured, limit) => {
   try {
     var queryParams = [];
     if (limit) {
-      queryParams = limitWith(limit);
+      const limitOp = limitWith(limit);
+      queryParams.push(limitOp);
+    }
+    if (isFeatured) {
+      const featuredOp = where("isFeatured", "==", true);
+      queryParams.push(featuredOp);
     }
     return queryParams;
   } catch (err) {

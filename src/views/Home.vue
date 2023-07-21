@@ -591,8 +591,9 @@ export default {
 
     const initData = async () => {
       //get featured creators
+      const isFeatured = true;
       const creatorsQuery = getQueryCreators(
-        queryService.getQueryParametersForCreators(6)
+        queryService.getQueryParametersForCreators(isFeatured, 6)
       );
       creators.value = await getAllCreators(creatorsQuery);
       for (const creator of creators.value) {
