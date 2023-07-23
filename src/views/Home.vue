@@ -399,7 +399,7 @@
           >
             Featured Creators
           </div>
-          <v-col cols="12" v-for="creator in creators" :key="creator.creatorId">
+          <v-col cols="12" v-for="creator in creators">
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
@@ -577,11 +577,13 @@ export default {
     };
 
     const getCreatorName = (id) => {
+      console.log("getCreatorName")
       if (allCreators.value) {
         const currentCreator = allCreators.value.find(
           (element) => element.id === id
         );
         if (currentCreator) {
+          console.log(currentCreator)
           return currentCreator.creatorDisplayTitle
             ? currentCreator.creatorDisplayTitle
             : currentCreator.creatorTitle;
@@ -590,8 +592,8 @@ export default {
     };
 
     const sortByNameCompareFunction = (a, b) => {
-      const nameA = getCreatorName(a.creatorId);
-      const nameB = getCreatorName(b.creatorId);
+      var nameA = getCreatorName(a.creatorId).toUpperCase();
+      var nameB = getCreatorName(b.creatorId).toUpperCase();
       if (nameA < nameB) {
         return -1;
       }
@@ -602,6 +604,9 @@ export default {
     };
 
     const initData = async () => {
+      //get all creators
+      allCreators.value = await getAllCreators();
+
       //get featured creators
       const isFeatured = true;
       const creatorsQuery = getQueryCreators(
@@ -609,12 +614,10 @@ export default {
       );
       creators.value = await getAllCreators(creatorsQuery);
       creators.value.sort(sortByNameCompareFunction)
+
       for (const creator of creators.value) {
         creator.image = await getChannelIcon(creator.creatorId);
       }
-
-      //get all creators
-      allCreators.value = await getAllCreators();
 
       //get most recent
       const mostRecentQuery = getQuery(

@@ -249,14 +249,12 @@ export default {
 
     onMounted(async () => {
       creators.value = await getAll();
-      console.log(creators.value);
       creators.value.sort(sortByNameCompareFunction);
-      console.log(creators.value);
     });
 
     const sortByNameCompareFunction = (a, b) => {
-      const nameA = getCreatorName(a.creatorId);
-      const nameB = getCreatorName(b.creatorId);
+      var nameA = getCreatorName(a.creatorId).toUpperCase();
+      var nameB = getCreatorName(b.creatorId).toUpperCase();
       if (nameA < nameB) {
         return -1;
       }
