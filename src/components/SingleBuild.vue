@@ -162,7 +162,7 @@
             {{ build.title }}
           </v-card-title>
           <!--large chips-->
-          <v-item-group class="ml-md-4 pt-2 hidden-md-and-down">
+          <v-item-group class="ml-md-4 pt-2">
             <v-chip
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
@@ -186,7 +186,7 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.timeCreated && orderBy == 'timeCreated'"
+              v-if="build.timeCreated"
               label
               size="small"
               ><v-icon start icon="mdi-clock-edit-outline"></v-icon
