@@ -589,6 +589,18 @@ export default {
       }
     };
 
+    const sortByNameCompareFunction = (a, b) => {
+      const nameA = getCreatorName(a.creatorId);
+      const nameB = getCreatorName(b.creatorId);
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    };
+
     const initData = async () => {
       //get featured creators
       const isFeatured = true;
@@ -596,6 +608,7 @@ export default {
         queryService.getQueryParametersForCreators(isFeatured, 6)
       );
       creators.value = await getAllCreators(creatorsQuery);
+      creators.value.sort(sortByNameCompareFunction)
       for (const creator of creators.value) {
         creator.image = await getChannelIcon(creator.creatorId);
       }
