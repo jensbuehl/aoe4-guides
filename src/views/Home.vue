@@ -577,13 +577,11 @@ export default {
     };
 
     const getCreatorName = (id) => {
-      console.log("getCreatorName")
       if (allCreators.value) {
         const currentCreator = allCreators.value.find(
           (element) => element.id === id
         );
         if (currentCreator) {
-          console.log(currentCreator)
           return currentCreator.creatorDisplayTitle
             ? currentCreator.creatorDisplayTitle
             : currentCreator.creatorTitle;
