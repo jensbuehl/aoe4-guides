@@ -32,7 +32,12 @@
         density="compact"
         :items="creators"
         item-value="creatorId"
-        :item-title="item => item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle"
+        :item-title="
+          (item) =>
+            item.creatorDisplayTitle
+              ? item.creatorDisplayTitle
+              : item.creatorTitle
+        "
         clearable
       ></v-autocomplete>
       <v-select
@@ -43,7 +48,12 @@
         density="compact"
         :items="creators"
         item-value="creatorId"
-        :item-title="item => item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle"
+        :item-title="
+          (item) =>
+            item.creatorDisplayTitle
+              ? item.creatorDisplayTitle
+              : item.creatorTitle
+        "
         clearable
       >
       </v-select>
@@ -239,7 +249,22 @@ export default {
 
     onMounted(async () => {
       creators.value = await getAll();
+      console.log(creators.value);
+      creators.value.sort(sortByNameCompareFunction);
+      console.log(creators.value);
     });
+
+    const sortByNameCompareFunction = (a, b) => {
+      const nameA = getCreatorName(a.creatorId);
+      const nameB = getCreatorName(b.creatorId);
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    };
 
     const sortOptions = ref([
       {
@@ -274,8 +299,7 @@ export default {
             ? currentCreator.creatorDisplayTitle
             : currentCreator.creatorTitle;
         }
-      }
-      else ""
+      } else "";
     };
 
     const selectedCivs = computed({
@@ -371,7 +395,7 @@ export default {
       showAdditionalFilters,
       count,
       handleReset,
-      getCreatorName
+      getCreatorName,
     };
   },
 };
