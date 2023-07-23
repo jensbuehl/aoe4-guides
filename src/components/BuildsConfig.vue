@@ -32,7 +32,7 @@
         density="compact"
         :items="creators"
         item-value="creatorId"
-        item-title="creatorTitle"
+        :item-title="item => item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle"
         clearable
       ></v-autocomplete>
       <v-select
@@ -43,7 +43,7 @@
         density="compact"
         :items="creators"
         item-value="creatorId"
-        item-title="creatorTitle"
+        :item-title="item => item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle"
         clearable
       >
       </v-select>
@@ -275,6 +275,7 @@ export default {
             : currentCreator.creatorTitle;
         }
       }
+      else ""
     };
 
     const selectedCivs = computed({
