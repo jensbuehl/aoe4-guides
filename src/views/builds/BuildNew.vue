@@ -344,13 +344,7 @@ export default {
           build.value.title.toLowerCase() + crypto.randomUUID();
         build.value.authorUid = user.value.uid;
         build.value.author = user.value.displayName;
-
-        const id = await add(build.value);
-        //Navigate to new build order
-        if (!error.value) {
-          router.push("/builds/" + id);
-        }
-
+        
         if(build.value.video){
           //Add content creator document
           const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
@@ -359,6 +353,12 @@ export default {
           if(!res){
             await addCreator(creatorDoc, creatorDoc.creatorId)
           }
+        }
+
+        const id = await add(build.value);
+        //Navigate to new build order
+        if (!error.value) {
+          router.push("/builds/" + id);
         }
       }
     };
