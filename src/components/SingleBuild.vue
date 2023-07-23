@@ -162,6 +162,7 @@
             {{ build.title }}
           </v-card-title>
           <!--large chips-->
+          <v-item-group class="ml-md-4 pt-2 hidden-md-and-down">
           <v-item-group class="ml-md-4 pt-2">
             <v-chip
               class="mr-2 mb-2"
