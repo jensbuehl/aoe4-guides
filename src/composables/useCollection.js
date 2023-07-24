@@ -74,20 +74,6 @@ const useCollection = (col) => {
     }
   };
 
-  const updateScore = async (id, val) => {
-    error.value = null;
-
-    try {
-      const docRef = doc(db, col, id);
-      await updateDoc(docRef, {
-        score: val,
-      });
-    } catch (err) {
-      console.log(err.message);
-      error.value = "Score could not be updated";
-    }
-  };
-
   const incrementUps = async (id) => {
     error.value = null;
 
@@ -356,7 +342,6 @@ const useCollection = (col) => {
     arrayRemoveUps,
     arrayUnionDowns,
     arrayRemoveDowns,
-    updateScore
   };
 };
 
