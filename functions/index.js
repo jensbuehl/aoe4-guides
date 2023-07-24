@@ -1,4 +1,3 @@
-// The Cloud Functions for Firebase SDK to create Cloud Functions and triggers.
 const { onRequest } = require("firebase-functions/v2/https");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { onDocumentUpdated } = require("firebase-functions/v2/firestore");
