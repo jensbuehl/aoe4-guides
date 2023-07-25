@@ -237,8 +237,6 @@ export default {
           favorites.value
         )
       );
-      //TODO: if favorites count != received favorites count, then update favorites list in DB (remove deprecated links)
-      //Preferably, fix in cloud function, whenever a build is removed.
       const currentPageSize = Math.min(
         await getSize(paginationQuery),
         paginationConfig.value.limit

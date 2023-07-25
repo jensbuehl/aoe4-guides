@@ -11,27 +11,24 @@ const { getFirestore } = require("firebase-admin/firestore");
 
 initializeApp();
 
-// Take the text parameter passed to this HTTP endpoint and insert it into
-exports.updateviews = onRequest(async (req, res) => {
-  //Update view count here, so that no any user is allowed to update all documents
-  logger.log("Update views called!");
+exports.cleanuserrefs = functions.auth.user().onDelete((user) => {
+  // TODO: Remove corresponding "favorites" document and adjust upvotes, downvotes, likes in the "builds" collection
+  logger.log("User deleted", user);
 });
 
-exports.updatelikes = onRequest(async (req, res) => {
-  //Update like count here, so that no any user is allowed to update all documents
-  logger.log("Update likes called!");
+exports.deleteuser = functions.auth.user().onDelete((user) => {
+  logger.log("User deleted", user);
+  // TODO: Delete user in "users" collection
 });
 
-exports.updatevotes = onRequest(async (req, res) => {
-  //Update vote count here, so that no any user is allowed to update all documents
-  logger.log("Update votes called!");
+exports.createuser = functions.auth.user().onCreate((user) => {
+  logger.log("User created", user);
+  // TODO: Create user in "users" collection
 });
 
-exports.logbuild = onDocumentCreated("/builds/{documentId}", (event) => {
-  // Grab the current value of what was written to Firestore.
-  logger.log(event.data.data());
-  const original = event.data.data();
-  logger.log("Document created", original);
+exports.cleanbuildrefs = onDocumentDeleted("/builds/{documentId}", (event) => {
+  // TODO: Clean up dead references to this build (upvotes, downvotes, likes)
+  logger.log("Build deleted", event.data.data());
 });
 
 // Run once a day at midnight, to update the build score

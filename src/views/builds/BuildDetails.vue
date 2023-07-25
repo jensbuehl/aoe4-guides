@@ -796,8 +796,6 @@ export default {
     const handleDelete = async () => {
       dialog.value = false;
       await del(props.id);
-      //TODO: if favorites count != received favorites count, then update favorites list in DB (remove deprecated links)
-      //Preferably, fix in cloud function, whenever a build is removed.
       if (!error.value) {
         router.push({ name: "Home" });
       }
