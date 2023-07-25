@@ -1,6 +1,5 @@
+const functions = require("firebase-functions");
 const { onRequest } = require("firebase-functions/v2/https");
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
-const { onDocumentUpdated } = require("firebase-functions/v2/firestore");
 const { onDocumentDeleted } = require("firebase-functions/v2/firestore");
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const logger = require("firebase-functions/logger");
@@ -17,13 +16,16 @@ exports.cleanuserrefs = functions.auth.user().onDelete((user) => {
 });
 
 exports.deleteuser = functions.auth.user().onDelete((user) => {
-  logger.log("User deleted", user);
-  // TODO: Delete user in "users" collection
+  const doc = getFirestore().collection("users").doc(user.uid);
+  return doc.delete();
 });
 
 exports.createuser = functions.auth.user().onCreate((user) => {
-  logger.log("User created", user);
-  // TODO: Create user in "users" collection
+  return getFirestore().collection("users").doc(user.uid).set({
+    email: user.email,
+    displayName: user.displayName,
+    id: user.uid
+  });
 });
 
 exports.cleanbuildrefs = onDocumentDeleted("/builds/{documentId}", (event) => {
@@ -60,19 +62,19 @@ const calculateAndUpdateScore = async (build) => {
   score = score + 5 * (build.upvotes ? build.upvotes : 0);
   score = score - 10 * (build.downvotes ? build.downvotes : 0);
   score = score + 50 * (build.likes ? build.likes : 0);
-  
+
   var baseScore = Math.log(Math.max(score, 1));
-  
+
   //elapsed time in weeks
   var msPerMinute = 60 * 1000;
   var msPerHour = msPerMinute * 60;
   var msPerDay = msPerHour * 24;
   var msPerWeek = msPerDay * 7;
-  
+
   var now = new Date();
   var elapsed = now - build.timeCreated.toDate();
   var timeDiff = Math.floor(elapsed / msPerWeek);
-    
+
   //slowly decay after 6 weeks
   if (timeDiff > 6) {
     var x = timeDiff - 6;
