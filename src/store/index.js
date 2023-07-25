@@ -6,13 +6,14 @@ import {
   auth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
-  updateProfile,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
   deleteUser,
   updatePassword,
+  functions,
 } from "../firebase";
+import {  httpsCallable } from 'firebase/functions';
 
 const store = createStore({
   state: {
@@ -68,7 +69,7 @@ const store = createStore({
       state.filterConfig.orderBy = payload;
       console.log("orderBy state changed:", state.filterConfig.orderBy);
     },
-    setResultsCount(state, payload){
+    setResultsCount(state, payload) {
       state.resultsCount = payload;
       console.log("results count state changed:", state.resultsCount);
     },
@@ -76,7 +77,7 @@ const store = createStore({
     setTemplate(state, payload) {
       state.template = payload;
       console.log("template state changed:", state.template);
-    }
+    },
   },
   actions: {
     //User module
@@ -91,15 +92,20 @@ const store = createStore({
           context.commit("setUser", data.user);
         })
         .then(() => {
-          updateProfile(auth.currentUser, {
+          const updateUserDisplayName = httpsCallable(functions,
+            "updateUserDisplayName"
+          );
+          updateUserDisplayName({
             displayName: displayName,
+            uid: auth.currentUser.uid,
+          }).then(() => {
+            context.commit("setDisplayName", displayName);
           });
         })
         .then(() => {
           //add to favorites collection
           const { add } = useCollection("favorites");
           add({ favorites: [] }, auth.currentUser.uid);
-          context.commit("setDisplayName", displayName);
         })
         .catch((error) => {
           throw new Error("Could not create account: " + error.code);
@@ -118,18 +124,20 @@ const store = createStore({
       await signOut(auth);
       context.commit("setUser", null);
     },
-    async deleteAccount(context) {     
+    async deleteAccount(context) {
       const { del, get } = useCollection("favorites");
       const { decrementLikes } = useCollection("builds");
 
       //decrement likes on all builds
-      const favorites = await get(auth.currentUser.uid).then((favorites) => {return favorites.favorites});
-      console.log("favorites", favorites)
-
-      await favorites.forEach(element => {
-        decrementLikes(element)
+      const favorites = await get(auth.currentUser.uid).then((favorites) => {
+        return favorites.favorites;
       });
-      
+      console.log("favorites", favorites);
+
+      await favorites.forEach((element) => {
+        decrementLikes(element);
+      });
+
       //remove from users collection
       await del(auth.currentUser.uid);
 
@@ -140,8 +148,6 @@ const store = createStore({
 
       //clear state
       context.commit("setUser", null);
-
-      
     },
     async changePassword(context, { password }) {
       await updatePassword(auth.currentUser, password).catch((error) => {
