@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app height="100">
+  <v-app-bar flat app height="100" :style="'border-bottom: 2px solid '+$vuetify.theme.current.colors.primary">
     <v-container class="fill-height d-flex align-center my-0 py-0">
       <v-app-bar-nav-icon color="primary" class="hidden-md-and-up">
         <v-menu>
