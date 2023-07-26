@@ -3,7 +3,7 @@
     <div v-if="authIsReady && user" class="d-flex justify-center">
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col cols="12" sm="6" lg="4">
-          <v-card rounded="lg" class="d-flex align-center mb-4">
+          <v-card flat rounded="lg" class="d-flex align-center mb-4">
             <v-row
               no-gutters
               class="fill-height"
@@ -41,13 +41,13 @@
                   placeholder="Your user id"
                   readonly
                 ></v-text-field>
-                <v-card v-if="error" rounded="lg" color="error">
+                <v-card flat v-if="error" rounded="lg" color="error">
                   <v-card-text>{{ error }}</v-card-text>
                 </v-card>
               </v-col>
             </v-row>
           </v-card>
-          <v-card rounded="lg" class="d-flex align-center mb-4">
+          <v-card flat rounded="lg" class="d-flex align-center mb-4">
             <v-row
               no-gutters
               class="fill-height"
@@ -80,7 +80,7 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-card rounded="lg" class="d-flex align-center mb-4">
+          <v-card flat rounded="lg" class="d-flex align-center mb-4">
             <v-row
               no-gutters
               class="fill-height"
@@ -101,7 +101,7 @@
                     >Delete Account</v-btn
                   >
                   <v-dialog v-model="dialog" width="auto">
-                    <v-card rounded="lg" class="text-center primary">
+                    <v-card flat rounded="lg" class="text-center primary">
                       <v-card-title>Delete Account</v-card-title>
                       <v-card-text>
                         Do you really want to delete your account?<br />

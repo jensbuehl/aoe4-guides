@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card flat>
     <v-row>
       <v-col cols="12">
         <v-text-field
@@ -10,7 +10,7 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-card fluid class="overflow-y-auto pb-2" max-height="400">
+    <v-card fluid class="overflow-y-auto pb-2" max-height="400" flat>
       <v-row v-show="filteredGeneral.length" no-gutters align="center">
         <v-col cols="12">
           <v-card flat subtitle="Workers & Resources"></v-card>

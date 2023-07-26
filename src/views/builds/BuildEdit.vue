@@ -1,9 +1,9 @@
 <template>
   <v-container v-if="user && build">
-    <v-card v-if="error" class="mb-4" rounded="lg" color="error">
+    <v-card flat v-if="error" class="mb-4" rounded="lg" color="error">
       <v-card-text>{{ error }}</v-card-text>
     </v-card>
-    <v-card rounded="lg">
+    <v-card flat rounded="lg">
       <v-card-title class="hidden-md-and-up">
         {{ build.title }}
       </v-card-title>
@@ -337,7 +337,7 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            gradient="to right, transparent, #1D2432"
+            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
@@ -361,7 +361,7 @@
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            gradient="to right, transparent, #1D2432"
+            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
@@ -588,7 +588,7 @@
 
     <v-row>
       <v-col cols="12" md="8">
-        <v-card rounded="lg" class="mt-4" fluid fill-height>
+        <v-card flat rounded="lg" class="mt-4" fluid fill-height>
           <v-text-field
             class="pa-4"
             label="Title"
@@ -618,7 +618,7 @@
           ></v-text-field> </v-card
       ></v-col>
       <v-col cols="12" md="4" class="d-flex">
-        <v-card rounded="lg" class="mt-n2 mt-md-4 ml-md-n2 flex-grow-1">
+        <v-card flat rounded="lg" class="mt-n2 mt-md-4 ml-md-n2 flex-grow-1">
           <v-card-text class="pb-0">
             <v-select
               prepend-icon="mdi-earth"

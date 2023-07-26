@@ -1,11 +1,11 @@
 <template>
   <div height="100px">
-    <v-footer padless class="text-center d-flex flex-column text-grey">
+    <v-footer padless class="text-center d-flex flex-column">
       <v-row justify="center" class="my-4 text-center">
         <v-col cols="12">
           <v-btn
             class="mx-1"
-            variant="plain"
+            variant="text"
             color="primary"
             onclick="location.href='https://ko-fi.com/jensbuehl'"
           >
@@ -17,15 +17,15 @@
           <v-btn
             class="mx-1"
             prepend-icon="mdi-github"
-            variant="plain"
+            variant="text"
             color="primary"
             onclick="location.href='https://github.com/jensbuehl/aoe4-guides'"
             >Contribute
           </v-btn>
-          <v-btn class="mx-1" variant="plain" color="primary" to="/privacy"
+          <v-btn class="mx-1" variant="text" color="primary" to="/privacy"
             >Privacy Policy
           </v-btn>
-          <v-btn class="mx-1" variant="plain" color="primary" to="/about"
+          <v-btn class="mx-1" variant="text" color="primary" to="/about"
             >About
           </v-btn>
         </v-col>

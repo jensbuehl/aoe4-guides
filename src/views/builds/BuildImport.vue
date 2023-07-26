@@ -2,13 +2,13 @@
   <v-container v-if="!user && authIsReady">
     <v-row>
       <v-col cols="12" md="8" align="center"
-        ><v-card
+        ><v-card flat
           class="d-flex justify-center align-center mb-n2"
           height="96"
           rounded="lg"
         >
           <div>
-            <v-label>Would you like to import build orders?</v-label>
+            <span>Would you like to import build orders?</span>
             <v-btn
               class="pb-1"
               color="primary"
@@ -29,7 +29,7 @@
           color="primary"
           class="pa-1"
         >
-          <v-card rounded="lg">
+          <v-card flat rounded="lg">
             <v-card-title v-if="!user">Create</v-card-title>
             <v-card-text
               >Create new Age of Empires 4 build orders and share them with your
@@ -73,7 +73,7 @@
     <v-alert v-if="error" color="error">
       {{ error }}
     </v-alert>
-    <v-card
+    <v-card flat
       class="main"
       rounded="lg"
       @dragover="dragover"

@@ -1,7 +1,7 @@
 <template>
   <!--Common delete confirmation dialog)-->
   <v-dialog v-model="dialog" width="auto">
-    <v-card rounded="lg" class="text-center primary">
+    <v-card rounded="lg" class="text-center primary" flat>
       <v-card-title>Delete Step</v-card-title>
       <v-card-text>
         Do you really want to delete this build step?<br />
@@ -15,7 +15,7 @@
     </v-card>
   </v-dialog>
   <!--Mobile UI (XS)-->
-  <v-card rounded="lg" class="mt-4 hidden-sm-and-up">
+  <v-card rounded="lg" class="mt-4 hidden-sm-and-up" flat>
     <v-card-title>Build Order</v-card-title>
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn
@@ -72,7 +72,7 @@
         </v-row>
       </v-col>
       <v-col v-if="!readonly" cols="12">
-        <v-card variant="flat" height="50"
+        <v-card flat height="50"
           ><div v-if="!readonly" class="text-right pr-4">
             <v-menu
               v-if="selection"
@@ -90,7 +90,7 @@
                   >Add Icon</v-btn
                 >
               </template>
-              <v-card rounded="lg" class="mt-4" width="350px">
+              <v-card flat rounded="lg" class="mt-4" width="350px">
                 <IconSelector
                   @iconSelected="
                     (iconPath, tooltip, iconClass) =>
@@ -121,7 +121,7 @@
       <v-col cols="12">
         <v-row no-gutters justify="center">
           <v-col cols="3">
-            <v-card variant="flat" rounded="0"
+            <v-card flat rounded="0"
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepTime($event, index)"
@@ -132,7 +132,7 @@
             ></v-card>
           </v-col>
           <v-col>
-            <v-card align="center" variant="flat" rounded="0"
+            <v-card flat align="center" rounded="0"
               ><v-card-text
                 class="text-center villager"
                 disabled
@@ -141,7 +141,7 @@
             ></v-card>
           </v-col>
           <v-col>
-            <v-card variant="flat" rounded="0" class="fill-height"
+            <v-card flat rounded="0" class="fill-height"
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepBuilders($event, index)"
@@ -215,7 +215,7 @@
       </v-col>
       <v-divider></v-divider>
       <v-col v-if="readonly" cols="12">
-        <v-card variant="flat" rounded="0" class="my-2">
+        <v-card flat rounded="0" class="my-2">
           <v-table width="100%">
             <tbody>
               <tr>
@@ -233,7 +233,7 @@
         ></v-card>
       </v-col>
       <v-col v-if="!readonly" cols="8">
-        <v-card variant="flat" rounded="0" class="my-2">
+        <v-card flat rounded="0" class="my-2">
           <v-table width="100%">
             <tbody>
               <tr>
@@ -251,7 +251,7 @@
         ></v-card>
       </v-col>
       <v-col v-if="!readonly" cols="4">
-        <v-card variant="flat" class="my-2">
+        <v-card flat class="my-2">
           <div class="text-right">
             <v-tooltip location="top">
               <span
@@ -264,7 +264,7 @@
                 <v-btn
                   v-bind="props"
                   v-if="index === hoverRowIndex"
-                  variant="plain"
+                  variant="text"
                   color="primary"
                   @click="
                     dialog = true;
@@ -287,7 +287,7 @@
                 <v-btn
                   v-bind="props"
                   v-show="index === hoverRowIndex"
-                  variant="plain"
+                  variant="text"
                   color="primary"
                   @click="addStep(index)"
                   icon="mdi-plus"
@@ -300,7 +300,7 @@
     </v-row>
   </v-card>
   <!--Desktop UI-->
-  <v-card rounded="lg" class="mt-4 hidden-xs">
+  <v-card flat rounded="lg" class="mt-4 hidden-xs">
     <v-card-title>Build Order</v-card-title>
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn
@@ -461,12 +461,12 @@
                         icon="mdi-image-plus"
                         color="primary"
                         v-bind="mergeProps(menu, tooltip)"
-                        variant="plain"
+                        variant="text"
                       ></v-btn>
                     </template>
                   </v-tooltip>
                 </template>
-                <v-card rounded="lg" class="mt-4" width="350px">
+                <v-card flat rounded="lg" class="mt-4" width="350px">
                   <IconSelector
                     @iconSelected="
                       (iconPath, tooltip, iconClass) =>
@@ -490,7 +490,7 @@
                 <v-btn
                   v-bind="props"
                   v-if="index === hoverRowIndex"
-                  variant="plain"
+                  variant="text"
                   color="primary"
                   @click="
                     dialog = true;
@@ -513,7 +513,7 @@
                 <v-btn
                   v-bind="props"
                   v-show="index === hoverRowIndex"
-                  variant="plain"
+                  variant="text"
                   color="primary"
                   @click="addStep(index)"
                   icon="mdi-plus"

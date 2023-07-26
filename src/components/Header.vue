@@ -63,7 +63,7 @@
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
-              variant="plain"
+              variant="text"
               to="/builds"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-hammer"
@@ -85,7 +85,6 @@
               v-if="user"
               v-bind="props"
               color="primary"
-              variant="plain"
               to="/favorites"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-heart-outline"
@@ -106,7 +105,6 @@
               v-if="user"
               v-bind="props"
               color="primary"
-              variant="plain"
               to="/mybuilds"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-playlist-edit"
@@ -120,7 +118,6 @@
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
-              variant="plain"
               color="primary"
               class="mr-2 hidden-sm-and-down"
               prepend-icon="mdi-plus"
@@ -162,7 +159,7 @@
         </v-menu>
         <v-menu class="mx-4">
           <template v-slot:activator="{ props }">
-            <v-btn class="mr-2" icon variant="plain">
+            <v-btn class="mr-2" icon>
               <v-avatar
                 v-if="user && user.displayName"
                 color="primary"
@@ -181,7 +178,6 @@
                 size="small"
                 color="primary"
                 style="background-color: transparent"
-                variant="plain"
                 to="/register"
               >
                 Register now!

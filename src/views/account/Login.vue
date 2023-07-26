@@ -3,7 +3,7 @@
     <div class="d-flex justify-center">
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col cols="12" sm="6" lg="4">
-          <v-card rounded="lg" class="d-flex align-center mb-4">
+          <v-card flat rounded="lg" class="d-flex align-center mb-4">
             <v-row
               no-gutters
               class="fill-height"
@@ -39,7 +39,7 @@
                     color="primary"
                     style="background-color: transparent"
                     class="ml-2"
-                    variant="plain"
+                    variant="text"
                     to="/resetpassword"
                   >
                     Forgot Password?
@@ -52,7 +52,7 @@
                     color="primary"
                     >Login</v-btn
                   >
-                  <v-card v-if="error" rounded="lg" color="error">
+                  <v-card flat v-if="error" rounded="lg" color="error">
                     <v-card-text>{{ error }}</v-card-text>
                   </v-card>
                 </v-form>

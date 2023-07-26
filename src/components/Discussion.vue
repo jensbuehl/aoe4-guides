@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="lg">
+  <v-card rounded="lg" flat>
     <v-card-title class="mb-4">Comments</v-card-title>
     <div v-for="comment in comments" :key="comment.id">
       <SingleComment @commentRemoved="init" :comment="comment"></SingleComment>
@@ -7,8 +7,8 @@
     <v-row align="center">
       <v-col v-if="!user" align="center" class="pa-2 ma-2">
         <div>
-          <v-label
-            >Would you like to leave messages for other villagers?</v-label
+          <span
+            >Would you like to leave messages for other villagers?</span
           >
           <v-btn
             class="pb-1"

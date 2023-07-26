@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="d-flex justify-center">
-      <v-card class="py-6 px-10" rounded="lg" width="1024px" fluid>
+      <v-card flat class="py-6 px-10" rounded="lg" width="1024px" fluid>
         <h1>Privacy Policy of AoE4 Guides</h1>
 
         <p>

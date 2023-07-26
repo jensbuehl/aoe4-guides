@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" width="auto">
-    <v-card rounded="lg" class="text-center primary">
+    <v-card rounded="lg" class="text-center primary" flat>
       <v-card-title>Delete Comment</v-card-title>
       <v-card-text>
         Do you really want to delete this comment?<br />

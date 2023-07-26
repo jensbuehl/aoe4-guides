@@ -11,7 +11,7 @@
     >
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col cols="12" sm="6" lg="4">
-          <v-card rounded="lg" class="d-flex align-center mb-4">
+          <v-card flat rounded="lg" class="d-flex align-center mb-4">
             <v-row
               no-gutters
               class="fill-height"
@@ -49,13 +49,13 @@
                   placeholder="Your user id"
                   readonly
                 ></v-text-field>
-                <v-card v-if="error" rounded="lg" color="error">
+                <v-card flat v-if="error" rounded="lg" color="error">
                   <v-card-text>{{ error }}</v-card-text>
                 </v-card>
               </v-col>
             </v-row>
           </v-card>
-          <v-card rounded="lg" class="d-flex align-center mb-4">
+          <v-card flat rounded="lg" class="d-flex align-center mb-4">
             <v-row
               no-gutters
               class="fill-height"
@@ -67,7 +67,7 @@
                 <v-btn
                   disabled
                   color="primary"
-                  variant="plain"
+                  variant="text"
                   @click="createCreatorsCollection()"
                   >Create creators collection</v-btn
                 >
@@ -78,7 +78,7 @@
                 <v-btn
                   disabled
                   color="primary"
-                  variant="plain"
+                  variant="text"
                   @click="rewriteImages()"
                   >Re-write images in build step</v-btn
                 >
@@ -91,7 +91,7 @@
                 <v-btn
                   disabled
                   color="primary"
-                  variant="plain"
+                  variant="text"
                   @click="sanitizeVideoPaths()"
                   >Sanitize video and Extract Creator</v-btn
                 >

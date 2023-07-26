@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="d-flex justify-center">
-      <v-card class="py-6 px-10" rounded="lg" width="1024px" fluid>
+      <v-card flat class="py-6 px-10" rounded="lg" width="1024px" fluid>
         <h1>About</h1><br>
         <p>
           AoE4 Guides is a fan-made project and not affiliated with Relic or Microsoft.

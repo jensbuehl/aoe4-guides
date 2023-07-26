@@ -11,7 +11,7 @@
           color="primary"
           class="mt-4 pa-1"
         >
-          <v-card rounded="lg">
+          <v-card flat rounded="lg">
             <v-card-title v-if="!user">Create</v-card-title>
             <v-card-text
               >Create new Age of Empires 4 build orders and share them with your
@@ -86,7 +86,7 @@
           color="primary"
           class="mt-4 pa-1"
         >
-          <v-card rounded="lg">
+          <v-card flat rounded="lg">
             <v-card-title v-if="!user">Create</v-card-title>
             <v-card-text
               >Create new Age of Empires 4 build orders and share them with your

@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="build">
     <v-dialog v-model="dialog" width="auto">
-      <v-card rounded="lg" class="text-center primary">
+      <v-card flat rounded="lg" class="text-center primary">
         <v-card-title>Delete Build</v-card-title>
         <v-card-text>
           Do you really want to delete this build?<br />
@@ -12,7 +12,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-card rounded="lg">
+    <v-card flat rounded="lg" elevation="0">
       <v-card-title class="hidden-md-and-up">
         {{ build.title }}
       </v-card-title>
@@ -385,7 +385,7 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            gradient="to right, transparent, #1D2432"
+            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
@@ -409,7 +409,7 @@
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            gradient="to right, transparent, #1D2432"
+            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
@@ -683,14 +683,14 @@
       </v-row>
     </v-card>
 
-    <v-card v-if="build.description" rounded="lg" class="mt-4">
+    <v-card flat v-if="build.description" rounded="lg" class="mt-4">
       <v-card-title>Description</v-card-title>
       <v-card-text style="white-space: pre-line">{{
         build.description
       }}</v-card-text>
     </v-card>
 
-    <v-card v-if="build.video" rounded="lg" class="mt-4">
+    <v-card flat v-if="build.video" rounded="lg" class="mt-4">
       <v-card-title>Video</v-card-title>
       <div align="center">
         <iframe

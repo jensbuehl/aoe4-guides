@@ -17,13 +17,13 @@ const customDarkTheme = {
   colors: {
     accent: "#e7c05e",
     anchor: "#e7c05e",
-    //background: '#161925',
-    surface: "#1D2432",
-    "surface-variant": "#47587F", //tooltips
+    background: '#1D2432',
+    surface: "#324156",
+    "surface-variant": "#3D516B", //tooltips
     primary: "#e7c05e",
     "primary-darken-1": "#cca741",
-    secondary: "#e7c05e",
-    "secondary-darken-1": "#cca741",
+    secondary: "#294790",
+    "secondary-darken-1": "#3D516B",
     //success: '#e7c05e',
     //warning: '#e7c05e',
     //error: '#e7c05e',
@@ -36,11 +36,11 @@ const customLightTheme = {
   colors: {
     accent: "#e7c05e",
     anchor: "#e7c05e",
-    //background: '#161925',
-    surface: "#1D2432",
-    "surface-variant": "#47587F", //tooltips
-    primary: "#e7c05e",
-    "primary-darken-1": "#cca741",
+    background: '#BEC5CD',
+    surface: "#A4ADB9",
+    "surface-variant": "#cca741", //tooltips
+    primary: "#294790",
+    "primary-darken-1": "#3D516B",
     secondary: "#e7c05e",
     "secondary-darken-1": "#cca741",
     //success: '#e7c05e',

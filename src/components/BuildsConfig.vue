@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="lg">
+  <v-card rounded="lg" flat>
     <v-card-text class="pb-0 mb-4">
       <v-autocomplete
         class="hidden-xs"

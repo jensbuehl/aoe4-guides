@@ -3,7 +3,7 @@
     <v-row>
       <!-- main content -->
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <v-card rounded="lg" class="mb-2">
+        <v-card flat rounded="lg" class="mb-2">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user"
             >Welcome, {{ user.displayName }}!</v-card-title
@@ -16,7 +16,7 @@
           color="primary"
           class="mt-4 pa-1"
         >
-          <v-card rounded="lg">
+          <v-card flat rounded="lg">
             <v-card-title v-if="!user">Create</v-card-title>
             <v-card-text
               >Create new Age of Empires 4 build orders and share them with your
@@ -75,7 +75,7 @@
                 >Explore all {{ civ.title }} build orders</span
               >
               <template v-slot:activator="{ props }">
-                <v-card
+                <v-card flat
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
@@ -91,7 +91,7 @@
                         min-height="50"
                         :src="civ.flagLarge"
                         :lazy-src="civ.flagSmall"
-                        gradient="to right, transparent, #1D2432"
+                        :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
                         alt="{{civ.title}}"
                         cover
                       >
@@ -129,7 +129,7 @@
                 >Explore all {{ civ.title }} build orders</span
               >
               <template v-slot:activator="{ props }">
-                <v-card
+                <v-card flat
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
@@ -145,7 +145,7 @@
                         min-height="50"
                         :src="civ.flagLarge"
                         :lazy-src="civ.flagSmall"
-                        gradient="to right, transparent, #1D2432"
+                        :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
                         alt="{{civ.title}}"
                         cover
                       >
@@ -184,7 +184,7 @@
                 >Explore all {{ civ.title }} build orders</span
               >
               <template v-slot:activator="{ props }">
-                <v-card
+                <v-card flat
                   class="mb-2 hidden-sm-and-up"
                   min-height="50"
                   rounded="lg"
@@ -197,7 +197,7 @@
                         min-height="50"
                         :src="civ.flagLarge"
                         :lazy-src="civ.flagSmall"
-                        gradient="to right, transparent, #1D2432"
+                        :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
                         alt="{{civ.title}}"
                         cover
                       >
@@ -253,7 +253,7 @@
                 {{ getCreatorName(creator.creatorId) }}
               </span>
               <template v-slot:activator="{ props }">
-                <v-card
+                <v-card flat
                   height="56"
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
@@ -366,7 +366,7 @@
 
       <!-- sidebar -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <v-card rounded="lg" class="mb-2">
+        <v-card flat rounded="lg" class="mb-2">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user"
             >Welcome, {{ user.displayName }}!</v-card-title
@@ -395,7 +395,7 @@
                 {{ getCreatorName(creator.creatorId) }}
               </span>
               <template v-slot:activator="{ props }">
-                <v-card
+                <v-card flat
                   height="56"
                   class="mb-2"
                   rounded="lg"
@@ -457,7 +457,7 @@
           color="primary"
           class="mt-4 pa-1"
         >
-          <v-card rounded="lg">
+          <v-card flat rounded="lg">
             <v-card-title v-if="!user">Create</v-card-title>
             <v-card-text
               >Create new Age of Empires 4 build orders and share them with your

@@ -1,5 +1,5 @@
 <template>
-  <v-card @click="" class="mb-2" rounded="lg">
+  <v-card @click="" class="mb-2" rounded="lg" flat>
     <v-skeleton-loader :loading="build.loading" :height="height">
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
@@ -17,7 +17,7 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            gradient="to right, transparent, #1D2432"
+            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
@@ -36,7 +36,7 @@
             :min-height="height"
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            gradient="to right, transparent, #1D2432"
+            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
