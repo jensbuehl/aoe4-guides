@@ -228,7 +228,7 @@
         <v-tooltip location="top">
           <span
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             >Edit Build Order</span
           >
@@ -256,7 +256,7 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Duplicate and Edit Build Order</span
               >
@@ -277,7 +277,7 @@
               <v-tooltip>
                 <span
                   :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
                   }"
                   >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
                 >
@@ -293,7 +293,7 @@
               <v-tooltip location="top">
                 <span
                   :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
                   }"
                   >Visit AoE4_Overlay Project Page</span
                 >
@@ -322,7 +322,7 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Download RTS_Overlay / AoE4_Overlay File</span
               >
@@ -340,7 +340,7 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Delete Build Order</span
               >
@@ -547,7 +547,7 @@
             <v-tooltip location="top">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Edit Build Order</span
               >
@@ -577,8 +577,7 @@
                 <v-tooltip>
                   <span
                     :style="{
-                      color:
-                        $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      color: $vuetify.theme.current.colors.primary,
                     }"
                     >Duplicate and Edit Build Order</span
                   >
@@ -599,8 +598,7 @@
                   <v-tooltip>
                     <span
                       :style="{
-                        color:
-                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                        color: $vuetify.theme.current.colors.primary,
                       }"
                       >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
                     >
@@ -616,8 +614,7 @@
                   <v-tooltip location="top">
                     <span
                       :style="{
-                        color:
-                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                        color: $vuetify.theme.current.colors.primary,
                       }"
                       >Visit AoE4_Overlay Project Page</span
                     >
@@ -646,8 +643,7 @@
                 <v-tooltip>
                   <span
                     :style="{
-                      color:
-                        $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      color: $vuetify.theme.current.colors.primary,
                     }"
                     >Download RTS_Overlay / AoE4_Overlay File</span
                   >
@@ -665,8 +661,7 @@
                 <v-tooltip>
                   <span
                     :style="{
-                      color:
-                        $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      color: $vuetify.theme.current.colors.primary,
                     }"
                     >Delete Build Order</span
                   >
@@ -751,8 +746,7 @@ export default {
     const { convertToOverlayFormat, download, copyToClipboard } =
       useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
-    const { get, del, incrementViews, error } =
-      useCollection("builds");
+    const { get, del, incrementViews, error } = useCollection("builds");
     const { get: getCreator } = useCollection("creators");
 
     onMounted(async () => {

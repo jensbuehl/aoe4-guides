@@ -2,7 +2,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
       }"
       >Add to Favorites</span
     >
@@ -21,7 +21,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
       }"
       >Remove from Favorites</span
     >

@@ -2,7 +2,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+        color: $vuetify.theme.current.colors.primary,
       }"
       >I like! This is a good one!</span
     >
@@ -20,7 +20,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+        color: $vuetify.theme.current.colors.primary,
       }"
       >Remove your like</span
     >
@@ -38,7 +38,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+        color: $vuetify.theme.current.colors.primary,
       }"
       >Downvote! Villagers need to improve this build!</span
     >
@@ -56,7 +56,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-        color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+        color: $vuetify.theme.current.colors.primary,
       }"
       >I changed my mind. This build is pretty neat!</span
     >

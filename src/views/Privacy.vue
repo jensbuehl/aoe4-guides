@@ -27,7 +27,8 @@
           The terms used in this Privacy Policy have the same meanings as in our
           Terms and Conditions, which is accessible at www.aoe4guides.com,
           unless otherwise defined in this Privacy Policy.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Information Collection and Use</h2>
 
@@ -36,7 +37,8 @@
           provide us with certain personally identifiable information, including
           but not limited to your name, phone number, and postal address. The
           information that we collect will be used to contact or identify you.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Log Data</h2>
 
@@ -47,7 +49,8 @@
           Protocol ("IP") address, browser version, pages of our Service that
           you visit, the time and date of your visit, the time spent on those
           pages, and other statistics.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Cookies</h2>
 
@@ -63,7 +66,8 @@
           these cookies, and know when a cookie is being sent to your computer.
           If you choose to refuse our cookies, you may not be able to use some
           portions of our Service.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Service Providers</h2>
 
@@ -77,14 +81,16 @@
           <li>To provide the Service on our behalf;</li>
           <li>To perform Service-related services; or</li>
           <li>To assist us in analyzing how our Service is used.</li>
-        </ul><br>
+        </ul>
+        <br />
 
         <p>
           We want to inform our Service users that these third parties have
           access to your Personal Information. The reason is to perform the
           tasks assigned to them on our behalf. However, they are obligated not
           to disclose or use the information for any other purpose.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Security</h2>
 
@@ -94,7 +100,8 @@
           But remember that no method of transmission over the internet, or
           method of electronic storage is 100% secure and reliable, and we
           cannot guarantee its absolute security.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Links to Other Sites</h2>
 
@@ -105,7 +112,8 @@
           you to review the Privacy Policy of these websites. We have no control
           over, and assume no responsibility for the content, privacy policies,
           or practices of any third-party sites or services.
-        </p><br>
+        </p>
+        <br />
 
         <p>Children's Privacy</p>
 
@@ -117,7 +125,8 @@
           servers. If you are a parent or guardian and you are aware that your
           child has provided us with personal information, please contact us so
           that we will be able to do necessary actions.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Changes to This Privacy Policy</h2>
 
@@ -131,17 +140,20 @@
 
         <p>
           Our Privacy Policy was created with the help of the
-          <a :style="{color: $vuetify.theme.themes.customDarkTheme.colors.primary}"
+          <a
+            :style="{ color: $vuetify.theme.current.colors.primary }"
             href="https://www.termsfeed.com/blog/sample-privacy-policy-template/"
             >Privacy Policy Template</a
           >.
-        </p><br>
+        </p>
+        <br />
 
         <h2>Contact Us</h2>
 
         <p>
           If you have any questions or suggestions about our Privacy Policy, do
-          not hesitate to contact us.<br>(via mail: info (at) aoe4guides (dot) com)
+          not hesitate to contact us.<br />(via mail: info (at) aoe4guides (dot)
+          com)
         </p>
       </v-card>
     </div>
@@ -152,7 +164,7 @@
 export default {
   name: "About",
   setup() {
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   },
 };
 </script>

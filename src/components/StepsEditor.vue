@@ -136,9 +136,7 @@
               ><v-card-text
                 class="text-center villager"
                 disabled
-                v-html="
-                  aggregateVillagers(index)
-                "
+                v-html="aggregateVillagers(index)"
               ></v-card-text
             ></v-card>
           </v-col>
@@ -258,7 +256,7 @@
             <v-tooltip location="top">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Remove current step (ALT + DEL)</span
               >
@@ -281,7 +279,7 @@
             <v-tooltip location="top">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Add new step below (ALT + ENTER)</span
               >
@@ -326,7 +324,7 @@
           <v-tooltip location="top">
             <span
               :style="{
-                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                color: $vuetify.theme.current.colors.primary,
               }"
               >Villager Count</span
             >
@@ -454,8 +452,7 @@
                   <v-tooltip location="top">
                     <span
                       :style="{
-                        color:
-                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                        color: $vuetify.theme.current.colors.primary,
                       }"
                       >Add icon at current selection or cursor position</span
                     >
@@ -485,7 +482,7 @@
             <v-tooltip location="top">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Remove current step (ALT + DEL)</span
               >
@@ -508,7 +505,7 @@
             <v-tooltip location="top">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Add new step below (ALT + ENTER)</span
               >
@@ -583,15 +580,17 @@ export default {
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
-      iconClass = iconClass ? "icon-"+iconClass : "icon"
+      iconClass = iconClass ? "icon-" + iconClass : "icon";
 
       const img =
         '<img src="' +
         iconPath +
-        '" class=' + iconClass + ' title="' +
+        '" class=' +
+        iconClass +
+        ' title="' +
         tooltipText +
         '"><\/img>';
-        
+
       document.execCommand("insertHTML", false, img);
       saveSelection();
     };
@@ -604,7 +603,7 @@ export default {
       const gold = parseInt(step.gold) || 0;
       const stone = parseInt(step.stone) || 0;
 
-      return (builders + food + wood + gold + stone) || "-";
+      return builders + food + wood + gold + stone || "-";
     };
     const updateStepTime = (event, index) => {
       steps[index].time = event.target.innerHTML;
@@ -726,7 +725,14 @@ export default {
         clean = sanitizeHtml(dirty, {
           allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
           allowedClasses: {
-            img: ["icon", "icon-none", "icon-military", "icon-tech", "icon-default", "icon-landmark"],
+            img: [
+              "icon",
+              "icon-none",
+              "icon-military",
+              "icon-tech",
+              "icon-default",
+              "icon-landmark",
+            ],
           },
           allowedAttributes: {
             img: ["style", "class", "src"],

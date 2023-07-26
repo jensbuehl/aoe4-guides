@@ -199,7 +199,7 @@
         <v-tooltip location="top" text="Save Build Order">
           <span
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             >Save Build Order</span
           >
@@ -227,7 +227,7 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Duplicate and Edit Build Order</span
               >
@@ -248,7 +248,7 @@
               <v-tooltip>
                 <span
                   :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
                   }"
                   >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
                 >
@@ -264,7 +264,7 @@
               <v-tooltip location="top">
                 <span
                   :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
                   }"
                   >Visit AoE4_Overlay Project Page</span
                 >
@@ -293,7 +293,7 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Download RTS_Overlay / AoE4_Overlay File</span
               >
@@ -470,7 +470,7 @@
             <v-tooltip location="top">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Save Build Order</span
               >
@@ -499,8 +499,7 @@
                 <v-tooltip>
                   <span
                     :style="{
-                      color:
-                        $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      color: $vuetify.theme.current.colors.primary,
                     }"
                     >Duplicate and Edit Build Order</span
                   >
@@ -521,8 +520,7 @@
                   <v-tooltip>
                     <span
                       :style="{
-                        color:
-                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                        color: $vuetify.theme.current.colors.primary,
                       }"
                       >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
                     >
@@ -538,8 +536,7 @@
                   <v-tooltip location="top">
                     <span
                       :style="{
-                        color:
-                          $vuetify.theme.themes.customDarkTheme.colors.primary,
+                        color: $vuetify.theme.current.colors.primary,
                       }"
                       >Visit AoE4_Overlay Project Page</span
                     >
@@ -568,8 +565,7 @@
                 <v-tooltip>
                   <span
                     :style="{
-                      color:
-                        $vuetify.theme.themes.customDarkTheme.colors.primary,
+                      color: $vuetify.theme.current.colors.primary,
                     }"
                     >Download RTS_Overlay / AoE4_Overlay File</span
                   >

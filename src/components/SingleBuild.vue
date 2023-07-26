@@ -54,7 +54,7 @@
           <!--small title-->
           <div
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
             }"
             class="ml-4 text-subtitle-2 hidden-lg-and-up"
             style="font-family: 'Segoe UI' !important"
@@ -156,7 +156,7 @@
           <v-card-title
             class="pt-0 pb-2 hidden-md-and-down"
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
             }"
           >
             {{ build.title }}

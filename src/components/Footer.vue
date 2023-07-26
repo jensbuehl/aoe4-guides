@@ -33,14 +33,14 @@
           >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was
           created under Microsoft's "<a
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             href="https://www.xbox.com/en-US/developers/rules"
             >Game Content Usage Rules</a
           >" using assets from
           <a
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             href="https://www.ageofempires.com/games/age-of-empires-iv/"
             >Age of Empires IV</a

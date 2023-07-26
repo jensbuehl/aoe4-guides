@@ -29,34 +29,34 @@
       </v-app-bar-nav-icon>
 
       <v-app-bar-title style="min-width: 240px">
-          <v-row no-gutters class="fill-height" align="center" justify="start">
-            <v-col cols="12">
-              <v-card to="/" flat width="240">
-                <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
-                <v-card-title
-                  :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-                  }"
-                  class="title mb-0 mt-1 mt-sm-0 pb-0 pt-0"
-                  >{{ title }}</v-card-title
-                >
-                <v-card-subtitle
-                  :style="{
-                    color: $vuetify.theme.themes.customDarkTheme.colors.primary,
-                  }"
-                  class="subtitle mb-1"
-                  >{{ subtitle }}</v-card-subtitle
-                >
-              </v-card>
-            </v-col>
-          </v-row>
+        <v-row no-gutters class="fill-height" align="center" justify="start">
+          <v-col cols="12">
+            <v-card to="/" flat width="240">
+              <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
+              <v-card-title
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                class="title mb-0 mt-1 mt-sm-0 pb-0 pt-0"
+                >{{ title }}</v-card-title
+              >
+              <v-card-subtitle
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                class="subtitle mb-1"
+                >{{ subtitle }}</v-card-subtitle
+              >
+            </v-card>
+          </v-col>
+        </v-row>
       </v-app-bar-title>
       <v-spacer></v-spacer>
       <span v-if="authIsReady">
         <v-tooltip location="top">
           <span
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             >Browse and filter all build orders</span
           >
@@ -76,7 +76,7 @@
         <v-tooltip location="top">
           <span
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             >Your favorites: Build orders that you have liked</span
           >
@@ -97,7 +97,7 @@
         <v-tooltip location="top">
           <span
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             >Build orders that you have created</span
           >
@@ -133,7 +133,7 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Create new build order from scratch</span
               >
@@ -147,7 +147,7 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Import build order from file (e.g. from overlay tool)</span
               >
@@ -163,9 +163,12 @@
         <v-menu class="mx-4">
           <template v-slot:activator="{ props }">
             <v-btn class="mr-2" icon variant="plain">
-              <v-avatar v-if="user && user.displayName" color="primary" v-bind="props">{{
-                user.displayName.slice(0, 2)
-              }}</v-avatar>
+              <v-avatar
+                v-if="user && user.displayName"
+                color="primary"
+                v-bind="props"
+                >{{ user.displayName.slice(0, 2) }}</v-avatar
+              >
               <v-avatar v-if="!user" color="primary" v-bind="props">
                 <v-icon icon="mdi-account"></v-icon
               ></v-avatar>
@@ -193,7 +196,7 @@
           <v-list v-if="user">
             <v-list-item
               :style="{
-                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                color: $vuetify.theme.current.colors.primary,
               }"
             >
               Logged in as {{ user.displayName }}

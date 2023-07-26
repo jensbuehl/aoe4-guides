@@ -15,7 +15,7 @@
             out of love for the game. The goal is to be the most useful place
             for AoE4 guides and build orders. You may find me on AoE 4 world under this "forever golden" profile as <a
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
             }"
             href="https://aoe4world.com/players/76561197963612898"
             >"exe"</a
@@ -34,14 +34,14 @@
           <ul class="pl-6">
             <li><a
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
             }"
             href="https://discord.gg/ysDrdHKs9w"
             >Join our AoE4 Guides discord server </a
           ></li>
           <li><a
             :style="{
-              color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
             }"
             href="https://github.com/jensbuehl/aoe4-guides/issues"
             >Report issue on Github</a

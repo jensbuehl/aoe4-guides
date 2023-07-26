@@ -37,7 +37,7 @@
           <v-tooltip location="top">
             <span
               :style="{
-                color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                color: $vuetify.theme.current.colors.primary,
               }"
               >Post Comment</span
             >

@@ -97,7 +97,7 @@
               <label
                 for="fileInput"
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                    color: $vuetify.theme.current.colors.primary,
                 }"
                 style="cursor: pointer"
                 ><u>click here</u></label

@@ -70,7 +70,7 @@
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Explore all {{ civ.title }} build orders</span
               >
@@ -101,9 +101,7 @@
                       <!--small title-->
                       <div
                         :style="{
-                          color:
-                            $vuetify.theme.themes.customDarkTheme.colors
-                              .primary,
+                          color: $vuetify.theme.current.colors.primary,
                         }"
                         class="text-subtitle-2 mx-2"
                         style="
@@ -126,7 +124,7 @@
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Explore all {{ civ.title }} build orders</span
               >
@@ -157,9 +155,7 @@
                       <!--small title-->
                       <div
                         :style="{
-                          color:
-                            $vuetify.theme.themes.customDarkTheme.colors
-                              .primary,
+                          color: $vuetify.theme.current.colors.primary,
                         }"
                         class="text-subtitle-2 mx-2 hidden-lg-and-up"
                         style="font-family: 'Segoe UI' !important"
@@ -170,9 +166,7 @@
                       <v-card-title
                         class="hidden-md-and-down"
                         :style="{
-                          color:
-                            $vuetify.theme.themes.customDarkTheme.colors
-                              .primary,
+                          color: $vuetify.theme.current.colors.primary,
                         }"
                       >
                         {{ civ.title }}
@@ -185,7 +179,7 @@
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Explore all {{ civ.title }} build orders</span
               >
@@ -213,9 +207,7 @@
                       <!--small title-->
                       <div
                         :style="{
-                          color:
-                            $vuetify.theme.themes.customDarkTheme.colors
-                              .primary,
+                          color: $vuetify.theme.current.colors.primary,
                         }"
                         class="text-subtitle-2 hidden-lg-and-up"
                         style="font-family: 'Segoe UI' !important"
@@ -226,9 +218,7 @@
                       <v-card-title
                         class="hidden-md-and-down"
                         :style="{
-                          color:
-                            $vuetify.theme.themes.customDarkTheme.colors
-                              .primary,
+                          color: $vuetify.theme.current.colors.primary,
                         }"
                       >
                         {{ civ.title }}
@@ -257,7 +247,7 @@
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Explore all build orders from
                 {{ getCreatorName(creator.creatorId) }}
@@ -292,9 +282,7 @@
                             <!--xs title-->
                             <div
                               :style="{
-                                color:
-                                  $vuetify.theme.themes.customDarkTheme.colors
-                                    .primary,
+                                color: $vuetify.theme.current.colors.primary,
                               }"
                               class="text-subtitle-2 ml-2 hidden-sm-and-up"
                               style="
@@ -307,9 +295,7 @@
                             <!--sm title-->
                             <div
                               :style="{
-                                color:
-                                  $vuetify.theme.themes.customDarkTheme.colors
-                                    .primary,
+                                color: $vuetify.theme.current.colors.primary,
                               }"
                               class="text-subtitle-2 hidden-xs mx-2"
                               style="font-family: 'Segoe UI' !important"
@@ -403,7 +389,7 @@
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
-                  color: $vuetify.theme.themes.customDarkTheme.colors.primary,
+                  color: $vuetify.theme.current.colors.primary,
                 }"
                 >Explore all build orders from
                 {{ getCreatorName(creator.creatorId) }}
@@ -437,9 +423,7 @@
                             <!--small title-->
                             <div
                               :style="{
-                                color:
-                                  $vuetify.theme.themes.customDarkTheme.colors
-                                    .primary,
+                                color: $vuetify.theme.current.colors.primary,
                               }"
                               class="text-subtitle-2 ml-4 hidden-lg-and-up"
                               style="font-family: 'Segoe UI' !important"
@@ -450,9 +434,7 @@
                             <v-card-title
                               class="hidden-md-and-down"
                               :style="{
-                                color:
-                                  $vuetify.theme.themes.customDarkTheme.colors
-                                    .primary,
+                                color: $vuetify.theme.current.colors.primary,
                               }"
                             >
                               {{ getCreatorName(creator.creatorId) }}
@@ -611,7 +593,7 @@ export default {
         queryService.getQueryParametersForCreators(isFeatured, 6)
       );
       creators.value = await getAllCreators(creatorsQuery);
-      creators.value.sort(sortByNameCompareFunction)
+      creators.value.sort(sortByNameCompareFunction);
 
       for (const creator of creators.value) {
         creator.image = await getChannelIcon(creator.creatorId);
