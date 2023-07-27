@@ -8,6 +8,12 @@
           <v-card-title v-if="user"
             >Welcome, {{ user.displayName }}!</v-card-title
           >
+          <v-card-text>
+            <span v-if="!count">Gathering build orders...</span>
+            <span v-if="count"
+              >Villagers have gathered {{ count }} build order</span
+            ><span v-if="count > 1">s</span></v-card-text
+          >
         </v-card>
         <v-alert
           v-if="!user && authIsReady"
@@ -386,8 +392,13 @@
           >
           <v-card-text
             >Create new Age of Empires 4 build orders and share them with your
-            friends and the community.</v-card-text
-          >
+            friends and the community. </v-card-text
+          ><v-card-text>
+            <span v-if="!count">Gathering build orders...</span>
+            <span v-if="count"
+              >Villagers have gathered {{ count }} build order</span
+            ><span v-if="count > 1">s</span>
+          </v-card-text>
         </v-card>
 
         <!--featured creators sm and up-->
