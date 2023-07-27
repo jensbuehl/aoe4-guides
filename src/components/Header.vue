@@ -177,6 +177,7 @@
               <v-btn
                 size="small"
                 color="primary"
+                variant="plain"
                 style="background-color: transparent"
                 to="/register"
               >
