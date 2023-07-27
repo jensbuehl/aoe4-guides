@@ -45,6 +45,10 @@ const store = createStore({
       state.filterConfig.creator = payload;
       console.log("creator state changed:", state.filterConfig.creator);
     },
+    setAuthor(state, payload) {
+      state.filterConfig.author = payload;
+      console.log("author state changed:", state.filterConfig.author);
+    },
     setCivs(state, payload) {
       state.filterConfig.civs = payload;
       console.log("civs state changed:", state.filterConfig.civs);

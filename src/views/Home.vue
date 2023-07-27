@@ -11,8 +11,8 @@
           <v-card-text>
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count"
-              >Villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span><span>!</span></v-card-text
+              >Busy villagers have gathered {{ count }} build order</span
+            ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
         <v-alert
@@ -354,7 +354,7 @@
                   flat
                   rounded="lg"
                   v-bind="props"
-                  @click="userSelected(villagerOfTheDay.creatorId)"
+                  @click="userSelected(villagerOfTheDay.id)"
                 >
                   <v-row
                     no-gutters
@@ -385,20 +385,21 @@
                             >
                               {{ villagerOfTheDay.displayName }}
                             </v-card-title>
-                            <v-card-text class="hidden-lg-and-up"
-                              >123 build orders gathered</v-card-text
+                            <v-card-text
+                              v-if="villagerOfTheDay.count > 1"
+                              class="hidden-lg-and-up"
+                              >{{ villagerOfTheDay.count }} build orders
+                              gathered</v-card-text
                             >
-                            <!--large title-->
-                            <v-card-title
-                              class="hidden-md-and-down"
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
+                            <v-card-text
+                              v-else-if="villagerOfTheDay.count == 1"
+                              class="hidden-lg-and-up"
+                              >{{ villagerOfTheDay.count }} build order
+                              gathered</v-card-text
                             >
-                              {{ villagerOfTheDay.displayName }}
-                            </v-card-title>
-                            <v-card-text class="hidden-md-and-down"
-                              >123 build orders gathered</v-card-text
+                            <v-card-text v-else class="hidden-lg-and-up"
+                              >No build order gathered so far. Researching
+                              wheelbarrow...</v-card-text
                             >
                           </v-col>
                         </v-row>
@@ -475,8 +476,8 @@
           ><v-card-text>
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count"
-              >Villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span><span>!</span>
+              >Busy villagers have gathered {{ count }} build order</span
+            ><span v-if="count > 1">s</span><span>.</span>
           </v-card-text>
         </v-card>
 
@@ -576,7 +577,7 @@
                   flat
                   rounded="lg"
                   v-bind="props"
-                  @click="userSelected(villagerOfTheDay.creatorId)"
+                  @click="userSelected(villagerOfTheDay.id)"
                 >
                   <v-row
                     no-gutters
@@ -607,9 +608,6 @@
                             >
                               {{ villagerOfTheDay.displayName }}
                             </v-card-title>
-                            <v-card-text class="hidden-lg-and-up"
-                              >123 build orders gathered</v-card-text
-                            >
                             <!--large title-->
                             <v-card-title
                               class="hidden-md-and-down"
@@ -619,8 +617,21 @@
                             >
                               {{ villagerOfTheDay.displayName }}
                             </v-card-title>
-                            <v-card-text class="hidden-md-and-down"
-                              >123 build orders gathered</v-card-text
+                            <v-card-text
+                              v-if="villagerOfTheDay.count > 1"
+                              class="hidden-sm-and-down"
+                              >{{ villagerOfTheDay.count }} build orders
+                              gathered</v-card-text
+                            >
+                            <v-card-text
+                              v-else-if="villagerOfTheDay.count == 1"
+                              class="hidden-sm-and-down"
+                              >{{ villagerOfTheDay.count }} build order
+                              gathered</v-card-text
+                            >
+                            <v-card-text v-else class="hidden-sm-and-down"
+                              >No build order gathered so far. Researching
+                              wheelbarrow...</v-card-text
                             >
                           </v-col>
                         </v-row>
@@ -724,12 +735,11 @@ export default {
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const popularConfig = ref(getDefaultConfig());
     const mostRecentConfig = ref(getDefaultConfig());
+    const authorConfig = ref(getDefaultConfig());
     mostRecentConfig.value.orderBy = "timeCreated";
 
     onMounted(() => {
-      if (!filterAndOrderConfig.value) {
-        store.commit("setFilterConfig", getDefaultConfig());
-      }
+      store.commit("setFilterConfig", getDefaultConfig());
       initData();
     });
 
@@ -746,8 +756,8 @@ export default {
     };
 
     const userSelected = (id) => {
-      console.log("villager of the day selected");
-      //TODO
+      store.commit("setFilterConfig", authorConfig.value);
+      router.push({ name: "Builds" });
     };
 
     const getCreatorName = (id) => {
@@ -799,6 +809,13 @@ export default {
       const timeInDays = Math.floor(currentTimeInMs / oneDayInMs);
       const rng = seedrandom(timeInDays);
       villagerOfTheDay.value = allUsers[Math.floor(allUsers.length * rng())];
+      authorConfig.value.author = villagerOfTheDay.value.id;
+
+      //get build count for villager of the day
+      const authorQuery = getQuery(
+        queryService.getQueryParametersFromConfig(authorConfig.value)
+      );
+      villagerOfTheDay.value.count = await getSize(authorQuery);
 
       //get most recent
       const mostRecentQuery = getQuery(

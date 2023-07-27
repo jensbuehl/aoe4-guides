@@ -146,7 +146,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { getAll: getAllCreators, getQuery: getQueryCreators } =
+    const { getAll: getAllCreators } =
       useCollection("creators");
     const builds = ref(null);
     const creators = ref(null);
@@ -165,8 +165,6 @@ export default {
       if (!filterAndOrderConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
-      const instance = getCurrentInstance();
-      console.log(instance.proxy.$vuetify.theme.themes);
       initData();
     });
 

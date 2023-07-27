@@ -171,8 +171,13 @@ const filterWith = (config, favorites) => {
     const queryParams = [];
 
     if (config?.creator) {
-      const civsOp = where("creatorId", "in", [config.creator]);
-      queryParams.push(civsOp);
+      const creatorOp = where("creatorId", "in", [config.creator]);
+      queryParams.push(creatorOp);
+    }
+
+    if (config?.author) {
+      const authorOp = where("authorUid", "in", [config.author]);
+      queryParams.push(authorOp);
     }
 
     if (config?.civs) {
