@@ -39,6 +39,8 @@ export default {
         vuetify.theme.global.name = "customLightTheme";
       }
     });
+
+      
   },
 };
 </script>

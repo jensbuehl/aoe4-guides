@@ -21,6 +21,27 @@ exports.createUser = functions.auth.user().onCreate((user) => {
   );
 });
 
+exports.getUsers = onCall(() => {
+  return getFirestore()
+    .collection("users")
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        console.log(doc.id, "=>", doc.data());
+      });
+      return snapshot.docs.map((doc) => {
+        return {
+          displayName: doc.data().displayName,
+          id: doc.data().id,
+        };
+      });
+    })
+    .catch(function (error) {
+      logger.log(error.message);
+      return null;
+    });
+});
+
 exports.updateUserDisplayName = onCall((data) => {
   if (!data.auth)
     return { status: "error", code: 401, message: "Not signed in" };

@@ -75,7 +75,8 @@
                 >Explore all {{ civ.title }} build orders</span
               >
               <template v-slot:activator="{ props }">
-                <v-card flat
+                <v-card
+                  flat
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
@@ -91,7 +92,10 @@
                         min-height="50"
                         :src="civ.flagLarge"
                         :lazy-src="civ.flagSmall"
-                        :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+                        :gradient="
+                          'to right, transparent, ' +
+                          $vuetify.theme.current.colors.surface
+                        "
                         alt="{{civ.title}}"
                         cover
                       >
@@ -129,7 +133,8 @@
                 >Explore all {{ civ.title }} build orders</span
               >
               <template v-slot:activator="{ props }">
-                <v-card flat
+                <v-card
+                  flat
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
@@ -145,7 +150,10 @@
                         min-height="50"
                         :src="civ.flagLarge"
                         :lazy-src="civ.flagSmall"
-                        :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+                        :gradient="
+                          'to right, transparent, ' +
+                          $vuetify.theme.current.colors.surface
+                        "
                         alt="{{civ.title}}"
                         cover
                       >
@@ -184,7 +192,8 @@
                 >Explore all {{ civ.title }} build orders</span
               >
               <template v-slot:activator="{ props }">
-                <v-card flat
+                <v-card
+                  flat
                   class="mb-2 hidden-sm-and-up"
                   min-height="50"
                   rounded="lg"
@@ -197,7 +206,10 @@
                         min-height="50"
                         :src="civ.flagLarge"
                         :lazy-src="civ.flagSmall"
-                        :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+                        :gradient="
+                          'to right, transparent, ' +
+                          $vuetify.theme.current.colors.surface
+                        "
                         alt="{{civ.title}}"
                         cover
                       >
@@ -253,7 +265,8 @@
                 {{ getCreatorName(creator.creatorId) }}
               </span>
               <template v-slot:activator="{ props }">
-                <v-card flat
+                <v-card
+                  flat
                   height="56"
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
@@ -395,7 +408,8 @@
                 {{ getCreatorName(creator.creatorId) }}
               </span>
               <template v-slot:activator="{ props }">
-                <v-card flat
+                <v-card
+                  flat
                   height="56"
                   class="mb-2"
                   rounded="lg"
@@ -512,6 +526,8 @@ import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 import useYoutube from "../composables/useYoutube";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
+import { functions } from "../firebase";
+import { httpsCallable } from "firebase/functions";
 
 export default {
   name: "Home",
@@ -527,6 +543,7 @@ export default {
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
     const creators = ref(Array(6).fill({ loading: true }));
     const allCreators = ref(null);
+    const villagerOfTheDay = ref(null)
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
@@ -598,6 +615,12 @@ export default {
       for (const creator of creators.value) {
         creator.image = await getChannelIcon(creator.creatorId);
       }
+
+      //get villager of the day
+      const getUsers = httpsCallable(functions, "getUsers");
+      const allUsers = (await getUsers()).data;
+      console.log(allUsers);
+      villagerOfTheDay.value = allUsers;
 
       //get most recent
       const mostRecentQuery = getQuery(
