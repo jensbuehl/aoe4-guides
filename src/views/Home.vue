@@ -528,6 +528,7 @@ import useYoutube from "../composables/useYoutube";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { functions } from "../firebase";
 import { httpsCallable } from "firebase/functions";
+import seedrandom from "seedrandom";
 
 export default {
   name: "Home",
@@ -543,7 +544,7 @@ export default {
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
     const creators = ref(Array(6).fill({ loading: true }));
     const allCreators = ref(null);
-    const villagerOfTheDay = ref(null)
+    const villagerOfTheDay = ref(null);
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
@@ -619,8 +620,11 @@ export default {
       //get villager of the day
       const getUsers = httpsCallable(functions, "getUsers");
       const allUsers = (await getUsers()).data;
-      console.log(allUsers);
-      villagerOfTheDay.value = allUsers;
+      const oneDayInMs = 1000 * 60 * 60 * 24;
+      const currentTimeInMs = new Date().getTime(); // UTC time
+      const timeInDays = Math.floor(currentTimeInMs / oneDayInMs);
+      const rng = seedrandom(timeInDays);
+      villagerOfTheDay.value = allUsers[Math.floor(allUsers.length * rng())];
 
       //get most recent
       const mostRecentQuery = getQuery(

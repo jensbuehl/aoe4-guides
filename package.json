@@ -15,6 +15,7 @@
     "firebase-functions": "^4.4.1",
     "json-server": "^0.17.2",
     "sanitize-html": "^2.10.0",
+    "seedrandom": "^3.0.5",
     "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.2.45",
     "vue-router": "^4.0.13",
