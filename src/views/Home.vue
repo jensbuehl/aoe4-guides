@@ -370,7 +370,7 @@
                           <v-col cols="auto">
                             <div>
                               <v-avatar class="ml-4" color="primary">{{
-                                user.displayName.slice(0, 2)
+                                villagerOfTheDay.displayName.slice(0, 2)
                               }}</v-avatar>
                             </div>
                           </v-col>
@@ -593,7 +593,7 @@
                           <v-col cols="auto">
                             <div>
                               <v-avatar class="ml-4" color="primary">{{
-                                user.displayName.slice(0, 2)
+                                villagerOfTheDay.displayName.slice(0, 2)
                               }}</v-avatar>
                             </div>
                           </v-col>
