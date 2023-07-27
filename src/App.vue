@@ -10,22 +10,35 @@
 
 <script>
 import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue"
+import Footer from "./components/Footer.vue";
 import { onBeforeMount } from "vue";
-import { useVuetify } from "./composables/useVuetify"
+import { useVuetify } from "./composables/useVuetify";
 
 export default {
   name: "App",
-  components: { Header, Footer},
+  components: { Header, Footer },
   setup() {
     onBeforeMount(() => {
-      const vuetify = useVuetify();
-      console.log(vuetify)
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", ({ matches }) => {
+          if (matches) {
+            console.log("change to dark mode!");
+            vuetify.theme.global.name = "customDarkTheme";
+          } else {
+            console.log("change to light mode!");
+            vuetify.theme.global.name = "customLightTheme";
+          }
+        });
 
-      if(window.matchMedia('(prefers-color-scheme: light)').matches) {
+      const vuetify = useVuetify();
+      console.log(vuetify);
+
+      if (window.matchMedia("(prefers-color-scheme: light)").matches) {
+        console.log("change to light mode!");
         vuetify.theme.global.name = "customLightTheme";
       }
-    })
+    });
   },
 };
 </script>
