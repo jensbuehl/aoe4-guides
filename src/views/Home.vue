@@ -12,7 +12,7 @@
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count"
               >Villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span></v-card-text
+            ><span v-if="count > 1">s</span><span>!</span></v-card-text
           >
         </v-card>
         <v-alert
@@ -290,20 +290,20 @@
                     ><v-col cols="12"
                       ><v-skeleton-loader :loading="creator.loading">
                         <v-row no-gutters align="center">
-                          <v-col cols="4" align="center">
+                          <v-col cols="auto" align="center">
                             <v-avatar
                               class="my-2 mx-4"
                               color="primary"
                               :image="creator.image"
                             ></v-avatar>
                           </v-col>
-                          <v-col cols="8" align="start">
+                          <v-col cols="auto" align="start" justify="start">
                             <!--xs title-->
                             <div
                               :style="{
                                 color: $vuetify.theme.current.colors.primary,
                               }"
-                              class="text-subtitle-2 ml-2 hidden-sm-and-up"
+                              class="text-subtitle-2 hidden-sm-and-up"
                               style="
                                 font-family: 'Segoe UI' !important;
                                 font-size: 0.8rem !important;
@@ -316,11 +316,90 @@
                               :style="{
                                 color: $vuetify.theme.current.colors.primary,
                               }"
-                              class="text-subtitle-2 hidden-xs mx-2"
+                              class="text-subtitle-2 hidden-xs"
                               style="font-family: 'Segoe UI' !important"
                             >
                               {{ getCreatorName(creator.creatorId) }}
                             </div>
+                          </v-col>
+                        </v-row>
+                      </v-skeleton-loader></v-col
+                    ></v-row
+                  >
+                </v-card>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+
+        <!--villager of the day xs-->
+        <v-row no-gutters class="hidden-md-and-up">
+          <div
+            class="text-h6 mt-4 mb-2 ml-4"
+            style="font-family: 'Segoe UI' !important"
+          >
+            Villager of the Day
+          </div>
+          <v-col cols="12" v-model="villagerOfTheDay">
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Explore all build orders from
+                {{ villagerOfTheDay.displayName }}
+              </span>
+              <template v-slot:activator="{ props }">
+                <v-card
+                  flat
+                  rounded="lg"
+                  v-bind="props"
+                  @click="userSelected(villagerOfTheDay.creatorId)"
+                >
+                  <v-row
+                    no-gutters
+                    class="fill-height"
+                    align="center"
+                    justify="center"
+                    ><v-col cols="12"
+                      ><v-skeleton-loader
+                        height="84"
+                        :loading="villagerOfTheDay.loading"
+                      >
+                        <v-row no-gutters align="center" justify="start">
+                          <v-col cols="auto">
+                            <div>
+                              <v-avatar class="ml-4" color="primary">{{
+                                user.displayName.slice(0, 2)
+                              }}</v-avatar>
+                            </div>
+                          </v-col>
+                          <v-col cols="9" align="start">
+                            <!--small title-->
+                            <v-card-title
+                              :style="{
+                                color: $vuetify.theme.current.colors.primary,
+                              }"
+                              class="text-subtitle-2 hidden-lg-and-up"
+                              style="font-family: 'Segoe UI' !important"
+                            >
+                              {{ villagerOfTheDay.displayName }}
+                            </v-card-title>
+                            <v-card-text class="hidden-lg-and-up"
+                              >123 build orders gathered</v-card-text
+                            >
+                            <!--large title-->
+                            <v-card-title
+                              class="hidden-md-and-down"
+                              :style="{
+                                color: $vuetify.theme.current.colors.primary,
+                              }"
+                            >
+                              {{ villagerOfTheDay.displayName }}
+                            </v-card-title>
+                            <v-card-text class="hidden-md-and-down"
+                              >123 build orders gathered</v-card-text
+                            >
                           </v-col>
                         </v-row>
                       </v-skeleton-loader></v-col
@@ -397,7 +476,7 @@
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count"
               >Villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span>
+            ><span v-if="count > 1">s</span><span>!</span>
           </v-card-text>
         </v-card>
 
@@ -464,6 +543,85 @@
                             >
                               {{ getCreatorName(creator.creatorId) }}
                             </v-card-title>
+                          </v-col>
+                        </v-row>
+                      </v-skeleton-loader></v-col
+                    ></v-row
+                  >
+                </v-card>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+
+        <!--villager of the day sm and up-->
+        <v-row no-gutters class="hidden-xs">
+          <div
+            class="text-h6 mt-4 mb-2 ml-4"
+            style="font-family: 'Segoe UI' !important"
+          >
+            Villager of the Day
+          </div>
+          <v-col cols="12" v-model="villagerOfTheDay">
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Explore all build orders from
+                {{ villagerOfTheDay.displayName }}
+              </span>
+              <template v-slot:activator="{ props }">
+                <v-card
+                  flat
+                  rounded="lg"
+                  v-bind="props"
+                  @click="userSelected(villagerOfTheDay.creatorId)"
+                >
+                  <v-row
+                    no-gutters
+                    class="fill-height"
+                    align="center"
+                    justify="center"
+                    ><v-col cols="12"
+                      ><v-skeleton-loader
+                        height="84"
+                        :loading="villagerOfTheDay.loading"
+                      >
+                        <v-row no-gutters align="center" justify="start">
+                          <v-col cols="auto">
+                            <div>
+                              <v-avatar class="ml-4" color="primary">{{
+                                user.displayName.slice(0, 2)
+                              }}</v-avatar>
+                            </div>
+                          </v-col>
+                          <v-col cols="9" align="start">
+                            <!--small title-->
+                            <v-card-title
+                              :style="{
+                                color: $vuetify.theme.current.colors.primary,
+                              }"
+                              class="text-subtitle-2 hidden-lg-and-up"
+                              style="font-family: 'Segoe UI' !important"
+                            >
+                              {{ villagerOfTheDay.displayName }}
+                            </v-card-title>
+                            <v-card-text class="hidden-lg-and-up"
+                              >123 build orders gathered</v-card-text
+                            >
+                            <!--large title-->
+                            <v-card-title
+                              class="hidden-md-and-down"
+                              :style="{
+                                color: $vuetify.theme.current.colors.primary,
+                              }"
+                            >
+                              {{ villagerOfTheDay.displayName }}
+                            </v-card-title>
+                            <v-card-text class="hidden-md-and-down"
+                              >123 build orders gathered</v-card-text
+                            >
                           </v-col>
                         </v-row>
                       </v-skeleton-loader></v-col
@@ -555,7 +713,7 @@ export default {
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
     const creators = ref(Array(6).fill({ loading: true }));
     const allCreators = ref(null);
-    const villagerOfTheDay = ref(null);
+    const villagerOfTheDay = ref({ loading: true });
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
@@ -585,6 +743,11 @@ export default {
       filterAndOrderConfig.value.creator = id;
       store.commit("setFilterConfig", filterAndOrderConfig.value);
       router.push({ name: "Builds" });
+    };
+
+    const userSelected = (id) => {
+      console.log("villager of the day selected");
+      //TODO
     };
 
     const getCreatorName = (id) => {
@@ -667,7 +830,9 @@ export default {
       creators,
       civSelected,
       creatorSelected,
+      userSelected,
       getCreatorName,
+      villagerOfTheDay,
     };
   },
 };

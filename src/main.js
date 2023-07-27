@@ -21,7 +21,7 @@ const customDarkTheme = {
     surface: "#324156",
     "surface-variant": "#3D516B", //tooltips
     primary: "#e7c05e",
-    "primary-darken-1": "#cca741",
+    "primary-darken-1": "#8D7B4B",
     secondary: "#294790",
     "secondary-darken-1": "#3D516B",
     //success: '#e7c05e',
@@ -42,7 +42,7 @@ const customLightTheme = {
     primary: "#294790",
     "primary-darken-1": "#3D516B",
     secondary: "#e7c05e",
-    "secondary-darken-1": "#cca741",
+    "secondary-darken-1": "#8D7B4B",
     //success: '#e7c05e',
     //warning: '#e7c05e',
     //error: '#e7c05e',
