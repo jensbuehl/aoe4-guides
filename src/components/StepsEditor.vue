@@ -1,6 +1,6 @@
 <template>
-  <!--Common delete confirmation dialog)-->
-  <v-dialog v-model="dialog" width="auto">
+  <!--Common delete confirmation dialog-->
+  <v-dialog v-model="removeStepConfirmationDialog" width="auto">
     <v-card rounded="lg" class="text-center primary" flat>
       <v-card-title>Delete Step</v-card-title>
       <v-card-text>
@@ -10,6 +10,21 @@
       <v-card-actions>
         <v-btn color="error" block @click="removeStep(delteRowIndex)"
           >Delete</v-btn
+        >
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <!--Do not copy images from age4builder dialog-->
+  <v-dialog v-model="pasteImagesInfoDialog" width="auto">
+    <v-card rounded="lg" class="text-center primary" flat>
+      <v-card-title>Unsupported Icon</v-card-title>
+      <v-card-text>
+        Unsupported icon format from age4builder detected.<br />
+        Please consider using the export/import feature to transfer build orders. 
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="error" block @click="pasteImagesInfoDialog = false"
+          >Close</v-btn
         >
       </v-card-actions>
     </v-card>
@@ -267,7 +282,7 @@
                   variant="text"
                   color="primary"
                   @click="
-                    dialog = true;
+                    removeStepConfirmationDialog = true;
                     delteRowIndex = index;
                   "
                   icon="mdi-delete"
@@ -378,7 +393,7 @@
           :key="index"
           v-on:keyup.enter.alt="addStep(index)"
           v-on:keyup.delete.alt="
-            dialog = true;
+            removeStepConfirmationDialog = true;
             delteRowIndex = index;
           "
           @mousedown="selectRow(index)"
@@ -493,7 +508,7 @@
                   variant="text"
                   color="primary"
                   @click="
-                    dialog = true;
+                    removeStepConfirmationDialog = true;
                     delteRowIndex = index;
                   "
                   icon="mdi-delete"
@@ -549,7 +564,8 @@ export default {
     const delteRowIndex = ref(null);
     const selection = ref(null);
     const stepsTable = ref(null);
-    const dialog = ref(false);
+    const removeStepConfirmationDialog = ref(false);
+    const pasteImagesInfoDialog = ref(false);
 
     const civ = computed(() => {
       return props.civ;
@@ -705,7 +721,7 @@ export default {
       steps.splice(currentIndex, 1);
 
       context.emit("stepsChanged", steps);
-      dialog.value = false;
+      removeStepConfirmationDialog.value = false;
     };
 
     const selectRow = (index) => {
@@ -720,6 +736,14 @@ export default {
     const handlePaste = async (e) => {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
+      const ageBuilderSource = dirty.match("age4builder");
+      if (ageBuilderSource) {
+        pasteImagesInfoDialog.value = true;
+        e.stopPropagation();
+        e.preventDefault();
+        return;
+      }
+
       var clean = "";
       if (dirty) {
         clean = sanitizeHtml(dirty, {
@@ -764,7 +788,8 @@ export default {
       sanitizeHtml,
       selection,
       delteRowIndex,
-      dialog,
+      removeStepConfirmationDialog,
+      pasteImagesInfoDialog,
       mergeProps,
       handlePaste,
       aggregateVillagers,
