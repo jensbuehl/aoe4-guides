@@ -19,13 +19,6 @@
       </v-col>
 
       <v-col cols="12" md="8">
-        <!--civilizations-->
-        <div
-          class="text-h6 mb-2 ml-4"
-          style="font-family: 'Segoe UI' !important"
-        >
-          Civilizations
-        </div>
         <!-- civilizations xs-->
         <v-row align="center" no-gutters class="hidden-sm-and-up">
           <v-col cols="6" v-for="(civ, index) in civs" :key="civ.title">
