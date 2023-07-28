@@ -3,11 +3,12 @@
     <v-row>
       <v-col cols="12" md="8" align="center"
         ><v-card
-          flat class="d-flex justify-center align-center mb-n2"
+          flat
+          class="d-flex justify-center align-center mb-n2"
           height="96"
           rounded="lg"
         >
-        <div>
+          <div>
             <span>Would you like to craft your own build orders?</span>
             <v-btn
               class="pb-1"
@@ -21,52 +22,9 @@
           </div>
         </v-card></v-col
       >
-      <v-col cols="12" md="4"
-        ><v-alert
-          v-if="!user && authIsReady"
-          rounded="lg"
-          outlined
-          color="primary"
-          class="pa-1"
-        >
-          <v-card flat rounded="lg">
-            <v-card-title v-if="!user">Create</v-card-title>
-            <v-card-text
-              >Create new Age of Empires 4 build orders and share them with your
-              friends.</v-card-text
-            >
-
-            <v-card-title>Like</v-card-title>
-            <v-card-text
-              >Manage your own favorite AoE 4 build orders and find the good
-              ones with ease.</v-card-text
-            >
-
-            <v-card-title>Comment</v-card-title>
-            <v-card-text
-              >Write build order comments and get in touch with the author and
-              the community.</v-card-text
-            >
-
-            <v-card-title>Sign up</v-card-title>
-            <v-card-text
-              >Registered villagers gather and manage build orders up to 20%
-              faster. ;)</v-card-text
-            >
-            <v-list-item>
-              <span>New Villager?</span>
-              <v-btn
-                size="small"
-                color="primary"
-                style="background-color: transparent"
-                variant="plain"
-                to="/register"
-              >
-                Register now!
-              </v-btn>
-            </v-list-item>
-          </v-card></v-alert
-        ></v-col>
+      <v-col cols="12" md="4">
+        <RegisterAd v-if="!user && authIsReady"></RegisterAd>
+      </v-col>
     </v-row>
   </v-container>
 
@@ -81,7 +39,7 @@
         ><v-tooltip location="top">
           <span
             :style="{
-                    color: $vuetify.theme.current.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             >Save Build Order</span
           >
@@ -116,7 +74,9 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -139,7 +99,9 @@
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -275,6 +237,7 @@
 </template>
 
 <script>
+import RegisterAd from "../../components/RegisterAd.vue";
 import StepsEditor from "../../components/StepsEditor.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
@@ -289,14 +252,19 @@ import getStrategies from "../../composables/getStrategies";
 
 export default {
   name: "BuildNew",
-  components: { StepsEditor },
+  components: { StepsEditor, RegisterAd },
   setup(props) {
     window.scrollTo(0, 0);
 
     const { add, error } = useCollection("builds");
-    const { get:getCreator, add:addCreator } = useCollection("creators");
+    const { get: getCreator, add: addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();
-    const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData } = useYoutube();
+    const {
+      extractVideoId,
+      buildEmbedUrl,
+      getVideoCreatorId,
+      getVideoMetaData,
+    } = useYoutube();
     const civs = getCivs().civs;
     const matchups = getCivs().civs;
     const maps = getMaps().maps;
@@ -344,14 +312,16 @@ export default {
           build.value.title.toLowerCase() + crypto.randomUUID();
         build.value.authorUid = user.value.uid;
         build.value.author = user.value.displayName;
-        
-        if(build.value.video){
+
+        if (build.value.video) {
           //Add content creator document
-          const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video))
+          const creatorDoc = await getVideoMetaData(
+            extractVideoId(build.value.video)
+          );
           const res = await getCreator(creatorDoc.creatorId);
-          console.log(creatorDoc)
-          if(!res){
-            await addCreator(creatorDoc, creatorDoc.creatorId)
+          console.log(creatorDoc);
+          if (!res) {
+            await addCreator(creatorDoc, creatorDoc.creatorId);
           }
         }
 
@@ -370,7 +340,7 @@ export default {
     const handleVideoInput = async () => {
       error.value = validateVideo(build.value.video);
       if (!error.value) {
-        const videoId = extractVideoId(build.value.video)
+        const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
       }
