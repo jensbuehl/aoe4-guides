@@ -714,14 +714,15 @@ export default {
       const currentTimeInMs = new Date().getTime(); // UTC time
       const timeInDays = Math.floor(currentTimeInMs / oneDayInMs);
       const rng = seedrandom(timeInDays);
-      villagerOfTheDay.value = allUsers[Math.floor(allUsers.length * rng())];
-      authorConfig.value.author = villagerOfTheDay.value.id;
+      var user = allUsers[Math.floor(allUsers.length * rng())];
+      authorConfig.value.author = user.id;
 
       //get build count for villager of the day
       const authorQuery = getQuery(
         queryService.getQueryParametersFromConfig(authorConfig.value)
       );
-      villagerOfTheDay.value.count = await getSize(authorQuery);
+      user.count = await getSize(authorQuery);
+      villagerOfTheDay.value = user;
 
       //get most recent
       const mostRecentQuery = getQuery(
