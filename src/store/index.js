@@ -142,7 +142,7 @@ const store = createStore({
         decrementLikes(element);
       });
 
-      //remove from users collection
+      //remove from favorites collection
       await del(auth.currentUser.uid);
 
       //remove user from auth db

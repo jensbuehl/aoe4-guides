@@ -4,8 +4,8 @@ const seasons = ref([
   {
     //TODO: Add tagline and date once info is available
     title: "Season 5",
-    tagline: "",
-    startDate: new Date()
+    tagline: "Map Monsters: Summer Party Edition",
+    startDate: new Date(2023, 6, 15)
   },
   {
     title: "Season 4",
