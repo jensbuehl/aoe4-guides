@@ -136,19 +136,20 @@ const store = createStore({
       const favorites = await get(auth.currentUser.uid).then((favorites) => {
         return favorites.favorites;
       });
-      console.log("favorites", favorites);
-
-      await favorites.forEach((element) => {
-        decrementLikes(element);
-      });
-
-      //remove from favorites collection
-      await del(auth.currentUser.uid);
 
       //remove user from auth db
       await deleteUser(auth.currentUser).catch((error) => {
         throw new Error("Could not delete account: " + error.code);
       });
+
+      if(favorites){
+        await favorites.forEach((element) => {
+          decrementLikes(element);
+        });
+
+        //remove from favorites collection
+        await del(auth.currentUser.uid);
+      }
 
       //clear state
       context.commit("setUser", null);
