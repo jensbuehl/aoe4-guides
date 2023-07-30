@@ -319,7 +319,7 @@
                           <v-col cols="auto">
                             <div>
                               <v-avatar class="ml-4" color="primary">{{
-                                villagerOfTheDay.displayName.slice(0, 2)
+                                villagerOfTheDay.displayName.slice(0, 2).toUpperCase()
                               }}</v-avatar>
                             </div>
                           </v-col>
@@ -542,7 +542,7 @@
                           <v-col cols="auto">
                             <div>
                               <v-avatar class="ml-4" color="primary">{{
-                                villagerOfTheDay.displayName.slice(0, 2)
+                                villagerOfTheDay.displayName.slice(0, 2).toUpperCase()
                               }}</v-avatar>
                             </div>
                           </v-col>

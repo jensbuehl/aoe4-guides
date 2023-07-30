@@ -315,7 +315,7 @@ export default {
 
         //Add creatorId if empty for some reason...
         if (!build.value.creatorId) {
-          const videoId = await extractVideoId(build.value.video);
+          const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
         }
 
@@ -348,7 +348,7 @@ export default {
     const handleVideoInput = async () => {
       error.value = validateVideo(build.value.video);
       if (!error.value) {
-        const videoId = await extractVideoId(build.value.video);
+        const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
       }
