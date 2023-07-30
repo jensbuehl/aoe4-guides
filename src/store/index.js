@@ -132,14 +132,15 @@ const store = createStore({
       const { del, get } = useCollection("favorites");
       const { decrementLikes } = useCollection("builds");
 
-      //decrement likes on all builds
-      const favorites = await get(auth.currentUser.uid).then((favorites) => {
-        return favorites.favorites;
-      });
-
       //remove user from auth db
+      const uid = auth.currentUser.uid;
       await deleteUser(auth.currentUser).catch((error) => {
         throw new Error("Could not delete account: " + error.code);
+      });
+
+      //decrement likes on all builds
+      const favorites = await get(uid).then((favorites) => {
+        return favorites?.favorites;
       });
 
       if(favorites){
@@ -148,7 +149,7 @@ const store = createStore({
         });
 
         //remove from favorites collection
-        await del(auth.currentUser.uid);
+        await del(uid);
       }
 
       //clear state
