@@ -313,6 +313,15 @@ export default {
         build.value.authorUid = user.value.uid;
         build.value.author = user.value.displayName;
 
+        //Add creatorId if empty for some reason...
+        if (!build.value.creatorId) {
+          const videoId = await extractVideoId(build.value.video);
+          build.value.creatorId = await getVideoCreatorId(videoId);
+        }
+
+        //Add build order document
+        const id = await add(build.value);
+
         if (build.value.video) {
           //Add content creator document
           const creatorDoc = await getVideoMetaData(
@@ -325,7 +334,6 @@ export default {
           }
         }
 
-        const id = await add(build.value);
         //Navigate to new build order
         if (!error.value) {
           router.push("/builds/" + id);
@@ -340,7 +348,7 @@ export default {
     const handleVideoInput = async () => {
       error.value = validateVideo(build.value.video);
       if (!error.value) {
-        const videoId = extractVideoId(build.value.video);
+        const videoId = await extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
       }

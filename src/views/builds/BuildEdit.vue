@@ -337,7 +337,9 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -361,7 +363,9 @@
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -778,6 +782,12 @@ export default {
       if (!error.value) {
         build.value.sortTitle =
           build.value.title.toLowerCase() + crypto.randomUUID();
+
+        //Add creatorId if empty for some reason...
+        if (!build.value.creatorId) {
+          const videoId = await extractVideoId(build.value.video);
+          build.value.creatorId = await getVideoCreatorId(videoId);
+        }
 
         //Update build order document
         await updateBuild(props.id, build.value);
