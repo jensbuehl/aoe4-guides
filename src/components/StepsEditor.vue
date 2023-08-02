@@ -759,7 +759,7 @@ export default {
             ],
           },
           allowedAttributes: {
-            img: ["style", "class", "src"],
+            img: ["style", "class", "src", "title"],
           },
           allowedStyles: {
             "*": {
