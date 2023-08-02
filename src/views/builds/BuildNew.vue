@@ -314,7 +314,7 @@ export default {
         build.value.author = user.value.displayName;
 
         //Add creatorId if empty for some reason...
-        if (!build.value.creatorId) {
+        if (!build.value.creatorId && build.value.video) {
           const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
         }
