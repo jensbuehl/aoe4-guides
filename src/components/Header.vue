@@ -1,5 +1,10 @@
 <template>
-  <v-app-bar flat app height="100" :style="'border-bottom: 2px solid '+$vuetify.theme.current.colors.primary">
+  <v-app-bar
+    flat
+    app
+    height="100"
+    :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.primary"
+  >
     <v-container class="fill-height d-flex align-center my-0 py-0">
       <v-app-bar-nav-icon color="primary" class="hidden-md-and-up">
         <v-menu>
@@ -22,7 +27,7 @@
             <v-divider></v-divider>
             <v-list-item to="/new">
               <v-icon class="mr-4" color="primary">mdi-plus</v-icon>
-              Create New Build
+              Create New Build Order
             </v-list-item>
           </v-list>
         </v-menu>
@@ -137,7 +142,7 @@
               <template v-slot:activator="{ props }">
                 <v-list-item to="/new" v-bind="props">
                   <v-icon class="mr-4" color="primary">mdi-pencil</v-icon>
-                  Create New Build
+                  Create New Build Order
                 </v-list-item>
               </template>
             </v-tooltip>
@@ -151,7 +156,29 @@
               <template v-slot:activator="{ props }">
                 <v-list-item to="/import" v-bind="props">
                   <v-icon class="mr-4" color="primary">mdi-import</v-icon>
-                  Import Build
+                  Import from File
+                </v-list-item>
+              </template>
+            </v-tooltip>
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Import build order from clipboard (e.g. from age4builder)</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-list-item
+                  :to="{
+                    name: 'BuildImport',
+                    params: { paste: true },
+                  }"
+                  v-bind="props"
+                >
+                  <v-icon class="mr-4" color="primary"
+                    >mdi-content-paste</v-icon
+                  >
+                  Import from Clipboard
                 </v-list-item>
               </template>
             </v-tooltip>

@@ -138,9 +138,10 @@ const routes = [
       }
     },
     {
-      path: "/import",
+      path: "/import/:paste?",
       name: "BuildImport",
       component: BuildImport,
+      props: true,
       meta: {
         title: "Import Build Order - Age of Empires IV Build Orders"
       }

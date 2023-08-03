@@ -526,7 +526,7 @@
                       :style="{
                         color: $vuetify.theme.current.colors.primary,
                       }"
-                      >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
+                      >Copy to Clipboard (RTS_Overlay / AoE4_Overlay)</span
                     >
                     <template v-slot:activator="{ props }">
                       <v-icon color="primary" class="mr-5" v-bind="props"

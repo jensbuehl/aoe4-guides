@@ -32,6 +32,7 @@
       {{ error }}
     </v-alert>
     <v-card
+      v-if="!paste"
       flat
       class="main"
       rounded="lg"
@@ -72,7 +73,7 @@
 
 <script>
 import RegisterAd from "../../components/RegisterAd.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
@@ -81,7 +82,8 @@ import useOverlayConversion from "../../composables/useOverlayConversion";
 export default {
   name: "BuildImport",
   components: { RegisterAd },
-  setup() {
+  props: ["paste"],
+  setup(props) {
     window.scrollTo(0, 0);
 
     const { error } = useCollection("builds");
@@ -93,6 +95,13 @@ export default {
 
     const files = ref(null);
     const build = ref(null);
+
+    onMounted(async () => {
+      //Trigger import from clipboard if paste is set
+      if (props.paste) {
+        importFromClipboard();
+      }
+    });
 
     const newFromTemplate = async () => {
       var template = {
@@ -121,21 +130,48 @@ export default {
       router.push({ name: "BuildNew" });
     };
 
-    const importAndCreateFromTemplate = async () => {
+    const importFromClipboard = async () => {
+      try {
+        navigator.clipboard
+          .readText()
+          .then((text) => {
+            console.log(text);
+            const importedFileString = text;
+            const importedFileObject = JSON.parse(importedFileString);
+            console.log(importedFileObject);
+            build.value = convertFromOverlayFormat(importedFileObject);
+            if (!error.value) {
+              newFromTemplate();
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            error.value =
+              "Could not import from clipboard. Please make sure that the clipboard contains a valid build order.";
+          });
+      } catch (err) {
+        error.value = err;
+      }
+    };
+
+    const importFromFile = async () => {
       try {
         const importedFileString = await files.value[0].text();
         const importedFileObject = JSON.parse(importedFileString);
         build.value = convertFromOverlayFormat(importedFileObject);
-        newFromTemplate();
+        if (!error.value) {
+          newFromTemplate();
+        }
       } catch (err) {
-        error.value = err;
-        alert(err);
+        console.log(err);
+        error.value =
+          "Could not import from file. Please make sure that the file contains a valid build order.";
       }
     };
 
     const onChange = async (e) => {
       files.value = e.target.files || e.dataTransfer.files;
-      importAndCreateFromTemplate();
+      importFromFile();
     };
 
     const dragover = async (e) => {
@@ -150,7 +186,7 @@ export default {
     const drop = async (e) => {
       e.preventDefault();
       files.value = e.dataTransfer.files;
-      importAndCreateFromTemplate();
+      importFromFile();
       isDragging.value = false;
     };
 
