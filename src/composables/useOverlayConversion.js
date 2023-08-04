@@ -160,6 +160,7 @@ export default function useOverlayConversion() {
 
   function convertDescriptionToOverlayNotes(description) {
     //Filter img elements
+    description = description.replaceAll("&amp;", "&");
     description = description.replaceAll("&nbsp;", " ");
     description = description.replaceAll("&gt;", ">");
     description = description.replaceAll("</img>", "");
