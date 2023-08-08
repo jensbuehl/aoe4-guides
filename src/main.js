@@ -16,6 +16,7 @@ const customDarkTheme = {
   dark: true,
   colors: {
     accent: "#e7c05e",
+    loading: "3D516B",
     anchor: "#e7c05e",
     background: '#1D2432',
     surface: "#324156",
@@ -35,10 +36,11 @@ const customLightTheme = {
   dark: false,
   colors: {
     accent: "#CCAA55",
+    loading: "D8DCE0",
     anchor: "#CCAA55",
     background: '#D8DCE0',
     surface: "#FAFAFA",
-    "surface-variant": "#cca741", //tooltips
+    "surface-variant": "#CCAA55", //tooltips
     primary: "#294790",
     "primary-darken-1": "#3D516B",
     secondary: "#CCAA55",

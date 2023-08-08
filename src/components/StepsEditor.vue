@@ -20,7 +20,8 @@
       <v-card-title>Unsupported Icon</v-card-title>
       <v-card-text>
         Unsupported icon format from age4builder detected.<br />
-        Please consider using the export/import feature to transfer build orders. 
+        Please consider using the export/import feature to transfer build
+        orders.
       </v-card-text>
       <v-card-actions>
         <v-btn color="error" block @click="pasteImagesInfoDialog = false"
@@ -36,10 +37,13 @@
       <v-btn
         variant="text"
         color="primary"
-        prepend-icon="mdi-plus"
         class="pt-5 pb-10"
         @click="addStep(0)"
-        >Add your first build step</v-btn
+      >
+        <template v-slot:prepend>
+          <v-icon color="accent">mdi-plus</v-icon>
+        </template>
+        Add your first build step</v-btn
       >
     </div>
     <v-row v-if="steps?.length" no-gutters align="center" justify="center">
@@ -280,7 +284,7 @@
                   v-bind="props"
                   v-if="index === hoverRowIndex"
                   variant="text"
-                  color="primary"
+                  color="accent"
                   @click="
                     removeStepConfirmationDialog = true;
                     delteRowIndex = index;
@@ -303,7 +307,7 @@
                   v-bind="props"
                   v-show="index === hoverRowIndex"
                   variant="text"
-                  color="primary"
+                  color="accent"
                   @click="addStep(index)"
                   icon="mdi-plus"
                 >
@@ -320,11 +324,13 @@
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn
         variant="text"
-        color="primary"
-        prepend-icon="mdi-plus"
+        color="accent"
         class="pt-5 pb-10"
         @click="addStep(0)"
-        >Add your first build step</v-btn
+        >Add your first build step
+        <template v-slot:prepend>
+          <v-icon color="accent">mdi-plus</v-icon>
+        </template></v-btn
       >
     </div>
     <v-table v-if="steps?.length" class="ma-4">
@@ -474,7 +480,7 @@
                     <template v-slot:activator="{ props: tooltip }">
                       <v-btn
                         icon="mdi-image-plus"
-                        color="primary"
+                        color="accent"
                         v-bind="mergeProps(menu, tooltip)"
                         variant="text"
                       ></v-btn>
@@ -506,7 +512,7 @@
                   v-bind="props"
                   v-if="index === hoverRowIndex"
                   variant="text"
-                  color="primary"
+                  color="accent"
                   @click="
                     removeStepConfirmationDialog = true;
                     delteRowIndex = index;
@@ -529,7 +535,7 @@
                   v-bind="props"
                   v-show="index === hoverRowIndex"
                   variant="text"
-                  color="primary"
+                  color="accent"
                   @click="addStep(index)"
                   icon="mdi-plus"
                 >

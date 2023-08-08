@@ -12,20 +12,20 @@
             <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list v-if="authIsReady">
-            <v-list-item to="/builds">
+            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/builds">
               <v-icon class="mr-4" color="accent">mdi-hammer</v-icon>
               All Builds
             </v-list-item>
-            <v-list-item v-if="user" to="/favorites">
+            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" v-if="user" to="/favorites">
               <v-icon class="mr-4" color="accent">mdi-heart-outline</v-icon>
               Favorites
             </v-list-item>
-            <v-list-item v-if="user" to="/mybuilds">
+            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" v-if="user" to="/mybuilds">
               <v-icon class="mr-4" color="accent">mdi-playlist-edit</v-icon>
               My Builds
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item to="/new">
+            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/new">
               <v-icon class="mr-4" color="accent">mdi-plus</v-icon>
               Create New Build Order
             </v-list-item>
@@ -148,7 +148,7 @@
                 >Create new build order from scratch</span
               >
               <template v-slot:activator="{ props }">
-                <v-list-item to="/new" v-bind="props">
+                <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/new" v-bind="props">
                   <v-icon class="mr-4" color="accent">mdi-pencil</v-icon>
                   Create New Build Order
                 </v-list-item>
@@ -162,7 +162,7 @@
                 >Import build order from file (e.g. from overlay tool)</span
               >
               <template v-slot:activator="{ props }">
-                <v-list-item to="/import" v-bind="props">
+                <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/import" v-bind="props">
                   <v-icon class="mr-4" color="accent">mdi-import</v-icon>
                   Import from File
                 </v-list-item>
@@ -176,7 +176,7 @@
                 >Import build order from clipboard (e.g. from age4builder)</span
               >
               <template v-slot:activator="{ props }">
-                <v-list-item
+                <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary"
                   :to="{
                     name: 'BuildImport',
                     params: { paste: true },
@@ -234,11 +234,11 @@
               Logged in as {{ user.displayName }}
             </v-list-item>
             <VDivider></VDivider>
-            <v-list-item v-if="user" to="/account">
+            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" v-if="user" to="/account">
               <v-icon class="mr-4" color="accent">mdi-account-edit</v-icon>
               Your Profile
             </v-list-item>
-            <v-list-item @click="logout">
+            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" @click="logout">
               <v-icon class="mr-4" color="accent">mdi-logout</v-icon>
               Logout
             </v-list-item>

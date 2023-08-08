@@ -1,6 +1,6 @@
 <template>
   <v-card @click="" class="mb-2" rounded="lg" flat>
-    <v-skeleton-loader :loading="build.loading" :height="height">
+    <v-skeleton-loader :loading="build.loading" :color="build.loading ? 'loading' : 'surface'" :height="height">
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
           <v-img
@@ -67,7 +67,7 @@
               class="mr-1 mt-1"
               v-if="isNew(build.timeCreated.toDate())"
               label
-              color="primary"
+              color="accent"
               size="x-small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
@@ -75,7 +75,7 @@
               class="mr-1 mt-1"
               v-if="build.creatorId"
               label
-              color="primary"
+              color="accent"
               size="x-small"
               ><v-icon start icon="mdi-youtube"></v-icon
               >{{ creatorName }}</v-chip
@@ -167,7 +167,7 @@
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
               label
-              color="primary"
+              color="accent"
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
@@ -175,7 +175,7 @@
               class="mr-2 mb-2"
               v-if="build.creatorId"
               label
-              color="primary"
+              color="accent"
               size="small"
               ><v-icon start icon="mdi-youtube"></v-icon
               >{{ creatorName }}</v-chip

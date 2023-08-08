@@ -45,7 +45,7 @@
           >
           <template :props="props" v-slot:activator="{ props }">
             <v-btn
-              color="primary"
+              color="accent"
               variant="text"
               icon="mdi-content-save"
               @click="save"
@@ -125,7 +125,7 @@
         >
           <v-col cols="auto">
             <v-btn
-              color="primary"
+              color="accent"
               variant="text"
               block
               icon="mdi-content-save"

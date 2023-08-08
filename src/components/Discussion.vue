@@ -44,7 +44,7 @@
             <template v-slot:activator="{ props }">
               <v-btn
                 v-bind="props"
-                color="primary"
+                color="accent"
                 variant="text"
                 block
                 icon="mdi-send"

@@ -237,7 +237,10 @@
                     align="center"
                     justify="center"
                     ><v-col cols="12"
-                      ><v-skeleton-loader :loading="creator.loading">
+                      ><v-skeleton-loader
+                        :color="creator.loading ? 'loading' : 'surface'"
+                        :loading="creator.loading"
+                      >
                         <v-row no-gutters align="center">
                           <v-col cols="auto" align="center">
                             <v-avatar
@@ -312,6 +315,9 @@
                     justify="center"
                     ><v-col cols="12"
                       ><v-skeleton-loader
+                        :color="
+                          villagerOfTheDay.loading ? 'loading' : 'surface'
+                        "
                         height="84"
                         :loading="villagerOfTheDay.loading"
                       >
@@ -319,7 +325,9 @@
                           <v-col cols="auto">
                             <div>
                               <v-avatar class="ml-4" color="accent">{{
-                                villagerOfTheDay.displayName.slice(0, 2).toUpperCase()
+                                villagerOfTheDay.displayName
+                                  .slice(0, 2)
+                                  .toUpperCase()
                               }}</v-avatar>
                             </div>
                           </v-col>
@@ -462,7 +470,10 @@
                     align="center"
                     justify="center"
                     ><v-col cols="12"
-                      ><v-skeleton-loader :loading="creator.loading">
+                      ><v-skeleton-loader
+                        :color="creator.loading ? 'loading' : 'surface'"
+                        :loading="creator.loading"
+                      >
                         <v-row no-gutters align="center" justify="start">
                           <v-col cols="auto">
                             <div>
@@ -535,6 +546,9 @@
                     justify="center"
                     ><v-col cols="12"
                       ><v-skeleton-loader
+                        :color="
+                          villagerOfTheDay.loading ? 'loading' : 'surface'
+                        "
                         height="84"
                         :loading="villagerOfTheDay.loading"
                       >
@@ -542,7 +556,9 @@
                           <v-col cols="auto">
                             <div>
                               <v-avatar class="ml-4" color="accent">{{
-                                villagerOfTheDay.displayName.slice(0, 2).toUpperCase()
+                                villagerOfTheDay.displayName
+                                  .slice(0, 2)
+                                  .toUpperCase()
                               }}</v-avatar>
                             </div>
                           </v-col>

@@ -11,7 +11,7 @@
         @click="handleAddVoteUp"
         v-bind="props"
         v-show="!upVote"
-        color="primary"
+        color="accent"
         variant="text"
         icon="mdi-thumb-up-outline"
       ></v-btn>
@@ -29,7 +29,7 @@
         @click="handleRemoveVoteUp"
         v-show="upVote"
         v-bind="props"
-        color="primary"
+        color="accent"
         variant="text"
         icon="mdi-thumb-up"
       ></v-btn>
@@ -47,7 +47,7 @@
         @click="handleAddVoteDown"
         v-bind="props"
         v-show="!downVote"
-        color="primary"
+        color="accent"
         variant="text"
         icon="mdi-thumb-down-outline"
       ></v-btn>
@@ -65,7 +65,7 @@
         @click="handleRemoveVoteDown"
         v-show="downVote"
         v-bind="props"
-        color="primary"
+        color="accent"
         variant="text"
         icon="mdi-thumb-down"
       ></v-btn>

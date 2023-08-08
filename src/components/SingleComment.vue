@@ -21,7 +21,7 @@
         <v-col cols="auto" class="fill-height mr-1">
           <v-btn
             v-if="authorId == user?.uid"
-            color="primary"
+            color="accent"
             variant="text"
             block
             icon="mdi-delete"
@@ -36,7 +36,7 @@
               class="mr-2"
               v-if="isNew(timeCreated.toDate())"
               label
-              color="primary"
+              color="accent"
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >

@@ -2,7 +2,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-                    color: $vuetify.theme.current.colors.primary,
+        color: $vuetify.theme.current.colors.primary,
       }"
       >Add to Favorites</span
     >
@@ -11,7 +11,7 @@
         @click="addToFavorites"
         v-bind="props"
         v-show="!isFavorite"
-        color="primary"
+        color="accent"
         variant="text"
         icon="mdi-heart-outline"
       ></v-btn>
@@ -21,7 +21,7 @@
   <v-tooltip location="top">
     <span
       :style="{
-                    color: $vuetify.theme.current.colors.primary,
+        color: $vuetify.theme.current.colors.primary,
       }"
       >Remove from Favorites</span
     >
@@ -30,7 +30,7 @@
         @click="removeFromFavorites"
         v-show="isFavorite"
         v-bind="props"
-        color="primary"
+        color="accent"
         variant="text"
         icon="mdi-heart"
       ></v-btn>

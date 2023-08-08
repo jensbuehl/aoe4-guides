@@ -30,7 +30,7 @@
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
               label
-              color="primary"
+              color="accent"
               size="x-small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
@@ -38,13 +38,13 @@
               class="mr-2 mb-2"
               v-if="build.creatorId && creatorName"
               label
-              color="primary"
+              color="accent"
               size="x-small"
               ><v-icon start icon="mdi-youtube"></v-icon
               >{{ creatorName }}</v-chip
             >
             <v-chip
-              color="primary"
+              color="accent"
               class="mr-2 mb-2"
               v-if="build.season"
               label
@@ -54,14 +54,14 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              color="primary"
+              color="accent"
               v-if="build.map"
               label
               size="x-small"
               ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
             <v-chip
-              color="primary"
+              color="accent"
               class="mr-2 mb-2"
               v-if="build.strategy"
               label
@@ -73,7 +73,7 @@
               ><v-chip
                 v-show="item != 'ANY'"
                 class="mr-2 mb-2"
-                color="primary"
+                color="accent"
                 label
                 size="x-small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
@@ -121,7 +121,7 @@
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
               label
-              color="primary"
+              color="accent"
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
@@ -129,13 +129,13 @@
               class="mr-2 mb-2"
               v-if="build.creatorId && creatorName"
               label
-              color="primary"
+              color="accent"
               size="small"
               ><v-icon start icon="mdi-youtube"></v-icon
               >{{ creatorName }}</v-chip
             >
             <v-chip
-              color="primary"
+              color="accent"
               class="mr-2 mb-2"
               v-if="build.season"
               label
@@ -145,14 +145,14 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              color="primary"
+              color="accent"
               v-if="build.map"
               label
               size="small"
               ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
             <v-chip
-              color="primary"
+              color="accent"
               class="mr-2 mb-2"
               v-if="build.strategy"
               label
@@ -164,7 +164,7 @@
               ><v-chip
                 v-show="item != 'ANY'"
                 class="mr-2 mb-2"
-                color="primary"
+                color="accent"
                 label
                 size="small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
@@ -235,7 +235,7 @@
           <template :props="props" v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
-              color="primary"
+              color="accent"
               variant="text"
               v-show="user?.uid === build.authorUid"
               icon="mdi-pencil"
@@ -247,7 +247,7 @@
           <template v-slot:activator="{ props }">
             <v-btn
               icon="mdi-dots-horizontal"
-              color="primary"
+              color="accent"
               variant="text"
               v-bind="props"
             ></v-btn>
@@ -262,11 +262,12 @@
               >
               <template v-slot:activator="{ props }">
                 <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
                   v-show="user"
                   @click="handleDuplicate"
                   v-bind="props"
                 >
-                  <v-icon color="primary" class="mr-4"
+                  <v-icon color="accent" class="mr-4"
                     >mdi-content-duplicate</v-icon
                   >
                   Duplicate Build
@@ -282,10 +283,12 @@
                   >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
                 >
                 <template v-slot:activator="{ props }">
-                  <v-icon color="primary" class="mr-5" v-bind="props"
+                  <v-icon color="accent" class="mr-5" v-bind="props"
                     >mdi-content-copy
                   </v-icon>
-                  <v-list-item-content v-bind="props"
+                  <v-list-item-content
+                    :style="'color: ' + $vuetify.theme.current.colors.primary"
+                    v-bind="props"
                     >Overlay Tool</v-list-item-content
                   >
                 </template>
@@ -312,7 +315,7 @@
                           .focus();
                       }
                     "
-                    color="primary"
+                    color="accent"
                     class="ml-2"
                     >mdi-information-outline</v-icon
                   >
@@ -328,10 +331,11 @@
               >
               <template v-slot:activator="{ props }">
                 <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
                   v-bind="props"
                   @click="handleDownloadOverlayFormat"
                 >
-                  <v-icon color="primary" class="mr-4">mdi-download</v-icon>
+                  <v-icon color="accent" class="mr-4">mdi-download</v-icon>
                   Download
                 </v-list-item>
               </template>
@@ -346,11 +350,12 @@
               >
               <template v-slot:activator="{ props }">
                 <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
                   v-bind="props"
                   v-show="user?.uid === build.authorUid"
                   @click="dialog = true"
                 >
-                  <v-icon color="primary" class="mr-4">mdi-delete</v-icon>
+                  <v-icon color="accent" class="mr-4">mdi-delete</v-icon>
                   Delete
                 </v-list-item>
               </template>
@@ -385,7 +390,9 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -409,7 +416,9 @@
           <v-img
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -432,7 +441,7 @@
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
               label
-              color="primary"
+              color="accent"
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
@@ -440,13 +449,13 @@
               class="mr-2 mb-2"
               v-if="build.creatorId && creatorName"
               label
-              color="primary"
+              color="accent"
               size="small"
               ><v-icon start icon="mdi-youtube"></v-icon
               >{{ creatorName }}</v-chip
             >
             <v-chip
-              color="primary"
+              color="accent"
               class="mr-2 mb-2"
               v-if="build.season"
               label
@@ -456,14 +465,14 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              color="primary"
+              color="accent"
               v-if="build.map"
               label
               size="small"
               ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
             <v-chip
-              color="primary"
+              color="accent"
               class="mr-2 mb-2"
               v-if="build.strategy"
               label
@@ -475,7 +484,7 @@
               ><v-chip
                 v-show="item != 'ANY'"
                 class="mr-2 mb-2"
-                color="primary"
+                color="accent"
                 label
                 size="small"
                 ><v-icon start icon="mdi-sword-cross"></v-icon
@@ -554,7 +563,7 @@
               <template :props="props" v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
-                  color="primary"
+                  color="accent"
                   variant="text"
                   block
                   v-show="user?.uid === build.authorUid"
@@ -568,7 +577,7 @@
               <template v-slot:activator="{ props }">
                 <v-btn
                   icon="mdi-dots-horizontal"
-                  color="primary"
+                  color="accent"
                   variant="text"
                   v-bind="props"
                 ></v-btn>
@@ -583,11 +592,12 @@
                   >
                   <template v-slot:activator="{ props }">
                     <v-list-item
+                      :style="'color: ' + $vuetify.theme.current.colors.primary"
                       v-show="user"
                       @click="handleDuplicate"
                       v-bind="props"
                     >
-                      <v-icon color="primary" class="mr-4"
+                      <v-icon color="accent" class="mr-4"
                         >mdi-content-duplicate</v-icon
                       >
                       Duplicate Build
@@ -603,10 +613,14 @@
                       >Copy to Clipboard (RTS_Overlay / AoE4_Overlay)</span
                     >
                     <template v-slot:activator="{ props }">
-                      <v-icon color="primary" class="mr-5" v-bind="props"
+                      <v-icon color="accent" class="mr-5" v-bind="props"
                         >mdi-content-copy
                       </v-icon>
-                      <v-list-item-content v-bind="props"
+                      <v-list-item-content
+                        :style="
+                          'color: ' + $vuetify.theme.current.colors.primary
+                        "
+                        v-bind="props"
                         >Overlay Tool</v-list-item-content
                       >
                     </template>
@@ -633,7 +647,7 @@
                               .focus();
                           }
                         "
-                        color="primary"
+                        color="accent"
                         class="ml-2"
                         >mdi-information-outline</v-icon
                       >
@@ -649,10 +663,11 @@
                   >
                   <template v-slot:activator="{ props }">
                     <v-list-item
+                      :style="'color: ' + $vuetify.theme.current.colors.primary"
                       v-bind="props"
                       @click="handleDownloadOverlayFormat"
                     >
-                      <v-icon color="primary" class="mr-4">mdi-download</v-icon>
+                      <v-icon color="accent" class="mr-4">mdi-download</v-icon>
                       Download
                     </v-list-item>
                   </template>
@@ -667,11 +682,12 @@
                   >
                   <template v-slot:activator="{ props }">
                     <v-list-item
+                      :style="'color: ' + $vuetify.theme.current.colors.primary"
                       v-bind="props"
                       v-show="user?.uid === build.authorUid"
                       @click="dialog = true"
                     >
-                      <v-icon color="primary" class="mr-4">mdi-delete</v-icon>
+                      <v-icon color="accent" class="mr-4">mdi-delete</v-icon>
                       Delete
                     </v-list-item>
                   </template>
