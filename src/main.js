@@ -34,19 +34,19 @@ const customDarkTheme = {
 const customLightTheme = {
   dark: false,
   colors: {
-    accent: "#e7c05e",
-    anchor: "#e7c05e",
-    background: '#BEC5CD',
-    surface: "#A4ADB9",
+    accent: "#CCAA55",
+    anchor: "#CCAA55",
+    background: '#D8DCE0',
+    surface: "#FAFAFA",
     "surface-variant": "#cca741", //tooltips
     primary: "#294790",
     "primary-darken-1": "#3D516B",
-    secondary: "#e7c05e",
+    secondary: "#CCAA55",
     "secondary-darken-1": "#8D7B4B",
     //success: '#e7c05e',
     //warning: '#e7c05e',
     //error: '#e7c05e',
-    info: "#e7c05e",
+    info: "#CCAA55",
   },
 };
 

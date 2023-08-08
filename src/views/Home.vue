@@ -242,7 +242,7 @@
                           <v-col cols="auto" align="center">
                             <v-avatar
                               class="my-2 mx-4"
-                              color="primary"
+                              color="accent"
                               :image="creator.image"
                             ></v-avatar>
                           </v-col>
@@ -318,7 +318,7 @@
                         <v-row no-gutters align="center" justify="start">
                           <v-col cols="auto">
                             <div>
-                              <v-avatar class="ml-4" color="primary">{{
+                              <v-avatar class="ml-4" color="accent">{{
                                 villagerOfTheDay.displayName.slice(0, 2).toUpperCase()
                               }}</v-avatar>
                             </div>
@@ -468,7 +468,7 @@
                             <div>
                               <v-avatar
                                 class="ml-4"
-                                color="primary"
+                                color="accent"
                                 :image="creator.image"
                               ></v-avatar>
                             </div>
@@ -541,7 +541,7 @@
                         <v-row no-gutters align="center" justify="start">
                           <v-col cols="auto">
                             <div>
-                              <v-avatar class="ml-4" color="primary">{{
+                              <v-avatar class="ml-4" color="accent">{{
                                 villagerOfTheDay.displayName.slice(0, 2).toUpperCase()
                               }}</v-avatar>
                             </div>

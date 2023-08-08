@@ -14,7 +14,7 @@
   <v-card-text style="white-space: pre-line">
     <v-row>
       <v-col cols="auto">
-        <v-avatar color="primary" v-bind="props" con>{{author.slice(0,2).toUpperCase()}}</v-avatar>
+        <v-avatar color="accent" v-bind="props" con>{{author.slice(0,2).toUpperCase()}}</v-avatar>
       </v-col>
       <v-col cols="8" sm="10">{{ comment }}</v-col>
       <v-row justify="end">

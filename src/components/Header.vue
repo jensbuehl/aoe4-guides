@@ -3,30 +3,30 @@
     flat
     app
     height="100"
-    :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.primary"
+    :style="'border-bottom: 3px solid ' + $vuetify.theme.current.colors.accent"
   >
     <v-container class="fill-height d-flex align-center my-0 py-0">
-      <v-app-bar-nav-icon color="primary" class="hidden-md-and-up">
+      <v-app-bar-nav-icon color="accent" class="hidden-md-and-up">
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-menu" variant="plain" v-bind="props"></v-btn>
+            <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list v-if="authIsReady">
             <v-list-item to="/builds">
-              <v-icon class="mr-4" color="primary">mdi-hammer</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-hammer</v-icon>
               All Builds
             </v-list-item>
             <v-list-item v-if="user" to="/favorites">
-              <v-icon class="mr-4" color="primary">mdi-heart-outline</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-heart-outline</v-icon>
               Favorites
             </v-list-item>
             <v-list-item v-if="user" to="/mybuilds">
-              <v-icon class="mr-4" color="primary">mdi-playlist-edit</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-playlist-edit</v-icon>
               My Builds
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item to="/new">
-              <v-icon class="mr-4" color="primary">mdi-plus</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-plus</v-icon>
               Create New Build Order
             </v-list-item>
           </v-list>
@@ -71,9 +71,11 @@
               variant="text"
               to="/builds"
               class="mr-2 hidden-sm-and-down"
-              prepend-icon="mdi-hammer"
               color="primary"
             >
+              <template v-slot:prepend>
+                <v-icon color="accent">mdi-hammer</v-icon>
+              </template>
               All Builds
             </v-btn>
           </template>
@@ -92,8 +94,10 @@
               color="primary"
               to="/favorites"
               class="mr-2 hidden-sm-and-down"
-              prepend-icon="mdi-heart-outline"
             >
+              <template v-slot:prepend>
+                <v-icon color="accent">mdi-heart-outline</v-icon>
+              </template>
               Favorites
             </v-btn>
           </template>
@@ -112,22 +116,26 @@
               color="primary"
               to="/mybuilds"
               class="mr-2 hidden-sm-and-down"
-              prepend-icon="mdi-playlist-edit"
             >
+              <template v-slot:prepend>
+                <v-icon color="accent">mdi-playlist-edit</v-icon>
+              </template>
               My Builds
             </v-btn>
           </template>
         </v-tooltip>
 
-        <v-menu open-on-hover>
+        <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn
               v-bind="props"
               color="primary"
               class="mr-2 hidden-sm-and-down"
-              prepend-icon="mdi-plus"
               append-icon="mdi-menu-down"
             >
+              <template v-slot:prepend>
+                <v-icon color="accent">mdi-plus</v-icon>
+              </template>
               Add Build
             </v-btn>
           </template>
@@ -141,7 +149,7 @@
               >
               <template v-slot:activator="{ props }">
                 <v-list-item to="/new" v-bind="props">
-                  <v-icon class="mr-4" color="primary">mdi-pencil</v-icon>
+                  <v-icon class="mr-4" color="accent">mdi-pencil</v-icon>
                   Create New Build Order
                 </v-list-item>
               </template>
@@ -155,7 +163,7 @@
               >
               <template v-slot:activator="{ props }">
                 <v-list-item to="/import" v-bind="props">
-                  <v-icon class="mr-4" color="primary">mdi-import</v-icon>
+                  <v-icon class="mr-4" color="accent">mdi-import</v-icon>
                   Import from File
                 </v-list-item>
               </template>
@@ -175,7 +183,7 @@
                   }"
                   v-bind="props"
                 >
-                  <v-icon class="mr-4" color="primary"
+                  <v-icon class="mr-4" color="accent"
                     >mdi-content-paste</v-icon
                   >
                   Import from Clipboard
@@ -189,11 +197,11 @@
             <v-btn class="mr-2" icon>
               <v-avatar
                 v-if="user && user.displayName"
-                color="primary"
+                color="accent"
                 v-bind="props"
                 >{{ user.displayName.slice(0, 2) }}</v-avatar
               >
-              <v-avatar v-if="!user" color="primary" v-bind="props">
+              <v-avatar v-if="!user" color="accent" v-bind="props">
                 <v-icon icon="mdi-account"></v-icon
               ></v-avatar>
             </v-btn>
@@ -213,7 +221,7 @@
             </v-list-item>
             <VDivider></VDivider>
             <v-list-item v-if="!user" to="/login">
-              <v-icon class="mr-4" color="primary">mdi-login</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-login</v-icon>
               Login
             </v-list-item>
           </v-list>
@@ -227,11 +235,11 @@
             </v-list-item>
             <VDivider></VDivider>
             <v-list-item v-if="user" to="/account">
-              <v-icon class="mr-4" color="primary">mdi-account-edit</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-account-edit</v-icon>
               Your Profile
             </v-list-item>
             <v-list-item @click="logout">
-              <v-icon class="mr-4" color="primary">mdi-logout</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-logout</v-icon>
               Logout
             </v-list-item>
           </v-list>
