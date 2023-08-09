@@ -3,29 +3,29 @@
     <v-footer padless class="text-center d-flex flex-column">
       <v-row justify="center" class="my-4 text-center">
         <v-col cols="12">
-          <v-btn
-            class="mx-1"
-            variant="text"
-            color="primary"
-            onclick="location.href='https://ko-fi.com/jensbuehl'"
+          <a href="https://ko-fi.com/jensbuehl"
+            ><v-btn class="mx-1" variant="text" color="primary">
+              <template v-slot:prepend>
+                <v-icon color="red">mdi-heart</v-icon>
+              </template>
+              Support me
+            </v-btn></a
           >
-            <template v-slot:prepend>
-              <v-icon color="red">mdi-heart</v-icon>
-            </template>
-            Support me
-          </v-btn>
-          <v-btn
-            class="mx-1"
-            prepend-icon="mdi-github"
-            variant="text"
-            color="primary"
-            onclick="location.href='https://github.com/jensbuehl/aoe4-guides'"
+
+          <a href="https://github.com/jensbuehl/aoe4-guides"
+            ><v-btn
+              class="mx-1"
+              prepend-icon="mdi-github"
+              variant="text"
+              color="primary"
+            >
+              <template v-slot:prepend>
+                <v-icon color="accent">mdi-github</v-icon>
+              </template>
+              Contribute
+            </v-btn></a
           >
-            <template v-slot:prepend>
-              <v-icon color="accent">mdi-github</v-icon>
-            </template>
-            Contribute
-          </v-btn>
+
           <v-btn class="mx-1" variant="text" color="primary" to="/privacy"
             >Privacy Policy
           </v-btn>
