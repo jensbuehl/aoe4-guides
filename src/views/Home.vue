@@ -139,62 +139,6 @@
                 </v-card>
               </template>
             </v-tooltip>
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all {{ civ.title }} build orders</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  class="mb-2 hidden-sm-and-up"
-                  min-height="50"
-                  rounded="lg"
-                  v-bind="props"
-                  @click="civSelected(civ.shortName)"
-                >
-                  <v-row align="center" justify="center">
-                    <v-col cols="4">
-                      <v-img
-                        min-height="50"
-                        :src="civ.flagLarge"
-                        :lazy-src="civ.flagSmall"
-                        :gradient="
-                          'to right, transparent, ' +
-                          $vuetify.theme.current.colors.surface
-                        "
-                        alt="{{civ.title}}"
-                        cover
-                      >
-                      </v-img>
-                    </v-col>
-                    <v-col cols="8">
-                      <!--small title-->
-                      <div
-                        :style="{
-                          color: $vuetify.theme.current.colors.primary,
-                        }"
-                        class="text-subtitle-2 hidden-lg-and-up"
-                        style="font-family: 'Segoe UI' !important"
-                      >
-                        {{ civ.title }}
-                      </div>
-                      <!--large title-->
-                      <v-card-title
-                        class="hidden-md-and-down"
-                        :style="{
-                          color: $vuetify.theme.current.colors.primary,
-                        }"
-                      >
-                        {{ civ.title }}
-                      </v-card-title>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </template>
-            </v-tooltip>
           </v-col>
         </v-row>
 
