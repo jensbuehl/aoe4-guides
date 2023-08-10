@@ -39,7 +39,10 @@
                   min-height="50"
                   rounded="lg"
                   v-bind="props"
-                  @click="civSelected(civ.shortName)"
+                  :to="{
+                    name: 'Builds',
+                    query: { civ: civ.shortName },
+                  }"
                 >
                   <v-row no-gutters align="center" justify="center">
                     <v-col cols="4">
@@ -97,7 +100,10 @@
                   min-height="50"
                   rounded="lg"
                   v-bind="props"
-                  @click="civSelected(civ.shortName)"
+                  :to="{
+                    name: 'Builds',
+                    query: { civ: civ.shortName },
+                  }"
                 >
                   <v-row no-gutters align="center" justify="center">
                     <v-col cols="4">
@@ -173,7 +179,10 @@
                   }"
                   rounded="lg"
                   v-bind="props"
-                  @click="creatorSelected(creator.creatorId)"
+                  :to="{
+                    name: 'Builds',
+                    query: { creator: creator.creatorId },
+                  }"
                 >
                   <v-row
                     no-gutters
@@ -250,7 +259,10 @@
                   flat
                   rounded="lg"
                   v-bind="props"
-                  @click="userSelected(villagerOfTheDay.id)"
+                  :to="{
+                    name: 'Builds',
+                    query: { author: villagerOfTheDay.id },
+                  }"
                 >
                   <v-row
                     no-gutters
@@ -406,7 +418,10 @@
                   class="mb-2"
                   rounded="lg"
                   v-bind="props"
-                  @click="creatorSelected(creator.creatorId)"
+                  :to="{
+                    name: 'Builds',
+                    query: { creator: creator.creatorId },
+                  }"
                 >
                   <v-row
                     no-gutters
@@ -481,7 +496,10 @@
                   flat
                   rounded="lg"
                   v-bind="props"
-                  @click="userSelected(villagerOfTheDay.id)"
+                  :to="{
+                    name: 'Builds',
+                    query: { author: villagerOfTheDay.id },
+                  }"
                 >
                   <v-row
                     no-gutters
@@ -565,7 +583,6 @@ import BuildsConfig from "../components/BuildsConfig.vue";
 import getCivs from "../composables/getCivs";
 import getDefaultConfig from "../composables/getDefaultConfig";
 import SingleBuild from "../components/SingleBuild.vue";
-import { useRouter } from "vue-router";
 import useCollection from "../composables/useCollection";
 import queryService from "../composables/queryService";
 import { useStore } from "vuex";
@@ -594,7 +611,6 @@ export default {
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const router = useRouter();
     const store = useStore();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
@@ -608,23 +624,6 @@ export default {
       store.commit("setFilterConfig", getDefaultConfig());
       initData();
     });
-
-    const civSelected = (id) => {
-      filterAndOrderConfig.value.civs = id;
-      store.commit("setFilterConfig", filterAndOrderConfig.value);
-      router.push({ name: "Builds" });
-    };
-
-    const creatorSelected = (id) => {
-      filterAndOrderConfig.value.creator = id;
-      store.commit("setFilterConfig", filterAndOrderConfig.value);
-      router.push({ name: "Builds" });
-    };
-
-    const userSelected = (id) => {
-      store.commit("setFilterConfig", authorConfig.value);
-      router.push({ name: "Builds" });
-    };
 
     const getCreatorName = (id) => {
       if (allCreators.value) {
@@ -712,9 +711,6 @@ export default {
       mostRecentBuilds,
       popularBuilds,
       creators,
-      civSelected,
-      creatorSelected,
-      userSelected,
       getCreatorName,
       villagerOfTheDay,
     };

@@ -51,6 +51,7 @@ import useCollection from "../../composables/useCollection";
 import queryService from "../../composables/queryService";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
   name: "Builds",
@@ -65,6 +66,8 @@ export default {
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
+    const route = useRoute();
+    const router = useRouter();
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -77,11 +80,25 @@ export default {
       if (!filterAndOrderConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
+      initQueryParameters();
       initData();
     });
 
+    const initQueryParameters = () => {
+      if(route.query.civ){
+        store.commit("setCivs", route.query.civ);
+      }
+      if(route.query.creator){
+        store.commit("setCreator", route.query.creator);
+      }
+      if(route.query.author){
+        store.commit("setAuthor", route.query.author);
+      }
+    }
+
     const configChanged = () => {
       initData();
+      router.replace('/builds')
     };
 
     const getCreatorName = (id) => {
