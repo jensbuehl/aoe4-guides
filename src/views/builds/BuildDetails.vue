@@ -69,16 +69,14 @@
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
             >
-            <span v-for="(item, index) in build.matchup"
-              ><v-chip
-                v-show="item != 'ANY'"
-                class="mr-2 mb-2"
-                color="accent"
-                label
-                size="x-small"
-                ><v-icon start icon="mdi-sword-cross"></v-icon
-                >{{ item }}</v-chip
-              ></span
+          </v-item-group>
+          <v-item-group v-if="build.matchup.length" class="hidden-sm-and-up">
+            <v-chip class="mb-2" color="accent" label size="x-small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span v-for="(item, index) in build.matchup">
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
@@ -160,16 +158,17 @@
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
             >
-            <span v-for="(item, index) in build.matchup"
-              ><v-chip
-                v-show="item != 'ANY'"
-                class="mr-2 mb-2"
-                color="accent"
-                label
-                size="small"
-                ><v-icon start icon="mdi-sword-cross"></v-icon
-                >{{ item }}</v-chip
-              ></span
+          </v-item-group>
+          <v-item-group
+            v-if="build.matchup.length"
+            class="hidden-xs hidden-md-and-up"
+          >
+            <v-chip class="mb-2" color="accent" label size="small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span v-for="(item, index) in build.matchup">
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
@@ -366,18 +365,17 @@
       <!--md and up-->
       <v-row
         no-gutters
-        align="center"
-        justify="center"
-        class="fill-height d-flex flex-nowrap"
+        class="fill-height d-flex flex-nowrap hidden-sm-and-down"
       >
         <v-col
           v-if="build.civ"
           cols="2"
           md="4"
           lg="3"
-          class="pa-0 ma-0 hidden-sm-and-down"
+          class="pa-0 ma-0 d-flex flex-column"
         >
           <v-img
+            class="hidden-sm-and-down"
             :src="
               '/' +
               civs.find((item) => {
@@ -414,6 +412,7 @@
           class="pa-0 ma-0 hidden-sm-and-down"
         >
           <v-img
+            class="hidden-sm-and-down"
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
             :gradient="
@@ -432,10 +431,11 @@
             </template>
           </v-img>
         </v-col>
-        <v-col cols="9" md="6">
-          <v-card-title class="py-2 mb-4 hidden-sm-and-down">
+        <v-col cols="9" md="6" lg="7" xl="8" class="d-flex flex-column">
+          <v-card-title class="py-0 mt-2 hidden-sm-and-down">
             {{ build.title }}
           </v-card-title>
+          <v-spacer></v-spacer>
           <v-item-group class="ml-4 pt-2 hidden-sm-and-down">
             <v-chip
               class="mr-2 mb-2"
@@ -480,16 +480,17 @@
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
             >
-            <span v-for="(item, index) in build.matchup"
-              ><v-chip
-                v-show="item != 'ANY'"
-                class="mr-2 mb-2"
-                color="accent"
-                label
-                size="small"
-                ><v-icon start icon="mdi-sword-cross"></v-icon
-                >{{ item }}</v-chip
-              ></span
+          </v-item-group>
+          <v-item-group
+            v-if="build.matchup.length"
+            class="ml-4 hidden-sm-and-down"
+          >
+            <v-chip class="mb-2" color="accent" label size="small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span v-for="(item, index) in build.matchup">
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
