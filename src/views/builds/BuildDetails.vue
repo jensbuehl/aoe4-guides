@@ -840,7 +840,7 @@ export default {
       isNew,
       creatorName,
       filteredMatchups: computed(() =>
-        build.value.matchup.filter((element) => element != "ANY").sort()
+        build.value.matchup?.filter((element) => element != "ANY").sort()
       ),
     };
   },

@@ -23,10 +23,8 @@ export default {
         .matchMedia("(prefers-color-scheme: dark)")
         .addEventListener("change", ({ matches }) => {
           if (matches) {
-            console.log("change to dark mode!");
             vuetify.theme.global.name = "customDarkTheme";
           } else {
-            console.log("change to light mode!");
             vuetify.theme.global.name = "customLightTheme";
           }
         });
@@ -35,7 +33,6 @@ export default {
       console.log(vuetify);
 
       if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-        console.log("change to light mode!");
         vuetify.theme.global.name = "customLightTheme";
       }
     });
