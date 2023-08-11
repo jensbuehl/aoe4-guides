@@ -52,6 +52,15 @@
               ><v-icon start icon="mdi-trophy"></v-icon
               >{{ build.season }}</v-chip
             >
+          </v-item-group>
+          <v-item-group v-if="build.matchup.length" class="hidden-sm-and-up">
+            <v-chip class="mr-2 mb-2" color="accent" label size="x-small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span v-for="(item, index) in build.matchup">
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -68,15 +77,6 @@
               size="x-small"
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
-            >
-          </v-item-group>
-          <v-item-group v-if="build.matchup.length" class="hidden-sm-and-up">
-            <v-chip class="mb-2" color="accent" label size="x-small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in build.matchup">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
@@ -141,6 +141,18 @@
               ><v-icon start icon="mdi-trophy"></v-icon
               >{{ build.season }}</v-chip
             >
+          </v-item-group>
+          <v-item-group
+            v-if="build.matchup.length"
+            class="hidden-xs hidden-md-and-up"
+          >
+            <v-chip class="mr-2 mb-2" color="accent" label size="small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span v-for="(item, index) in build.matchup">
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -157,18 +169,6 @@
               size="small"
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
-            >
-          </v-item-group>
-          <v-item-group
-            v-if="build.matchup.length"
-            class="hidden-xs hidden-md-and-up"
-          >
-            <v-chip class="mb-2" color="accent" label size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in build.matchup">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
@@ -463,6 +463,18 @@
               ><v-icon start icon="mdi-trophy"></v-icon
               >{{ build.season }}</v-chip
             >
+          </v-item-group>
+          <v-item-group
+            v-if="build.matchup.length"
+            class="ml-4 hidden-sm-and-down"
+          >
+            <v-chip class="mr-2 mb-2" color="accent" label size="small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span v-for="(item, index) in build.matchup">
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -479,18 +491,6 @@
               size="small"
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
-            >
-          </v-item-group>
-          <v-item-group
-            v-if="build.matchup.length"
-            class="ml-4 hidden-sm-and-down"
-          >
-            <v-chip class="mb-2" color="accent" label size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in build.matchup">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
