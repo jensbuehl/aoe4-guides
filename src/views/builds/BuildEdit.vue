@@ -839,13 +839,15 @@ export default {
 
     const handleVideoInput = async () => {
       error.value = validateVideo(build.value.video);
-      if (!error.value) {
+
+      if (!error.value && build.value.video) {
         const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
         creatorName.value = (await getVideoMetaData(videoId)).creatorTitle;
       } else {
         creatorName.value = "";
+        build.value.creatorId = "";
       }
     };
 
