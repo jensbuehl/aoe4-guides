@@ -158,7 +158,7 @@
               ><span
                 v-for="(item, index) in build.matchup?.filter(
                   (element) => element != 'ANY'
-                )"
+                ).sort()"
               >
                 <span v-if="!index">{{ item }}</span
                 ><span v-if="index" class="ml-2">{{ item }}</span></span
@@ -260,7 +260,7 @@
               ><span
                 v-for="(item, index) in build.matchup?.filter(
                   (element) => element != 'ANY'
-                )"
+                ).sort()"
               >
                 <span v-if="!index">{{ item }}</span
                 ><span v-if="index" class="ml-2">{{ item }}</span></span
