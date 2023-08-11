@@ -1,6 +1,10 @@
 <template>
   <v-card @click="" class="mb-2" rounded="lg" flat>
-    <v-skeleton-loader :loading="build.loading" :color="build.loading ? 'loading' : 'surface'" :height="height">
+    <v-skeleton-loader
+      :loading="build.loading"
+      :color="build.loading ? 'loading' : 'surface'"
+      :height="height"
+    >
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col v-if="build.civ" cols="3" class="pa-0 ma-0">
           <v-img
@@ -17,7 +21,9 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -36,7 +42,9 @@
             :min-height="height"
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            :gradient="'to right, transparent, '+$vuetify.theme.current.colors.surface"
+            :gradient="
+              'to right, transparent, ' + $vuetify.theme.current.colors.surface
+            "
             alt="{{build.civ}}"
             cover
           >
@@ -54,7 +62,7 @@
           <!--small title-->
           <div
             :style="{
-                    color: $vuetify.theme.current.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
             class="ml-4 text-subtitle-2 hidden-lg-and-up"
             style="font-family: 'Segoe UI' !important"
@@ -141,22 +149,27 @@
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
             >
-            <span v-for="item in build.matchup"
-              ><v-chip
-                v-show="item != 'ANY'"
-                class="mr-1 mt-1 hidden-xs"
-                label
-                size="x-small"
-                ><v-icon start icon="mdi-sword-cross"></v-icon
-                >{{ item }}</v-chip
-              ></span
+            <v-chip
+              v-if="build.matchup?.filter((element) => element != 'ANY').length"
+              class="mr-1 mt-1"
+              label
+              size="x-small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span
+                v-for="(item, index) in build.matchup?.filter(
+                  (element) => element != 'ANY'
+                )"
+              >
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
             >
           </v-item-group>
           <!--large title-->
           <v-card-title
             class="pt-0 pb-2 hidden-md-and-down"
             :style="{
-                    color: $vuetify.theme.current.colors.primary,
+              color: $vuetify.theme.current.colors.primary,
             }"
           >
             {{ build.title }}
@@ -238,15 +251,20 @@
               ><v-icon start icon="mdi-strategy"></v-icon
               >{{ build.strategy }}</v-chip
             >
-            <span v-for="item in build.matchup"
-              ><v-chip
-                v-show="item != 'ANY'"
-                class="mr-2 mb-2"
-                label
-                size="small"
-                ><v-icon start icon="mdi-sword-cross"></v-icon
-                >{{ item }}</v-chip
-              ></span
+            <v-chip
+              v-if="build.matchup?.filter((element) => element != 'ANY').length"
+              class="mr-2 mb-2"
+              label
+              size="small"
+              ><v-icon start icon="mdi-sword-cross"></v-icon
+              ><span
+                v-for="(item, index) in build.matchup?.filter(
+                  (element) => element != 'ANY'
+                )"
+              >
+                <span v-if="!index">{{ item }}</span
+                ><span v-if="index" class="ml-2">{{ item }}</span></span
+              ></v-chip
             >
           </v-item-group>
         </v-col>

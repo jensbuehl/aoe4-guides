@@ -53,10 +53,10 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group v-if="build.matchup.length" class="hidden-sm-and-up">
+          <v-item-group v-if="filteredMatchups.length" class="hidden-sm-and-up">
             <v-chip class="mr-2 mb-2" color="accent" label size="x-small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in build.matchup">
+              ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
                 ><span v-if="index" class="ml-2">{{ item }}</span></span
               ></v-chip
@@ -143,12 +143,12 @@
             >
           </v-item-group>
           <v-item-group
-            v-if="build.matchup.length"
+            v-if="filteredMatchups.length"
             class="hidden-xs hidden-md-and-up"
           >
             <v-chip class="mr-2 mb-2" color="accent" label size="small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in build.matchup">
+              ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
                 ><span v-if="index" class="ml-2">{{ item }}</span></span
               ></v-chip
@@ -465,12 +465,12 @@
             >
           </v-item-group>
           <v-item-group
-            v-if="build.matchup.length"
+            v-if="filteredMatchups.length"
             class="ml-4 hidden-sm-and-down"
           >
             <v-chip class="mr-2 mb-2" color="accent" label size="small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in build.matchup">
+              ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
                 ><span v-if="index" class="ml-2">{{ item }}</span></span
               ></v-chip
@@ -839,6 +839,9 @@ export default {
       timeSince,
       isNew,
       creatorName,
+      filteredMatchups: computed(() =>
+        build.value.matchup.filter((element) => element != "ANY")
+      ),
     };
   },
 };
