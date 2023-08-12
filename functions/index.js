@@ -89,7 +89,7 @@ exports.cleanBuildRefs = onDocumentDeleted("/builds/{documentId}", (event) => {
 });
 
 exports.updateBuildScore = onSchedule(
-  { schedule: "every day 00:00" },
+  { schedule: "0 0 * * 5" },
   async (event) => {
     // Get all builds
     const snapshot = await getFirestore().collection("builds").get();
