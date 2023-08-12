@@ -233,6 +233,7 @@
           >
           <template :props="props" v-slot:activator="{ props }">
             <v-btn
+              replace
               v-bind="props"
               color="accent"
               variant="text"
@@ -563,6 +564,7 @@
               >
               <template :props="props" v-slot:activator="{ props }">
                 <v-btn
+                  replace
                   v-bind="props"
                   color="accent"
                   variant="text"
@@ -808,7 +810,7 @@ export default {
       dialog.value = false;
       await del(props.id);
       if (!error.value) {
-        router.push({ name: "Home" });
+        router.go(-1)
       }
     };
 

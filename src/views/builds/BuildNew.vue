@@ -336,7 +336,7 @@ export default {
 
         //Navigate to new build order
         if (!error.value) {
-          router.push("/builds/" + id);
+          router.replace("/builds/" + id);
         }
       }
     };

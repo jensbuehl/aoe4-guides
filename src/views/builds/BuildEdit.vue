@@ -821,7 +821,7 @@ export default {
 
         //Navigate to new build order
         if (!error.value) {
-          router.push("/builds/" + props.id);
+          router.replace("/builds/" + props.id);
         }
       }
     };
