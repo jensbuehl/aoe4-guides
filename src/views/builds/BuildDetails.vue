@@ -28,6 +28,14 @@
           <v-item-group class="pt-2 hidden-sm-and-up">
             <v-chip
               class="mr-2 mb-2"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="x-small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
               label
               color="accent"
@@ -53,7 +61,10 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group v-if="filteredMatchups?.length" class="hidden-sm-and-up">
+          <v-item-group
+            v-if="filteredMatchups?.length"
+            class="hidden-sm-and-up"
+          >
             <v-chip class="mr-2 mb-2" color="accent" label size="x-small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
@@ -115,6 +126,14 @@
           </v-item-group>
           <!--sm and up-->
           <v-item-group class="pt-2 hidden-xs hidden-md-and-up">
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
@@ -253,6 +272,25 @@
             ></v-btn>
           </template>
           <v-list>
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Publish Build Order</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
+                  v-show="user && build.isDraft"
+                  @click="handlePublish"
+                  v-bind="props"
+                >
+                  <v-icon color="accent" class="mr-4">mdi-publish</v-icon>
+                  Publish
+                </v-list-item>
+              </template>
+            </v-tooltip>
             <v-tooltip>
               <span
                 :style="{
@@ -440,6 +478,14 @@
           <v-item-group class="ml-4 pt-2 hidden-sm-and-down">
             <v-chip
               class="mr-2 mb-2"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
               label
               color="accent"
@@ -586,6 +632,25 @@
                 ></v-btn>
               </template>
               <v-list>
+                <v-tooltip>
+                  <span
+                    :style="{
+                      color: $vuetify.theme.current.colors.primary,
+                    }"
+                    >Publish Build Order</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                      :style="'color: ' + $vuetify.theme.current.colors.primary"
+                      v-show="user && build.isDraft"
+                      @click="handlePublish"
+                      v-bind="props"
+                    >
+                      <v-icon color="accent" class="mr-4">mdi-publish</v-icon>
+                      Publish
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
                 <v-tooltip>
                   <span
                     :style="{
@@ -810,9 +875,11 @@ export default {
       dialog.value = false;
       await del(props.id);
       if (!error.value) {
-        router.go(-1)
+        router.go(-1);
       }
     };
+
+    const handlePublish = async () => {};
 
     const handleCopyOverlayFormat = () => {
       const overlayBuild = convertToOverlayFormat(build.value);
@@ -834,6 +901,7 @@ export default {
       error,
       dialog,
       window,
+      handlePublish,
       handleDelete,
       handleDuplicate,
       handleCopyOverlayFormat,

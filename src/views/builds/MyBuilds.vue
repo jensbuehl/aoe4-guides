@@ -16,10 +16,11 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-          <SingleBuild
+            <SingleBuild
               :build="item"
               :creatorName="getCreatorName(item.creatorId)"
-            ></SingleBuild>          </router-link>
+            ></SingleBuild>
+          </router-link>
         </div>
         <v-pagination
           v-if="paginationConfig.totalPages > 1"
@@ -109,6 +110,9 @@ export default {
     };
 
     const initData = async () => {
+      //include drafts
+      store.commit ("setDrafts", true)
+
       //get all creators
       creators.value = await getAllCreators();
 
@@ -203,7 +207,7 @@ export default {
       configChanged,
       nextPage,
       previousPage,
-      getCreatorName
+      getCreatorName,
     };
   },
 };

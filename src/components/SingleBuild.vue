@@ -73,6 +73,14 @@
           <v-item-group class="ml-4 mb-1 hidden-lg-and-up">
             <v-chip
               class="mr-1 mt-1"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="x-small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
+            <v-chip
+              class="mr-1 mt-1"
               v-if="isNew(build.timeCreated.toDate())"
               label
               color="accent"
@@ -176,6 +184,14 @@
           </v-card-title>
           <!--large chips-->
           <v-item-group class="ml-md-4 pt-2 hidden-md-and-down">
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"

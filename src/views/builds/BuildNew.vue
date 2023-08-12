@@ -36,7 +36,7 @@
       <v-card-title>{{ build.title }}</v-card-title>
       <v-card-actions
         ><v-spacer></v-spacer
-        ><v-tooltip location="top">
+        ><v-tooltip location="top" text="Save Build Order">
           <span
             :style="{
               color: $vuetify.theme.current.colors.primary,
@@ -45,13 +45,47 @@
           >
           <template :props="props" v-slot:activator="{ props }">
             <v-btn
+              v-bind="props"
               color="accent"
               variant="text"
               icon="mdi-content-save"
               @click="save"
             ></v-btn>
-          </template> </v-tooltip
-      ></v-card-actions>
+          </template>
+        </v-tooltip>
+        <v-menu>
+          <template v-slot:activator="{ props }">
+            <v-btn
+              icon="mdi-dots-horizontal"
+              color="accent"
+              variant="text"
+              v-bind="props"
+            ></v-btn>
+          </template>
+          <v-list>
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Save Build Order as Draft</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
+                  @click="draft"
+                  v-bind="props"
+                >
+                  <v-icon color="accent" class="mr-4"
+                    >mdi-content-save-cog</v-icon
+                  >
+                  Save as Draft
+                </v-list-item>
+              </template>
+            </v-tooltip>
+          </v-list>
+        </v-menu></v-card-actions
+      >
     </v-card>
     <v-card flat rounded="lg" class="hidden-sm-and-down">
       <v-row class="d-flex align-center flex-nowrap hidden-sm-and-down">
@@ -124,13 +158,56 @@
           class="fill-height mr-4 hidden-sm-and-down"
         >
           <v-col cols="auto">
-            <v-btn
-              color="accent"
-              variant="text"
-              block
-              icon="mdi-content-save"
-              @click="save"
-            ></v-btn>
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Save Build Order</span
+              >
+              <template :props="props" v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  color="accent"
+                  variant="text"
+                  block
+                  icon="mdi-content-save"
+                  @click="save"
+                ></v-btn>
+              </template>
+            </v-tooltip>
+            <v-menu>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  icon="mdi-dots-horizontal"
+                  color="accent"
+                  variant="text"
+                  v-bind="props"
+                ></v-btn>
+              </template>
+              <v-list>
+                <v-tooltip>
+                  <span
+                    :style="{
+                      color: $vuetify.theme.current.colors.primary,
+                    }"
+                    >Save Build Order as Draft</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                      :style="'color: ' + $vuetify.theme.current.colors.primary"
+                      @click="draft"
+                      v-bind="props"
+                    >
+                      <v-icon color="accent" class="mr-4"
+                        >mdi-content-save-cog</v-icon
+                      >
+                      Save as Draft
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
+              </v-list>
+            </v-menu>
           </v-col>
         </v-row>
       </v-row>
@@ -298,10 +375,12 @@ export default {
         upvotes: 0,
         downvotes: 0,
         score: 0,
+        isDraft: false,
         timeCreated: null,
         timeUpdated: null,
       };
     }
+    const draft = async () => {};
 
     const save = async () => {
       error.value = validateBuild(build.value);
@@ -370,6 +449,7 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       save,
+      draft,
       handleVideoInput,
       handleStepsChanged,
     };

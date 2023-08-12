@@ -115,6 +115,9 @@ export default {
     };
 
     const initData = async () => {
+      //exclude drafts
+      store.commit("setDrafts", false);
+
       //get all creators
       creators.value = await getAllCreators();
 

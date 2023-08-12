@@ -112,6 +112,9 @@ export default {
     };
 
     const initData = async () => {
+      //include drafts
+      store.commit("setDrafts", true);
+
       //get all creators
       creators.value = await getAllCreators();
 

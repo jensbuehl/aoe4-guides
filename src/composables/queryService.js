@@ -75,8 +75,7 @@ const getQueryParametersFromConfig = (
   config,
   pageLimit,
   userUid,
-  favorites
-) => {
+  favorites) => {
   try {
     var queryParams = [];
     if (pageLimit) {
@@ -172,6 +171,11 @@ const filterWith = (config, favorites) => {
 
     if (config?.creator) {
       const creatorOp = where("creatorId", "in", [config.creator]);
+      queryParams.push(creatorOp);
+    }
+
+    if (config?.drafts === false) {
+      const creatorOp = where("isDraft", "==", false);
       queryParams.push(creatorOp);
     }
 

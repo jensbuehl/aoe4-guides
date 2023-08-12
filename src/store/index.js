@@ -45,6 +45,10 @@ const store = createStore({
       state.filterConfig.creator = payload;
       console.log("creator state changed:", state.filterConfig.creator);
     },
+    setDrafts(state, payload) {
+      state.filterConfig.drafts = payload;
+      console.log("drafts state changed:", state.filterConfig.drafts);
+    },
     setAuthor(state, payload) {
       state.filterConfig.author = payload;
       console.log("author state changed:", state.filterConfig.author);
