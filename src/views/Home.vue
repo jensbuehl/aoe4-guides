@@ -15,7 +15,7 @@
             ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
-        <RegisterAd v-if="!user && authIsReady"></RegisterAd>
+        <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
       <v-col cols="12" md="8">

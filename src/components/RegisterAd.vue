@@ -3,7 +3,7 @@
     rounded="lg"
     outlined
     color="accent"
-    class="mt-4 pa-1"
+    class="pa-1"
   >
     <v-card flat rounded="lg">
       <v-card-title>Create</v-card-title>

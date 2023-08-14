@@ -4,7 +4,7 @@
       <v-col cols="12" md="4" class="hidden-md-and-up">
         <BuildsConfig class="mb-2" @configChanged="configChanged">
         </BuildsConfig>
-        <RegisterAd v-if="!user && authIsReady"></RegisterAd>
+        <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
       <v-col cols="12" md="8">
