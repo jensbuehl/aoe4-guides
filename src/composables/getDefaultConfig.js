@@ -7,7 +7,7 @@ const getDefaultConfig = () => ({
   strategies: [],
   seasons: [],
   orderBy: "score",
-  drafts: false
+  drafts: null
 });
 
 export default getDefaultConfig;

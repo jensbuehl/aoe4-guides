@@ -3,9 +3,7 @@
     <div
       v-if="
         authIsReady &&
-        user &&
-        (user.uid === 'beJM1k8sm8TVm5fHQZfKUniL8Hp1' ||
-          user.uid === '6mzuhMzRCySxaFcaSrXamwHjVm02')
+        user
       "
       class="d-flex justify-center"
     >
@@ -64,6 +62,16 @@
             >
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
+                <v-btn
+                  color="primary"
+                  variant="text"
+                  @click="addIsDraftProperty()"
+                  >Add isDraft property</v-btn
+                >
+                <div class="ml-4 mb-3">
+                  Create isDraft field in all build orders. Defaults to false.
+                </div>
+                <v-divider></v-divider>
                 <v-btn
                   disabled
                   color="primary"
@@ -191,6 +199,20 @@ export default {
       }
     };
 
+    const addIsDraftProperty = () => {
+      console.log("Builds count:", buildsCount.value);
+
+      for (const build of builds){
+        console.log("Build:", build.id);
+
+        //Add field
+        build.isDraft = false;
+
+        //Save to database
+        update(build.id, build);
+      };
+    };
+
     const rewriteImages = () => {
       console.log("Builds count:", buildsCount.value);
 
@@ -240,8 +262,10 @@ export default {
       authIsReady: computed(() => store.state.authIsReady),
       error,
       rewriteImages,
+      addIsDraftProperty,
       sanitizeVideoPaths,
       createCreatorsCollection,
+      
     };
   },
 };
