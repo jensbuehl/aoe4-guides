@@ -3,7 +3,9 @@
     <div
       v-if="
         authIsReady &&
-        user
+        user &&
+        (user.uid === 'beJM1k8sm8TVm5fHQZfKUniL8Hp1' ||
+          user.uid === '6mzuhMzRCySxaFcaSrXamwHjVm02')
       "
       class="d-flex justify-center"
     >
