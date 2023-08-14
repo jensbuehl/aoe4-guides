@@ -19,6 +19,14 @@
           <v-item-group class="pt-2 hidden-sm-and-up">
             <v-chip
               class="mr-2 mb-2"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="x-small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
               label
               color="accent"
@@ -44,7 +52,10 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group v-if="filteredMatchups?.length" class="hidden-sm-and-up">
+          <v-item-group
+            v-if="filteredMatchups?.length"
+            class="hidden-sm-and-up"
+          >
             <v-chip class="mr-2 mb-2" color="accent" label size="x-small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
@@ -105,7 +116,16 @@
             >
           </v-item-group>
           <!--sm-->
+
           <v-item-group class="pt-2 hidden-xs hidden-md-and-up">
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"
@@ -388,6 +408,14 @@
           </v-card-title>
           <v-spacer></v-spacer>
           <v-item-group class="ml-4 pt-2 hidden-sm-and-down">
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.isDraft"
+              label
+              color="error"
+              size="small"
+              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            >
             <v-chip
               class="mr-2 mb-2"
               v-if="isNew(build.timeCreated.toDate())"

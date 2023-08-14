@@ -49,7 +49,7 @@
               color="accent"
               variant="text"
               icon="mdi-content-save"
-              @click="save"
+              @click="handleSave"
             ></v-btn>
           </template>
         </v-tooltip>
@@ -73,7 +73,7 @@
               <template v-slot:activator="{ props }">
                 <v-list-item
                   :style="'color: ' + $vuetify.theme.current.colors.primary"
-                  @click="draft"
+                  @click="handleDraft"
                   v-bind="props"
                 >
                   <v-icon color="accent" class="mr-4"
@@ -172,7 +172,7 @@
                   variant="text"
                   block
                   icon="mdi-content-save"
-                  @click="save"
+                  @click="handleSave"
                 ></v-btn>
               </template>
             </v-tooltip>
@@ -196,7 +196,7 @@
                   <template v-slot:activator="{ props }">
                     <v-list-item
                       :style="'color: ' + $vuetify.theme.current.colors.primary"
-                      @click="draft"
+                      @click="handleDraft"
                       v-bind="props"
                     >
                       <v-icon color="accent" class="mr-4"
@@ -326,14 +326,15 @@ import useBuildValidator from "../../composables/useBuildValidator";
 import useYoutube from "../../composables/useYoutube";
 import getMaps from "../../composables/getMaps";
 import getStrategies from "../../composables/getStrategies";
+import queryService from "../../composables/queryService";
 
 export default {
   name: "BuildNew",
   components: { StepsEditor, RegisterAd },
-  setup(props) {
+  setup() {
     window.scrollTo(0, 0);
 
-    const { add, error } = useCollection("builds");
+    const { add, getQuery, getSize, error } = useCollection("builds");
     const { get: getCreator, add: addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();
     const {
@@ -380,9 +381,23 @@ export default {
         timeUpdated: null,
       };
     }
-    const draft = async () => {};
+    const handleDraft = async () => {
+      const maxDrafts = 2;
 
-    const save = async () => {
+      build.value.isDraft = true;
+      const allDocsQuery = getQuery(
+        queryService.getQueryParametersForDrafts(true, user.value.uid)
+      );
+      const size = await getSize(allDocsQuery);
+      console.log(size);
+      if (size >= maxDrafts) {
+        error.value = `Villagers shall only manage ${maxDrafts} drafts at the same time. Please publish or delete your open drafts, first.`;
+      } else {
+        handleSave();
+      }
+    };
+
+    const handleSave = async () => {
       error.value = validateBuild(build.value);
 
       //Write to database
@@ -448,8 +463,8 @@ export default {
       seasons,
       user,
       authIsReady: computed(() => store.state.authIsReady),
-      save,
-      draft,
+      handleSave,
+      handleDraft,
       handleVideoInput,
       handleStepsChanged,
     };

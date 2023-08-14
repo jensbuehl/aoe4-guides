@@ -830,7 +830,7 @@ export default {
     const { convertToOverlayFormat, download, copyToClipboard } =
       useOverlayConversion();
     const { timeSince, isNew } = useTimeSince();
-    const { get, del, incrementViews, error } = useCollection("builds");
+    const { get, del, incrementViews, error, update: updateBuild } = useCollection("builds");
     const { get: getCreator } = useCollection("creators");
 
     onMounted(async () => {
@@ -879,7 +879,16 @@ export default {
       }
     };
 
-    const handlePublish = async () => {};
+    const handlePublish = async () => {
+      //Update build order document
+      build.value.isDraft = false;
+      await updateBuild(props.id, build.value);
+
+      //Navigate to new build order
+      if (!error.value) {
+        router.replace("/builds/" + props.id);
+      }
+    };
 
     const handleCopyOverlayFormat = () => {
       const overlayBuild = convertToOverlayFormat(build.value);

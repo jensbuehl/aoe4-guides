@@ -58,7 +58,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { getAll: getAllCreators, getQuery: getQueryCreators } =
+    const { getAll: getAllCreators } =
       useCollection("creators");
     const builds = ref(null);
     const creators = ref(null);

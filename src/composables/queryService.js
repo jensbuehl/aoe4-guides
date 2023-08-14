@@ -71,6 +71,24 @@ const getQueryParametersForCreators = (isFeatured, limit) => {
   }
 };
 
+const getQueryParametersForDrafts = (isDraft, userUid) => {
+  try {
+    var queryParams = [];
+
+    //Return only drafts OR only published builds
+    const draftsOp = where("isDraft", "==", isDraft);
+    queryParams.push(draftsOp);
+
+    if (userUid) {
+      queryParams = queryParams.concat(filterAuthorBy(userUid));
+    }
+    
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 const getQueryParametersFromConfig = (
   config,
   pageLimit,
@@ -235,6 +253,7 @@ const whereEqual = (field, value) => {
 export default {
   getQueryParametersFromConfig,
   getQueryParametersForCreators,
+  getQueryParametersForDrafts,
   filterAuthorBy,
   orderByWith,
   getQueryParametersNextPage,
