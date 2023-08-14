@@ -450,13 +450,13 @@ export default {
   height: auto;
   width: 42px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
+  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
 }
 .icon-default-selector {
   vertical-align: middle;
   height: auto;
   width: 42px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #3d516b, #23303f);
+  background: radial-gradient(circle at top center, #4b6382, #1D2432);
 }
 </style>
