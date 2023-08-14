@@ -50,7 +50,7 @@
       <v-col cols="12">
         <v-row no-gutters align="center" justify="center">
           <v-col cols="3">
-            <v-img class="timeIconXs" src="/assets/resources/time.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/time.png"></v-img>
           </v-col>
           <v-col>
             <v-img
@@ -153,7 +153,7 @@
           <v-col>
             <v-card flat align="center" rounded="0"
               ><v-card-text
-                class="text-center villager"
+                class="text-center"
                 disabled
                 v-html="aggregateVillagers(index)"
               ></v-card-text
@@ -338,7 +338,7 @@
         <tr>
           <th class="text-center ma-0 pa-0" width="50px">
             <v-img
-              class="mx-auto titleIconXs"
+              class="mx-auto titleIcon"
               src="/assets/resources/time.png"
             ></v-img>
           </th>
@@ -350,7 +350,7 @@
               >Villager Count</span
             >
             <template v-slot:activator="{ props }">
-              <th v-bind="props" class="text-center ma-0 pa-0" width="56px">
+              <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
                 <v-img
                   class="mx-auto titleIcon"
                   src="/assets/resources/villager.png"
@@ -358,7 +358,7 @@
               </th>
             </template>
           </v-tooltip>
-          <th class="text-center ma-0 pa-0" width="56px">
+          <th class="text-center ma-0 pa-0" width="50px">
             <v-img
               class="mx-auto titleIcon"
               src="/assets/resources/repair.png"
@@ -840,10 +840,6 @@ table tbody tr td:nth-child(7) {
   background: #7a7a7b69;
 }
 
-.villager {
-  color: #828282;
-}
-
 td:empty {
   line-height: 46px;
 }
@@ -855,15 +851,24 @@ td:empty {
   margin: 2px;
   border-radius: 4px;
 }
+
 .icon-tech {
   vertical-align: middle;
   height: auto;
   width: 42px;
-  margin: 2px;
+  margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
 }
-.icon-military {
+.icon-tech + .icon-none {
+  vertical-align: middle;
+  width: auto;
+  height: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
+}
+.icon-tech + .icon-military {
   vertical-align: middle;
   height: auto;
   width: 42px;
@@ -871,22 +876,15 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
 }
-.icon-landmark {
+.icon-tech + .icon-tech {
   vertical-align: middle;
   height: auto;
   width: 42px;
   margin: 2px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+  background: radial-gradient(circle at top center, #469586, #266d5b);
 }
-.icon-none {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-}
-.icon-default {
+.icon-tech + .icon-default {
   vertical-align: middle;
   height: auto;
   width: 42px;
@@ -894,6 +892,211 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #3d516b, #23303f);
 }
+.icon-tech + .icon-landmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+
+.icon-military {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px 2px 2px 0px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #8b5d44, #683a22);
+}
+.icon-military + .icon-none {
+  vertical-align: middle;
+  width: auto;
+  height: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
+}
+.icon-military + .icon-military {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #8b5d44, #683a22);
+}
+.icon-military + .icon-tech {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #469586, #266d5b);
+}
+.icon-military + .icon-default {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+.icon-military + .icon-landmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+
+.icon-none {
+  vertical-align: middle;
+  width: auto;
+  height: 42px;
+  margin: 2px 2px 2px 0px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
+}
+.icon-none + .icon-none {
+  vertical-align: middle;
+  width: auto;
+  height: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
+}
+.icon-none + .icon-military {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #8b5d44, #683a22);
+}
+.icon-none + .icon-tech {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #469586, #266d5b);
+}
+.icon-none + .icon-default {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+.icon-none + .icon-landmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+
+.icon-default {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px 2px 2px 0px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+.icon-default + .icon-none {
+  vertical-align: middle;
+  width: auto;
+  height: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
+}
+.icon-default + .icon-military {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #8b5d44, #683a22);
+}
+.icon-default + .icon-tech {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #469586, #266d5b);
+}
+.icon-default + .icon-default {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+.icon-default + .icon-landmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+
+.icon-landmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px 2px 2px 0px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+.icon-landmark + .icon-none {
+  vertical-align: middle;
+  width: auto;
+  height: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
+}
+.icon-landmark + .icon-military {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #8b5d44, #683a22);
+}
+.icon-landmark + .icon-tech {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #469586, #266d5b);
+}
+.icon-landmark + .icon-default {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #3d516b, #23303f);
+}
+.icon-landmark + .icon-landmark {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+}
+
 .titleIcon {
   vertical-align: middle;
   width: auto;
@@ -903,10 +1106,5 @@ td:empty {
   vertical-align: middle;
   width: auto;
   height: 24px;
-}
-.timeIconXs {
-  vertical-align: middle;
-  width: auto;
-  height: 20px;
 }
 </style>

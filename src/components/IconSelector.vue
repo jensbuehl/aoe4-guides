@@ -41,12 +41,12 @@
                   >
                     <v-img
                       v-bind:class="{
-                        'icon-landmark': icon.class == 'landmark',
-                        'icon-tech': icon.class == 'tech',
-                        'icon-military': icon.class == 'military',
-                        'icon-default': icon.class == 'default',
-                        'icon-none': icon.class == 'none',
-                        'icon': !icon.class,
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
                       }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
@@ -88,12 +88,12 @@
                   >
                   <v-img
                       v-bind:class="{
-                        'icon-landmark': icon.class == 'landmark',
-                        'icon-tech': icon.class == 'tech',
-                        'icon-military': icon.class == 'military',
-                        'icon-default': icon.class == 'default',
-                        'icon-none': icon.class == 'none',
-                        'icon': !icon.class,
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
                       }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
@@ -135,12 +135,12 @@
                   >
                   <v-img
                       v-bind:class="{
-                        'icon-landmark': icon.class == 'landmark',
-                        'icon-tech': icon.class == 'tech',
-                        'icon-military': icon.class == 'military',
-                        'icon-default': icon.class == 'default',
-                        'icon-none': icon.class == 'none',
-                        'icon': !icon.class,
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
                       }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
@@ -186,12 +186,12 @@
                   >
                   <v-img
                       v-bind:class="{
-                        'icon-landmark': icon.class == 'landmark',
-                        'icon-tech': icon.class == 'tech',
-                        'icon-military': icon.class == 'military',
-                        'icon-default': icon.class == 'default',
-                        'icon-none': icon.class == 'none',
-                        'icon': !icon.class,
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
                       }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
@@ -233,12 +233,12 @@
                   >
                   <v-img
                       v-bind:class="{
-                        'icon-landmark': icon.class == 'landmark',
-                        'icon-tech': icon.class == 'tech',
-                        'icon-military': icon.class == 'military',
-                        'icon-default': icon.class == 'default',
-                        'icon-none': icon.class == 'none',
-                        'icon': !icon.class,
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
                       }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
@@ -280,12 +280,12 @@
                   >
                   <v-img
                       v-bind:class="{
-                        'icon-landmark': icon.class == 'landmark',
-                        'icon-tech': icon.class == 'tech',
-                        'icon-military': icon.class == 'military',
-                        'icon-default': icon.class == 'default',
-                        'icon-none': icon.class == 'none',
-                        'icon': !icon.class,
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
                       }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
@@ -331,12 +331,12 @@
                   >
                   <v-img
                       v-bind:class="{
-                        'icon-landmark': icon.class == 'landmark',
-                        'icon-tech': icon.class == 'tech',
-                        'icon-military': icon.class == 'military',
-                        'icon-default': icon.class == 'default',
-                        'icon-none': icon.class == 'none',
-                        'icon': !icon.class,
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
                       }"
                       style="height: 42px; width: 42px"
                       :src="icon.imgSrc"
@@ -424,34 +424,35 @@ export default {
   width: 42px;
   border-radius: 4px;
 }
-.icon-tech {
+.icon-tech-selector {
   vertical-align: middle;
   height: auto;
   width: 42px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
 }
-.icon-military {
+.icon-military-selector {
   vertical-align: middle;
   height: 42px;
   width: 42px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
 }
-.icon-landmark {
+.icon-landmark-selector {
   vertical-align: middle;
   height: auto;
   width: 42px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
-.icon-none {
+.icon-none-selector {
   vertical-align: middle;
   height: auto;
   width: 42px;
   border-radius: 4px;
+  background: radial-gradient(circle at top center, #cdcdcd, #ababab);
 }
-.icon-default {
+.icon-default-selector {
   vertical-align: middle;
   height: auto;
   width: 42px;
