@@ -848,9 +848,10 @@ td:empty {
   vertical-align: middle;
   height: auto;
   width: 42px;
-  margin: 2px;
+  margin: 2px 2px 2px 0px;
   border-radius: 4px;
 }
+
 .icon-tech {
   vertical-align: middle;
   height: auto;
@@ -859,46 +860,8 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
 }
-
-.icon-tech + .icon-none {
-  vertical-align: middle;
-  width: auto;
-  height: 42px;
+.icon-tech + img {
   margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
-}
-.icon-tech + .icon-military {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-}
-.icon-tech + .icon-tech {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-}
-.icon-tech + .icon-default {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1D2432);
-}
-.icon-tech + .icon-landmark {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
 
 .icon-military {
@@ -909,45 +872,8 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
 }
-.icon-military + .icon-none {
-  vertical-align: middle;
-  width: auto;
-  height: 42px;
+.icon-military + img {
   margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
-}
-.icon-military + .icon-military {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-}
-.icon-military + .icon-tech {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-}
-.icon-military + .icon-default {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1D2432);
-}
-.icon-military + .icon-landmark {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
 
 .icon-none {
@@ -958,45 +884,8 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
 }
-.icon-none + .icon-none {
-  vertical-align: middle;
-  width: auto;
-  height: 42px;
+.icon-none + img {
   margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
-}
-.icon-none + .icon-military {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-}
-.icon-none + .icon-tech {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-}
-.icon-none + .icon-default {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1D2432);
-}
-.icon-none + .icon-landmark {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
 
 .icon-default {
@@ -1007,45 +896,8 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #4b6382, #1D2432);
 }
-.icon-default + .icon-none {
-  vertical-align: middle;
-  width: auto;
-  height: 42px;
+.icon-default + img {
   margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
-}
-.icon-default + .icon-military {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-}
-.icon-default + .icon-tech {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-}
-.icon-default + .icon-default {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1D2432);
-}
-.icon-default + .icon-landmark {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
 
 .icon-landmark {
@@ -1056,45 +908,8 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
-.icon-landmark + .icon-none {
-  vertical-align: middle;
-  width: auto;
-  height: 42px;
+.icon-landmark + img {
   margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
-}
-.icon-landmark + .icon-military {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-}
-.icon-landmark + .icon-tech {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-}
-.icon-landmark + .icon-default {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1D2432);
-}
-.icon-landmark + .icon-landmark {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
 
 .titleIcon {
