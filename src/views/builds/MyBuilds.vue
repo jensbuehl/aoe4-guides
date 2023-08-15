@@ -113,6 +113,9 @@ export default {
       //include drafts
       store.commit ("setDrafts", true)
 
+      //reset author filter
+      store.commit("setAuthor", null);
+
       //get all creators
       creators.value = await getAllCreators();
 

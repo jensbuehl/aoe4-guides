@@ -115,6 +115,9 @@ export default {
       //exclude drafts
       store.commit("setDrafts", false);
 
+      //reset author filter
+      store.commit("setAuthor", null);
+
       //get all creators
       creators.value = await getAllCreators();
 
