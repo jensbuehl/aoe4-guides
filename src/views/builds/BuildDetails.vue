@@ -1,7 +1,12 @@
 <template>
-  <v-container v-if="build">
-    <v-dialog v-model="dialog" width="auto">
-      <v-card flat rounded="lg" class="text-center primary">
+  <v-container v-if="build && focusDialog">
+    <v-dialog v-model="focusDialog" fullscreen :scrim="false" transition="dialog-bottom-transition">
+      <Focus :build="build"></Focus>
+    </v-dialog>
+  </v-container>
+  <v-container v-if="build && !focusDialog">
+    <v-dialog v-model="deleteDialog" width="auto">
+      <v-card rounded="lg" flat class="text-center primary">
         <v-card-title>Delete Build</v-card-title>
         <v-card-text>
           Do you really want to delete this build?<br />
@@ -391,7 +396,7 @@
                   :style="'color: ' + $vuetify.theme.current.colors.primary"
                   v-bind="props"
                   v-show="user?.uid === build.authorUid"
-                  @click="dialog = true"
+                  @click="deleteDialog = true"
                 >
                   <v-icon color="accent" class="mr-4">mdi-delete</v-icon>
                   Delete
@@ -753,7 +758,7 @@
                       :style="'color: ' + $vuetify.theme.current.colors.primary"
                       v-bind="props"
                       v-show="user?.uid === build.authorUid"
-                      @click="dialog = true"
+                      @click="deleteDialog = true"
                     >
                       <v-icon color="accent" class="mr-4">mdi-delete</v-icon>
                       Delete
@@ -802,6 +807,7 @@
 
 <script>
 import Favorite from "../../components/Favorite.vue";
+import Focus from "../../components/Focus.vue";
 import Vote from "../../components/Vote.vue";
 import StepsEditor from "../../components/StepsEditor.vue";
 import Discussion from "../../components/Discussion.vue";
@@ -815,7 +821,7 @@ import useOverlayConversion from "../../composables/useOverlayConversion";
 
 export default {
   name: "BuildDetails",
-  components: { Favorite, Vote, Discussion, StepsEditor },
+  components: { Favorite, Vote, Discussion, StepsEditor, Focus },
   props: ["id"],
   setup(props) {
     window.scrollTo(0, 0);
@@ -825,7 +831,8 @@ export default {
     const user = computed(() => store.state.user);
     const civs = getCivs().civs;
     const build = ref(null);
-    const dialog = ref(false);
+    const deleteDialog = ref(false);
+    const focusDialog = ref(false)
     const creatorName = ref("");
     const { convertToOverlayFormat, download, copyToClipboard } =
       useOverlayConversion();
@@ -834,6 +841,7 @@ export default {
     const { get: getCreator } = useCollection("creators");
 
     onMounted(async () => {
+      focusDialog.value = true;
       const resBuild = await get(props.id);
       if (resBuild.creatorId) {
         const resCreator = await getCreator(resBuild.creatorId);
@@ -872,7 +880,7 @@ export default {
     };
 
     const handleDelete = async () => {
-      dialog.value = false;
+      deleteDialog.value = false;
       await del(props.id);
       if (!error.value) {
         router.go(-1);
@@ -908,7 +916,8 @@ export default {
       user,
       civs,
       error,
-      dialog,
+      deleteDialog,
+      focusDialog,
       window,
       handlePublish,
       handleDelete,
