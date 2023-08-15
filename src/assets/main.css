@@ -6,3 +6,5 @@
   font-weight: normal;
 }
 
+html { overflow-y: auto !important}
+
