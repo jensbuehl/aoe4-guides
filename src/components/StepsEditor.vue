@@ -32,7 +32,28 @@
   </v-dialog>
   <!--Mobile UI (XS)-->
   <v-card rounded="lg" class="mt-4 hidden-sm-and-up" flat>
-    <v-card-title>Build Order</v-card-title>
+    <v-row no-gutters>
+      <v-card-title>Build Order</v-card-title><v-spacer></v-spacer>
+      <v-tooltip>
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Activate Focus Mode</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            class="ma-2"
+            v-bind="props"
+            variant="text"
+            color="accent"
+            prepend-icon="mdi-controller"
+            >Focus Mode</v-btn
+          >
+        </template>
+      </v-tooltip>
+    </v-row>
+
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn
         variant="text"
@@ -50,7 +71,10 @@
       <v-col cols="12">
         <v-row no-gutters align="center" justify="center">
           <v-col cols="3">
-            <v-img class="titleIconXs ma-2" src="/assets/resources/time.png"></v-img>
+            <v-img
+              class="titleIconXs ma-2"
+              src="/assets/resources/time.png"
+            ></v-img>
           </v-col>
           <v-col>
             <v-img
@@ -320,7 +344,27 @@
   </v-card>
   <!--Desktop UI-->
   <v-card flat rounded="lg" class="mt-4 hidden-xs">
-    <v-card-title>Build Order</v-card-title>
+    <v-row no-gutters>
+      <v-card-title>Build Order</v-card-title><v-spacer></v-spacer
+      ><v-tooltip>
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Activate Focus Mode</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            class="ma-2"
+            v-bind="props"
+            variant="text"
+            color="accent"
+            prepend-icon="mdi-controller"
+            >Focus Mode</v-btn
+          >
+        </template>
+      </v-tooltip>
+    </v-row>
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn
         variant="text"
@@ -819,7 +863,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 table tbody tr td:nth-child(2) {
   color: #828282;
 }
@@ -844,7 +888,7 @@ td:empty {
   line-height: 46px;
 }
 
-.icon {
+:deep(.icon) {
   vertical-align: middle;
   height: auto;
   width: 42px;
@@ -852,7 +896,7 @@ td:empty {
   border-radius: 4px;
 }
 
-.icon-tech {
+:deep(.icon-tech) {
   vertical-align: middle;
   height: auto;
   width: 42px;
@@ -860,11 +904,11 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
 }
-.icon-tech + img {
+:deep(.icon-tech + img) {
   margin: 2px;
 }
 
-.icon-military {
+:deep(.icon-military) {
   vertical-align: middle;
   height: auto;
   width: 42px;
@@ -872,35 +916,39 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
 }
-.icon-military + img {
+:deep(.icon-military + img) {
   margin: 2px;
 }
 
-.icon-none {
+:deep(.icon-none) {
   vertical-align: middle;
   width: auto;
   height: 42px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
+  background: radial-gradient(
+    circle at top center,
+    rgb(var(--v-theme-icon-background-highlight)),
+    rgb(var(--v-theme-icon-background))
+  );
 }
-.icon-none + img {
+:deep(.icon-none + img) {
   margin: 2px;
 }
 
-.icon-default {
+:deep(.icon-default) {
   vertical-align: middle;
   height: auto;
   width: 42px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1D2432);
+  background: radial-gradient(circle at top center, #4b6382, #1d2432);
 }
-.icon-default + img {
+:deep(.icon-default + img) {
   margin: 2px;
 }
 
-.icon-landmark {
+:deep(.icon-landmark) {
   vertical-align: middle;
   height: auto;
   width: 42px;
@@ -908,16 +956,16 @@ td:empty {
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
-.icon-landmark + img {
+:deep(.icon-landmark + img) {
   margin: 2px;
 }
 
-.titleIcon {
+:deep(.titleIcon) {
   vertical-align: middle;
   width: auto;
   height: 40px;
 }
-.titleIconXs {
+:deep(.titleIconXs) {
   vertical-align: middle;
   width: auto;
   height: 24px;
