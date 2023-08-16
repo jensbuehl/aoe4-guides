@@ -1,21 +1,45 @@
 <template>
   <v-card rounded="0">
-    <v-row no-gutters class="justify-end">
-      <v-btn flat color="accent" class="ma-4" icon="mdi-close"></v-btn>
+    <v-row
+      :style="{
+        'background-color': $vuetify.theme.current.colors.background,
+      }"
+      no-gutters
+      class="justify-end"
+    >
+      <v-btn flat color="accent" class="ma-4" icon="mdi-close" @click="handleClose"></v-btn>
     </v-row>
 
-    <v-row no-gutters class="justify-center align-center"
-      ><v-card-title>{{ build.title }}</v-card-title></v-row
+    <v-row
+      :style="{
+        'background-color': $vuetify.theme.current.colors.background,
+      }"
+      no-gutters
+      class="justify-center align-center"
+      ><v-card-title class="ma-4">{{ build.title }}</v-card-title></v-row
     >
 
     <v-row no-gutters class="h-75 align-center justify-center"
       ><v-col class="d-flex justify-center align-center">
-        <span style="text-align:center" v-html="build.steps[1].description" /> </v-col
+        <span
+          style="text-align: center"
+          v-html="currentStep?.description ? currentStep?.description : ''"
+        /> </v-col
     ></v-row>
 
-    <v-row no-gutters class="align-center justify-center"
+    <v-row
+      :style="{
+        'background-color': $vuetify.theme.current.colors.background,
+      }"
+      no-gutters
+      class="align-center justify-center"
       ><v-col cols="auto"
-        ><v-table class="mx-4 my-8">
+        ><v-table
+          :style="{
+            'background-color': $vuetify.theme.current.colors.background,
+          }"
+          class="mx-4 my-4"
+        >
           <thead>
             <tr>
               <th class="text-center ma-0 pa-0" width="70px">
@@ -62,37 +86,95 @@
               </th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style="user-select: none;">
             <tr>
-              <td class="text-center py-1" v-html="build.steps[2].time"></td>
+              <td class="text-center py-1" v-html="currentStep?.time"></td>
               <td class="text-center py-1">todo</td>
               <td
                 class="text-center py-1"
-                v-html="build.steps[2].builders ? build.steps[2].builders : ''"
+                v-html="currentStep?.builders ? currentStep.builders : ''"
               ></td>
-              <td class="text-center py-1" v-html="build.steps[2].food"></td>
-              <td class="text-center py-1" v-html="build.steps[2].wood"></td>
-              <td class="text-center py-1" v-html="build.steps[2].gold"></td>
-              <td class="text-center py-1" v-html="build.steps[2].stone"></td>
+              <td class="text-center py-1" v-html="currentStep?.food"></td>
+              <td class="text-center py-1" v-html="currentStep?.wood"></td>
+              <td class="text-center py-1" v-html="currentStep?.gold"></td>
+              <td class="text-center py-1" v-html="currentStep?.stone"></td>
             </tr>
           </tbody> </v-table></v-col
     ></v-row>
 
-    <v-row no-gutters class="justify-center align-center">
-      <v-btn color="accent" flat width="150px" class="ma-4"
+    <v-row
+      :style="{
+        'background-color': $vuetify.theme.current.colors.background,
+      }"
+      no-gutters
+      class="justify-center align-center"
+    >
+      <v-btn
+        :disabled="!currentStepIndex"
+        color="accent"
+        flat
+        width="170px"
+        class="ma-4"
+        prepend-icon="mdi-chevron-left"
+        @click="handlePreviousStep"
         >Previous Step</v-btn
       >
-      <v-btn color="accent" flat width="150px" class="ma-4">Next Step</v-btn>
+      <span style="user-select: none;">
+        {{ currentStepIndex + 1 }} of {{ build.steps.length }}
+      </span>
+      
+      <v-btn
+        :disabled="currentStepIndex === build.steps.length-1"
+        color="accent"
+        flat
+        width="170px"
+        class="ma-4"
+        append-icon="mdi-chevron-right"
+        @click="handleNextStep"
+        >Next Step</v-btn
+      >
     </v-row>
   </v-card>
 </template>
 
 <script>
+import { ref, onMounted } from "vue";
+
 export default {
   name: "Focus",
   props: ["build"],
-  setup() {
-    return {};
+  setup(props) {
+    const currentStep = ref(null);
+    const currentStepIndex = ref(0);
+
+    onMounted(async () => {
+      currentStep.value = props.build.steps[currentStepIndex.value];
+    });
+
+    const handleNextStep = async () => {
+      currentStepIndex.value = Math.min(
+        ++currentStepIndex.value,
+        props.build.steps.length-1
+      );
+      currentStep.value = props.build.steps[currentStepIndex.value];
+    };
+
+    const handlePreviousStep = async () => {
+      currentStepIndex.value = Math.max(--currentStepIndex.value, 0);
+      currentStep.value = props.build.steps[currentStepIndex.value];
+    };
+
+    const handleClose = async () => {
+      console.log("handleClose")
+    };
+
+    return {
+      currentStep,
+      handleNextStep,
+      handlePreviousStep,
+      currentStepIndex,
+      handleClose,
+    };
   },
 };
 </script>
