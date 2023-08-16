@@ -114,37 +114,6 @@
           </v-col>
         </v-row>
       </v-col>
-      <v-col v-if="!readonly" cols="12">
-        <v-card flat height="50"
-          ><div v-if="!readonly" class="text-right pr-4">
-            <v-menu
-              v-if="selection"
-              :close-on-content-click="false"
-              location="bottom"
-            >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  class="mr-n4"
-                  prepend-icon="mdi-image-plus"
-                  color="primary"
-                  v-bind="props"
-                  variant="text"
-                  append-icon="mdi-menu-down"
-                  >Add Icon</v-btn
-                >
-              </template>
-              <v-card flat rounded="lg" class="mt-4" width="350px">
-                <IconSelector
-                  @iconSelected="
-                    (iconPath, tooltip, iconClass) =>
-                      handleIconSelected(iconPath, tooltip, iconClass)
-                  "
-                  :civ="civ"
-                ></IconSelector>
-              </v-card>
-            </v-menu></div
-        ></v-card>
-      </v-col>
     </v-row>
     <v-row
       no-gutters
@@ -157,6 +126,7 @@
         delteRowIndex = index;
         delteRowIndex = index;
       "
+      @mousedown="selectRow(index)"
       @mouseover="hoverItem(index)"
       @mouseleave="unhoverItem()"
     >
@@ -296,48 +266,84 @@
       <v-col v-if="!readonly" cols="4">
         <v-card flat class="my-2">
           <div class="text-right">
-            <v-tooltip location="top">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Remove current step (ALT + DEL)</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  v-if="index === hoverRowIndex"
-                  variant="text"
-                  color="accent"
-                  @click="
-                    removeStepConfirmationDialog = true;
-                    delteRowIndex = index;
-                  "
-                  icon="mdi-delete"
+            <v-row no-gutters>
+              <v-col cols="4"
+                ><v-menu
+                  v-if="selection && index === selectedRowIndex"
+                  :close-on-content-click="false"
+                  location="bottom"
                 >
-                </v-btn>
-              </template>
-            </v-tooltip>
-
-            <v-tooltip location="top">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Add new step below (ALT + ENTER)</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  v-show="index === hoverRowIndex"
-                  variant="text"
-                  color="accent"
-                  @click="addStep(index)"
-                  icon="mdi-plus"
-                >
-                </v-btn>
-              </template>
-            </v-tooltip></div
+                  <template v-slot:activator="{ props: menu }">
+                    <v-tooltip location="top">
+                      <span
+                        :style="{
+                          color: $vuetify.theme.current.colors.primary,
+                        }"
+                        >Add icon at current selection or cursor position</span
+                      >
+                      <template v-slot:activator="{ props: tooltip }">
+                        <v-btn
+                          icon="mdi-image-plus"
+                          color="accent"
+                          v-bind="mergeProps(menu, tooltip)"
+                          variant="text"
+                        ></v-btn>
+                      </template>
+                    </v-tooltip>
+                  </template>
+                  <v-card flat rounded="lg" class="mt-4" width="350px">
+                    <IconSelector
+                      @iconSelected="
+                        (iconPath, tooltip, iconClass) =>
+                          handleIconSelected(iconPath, tooltip, iconClass)
+                      "
+                      :civ="civ"
+                    ></IconSelector>
+                  </v-card> </v-menu
+              ></v-col>
+              <v-col cols="4"
+                ><v-tooltip location="top">
+                  <span
+                    :style="{
+                      color: $vuetify.theme.current.colors.primary,
+                    }"
+                    >Remove current step (ALT + DEL)</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      v-bind="props"
+                      v-if="index === hoverRowIndex"
+                      variant="text"
+                      color="accent"
+                      @click="
+                        removeStepConfirmationDialog = true;
+                        delteRowIndex = index;
+                      "
+                      icon="mdi-delete"
+                    >
+                    </v-btn>
+                  </template> </v-tooltip
+              ></v-col>
+              <v-col cols="4"
+                ><v-tooltip location="top">
+                  <span
+                    :style="{
+                      color: $vuetify.theme.current.colors.primary,
+                    }"
+                    >Add new step below (ALT + ENTER)</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      v-bind="props"
+                      v-show="index === hoverRowIndex"
+                      variant="text"
+                      color="accent"
+                      @click="addStep(index)"
+                      icon="mdi-plus"
+                    >
+                    </v-btn>
+                  </template> </v-tooltip></v-col
+            ></v-row></div
         ></v-card>
       </v-col>
     </v-row>
@@ -433,7 +439,6 @@
             ></v-img>
           </th>
           <th class="text-left">Description</th>
-          <th v-if="!readonly" width="50px" class="text-right"></th>
           <th v-if="!readonly" class="text-right"></th>
         </tr>
       </thead>
@@ -506,86 +511,85 @@
             class="text-left py-1"
             v-html="item.description"
           ></td>
-          <td v-if="!readonly" class="text-right">
-            <div style="min-width: 50px">
-              <v-menu
-                v-if="selection && index === selectedRowIndex"
-                :close-on-content-click="false"
-                location="bottom"
-              >
-                <template v-slot:activator="{ props: menu }">
-                  <v-tooltip location="top">
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >Add icon at current selection or cursor position</span
+          <td v-if="!readonly" width="180" class="text-right">
+            <v-row no-gutters>
+              <v-col cols="4"
+                ><v-menu
+                  v-if="selection && index === selectedRowIndex"
+                  :close-on-content-click="false"
+                  location="bottom"
+                >
+                  <template v-slot:activator="{ props: menu }">
+                    <v-tooltip location="top">
+                      <span
+                        :style="{
+                          color: $vuetify.theme.current.colors.primary,
+                        }"
+                        >Add icon at current selection or cursor position</span
+                      >
+                      <template v-slot:activator="{ props: tooltip }">
+                        <v-btn
+                          icon="mdi-image-plus"
+                          color="accent"
+                          v-bind="mergeProps(menu, tooltip)"
+                          variant="text"
+                        ></v-btn>
+                      </template>
+                    </v-tooltip>
+                  </template>
+                  <v-card flat rounded="lg" class="mt-4" width="350px">
+                    <IconSelector
+                      @iconSelected="
+                        (iconPath, tooltip, iconClass) =>
+                          handleIconSelected(iconPath, tooltip, iconClass)
+                      "
+                      :civ="civ"
+                    ></IconSelector>
+                  </v-card> </v-menu
+              ></v-col>
+              <v-col cols="4"
+                ><v-tooltip location="top">
+                  <span
+                    :style="{
+                      color: $vuetify.theme.current.colors.primary,
+                    }"
+                    >Remove current step (ALT + DEL)</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      v-bind="props"
+                      v-if="index === hoverRowIndex"
+                      variant="text"
+                      color="accent"
+                      @click="
+                        removeStepConfirmationDialog = true;
+                        delteRowIndex = index;
+                      "
+                      icon="mdi-delete"
                     >
-                    <template v-slot:activator="{ props: tooltip }">
-                      <v-btn
-                        icon="mdi-image-plus"
-                        color="accent"
-                        v-bind="mergeProps(menu, tooltip)"
-                        variant="text"
-                      ></v-btn>
-                    </template>
-                  </v-tooltip>
-                </template>
-                <v-card flat rounded="lg" class="mt-4" width="350px">
-                  <IconSelector
-                    @iconSelected="
-                      (iconPath, tooltip, iconClass) =>
-                        handleIconSelected(iconPath, tooltip, iconClass)
-                    "
-                    :civ="civ"
-                  ></IconSelector>
-                </v-card>
-              </v-menu>
-            </div>
-          </td>
-          <td v-if="!readonly" width="130" class="text-right">
-            <v-tooltip location="top">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Remove current step (ALT + DEL)</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  v-if="index === hoverRowIndex"
-                  variant="text"
-                  color="accent"
-                  @click="
-                    removeStepConfirmationDialog = true;
-                    delteRowIndex = index;
-                  "
-                  icon="mdi-delete"
-                >
-                </v-btn>
-              </template>
-            </v-tooltip>
-
-            <v-tooltip location="top">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Add new step below (ALT + ENTER)</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  v-show="index === hoverRowIndex"
-                  variant="text"
-                  color="accent"
-                  @click="addStep(index)"
-                  icon="mdi-plus"
-                >
-                </v-btn>
-              </template>
-            </v-tooltip>
+                    </v-btn>
+                  </template> </v-tooltip
+              ></v-col>
+              <v-col cols="4"
+                ><v-tooltip location="top">
+                  <span
+                    :style="{
+                      color: $vuetify.theme.current.colors.primary,
+                    }"
+                    >Add new step below (ALT + ENTER)</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      v-bind="props"
+                      v-show="index === hoverRowIndex"
+                      variant="text"
+                      color="accent"
+                      @click="addStep(index)"
+                      icon="mdi-plus"
+                    >
+                    </v-btn>
+                  </template> </v-tooltip></v-col
+            ></v-row>
           </td>
         </tr>
       </tbody>
