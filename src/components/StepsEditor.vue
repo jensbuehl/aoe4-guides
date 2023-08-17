@@ -43,11 +43,13 @@
         >
         <template v-slot:activator="{ props }">
           <v-btn
+            v-if="readonly"
             class="ma-2"
             v-bind="props"
             variant="text"
             color="accent"
             prepend-icon="mdi-controller"
+            @click="handleActivateFocusMode"
             >Focus Mode</v-btn
           >
         </template>
@@ -361,11 +363,13 @@
         >
         <template v-slot:activator="{ props }">
           <v-btn
+            v-if="readonly"
             class="ma-2"
             v-bind="props"
             variant="text"
             color="accent"
             prepend-icon="mdi-controller"
+            @click="handleActivateFocusMode"
             >Focus Mode</v-btn
           >
         </template>
@@ -605,7 +609,7 @@ import IconSelector from "../components/IconSelector.vue";
 export default {
   name: "StepsEditor",
   props: ["steps", "readonly", "civ"],
-  emits: ["stepsChanged"],
+  emits: ["stepsChanged", "activateFocusMode"],
   components: { IconSelector },
   setup(props, context) {
     //Hacky deep copy of object since working on the reference broke the current selection
@@ -646,6 +650,10 @@ export default {
           selection.value.select();
         }
       }
+    };
+
+    const handleActivateFocusMode = () => {
+      context.emit("activateFocusMode")
     };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
@@ -862,6 +870,7 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelected,
+      handleActivateFocusMode
     };
   },
 };

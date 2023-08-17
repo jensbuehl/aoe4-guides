@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="build && focusDialog">
-    <v-dialog v-model="focusDialog" fullscreen :scrim="false" transition="dialog-bottom-transition">
-      <Focus :build="build"></Focus>
+    <v-dialog v-model="focusDialog" fullscreen transition="dialog-bottom-transition">
+      <Focus v-on:closeDialog="focusDialog = false" :build="build"></Focus>
     </v-dialog>
   </v-container>
   <v-container v-if="build && !focusDialog">
@@ -797,6 +797,7 @@
       :steps="build.steps"
       :readonly="true"
       :civ="build.civ"
+      @activateFocusMode="focusDialog=true"
     ></StepsEditor>
 
     <div class="mt-4">
@@ -841,7 +842,6 @@ export default {
     const { get: getCreator } = useCollection("creators");
 
     onMounted(async () => {
-      focusDialog.value = true;
       const resBuild = await get(props.id);
       if (resBuild.creatorId) {
         const resCreator = await getCreator(resBuild.creatorId);

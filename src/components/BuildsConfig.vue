@@ -235,6 +235,7 @@ import useCollection from "../composables/useCollection";
 
 export default {
   name: "BuildsConfig",
+  emits: ["configChanged"],
   setup(props, context) {
     const { getAll } = useCollection("creators");
     const store = useStore();

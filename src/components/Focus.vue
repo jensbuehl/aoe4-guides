@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="0">
+  <v-card rounded="0" >
     <v-row
       :style="{
         'background-color': $vuetify.theme.current.colors.background,
@@ -113,11 +113,10 @@
         :disabled="!currentStepIndex"
         color="accent"
         flat
-        width="170px"
         class="ma-4"
-        prepend-icon="mdi-chevron-left"
+        icon="mdi-chevron-left"
         @click="handlePreviousStep"
-        >Previous Step</v-btn
+        ></v-btn
       >
       <span style="user-select: none;">
         {{ currentStepIndex + 1 }} of {{ build.steps.length }}
@@ -127,11 +126,10 @@
         :disabled="currentStepIndex === build.steps.length-1"
         color="accent"
         flat
-        width="170px"
         class="ma-4"
-        append-icon="mdi-chevron-right"
+        icon="mdi-chevron-right"
         @click="handleNextStep"
-        >Next Step</v-btn
+        ></v-btn
       >
     </v-row>
   </v-card>
@@ -143,7 +141,8 @@ import { ref, onMounted } from "vue";
 export default {
   name: "Focus",
   props: ["build"],
-  setup(props) {
+  emits: ["closeDialog"],
+  setup(props, context) {
     const currentStep = ref(null);
     const currentStepIndex = ref(0);
 
@@ -164,16 +163,17 @@ export default {
       currentStep.value = props.build.steps[currentStepIndex.value];
     };
 
-    const handleClose = async () => {
-      console.log("handleClose")
-    };
+    const handleClose = () => {
+      console.log("close Dialog")
+        context.emit('closeDialog');        
+      }
 
     return {
       currentStep,
       handleNextStep,
       handlePreviousStep,
       currentStepIndex,
-      handleClose,
+      handleClose
     };
   },
 };
