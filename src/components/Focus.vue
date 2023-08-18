@@ -25,7 +25,13 @@
       ><v-card-title class="ma-4">{{ build.title }}</v-card-title></v-row
     >
 
-    <v-row no-gutters class="h-75 align-center justify-center"
+    <v-row
+      no-gutters
+      class="h-75 align-center justify-center"
+      v-touch="{
+        left: () => handleNextStep(),
+        right: () => handlePreviousStep(),
+      }"
       ><v-col class="d-flex justify-center align-center">
         <span
           style="text-align: center"

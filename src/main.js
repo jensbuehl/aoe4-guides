@@ -11,10 +11,6 @@ import "vuetify/dist/vuetify.min.css";
 // import store
 import store from "./store";
 
-// touch events
-import Vue3TouchEvents from "vue3-touch-events";
-
-
 // theme definition
 const customDarkTheme = {
   dark: true,
@@ -74,4 +70,4 @@ const vuetify = createVuetify({
     },
   },
 });
-createApp(App).use(vuetify).use(router).use(store).use(Vue3TouchEvents).mount("#app");
+createApp(App).use(vuetify).use(router).use(store).mount("#app");
