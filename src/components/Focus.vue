@@ -101,7 +101,7 @@
           <tbody style="user-select: none">
             <tr>
               <td class="text-center py-1" v-html="currentStep?.time"></td>
-              <td class="text-center py-1">todo</td>
+              <td v-if="currentStep" class="text-center py-1">{{aggregateVillagers()}}</td>
               <td
                 class="text-center py-1"
                 v-html="currentStep?.builders ? currentStep.builders : ''"
@@ -187,12 +187,14 @@ export default {
       document.removeEventListener("keyup", handleKeyPressed);
     });
 
-    // script setup
-    const handleSwipeLeft = () => {
-      console.log("left");
-    };
-    const handleSwipeRight = () => {
-      console.log("right");
+    const aggregateVillagers = () => {
+      const builders = parseInt(currentStep.value.builders) || 0;
+      const food = parseInt(currentStep.value.food) || 0;
+      const wood = parseInt(currentStep.value.wood) || 0;
+      const gold = parseInt(currentStep.value.gold) || 0;
+      const stone = parseInt(currentStep.value.stone) || 0;
+
+      return builders + food + wood + gold + stone || "-";
     };
 
     const handleKeyPressed = (e) => {
@@ -227,10 +229,9 @@ export default {
       currentStep,
       handleNextStep,
       handlePreviousStep,
-      handleSwipeLeft,
-      handleSwipeRight,
       currentStepIndex,
       handleClose,
+      aggregateVillagers
     };
   },
 };
