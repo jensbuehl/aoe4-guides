@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="0" >
+  <v-card rounded="0">
     <v-row
       :style="{
         'background-color': $vuetify.theme.current.colors.background,
@@ -7,7 +7,13 @@
       no-gutters
       class="justify-end"
     >
-      <v-btn flat color="accent" class="ma-4" icon="mdi-close" @click="handleClose"></v-btn>
+      <v-btn
+        flat
+        color="accent"
+        class="ma-4"
+        icon="mdi-close"
+        @click="handleClose"
+      ></v-btn>
     </v-row>
 
     <v-row
@@ -86,7 +92,7 @@
               </th>
             </tr>
           </thead>
-          <tbody style="user-select: none;">
+          <tbody style="user-select: none">
             <tr>
               <td class="text-center py-1" v-html="currentStep?.time"></td>
               <td class="text-center py-1">todo</td>
@@ -109,34 +115,53 @@
       no-gutters
       class="justify-center align-center"
     >
-      <v-btn
-        :disabled="!currentStepIndex"
-        color="accent"
-        flat
-        class="ma-4"
-        icon="mdi-chevron-left"
-        @click="handlePreviousStep"
-        ></v-btn
-      >
-      <span style="user-select: none;">
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Previous Build Order Step (ARROW LEFT)</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            :disabled="!currentStepIndex"
+            v-bind="props"
+            color="accent"
+            flat
+            class="ma-4"
+            icon="mdi-chevron-left"
+            @click="handlePreviousStep"
+          ></v-btn>
+        </template>
+      </v-tooltip>
+      <span style="user-select: none">
         {{ currentStepIndex + 1 }} of {{ build.steps.length }}
       </span>
-      
-      <v-btn
-        :disabled="currentStepIndex === build.steps.length-1"
-        color="accent"
-        flat
-        class="ma-4"
-        icon="mdi-chevron-right"
-        @click="handleNextStep"
-        ></v-btn
-      >
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Next Build Order Step (ARROW RIGHT)</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-bind="props"
+            :disabled="currentStepIndex === build.steps.length - 1"
+            color="accent"
+            flat
+            class="ma-4"
+            icon="mdi-chevron-right"
+            @click="handleNextStep"
+          ></v-btn>
+        </template>
+      </v-tooltip>
     </v-row>
   </v-card>
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
 export default {
   name: "Focus",
@@ -146,14 +171,39 @@ export default {
     const currentStep = ref(null);
     const currentStepIndex = ref(0);
 
-    onMounted(async () => {
+    onMounted(() => {
       currentStep.value = props.build.steps[currentStepIndex.value];
+
+      document.addEventListener("keyup", handleKeyPressed);
     });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener("keyup", handleKeyPressed);
+    });
+
+    // script setup
+    const handleSwipeLeft = () => {
+      console.log("left");
+    };
+    const handleSwipeRight = () => {
+      console.log("right");
+    };
+
+    const handleKeyPressed = (e) => {
+      switch (e.key) {
+        case "ArrowLeft":
+          handlePreviousStep();
+          break;
+        case "ArrowRight":
+          handleNextStep();
+          break;
+      }
+    };
 
     const handleNextStep = async () => {
       currentStepIndex.value = Math.min(
         ++currentStepIndex.value,
-        props.build.steps.length-1
+        props.build.steps.length - 1
       );
       currentStep.value = props.build.steps[currentStepIndex.value];
     };
@@ -164,16 +214,17 @@ export default {
     };
 
     const handleClose = () => {
-      console.log("close Dialog")
-        context.emit('closeDialog');        
-      }
+      context.emit("closeDialog");
+    };
 
     return {
       currentStep,
       handleNextStep,
       handlePreviousStep,
+      handleSwipeLeft,
+      handleSwipeRight,
       currentStepIndex,
-      handleClose
+      handleClose,
     };
   },
 };
