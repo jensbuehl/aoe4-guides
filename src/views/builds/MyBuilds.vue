@@ -110,6 +110,9 @@ export default {
     };
 
     const initData = async () => {
+      //reset results count
+      store.commit("setResultsCount", null);
+      
       //include drafts
       store.commit ("setDrafts", true)
 

@@ -651,6 +651,9 @@ export default {
     };
 
     const initData = async () => {
+      //reset results count
+      store.commit("setResultsCount", null);
+
       //get all creators
       allCreators.value = await getAllCreators();
 
