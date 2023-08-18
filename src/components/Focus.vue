@@ -40,6 +40,76 @@
     ></v-row>
 
     <v-row
+      class="py-4"
+      :style="{
+        'background-color': $vuetify.theme.current.colors.background,
+      }"
+      v-if="$vuetify.display.xs"
+      no-gutters
+      align="center"
+      justify="center"
+    >
+      <v-col cols="12">
+        <v-row no-gutters align="center" justify="center">
+          <v-col>
+            <v-img class="titleIconXs" src="/assets/resources/time.png"></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs"
+              src="/assets/resources/villager.png"
+            ></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs"
+              src="/assets/resources/repair.png"
+            ></v-img>
+          </v-col>
+          <v-col>
+            <v-img class="titleIconXs" src="/assets/resources/food.png"></v-img>
+          </v-col>
+          <v-col>
+            <v-img class="titleIconXs" src="/assets/resources/wood.png"></v-img>
+          </v-col>
+          <v-col>
+            <v-img class="titleIconXs" src="/assets/resources/gold.png"></v-img>
+          </v-col>
+          <v-col>
+            <v-img
+              class="titleIconXs"
+              src="/assets/resources/stone.png"
+            ></v-img>
+          </v-col>
+        </v-row>
+        <v-row class="mt-2" no-gutters align="center" justify="center">
+          <v-col class="text-center">
+            {{ currentStep?.time }}
+          </v-col>
+          <v-col class="text-center">
+            <span v-if="currentStep">{{ aggregateVillagers() }}</span>
+          </v-col>
+          <v-col class="text-center">
+            {{ currentStep?.builders ? currentStep.builders : "" }}
+          </v-col>
+          <v-col class="text-center">
+            {{ currentStep?.food }}
+          </v-col>
+          <v-col class="text-center">
+            {{ currentStep?.wood }}
+          </v-col>
+          <v-col class="text-center">
+            {{ currentStep?.gold }}
+          </v-col>
+          <v-col class="text-center">
+            {{ currentStep?.stone }}
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+
+    <v-row
+      v-if="!$vuetify.display.xs"
       :style="{
         'background-color': $vuetify.theme.current.colors.background,
       }"
@@ -101,7 +171,9 @@
           <tbody style="user-select: none">
             <tr>
               <td class="text-center py-1" v-html="currentStep?.time"></td>
-              <td v-if="currentStep" class="text-center py-1">{{aggregateVillagers()}}</td>
+              <td v-if="currentStep" class="text-center py-1">
+                {{ aggregateVillagers() }}
+              </td>
               <td
                 class="text-center py-1"
                 v-html="currentStep?.builders ? currentStep.builders : ''"
@@ -130,7 +202,6 @@
         >
         <template v-slot:activator="{ props }">
           <v-btn
-            :disabled="!currentStepIndex"
             v-bind="props"
             color="accent"
             flat
@@ -153,7 +224,6 @@
         <template v-slot:activator="{ props }">
           <v-btn
             v-bind="props"
-            :disabled="currentStepIndex === build.steps.length - 1"
             color="accent"
             flat
             class="ma-4"
@@ -231,7 +301,7 @@ export default {
       handlePreviousStep,
       currentStepIndex,
       handleClose,
-      aggregateVillagers
+      aggregateVillagers,
     };
   },
 };
@@ -296,7 +366,14 @@ export default {
 
 :deep(.titleIcon) {
   vertical-align: middle;
+  margin: 2px;
+  width: 60px;
+  height: auto;
+}
+
+:deep(.titleIconXs) {
+  vertical-align: middle;
   width: auto;
-  height: 60px;
+  height: 30px;
 }
 </style>

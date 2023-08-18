@@ -981,6 +981,6 @@ td:empty {
 :deep(.titleIconXs) {
   vertical-align: middle;
   width: auto;
-  height: 24px;
+  height: 30px;
 }
 </style>
