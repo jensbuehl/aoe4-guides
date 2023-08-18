@@ -205,7 +205,8 @@
     <v-container class="fill-height">
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center" cols="12" lg="6">
-          <span>{{ count }} build order</span
+          <span v-if="!count">Gathering...</span>
+          <span v-if="count">{{ count }} build order</span
           ><span v-if="count > 1 || count == 0">s</span>
         </v-col>
         <v-col class="d-flex justify-center" cols="12" lg="6">
