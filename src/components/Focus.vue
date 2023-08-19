@@ -21,9 +21,8 @@
         'background-color': $vuetify.theme.current.colors.background,
       }"
       no-gutters
-      class="justify-center align-center"
     >
-      <v-col
+      <v-col align="center"
         ><v-card-title class="ma-4">{{ build.title }}</v-card-title></v-col
       >
     </v-row>
