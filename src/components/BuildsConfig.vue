@@ -207,7 +207,7 @@
         <v-col class="d-flex justify-center" cols="12" lg="6">
           <span v-if="!count">Gathering...</span>
           <span v-if="count">{{ count }} build order</span
-          ><span v-if="count > 1 || count == 0">s</span>
+          ><span v-if="count > 1">s</span>
         </v-col>
         <v-col class="d-flex justify-center" cols="12" lg="6">
           <v-btn
