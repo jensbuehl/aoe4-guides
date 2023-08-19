@@ -22,8 +22,11 @@
       }"
       no-gutters
       class="justify-center align-center"
-      ><v-card-title class="ma-4">{{ build.title }}</v-card-title></v-row
     >
+      <v-col
+        ><v-card-title class="ma-4">{{ build.title }}</v-card-title></v-col
+      >
+    </v-row>
 
     <v-row
       no-gutters
