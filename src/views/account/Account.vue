@@ -11,7 +11,7 @@
               justify="center"
             >
               <v-col cols="12">
-                <v-card-title class="mb-4">Account Info</v-card-title>
+                <v-card-title>Account Info</v-card-title>
               </v-col>
               <v-col cols="12">
                 <v-text-field
@@ -47,6 +47,34 @@
               </v-col>
             </v-row>
           </v-card>
+          <v-card
+            v-if="!user.emailVerified"
+            flat
+            rounded="lg"
+            class="d-flex align-center mb-4"
+          >
+            <v-row
+              no-gutters
+              class="fill-height"
+              align="center"
+              justify="center"
+            >
+              <v-col cols="12">
+                <v-card-title>Verify Email</v-card-title>
+                <v-card-text
+                  >Re-send email verification link. Verification is needed for build order
+                  notifications.</v-card-text
+                >
+              </v-col>
+              <v-col cols="12">
+                <v-form ref="form" @submit.prevent="verifyEmail()">
+                  <v-btn color="primary" variant="text" type="submit" block
+                    >Verify Email</v-btn
+                  >
+                </v-form>
+              </v-col>
+            </v-row>
+          </v-card>
           <v-card flat rounded="lg" class="d-flex align-center mb-4">
             <v-row
               no-gutters
@@ -55,7 +83,7 @@
               justify="center"
             >
               <v-col cols="12">
-                <v-card-title class="mb-4">Change Password</v-card-title>
+                <v-card-title>Change Password</v-card-title>
               </v-col>
               <v-col cols="12">
                 <v-form ref="form" @submit.prevent="changePassword()">
@@ -68,12 +96,7 @@
                     placeholder="Your new password"
                     required
                   ></v-text-field>
-                  <v-btn
-                    color="primary"
-                    variant="text"
-                    type="submit"
-                    block
-                    class="mt-2"
+                  <v-btn color="primary" variant="text" type="submit" block
                     >Change Password</v-btn
                   >
                 </v-form>
@@ -88,16 +111,15 @@
               justify="center"
             >
               <v-col cols="12">
-                <v-card-title class="mb-4">Delete Account</v-card-title>
+                <v-card-title>Delete Account</v-card-title>
+                <v-card-text
+                  >Permanently delete your account and leave the
+                  towncenter.</v-card-text
+                >
               </v-col>
               <v-col cols="12">
                 <v-form ref="form" @submit.prevent="dialog = true">
-                  <v-btn
-                    color="primary"
-                    variant="text"
-                    type="submit"
-                    block
-                    class="mt-2"
+                  <v-btn color="primary" variant="text" type="submit" block
                     >Delete Account</v-btn
                   >
                   <v-dialog v-model="dialog" width="auto">
@@ -170,6 +192,16 @@ export default {
       }
     };
 
+    const verifyEmail = async () => {
+      try {
+        await store.dispatch("verifyEmail");
+        router.push("/");
+      } catch (err) {
+        error.value = err.message;
+        console.log(error.value);
+      }
+    };
+
     return {
       newPassword,
       router,
@@ -180,6 +212,7 @@ export default {
       authIsReady: computed(() => store.state.authIsReady),
       changePassword,
       deleteAccount,
+      verifyEmail
     };
   },
 };

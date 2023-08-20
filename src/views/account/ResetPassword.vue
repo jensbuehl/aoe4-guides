@@ -3,7 +3,7 @@
     <div class="d-flex justify-center">
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col cols="12" sm="6" lg="4">
-          <v-card flat rounded="lg" class="d-flex align-center mb-4">
+          <v-card flat rounded="lg" class="d-flex align-center">
             <v-row
               no-gutters
               class="fill-height"
@@ -11,11 +11,12 @@
               justify="center"
             >
               <v-col cols="12">
-                <v-card-title class="mb-4">Reset Password</v-card-title>
+                <v-card-title>Reset Password</v-card-title>
               </v-col>
               <v-col cols="12">
                 <v-form ref="form" @submit.prevent="reset()">
                   <v-text-field
+                    rounded="0"
                     v-model="email"
                     name="email"
                     label="E-mail"
@@ -29,7 +30,6 @@
                     color="primary"
                     type="submit"
                     block
-                    class="mt-2"
                     >Reset Password</v-btn
                   >
                   <v-card flat v-if="error" rounded="lg" color="error">

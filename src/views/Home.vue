@@ -16,6 +16,7 @@
           >
         </v-card>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
+        <EmailVerificationAd class="mt-4" v-if="!(user?.emailVerified) && authIsReady"></EmailVerificationAd>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -572,6 +573,7 @@
         </v-row>
 
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
+        <EmailVerificationAd class="mt-6" v-if="!(user?.emailVerified) && authIsReady"></EmailVerificationAd>
       </v-col>
     </v-row>
   </v-container>
@@ -579,6 +581,7 @@
 
 <script>
 import RegisterAd from "../components/RegisterAd.vue";
+import EmailVerificationAd from "../components/EmailVerificationAd.vue";
 import BuildsConfig from "../components/BuildsConfig.vue";
 import getCivs from "../composables/getCivs";
 import getDefaultConfig from "../composables/getDefaultConfig";
@@ -595,7 +598,7 @@ import seedrandom from "seedrandom";
 
 export default {
   name: "Home",
-  components: { BuildsConfig, SingleBuild, RegisterAd, VSkeletonLoader },
+  components: { BuildsConfig, SingleBuild, RegisterAd, VSkeletonLoader, EmailVerificationAd },
   setup() {
     window.scrollTo(0, 0);
 

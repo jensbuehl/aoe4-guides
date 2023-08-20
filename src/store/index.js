@@ -13,7 +13,7 @@ import {
   updatePassword,
   functions,
 } from "../firebase";
-import {  httpsCallable } from 'firebase/functions';
+import { httpsCallable } from "firebase/functions";
 
 const store = createStore({
   state: {
@@ -96,18 +96,20 @@ const store = createStore({
 
       await createUserWithEmailAndPassword(auth, email, password)
         .then((data) => {
-          sendEmailVerification(auth.currentUser, actionCodeSettings);
           context.commit("setUser", data.user);
+          context.commit("setDisplayName", displayName);
         })
         .then(() => {
-          const updateUserDisplayName = httpsCallable(functions,
+          const updateUserDisplayName = httpsCallable(
+            functions,
             "updateUserDisplayName"
           );
           updateUserDisplayName({
             displayName: displayName,
             uid: auth.currentUser.uid,
           }).then(() => {
-            context.commit("setDisplayName", displayName);
+            //send email verification including updated display name
+            sendEmailVerification(auth.currentUser, actionCodeSettings);
           });
         })
         .then(() => {
@@ -132,6 +134,19 @@ const store = createStore({
       await signOut(auth);
       context.commit("setUser", null);
     },
+
+    async verifyEmail(context) {
+      const actionCodeSettings = {
+        url: "https://aoe4guides.com/login",
+      };
+
+      await sendEmailVerification(auth.currentUser, actionCodeSettings).catch(
+        (error) => {
+          throw new Error("Could not signin: " + error.code);
+        }
+      );
+    },
+
     async deleteAccount(context) {
       const { del, get } = useCollection("favorites");
       const { decrementLikes } = useCollection("builds");
@@ -147,7 +162,7 @@ const store = createStore({
         return favorites?.favorites;
       });
 
-      if(favorites){
+      if (favorites) {
         await favorites.forEach((element) => {
           decrementLikes(element);
         });

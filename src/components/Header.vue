@@ -201,7 +201,7 @@
                 v-bind="props"
                 >{{ user.displayName.slice(0, 2) }}</v-avatar
               >
-              <v-avatar v-if="!user" color="accent" v-bind="props">
+              <v-avatar v-if="!user?.displayName" color="accent" v-bind="props">
                 <v-icon icon="mdi-account"></v-icon
               ></v-avatar>
             </v-btn>
