@@ -16,7 +16,7 @@
           >
         </v-card>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
-        <EmailVerificationAd class="mt-4" v-if="!(user?.emailVerified) && authIsReady"></EmailVerificationAd>
+        <EmailVerificationAd class="mt-4" v-if="user && authIsReady && !(user.emailVerified)"></EmailVerificationAd>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -573,7 +573,7 @@
         </v-row>
 
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
-        <EmailVerificationAd class="mt-6" v-if="!(user?.emailVerified) && authIsReady"></EmailVerificationAd>
+        <EmailVerificationAd class="mt-6" v-if="user && authIsReady && !(user.emailVerified)"></EmailVerificationAd>
       </v-col>
     </v-row>
   </v-container>

@@ -20,7 +20,6 @@
           color="primary"
           style="background-color: transparent"
           variant="plain"
-          class="mb-1"
           to="/account"
         >
           Verify Email
