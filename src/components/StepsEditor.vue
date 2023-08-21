@@ -387,217 +387,675 @@
         </template></v-btn
       >
     </div>
-    <v-table v-if="steps?.length" class="ma-4">
-      <thead>
-        <tr>
-          <th class="text-center ma-0 pa-0" width="50px">
-            <v-img
-              class="mx-auto titleIcon"
-              src="/assets/resources/time.png"
-            ></v-img>
-          </th>
-          <v-tooltip location="top">
-            <span
-              :style="{
-                color: $vuetify.theme.current.colors.primary,
-              }"
-              >Villager Count</span
-            >
-            <template v-slot:activator="{ props }">
-              <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/villager.png"
-                ></v-img>
-              </th>
-            </template>
-          </v-tooltip>
-          <th class="text-center ma-0 pa-0" width="50px">
-            <v-img
-              class="mx-auto titleIcon"
-              src="/assets/resources/repair.png"
-            ></v-img>
-          </th>
-          <th class="text-center ma-0 pa-0" width="50px">
-            <v-img
-              class="mx-auto titleIcon"
-              src="/assets/resources/food.png"
-            ></v-img>
-          </th>
-          <th class="text-center ma-0 pa-0" width="50px">
-            <v-img
-              class="mx-auto titleIcon"
-              src="/assets/resources/wood.png"
-            ></v-img>
-          </th>
-          <th class="text-center ma-0 pa-0" width="50px">
-            <v-img
-              class="mx-auto titleIcon"
-              src="/assets/resources/gold.png"
-            ></v-img>
-          </th>
-          <th class="text-center ma-0 pa-0" width="50px">
-            <v-img
-              class="mx-auto titleIcon"
-              src="/assets/resources/stone.png"
-            ></v-img>
-          </th>
-          <th class="text-left">Description</th>
-          <th v-if="!readonly" class="text-right"></th>
-        </tr>
-      </thead>
-      <tbody ref="stepsTable">
-        <tr
-          v-for="(item, index) in steps"
-          :key="index"
-          v-on:keyup.enter.alt="addStep(index)"
-          v-on:keyup.delete.alt="
-            removeStepConfirmationDialog = true;
-            delteRowIndex = index;
-          "
-          @mousedown="selectRow(index)"
-          @mouseover="hoverItem(index)"
-          @mouseleave="unhoverItem()"
-        >
-          <td
-            @paste="handlePaste"
-            @focusout="updateStepTime($event, index)"
-            :contenteditable="!readonly"
-            class="text-center py-1"
-            v-html="item.time"
-          ></td>
-          <td
-            class="text-center py-1"
-            disabled
-            v-html="aggregateVillagers(index)"
-          ></td>
-          <td
-            @paste="handlePaste"
-            @focusout="updateStepBuilders($event, index)"
-            :contenteditable="!readonly"
-            class="text-center py-1"
-            v-html="item.builders ? item.builders : ''"
-          ></td>
-          <td
-            @paste="handlePaste"
-            @focusout="updateStepFood($event, index)"
-            :contenteditable="!readonly"
-            class="text-center py-1"
-            v-html="item.food"
-          ></td>
-          <td
-            @paste="handlePaste"
-            @focusout="updateStepWood($event, index)"
-            :contenteditable="!readonly"
-            class="text-center py-1"
-            v-html="item.wood"
-          ></td>
-          <td
-            @paste="handlePaste"
-            @focusout="updateStepGold($event, index)"
-            :contenteditable="!readonly"
-            class="text-center py-1"
-            v-html="item.gold"
-          ></td>
-          <td
-            @paste="handlePaste"
-            @focusout="updateStepStone($event, index)"
-            :contenteditable="!readonly"
-            class="text-center py-1"
-            v-html="item.stone"
-          ></td>
-          <td
-            @keyup="saveSelection"
-            @click="saveSelection"
-            @paste="handlePaste"
-            @focusout="updateStepDescription($event, index)"
-            :contenteditable="!readonly"
-            class="text-left py-1"
-            v-html="item.description"
-          ></td>
-          <td v-if="!readonly" width="180" class="text-right">
-            <v-row no-gutters>
-              <v-col cols="4"
-                ><v-menu
-                  v-if="selection && index === selectedRowIndex"
-                  :close-on-content-click="false"
-                  location="bottom"
-                >
-                  <template v-slot:activator="{ props: menu }">
-                    <v-tooltip location="top">
-                      <span
-                        :style="{
-                          color: $vuetify.theme.current.colors.primary,
-                        }"
-                        >Add icon at current selection or cursor position</span
+
+    <v-card flat>
+      <v-card-title>Description</v-card-title>
+      <v-card-text :contenteditable="!readonly">asd</v-card-text></v-card
+    >
+    <v-card flat align="center" class="mt-4"
+      ><v-table v-if="steps?.length" class="mx-4 mb-4" style="background-color: ; border-radius: 0; border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));">
+        <thead>
+          <tr>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/time.png"
+              ></v-img>
+            </th>
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Villager Count</span
+              >
+              <template v-slot:activator="{ props }">
+                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto titleIcon"
+                    src="/assets/resources/villager.png"
+                  ></v-img>
+                </th>
+              </template>
+            </v-tooltip>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/repair.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/food.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/wood.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/gold.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/stone.png"
+              ></v-img>
+            </th>
+            <th class="text-left">Description</th>
+            <th v-if="!readonly" class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody ref="stepsTable">
+          <tr
+            v-for="(item, index) in steps"
+            :key="index"
+            v-on:keyup.enter.alt="addStep(index)"
+            v-on:keyup.delete.alt="
+              removeStepConfirmationDialog = true;
+              delteRowIndex = index;
+            "
+            @mousedown="selectRow(index)"
+            @mouseover="hoverItem(index)"
+            @mouseleave="unhoverItem()"
+          >
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepTime($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.time"
+            ></td>
+            <td
+              class="text-center py-1"
+              disabled
+              v-html="aggregateVillagers(index)"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepBuilders($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.builders ? item.builders : ''"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepFood($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.food"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepWood($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.wood"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepGold($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.gold"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepStone($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.stone"
+            ></td>
+            <td
+              @keyup="saveSelection"
+              @click="saveSelection"
+              @paste="handlePaste"
+              @focusout="updateStepDescription($event, index)"
+              :contenteditable="!readonly"
+              class="text-left py-1"
+              v-html="item.description"
+            ></td>
+            <td v-if="!readonly" width="180" class="text-right">
+              <v-row no-gutters>
+                <v-col cols="4"
+                  ><v-menu
+                    v-if="selection && index === selectedRowIndex"
+                    :close-on-content-click="false"
+                    location="bottom"
+                  >
+                    <template v-slot:activator="{ props: menu }">
+                      <v-tooltip location="top">
+                        <span
+                          :style="{
+                            color: $vuetify.theme.current.colors.primary,
+                          }"
+                          >Add icon at current selection or cursor
+                          position</span
+                        >
+                        <template v-slot:activator="{ props: tooltip }">
+                          <v-btn
+                            icon="mdi-image-plus"
+                            color="accent"
+                            v-bind="mergeProps(menu, tooltip)"
+                            variant="text"
+                          ></v-btn>
+                        </template>
+                      </v-tooltip>
+                    </template>
+                    <v-card flat rounded="lg" class="mt-4" width="350px">
+                      <IconSelector
+                        @iconSelected="
+                          (iconPath, tooltip, iconClass) =>
+                            handleIconSelected(iconPath, tooltip, iconClass)
+                        "
+                        :civ="civ"
+                      ></IconSelector>
+                    </v-card> </v-menu
+                ></v-col>
+                <v-col cols="4"
+                  ><v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Remove current step (ALT + DEL)</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-if="index === hoverRowIndex"
+                        variant="text"
+                        color="accent"
+                        @click="
+                          removeStepConfirmationDialog = true;
+                          delteRowIndex = index;
+                        "
+                        icon="mdi-delete"
                       >
-                      <template v-slot:activator="{ props: tooltip }">
-                        <v-btn
-                          icon="mdi-image-plus"
-                          color="accent"
-                          v-bind="mergeProps(menu, tooltip)"
-                          variant="text"
-                        ></v-btn>
-                      </template>
-                    </v-tooltip>
-                  </template>
-                  <v-card flat rounded="lg" class="mt-4" width="350px">
-                    <IconSelector
-                      @iconSelected="
-                        (iconPath, tooltip, iconClass) =>
-                          handleIconSelected(iconPath, tooltip, iconClass)
-                      "
-                      :civ="civ"
-                    ></IconSelector>
-                  </v-card> </v-menu
-              ></v-col>
-              <v-col cols="4"
-                ><v-tooltip location="top">
-                  <span
-                    :style="{
-                      color: $vuetify.theme.current.colors.primary,
-                    }"
-                    >Remove current step (ALT + DEL)</span
-                  >
-                  <template v-slot:activator="{ props }">
-                    <v-btn
-                      v-bind="props"
-                      v-if="index === hoverRowIndex"
-                      variant="text"
-                      color="accent"
-                      @click="
-                        removeStepConfirmationDialog = true;
-                        delteRowIndex = index;
-                      "
-                      icon="mdi-delete"
+                      </v-btn>
+                    </template> </v-tooltip
+                ></v-col>
+                <v-col cols="4"
+                  ><v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Add new step below (ALT + ENTER)</span
                     >
-                    </v-btn>
-                  </template> </v-tooltip
-              ></v-col>
-              <v-col cols="4"
-                ><v-tooltip location="top">
-                  <span
-                    :style="{
-                      color: $vuetify.theme.current.colors.primary,
-                    }"
-                    >Add new step below (ALT + ENTER)</span
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-show="index === hoverRowIndex"
+                        variant="text"
+                        color="accent"
+                        @click="addStep(index)"
+                        icon="mdi-plus"
+                      >
+                      </v-btn>
+                    </template> </v-tooltip></v-col
+              ></v-row>
+            </td>
+          </tr>
+        </tbody> </v-table
+    ></v-card>
+
+    <v-card flat class="mt-4"
+      ><v-card-title>
+        <v-row
+          style="font-weight: inherit"
+          no-gutters
+          align="center"
+          justify="start"
+        >
+          <v-icon color="accent">mdi-arrow-up-bold</v-icon>
+          <v-icon class="mr-2"
+            ><v-img
+              src="http://localhost:5173/assets/pictures/age/age_2.png"
+            ></v-img></v-icon
+          >Dark Age > Feudal Age</v-row
+        ></v-card-title
+        ><v-table v-if="steps?.length" class="mx-4 mb-4" style="border-radius: 0; border-top: thin solid rgba(var(--v-border-color), var(--v-border-opacity)); border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));">
+        <thead style="visibility: collapse; ">
+          <tr>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/time.png"
+              ></v-img>
+            </th>
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Villager Count</span
+              >
+              <template v-slot:activator="{ props }">
+                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto titleIcon"
+                    src="/assets/resources/villager.png"
+                  ></v-img>
+                </th>
+              </template>
+            </v-tooltip>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/repair.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/food.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/wood.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/gold.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/stone.png"
+              ></v-img>
+            </th>
+            <th class="text-left">Description</th>
+            <th v-if="!readonly" class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody ref="stepsTable">
+          <tr
+            v-for="(item, index) in steps"
+            :key="index"
+            v-on:keyup.enter.alt="addStep(index)"
+            v-on:keyup.delete.alt="
+              removeStepConfirmationDialog = true;
+              delteRowIndex = index;
+            "
+            @mousedown="selectRow(index)"
+            @mouseover="hoverItem(index)"
+            @mouseleave="unhoverItem()"
+          >
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepTime($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.time"
+            ></td>
+            <td
+              class="text-center py-1"
+              disabled
+              v-html="aggregateVillagers(index)"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepBuilders($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.builders ? item.builders : ''"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepFood($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.food"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepWood($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.wood"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepGold($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.gold"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepStone($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.stone"
+            ></td>
+            <td
+              @keyup="saveSelection"
+              @click="saveSelection"
+              @paste="handlePaste"
+              @focusout="updateStepDescription($event, index)"
+              :contenteditable="!readonly"
+              class="text-left py-1"
+              v-html="item.description"
+            ></td>
+            <td v-if="!readonly" width="180" class="text-right">
+              <v-row no-gutters>
+                <v-col cols="4"
+                  ><v-menu
+                    v-if="selection && index === selectedRowIndex"
+                    :close-on-content-click="false"
+                    location="bottom"
                   >
-                  <template v-slot:activator="{ props }">
-                    <v-btn
-                      v-bind="props"
-                      v-show="index === hoverRowIndex"
-                      variant="text"
-                      color="accent"
-                      @click="addStep(index)"
-                      icon="mdi-plus"
+                    <template v-slot:activator="{ props: menu }">
+                      <v-tooltip location="top">
+                        <span
+                          :style="{
+                            color: $vuetify.theme.current.colors.primary,
+                          }"
+                          >Add icon at current selection or cursor
+                          position</span
+                        >
+                        <template v-slot:activator="{ props: tooltip }">
+                          <v-btn
+                            icon="mdi-image-plus"
+                            color="accent"
+                            v-bind="mergeProps(menu, tooltip)"
+                            variant="text"
+                          ></v-btn>
+                        </template>
+                      </v-tooltip>
+                    </template>
+                    <v-card flat rounded="lg" class="mt-4" width="350px">
+                      <IconSelector
+                        @iconSelected="
+                          (iconPath, tooltip, iconClass) =>
+                            handleIconSelected(iconPath, tooltip, iconClass)
+                        "
+                        :civ="civ"
+                      ></IconSelector>
+                    </v-card> </v-menu
+                ></v-col>
+                <v-col cols="4"
+                  ><v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Remove current step (ALT + DEL)</span
                     >
-                    </v-btn>
-                  </template> </v-tooltip></v-col
-            ></v-row>
-          </td>
-        </tr>
-      </tbody>
-    </v-table>
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-if="index === hoverRowIndex"
+                        variant="text"
+                        color="accent"
+                        @click="
+                          removeStepConfirmationDialog = true;
+                          delteRowIndex = index;
+                        "
+                        icon="mdi-delete"
+                      >
+                      </v-btn>
+                    </template> </v-tooltip
+                ></v-col>
+                <v-col cols="4"
+                  ><v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Add new step below (ALT + ENTER)</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-show="index === hoverRowIndex"
+                        variant="text"
+                        color="accent"
+                        @click="addStep(index)"
+                        icon="mdi-plus"
+                      >
+                      </v-btn>
+                    </template> </v-tooltip></v-col
+              ></v-row>
+            </td>
+          </tr>
+        </tbody> </v-table
+    ></v-card>
+
+    <v-card flat class="mt-4"
+      ><v-card-title>
+        <v-row
+          style="font-weight: inherit"
+          no-gutters
+          align="center"
+          justify="start"
+        >
+          <v-icon class="mr-2"
+            ><v-img
+              src="http://localhost:5173/assets/pictures/age/age_2.png"
+            ></v-img></v-icon
+          >Feudal Age</v-row
+        ></v-card-title
+      ><v-table v-if="steps?.length" class="mx-4 mb-4" style="border-radius: 0; border-top: thin solid rgba(var(--v-border-color), var(--v-border-opacity)); border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));">
+        <thead style="visibility: collapse; ">
+          <tr>
+            <th class="text-center ma-0 pa-0" width="50px">
+            </th>
+            <v-tooltip location="top">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Villager Count</span
+              >
+              <template v-slot:activator="{ props }">
+                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
+                  <v-img
+                    class="mx-auto titleIcon"
+                    src="/assets/resources/villager.png"
+                  ></v-img>
+                </th>
+              </template>
+            </v-tooltip>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/repair.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/food.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/wood.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/gold.png"
+              ></v-img>
+            </th>
+            <th class="text-center ma-0 pa-0" width="50px">
+              <v-img
+                class="mx-auto titleIcon"
+                src="/assets/resources/stone.png"
+              ></v-img>
+            </th>
+            <th class="text-left">Description</th>
+            <th v-if="!readonly" class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody ref="stepsTable" >
+          <tr
+            v-for="(item, index) in steps"
+            :key="index"
+            v-on:keyup.enter.alt="addStep(index)"
+            v-on:keyup.delete.alt="
+              removeStepConfirmationDialog = true;
+              delteRowIndex = index;
+            "
+            @mousedown="selectRow(index)"
+            @mouseover="hoverItem(index)"
+            @mouseleave="unhoverItem()"
+          >
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepTime($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.time"
+            ></td>
+            <td
+              class="text-center py-1"
+              disabled
+              v-html="aggregateVillagers(index)"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepBuilders($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.builders ? item.builders : ''"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepFood($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.food"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepWood($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.wood"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepGold($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.gold"
+            ></td>
+            <td
+              @paste="handlePaste"
+              @focusout="updateStepStone($event, index)"
+              :contenteditable="!readonly"
+              class="text-center py-1"
+              v-html="item.stone"
+            ></td>
+            <td
+              @keyup="saveSelection"
+              @click="saveSelection"
+              @paste="handlePaste"
+              @focusout="updateStepDescription($event, index)"
+              :contenteditable="!readonly"
+              class="text-left py-1"
+              v-html="item.description"
+            ></td>
+            <td v-if="!readonly" width="180" class="text-right">
+              <v-row no-gutters>
+                <v-col cols="4"
+                  ><v-menu
+                    v-if="selection && index === selectedRowIndex"
+                    :close-on-content-click="false"
+                    location="bottom"
+                  >
+                    <template v-slot:activator="{ props: menu }">
+                      <v-tooltip location="top">
+                        <span
+                          :style="{
+                            color: $vuetify.theme.current.colors.primary,
+                          }"
+                          >Add icon at current selection or cursor
+                          position</span
+                        >
+                        <template v-slot:activator="{ props: tooltip }">
+                          <v-btn
+                            icon="mdi-image-plus"
+                            color="accent"
+                            v-bind="mergeProps(menu, tooltip)"
+                            variant="text"
+                          ></v-btn>
+                        </template>
+                      </v-tooltip>
+                    </template>
+                    <v-card flat rounded="lg" class="mt-4" width="350px">
+                      <IconSelector
+                        @iconSelected="
+                          (iconPath, tooltip, iconClass) =>
+                            handleIconSelected(iconPath, tooltip, iconClass)
+                        "
+                        :civ="civ"
+                      ></IconSelector>
+                    </v-card> </v-menu
+                ></v-col>
+                <v-col cols="4"
+                  ><v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Remove current step (ALT + DEL)</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-if="index === hoverRowIndex"
+                        variant="text"
+                        color="accent"
+                        @click="
+                          removeStepConfirmationDialog = true;
+                          delteRowIndex = index;
+                        "
+                        icon="mdi-delete"
+                      >
+                      </v-btn>
+                    </template> </v-tooltip
+                ></v-col>
+                <v-col cols="4"
+                  ><v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Add new step below (ALT + ENTER)</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        v-bind="props"
+                        v-show="index === hoverRowIndex"
+                        variant="text"
+                        color="accent"
+                        @click="addStep(index)"
+                        icon="mdi-plus"
+                      >
+                      </v-btn>
+                    </template> </v-tooltip></v-col
+              ></v-row>
+            </td>
+          </tr>
+        </tbody> </v-table
+    ></v-card>
   </v-card>
 </template>
 
@@ -653,7 +1111,7 @@ export default {
     };
 
     const handleActivateFocusMode = () => {
-      context.emit("activateFocusMode")
+      context.emit("activateFocusMode");
     };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
@@ -870,7 +1328,7 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelected,
-      handleActivateFocusMode
+      handleActivateFocusMode,
     };
   },
 };
