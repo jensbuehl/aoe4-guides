@@ -1164,7 +1164,7 @@ export default function useIconService(civArg) {
 
   const tech_eco = [
     {
-      title: "Double Broadax",
+      title: "Double Broadaxe",
       age: "2",
       imgSrc: "/assets/pictures/technology_economy/double-broadaxe.png",
       civ: [
