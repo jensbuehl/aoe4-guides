@@ -2,8 +2,8 @@
   <v-container v-if="builds">
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <BuildsConfig class="mb-2" @configChanged="configChanged">
-        </BuildsConfig>
+        <FilterConfig class="mb-2" @configChanged="configChanged">
+        </FilterConfig>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
@@ -16,10 +16,10 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <SingleBuild
+            <BuildListCard
               :build="item"
               :creatorName="getCreatorName(item.creatorId)"
-            ></SingleBuild>
+            ></BuildListCard>
           </router-link>
         </div>
 
@@ -35,7 +35,7 @@
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <BuildsConfig @configChanged="configChanged"> </BuildsConfig>
+        <FilterConfig @configChanged="configChanged"> </FilterConfig>
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
     </v-row>
@@ -44,18 +44,18 @@
 
 <script>
 import RegisterAd from "../../components/RegisterAd.vue";
-import BuildsConfig from "../../components/BuildsConfig.vue";
-import getDefaultConfig from "../../composables/getDefaultConfig";
-import SingleBuild from "../../components/SingleBuild.vue";
+import FilterConfig from "../../components/filter/FilterConfig.vue";
+import getDefaultConfig from "../../composables/filter/getDefaultConfig";
+import BuildListCard from "../../components/builds/BuildListCard.vue";
 import useCollection from "../../composables/useCollection";
-import queryService from "../../composables/queryService";
+import queryService from "../../composables/useQueryService";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from 'vue-router'
 
 export default {
   name: "Builds",
-  components: { BuildsConfig, SingleBuild, RegisterAd },
+  components: { FilterConfig, BuildListCard, RegisterAd },
   setup() {
     window.scrollTo(0, 0);
 

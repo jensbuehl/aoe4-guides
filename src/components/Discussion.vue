@@ -62,7 +62,7 @@
 import SingleComment from "./SingleComment.vue";
 import useCollection from "../composables/useCollection";
 import { useStore } from "vuex";
-import queryService from "../composables/queryService";
+import queryService from "../composables/useQueryService";
 import { ref, onMounted, computed } from "vue";
 
 export default {

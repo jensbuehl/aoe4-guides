@@ -242,7 +242,7 @@
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
 export default {
-  name: "Focus",
+  name: "FocusMode",
   props: ["build"],
   emits: ["closeDialog"],
   setup(props, context) {

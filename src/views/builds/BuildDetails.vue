@@ -1,7 +1,7 @@
 <template>
   <v-container v-if="build && focusDialog">
     <v-dialog v-model="focusDialog" fullscreen transition="dialog-bottom-transition">
-      <Focus v-on:closeDialog="focusDialog = false" :build="build"></Focus>
+      <FocusMode v-on:closeDialog="focusDialog = false" :build="build"></FocusMode>
     </v-dialog>
   </v-container>
   <v-container v-if="build && !focusDialog">
@@ -808,21 +808,21 @@
 
 <script>
 import Favorite from "../../components/Favorite.vue";
-import Focus from "../../components/Focus.vue";
+import FocusMode from "../../components/builds/FocusMode.vue";
 import Vote from "../../components/Vote.vue";
-import StepsEditor from "../../components/StepsEditor.vue";
+import StepsEditor from "../../components/builds/StepsEditor.vue";
 import Discussion from "../../components/Discussion.vue";
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
-import getCivs from "../../composables/getCivs";
+import getCivs from "../../composables/filter/getCivs";
 import useTimeSince from "../../composables/useTimeSince";
-import useOverlayConversion from "../../composables/useOverlayConversion";
+import useOverlayConverter from "../../composables/converter/useOverlayConverter";
 
 export default {
   name: "BuildDetails",
-  components: { Favorite, Vote, Discussion, StepsEditor, Focus },
+  components: { Favorite, Vote, Discussion, StepsEditor, FocusMode },
   props: ["id"],
   setup(props) {
     window.scrollTo(0, 0);
@@ -836,7 +836,7 @@ export default {
     const focusDialog = ref(false)
     const creatorName = ref("");
     const { convertToOverlayFormat, download, copyToClipboard } =
-      useOverlayConversion();
+    useOverlayConverter();
     const { timeSince, isNew } = useTimeSince();
     const { get, del, incrementViews, error, update: updateBuild } = useCollection("builds");
     const { get: getCreator } = useCollection("creators");

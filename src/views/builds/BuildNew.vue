@@ -315,18 +315,18 @@
 
 <script>
 import RegisterAd from "../../components/RegisterAd.vue";
-import StepsEditor from "../../components/StepsEditor.vue";
+import StepsEditor from "../../components/builds/StepsEditor.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import getCivs from "../../composables/getCivs";
-import getSeasons from "../../composables/getSeasons";
+import getCivs from "../../composables/filter/getCivs";
+import getSeasons from "../../composables/filter/getSeasons";
 import useCollection from "../../composables/useCollection";
-import useBuildValidator from "../../composables/useBuildValidator";
-import useYoutube from "../../composables/useYoutube";
-import getMaps from "../../composables/getMaps";
-import getStrategies from "../../composables/getStrategies";
-import queryService from "../../composables/queryService";
+import useBuildValidator from "../../composables/builds/useBuildValidator";
+import useYoutube from "../../composables/builds/useYoutube";
+import getMaps from "../../composables/filter/getMaps";
+import getStrategies from "../../composables/filter/getStrategies";
+import queryService from "../../composables/useQueryService";
 
 export default {
   name: "BuildNew",

@@ -120,13 +120,13 @@
 </template>
 
 <script>
-import getDefaultConfig from "../composables/getDefaultConfig";
+import getDefaultConfig from "../composables/filter/getDefaultConfig";
 import useCollection from "../composables/useCollection";
-import queryService from "../composables/queryService";
-import useOverlayConversion from "../composables/useOverlayConversion";
+import queryService from "../composables/useQueryService";
+import useOverlayConverter from "../composables/converter/useOverlayConverter";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
-import useYoutube from "../composables/useYoutube";
+import useYoutube from "../composables/builds/useYoutube";
 
 export default {
   name: "Admin",
@@ -140,7 +140,7 @@ export default {
     const {
       convertOverlayNotesToDescription,
       convertDescriptionToOverlayNotes,
-    } = useOverlayConversion();
+    } = useOverlayConverter();
     const error = ref(null);
     const buildsCount = ref(null);
     const store = useStore();

@@ -77,7 +77,7 @@ import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
-import useOverlayConversion from "../../composables/useOverlayConversion";
+import useOverlayConverter from "../../composables/converter/useOverlayConverter";
 
 export default {
   name: "BuildImport",
@@ -87,7 +87,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { error } = useCollection("builds");
-    const { convertFromOverlayFormat } = useOverlayConversion();
+    const { convertFromOverlayFormat } = useOverlayConverter();
     const store = useStore();
     const user = computed(() => store.state.user);
     const router = useRouter();

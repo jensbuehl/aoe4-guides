@@ -227,15 +227,15 @@
 <script>
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import getCivs from "../composables/getCivs";
-import getMaps from "../composables/getMaps";
-import getSeasons from "../composables/getSeasons";
-import getDefaultConfig from "../composables/getDefaultConfig";
-import getStrategies from "../composables/getStrategies";
-import useCollection from "../composables/useCollection";
+import getCivs from "../../composables/filter/getCivs";
+import getMaps from "../../composables/filter/getMaps";
+import getSeasons from "../../composables/filter/getSeasons";
+import getDefaultConfig from "../../composables/filter/getDefaultConfig";
+import getStrategies from "../../composables/filter/getStrategies";
+import useCollection from "../../composables/useCollection";
 
 export default {
-  name: "BuildsConfig",
+  name: "FilterConfig",
   emits: ["configChanged"],
   setup(props, context) {
     const { getAll } = useCollection("creators");

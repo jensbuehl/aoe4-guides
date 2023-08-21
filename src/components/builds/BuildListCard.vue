@@ -290,8 +290,8 @@
 </template>
 
 <script>
-import getCivs from "../composables/getCivs";
-import useTimeSince from "../composables/useTimeSince";
+import getCivs from "../../composables/filter/getCivs";
+import useTimeSince from "../../composables/useTimeSince";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
@@ -301,7 +301,7 @@ export default {
   components: {
     VSkeletonLoader,
   },
-  name: "SingleBuild",
+  name: "BuildListCard",
   props: ["build", "creatorName"],
   setup() {
     const civs = getCivs().civs;

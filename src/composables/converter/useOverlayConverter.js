@@ -1,6 +1,6 @@
-import useIconService from "../composables/useIconService.js";
+import useIconService from "../builds/useIconService.js";
 
-export default function useOverlayConversion() {
+export default function useOverlayConverter() {
   //Import AoE4_Overlay format
   const convertFromOverlayFormat = (build) => {
     const buildSteps = build.build_order?.map((step) =>

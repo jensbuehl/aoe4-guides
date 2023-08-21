@@ -1062,7 +1062,7 @@
 <script>
 import { ref, computed, reactive, mergeProps } from "vue";
 import sanitizeHtml from "sanitize-html";
-import IconSelector from "../components/IconSelector.vue";
+import IconSelector from "../../components/builds/IconSelector.vue";
 
 export default {
   name: "StepsEditor",

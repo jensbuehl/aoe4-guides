@@ -733,19 +733,19 @@
 
 <script>
 import Favorite from "../../components/Favorite.vue";
-import StepsEditor from "../../components/StepsEditor.vue";
+import StepsEditor from "../../components/builds/StepsEditor.vue";
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import useCollection from "../../composables/useCollection";
-import useBuildValidator from "../../composables/useBuildValidator";
-import useYoutube from "../../composables/useYoutube";
-import getCivs from "../../composables/getCivs";
-import getSeasons from "../../composables/getSeasons";
-import getMaps from "../../composables/getMaps";
-import getStrategies from "../../composables/getStrategies";
+import useBuildValidator from "../../composables/builds/useBuildValidator";
+import useYoutube from "../../composables/builds/useYoutube";
+import getCivs from "../../composables/filter/getCivs";
+import getSeasons from "../../composables/filter/getSeasons";
+import getMaps from "../../composables/filter/getMaps";
+import getStrategies from "../../composables/filter/getStrategies";
 import useTimeSince from "../../composables/useTimeSince";
-import useOverlayConversion from "../../composables/useOverlayConversion";
+import useOverlayConverter from "../../composables/converter/useOverlayConverter";
 
 export default {
   name: "BuildEdit",
@@ -765,7 +765,7 @@ export default {
     const strategies = getStrategies().strategies;
     const build = ref(null);
     const { convertToOverlayFormat, download, copyToClipboard } =
-      useOverlayConversion();
+    useOverlayConverter();
     const { timeSince, isNew } = useTimeSince();
     const {
       get: getBuild,

@@ -343,10 +343,10 @@
                   params: { id: !item.loading ? item.id : null },
                 }"
               >
-                <SingleBuild
+                <BuildListCard
                   :build="item"
                   :creatorName="getCreatorName(item.creatorId)"
-                ></SingleBuild>
+                ></BuildListCard>
               </router-link>
             </div> </v-col
         ></v-row>
@@ -368,10 +368,10 @@
                   params: { id: !item.loading ? item.id : null },
                 }"
               >
-                <SingleBuild
+                <BuildListCard
                   :build="item"
                   :creatorName="getCreatorName(item.creatorId)"
-                ></SingleBuild>
+                ></BuildListCard>
               </router-link>
             </div> </v-col
         ></v-row>
@@ -582,15 +582,15 @@
 <script>
 import RegisterAd from "../components/RegisterAd.vue";
 import EmailVerificationAd from "../components/EmailVerificationAd.vue";
-import BuildsConfig from "../components/BuildsConfig.vue";
-import getCivs from "../composables/getCivs";
-import getDefaultConfig from "../composables/getDefaultConfig";
-import SingleBuild from "../components/SingleBuild.vue";
+import FilterConfig from "../components/filter/FilterConfig.vue";
+import getCivs from "../composables/filter/getCivs";
+import getDefaultConfig from "../composables/filter/getDefaultConfig";
+import BuildListCard from "../components/builds/BuildListCard.vue";
 import useCollection from "../composables/useCollection";
-import queryService from "../composables/queryService";
+import queryService from "../composables/useQueryService";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
-import useYoutube from "../composables/useYoutube";
+import useYoutube from "../composables/builds/useYoutube";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { functions } from "../firebase";
 import { httpsCallable } from "firebase/functions";
@@ -598,7 +598,7 @@ import seedrandom from "seedrandom";
 
 export default {
   name: "Home",
-  components: { BuildsConfig, SingleBuild, RegisterAd, VSkeletonLoader, EmailVerificationAd },
+  components: { FilterConfig, BuildListCard, RegisterAd, VSkeletonLoader, EmailVerificationAd },
   setup() {
     window.scrollTo(0, 0);
 

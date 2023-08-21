@@ -354,10 +354,10 @@
 
 <script>
 import { ref, computed } from "vue";
-import useIconService from "../composables/useIconService.js";
+import useIconService from "../../composables/builds/useIconService.js";
 
 export default {
-  name: "StepsEditor",
+  name: "IconSelector",
   props: ["civ"],
   emits: ["iconSelected"],
   setup(props, context) {
