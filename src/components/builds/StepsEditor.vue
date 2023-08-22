@@ -42,6 +42,7 @@
         ><div v-for="(section, index) in sections">
           <StepSectionEditor
             v-if="section.steps"
+            @textChanged="(event) => handleTextChanged(event)"
             @selectionChanged="(event) => handleSelectionChanged(event, index)"
             @stepsChanged="(event) => handleStepsChanged(event, index)"
             :section="section"
@@ -74,7 +75,7 @@ export default {
           steps: JSON.parse(JSON.stringify(props.steps)),
         },
       ]);
-    } else{
+    } else {
       sections = reactive(JSON.parse(JSON.stringify(props.steps)));
     }
 
@@ -82,21 +83,61 @@ export default {
     const civ = computed(() => {
       return props.civ;
     });
-    const sectionFocus = ref(null)
+    const sectionFocus = ref(null);
 
     const handleActivateFocusMode = () => {
       context.emit("activateFocusMode");
     };
 
+    const handleTextChanged = (event) => {
+      alignTableColumnWidth("align-to-widest");
+    };
+
     const handleSelectionChanged = (event, index) => {
-      console.log("section focus set to:", index);
       sectionFocus.value = index;
-      console.log("selectionChanged");
-    }
+    };
+
     const handleStepsChanged = (event, index) => {
       sections[index].steps = event;
       context.emit("stepsChanged", sections);
     };
+
+    function alignTableColumnWidth(class_name) {
+      // Set each column in each table to the max width of that column across all tables.
+      // Align tables with the specified class so that all columns line up across tables.
+      const col_width_defaults = ["50px", "50px", "50px", "50px", "50px", "50px", "50px", "auto", "180px"];
+
+      // Reset to allow shrinking
+      document.querySelectorAll("." + class_name).forEach(function (element, index) {
+        element.querySelectorAll("tr:first-child th")
+        .forEach(function (element2, index2) {
+          element2.style.width = col_width_defaults[index2]
+        });
+      });
+
+      // Find the max width of each column across all tables
+      var col_widths = [];
+      document.querySelectorAll("." + class_name).forEach(function (element, index) {
+        element.querySelectorAll("tr:first-child th")
+          .forEach(function (element2, index2) {
+            col_widths[index2] = Math.max(
+              col_widths[index2] || 0,
+              element2.offsetWidth  
+            );
+          });
+      });
+
+      // Keep description column on auto
+      col_widths[7] = col_width_defaults[7]
+
+      // Set each column in each table to the max width of that column across all tables.
+      document.querySelectorAll("." + class_name).forEach(function (element, index) {
+        element.querySelectorAll("tr:first-child th")
+          .forEach(function (element2, index2) {
+            element2.style.width = col_widths[index2]+"px"
+          });
+      });
+    }
 
     return {
       handleActivateFocusMode,
@@ -105,7 +146,8 @@ export default {
       sections,
       handleStepsChanged,
       handleSelectionChanged,
-      sectionFocus
+      handleTextChanged,
+      sectionFocus,
     };
   },
 };

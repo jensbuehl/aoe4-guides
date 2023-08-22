@@ -516,7 +516,7 @@
       >
       <v-table
         v-if="steps?.length"
-        class="mx-4 mb-4"
+        class="mx-4 mb-4 align-to-widest"
         :style="
           section.age <= 1 && section.type == 'age'
             ? ''
@@ -536,7 +536,7 @@
           "
         >
           <tr>
-            <th class="text-center ma-0 pa-0" width="50px">
+            <th class="text-center ma-0 pa-0" style="width: 50px;">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/time.png"
@@ -550,7 +550,7 @@
                 >Villager Count</span
               >
               <template v-slot:activator="{ props }">
-                <th v-bind="props" class="text-center ma-0 pa-0" width="50px">
+                <th v-bind="props" class="text-center ma-0 pa-0" style="width: 50px;">
                   <v-img
                     class="mx-auto titleIcon"
                     src="/assets/resources/villager.png"
@@ -558,31 +558,31 @@
                 </th>
               </template>
             </v-tooltip>
-            <th class="text-center ma-0 pa-0" width="50px">
+            <th class="text-center ma-0 pa-0" style="width: 50px;">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/repair.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" width="50px">
+            <th class="text-center ma-0 pa-0" style="width: 50px;">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/food.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" width="50px">
+            <th class="text-center ma-0 pa-0" style="width: 50px;">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/wood.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" width="50px">
+            <th class="text-center ma-0 pa-0" style="width: 50px;">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/gold.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" width="50px">
+            <th class="text-center ma-0 pa-0" style="width: 50px;">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/stone.png"
@@ -607,6 +607,7 @@
             @mouseleave="unhoverItem()"
           >
             <td
+              @input="$emit('textChanged')"
               @paste="handlePaste"
               @focusout="updateStepTime($event, index)"
               :contenteditable="!readonly"
@@ -619,6 +620,7 @@
               v-html="aggregateVillagers(index)"
             ></td>
             <td
+            @input="$emit('textChanged')"
               @paste="handlePaste"
               @focusout="updateStepBuilders($event, index)"
               :contenteditable="!readonly"
@@ -626,28 +628,28 @@
               v-html="item.builders ? item.builders : ''"
             ></td>
             <td
-              @paste="handlePaste"
+            @input="$emit('textChanged')" @paste="handlePaste"
               @focusout="updateStepFood($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.food"
             ></td>
             <td
-              @paste="handlePaste"
+            @input="$emit('textChanged')" @paste="handlePaste"
               @focusout="updateStepWood($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.wood"
             ></td>
             <td
-              @paste="handlePaste"
+            @input="$emit('textChanged')" @paste="handlePaste"
               @focusout="updateStepGold($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.gold"
             ></td>
             <td
-              @paste="handlePaste"
+            @input="$emit('textChanged')" @paste="handlePaste"
               @focusout="updateStepStone($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
@@ -662,7 +664,7 @@
               class="text-left py-1"
               v-html="item.description"
             ></td>
-            <td v-if="!readonly" width="180" class="text-right">
+            <td v-if="!readonly" style="width:180px" class="text-right">
               <v-row no-gutters>
                 <v-col cols="4"
                   ><v-menu
@@ -757,7 +759,7 @@ import IconSelector from "../../components/builds/IconSelector.vue";
 export default {
   name: "StepSectionEditor",
   props: ["section", "readonly", "civ", "focus"],
-  emits: ["stepsChanged", "selectionChanged"],
+  emits: ["stepsChanged", "selectionChanged", "textChanged"],
   components: { IconSelector },
   setup(props, context) {
     //Hacky deep copy of object since working on the reference broke the current selection
