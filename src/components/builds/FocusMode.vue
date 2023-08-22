@@ -214,7 +214,7 @@
         </template>
       </v-tooltip>
       <span style="user-select: none">
-        {{ currentStepIndex + 1 }} of {{ build.steps.length }}
+        {{ currentStepIndex + 1 }} of {{ steps.length }}
       </span>
       <v-tooltip location="top">
         <span
@@ -249,8 +249,13 @@ export default {
     const currentStep = ref(null);
     const currentStepIndex = ref(0);
 
+    var steps = [];
+    props.build.steps.forEach((section) => {
+      steps = steps.concat(section.steps);
+    });
+
     onMounted(() => {
-      currentStep.value = props.build.steps[currentStepIndex.value];
+      currentStep.value = steps[currentStepIndex.value];
 
       document.addEventListener("keyup", handleKeyPressed);
     });
@@ -283,14 +288,14 @@ export default {
     const handleNextStep = async () => {
       currentStepIndex.value = Math.min(
         ++currentStepIndex.value,
-        props.build.steps.length - 1
+        steps.length - 1
       );
-      currentStep.value = props.build.steps[currentStepIndex.value];
+      currentStep.value = steps[currentStepIndex.value];
     };
 
     const handlePreviousStep = async () => {
       currentStepIndex.value = Math.max(--currentStepIndex.value, 0);
-      currentStep.value = props.build.steps[currentStepIndex.value];
+      currentStep.value = steps[currentStepIndex.value];
     };
 
     const handleClose = () => {
@@ -298,6 +303,7 @@ export default {
     };
 
     return {
+      steps,
       currentStep,
       handleNextStep,
       handlePreviousStep,

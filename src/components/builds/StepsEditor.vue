@@ -97,7 +97,7 @@ export default {
   components: { StepSectionEditor },
   setup(props, context) {
     var sections;
-    if (!props.steps[0]?.type == "age") {
+    if (!props.steps[0]?.type) {
       //migrate old format
       sections = reactive([
         {
@@ -107,6 +107,7 @@ export default {
         },
       ]);
     } else {
+
       sections = reactive(JSON.parse(JSON.stringify(props.steps)));
     }
 
