@@ -103,13 +103,11 @@
             no-gutters
             align="center"
             justify="start"
-          >
+            ><v-icon class="mr-2"
+              ><v-img src="/assets/pictures/age/age_2.png"></v-img
+            ></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-            <v-icon class="mr-2"
-              ><v-img
-                src="/assets/pictures/age/age_2.png"
-              ></v-img></v-icon
-            >Advance to Feudal Age</v-row
+            Advance to Feudal Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 2 && section.type == 'age'">
           <v-row
@@ -119,9 +117,7 @@
             justify="start"
           >
             <v-icon class="mr-2"
-              ><v-img
-                src="/assets/pictures/age/age_2.png"
-              ></v-img></v-icon
+              ><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon
             >Feudal Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
@@ -130,13 +126,11 @@
             no-gutters
             align="center"
             justify="start"
-          >
+            ><v-icon class="mr-2"
+              ><v-img src="/assets/pictures/age/age_3.png"></v-img
+            ></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-            <v-icon class="mr-2"
-              ><v-img
-                src="/assets/pictures/age/age_3.png"
-              ></v-img></v-icon
-            >Advance to Castle Age</v-row
+            Advance to Castle Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 3 && section.type == 'age'">
           <v-row
@@ -146,9 +140,7 @@
             justify="start"
           >
             <v-icon class="mr-2"
-              ><v-img
-                src="/assets/pictures/age/age_3.png"
-              ></v-img></v-icon
+              ><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon
             >Castle Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
@@ -157,13 +149,11 @@
             no-gutters
             align="center"
             justify="start"
-          >
+            ><v-icon class="mr-2"
+              ><v-img src="/assets/pictures/age/age_4.png"></v-img
+            ></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-            <v-icon class="mr-2"
-              ><v-img
-                src="/assets/pictures/age/age_4.png"
-              ></v-img></v-icon
-            >Advance to Imperial Age</v-row
+            Advance to Imperial Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 4 && section.type == 'age'">
           <v-row
@@ -173,9 +163,7 @@
             justify="start"
           >
             <v-icon class="mr-2"
-              ><v-img
-                src="/assets/pictures/age/age_4.png"
-              ></v-img></v-icon
+              ><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon
             >Imperial Age</v-row
           ></v-card-title
         >
@@ -438,13 +426,11 @@
           no-gutters
           align="center"
           justify="start"
-        >
+          ><v-icon class="mr-2"
+            ><v-img src="/assets/pictures/age/age_2.png"></v-img
+          ></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-          <v-icon class="mr-2"
-            ><v-img
-              src="/assets/pictures/age/age_2.png"
-            ></v-img></v-icon
-          >Advance to Feudal Age</v-row
+          Advance to Feudal Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 2 && section.type == 'age'">
         <v-row
@@ -454,9 +440,7 @@
           justify="start"
         >
           <v-icon class="mr-2"
-            ><v-img
-              src="/assets/pictures/age/age_2.png"
-            ></v-img></v-icon
+            ><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon
           >Feudal Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
@@ -465,13 +449,11 @@
           no-gutters
           align="center"
           justify="start"
-        >
+          ><v-icon class="mr-2"
+            ><v-img src="/assets/pictures/age/age_3.png"></v-img
+          ></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-          <v-icon class="mr-2"
-            ><v-img
-              src="/assets/pictures/age/age_3.png"
-            ></v-img></v-icon
-          >Advance to Castle Age</v-row
+          Advance to Castle Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 3 && section.type == 'age'">
         <v-row
@@ -481,9 +463,7 @@
           justify="start"
         >
           <v-icon class="mr-2"
-            ><v-img
-              src="/assets/pictures/age/age_3.png"
-            ></v-img></v-icon
+            ><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon
           >Castle Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
@@ -492,13 +472,11 @@
           no-gutters
           align="center"
           justify="start"
-        >
+          ><v-icon class="mr-2"
+            ><v-img src="/assets/pictures/age/age_4.png"></v-img
+          ></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-          <v-icon class="mr-2"
-            ><v-img
-              src="/assets/pictures/age/age_4.png"
-            ></v-img></v-icon
-          >Advance to Imperial Age</v-row
+          Advance to Imperial Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 4 && section.type == 'age'">
         <v-row
