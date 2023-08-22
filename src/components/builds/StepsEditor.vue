@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, onMounted } from "vue";
 import StepSectionEditor from "../../components/builds/StepSectionEditor.vue";
 
 export default {
@@ -110,6 +110,10 @@ export default {
 
       sections = reactive(JSON.parse(JSON.stringify(props.steps)));
     }
+
+    onMounted(async () => {
+      alignTableColumnWidth("align-to-widest");
+    });
 
     const removeAgeConfirmationDialog = ref(false);
     const readonly = props.readonly;

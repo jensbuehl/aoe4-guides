@@ -93,7 +93,13 @@ export default function useOverlayConverter() {
 
   //Export AoE4_Overlay format
   const convertToOverlayFormat = (build) => {
-    const overlay_steps = build.steps?.map((step) =>
+    //flatten sections
+    var steps = [];
+    build.steps?.forEach((section) => {
+      steps = steps.concat(section.steps);
+    });
+
+    const overlay_steps = steps?.map((step) =>
       convertStepToOverlayFormat(step)
     );
 
@@ -124,6 +130,8 @@ export default function useOverlayConverter() {
     //Remove internal path extensions, ", and src=
     var imageSource = matches[0].replaceAll('"', "");
     imageSource = imageSource.replaceAll("src=", "");
+
+    imageSource = imageSource.replace("http://localhost:5173", "");
     imageSource = imageSource.replace("https://aoe4guides.com", "");
     imageSource = imageSource.replace("/assets/pictures/", "");
     //Wrap with@
