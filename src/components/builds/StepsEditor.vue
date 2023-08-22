@@ -68,7 +68,12 @@
           </v-btn>
 
           <v-btn
-            v-if="sections[0]?.steps && !readonly && getCurrentAge() > 1"
+            v-if="
+              sections[0]?.steps &&
+              !readonly &&
+              getCurrentAge() >= 1 &&
+              sections[0]?.age > 0
+            "
             variant="text"
             color="accent"
             class="ma-2"
@@ -107,7 +112,6 @@ export default {
         },
       ]);
     } else {
-
       sections = reactive(JSON.parse(JSON.stringify(props.steps)));
     }
 
@@ -140,8 +144,11 @@ export default {
     };
 
     const ageUp = () => {
-      //TODO: Change age 0 to age 1 on first new step
       const currentAge = getCurrentAge();
+
+      //If migrated / no age information => initialize now
+      sections[0].age = 1;
+
       sections.push({
         type: "ageUp",
         age: currentAge,
@@ -156,11 +163,15 @@ export default {
     };
 
     const ageDown = () => {
-      //TODO: Change age 1 to age 0
-      sections.pop();
-      sections.pop();
+      if (getCurrentAge() == 1 && sections[0]?.age > 0) {
+        console.log("hia!");
+        sections[0].age = 0;
+      } else {
+        sections.pop();
+        sections.pop();
+        context.emit("stepsChanged", sections);
+      }
       removeAgeConfirmationDialog.value = false;
-      context.emit("stepsChanged", sections);
     };
 
     const getCurrentAge = () => {
@@ -182,6 +193,8 @@ export default {
 
     const getPreviousAgeName = () => {
       switch (getCurrentAge()) {
+        case 1:
+          return "No Particular Age";
         case 2:
           return "Dark Age";
         case 3:
