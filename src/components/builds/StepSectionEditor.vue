@@ -97,7 +97,7 @@
             ></v-img>
           </v-col>
         </v-row>
-        <v-card-title v-else-if="section.age == 1 && section.type == 'ageUp'">
+        <v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
           <v-row
             style="font-weight: inherit"
             no-gutters
@@ -111,7 +111,7 @@
               ></v-img></v-icon
             >Dark Age > Feudal Age</v-row
           ></v-card-title
-        ><v-card-title v-else-if="section.age == 2 && section.type == 'age'">
+        ><v-card-title v-if="section.age == 2 && section.type == 'age'">
           <v-row
             style="font-weight: inherit"
             no-gutters
@@ -123,6 +123,60 @@
                 src="http://localhost:5173/assets/pictures/age/age_2.png"
               ></v-img></v-icon
             >Feudal Age</v-row
+          ></v-card-title
+        ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
+          <v-row
+            style="font-weight: inherit"
+            no-gutters
+            align="center"
+            justify="start"
+          >
+            <v-icon color="accent">mdi-arrow-up-bold</v-icon>
+            <v-icon class="mr-2"
+              ><v-img
+                src="http://localhost:5173/assets/pictures/age/age_3.png"
+              ></v-img></v-icon
+            >Feudal Age > Castle Age</v-row
+          ></v-card-title
+        ><v-card-title v-if="section.age == 3 && section.type == 'age'">
+          <v-row
+            style="font-weight: inherit"
+            no-gutters
+            align="center"
+            justify="start"
+          >
+            <v-icon class="mr-2"
+              ><v-img
+                src="http://localhost:5173/assets/pictures/age/age_3.png"
+              ></v-img></v-icon
+            >Castle Age</v-row
+          ></v-card-title
+        ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
+          <v-row
+            style="font-weight: inherit"
+            no-gutters
+            align="center"
+            justify="start"
+          >
+            <v-icon color="accent">mdi-arrow-up-bold</v-icon>
+            <v-icon class="mr-2"
+              ><v-img
+                src="http://localhost:5173/assets/pictures/age/age_4.png"
+              ></v-img></v-icon
+            >Castle Age > Imperial Age</v-row
+          ></v-card-title
+        ><v-card-title v-if="section.age == 4 && section.type == 'age'">
+          <v-row
+            style="font-weight: inherit"
+            no-gutters
+            align="center"
+            justify="start"
+          >
+            <v-icon class="mr-2"
+              ><v-img
+                src="http://localhost:5173/assets/pictures/age/age_4.png"
+              ></v-img></v-icon
+            >Imperial Age</v-row
           ></v-card-title
         >
       </v-col>
@@ -138,6 +192,7 @@
         delteRowIndex = index;
         delteRowIndex = index;
       "
+      @focusin="$emit('selectionChanged')"
       @mousedown="selectRow(index)"
       @mouseover="hoverItem(index)"
       @mouseleave="unhoverItem()"
@@ -404,6 +459,60 @@
             ></v-img></v-icon
           >Feudal Age</v-row
         ></v-card-title
+      ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
+        <v-row
+          style="font-weight: inherit"
+          no-gutters
+          align="center"
+          justify="start"
+        >
+          <v-icon color="accent">mdi-arrow-up-bold</v-icon>
+          <v-icon class="mr-2"
+            ><v-img
+              src="http://localhost:5173/assets/pictures/age/age_3.png"
+            ></v-img></v-icon
+          >Feudal Age > Castle Age</v-row
+        ></v-card-title
+      ><v-card-title v-if="section.age == 3 && section.type == 'age'">
+        <v-row
+          style="font-weight: inherit"
+          no-gutters
+          align="center"
+          justify="start"
+        >
+          <v-icon class="mr-2"
+            ><v-img
+              src="http://localhost:5173/assets/pictures/age/age_3.png"
+            ></v-img></v-icon
+          >Castle Age</v-row
+        ></v-card-title
+      ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
+        <v-row
+          style="font-weight: inherit"
+          no-gutters
+          align="center"
+          justify="start"
+        >
+          <v-icon color="accent">mdi-arrow-up-bold</v-icon>
+          <v-icon class="mr-2"
+            ><v-img
+              src="http://localhost:5173/assets/pictures/age/age_4.png"
+            ></v-img></v-icon
+          >Castle Age > Imperial Age</v-row
+        ></v-card-title
+      ><v-card-title v-if="section.age == 4 && section.type == 'age'">
+        <v-row
+          style="font-weight: inherit"
+          no-gutters
+          align="center"
+          justify="start"
+        >
+          <v-icon class="mr-2"
+            ><v-img
+              src="http://localhost:5173/assets/pictures/age/age_4.png"
+            ></v-img></v-icon
+          >Imperial Age</v-row
+        ></v-card-title
       >
       <v-table
         v-if="steps?.length"
@@ -492,6 +601,7 @@
               removeStepConfirmationDialog = true;
               delteRowIndex = index;
             "
+            @focusin="$emit('selectionChanged')"
             @mousedown="selectRow(index)"
             @mouseover="hoverItem(index)"
             @mouseleave="unhoverItem()"
@@ -640,14 +750,14 @@
 </template>
 
 <script>
-import { ref, computed, reactive, mergeProps } from "vue";
+import { watch, ref, computed, reactive, mergeProps } from "vue";
 import sanitizeHtml from "sanitize-html";
 import IconSelector from "../../components/builds/IconSelector.vue";
 
 export default {
   name: "StepSectionEditor",
-  props: ["section", "readonly", "civ"],
-  emits: ["stepsChanged", "activateFocusMode"],
+  props: ["section", "readonly", "civ", "focus"],
+  emits: ["stepsChanged", "selectionChanged"],
   components: { IconSelector },
   setup(props, context) {
     //Hacky deep copy of object since working on the reference broke the current selection
@@ -666,6 +776,15 @@ export default {
     const civ = computed(() => {
       return props.civ;
     });
+
+    watch(
+      () => props.focus,
+      (value, previousValue) => {
+        if (!value) {
+          selection.value = null;
+        }
+      }
+    );
 
     const saveSelection = () => {
       if (window.getSelection) {
@@ -688,10 +807,6 @@ export default {
           selection.value.select();
         }
       }
-    };
-
-    const handleActivateFocusMode = () => {
-      context.emit("activateFocusMode");
     };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
@@ -764,6 +879,7 @@ export default {
     };
     const updateStepDescription = (event, index) => {
       stepsCopy[index].description = event.target.innerHTML;
+
       context.emit("stepsChanged", stepsCopy);
     };
     const addStep = (index) => {
@@ -908,7 +1024,6 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelected,
-      handleActivateFocusMode,
     };
   },
 };

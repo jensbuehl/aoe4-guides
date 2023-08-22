@@ -39,12 +39,15 @@
     </div>
     <v-row no-gutters align="center" justify="center">
       <v-col cols="12"
-        ><div v-for="section in sections">
+        ><div v-for="(section, index) in sections">
           <StepSectionEditor
             v-if="section.steps"
+            @selectionChanged="(event) => handleSelectionChanged(event, index)"
+            @stepsChanged="(event) => handleStepsChanged(event, index)"
             :section="section"
             :readonly="readonly"
             :civ="civ"
+            :focus="sectionFocus == index"
           ></StepSectionEditor></div
       ></v-col>
     </v-row>
@@ -52,7 +55,7 @@
 </template>
 
 <script>
-import { computed, reactive } from "vue";
+import { ref, computed, reactive } from "vue";
 import StepSectionEditor from "../../components/builds/StepSectionEditor.vue";
 
 export default {
@@ -61,33 +64,38 @@ export default {
   emits: ["stepsChanged", "activateFocusMode"],
   components: { StepSectionEditor },
   setup(props, context) {
-    //const sections = reactive(JSON.parse(JSON.stringify(props.steps)));
-    const sections = [
-      {
-        type: "age",
-        age: 1,
-        steps: reactive(JSON.parse(JSON.stringify(props.steps))),
-      },
-      {
-        type: "ageUp",
-        age: 1,
-        steps: reactive(JSON.parse(JSON.stringify(props.steps))),
-      },
-      {
-        type: "age",
-        age: 2,
-        steps: reactive(JSON.parse(JSON.stringify(props.steps))),
-      },
-    ];
+    var sections;
+    if (!props.steps[0].age) {
+      //migrate old format
+      sections = reactive([
+        {
+          type: "age",
+          age: 0,
+          steps: JSON.parse(JSON.stringify(props.steps)),
+        },
+      ]);
+    } else{
+      sections = reactive(JSON.parse(JSON.stringify(props.steps)));
+    }
 
     const readonly = props.readonly;
-
     const civ = computed(() => {
       return props.civ;
     });
+    const sectionFocus = ref(null)
 
     const handleActivateFocusMode = () => {
       context.emit("activateFocusMode");
+    };
+
+    const handleSelectionChanged = (event, index) => {
+      console.log("section focus set to:", index);
+      sectionFocus.value = index;
+      console.log("selectionChanged");
+    }
+    const handleStepsChanged = (event, index) => {
+      sections[index].steps = event;
+      context.emit("stepsChanged", sections);
     };
 
     return {
@@ -95,116 +103,10 @@ export default {
       civ,
       readonly,
       sections,
+      handleStepsChanged,
+      handleSelectionChanged,
+      sectionFocus
     };
   },
 };
 </script>
-
-<style scoped>
-table tbody tr td:nth-child(2) {
-  color: #828282;
-}
-
-table tbody tr td:nth-child(4) {
-  background: #ff000034;
-}
-
-table tbody tr td:nth-child(5) {
-  background: #75400c5b;
-}
-
-table tbody tr td:nth-child(6) {
-  background: #edbe003e;
-}
-
-table tbody tr td:nth-child(7) {
-  background: #7a7a7b69;
-}
-
-td:empty {
-  line-height: 46px;
-}
-
-:deep(.icon) {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px 2px 2px 0px;
-  border-radius: 4px;
-}
-
-:deep(.icon-tech) {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px 2px 2px 0px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-}
-:deep(.icon-tech + img) {
-  margin: 2px;
-}
-
-:deep(.icon-military) {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px 2px 2px 0px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-}
-:deep(.icon-military + img) {
-  margin: 2px;
-}
-
-:deep(.icon-none) {
-  vertical-align: middle;
-  width: auto;
-  height: 42px;
-  margin: 2px 2px 2px 0px;
-  border-radius: 4px;
-  background: radial-gradient(
-    circle at top center,
-    rgb(var(--v-theme-icon-background-highlight)),
-    rgb(var(--v-theme-icon-background))
-  );
-}
-:deep(.icon-none + img) {
-  margin: 2px;
-}
-
-:deep(.icon-default) {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px 2px 2px 0px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1d2432);
-}
-:deep(.icon-default + img) {
-  margin: 2px;
-}
-
-:deep(.icon-landmark) {
-  vertical-align: middle;
-  height: auto;
-  width: 42px;
-  margin: 2px 2px 2px 0px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
-}
-:deep(.icon-landmark + img) {
-  margin: 2px;
-}
-
-:deep(.titleIcon) {
-  vertical-align: middle;
-  width: auto;
-  height: 40px;
-}
-:deep(.titleIconXs) {
-  vertical-align: middle;
-  width: auto;
-  height: 30px;
-}
-</style>
