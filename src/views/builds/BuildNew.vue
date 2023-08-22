@@ -364,7 +364,13 @@ export default {
         description: "",
         title: "",
         sortTitle: "", //firestore does not support case-insensitive sorting
-        steps: [],
+        steps: [
+          {
+            type: "age",
+            age: 0,
+            steps: [{}],
+          },
+        ],
         video: "",
         civ: "ANY",
         map: "",

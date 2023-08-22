@@ -107,9 +107,9 @@
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             <v-icon class="mr-2"
               ><v-img
-                src="http://localhost:5173/assets/pictures/age/age_2.png"
+                src="/assets/pictures/age/age_2.png"
               ></v-img></v-icon
-            >Dark Age > Feudal Age</v-row
+            >Advance to Feudal Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 2 && section.type == 'age'">
           <v-row
@@ -120,7 +120,7 @@
           >
             <v-icon class="mr-2"
               ><v-img
-                src="http://localhost:5173/assets/pictures/age/age_2.png"
+                src="/assets/pictures/age/age_2.png"
               ></v-img></v-icon
             >Feudal Age</v-row
           ></v-card-title
@@ -134,9 +134,9 @@
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             <v-icon class="mr-2"
               ><v-img
-                src="http://localhost:5173/assets/pictures/age/age_3.png"
+                src="/assets/pictures/age/age_3.png"
               ></v-img></v-icon
-            >Feudal Age > Castle Age</v-row
+            >Advance to Castle Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 3 && section.type == 'age'">
           <v-row
@@ -147,7 +147,7 @@
           >
             <v-icon class="mr-2"
               ><v-img
-                src="http://localhost:5173/assets/pictures/age/age_3.png"
+                src="/assets/pictures/age/age_3.png"
               ></v-img></v-icon
             >Castle Age</v-row
           ></v-card-title
@@ -161,9 +161,9 @@
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             <v-icon class="mr-2"
               ><v-img
-                src="http://localhost:5173/assets/pictures/age/age_4.png"
+                src="/assets/pictures/age/age_4.png"
               ></v-img></v-icon
-            >Castle Age > Imperial Age</v-row
+            >Advance to Imperial Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 4 && section.type == 'age'">
           <v-row
@@ -174,7 +174,7 @@
           >
             <v-icon class="mr-2"
               ><v-img
-                src="http://localhost:5173/assets/pictures/age/age_4.png"
+                src="/assets/pictures/age/age_4.png"
               ></v-img></v-icon
             >Imperial Age</v-row
           ></v-card-title
@@ -442,9 +442,9 @@
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           <v-icon class="mr-2"
             ><v-img
-              src="http://localhost:5173/assets/pictures/age/age_2.png"
+              src="/assets/pictures/age/age_2.png"
             ></v-img></v-icon
-          >Dark Age > Feudal Age</v-row
+          >Advance to Feudal Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 2 && section.type == 'age'">
         <v-row
@@ -455,7 +455,7 @@
         >
           <v-icon class="mr-2"
             ><v-img
-              src="http://localhost:5173/assets/pictures/age/age_2.png"
+              src="/assets/pictures/age/age_2.png"
             ></v-img></v-icon
           >Feudal Age</v-row
         ></v-card-title
@@ -469,9 +469,9 @@
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           <v-icon class="mr-2"
             ><v-img
-              src="http://localhost:5173/assets/pictures/age/age_3.png"
+              src="/assets/pictures/age/age_3.png"
             ></v-img></v-icon
-          >Feudal Age > Castle Age</v-row
+          >Advance to Castle Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 3 && section.type == 'age'">
         <v-row
@@ -482,7 +482,7 @@
         >
           <v-icon class="mr-2"
             ><v-img
-              src="http://localhost:5173/assets/pictures/age/age_3.png"
+              src="/assets/pictures/age/age_3.png"
             ></v-img></v-icon
           >Castle Age</v-row
         ></v-card-title
@@ -496,9 +496,9 @@
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           <v-icon class="mr-2"
             ><v-img
-              src="http://localhost:5173/assets/pictures/age/age_4.png"
+              src="/assets/pictures/age/age_4.png"
             ></v-img></v-icon
-          >Castle Age > Imperial Age</v-row
+          >Advance to Imperial Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 4 && section.type == 'age'">
         <v-row
@@ -536,7 +536,7 @@
           "
         >
           <tr>
-            <th class="text-center ma-0 pa-0" style="width: 50px;">
+            <th class="text-center ma-0 pa-0" style="width: 50px">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/time.png"
@@ -550,7 +550,11 @@
                 >Villager Count</span
               >
               <template v-slot:activator="{ props }">
-                <th v-bind="props" class="text-center ma-0 pa-0" style="width: 50px;">
+                <th
+                  v-bind="props"
+                  class="text-center ma-0 pa-0"
+                  style="width: 50px"
+                >
                   <v-img
                     class="mx-auto titleIcon"
                     src="/assets/resources/villager.png"
@@ -558,31 +562,31 @@
                 </th>
               </template>
             </v-tooltip>
-            <th class="text-center ma-0 pa-0" style="width: 50px;">
+            <th class="text-center ma-0 pa-0" style="width: 50px">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/repair.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px;">
+            <th class="text-center ma-0 pa-0" style="width: 50px">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/food.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px;">
+            <th class="text-center ma-0 pa-0" style="width: 50px">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/wood.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px;">
+            <th class="text-center ma-0 pa-0" style="width: 50px">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/gold.png"
               ></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px;">
+            <th class="text-center ma-0 pa-0" style="width: 50px">
               <v-img
                 class="mx-auto titleIcon"
                 src="/assets/resources/stone.png"
@@ -607,6 +611,7 @@
             @mouseleave="unhoverItem()"
           >
             <td
+              @focusin="selection = null"
               @input="$emit('textChanged')"
               @paste="handlePaste"
               @focusout="updateStepTime($event, index)"
@@ -620,7 +625,8 @@
               v-html="aggregateVillagers(index)"
             ></td>
             <td
-            @input="$emit('textChanged')"
+              @focusin="selection = null"
+              @input="$emit('textChanged')"
               @paste="handlePaste"
               @focusout="updateStepBuilders($event, index)"
               :contenteditable="!readonly"
@@ -628,28 +634,36 @@
               v-html="item.builders ? item.builders : ''"
             ></td>
             <td
-            @input="$emit('textChanged')" @paste="handlePaste"
+              @focusin="selection = null"
+              @input="$emit('textChanged')"
+              @paste="handlePaste"
               @focusout="updateStepFood($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.food"
             ></td>
             <td
-            @input="$emit('textChanged')" @paste="handlePaste"
+              @focusin="selection = null"
+              @input="$emit('textChanged')"
+              @paste="handlePaste"
               @focusout="updateStepWood($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.wood"
             ></td>
             <td
-            @input="$emit('textChanged')" @paste="handlePaste"
+              @focusin="selection = null"
+              @input="$emit('textChanged')"
+              @paste="handlePaste"
               @focusout="updateStepGold($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.gold"
             ></td>
             <td
-            @input="$emit('textChanged')" @paste="handlePaste"
+              @focusin="selection = null"
+              @input="$emit('textChanged')"
+              @paste="handlePaste"
               @focusout="updateStepStone($event, index)"
               :contenteditable="!readonly"
               class="text-center py-1"
@@ -664,7 +678,7 @@
               class="text-left py-1"
               v-html="item.description"
             ></td>
-            <td v-if="!readonly" style="width:180px" class="text-right">
+            <td v-if="!readonly" style="width: 180px" class="text-right">
               <v-row no-gutters>
                 <v-col cols="4"
                   ><v-menu
@@ -841,12 +855,14 @@ export default {
     const updateStepTime = (event, index) => {
       steps[index].time = event.target.innerHTML;
       stepsCopy[index].time = event.target.innerHTML;
+      steps[index].description = stepsCopy[index].description;
 
       context.emit("stepsChanged", steps);
     };
     const updateStepBuilders = (event, index) => {
       steps[index].builders = event.target.innerHTML;
       stepsCopy[index].builders = event.target.innerHTML;
+      steps[index].description = stepsCopy[index].description;
 
       aggregateVillagers(index);
       context.emit("stepsChanged", steps);
@@ -854,6 +870,7 @@ export default {
     const updateStepFood = (event, index) => {
       steps[index].food = event.target.innerHTML;
       stepsCopy[index].food = event.target.innerHTML;
+      steps[index].description = stepsCopy[index].description;
 
       aggregateVillagers(index);
       context.emit("stepsChanged", steps);
@@ -861,6 +878,7 @@ export default {
     const updateStepWood = (event, index) => {
       steps[index].wood = event.target.innerHTML;
       stepsCopy[index].wood = event.target.innerHTML;
+      steps[index].description = stepsCopy[index].description;
 
       aggregateVillagers(index);
       context.emit("stepsChanged", steps);
@@ -868,6 +886,7 @@ export default {
     const updateStepGold = (event, index) => {
       steps[index].gold = event.target.innerHTML;
       stepsCopy[index].gold = event.target.innerHTML;
+      steps[index].description = stepsCopy[index].description;
 
       aggregateVillagers(index);
       context.emit("stepsChanged", steps);
@@ -875,6 +894,7 @@ export default {
     const updateStepStone = (event, index) => {
       steps[index].stone = event.target.innerHTML;
       stepsCopy[index].stone = event.target.innerHTML;
+      steps[index].description = stepsCopy[index].description;
 
       aggregateVillagers(index);
       context.emit("stepsChanged", steps);
