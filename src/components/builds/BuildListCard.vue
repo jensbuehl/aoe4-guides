@@ -156,16 +156,15 @@
             size="x-small"
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
-          <v-chip
+          <!--v-chip
             v-if="build.strategy"
             class="mr-1 mt-1 hidden-xs"
             label
             size="x-small"
             ><v-icon start icon="mdi-strategy"></v-icon
-            >{{ build.strategy }}</v-chip
-          >
+            >{{ build.strategy }}</v-chip-->
           <v-chip
-            v-if="build.matchup?.filter((element) => element != 'ANY').length"
+            v-if="build.matchup?.filter((element) => element != 'ANY').length && !$vuetify.display.xs"
             class="mr-1 mt-1"
             label
             size="x-small"
@@ -264,10 +263,9 @@
             size="small"
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
-          <v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small"
+          <!--v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small"
             ><v-icon start icon="mdi-strategy"></v-icon
-            >{{ build.strategy }}</v-chip
-          >
+            >{{ build.strategy }}</v-chip-->
           <v-chip
             v-if="build.matchup?.filter((element) => element != 'ANY').length"
             class="mr-2 mb-2"
@@ -314,11 +312,11 @@ export default {
     const height = computed(() => {
       switch (name.value) {
         case "xs":
-          return 80;
+          return 90;
         case "sm":
           return 125;
         case "md":
-          return 80;
+          return 90;
         case "lg":
           return 112;
         case "xl":

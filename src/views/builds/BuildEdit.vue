@@ -53,10 +53,9 @@
             >
           </v-item-group>
           <v-item-group
-            v-if="filteredMatchups?.length"
             class="hidden-sm-and-up"
           >
-            <v-chip class="mr-2 mb-2" color="accent" label size="x-small"
+            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="x-small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
@@ -154,10 +153,9 @@
             >
           </v-item-group>
           <v-item-group
-            v-if="filteredMatchups?.length"
             class="hidden-xs hidden-md-and-up"
           >
-            <v-chip class="mr-2 mb-2" color="accent" label size="small"
+            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
@@ -444,10 +442,9 @@
             >
           </v-item-group>
           <v-item-group
-            v-if="filteredMatchups?.length"
             class="ml-4 hidden-sm-and-down"
           >
-            <v-chip class="mr-2 mb-2" color="accent" label size="small"
+            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
