@@ -283,7 +283,7 @@
       </v-col>
       <v-divider></v-divider>
       <v-col v-if="readonly" cols="12">
-        <v-card flat rounded="0" class="my-2">
+        <v-card flat rounded="0" class="px-2 my-2 d-flex justify-center align-center">
           <v-table width="100%">
             <tbody>
               <tr>
@@ -293,15 +293,16 @@
                   @paste="handlePaste"
                   @focusout="updateStepDescription($event, index)"
                   :contenteditable="!readonly"
-                  class="text-left py-1"
+                  class="text-center"
                   v-html="item.description"
                 ></td>
               </tr>
             </tbody> </v-table
         ></v-card>
+        
       </v-col>
-      <v-col v-if="!readonly" cols="8">
-        <v-card flat rounded="0" class="my-2">
+      <v-col v-if="!readonly" cols="12" class="px-2 my-2 justify-center align-center">
+        <v-card flat rounded="0">
           <v-table width="100%">
             <tbody>
               <tr>
@@ -311,15 +312,15 @@
                   @paste="handlePaste"
                   @focusout="updateStepDescription($event, index)"
                   :contenteditable="!readonly"
-                  class="text-left py-1"
+                  class="text-center"
                   v-html="item.description"
                 ></td>
               </tr>
             </tbody> </v-table
         ></v-card>
       </v-col>
-      <v-col v-if="!readonly" cols="4">
-        <v-card flat class="my-2">
+      <v-col v-if="!readonly && selection && index === selectedRowIndex" cols="auto" class="justify-center align-center">
+        <v-card flat>
           <div class="text-right">
             <v-row no-gutters>
               <v-col cols="4"
@@ -402,6 +403,7 @@
         ></v-card>
       </v-col>
     </v-row>
+    
   </v-card>
 
   <!--Desktop UI-->

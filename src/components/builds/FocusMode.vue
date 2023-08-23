@@ -34,7 +34,7 @@
         left: () => handleNextStep(),
         right: () => handlePreviousStep(),
       }"
-      ><v-col class="d-flex justify-center align-center">
+      ><v-col class="ma-4 d-flex justify-center align-center">
         <span
           style="text-align: center"
           v-html="currentStep?.description ? currentStep?.description : ''"
