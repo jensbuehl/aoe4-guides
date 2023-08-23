@@ -159,6 +159,7 @@ export default {
         age: currentAge + 1,
         steps: [{}],
       });
+      alignTableColumnWidth("align-to-widest");
       context.emit("stepsChanged", sections);
     };
 
