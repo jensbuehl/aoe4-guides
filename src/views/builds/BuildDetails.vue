@@ -784,6 +784,13 @@
       }}</v-card-text>
     </v-card>
 
+    <StepsEditor
+      :steps="build.steps"
+      :readonly="true"
+      :civ="build.civ"
+      @activateFocusMode="focusDialog = true"
+    ></StepsEditor>
+
     <v-card flat v-if="build.video" rounded="lg" class="mt-4">
       <v-card-title>Video</v-card-title>
       <div align="center">
@@ -797,13 +804,6 @@
         ></iframe>
       </div>
     </v-card>
-
-    <StepsEditor
-      :steps="build.steps"
-      :readonly="true"
-      :civ="build.civ"
-      @activateFocusMode="focusDialog = true"
-    ></StepsEditor>
 
     <div class="mt-4">
       <Discussion :buildId="build.id"></Discussion>
