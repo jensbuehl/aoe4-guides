@@ -1,10 +1,15 @@
 <template>
-  <v-container v-if="build && focusDialog">
-    <v-dialog v-model="focusDialog" fullscreen transition="dialog-bottom-transition">
-      <FocusMode v-on:closeDialog="focusDialog = false" :build="build"></FocusMode>
-    </v-dialog>
-  </v-container>
-  <v-container v-if="build && !focusDialog">
+  <v-dialog
+    v-model="focusDialog"
+    fullscreen
+    transition="dialog-bottom-transition"
+  >
+    <FocusMode
+      v-on:closeDialog="focusDialog = false"
+      :build="build"
+    ></FocusMode>
+  </v-dialog>
+  <v-container v-if="build">
     <v-dialog v-model="deleteDialog" width="auto">
       <v-card rounded="lg" flat class="text-center primary">
         <v-card-title>Delete Build</v-card-title>
@@ -797,7 +802,7 @@
       :steps="build.steps"
       :readonly="true"
       :civ="build.civ"
-      @activateFocusMode="focusDialog=true"
+      @activateFocusMode="focusDialog = true"
     ></StepsEditor>
 
     <div class="mt-4">
@@ -833,12 +838,18 @@ export default {
     const civs = getCivs().civs;
     const build = ref(null);
     const deleteDialog = ref(false);
-    const focusDialog = ref(false)
+    const focusDialog = ref(false);
     const creatorName = ref("");
     const { convertToOverlayFormat, download, copyToClipboard } =
-    useOverlayConverter();
+      useOverlayConverter();
     const { timeSince, isNew } = useTimeSince();
-    const { get, del, incrementViews, error, update: updateBuild } = useCollection("builds");
+    const {
+      get,
+      del,
+      incrementViews,
+      error,
+      update: updateBuild,
+    } = useCollection("builds");
     const { get: getCreator } = useCollection("creators");
 
     onMounted(async () => {
