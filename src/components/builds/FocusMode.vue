@@ -250,9 +250,14 @@ export default {
     const currentStepIndex = ref(0);
 
     var steps = [];
-    props.build.steps.forEach((section) => {
-      steps = steps.concat(section.steps);
-    });
+    if (!props.build.steps[0]?.type) {
+      //For backwards compatibility
+      steps = props.build.steps;
+    } else {
+      props.build.steps.forEach((section) => {
+        steps = steps.concat(section.steps);
+      });
+    }
 
     onMounted(() => {
       currentStep.value = steps[currentStepIndex.value];
