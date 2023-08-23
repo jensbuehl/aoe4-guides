@@ -13,8 +13,7 @@
         Only with a verified email address you are prepared for upcoming features, e.g. build order notificiations.</v-card-text
       >
 
-      <v-list-item>
-        <span>Missing Notifications?</span>
+      <v-row class="ma-2" no-gutters justify="center">
         <v-btn
           size="small"
           color="primary"
@@ -23,8 +22,8 @@
           to="/account"
         >
           Verify Email
-        </v-btn>
-      </v-list-item>
+        </v-btn> 
+      </v-row>
     </v-card></v-alert
   >
 </template>

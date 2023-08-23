@@ -29,8 +29,8 @@
         >Registered villagers gather and manage build orders up to 20% faster.
         ;)</v-card-text
       >
-      <v-list-item>
-        <span>New Villager?</span>
+
+      <v-row class="ma-2" no-gutters justify="center">
         <v-btn
           size="small"
           color="primary"
@@ -40,7 +40,7 @@
         >
           Register now!
         </v-btn>
-      </v-list-item>
+      </v-row>
     </v-card></v-alert
   >
 </template>
