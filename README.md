@@ -1,23 +1,28 @@
 # aoe4-guides
+![image](https://github.com/jensbuehl/aoe4-guides/assets/3983913/99ab70c3-19db-4eb8-bd44-620ef55e5d52)
+
+![image](https://github.com/jensbuehl/aoe4-guides/assets/3983913/86f07842-61d1-4375-824e-db31597f7e1f)
+
 
 Source code for [aoe4guides.com](https://aoe4guides.com): Yet another Age of Empires IV build order page to:
-* create your own build orders (including video link, description, other meta information)
-* share build orders with others
+* create your own build order (including video link, description, other meta information)
+* share build order with others
 * browse and filter build orders (e.g. by season or rating)
-* manage your own favorite build orders
+* manage your own favorite build order
 * write build order comments
-* (more to come, some ideas: icon-based-builds, custom exports/imports, public api,...)
+* illustrate your build order with AOE4 icons
+* get less distracted while playing via focus mode
+* export/import to/from the AOE4 overlay tool
+  
 
 Goals:
 * Build order central for Age of Empires IV/4
-* Open and transparent
-* Community driven
 * Focus on good UX (snappy, easy-to-use, mobile-ready, discoverable...)
 
 If you want to participate, some basic knowledge in the following technology stack would be useful:
 * vue.js
 * vuetify
-* firebase (appcheck, auth, firestore)
+* firebase (appcheck, auth, firestore, cloud functions)
 * vuex
 * (maybe more)
 
