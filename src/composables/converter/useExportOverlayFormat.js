@@ -1,13 +1,6 @@
-import useIconService from "../builds/useIconService.js";
-
 export default function useExportOverlayFormat() {
   const convert = (build) => {
-    //flatten sections
-    var steps = [];
-    build.steps?.forEach((section) => {
-      steps = steps.concat(section.steps);
-    });
-
+    const steps = convertSectionsToSteps(build.steps);
     const overlay_steps = steps?.map((step) =>
       convertStepToOverlayFormat(step)
     );
@@ -30,6 +23,18 @@ export default function useExportOverlayFormat() {
       strategy: build.strategy || null,
     };
   };
+
+  function convertSectionsToSteps(sections) {
+    var steps = [];
+    console.log(sections);
+    sections?.forEach((section) => {
+      section.steps?.forEach((step) => {
+        if (section.age && section.age > 0) step.age = section.age;
+      });
+      steps = steps.concat(section.steps);
+    });
+    return steps;
+  }
 
   function convertImagePathToText(imageElement) {
     //Get src
@@ -54,13 +59,13 @@ export default function useExportOverlayFormat() {
     const gold = parseInt(step.gold) || 0;
     const stone = parseInt(step.stone) || 0;
 
-    return (builders + food + wood + gold + stone) || -1;
+    return builders + food + wood + gold + stone || -1;
   };
 
   const convertStepToOverlayFormat = (step) => {
     const notes = convertDescription(step.description);
     return {
-      age: -1, //not supported
+      age: (step.age > 0)? step.age : -1,
       population_count: -1, //not supported
       ...(step.time && { time: step.time }),
       villager_count: aggregateVillagers(step),
