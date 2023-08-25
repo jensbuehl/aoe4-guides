@@ -2,10 +2,14 @@ import useIconService from "../builds/useIconService.js";
 
 export default function useImportOverlayFormat() {
   const convert = (build) => {
-    const buildSteps = build.build_order?.map((step) =>
-      convertStep(step)
-    );
-
+    //Do not convert ages since "age up" is not supported and the roundtrip would break
+    const buildSteps = [
+      {
+        type: "age",
+        age: 0,
+        steps: build.build_order?.map((step) => convertStep(step)),
+      },
+    ];
     var match_ups = [];
     match_ups = build.matchup?.map((matchup) => mapCivilizations[matchup]);
 
@@ -36,7 +40,7 @@ export default function useImportOverlayFormat() {
   };
 
   const convertStep = (step) => {
-    const convertedNotes = convertNotes(step.notes)
+    const convertedNotes = convertNotes(step.notes);
     return {
       ...(step.time && { time: step.time }),
       food: convertResourceFromOverlayFormat(step.resources.food),
@@ -64,7 +68,9 @@ export default function useImportOverlayFormat() {
     imageText = imageText.replaceAll("@", "");
 
     //Convert to aoe4guides path, if not from aoe4guides, then keep path as is. (e.g. from age4builder)
-    const imagePath = imageText.includes("https") ? imageText : ("/assets/pictures/" + imageText);
+    const imagePath = imageText.includes("https")
+      ? imageText
+      : "/assets/pictures/" + imageText;
 
     //Get meta data
     const { getIconFromImgPath } = useIconService();
@@ -73,7 +79,9 @@ export default function useImportOverlayFormat() {
     //Initialize image data with fallback values, so that broken images do get messed up (e.g. Valdemar used to copy from age4builder)
     //Create image element
     const iconPath = iconMetaData.imgSrc ? iconMetaData.imgSrc : imagePath;
-    const tooltipText = iconMetaData.title ? iconMetaData.title : "Image not found. Please make sure to not copy and paste images from other sources.";
+    const tooltipText = iconMetaData.title
+      ? iconMetaData.title
+      : "Image not found. Please make sure to not copy and paste images from other sources.";
     const iconClass = iconMetaData.class
       ? "icon-" + iconMetaData.class
       : "icon";

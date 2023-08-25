@@ -26,7 +26,6 @@ export default function useExportOverlayFormat() {
 
   function convertSectionsToSteps(sections) {
     var steps = [];
-    console.log(sections);
     sections?.forEach((section) => {
       section.steps?.forEach((step) => {
         if (section.age && section.age > 0) step.age = section.age;

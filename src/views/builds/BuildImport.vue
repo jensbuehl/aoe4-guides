@@ -142,7 +142,6 @@ export default {
             console.log(text);
             const importedFileString = text;
             const importedFileObject = JSON.parse(importedFileString);
-            console.log(importedFileObject);
             build.value = convert(importedFileObject);
             if (!error.value) {
               newFromTemplate();
