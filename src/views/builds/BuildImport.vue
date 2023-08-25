@@ -72,12 +72,16 @@
 </template>
 
 <script>
-import RegisterAd from "../../components/RegisterAd.vue";
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+
+//Components
+import RegisterAd from "../../components/RegisterAd.vue";
+
+//Composables
 import useCollection from "../../composables/useCollection";
-import useOverlayConverter from "../../composables/converter/useOverlayConverter";
+import useImportOverlayFormat from "../../composables/converter/useImportOverlayFormat";
 
 export default {
   name: "BuildImport",
@@ -87,7 +91,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { error } = useCollection("builds");
-    const { convertFromOverlayFormat } = useOverlayConverter();
+    const { convert } = useImportOverlayFormat();
     const store = useStore();
     const user = computed(() => store.state.user);
     const router = useRouter();
@@ -139,7 +143,7 @@ export default {
             const importedFileString = text;
             const importedFileObject = JSON.parse(importedFileString);
             console.log(importedFileObject);
-            build.value = convertFromOverlayFormat(importedFileObject);
+            build.value = convert(importedFileObject);
             if (!error.value) {
               newFromTemplate();
             }
@@ -158,7 +162,7 @@ export default {
       try {
         const importedFileString = await files.value[0].text();
         const importedFileObject = JSON.parse(importedFileString);
-        build.value = convertFromOverlayFormat(importedFileObject);
+        build.value = convert(importedFileObject);
         if (!error.value) {
           newFromTemplate();
         }

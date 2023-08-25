@@ -83,7 +83,8 @@
                   >Create creators collection</v-btn
                 >
                 <div class="ml-4 mb-3">
-                  Create creators collection based on creatorIds in build orders.
+                  Create creators collection based on creatorIds in build
+                  orders.
                 </div>
                 <v-divider></v-divider>
                 <v-btn
@@ -120,12 +121,15 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { ref, computed, onMounted } from "vue";
+
+//Composables
 import getDefaultConfig from "../composables/filter/getDefaultConfig";
 import useCollection from "../composables/useCollection";
 import queryService from "../composables/useQueryService";
-import useOverlayConverter from "../composables/converter/useOverlayConverter";
-import { useStore } from "vuex";
-import { ref, computed, onMounted } from "vue";
+import useImportOverlayFormat from "../composables/converter/useImportOverlayFormat";
+import useExportOverlayFormat from "../composables/converter/useExportOverlayFormat";
 import useYoutube from "../composables/builds/useYoutube";
 
 export default {
@@ -136,11 +140,9 @@ export default {
     var builds = null;
 
     const { getAll, getQuery, getSize, update } = useCollection("builds");
-    const { get:getCreator, add:addCreator } = useCollection("creators");
-    const {
-      convertOverlayNotesToDescription,
-      convertDescriptionToOverlayNotes,
-    } = useOverlayConverter();
+    const { get: getCreator, add: addCreator } = useCollection("creators");
+    const { convertNotes } = useImportOverlayFormat();
+    const { convertDescription } = useExportOverlayFormat();
     const error = ref(null);
     const buildsCount = ref(null);
     const store = useStore();
@@ -162,8 +164,8 @@ export default {
 
     const updateDescription = (description) => {
       //roundtrip export/re-import to update entire description
-      const notes = convertDescriptionToOverlayNotes(description);
-      const migrated = convertOverlayNotesToDescription(notes);
+      const notes = convertDescription(description);
+      const migrated = convertNotes(notes);
       return migrated;
     };
 
@@ -190,14 +192,16 @@ export default {
         console.log("Build id:", element.id);
 
         //Get creator document
-        const creatorDoc = await getVideoMetaData(extractVideoId(element.video))
+        const creatorDoc = await getVideoMetaData(
+          extractVideoId(element.video)
+        );
         console.log("Creator document:", creatorDoc);
 
         //Add content creator document
         const res = await getCreator(creatorDoc.creatorId);
-        console.log(creatorDoc)
-        if(!res){
-          await addCreator(creatorDoc, creatorDoc.creatorId)
+        console.log(creatorDoc);
+        if (!res) {
+          await addCreator(creatorDoc, creatorDoc.creatorId);
         }
       }
     };
@@ -205,7 +209,7 @@ export default {
     const addIsDraftProperty = () => {
       console.log("Builds count:", buildsCount.value);
 
-      for (const build of builds){
+      for (const build of builds) {
         console.log("Build:", build.id);
 
         //Add field
@@ -213,7 +217,7 @@ export default {
 
         //Save to database
         update(build.id, build);
-      };
+      }
     };
 
     const rewriteImages = () => {
@@ -268,7 +272,6 @@ export default {
       addIsDraftProperty,
       sanitizeVideoPaths,
       createCreatorsCollection,
-      
     };
   },
 };

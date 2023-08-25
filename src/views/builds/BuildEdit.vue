@@ -52,10 +52,13 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group
-            class="hidden-sm-and-up"
-          >
-            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="x-small"
+          <v-item-group class="hidden-sm-and-up">
+            <v-chip
+              v-if="filteredMatchups?.length"
+              class="mr-2 mb-2"
+              color="accent"
+              label
+              size="x-small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
@@ -152,10 +155,13 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group
-            class="hidden-xs hidden-md-and-up"
-          >
-            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="small"
+          <v-item-group class="hidden-xs hidden-md-and-up">
+            <v-chip
+              v-if="filteredMatchups?.length"
+              class="mr-2 mb-2"
+              color="accent"
+              label
+              size="small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
@@ -441,10 +447,13 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group
-            class="ml-4 hidden-sm-and-down"
-          >
-            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="small"
+          <v-item-group class="ml-4 hidden-sm-and-down">
+            <v-chip
+              v-if="filteredMatchups?.length"
+              class="mr-2 mb-2"
+              color="accent"
+              label
+              size="small"
               ><v-icon start icon="mdi-sword-cross"></v-icon
               ><span v-for="(item, index) in filteredMatchups">
                 <span v-if="!index">{{ item }}</span
@@ -729,11 +738,15 @@
 </template>
 
 <script>
-import Favorite from "../../components/Favorite.vue";
-import StepsEditor from "../../components/builds/StepsEditor.vue";
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+
+//Components
+import Favorite from "../../components/Favorite.vue";
+import StepsEditor from "../../components/builds/StepsEditor.vue";
+
+//Composables
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
@@ -742,7 +755,9 @@ import getSeasons from "../../composables/filter/getSeasons";
 import getMaps from "../../composables/filter/getMaps";
 import getStrategies from "../../composables/filter/getStrategies";
 import useTimeSince from "../../composables/useTimeSince";
-import useOverlayConverter from "../../composables/converter/useOverlayConverter";
+import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
+import useCopyToClipboard from "../../composables/converter/useCopyToClipboard";
+import useDownload from "../../composables/converter/useDownload";
 
 export default {
   name: "BuildEdit",
@@ -761,8 +776,9 @@ export default {
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const build = ref(null);
-    const { convertToOverlayFormat, download, copyToClipboard } =
-    useOverlayConverter();
+    const { convert } = useExportOverlayFormat();
+    const { copyToClipboard } = useCopyToClipboard();
+    const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
     const {
       get: getBuild,
@@ -853,13 +869,13 @@ export default {
     };
 
     const handleCopyOverlayFormat = () => {
-      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuild = convert(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       copyToClipboard(overlayBuildString);
     };
 
     const handleDownloadOverlayFormat = () => {
-      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuild = convert(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       download(overlayBuildString, build.value.title);
     };

@@ -809,18 +809,24 @@
 </template>
 
 <script>
+import { ref, onMounted, computed } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+
+//components
 import Favorite from "../../components/Favorite.vue";
 import FocusMode from "../../components/builds/FocusMode.vue";
 import Vote from "../../components/Vote.vue";
 import StepsEditor from "../../components/builds/StepsEditor.vue";
 import Discussion from "../../components/Discussion.vue";
-import { ref, onMounted, computed } from "vue";
-import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+
+//composables
 import useCollection from "../../composables/useCollection";
 import getCivs from "../../composables/filter/getCivs";
 import useTimeSince from "../../composables/useTimeSince";
-import useOverlayConverter from "../../composables/converter/useOverlayConverter";
+import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
+import useCopyToClipboard from "../../composables/converter/useCopyToClipboard";
+import useDownload from "../../composables/converter/useDownload";
 
 export default {
   name: "BuildDetails",
@@ -837,8 +843,9 @@ export default {
     const deleteDialog = ref(false);
     const focusDialog = ref(false);
     const creatorName = ref("");
-    const { convertToOverlayFormat, download, copyToClipboard } =
-      useOverlayConverter();
+    const { convert } = useExportOverlayFormat();
+    const { copyToClipboard } = useCopyToClipboard();
+    const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
     const {
       get,
@@ -908,13 +915,13 @@ export default {
     };
 
     const handleCopyOverlayFormat = () => {
-      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuild = convert(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       copyToClipboard(overlayBuildString);
     };
 
     const handleDownloadOverlayFormat = () => {
-      const overlayBuild = convertToOverlayFormat(build.value);
+      const overlayBuild = convert(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       download(overlayBuildString, build.value.title);
     };
