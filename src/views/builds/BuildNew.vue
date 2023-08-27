@@ -368,7 +368,17 @@ export default {
           {
             type: "age",
             age: 0,
-            steps: [{}],
+            steps: [
+              {
+                time: "",
+                builders: "",
+                food: "",
+                wood: "",
+                gold: "",
+                stone: "",
+                description: "",
+              },
+            ],
           },
         ],
         video: "",
@@ -404,6 +414,7 @@ export default {
     };
 
     const handleSave = async () => {
+      console.log(build.value);
       error.value = validateBuild(build.value);
 
       //Write to database
