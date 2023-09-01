@@ -1,6 +1,11 @@
 export default function useExportOverlayFormat() {
   const convert = (build) => {
-    const steps = convertSectionsToSteps(build.steps);
+    var steps;
+    if (build.steps[0]?.type) {
+      steps = convertSectionsToSteps(build.steps);
+    } else {
+      steps = build.steps;
+    }
     const overlay_steps = steps?.map((step) =>
       convertStepToOverlayFormat(step)
     );
@@ -64,7 +69,7 @@ export default function useExportOverlayFormat() {
   const convertStepToOverlayFormat = (step) => {
     const notes = convertDescription(step.description);
     return {
-      age: (step.age > 0)? step.age : -1,
+      age: step.age > 0 ? step.age : -1,
       population_count: -1, //not supported
       ...(step.time && { time: step.time }),
       villager_count: aggregateVillagers(step),
