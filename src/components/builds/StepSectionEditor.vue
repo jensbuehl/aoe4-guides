@@ -282,26 +282,7 @@
         </v-row>
       </v-col>
       <v-divider></v-divider>
-      <v-col v-if="readonly" cols="12">
-        <v-card flat rounded="0" class="px-2 my-2 d-flex justify-center align-center">
-          <v-table width="100%">
-            <tbody>
-              <tr>
-                <td
-                  @keyup="saveSelection"
-                  @click="saveSelection"
-                  @paste="handlePaste"
-                  @focusout="updateStepDescription($event, index)"
-                  :contenteditable="!readonly"
-                  class="text-center"
-                  v-html="item.description"
-                ></td>
-              </tr>
-            </tbody> </v-table
-        ></v-card>
-        
-      </v-col>
-      <v-col v-if="!readonly" cols="12" class="px-2 my-2 justify-center align-center">
+      <v-col cols="12" class="px-2 my-2 justify-center align-center">
         <v-card flat rounded="0">
           <v-table width="100%">
             <tbody>
