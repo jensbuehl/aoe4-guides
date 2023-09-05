@@ -25,7 +25,7 @@
       >Remove your like</span
     >
     <template v-slot:activator="{ props }">
-      <v-btn
+      <v-btn class="ml-0"
         @click="handleRemoveVoteUp"
         v-show="upVote"
         v-bind="props"
