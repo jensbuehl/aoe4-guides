@@ -30,7 +30,6 @@ export default {
         });
 
       const vuetify = useVuetify();
-      console.log(vuetify);
 
       if (window.matchMedia("(prefers-color-scheme: light)").matches) {
         vuetify.theme.global.name = "customLightTheme";
