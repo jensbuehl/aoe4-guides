@@ -126,6 +126,7 @@ export default {
         upvotes: 0,
         downvotes: 0,
         score: 0,
+        isDraft: false,
         timeCreated: null,
         timeUpdated: null,
       };
@@ -139,7 +140,6 @@ export default {
         navigator.clipboard
           .readText()
           .then((text) => {
-            console.log(text);
             const importedFileString = text;
             const importedFileObject = JSON.parse(importedFileString);
             build.value = convert(importedFileObject);
