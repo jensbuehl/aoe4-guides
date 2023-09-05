@@ -17,7 +17,6 @@ export default {
         name: "AOE4 GUIDES",
         short_name: "AOE4 GUIDES",
         description: "Create and share build orders for Age of Empires IV. Export and use any build order with the Overlay Tool for AoE4.",
-        theme_color: "#e7c05e",
         background_color: "#1D2432",
         display: "standalone",
         icons: [
