@@ -280,6 +280,8 @@
       </span>
     </v-container>
   </v-app-bar>
+  <v-row> </v-row>
+
   <v-bottom-navigation
     hide-on-scroll
     scroll-target="#main-content"
