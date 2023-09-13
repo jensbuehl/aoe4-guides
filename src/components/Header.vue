@@ -1,31 +1,50 @@
 <template>
   <v-app-bar
+    scroll-behavior="hide"
     flat
     app
     height="100"
     :style="'border-bottom: 3px solid ' + $vuetify.theme.current.colors.accent"
   >
     <v-container class="fill-height d-flex align-center my-0 py-0">
-      <v-app-bar-nav-icon color="accent" class="hidden-md-and-up">
+      <v-app-bar-nav-icon
+        color="accent"
+        class="hidden-md-and-up"
+        v-if="!(platform.android || platform.ios)"
+      >
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn icon="mdi-menu" v-bind="props"></v-btn>
           </template>
           <v-list v-if="authIsReady">
-            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/builds">
+            <v-list-item
+              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              to="/builds"
+            >
               <v-icon class="mr-4" color="accent">mdi-hammer</v-icon>
               All Builds
             </v-list-item>
-            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" v-if="user" to="/favorites">
-              <v-icon class="mr-4" color="accent">mdi-heart-outline</v-icon>
+            <v-list-item
+              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              v-if="user"
+              to="/favorites"
+            >
+              <v-icon class="mr-4" color="accent">mdi-heart</v-icon>
               Favorites
             </v-list-item>
-            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" v-if="user" to="/mybuilds">
+            <v-list-item
+              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              v-if="user"
+              to="/mybuilds"
+            >
               <v-icon class="mr-4" color="accent">mdi-playlist-edit</v-icon>
               My Builds
             </v-list-item>
             <v-divider></v-divider>
-            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/new">
+            <v-list-item
+              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              to="/new"
+            >
               <v-icon class="mr-4" color="accent">mdi-plus</v-icon>
               Create New Build Order
             </v-list-item>
@@ -148,7 +167,11 @@
                 >Create new build order from scratch</span
               >
               <template v-slot:activator="{ props }">
-                <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/new" v-bind="props">
+                <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
+                  to="/new"
+                  v-bind="props"
+                >
                   <v-icon class="mr-4" color="accent">mdi-pencil</v-icon>
                   Create New Build Order
                 </v-list-item>
@@ -162,7 +185,11 @@
                 >Import build order from file (e.g. from overlay tool)</span
               >
               <template v-slot:activator="{ props }">
-                <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" to="/import" v-bind="props">
+                <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
+                  to="/import"
+                  v-bind="props"
+                >
                   <v-icon class="mr-4" color="accent">mdi-import</v-icon>
                   Import from File
                 </v-list-item>
@@ -176,16 +203,15 @@
                 >Import build order from clipboard (e.g. from age4builder)</span
               >
               <template v-slot:activator="{ props }">
-                <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary"
+                <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
                   :to="{
                     name: 'BuildImport',
                     params: { paste: true },
                   }"
                   v-bind="props"
                 >
-                  <v-icon class="mr-4" color="accent"
-                    >mdi-content-paste</v-icon
-                  >
+                  <v-icon class="mr-4" color="accent">mdi-content-paste</v-icon>
                   Import from Clipboard
                 </v-list-item>
               </template>
@@ -234,11 +260,18 @@
               Logged in as {{ user.displayName }}
             </v-list-item>
             <VDivider></VDivider>
-            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" v-if="user" to="/account">
+            <v-list-item
+              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              v-if="user"
+              to="/account"
+            >
               <v-icon class="mr-4" color="accent">mdi-account-edit</v-icon>
               Your Profile
             </v-list-item>
-            <v-list-item :style="'color: '+ $vuetify.theme.current.colors.primary" @click="logout">
+            <v-list-item
+              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              @click="logout"
+            >
               <v-icon class="mr-4" color="accent">mdi-logout</v-icon>
               Logout
             </v-list-item>
@@ -247,12 +280,55 @@
       </span>
     </v-container>
   </v-app-bar>
+  <v-bottom-navigation
+    hide-on-scroll
+    scroll-target="#main-content"
+    :style="'border-top: 3px solid ' + $vuetify.theme.current.colors.accent"
+    v-if="mobile && (platform.android || platform.ios)"
+  >
+    <v-btn to="/" color="primary">
+      <template v-slot:prepend>
+        <v-icon color="accent">mdi-home</v-icon>
+      </template>
+      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+        >Home</span
+      >
+    </v-btn>
+
+    <v-btn to="/builds" color="primary">
+      <template v-slot:prepend>
+        <v-icon color="accent">mdi-hammer</v-icon>
+      </template>
+      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+        >All Builds</span
+      >
+    </v-btn>
+
+    <v-btn v-if="user" color="primary" to="/favorites">
+      <template v-slot:prepend>
+        <v-icon color="accent">mdi-heart-outline</v-icon>
+      </template>
+      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+        >Favorites</span
+      >
+    </v-btn>
+
+    <v-btn v-if="user" color="primary" to="/mybuilds">
+      <template v-slot:prepend>
+        <v-icon color="accent">mdi-playlist-edit</v-icon>
+      </template>
+      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+        >My Builds</span
+      >
+    </v-btn>
+  </v-bottom-navigation>
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useDisplay } from "vuetify";
 
 export default {
   name: "Header",
@@ -263,6 +339,7 @@ export default {
     const user = computed(() => store.state.user);
     const error = ref(null);
     const router = useRouter();
+    const { mobile, platform } = useDisplay();
     const logout = async () => {
       try {
         await store.dispatch("logout");
@@ -273,12 +350,19 @@ export default {
       }
     };
 
+    onMounted(() => {
+      console.log("mobile", mobile.value);
+      console.log("platform", platform.value);
+    });
+
     return {
       title,
       subtitle,
       user,
       authIsReady: computed(() => store.state.authIsReady),
       logout,
+      platform,
+      mobile,
     };
   },
 };
