@@ -1,4 +1,28 @@
 <template>
+  <v-layout-item model-value position="bottom" class="text-end" size="88">
+    <div class="ma-4">
+      <v-tooltip>
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Create new build order from scratch</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            class="hidden-md-and-up"
+            :style="'color: ' + $vuetify.theme.current.colors.primary"
+            to="/new"
+            v-bind="props"
+            icon="mdi-plus"
+            size="large"
+            color="primary"
+            elevation="8"
+          />
+        </template>
+      </v-tooltip>
+    </div>
+  </v-layout-item>
   <v-container>
     <v-row>
       <!-- main content -->
@@ -16,12 +40,15 @@
           >
         </v-card>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
-        <EmailVerificationAd class="mt-4" v-if="user && authIsReady && !(user.emailVerified)"></EmailVerificationAd>
+        <EmailVerificationAd
+          class="mt-4"
+          v-if="user && authIsReady && !user.emailVerified"
+        ></EmailVerificationAd>
       </v-col>
 
       <v-col cols="12" md="8">
         <!-- civilizations xs-->
-        <v-row align="center" no-gutters class="hidden-sm-and-up">
+        <v-row align="center" no-gutters class="hidden-sm-and-up mt-n2">
           <v-col cols="6" v-for="(civ, index) in civs" :key="civ.title">
             <v-tooltip location="top" open-delay="1000">
               <span
@@ -151,7 +178,7 @@
 
         <!--featured creators xs-->
         <div
-          class="text-h6 mt-4 mb-2 ml-4 hidden-md-and-up"
+          class="text-h6 mt-2 mb-2 ml-4 hidden-md-and-up"
           style="font-family: 'Segoe UI' !important"
         >
           Featured Creators
@@ -573,7 +600,10 @@
         </v-row>
 
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
-        <EmailVerificationAd class="mt-6" v-if="user && authIsReady && !(user.emailVerified)"></EmailVerificationAd>
+        <EmailVerificationAd
+          class="mt-6"
+          v-if="user && authIsReady && !user.emailVerified"
+        ></EmailVerificationAd>
       </v-col>
     </v-row>
   </v-container>
@@ -598,7 +628,13 @@ import seedrandom from "seedrandom";
 
 export default {
   name: "Home",
-  components: { FilterConfig, BuildListCard, RegisterAd, VSkeletonLoader, EmailVerificationAd },
+  components: {
+    FilterConfig,
+    BuildListCard,
+    RegisterAd,
+    VSkeletonLoader,
+    EmailVerificationAd,
+  },
   setup() {
     window.scrollTo(0, 0);
 

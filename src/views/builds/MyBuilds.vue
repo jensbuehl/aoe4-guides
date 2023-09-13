@@ -1,4 +1,28 @@
 <template>
+  <v-layout-item model-value position="bottom" class="text-end" size="88">
+    <div class="ma-4">
+      <v-tooltip>
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Create new build order from scratch</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            class="hidden-md-and-up"
+            :style="'color: ' + $vuetify.theme.current.colors.primary"
+            to="/new"
+            v-bind="props"
+            icon="mdi-plus"
+            size="large"
+            color="primary"
+            elevation="8"
+          />
+        </template>
+      </v-tooltip>
+    </div>
+  </v-layout-item>
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
@@ -7,7 +31,7 @@
         <RegisterAd v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="8" v-if="builds">
         <div v-for="item in builds">
           <router-link
             style="text-decoration: none"
@@ -58,8 +82,7 @@ export default {
     window.scrollTo(0, 0);
 
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { getAll: getAllCreators } =
-      useCollection("creators");
+    const { getAll: getAllCreators } = useCollection("creators");
     const builds = ref(null);
     const creators = ref(null);
     const store = useStore();
@@ -112,9 +135,9 @@ export default {
     const initData = async () => {
       //reset results count
       store.commit("setResultsCount", null);
-      
+
       //include drafts
-      store.commit ("setDrafts", true)
+      store.commit("setDrafts", true);
 
       //reset author filter
       store.commit("setAuthor", null);

@@ -1,10 +1,9 @@
 <template>
   <v-app-bar
-    scroll-behavior="hide"
     flat
     app
-    height="100"
-    :style="'border-bottom: 3px solid ' + $vuetify.theme.current.colors.accent"
+    :height="(platform.android || platform.ios) ? 60 : 100 "
+    :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.accent"
   >
     <v-container class="fill-height d-flex align-center my-0 py-0">
       <v-app-bar-nav-icon
@@ -29,7 +28,7 @@
               v-if="user"
               to="/favorites"
             >
-              <v-icon class="mr-4" color="accent">mdi-heart</v-icon>
+              <v-icon class="mr-4" color="accent">mdi-heart-outline</v-icon>
               Favorites
             </v-list-item>
             <v-list-item
@@ -57,14 +56,21 @@
           <v-col cols="12">
             <v-card to="/" flat width="240">
               <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
-              <v-card-title
+              <v-card-title v-if="!(platform.android || platform.ios)"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
-                class="title mb-0 mt-1 mt-sm-0 pb-0 pt-0"
+                class="title my-0 py-0"
                 >{{ title }}</v-card-title
               >
-              <v-card-subtitle
+              <v-card-title v-if="(platform.android || platform.ios)"
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                class="title mb-0 mt-1 pb-0 pt-0"
+                >{{ title }}</v-card-title
+              >
+              <v-card-subtitle v-if="!(platform.android || platform.ios)"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
@@ -285,7 +291,7 @@
   <v-bottom-navigation
     hide-on-scroll
     scroll-target="#main-content"
-    :style="'border-top: 3px solid ' + $vuetify.theme.current.colors.accent"
+    :style="'border-top: 2px solid ' + $vuetify.theme.current.colors.accent"
     v-if="mobile && (platform.android || platform.ios)"
   >
     <v-btn to="/" color="primary">
