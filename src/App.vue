@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <Header></Header>
-    <v-main class="mt-6 mx-md-2" id="main-content">
+    <v-main class="mt-2 mx-md-2" id="main-content">
       <router-view />
     </v-main>
     <Footer></Footer>

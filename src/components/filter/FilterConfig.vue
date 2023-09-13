@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="lg" flat class="hidden-sm-and-up">
+  <v-card rounded="lg" flat class="hidden-md-and-up">
     <v-card-text class="pb-0 mb-4">
       <v-expansion-panels>
         <v-expansion-panel elevation="0">
@@ -124,7 +124,7 @@
       </v-row>
     </v-container>
   </v-card>
-  <v-card rounded="lg" flat class="hidden-xs">
+  <v-card rounded="lg" flat class="hidden-sm-and-down">
     <v-card-text class="pb-0 mb-4">
       <v-autocomplete
         class="hidden-xs"
@@ -334,6 +334,7 @@
           <span v-if="count">{{ count }} build order</span
           ><span v-if="count > 1">s</span>
         </v-col>
+        
         <v-col class="d-flex justify-center" cols="6" md="12" lg="6">
           <v-btn
             color="primary"
