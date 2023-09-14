@@ -193,6 +193,7 @@
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepTime($event, index)"
+                @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
                 v-html="item.time"
@@ -213,6 +214,7 @@
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepBuilders($event, index)"
+                @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
                 v-html="item.builders ? item.builders : ''"
@@ -228,6 +230,7 @@
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepFood($event, index)"
+                @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
                 v-html="item.food"
@@ -243,6 +246,7 @@
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepWood($event, index)"
+                @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
                 v-html="item.wood"
@@ -258,6 +262,7 @@
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepGold($event, index)"
+                @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
                 v-html="item.gold"
@@ -273,6 +278,7 @@
               ><v-card-text
                 @paste="handlePaste"
                 @focusout="updateStepStone($event, index)"
+                @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
                 v-html="item.stone"
@@ -573,7 +579,7 @@
           >
             <td
               @focusin="selection = null"
-              @input="$emit('textChanged')"
+              @input="handleResourceInput"
               @paste="handlePaste"
               @focusout="updateStepTime($event, index)"
               :contenteditable="!readonly"
@@ -587,7 +593,7 @@
             ></td>
             <td
               @focusin="selection = null"
-              @input="$emit('textChanged')"
+              @input="handleResourceInput"
               @paste="handlePaste"
               @focusout="updateStepBuilders($event, index)"
               :contenteditable="!readonly"
@@ -596,7 +602,7 @@
             ></td>
             <td
               @focusin="selection = null"
-              @input="$emit('textChanged')"
+              @input="handleResourceInput"
               @paste="handlePaste"
               @focusout="updateStepFood($event, index)"
               :contenteditable="!readonly"
@@ -605,7 +611,7 @@
             ></td>
             <td
               @focusin="selection = null"
-              @input="$emit('textChanged')"
+              @input="handleResourceInput"
               @paste="handlePaste"
               @focusout="updateStepWood($event, index)"
               :contenteditable="!readonly"
@@ -614,7 +620,7 @@
             ></td>
             <td
               @focusin="selection = null"
-              @input="$emit('textChanged')"
+              @input="handleResourceInput"
               @paste="handlePaste"
               @focusout="updateStepGold($event, index)"
               :contenteditable="!readonly"
@@ -623,7 +629,7 @@
             ></td>
             <td
               @focusin="selection = null"
-              @input="$emit('textChanged')"
+              @input="handleResourceInput"
               @paste="handlePaste"
               @focusout="updateStepStone($event, index)"
               :contenteditable="!readonly"
@@ -837,8 +843,10 @@ export default {
       context.emit("stepsChanged", steps);
     };
     const updateStepWood = (event, index) => {
-      steps[index].wood = event.target.innerHTML;
-      stepsCopy[index].wood = event.target.innerHTML;
+      const content = event.target.innerHTML;
+
+      steps[index].wood = content;
+      stepsCopy[index].wood = content;
       steps[index].description = stepsCopy[index].description;
 
       aggregateVillagers(index);
@@ -932,6 +940,35 @@ export default {
     const unhoverItem = () => {
       hoverRowIndex.value = null;
     };
+
+    const handleResourceInput = async (e) => {
+      //prevent break on hyphen
+      e.target.innerHTML = e.target.innerHTML.replace("-", "&#8209;")
+      
+      //updating innerHTML sets cursor to start, this is a workaround to set caret to end
+      placeCaretAtEnd(e.target)
+
+      context.emit('textChanged')
+    }
+
+    function placeCaretAtEnd(el) {
+    el.focus();
+    if (typeof window.getSelection != "undefined"
+            && typeof document.createRange != "undefined") {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (typeof document.body.createTextRange != "undefined") {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+    }
+}
+
     const handlePaste = async (e) => {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
@@ -984,6 +1021,7 @@ export default {
       readonly,
       hoverRowIndex,
       selectedRowIndex,
+      handleResourceInput,
       sanitizeHtml,
       selection,
       delteRowIndex,
