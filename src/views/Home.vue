@@ -268,7 +268,7 @@
         <!--villager of the day xs-->
         <v-row no-gutters class="hidden-md-and-up">
           <div
-            class="text-h6 mt-4 mb-2 ml-4"
+            class="text-h6 mt-2 mb-2 ml-4"
             style="font-family: 'Segoe UI' !important"
           >
             Villager of the Day
@@ -403,6 +403,7 @@
             </div> </v-col
         ></v-row>
       </v-col>
+
 
       <!-- sidebar -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
