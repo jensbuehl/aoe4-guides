@@ -694,6 +694,18 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
+      //get most recent
+      const mostRecentQuery = getQuery(
+        queryService.getQueryParametersFromConfig(mostRecentConfig.value, 5)
+      );
+      mostRecentBuilds.value = await getAll(mostRecentQuery);
+
+      //get popular
+      const popularBuildsQuery = getQuery(
+        queryService.getQueryParametersFromConfig(popularConfig.value, 5)
+      );
+      popularBuilds.value = await getAll(popularBuildsQuery);
+
       //get all creators
       allCreators.value = await getAllCreators();
 
@@ -725,18 +737,6 @@ export default {
       );
       user.count = await getSize(authorQuery);
       villagerOfTheDay.value = user;
-
-      //get most recent
-      const mostRecentQuery = getQuery(
-        queryService.getQueryParametersFromConfig(mostRecentConfig.value, 5)
-      );
-      mostRecentBuilds.value = await getAll(mostRecentQuery);
-
-      //get popular
-      const popularBuildsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(popularConfig.value, 5)
-      );
-      popularBuilds.value = await getAll(popularBuildsQuery);
 
       //get count
       const allDocsQuery = getQuery(
