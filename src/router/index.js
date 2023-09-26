@@ -147,12 +147,12 @@ const routes = [
       }
     },
     {
-      path: "/:catchAll(.*)",
-      name: "NotFound",
-      component: NotFound,
-      meta: {
-        title: "Page Not Found"
-      }
+      //path: "/:catchAll(.*)",
+      //name: "NotFound",
+      //component: NotFound,
+      //meta: {
+      //  title: "Page Not Found"
+      //}
     }
   ];
   
