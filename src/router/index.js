@@ -4,6 +4,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import Login from "../views/account/Login.vue";
 import Register from "../views/account/Register.vue";
 import Account from "../views/account/Account.vue";
+import AccountAction from "../views/account/AccountAction.vue";
 import ResetPassword from "../views/account/ResetPassword.vue";
 
 //builds
@@ -84,6 +85,14 @@ const routes = [
       path: "/account",
       name: "Account",
       component: Account,
+      meta: {
+        title: "Account"
+      }
+    },
+    {
+      path: "/account/action",
+      name: "AccountAction",
+      component: AccountAction,
       meta: {
         title: "Account"
       }

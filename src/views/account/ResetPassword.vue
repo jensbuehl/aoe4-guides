@@ -68,7 +68,6 @@ export default {
 
       await sendPasswordResetEmail(auth, email.value, actionCodeSettings)
         .then(() => {
-          alert("Password reset email sent!");
           router.push("/");
         })
         .catch((err) => {
