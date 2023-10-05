@@ -61,10 +61,11 @@ export default function useIconService(civArg) {
         break;
     }
 
-    if (civ.value) {
+    if (civ.value && civ.value != "ANY") {
+      console.log(civ.value);
       return allIcons.filter((icon) => icon.civ.includes(civ.value));
     } else {
-      return allIcons;
+      return allIcons.filter(() => true);
     }
   };
 
