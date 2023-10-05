@@ -14,6 +14,18 @@ const civs = ref([
     flagSmall: "assets/flags/abb-small.png",
   },
   {
+    title: "Ayyubids",
+    shortName: "AYY",
+    flagLarge: "assets/flags/ayy-large.png",
+    flagSmall: "assets/flags/ayy-small.png",
+  },
+  {
+    title: "Byzantines",
+    shortName: "BYZ",
+    flagLarge: "assets/flags/byz-large.png",
+    flagSmall: "assets/flags/byz-small.png",
+  },
+  {
     title: "Chinese",
     shortName: "CHI",
     flagLarge: "assets/flags/chi-large.png",
@@ -44,6 +56,18 @@ const civs = ref([
     flagSmall: "assets/flags/hre-small.png",
   },
   {
+    title: "Japanese",
+    shortName: "JAP",
+    flagLarge: "assets/flags/jap-large.png",
+    flagSmall: "assets/flags/jap-small.png",
+  },
+  {
+    title: "Jeanne d'Arc",
+    shortName: "JDA",
+    flagLarge: "assets/flags/jda-large.png",
+    flagSmall: "assets/flags/jda-small.png",
+  },
+  {
     title: "Malian",
     shortName: "MAL",
     flagLarge: "assets/flags/mal-large.png",
@@ -56,6 +80,12 @@ const civs = ref([
     flagSmall: "assets/flags/mon-small.png",
   },
   {
+    title: "Order of  the Dragon",
+    shortName: "DRA",
+    flagLarge: "assets/flags/dra-large.png",
+    flagSmall: "assets/flags/dra-small.png",
+  },
+  {
     title: "Ottomans",
     shortName: "OTT",
     flagLarge: "assets/flags/ott-large.png",
@@ -66,6 +96,12 @@ const civs = ref([
     shortName: "RUS",
     flagLarge: "assets/flags/rus-large.png",
     flagSmall: "assets/flags/rus-small.png",
+  },
+  {
+    title: "Zhu Xi's Legacy",
+    shortName: "ZXL",
+    flagLarge: "assets/flags/zxl-large.png",
+    flagSmall: "assets/flags/zxl-small.png",
   },
 ]);
 
