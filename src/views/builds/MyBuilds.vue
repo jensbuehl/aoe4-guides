@@ -31,8 +31,8 @@
         <RegisterAd v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
-      <v-col cols="12" md="8" v-if="builds">
-        <div v-for="item in builds">
+      <v-col cols="12" md="8">
+        <div v-if="builds" v-for="item in builds">
           <router-link
             style="text-decoration: none"
             :to="{
@@ -142,9 +142,6 @@ export default {
       //reset author filter
       store.commit("setAuthor", null);
 
-      //get all creators
-      creators.value = await getAllCreators();
-
       //get builds that match the filter
       const paginationQuery = getQuery(
         queryService.getQueryParametersFromConfig(
@@ -162,6 +159,9 @@ export default {
       });
       const res = await getAll(paginationQuery);
       builds.value = res;
+
+      //get all creators
+      creators.value = await getAllCreators();
 
       //init page count, current page, and commit overall results count
       const allDocsQuery = getQuery(

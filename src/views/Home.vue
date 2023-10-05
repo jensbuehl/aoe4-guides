@@ -136,7 +136,7 @@
                   <v-row no-gutters align="center" justify="center">
                     <v-col cols="4">
                       <v-img
-                        min-height="50"
+                        min-height="70"
                         :src="civ.flagLarge"
                         :lazy-src="civ.flagSmall"
                         :gradient="
