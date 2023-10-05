@@ -2,7 +2,11 @@ import { ref } from "vue";
 
 const seasons = ref([
   {
-    //TODO: Add tagline and date once info is available
+    title: "Season 6",
+    tagline: "The Sultans Ascend",
+    startDate: new Date(2023, 11, 14)
+  },
+  {
     title: "Season 5",
     tagline: "Map Monsters: Summer Party Edition",
     startDate: new Date(2023, 6, 15)
