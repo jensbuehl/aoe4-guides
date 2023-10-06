@@ -191,6 +191,7 @@
           <v-col cols="3">
             <v-card flat rounded="0"
               ><v-card-text
+                style="white-space: break-spaces"
                 @paste="handlePaste"
                 @focusout="updateStepTime($event, index)"
                 @input="handleResourceInput"
@@ -212,6 +213,7 @@
           <v-col>
             <v-card flat rounded="0" class="fill-height"
               ><v-card-text
+                style="white-space: break-spaces"
                 @paste="handlePaste"
                 @focusout="updateStepBuilders($event, index)"
                 @input="handleResourceInput"
@@ -228,6 +230,7 @@
               class="fill-height"
               style="background-color: #ff000034"
               ><v-card-text
+                style="white-space: break-spaces"
                 @paste="handlePaste"
                 @focusout="updateStepFood($event, index)"
                 @input="handleResourceInput"
@@ -244,6 +247,7 @@
               class="fill-height"
               style="background-color: #75400c5b"
               ><v-card-text
+                style="white-space: break-spaces"
                 @paste="handlePaste"
                 @focusout="updateStepWood($event, index)"
                 @input="handleResourceInput"
@@ -260,6 +264,7 @@
               class="fill-height"
               style="background-color: #edbe003e"
               ><v-card-text
+                style="white-space: break-spaces"
                 @paste="handlePaste"
                 @focusout="updateStepGold($event, index)"
                 @input="handleResourceInput"
@@ -276,6 +281,7 @@
               class="fill-height"
               style="background-color: #7a7a7b69"
               ><v-card-text
+                style="white-space: break-spaces"
                 @paste="handlePaste"
                 @focusout="updateStepStone($event, index)"
                 @input="handleResourceInput"
@@ -294,6 +300,7 @@
             <tbody>
               <tr>
                 <td
+                  style="white-space: break-spaces"
                   @keyup="saveSelection"
                   @click="saveSelection"
                   @paste="handlePaste"
@@ -306,7 +313,11 @@
             </tbody> </v-table
         ></v-card>
       </v-col>
-      <v-col v-if="!readonly && selection && index === selectedRowIndex" cols="auto" class="justify-center align-center">
+      <v-col
+        v-if="!readonly && selection && index === selectedRowIndex"
+        cols="auto"
+        class="justify-center align-center"
+      >
         <v-card flat>
           <div class="text-right">
             <v-row no-gutters>
@@ -390,7 +401,6 @@
         ></v-card>
       </v-col>
     </v-row>
-    
   </v-card>
 
   <!--Desktop UI-->
@@ -578,6 +588,7 @@
             @mouseleave="unhoverItem()"
           >
             <td
+              style="white-space: break-spaces"
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
@@ -592,6 +603,7 @@
               v-html="aggregateVillagers(index)"
             ></td>
             <td
+              style="white-space: break-spaces"
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
@@ -601,6 +613,7 @@
               v-html="item.builders ? item.builders : ''"
             ></td>
             <td
+              style="white-space: break-spaces"
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
@@ -610,6 +623,7 @@
               v-html="item.food"
             ></td>
             <td
+              style="white-space: break-spaces"
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
@@ -619,6 +633,7 @@
               v-html="item.wood"
             ></td>
             <td
+              style="white-space: break-spaces"
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
@@ -628,6 +643,7 @@
               v-html="item.gold"
             ></td>
             <td
+              style="white-space: break-spaces"
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
@@ -637,6 +653,7 @@
               v-html="item.stone"
             ></td>
             <td
+              style="white-space: break-spaces"
               @keyup="saveSelection"
               @click="saveSelection"
               @paste="handlePaste"
@@ -943,31 +960,33 @@ export default {
 
     const handleResourceInput = async (e) => {
       //prevent break on hyphen
-      e.target.innerHTML = e.target.innerHTML.replace("-", "&#8209;")
-      
-      //updating innerHTML sets cursor to start, this is a workaround to set caret to end
-      placeCaretAtEnd(e.target)
+      e.target.innerHTML = e.target.innerHTML.replace("-", "&#8209;");
 
-      context.emit('textChanged')
-    }
+      //updating innerHTML sets cursor to start, this is a workaround to set caret to end
+      placeCaretAtEnd(e.target);
+
+      context.emit("textChanged");
+    };
 
     function placeCaretAtEnd(el) {
-    el.focus();
-    if (typeof window.getSelection != "undefined"
-            && typeof document.createRange != "undefined") {
+      el.focus();
+      if (
+        typeof window.getSelection != "undefined" &&
+        typeof document.createRange != "undefined"
+      ) {
         var range = document.createRange();
         range.selectNodeContents(el);
         range.collapse(false);
         var sel = window.getSelection();
         sel.removeAllRanges();
         sel.addRange(range);
-    } else if (typeof document.body.createTextRange != "undefined") {
+      } else if (typeof document.body.createTextRange != "undefined") {
         var textRange = document.body.createTextRange();
         textRange.moveToElementText(el);
         textRange.collapse(false);
         textRange.select();
+      }
     }
-}
 
     const handlePaste = async (e) => {
       //Check html content first
