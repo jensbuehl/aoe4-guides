@@ -821,6 +821,7 @@ export default {
         map: build.value.map || "",
         season: build.value.season,
         strategy: build.value.strategy,
+        isDraft: false,
         views: 0,
         likes: 0,
         score: 0,
