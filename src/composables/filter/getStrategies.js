@@ -11,6 +11,12 @@ const strategies = ref([
     title: "Fast Castle",
   },
   {
+    title: "Fast Imperial",
+  },
+  {
+    title: "Timing Attack",
+  },
+  {
     title: "Cheese",
   },
 ]);
