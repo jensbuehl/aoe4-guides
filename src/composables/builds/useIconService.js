@@ -909,6 +909,55 @@ export default function useIconService(civArg) {
       civ: ["ABB", "AYY"],
       class: "landmark",
     },
+    {
+      title: "Grand Winery",
+      age: "1",
+      imgSrc: "/assets/pictures/landmark_byzantines/grand-winery-1.png",
+      civ: ["BYZ"],
+      class: "landmark",
+    },
+    {
+      title: "Imperial Hippodrome",
+      age: "1",
+      imgSrc: "/assets/pictures/landmark_byzantines/imperial-hippodrome-1.png",
+      civ: ["BYZ"],
+      class: "landmark",
+    },
+    {
+      title: "Cistern of the First Hill",
+      age: "2",
+      imgSrc: "/assets/pictures/landmark_byzantines/cistern-of-the-first-hill-2.png",
+      civ: ["BYZ"],
+      class: "landmark",
+    },
+    {
+      title: "Golden Horn Tower",
+      age: "2",
+      imgSrc: "/assets/pictures/landmark_byzantines/golden-horn-tower-2.png",
+      civ: ["BYZ"],
+      class: "landmark",
+    },
+    {
+      title: "Palatine School",
+      age: "3",
+      imgSrc: "/assets/pictures/landmark_byzantines/palatine-school-3.png",
+      civ: ["BYZ"],
+      class: "landmark",
+    },
+    {
+      title: "Foreign Engineering Company",
+      age: "3",
+      imgSrc: "/assets/pictures/landmark_byzantines/foreign-engineering-company-3.png",
+      civ: ["BYZ"],
+      class: "landmark",
+    },
+    {
+      title: "Cathedral of Divine Wisdom",
+      age: "4",
+      imgSrc: "/assets/pictures/landmark_byzantines/cathedral-of-divine-wisdom-4.png",
+      civ: ["BYZ"],
+      class: "landmark",
+    },
   ];
 
   const tech_eco = [
@@ -1490,25 +1539,6 @@ export default function useIconService(civArg) {
       civ: allCivs,
       class: "tech",
     },
-    //{
-    //  title: "Spyglasses",
-    //  age: "4",
-    //  imgSrc: "/assets/pictures/technology_military/Spyglasses.png",
-    //  civ: [
-    //    "ENG",
-    //    "FRE", "JDA",
-    //    "RUS",
-    //    "MAL",
-    //    "MON",
-    //    "ABB",
-    //    "AYY",
-    //    "OTT",
-    //    "CHI", "ZXL",
-    //    "DEL",
-    //    "HRE", "DRA",
-    //  ],
-    //  class: "tech"
-    //},
     {
       title: "Composite Bows",
       age: "3",
@@ -1937,13 +1967,6 @@ export default function useIconService(civArg) {
       civ: ["MON"],
       class: "tech",
     },
-    //{
-    //  title: "Improved Yam Network",
-    //  age: "4",
-    //  imgSrc: "/assets/pictures/technology_mongols/improved-yam-network.png",
-    //  civ: ["MON"],
-    //  class: "tech"
-    //},
     {
       title: "Additional Torches",
       age: "3",
@@ -2183,6 +2206,69 @@ export default function useIconService(civArg) {
       civ: ["RUS"],
       class: "tech",
     },
+    {
+      title: "Heavy Dromon",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_byzantines/heavy-dromon-3.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Liquid Explosives",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_byzantines/liquid-explosives-3.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Border Settlements",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_byzantines/border-settlements-2.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Expilatores",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_byzantines/expilatores-2.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Trapezites",
+      age: "2",
+      imgSrc: "/assets/pictures/technology_byzantines/trapezites-2.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Greek Fire Projectiles",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_byzantines/greek-fire-projectiles-4.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Numeri",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_byzantines/numeri-4.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Teardrop Shields",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_byzantines/teardrop-shields-3.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
+    {
+      title: "Ferocious Speed",
+      age: "4",
+      imgSrc: "/assets/pictures/technology_byzantines/ferocious-speed-4.png",
+      civ: ["BYZ"],
+      class: "tech",
+    },
   ];
 
   const building_religious = [
@@ -2190,7 +2276,7 @@ export default function useIconService(civArg) {
       title: "Monastery",
       age: "3",
       imgSrc: "/assets/pictures/building_religious/monastery.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "CHI", "ZXL", "HRE", "DRA"],
+      civ: ["ENG", "FRE", "JDA", "RUS", "CHI", "ZXL", "HRE", "DRA", "BYZ"],
       class: "default",
     },
     {
@@ -2221,7 +2307,14 @@ export default function useIconService(civArg) {
       title: "Farm",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/farm.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: allCivs.exceptMany(["MON", "BYZ"]),
+      class: "default",
+    },
+    {
+      title: "Olive Grove",
+      age: "1",
+      imgSrc: "/assets/pictures/building_byzantines/olive-grove-1.png",
+      civ: ["BYZ"],
       class: "default",
     },
     {
@@ -2250,6 +2343,13 @@ export default function useIconService(civArg) {
       age: "1",
       imgSrc: "/assets/pictures/building_economy/mill.png",
       civ: allCivs.exceptMany(["RUS", "MON"]),
+      class: "default",
+    },
+    {
+      title: "Cistern",
+      age: "1",
+      imgSrc: "/assets/pictures/building_byzantines/cistern-1.png",
+      civ: ["BYZ"],
       class: "default",
     },
     {
@@ -2343,7 +2443,7 @@ export default function useIconService(civArg) {
       title: "University",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/university.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "OTT", "CHI", "ZXL", "HRE", "DRA"],
+      civ: ["ENG", "FRE", "JDA", "RUS", "OTT", "CHI", "ZXL", "HRE", "DRA", "BYZ"],
       class: "tech",
     },
     {
@@ -2385,6 +2485,13 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
+      title: "Mercenary House",
+      age: "2",
+      imgSrc: "/assets/pictures/building_byzantines/mercenary-house-2.png",
+      civ: ["BYZ"],
+      class: "military",
+    },
+    {
       title: "Siege Workshop",
       age: "3",
       imgSrc: "/assets/pictures/building_military/siege-workshop.png",
@@ -2403,6 +2510,13 @@ export default function useIconService(civArg) {
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/keep.png",
       civ: allCivs.exceptMany(["MON"]),
+      class: "default",
+    },
+    {
+      title: "Aqueduct",
+      age: "2",
+      imgSrc: "/assets/pictures/building_byzantines/aqueduct-1.png",
+      civ: ["BYZ"],
       class: "default",
     },
     {
@@ -2923,20 +3037,6 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
-      title: "Trade Ship",
-      age: "2",
-      imgSrc: "/assets/pictures/unit_ship/trade-ship.png",
-      civ: allCivs.exceptMany("RUS"),
-      class: "default",
-    },
-    {
-      title: "Lodya Trade Ship",
-      age: "2",
-      imgSrc: "/assets/pictures/unit_rus/lodya-trade-ship.png",
-      civ: ["RUS"],
-      class: "default",
-    },
-    {
       title: "Lodya Galley",
       age: "2",
       imgSrc: "/assets/pictures/unit_rus/lodya-galley-3.png",
@@ -3268,6 +3368,20 @@ export default function useIconService(civArg) {
       civ: ["CHI", "ZXL"],
       class: "default",
     },
+    {
+      title: "Trade Ship",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_ship/trade-ship.png",
+      civ: allCivs.exceptMany("RUS"),
+      class: "default",
+    },
+    {
+      title: "Lodya Trade Ship",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_rus/lodya-trade-ship.png",
+      civ: ["RUS"],
+      class: "default",
+    }
   ];
 
   return { getIcons, getIconFromImgPath };
