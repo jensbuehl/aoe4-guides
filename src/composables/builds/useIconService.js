@@ -958,6 +958,55 @@ export default function useIconService(civArg) {
       civ: ["BYZ"],
       class: "landmark",
     },
+    {
+      title: "Koka Township",
+      age: "1",
+      imgSrc: "/assets/pictures/landmark_japanese/koka-township-1.png",
+      civ: ["JAP"],
+      class: "landmark",
+    },
+    {
+      title: "Kura Storehouse",
+      age: "1",
+      imgSrc: "/assets/pictures/landmark_japanese/kura-storehouse-1.png",
+      civ: ["JAP"],
+      class: "landmark",
+    },
+    {
+      title: "Floating Gate",
+      age: "2",
+      imgSrc: "/assets/pictures/landmark_japanese/floating-gate-2.png",
+      civ: ["JAP"],
+      class: "landmark",
+    },
+    {
+      title: "Temple of Equality",
+      age: "2",
+      imgSrc: "/assets/pictures/landmark_japanese/temple-of-equality-2.png",
+      civ: ["JAP"],
+      class: "landmark",
+    },
+    {
+      title: "Tanegashima Gunsmith",
+      age: "3",
+      imgSrc: "/assets/pictures/landmark_japanese/tanegashima-gunsmith-3.png",
+      civ: ["JAP"],
+      class: "landmark",
+    },
+    {
+      title: "Castle of the Crow",
+      age: "3",
+      imgSrc: "/assets/pictures/landmark_japanese/castle-of-the-crow-4.png",
+      civ: ["JAP"],
+      class: "landmark",
+    },
+    {
+      title: "Tokugawa Shrine",
+      age: "4",
+      imgSrc: "/assets/pictures/landmark_japanese/tokugawa-shrine-4.png",
+      civ: ["JAP"],
+      class: "landmark",
+    },
   ];
 
   const tech_eco = [
@@ -2294,6 +2343,20 @@ export default function useIconService(civArg) {
       class: "default",
     },
     {
+      title: "Buddhist Temple",
+      age: "3",
+      imgSrc: "/assets/pictures/building_japanese/buddhist-temple-3.png",
+      civ: ["JAP"],
+      class: "default",
+    },
+    {
+      title: "Shinto Shrine",
+      age: "3",
+      imgSrc: "/assets/pictures/building_japanese/shinto-shrine-3.png",
+      civ: ["JAP"],
+      class: "default",
+    },
+    {
       title: "Pagoda",
       age: "3",
       imgSrc: "/assets/pictures/building_chinese/pagoda.png",
@@ -2321,7 +2384,7 @@ export default function useIconService(civArg) {
       title: "House",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/house.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: allCivs.exceptMany(["MON", "JAP"]),
       class: "default",
     },
     {
@@ -2343,6 +2406,13 @@ export default function useIconService(civArg) {
       age: "1",
       imgSrc: "/assets/pictures/building_economy/mill.png",
       civ: allCivs.exceptMany(["RUS", "MON"]),
+      class: "default",
+    },
+    {
+      title: "Farmhouse",
+      age: "1",
+      imgSrc: "/assets/pictures/building_japanese/farmhouse-1.png",
+      civ: ["JAP"],
       class: "default",
     },
     {
@@ -2436,6 +2506,13 @@ export default function useIconService(civArg) {
       title: "Blacksmith",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/blacksmith.png",
+      civ: allCivs.except("JAP"),
+      class: "tech",
+    },
+    {
+      title: "Forge",
+      age: "2",
+      imgSrc: "/assets/pictures/building_japanese/forge-1.png",
       civ: allCivs,
       class: "tech",
     },
@@ -2443,7 +2520,7 @@ export default function useIconService(civArg) {
       title: "University",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/university.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "OTT", "CHI", "ZXL", "HRE", "DRA", "BYZ"],
+      civ: ["ENG", "FRE", "JDA", "RUS", "OTT", "CHI", "ZXL", "HRE", "DRA", "BYZ", "JAP"],
       class: "tech",
     },
     {
@@ -2509,7 +2586,14 @@ export default function useIconService(civArg) {
       title: "Keep",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/keep.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: allCivs.exceptMany(["MON", "JAP"]),
+      class: "default",
+    },
+    {
+      title: "Castle",
+      age: "4",
+      imgSrc: "/assets/pictures/building_japanese/castle-4.png",
+      civ: ["JAP"],
       class: "default",
     },
     {
@@ -2566,6 +2650,13 @@ export default function useIconService(civArg) {
       age: "1",
       imgSrc: "/assets/pictures/building_rus/fortified-palisade-wall.png",
       civ: ["RUS"],
+      class: "default",
+    },
+    {
+      title: "Stone Wall",
+      age: "3",
+      imgSrc: "/assets/pictures/building_defensive/stone-wall.png",
+      civ: allCivs.exceptMany(["MON"]),
       class: "default",
     },
     {
