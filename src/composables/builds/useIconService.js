@@ -2902,11 +2902,32 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
+      title: "Dromon",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_byzantines/dromon-2.png",
+      civ: ["BYZ"],
+      class: "military",
+    },
+    {
+      title: "Transport Ship",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_ship/transport-ship.png",
+      civ: ["RUS"],
+      class: "military",
+    },
+    {
       title: "Lodya Transport Ship",
       age: "1",
       imgSrc: "/assets/pictures/unit_rus/lodya-transport-ship.png",
       civ: ["RUS"],
       class: "military",
+    },
+    {
+      title: "Trade Ship",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_ship/trade-ship.png",
+      civ: allCivs.exceptMany("RUS"),
+      class: "default",
     },
     {
       title: "Lodya Trade Ship",
@@ -3059,7 +3080,7 @@ export default function useIconService(civArg) {
       title: "Galley",
       age: "2",
       imgSrc: "/assets/pictures/unit_ship/dhow.png",
-      civ: ["ENG", "HRE", "DRA", "FRE", "JDA"],
+      civ: ["ENG", "HRE", "DRA", "FRE", "JDA", "BYZ"],
       class: "military",
     },
     {
@@ -3129,7 +3150,7 @@ export default function useIconService(civArg) {
       title: "Demolition Ship",
       age: "2",
       imgSrc: "/assets/pictures/unit_ship/explosive-dhow.png",
-      civ: ["ENG", "FRE", "JDA", "HRE", "DRA", "MAL", "OTT"],
+      civ: ["ENG", "FRE", "JDA", "HRE", "DRA", "MAL", "OTT", "BYZ"],
       class: "military",
     },
     {
@@ -3150,7 +3171,7 @@ export default function useIconService(civArg) {
       title: "Carrack",
       age: "4",
       imgSrc: "/assets/pictures/unit_ship/xebec.png",
-      civ: ["ENG", "FRE", "JDA", "HRE", "DRA", "OTT"],
+      civ: ["ENG", "FRE", "JDA", "HRE", "DRA", "OTT", "BYZ"],
       class: "military",
     },
     {
