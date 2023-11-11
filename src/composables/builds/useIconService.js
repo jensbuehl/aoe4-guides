@@ -258,7 +258,7 @@ export default function useIconService(civArg) {
     {
       title: "Jeanne d'Arc",
       age: "1",
-      imgSrc: "/assets/pictures/civilization_flag/hre.png",
+      imgSrc: "/assets/pictures/civilization_flag/jda.png",
       civ: allCivs,
       class: "none",
     },
