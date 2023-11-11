@@ -384,7 +384,7 @@ export default {
         video: "",
         civ: "ANY",
         map: "",
-        season: "Season 5",
+        season: "Season 6",
         strategy: "",
         matchup: ["ANY"],
         views: 0,
