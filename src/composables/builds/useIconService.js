@@ -256,7 +256,7 @@ export default function useIconService(civArg) {
       class: "none",
     },
     {
-      title: "Jeanne D'Arc",
+      title: "Jeanne d'Arc",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/hre.png",
       civ: allCivs,
@@ -2475,7 +2475,7 @@ export default function useIconService(civArg) {
       title: "Monk",
       age: "3",
       imgSrc: "/assets/pictures/unit_religious/monk-3.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "MAL", "MON", "CHI", "ZXL", "HRE", "DRA"],
+      civ: ["ENG", "FRE", "JDA", "RUS", "MAL", "MON", "CHI", "ZXL", "HRE", "DRA", "BYZ"],
       class: "military",
     },
     {
@@ -2524,6 +2524,20 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
+      title: "Spearman",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_infantry/spearman-1.png",
+      civ: ["ENG", "FRE", "JDA", "RUS", "MON", "ABB", "AYY", "OTT", "CHI", "ZXL", "DEL", "HRE", "DRA"],
+      class: "military",
+    },
+    {
+      title: "Limitanei",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_byzantines/limitanei-1.png",
+      civ: ["BYZ"],
+      class: "military",
+    },
+    {
       title: "Archer",
       age: "2",
       imgSrc: "/assets/pictures/unit_infantry/archer-2.png",
@@ -2534,21 +2548,14 @@ export default function useIconService(civArg) {
       title: "Crossbowman",
       age: "3",
       imgSrc: "/assets/pictures/unit_infantry/crossbowman-3.png",
-      civ: ["ENG", "RUS", "MON", "ABB", "AYY", "OTT", "CHI", "ZXL", "DEL", "HRE", "DRA"],
+      civ: allCivs.exceptMany(["FRE", "MAL"]),
       class: "military",
     },
     {
       title: "Handcannoneer",
       age: "4",
       imgSrc: "/assets/pictures/unit_infantry/handcannoneer-4.png",
-      civ: ["ENG", "FRE", "JDA", "MON", "ABB", "AYY", "CHI", "ZXL", "DEL", "HRE", "DRA"],
-      class: "military",
-    },
-    {
-      title: "Spearman",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_infantry/spearman-1.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "MON", "ABB", "AYY", "OTT", "CHI", "ZXL", "DEL", "HRE", "DRA"],
+      civ: allCivs.exceptMany(["OTT", "MAL"]),
       class: "military",
     },
     {
@@ -2566,10 +2573,17 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
+      title: "Varangian Guard",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_byzantines/varangian-guard-3.png",
+      civ: ["BYZ"],
+      class: "military",
+    },
+    {
       title: "Horseman",
       age: "2",
       imgSrc: "/assets/pictures/unit_cavalry/horseman-1.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "MON", "OTT", "CHI", "ZXL", "HRE", "DRA"],
+      civ: ["ENG", "FRE", "JDA", "RUS", "MON", "OTT", "CHI", "ZXL", "HRE", "DRA", "BYZ"],
       class: "military",
     },
     {
@@ -2587,18 +2601,17 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
+      title: "Cataphract",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_byzantines/cataphract-3.png",
+      civ: ["BYZ"],
+      class: "military",
+    },
+    {
       title: "Lancer",
       age: "3",
       imgSrc: "/assets/pictures/unit_cavalry/lancer-3.png",
       civ: ["ABB", "AYY", "OTT", "CHI", "ZXL", "DEL"],
-      class: "military",
-    },
-    //deprecated element, keep for export/import compatibility
-    {
-      title: "Lancer",
-      age: "4",
-      imgSrc: "/assets/pictures/unit_cavalry/lancer-4.png",
-      civ: [],
       class: "military",
     },
     {
@@ -2962,7 +2975,21 @@ export default function useIconService(civArg) {
       title: "Battering Ram",
       age: "2",
       imgSrc: "/assets/pictures/unit_siege/battering-ram.png",
-      civ: allCivs,
+      civ: allCivs.exceptMany("BYZ"),
+      class: "military",
+    },
+    {
+      title: "Cheirosiphon",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_byzantines/cheirosiphon-3.png",
+      civ: ["BYZ"],
+      class: "military",
+    },
+    {
+      title: "Tower of the Sultan",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_byzantines/tower-of-the-sultan-3.png",
+      civ: ["BYZ"],
       class: "military",
     },
     {
@@ -3004,7 +3031,7 @@ export default function useIconService(civArg) {
       title: "Bombard",
       age: "3",
       imgSrc: "/assets/pictures/unit_siege/bombard.png",
-      civ: ["ENG", "RUS", "MAL", "MON", "ABB", "AYY", "CHI", "ZXL", "DEL", "HRE", "DRA"],
+      civ: ["ENG", "RUS", "MAL", "MON", "ABB", "AYY", "CHI", "ZXL", "DEL", "HRE", "DRA", "BYZ"],
       class: "military",
     },
     {
@@ -3140,7 +3167,7 @@ export default function useIconService(civArg) {
       title: "Villager",
       age: "1",
       imgSrc: "/assets/pictures/unit_worker/villager.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "HRE", "DRA"],
+      civ: ["ENG", "FRE", "JDA", "RUS", "HRE", "DRA", "BYZ"],
       class: "default",
     },
     {
