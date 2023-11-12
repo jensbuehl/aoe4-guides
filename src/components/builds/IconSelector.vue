@@ -372,7 +372,7 @@ export default {
     const general = getIcons("unit_eco").concat(
       getIcons("unit_religious").concat(getIcons("resource"))
     );
-    const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious"));
+    const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious").concat(getIcons("unit_hero")));
     const ecoTechnologies = getIcons("tech_eco");
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));

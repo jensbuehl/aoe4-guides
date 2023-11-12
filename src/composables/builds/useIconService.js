@@ -44,9 +44,13 @@ export default function useIconService(civArg) {
       case "unit_eco":
         allIcons = unit_eco;
         break;
+        case "unit_hero":
+        allIcons = unit_hero;
+        break;
       default:
         allIcons = general.concat(
           unit_eco,
+          unit_hero,
           landmark,
           tech_eco,
           tech_military,
@@ -175,14 +179,6 @@ export default function useIconService(civArg) {
       age: "1",
       imgSrc: "/assets/pictures/abilities/repair.png",
       civ: allCivs,
-      class: "none",
-    },
-    //deprecated element, keep for export/import compatibility
-    {
-      title: "Build or Repair",
-      age: "1",
-      imgSrc: "/assets/pictures/resource/repair.png",
-      civ: [],
       class: "none",
     },
     {
@@ -3019,6 +3015,13 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
+      title: "Jeanne's Champion",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_jeanne/jeannes-champion-3.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
       title: "Ghulam",
       age: "3",
       imgSrc: "/assets/pictures/unit_abbasid/ghulam-3.png",
@@ -3215,6 +3218,13 @@ export default function useIconService(civArg) {
       class: "military",
     },
     {
+      title: "Jeanne's Rider",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_jeanne/jeannes-rider-3.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
       title: "Arbalétrier",
       age: "3",
       imgSrc: "/assets/pictures/unit_french/arbaletrier-3.png",
@@ -3232,6 +3242,27 @@ export default function useIconService(civArg) {
       title: "Cannon",
       age: "4",
       imgSrc: "/assets/pictures/unit_french/cannon-4.png",
+      civ: ["FRE", "JDA"],
+      class: "military",
+    },
+    {
+      title: "Royal Cannon",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_french/royal-cannon-4.png",
+      civ: ["FRE", "JDA"],
+      class: "military",
+    },
+    {
+      title: "Royal Culverin",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_french/royal-culverin-4.png",
+      civ: ["FRE", "JDA"],
+      class: "military",
+    },
+    {
+      title: "Royal Ribauldequin",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_french/royal-ribauldequin-4.png",
       civ: ["FRE", "JDA"],
       class: "military",
     },
@@ -3628,6 +3659,58 @@ export default function useIconService(civArg) {
       class: "military",
     },
   ];
+
+  const unit_hero = [
+    {
+      title: "Jeanne d'Arc - Peasant",
+      age: "1",
+      imgSrc: "/assets/pictures/unit_jeanne/jeanne-darc-peasant-1.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
+      title: "Jeanne d'Arc - Hunter",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_jeanne/jeanne-darc-hunter-2.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
+      title: "Jeanne d'Arc - Woman-at-Arms",
+      age: "2",
+      imgSrc: "/assets/pictures/unit_jeanne/jeanne-darc-woman-at-arms-2.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
+      title: "Jeanne d'Arc - Mounted Archer",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_jeanne/jeanne-darc-mounted-archer-3.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
+      title: "Jeanne d'Arc - Knight",
+      age: "3",
+      imgSrc: "/assets/pictures/unit_jeanne/jeanne-darc-knight-3.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
+      title: "Jeanne d'Arc - Markswoman",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_jeanne/jeanne-darc-markswoman-4.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+    {
+      title: "Jeanne d'Arc - Blast Cannon",
+      age: "4",
+      imgSrc: "/assets/pictures/unit_jeanne/jeanne-darc-blast-cannon-4.png",
+      civ: ["JDA"],
+      class: "military",
+    },
+  ]
 
   const unit_eco = [
     {
