@@ -328,6 +328,15 @@ export default {
   border-radius: 4px;
 }
 
+:deep(.icon-ability) {
+  vertical-align: middle;
+  height: auto;
+  width: 60px;
+  margin: 2px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #5C457B, #4D366E);
+}
+
 :deep(.icon-tech) {
   vertical-align: middle;
   height: auto;

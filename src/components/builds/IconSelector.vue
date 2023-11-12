@@ -43,6 +43,55 @@
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
+                        'icon-military-selector': icon.class == 'military',
+                        'icon-default-selector': icon.class == 'default',
+                        'icon-none-selector': icon.class == 'none',
+                        'icon-selector': !icon.class,
+                      }"
+                      style="height: 42px; width: 42px"
+                      :src="icon.imgSrc"
+                    ></v-img>
+                  </v-btn>
+                </template>
+              </v-tooltip>
+            </v-row>
+          </v-container>
+        </v-col>
+      </v-row>
+      <v-row v-show="filteredHeroes.length" no-gutters align="center">
+        <v-col cols="12">
+          <v-card flat subtitle="Heroes and Abilities"></v-card>
+        </v-col>
+        <v-col
+          class="mt-n2 mb-2"
+          cols="3"
+          v-for="icon in filteredHeroes"
+          :key="icon.imgSrc"
+        >
+          <v-container>
+            <v-row align="center" justify="center">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >{{ icon.title }}</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    color="primary"
+                    v-bind="props"
+                    variant="text"
+                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
+                    height="60"
+                    width="60"
+                  >
+                  <v-img
+                      v-bind:class="{
+                        'icon-landmark-selector': icon.class == 'landmark',
+                        'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
                         'icon-military-selector': icon.class == 'military',
                         'icon-default-selector': icon.class == 'default',
                         'icon-none-selector': icon.class == 'none',
@@ -90,6 +139,7 @@
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
                         'icon-military-selector': icon.class == 'military',
                         'icon-default-selector': icon.class == 'default',
                         'icon-none-selector': icon.class == 'none',
@@ -137,6 +187,7 @@
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
                         'icon-military-selector': icon.class == 'military',
                         'icon-default-selector': icon.class == 'default',
                         'icon-none-selector': icon.class == 'none',
@@ -188,6 +239,7 @@
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
                         'icon-military-selector': icon.class == 'military',
                         'icon-default-selector': icon.class == 'default',
                         'icon-none-selector': icon.class == 'none',
@@ -235,6 +287,7 @@
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
                         'icon-military-selector': icon.class == 'military',
                         'icon-default-selector': icon.class == 'default',
                         'icon-none-selector': icon.class == 'none',
@@ -282,6 +335,7 @@
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
                         'icon-military-selector': icon.class == 'military',
                         'icon-default-selector': icon.class == 'default',
                         'icon-none-selector': icon.class == 'none',
@@ -333,6 +387,7 @@
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
+                        'icon-ability-selector': icon.class == 'ability',
                         'icon-military-selector': icon.class == 'military',
                         'icon-default-selector': icon.class == 'default',
                         'icon-none-selector': icon.class == 'none',
@@ -372,10 +427,11 @@ export default {
     const general = getIcons("unit_eco").concat(
       getIcons("unit_religious").concat(getIcons("resource"))
     );
-    const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious").concat(getIcons("unit_hero")));
+    const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious"));
     const ecoTechnologies = getIcons("tech_eco");
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
+    const heroes = getIcons("unit_hero").concat(getIcons("ability_hero"));
 
     //filtered data
     const filteredEcoBuildings = computed(() => filter(ecoBuildings));
@@ -387,6 +443,7 @@ export default {
       filter(militaryTechnologies)
     );
     const filteredLandmarks = computed(() => filter(landmarks));
+    const filteredHeroes = computed(() => filter(heroes));
 
     const filter = (unfiltered) => {
       if (searchText.value?.length >= 2) {
@@ -410,6 +467,7 @@ export default {
       filteredEcoTechnologies,
       filteredMilitaryTechnologies,
       filteredLandmarks,
+      filteredHeroes,
       searchText,
       filter,
       imageSelected,
@@ -423,6 +481,13 @@ export default {
   height: auto;
   width: 42px;
   border-radius: 4px;
+}
+.icon-ability-selector {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #5C457B, #4D366E);
 }
 .icon-tech-selector {
   vertical-align: middle;

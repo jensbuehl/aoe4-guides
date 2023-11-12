@@ -1102,6 +1102,19 @@ td:empty {
   border-radius: 4px;
 }
 
+:deep(.icon-ability) {
+  vertical-align: middle;
+  height: auto;
+  width: 42px;
+  margin: 2px 2px 2px 0px;
+  border-radius: 4px;
+  background: radial-gradient(circle at top center, #5C457B, #4D366E);
+}
+
+:deep(.icon-ability + img) {
+  margin: 2px;
+}
+
 :deep(.icon-tech) {
   vertical-align: middle;
   height: auto;

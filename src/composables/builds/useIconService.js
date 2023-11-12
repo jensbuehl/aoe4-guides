@@ -44,8 +44,11 @@ export default function useIconService(civArg) {
       case "unit_eco":
         allIcons = unit_eco;
         break;
-        case "unit_hero":
+      case "unit_hero":
         allIcons = unit_hero;
+        break;
+      case "ability_hero":
+        allIcons = ability_hero;
         break;
       default:
         allIcons = general.concat(
@@ -1144,6 +1147,14 @@ export default function useIconService(civArg) {
       class: "tech",
     },
     {
+      title: "Merchant Guilds",
+      age: "4",
+      imgSrc:
+        "/assets/pictures/technology_french/merchant-guilds-4.png",
+      civ: ["FRE", "JDA"],
+      class: "tech",
+    },
+    {
       title: "Industry",
       age: "1",
       imgSrc:
@@ -1875,9 +1886,23 @@ export default function useIconService(civArg) {
       class: "tech",
     },
     {
-      title: "Chivalry ",
+      title: "Chivalry",
       age: "2",
       imgSrc: "/assets/pictures/technology_french/chivalry.png",
+      civ: ["FRE", "JDA"],
+      class: "tech",
+    },
+    {
+      title: "Companion Equipment",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_jeanne/companion-equipment-3.png",
+      civ: ["FRE", "JDA"],
+      class: "tech",
+    },
+    {
+      title: "Ordinance Company",
+      age: "3",
+      imgSrc: "/assets/pictures/technology_jeanne/ordinance-company-3.png",
       civ: ["FRE", "JDA"],
       class: "tech",
     },
@@ -2342,21 +2367,21 @@ export default function useIconService(civArg) {
       title: "Explosives",
       age: "4",
       imgSrc: "/assets/pictures/technology_japanese/explosives-4.png",
-      civ: ["JAP"],
+      civ: allCivs,
       class: "tech",
     },
     {
       title: "Heated Shot",
       age: "4",
       imgSrc: "/assets/pictures/technology_japanese/heated-shot-4.png",
-      civ: ["JAP"],
+      civ: allCivs,
       class: "tech",
     },
     {
       title: "Swivel Cannon",
       age: "4",
       imgSrc: "/assets/pictures/technology_japanese/swivel-cannon-4.png",
-      civ: ["JAP"],
+      civ: allCivs,
       class: "tech",
     },
     {
@@ -3710,6 +3735,107 @@ export default function useIconService(civArg) {
       civ: ["JDA"],
       class: "military",
     },
+  ]
+
+  const ability_hero = [
+    {
+      title: "Path of the Archer",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-path-of-the-archer-1.png",
+      civ: ["JDA"],
+      class: "tech",
+    },
+    {
+      title: "Path of the Warrior",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-path-of-the-warrior-1.png",
+      civ: ["JDA"],
+      class: "tech",
+    },
+    {
+      title: "Champion Companions",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-champion-companions-1.png",
+      civ: ["JDA"],
+      class: "tech",
+    },
+    {
+      title: "Rider Companions",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-rider-companions-1.png",
+      civ: ["JDA"],
+      class: "tech",
+    },
+    {
+      title: "Field Commander",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-field-commander-1.png",
+      civ: ["JDA"],
+      class: "tech",
+    },
+    {
+      title: "Gunpowder Monarch",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-gunpowder-monarch-1.png",
+      civ: ["JDA"],
+      class: "tech",
+    },
+    {
+      title: "Divine Restoration",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-divine-restoration-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    },
+    {
+      title: "Divine Arrow",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-divine-arrow-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    },
+    {
+      title: "Consecrate",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-consecrate-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    },
+    {
+      title: "Holy Wrath",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-holy-wrath-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    },
+    {
+      title: "To arms, men!",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-to-arms-men-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    },
+    {
+      title: "Riders, Ready!",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-riders-ready-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    },
+    {
+      title: "Strength of Heaven",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-strength-of-heaven-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    },
+    {
+      title: "Valorous Inspiration",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_jeanne/ability-valorous-inspiration-1.png",
+      civ: ["JDA"],
+      class: "ability",
+    }
   ]
 
   const unit_eco = [
