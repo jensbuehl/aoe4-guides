@@ -27,6 +27,7 @@
     <v-row>
       <!-- main content -->
       <v-col cols="12" md="4" class="hidden-md-and-up">
+        <NewsCard class="mb-4"></NewsCard>
         <v-card flat rounded="lg" class="mb-2">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user"
@@ -407,6 +408,7 @@
 
       <!-- sidebar -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
+        <NewsCard class="mb-6"></NewsCard>
         <v-card flat rounded="lg" class="mb-2">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user"
@@ -599,7 +601,6 @@
             </v-tooltip>
           </v-col>
         </v-row>
-
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
           class="mt-6"
@@ -612,6 +613,7 @@
 
 <script>
 import RegisterAd from "../components/RegisterAd.vue";
+import NewsCard from "../components/NewsCard.vue";
 import EmailVerificationAd from "../components/EmailVerificationAd.vue";
 import FilterConfig from "../components/filter/FilterConfig.vue";
 import getCivs from "../composables/filter/getCivs";
@@ -633,6 +635,7 @@ export default {
     FilterConfig,
     BuildListCard,
     RegisterAd,
+    NewsCard,
     VSkeletonLoader,
     EmailVerificationAd,
   },
