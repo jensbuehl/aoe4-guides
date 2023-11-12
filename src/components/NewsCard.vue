@@ -4,7 +4,7 @@
       <v-card-title>The Sultans Ascend</v-card-title>
       <v-card-text
         >Be prepared for the Sultans Ascend Expansion. <br />
-        All new civilizations are now supported. Browse build orders:</v-card-text>
+        All new civilizations are now supported, including:</v-card-text>
 
       <v-row class="ma-2" no-gutters>
         <v-col align="start" justify="start"
