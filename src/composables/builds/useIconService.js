@@ -3255,7 +3255,7 @@ export default function useIconService(civArg) {
       title: "Horseman",
       age: "2",
       imgSrc: "/assets/pictures/unit_cavalry/horseman-1.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "MON", "OTT", "CHI", "ZXL", "HRE", "BYZ", "JAP"],
+      civ: ["ENG", "FRE", "JDA", "RUS", "MON", "OTT", "CHI", "ZXL", "HRE", "BYZ", "JAP", "ABB", "AYY"],
       class: "military",
     },
     {

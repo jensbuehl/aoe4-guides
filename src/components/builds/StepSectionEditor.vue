@@ -1011,6 +1011,7 @@ export default {
               "icon-tech",
               "icon-default",
               "icon-landmark",
+              "icon-ability",
             ],
           },
           allowedAttributes: {
