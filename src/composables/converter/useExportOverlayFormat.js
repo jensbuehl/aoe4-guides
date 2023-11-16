@@ -114,6 +114,13 @@ export default function useExportOverlayFormat() {
     OTT: "Ottomans",
     CHI: "Chinese",
     MON: "Mongols",
+    //Sultans Ascend
+    BYZ: "Byzantines",
+    JAP: "Japanese",
+    AYY: "Ayyubids",
+    JDA: "Jeanne d'Arc",
+    ZXL: "Zhu Xi's Legacy",
+    DRA: "Order of the Dragon"
   };
 
   return {
