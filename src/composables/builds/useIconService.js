@@ -171,6 +171,20 @@ export default function useIconService(civArg) {
       class: "none",
     },
     {
+      title: "Golden Age Tier 4",
+      age: "1",
+      imgSrc: "/assets/pictures/age/goldenagetier4.png",
+      civ: ["AYY"],
+      class: "none",
+    },
+    {
+      title: "Golden Age Tier 5",
+      age: "1",
+      imgSrc: "/assets/pictures/age/goldenagetier5.png",
+      civ: ["AYY"],
+      class: "none",
+    },
+    {
       title: "Vizier Point",
       age: "1",
       imgSrc: "/assets/pictures/age/vizier_point.png",
