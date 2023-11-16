@@ -1485,7 +1485,7 @@ export default function useIconService(civArg) {
       title: "Bloomery",
       age: "2",
       imgSrc: "/assets/pictures/technology_military/bloomery.png",
-      civ: allCivs,
+      civ: allCivs.except("JAP"),
       class: "tech",
     },
     {
