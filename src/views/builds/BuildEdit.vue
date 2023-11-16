@@ -755,6 +755,7 @@ import getSeasons from "../../composables/filter/getSeasons";
 import getMaps from "../../composables/filter/getMaps";
 import getStrategies from "../../composables/filter/getStrategies";
 import useTimeSince from "../../composables/useTimeSince";
+import sanitizeHtml from "sanitize-html";
 import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
 import useCopyToClipboard from "../../composables/converter/useCopyToClipboard";
 import useDownload from "../../composables/converter/useDownload";
@@ -835,6 +836,7 @@ export default {
 
     const handleSave = async () => {
       error.value = validateBuild(build.value);
+      sanitizeSteps();
 
       //Write to database
       if (!error.value) {
@@ -867,6 +869,35 @@ export default {
           router.replace("/builds/" + props.id);
         }
       }
+    };
+
+    const sanitizeSteps = () => {  
+      build.value.steps.forEach(function(stepCollection){
+        stepCollection.steps.forEach(function (step, index) {
+        this[index].description = sanitizeHtml(step.description, {
+          allowedTags: ["img", "br"],
+          allowedClasses: {
+            img: [
+              "icon",
+              "icon-none",
+              "icon-military",
+              "icon-tech",
+              "icon-default",
+              "icon-landmark",
+              "icon-ability",
+            ],
+          },
+          allowedAttributes: {
+            img: ["style", "class", "src", "title"],
+          },
+          allowedStyles: {
+            "*": {
+              "vertical-align": [/^middle$/],
+            },
+          },
+        });
+      }, stepCollection.steps);
+      })
     };
 
     const handleCopyOverlayFormat = () => {
