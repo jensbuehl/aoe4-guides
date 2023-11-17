@@ -1,86 +1,27 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>The Sultans Ascend</v-card-title>
+      <v-card-title>Housed!</v-card-title>
       <v-card-text
-        >Be prepared for the Sultans Ascend Expansion. <br />
-        All new civilizations are now supported, including:</v-card-text>
+        >With the recent big expansion the web site traffic has exploded like an
+        Ozutsu.<br /><br />
+        If you are a happy villager, please consider donating some olive oil or
+        coffee. Thank you! - exe</v-card-text
+      >
 
       <v-row class="ma-2" no-gutters>
-        <v-col align="start" justify="start"
+        <v-col align="center" justify="center"
           ><v-btn
+            class="ma-2"
             size="small"
+            variant="plain"
             color="primary"
             style="background-color: transparent"
-            variant="plain"
-            :to="{
-              name: 'Builds',
-              query: { civ: 'AYY' },
-            }"
           >
-            Ayyubids </v-btn
-          ><br />
-          <v-btn
-            size="small"
-            color="primary"
-            style="background-color: transparent"
-            variant="plain"
-            :to="{
-              name: 'Builds',
-              query: { civ: 'BYZ' },
-            }"
-          >
-            Byzantines </v-btn
-          ><br />
-          <v-btn
-            size="small"
-            color="primary"
-            style="background-color: transparent"
-            variant="plain"
-            :to="{
-              name: 'Builds',
-              query: { civ: 'JAP' },
-            }"
-          >
-            Japanese
-          </v-btn></v-col
-        >
-        <v-col
-          ><v-btn
-            size="small"
-            color="primary"
-            style="background-color: transparent"
-            variant="plain"
-            :to="{
-              name: 'Builds',
-              query: { civ: 'JDA' },
-            }"
-          >
-            Jeanne d'Arc </v-btn
-          ><br />
-          <v-btn
-            size="small"
-            color="primary"
-            style="background-color: transparent"
-            variant="plain"
-            :to="{
-              name: 'Builds',
-              query: { civ: 'DRA' },
-            }"
-          >
-            Order of the Dragon </v-btn
-          ><br />
-          <v-btn
-            size="small"
-            color="primary"
-            style="background-color: transparent"
-            variant="plain"
-            :to="{
-              name: 'Builds',
-              query: { civ: 'ZXL' },
-            }"
-          >
-            Zhu Xi's Legacy
+            <template v-slot:prepend>
+              <v-icon color="red">mdi-heart</v-icon>
+            </template>
+            Support me
           </v-btn></v-col
         >
       </v-row>
