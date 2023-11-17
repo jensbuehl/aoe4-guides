@@ -86,7 +86,7 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { getAll: getAllCreators } = useCollection("creators");
     const builds = ref(null);
-    const creators = ref(null);
+    const allCreators = computed(() => store.state.creators);
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
@@ -126,8 +126,8 @@ export default {
     };
 
     const getCreatorName = (id) => {
-      if (creators.value) {
-        const currentCreator = creators.value.find(
+      if (allCreators.value) {
+        const currentCreator = allCreators.value.find(
           (element) => element.id === id
         );
         if (currentCreator) {
@@ -163,7 +163,9 @@ export default {
       builds.value = res;
 
       //get all creators
-      creators.value = await getAllCreators();
+      if(!allCreators.value){
+        store.commit("setCreators", await getAllCreators());
+      };
 
       //init page count, current page, and commit overall results count
       const allDocsQuery = getQuery(

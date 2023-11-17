@@ -649,7 +649,7 @@ export default {
     const popularBuilds = ref(Array(5).fill({ loading: true }));
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
     const creators = ref(Array(6).fill({ loading: true }));
-    const allCreators = ref(null);
+    const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
@@ -710,7 +710,9 @@ export default {
       popularBuilds.value = await getAll(popularBuildsQuery);
 
       //get all creators
-      allCreators.value = await getAllCreators();
+      if(!allCreators.value){
+        store.commit("setCreators", await getAllCreators());
+      };
 
       //get featured creators
       const isFeatured = true;

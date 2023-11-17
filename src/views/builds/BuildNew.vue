@@ -427,15 +427,15 @@ export default {
         build.value.author = user.value.displayName;
 
         //Add creatorId if empty for some reason...
-        //if (!build.value.creatorId && build.value.video) {
-        //  const videoId = extractVideoId(build.value.video);
-        //  build.value.creatorId = await getVideoCreatorId(videoId);
-        //}
+        if (!build.value.creatorId && build.value.video) {
+          const videoId = extractVideoId(build.value.video);
+          build.value.creatorId = await getVideoCreatorId(videoId);
+        }
 
         //Add build order document
         const id = await add(build.value);
 
-        /*if (build.value.video) {
+        if (build.value.video) {
           //Add content creator document
           const creatorDoc = await getVideoMetaData(
             extractVideoId(build.value.video)
@@ -445,7 +445,7 @@ export default {
           if (!res) {
             await addCreator(creatorDoc, creatorDoc.creatorId);
           }
-        }*/
+        }
 
         //Navigate to new build order
         if (!error.value) {
@@ -493,8 +493,8 @@ export default {
       if (!error.value && build.value.video) {
         const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
-        //build.value.creatorId = await getVideoCreatorId(videoId);
-        //creatorName.value = (await getVideoMetaData(videoId)).creatorTitle;
+        build.value.creatorId = await getVideoCreatorId(videoId);
+        creatorName.value = (await getVideoMetaData(videoId)).creatorTitle;
       } else {
         creatorName.value = "";
         build.value.creatorId = "";
