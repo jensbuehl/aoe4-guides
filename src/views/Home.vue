@@ -721,7 +721,8 @@ export default {
       creators.value.sort(sortByNameCompareFunction);
 
       for (const creator of creators.value) {
-        creator.image = await getChannelIcon(creator.creatorId);
+        //TODO: Store in DB (e.g. on save) to avoid A LOT of traffic
+        //creator.image = await getChannelIcon(creator.creatorId);
       }
 
       //get villager of the day
