@@ -228,7 +228,7 @@
                             <v-avatar
                               class="my-2 mx-4"
                               color="accent"
-                              :image="creator.image"
+                              :image="creator.creatorImage"
                             ></v-avatar>
                           </v-col>
                           <v-col cols="auto" align="start" justify="start">
@@ -470,7 +470,7 @@
                               <v-avatar
                                 class="ml-4"
                                 color="accent"
-                                :image="creator.image"
+                                :image="creator.creatorImage"
                               ></v-avatar>
                             </div>
                           </v-col>
@@ -645,7 +645,6 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { getAll: getAllCreators, getQuery: getQueryCreators } =
       useCollection("creators");
-    const { getChannelIcon } = useYoutube();
     const popularBuilds = ref(Array(5).fill({ loading: true }));
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
     const creators = ref(Array(6).fill({ loading: true }));
@@ -721,11 +720,6 @@ export default {
       );
       creators.value = await getAllCreators(creatorsQuery);
       creators.value.sort(sortByNameCompareFunction);
-
-      for (const creator of creators.value) {
-        //TODO: Store in DB (e.g. on save) to avoid A LOT of traffic
-        //creator.image = await getChannelIcon(creator.creatorId);
-      }
 
       //get villager of the day
       const getUsers = httpsCallable(functions, "getUsers");

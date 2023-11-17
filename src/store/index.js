@@ -92,6 +92,10 @@ const store = createStore({
       state.creators = payload;
       console.log("creators state changed:", state.creators);
     },
+    addCreator(state, payload) {
+      state.creators.push(payload);
+      console.log("creators state changed:", state.creators);
+    },
   },
   actions: {
     //User module

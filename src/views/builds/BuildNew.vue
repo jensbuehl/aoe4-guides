@@ -343,6 +343,7 @@ export default {
       buildEmbedUrl,
       getVideoCreatorId,
       getVideoMetaData,
+      getChannelIcon
     } = useYoutube();
     const civs = getCivs().civs;
     const matchups = getCivs().civs;
@@ -443,7 +444,9 @@ export default {
           const res = await getCreator(creatorDoc.creatorId);
           console.log(creatorDoc);
           if (!res) {
+            creatorDoc.creatorImage = await getChannelIcon(creatorDoc.creatorId);
             await addCreator(creatorDoc, creatorDoc.creatorId);
+            store.commit("addCreator", creatorDoc);
           }
         }
 
@@ -494,9 +497,7 @@ export default {
         const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
-        creatorName.value = (await getVideoMetaData(videoId)).creatorTitle;
       } else {
-        creatorName.value = "";
         build.value.creatorId = "";
       }
     };

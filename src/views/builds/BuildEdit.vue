@@ -793,6 +793,7 @@ export default {
       buildEmbedUrl,
       getVideoCreatorId,
       getVideoMetaData,
+      getChannelIcon
     } = useYoutube();
 
     onMounted(async () => {
@@ -860,7 +861,9 @@ export default {
           const res = await getCreator(creatorDoc.creatorId);
           console.log(creatorDoc);
           if (!res) {
+            creatorDoc.creatorImage = await getChannelIcon(creatorDoc.creatorId);
             await addCreator(creatorDoc, creatorDoc.creatorId);
+            store.commit("addCreator", creatorDoc);
           }
         }
 
