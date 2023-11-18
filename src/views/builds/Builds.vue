@@ -97,7 +97,7 @@ export default {
       totalPages: null,
       pageStart: null,
       pageEnd: null,
-      limit: 20,
+      limit: 10,
     });
 
     onMounted(() => {
