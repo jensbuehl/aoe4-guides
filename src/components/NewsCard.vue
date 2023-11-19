@@ -1,12 +1,10 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>Housed!</v-card-title>
+      <v-card-title>Thank You!</v-card-title>
       <v-card-text
-        >With the recent big expansion the web site traffic has exploded like an
-        Ozutsu.<br /><br />
-        If you are a happy villager, please consider donating some olive oil or
-        coffee. Thank you! - exe</v-card-text
+        >Thank you to all the supporting villagers!<br /><br />
+        With all the olive oil and coffee, 2023 seems funded! Happy scouting!</v-card-text
       >
 
       <v-row class="ma-2" no-gutters>
