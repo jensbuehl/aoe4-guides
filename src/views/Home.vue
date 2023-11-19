@@ -643,8 +643,8 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { getAll: getAllCreators, getQuery: getQueryCreators } =
       useCollection("creators");
-    const popularBuilds = ref(Array(5).fill({ loading: true }));
-    const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
+    const popularBuilds = computed(() => store.state.popularBuilds);
+    const mostRecentBuilds = computed(() => store.state.mostRecentBuilds);
     const creators = computed(() => store.state.featuredCreators);
     const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
@@ -695,16 +695,20 @@ export default {
       store.commit("setResultsCount", null);
 
       //get most recent
-      const mostRecentQuery = getQuery(
-        queryService.getQueryParametersFromConfig(mostRecentConfig.value, 5)
-      );
-      mostRecentBuilds.value = await getAll(mostRecentQuery);
+      if (mostRecentBuilds.value[0].loading) {
+        const mostRecentQuery = getQuery(
+          queryService.getQueryParametersFromConfig(mostRecentConfig.value, 5)
+        );
+        store.commit("setMostRecentBuilds", await getAll(mostRecentQuery));
+      }
 
       //get popular
-      const popularBuildsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(popularConfig.value, 5)
-      );
-      popularBuilds.value = await getAll(popularBuildsQuery);
+      if (popularBuilds.value[0].loading) {
+        const popularBuildsQuery = getQuery(
+          queryService.getQueryParametersFromConfig(popularConfig.value, 5)
+        );
+        store.commit("setPopularBuilds", await getAll(popularBuildsQuery));
+      }
 
       //get all creators
       if (!allCreators.value) {

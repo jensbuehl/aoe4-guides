@@ -25,6 +25,8 @@ const store = createStore({
     //cache
     creators: null,
     featuredCreators: Array(6).fill({ loading: true }),
+    popularBuilds: Array(5).fill({ loading: true }),
+    mostRecentBuilds: Array(5).fill({ loading: true })
   },
   mutations: {
     //User module
@@ -97,6 +99,14 @@ const store = createStore({
     setFeaturedCreators(state, payload) {
       state.featuredCreators = payload;
       console.log("featuredCreators state changed:", state.featuredCreators);
+    },
+    setMostRecentBuilds(state, payload) {
+      state.mostRecentBuilds = payload;
+      console.log("mostRecentBuilds state changed:", state.mostRecentBuilds);
+    },
+    setPopularBuilds(state, payload) {
+      state.popularBuilds = payload;
+      console.log("popularBuilds state changed:", state.popularBuilds);
     },
     addCreator(state, payload) {
       state.creators.push(payload);
