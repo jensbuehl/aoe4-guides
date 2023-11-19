@@ -405,7 +405,6 @@
         ></v-row>
       </v-col>
 
-
       <!-- sidebar -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <NewsCard class="mb-6"></NewsCard>
@@ -623,7 +622,6 @@ import useCollection from "../composables/useCollection";
 import queryService from "../composables/useQueryService";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
-import useYoutube from "../composables/builds/useYoutube";
 import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { functions } from "../firebase";
 import { httpsCallable } from "firebase/functions";
@@ -647,7 +645,7 @@ export default {
       useCollection("creators");
     const popularBuilds = ref(Array(5).fill({ loading: true }));
     const mostRecentBuilds = ref(Array(5).fill({ loading: true }));
-    const creators = ref(Array(6).fill({ loading: true }));
+    const creators = computed(() => store.state.featuredCreators);
     const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
     const civs = getCivs().civs.value.filter(
@@ -709,17 +707,20 @@ export default {
       popularBuilds.value = await getAll(popularBuildsQuery);
 
       //get all creators
-      if(!allCreators.value){
+      if (!allCreators.value) {
         store.commit("setCreators", await getAllCreators());
-      };
+      }
 
       //get featured creators
-      const isFeatured = true;
-      const creatorsQuery = getQueryCreators(
-        queryService.getQueryParametersForCreators(isFeatured, 6)
-      );
-      creators.value = await getAllCreators(creatorsQuery);
-      creators.value.sort(sortByNameCompareFunction);
+      if (creators.value[0].loading) {
+        const isFeatured = true;
+        const creatorsQuery = getQueryCreators(
+          queryService.getQueryParametersForCreators(isFeatured, 6)
+        );
+        var featuredCreators = await getAllCreators(creatorsQuery);
+        featuredCreators.sort(sortByNameCompareFunction);
+        store.commit("setFeaturedCreators", featuredCreators);
+      }
 
       //get villager of the day
       const getUsers = httpsCallable(functions, "getUsers");

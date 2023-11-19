@@ -22,7 +22,9 @@ const store = createStore({
     filterConfig: null,
     resultsCount: 0,
     template: null,
+    //cache
     creators: null,
+    featuredCreators: Array(6).fill({ loading: true }),
   },
   mutations: {
     //User module
@@ -87,10 +89,14 @@ const store = createStore({
       state.template = payload;
       console.log("template state changed:", state.template);
     },
-    //Creators cache module
+    //Cache module
     setCreators(state, payload) {
       state.creators = payload;
       console.log("creators state changed:", state.creators);
+    },
+    setFeaturedCreators(state, payload) {
+      state.featuredCreators = payload;
+      console.log("featuredCreators state changed:", state.featuredCreators);
     },
     addCreator(state, payload) {
       state.creators.push(payload);
