@@ -267,7 +267,7 @@
         </v-row>
 
         <!--villager of the day xs-->
-        <v-row no-gutters class="hidden-md-and-up">
+        <!--v-row no-gutters class="hidden-md-and-up">
           <div
             class="text-h6 mt-2 mb-2 ml-4"
             style="font-family: 'Segoe UI' !important"
@@ -317,7 +317,7 @@
                             </div>
                           </v-col>
                           <v-col cols="9" align="start">
-                            <!--small title-->
+                            //small title
                             <v-card-title
                               :style="{
                                 color: $vuetify.theme.current.colors.primary,
@@ -352,7 +352,7 @@
               </template>
             </v-tooltip>
           </v-col>
-        </v-row>
+        </v-row-->
 
         <!-- recent builds -->
         <v-row align="center" no-gutters>
@@ -505,7 +505,7 @@
         </v-row>
 
         <!--villager of the day sm and up-->
-        <v-row no-gutters class="hidden-xs">
+        <!--v-row no-gutters class="hidden-xs">
           <div
             class="text-h6 mt-4 mb-2 ml-4"
             style="font-family: 'Segoe UI' !important"
@@ -555,7 +555,7 @@
                             </div>
                           </v-col>
                           <v-col cols="9" align="start">
-                            <!--small title-->
+                            //small title
                             <v-card-title
                               :style="{
                                 color: $vuetify.theme.current.colors.primary,
@@ -565,7 +565,7 @@
                             >
                               {{ villagerOfTheDay.displayName }}
                             </v-card-title>
-                            <!--large title-->
+                            //large title
                             <v-card-title
                               class="hidden-md-and-down"
                               :style="{
@@ -599,7 +599,7 @@
               </template>
             </v-tooltip>
           </v-col>
-        </v-row>
+        </v-row-->
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
           class="mt-6"
@@ -727,8 +727,13 @@ export default {
       }
 
       //get villager of the day
+      //disable villager of the day
+      //re-implement without reading all users on each load?
+      //e.g. get user count and use start / limit smart!
+      /*
       const getUsers = httpsCallable(functions, "getUsers");
       const allUsers = (await getUsers()).data;
+      console.log(allUsers);
       const oneDayInMs = 1000 * 60 * 60 * 24;
       const currentTimeInMs = new Date().getTime(); // UTC time
       const timeInDays = Math.floor(currentTimeInMs / oneDayInMs);
@@ -742,6 +747,7 @@ export default {
       );
       user.count = await getSize(authorQuery);
       villagerOfTheDay.value = user;
+      */
 
       //get count
       const allDocsQuery = getQuery(

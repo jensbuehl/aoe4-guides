@@ -26,7 +26,8 @@ const store = createStore({
     creators: null,
     featuredCreators: Array(6).fill({ loading: true }),
     popularBuilds: Array(5).fill({ loading: true }),
-    mostRecentBuilds: Array(5).fill({ loading: true })
+    mostRecentBuilds: Array(5).fill({ loading: true }),
+    villagerOfTheDay: null
   },
   mutations: {
     //User module
