@@ -4,7 +4,8 @@
       <v-card-title>Thank You!</v-card-title>
       <v-card-text
         >Thank you to all the supporting villagers!<br /><br />
-        With all the olive oil and coffee, 2023 seems funded! Happy scouting!</v-card-text
+        The project is funded for 2023 due to the donated olive oil and coffee! Happy scouting!<br /><br />
+        PS: The villager of the day feature is offline until further notice.</v-card-text
       >
 
       <v-row class="ma-2" no-gutters>
