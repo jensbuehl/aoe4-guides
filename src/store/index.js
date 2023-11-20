@@ -24,7 +24,7 @@ const store = createStore({
     template: null,
     //cache
     creators: null,
-    featuredCreators: Array(6).fill({ loading: true }),
+    featuredCreators: Array(8).fill({ loading: true }),
     popularBuilds: Array(5).fill({ loading: true }),
     mostRecentBuilds: Array(5).fill({ loading: true }),
     villagerOfTheDay: null
