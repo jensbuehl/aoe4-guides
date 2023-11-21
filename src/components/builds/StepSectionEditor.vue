@@ -653,14 +653,13 @@
               v-html="item.stone"
             ></td>
             <td
-              style="white-space: break-spaces"
               @keyup="saveSelection"
-              @keydown="replaceShortcut($event, index)"
+              @input="addInlineIcon($event, index)"
               @click="saveSelection"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
               :contenteditable="!readonly"
-              class="text-left py-1"
+              class="editor text-left py-1"
               v-html="item.description"
             ></td>
             <td v-if="!readonly" style="width: 180px" class="text-right">
@@ -810,6 +809,111 @@ export default {
       }
     };
 
+    // get the cursor position from .editor start
+    function getCursorPosition(parent, node, offset, stat) {
+      if (stat.done) return stat;
+
+      let currentNode = null;
+      if (parent.childNodes.length == 0) {
+        stat.pos += parent.textContent.length;
+      } else {
+        for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
+          currentNode = parent.childNodes[i];
+          if (currentNode === node) {
+            stat.pos += offset;
+            stat.done = true;
+            return stat;
+          } else getCursorPosition(currentNode, node, offset, stat);
+        }
+      }
+      return stat;
+    }
+
+    //find the child node and relative position and set it on range
+    function setCursorPosition(parent, range, stat) {
+      if (stat.done) return range;
+
+      let currentNode = null;
+      if (parent.childNodes.length == 0) {
+        if (parent.textContent.length >= stat.pos) {
+          range.setStart(parent, stat.pos);
+          stat.done = true;
+        } else {
+          stat.pos = stat.pos - parent.textContent.length;
+        }
+      } else {
+        for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
+          currentNode = parent.childNodes[i];
+          setCursorPosition(currentNode, range, stat);
+        }
+      }
+      return range;
+    }
+
+    const addInlineIcon = (event, index) => {
+      const editor = stepsTable.value.rows[index].cells[7];
+
+      //get current cursor position
+      const sel = window.getSelection();
+      const node = sel.focusNode;
+      const offset = sel.focusOffset;
+      const pos = getCursorPosition(editor, node, offset, {
+        pos: 0,
+        done: false,
+      });
+      console.log("node", node);
+      console.log("pos", pos);
+      console.log("offset", offset);
+
+      if (offset === 0) pos.pos += 0.5;
+
+      //parse and replace
+      if (editor.innerHTML.includes(":vil")) {
+        //TODO: Use regex to check if anything can be replaced
+        //Query icon service to get metadata
+        //Build image element
+        const img =
+          '<img src="' +
+          "/assets/pictures/unit_worker/villager.png" +
+          '" class=icon-default' +
+          ' title="' +
+          "Villager" +
+          '"><\/img>';
+
+        editor.innerHTML = editor.innerHTML.replace(":vil", img);
+
+        // restore the position
+        sel.removeAllRanges();
+        const range = setCursorPosition(editor, document.createRange(), {
+          pos: pos.pos - 3.5, //TODO: Use length of the replaced shortcut, instead?
+          done: false,
+        });
+        console.log("range", range);
+        range.collapse(true);
+        sel.addRange(range);
+      }
+    };
+
+    function placeCaretAtEnd(el) {
+      el.focus();
+      if (
+        typeof window.getSelection != "undefined" &&
+        typeof document.createRange != "undefined"
+      ) {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        range.collapse(false);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      } else if (typeof document.body.createTextRange != "undefined") {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(false);
+        textRange.select();
+      }
+    }
+
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
       iconClass = iconClass ? "icon-" + iconClass : "icon";
@@ -891,32 +995,6 @@ export default {
 
       context.emit("stepsChanged", stepsCopy);
     };
-    const replaceShortcut = (event, index) => {
-      var innerHTML = stepsTable.value.rows[index].cells[7].innerHTML;
-
-      //TODO: Store Caret Position
-      console.log(selection.value);
-      if (innerHTML.includes(":vil:")) {
-        //TODO: Use regex to check if anything can be replaced
-        //TODO: Query icon service to get metadata
-
-        //TODO: Build image element
-        const img =
-          '<img src="' +
-          "/assets/pictures/unit_worker/villager.png" +
-          '" class=icon-default' +
-          ' title="' +
-          "Villager" +
-          '"><\/img>';
-
-        stepsTable.value.rows[index].cells[7].innerHTML = innerHTML.replace(
-          ":vil:",
-          img
-        );
-        //TODO: Restore Caret Position
-        placeCaretAtEnd(event.target);
-      }
-    };
     const addStep = (index) => {
       var table = stepsTable.value;
       if (table) {
@@ -995,26 +1073,6 @@ export default {
       context.emit("textChanged");
     };
 
-    function placeCaretAtEnd(el) {
-      el.focus();
-      if (
-        typeof window.getSelection != "undefined" &&
-        typeof document.createRange != "undefined"
-      ) {
-        var range = document.createRange();
-        range.selectNodeContents(el);
-        range.collapse(false);
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-      } else if (typeof document.body.createTextRange != "undefined") {
-        var textRange = document.body.createTextRange();
-        textRange.moveToElementText(el);
-        textRange.collapse(false);
-        textRange.select();
-      }
-    }
-
     const handlePaste = async (e) => {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
@@ -1078,7 +1136,7 @@ export default {
       handlePaste,
       aggregateVillagers,
       updateStepDescription,
-      replaceShortcut,
+      addInlineIcon,
       updateStepStone,
       updateStepGold,
       updateStepWood,
@@ -1217,5 +1275,8 @@ td:empty {
   vertical-align: middle;
   width: auto;
   height: 30px;
+}
+.editor {
+  white-space: break-spaces;
 }
 </style>
