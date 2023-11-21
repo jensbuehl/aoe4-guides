@@ -49,7 +49,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -97,7 +97,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -145,7 +145,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -193,7 +193,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -245,7 +245,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -293,7 +293,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -341,7 +341,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -393,7 +393,7 @@
                         'icon-none-selector': icon.class == 'none',
                         'icon-selector': !icon.class,
                       }"
-                      style="height: 42px; width: 42px"
+                      style="height: 48px; width: 48px"
                       :src="icon.imgSrc"
                     ></v-img>
                   </v-btn>
@@ -479,48 +479,48 @@ export default {
 .icon {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   border-radius: 4px;
 }
 .icon-ability-selector {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #5C457B, #4D366E);
 }
 .icon-tech-selector {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
 }
 .icon-military-selector {
   vertical-align: middle;
-  height: 42px;
-  width: 42px;
+  height: 48px;
+  width: 48px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
 }
 .icon-landmark-selector {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
 }
 .icon-none-selector {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
 }
 .icon-default-selector {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #4b6382, #1D2432);
 }

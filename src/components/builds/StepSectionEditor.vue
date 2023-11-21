@@ -1092,13 +1092,13 @@ table tbody tr td:nth-child(7) {
 }
 
 td:empty {
-  line-height: 46px;
+  line-height: 52px;
 }
 
 :deep(.icon) {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
 }
@@ -1106,7 +1106,7 @@ td:empty {
 :deep(.icon-ability) {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #5C457B, #4D366E);
@@ -1119,7 +1119,7 @@ td:empty {
 :deep(.icon-tech) {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
@@ -1131,7 +1131,7 @@ td:empty {
 :deep(.icon-military) {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
@@ -1143,7 +1143,7 @@ td:empty {
 :deep(.icon-none) {
   vertical-align: middle;
   width: auto;
-  height: 42px;
+  height: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(
@@ -1159,7 +1159,7 @@ td:empty {
 :deep(.icon-default) {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #4b6382, #1d2432);
@@ -1171,7 +1171,7 @@ td:empty {
 :deep(.icon-landmark) {
   vertical-align: middle;
   height: auto;
-  width: 42px;
+  width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
