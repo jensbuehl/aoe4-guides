@@ -98,7 +98,8 @@ export default function useExportOverlayFormat() {
       }
     );
 
-    const notes = convertedDescription.split("<br>").map((it) => it.trim());
+    var notes = convertedDescription.split("<br>").map((it) => it.trim());
+    notes = convertedDescription.split("\n").map((it) => it.trim());
     return notes;
   }
 
