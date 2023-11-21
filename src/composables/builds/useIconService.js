@@ -54,6 +54,7 @@ export default function useIconService(civArg) {
         allIcons = general.concat(
           unit_eco,
           unit_hero,
+          ability_hero,
           landmark,
           tech_eco,
           tech_military,
@@ -93,8 +94,6 @@ export default function useIconService(civArg) {
 
   Array.prototype.exceptMany = function (val) {
     return this.filter(function (x) {
-      console.log(val);
-      console.log(x);
       return !val.includes(x);
     });
   };
