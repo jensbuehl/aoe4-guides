@@ -655,6 +655,7 @@
             <td
               style="white-space: break-spaces"
               @keyup="saveSelection"
+              @keydown="replaceShortcut($event, index)"
               @click="saveSelection"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
@@ -761,7 +762,7 @@ export default {
   components: { IconSelector },
   setup(props, context) {
     //Hacky deep copy of object since working on the reference broke the current selection
-    //Copy needs to be kepts in sync and is used only for the description field :(
+    //Copy needs to be kept in sync and is used only for the description field :(
     const steps = reactive(JSON.parse(JSON.stringify(props.section.steps)));
     const stepsCopy = reactive(JSON.parse(JSON.stringify(props.section.steps)));
     const readonly = props.readonly;
@@ -889,6 +890,32 @@ export default {
       stepsCopy[index].description = event.target.innerHTML;
 
       context.emit("stepsChanged", stepsCopy);
+    };
+    const replaceShortcut = (event, index) => {
+      var innerHTML = stepsTable.value.rows[index].cells[7].innerHTML;
+
+      //TODO: Store Caret Position
+      console.log(selection.value);
+      if (innerHTML.includes(":vil:")) {
+        //TODO: Use regex to check if anything can be replaced
+        //TODO: Query icon service to get metadata
+
+        //TODO: Build image element
+        const img =
+          '<img src="' +
+          "/assets/pictures/unit_worker/villager.png" +
+          '" class=icon-default' +
+          ' title="' +
+          "Villager" +
+          '"><\/img>';
+
+        stepsTable.value.rows[index].cells[7].innerHTML = innerHTML.replace(
+          ":vil:",
+          img
+        );
+        //TODO: Restore Caret Position
+        placeCaretAtEnd(event.target);
+      }
     };
     const addStep = (index) => {
       var table = stepsTable.value;
@@ -1051,6 +1078,7 @@ export default {
       handlePaste,
       aggregateVillagers,
       updateStepDescription,
+      replaceShortcut,
       updateStepStone,
       updateStepGold,
       updateStepWood,
@@ -1109,7 +1137,7 @@ td:empty {
   width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #5C457B, #4D366E);
+  background: radial-gradient(circle at top center, #5c457b, #4d366e);
 }
 
 :deep(.icon-ability + img) {
