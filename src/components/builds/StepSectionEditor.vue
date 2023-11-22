@@ -349,7 +349,7 @@
                     <IconSelector
                       @iconSelected="
                         (iconPath, tooltip, iconClass) =>
-                          handleIconSelected(iconPath, tooltip, iconClass)
+                          handleShortcutInput(iconPath, tooltip, iconClass)
                       "
                       :civ="civ"
                     ></IconSelector>
@@ -654,6 +654,7 @@
             ></td>
             <td
               @keyup="saveSelection"
+              @keypress="handleNewLine($event)"
               @input="addInlineIcon($event, index)"
               @click="saveSelection"
               @paste="handlePaste"
@@ -693,7 +694,7 @@
                       <IconSelector
                         @iconSelected="
                           (iconPath, tooltip, iconClass) =>
-                            handleIconSelected(iconPath, tooltip, iconClass)
+                            handleShortcutInput(iconPath, tooltip, iconClass)
                         "
                         :civ="civ"
                       ></IconSelector>
@@ -816,7 +817,9 @@ export default {
 
       for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
         currentNode = parent.childNodes[i];
-        stat.pos++;
+        if(currentNode.data != "\n"){
+          stat.pos++;
+        }
         if (currentNode.wholeText?.indexOf(":") > 0) {
           stat.pos++;
         }
@@ -828,6 +831,17 @@ export default {
 
       return stat;
     }
+
+    const handleNewLine = (event) => {
+      //Make sure that Enter has the same behaviour across all browser
+      //Also, required (!) to get cursor restore working for inline-icons (\n does not work!)
+      if (event.which === 13) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        document.execCommand('insertHTML', false, '<br><br>');
+    }
+  }
 
     const addInlineIcon = (event, index) => {
       const editor = stepsTable.value.rows[index].cells[7];
@@ -860,7 +874,7 @@ export default {
         // restore the position
         sel.removeAllRanges();
         var range = document.createRange();
-        range.setStart(editor, pos.pos); //TODO: use correct position
+        range.setStart(editor, pos.pos);
         range.collapse(true);
         sel.addRange(range);
       }
@@ -886,7 +900,7 @@ export default {
       }
     }
 
-    const handleIconSelected = (iconPath, tooltipText, iconClass) => {
+    const handleShortcutInput = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
       iconClass = iconClass ? "icon-" + iconClass : "icon";
 
@@ -1109,6 +1123,7 @@ export default {
       aggregateVillagers,
       updateStepDescription,
       addInlineIcon,
+      handleNewLine,
       updateStepStone,
       updateStepGold,
       updateStepWood,
@@ -1122,7 +1137,7 @@ export default {
       unhoverItem,
       saveSelection,
       restoreSelection,
-      handleIconSelected,
+      handleShortcutInput,
     };
   },
 };
