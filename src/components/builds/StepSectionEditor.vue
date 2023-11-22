@@ -809,45 +809,24 @@ export default {
       }
     };
 
-    // get the cursor position from .editor start
     function getCursorPosition(parent, node, offset, stat) {
       if (stat.done) return stat;
 
       let currentNode = null;
-      if (parent.childNodes.length == 0) {
-        stat.pos += parent.textContent.length;
-      } else {
-        for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
-          currentNode = parent.childNodes[i];
-          if (currentNode === node) {
-            stat.pos += offset;
-            stat.done = true;
-            return stat;
-          } else getCursorPosition(currentNode, node, offset, stat);
+
+      for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
+        currentNode = parent.childNodes[i];
+        stat.pos++;
+        if (currentNode.wholeText?.indexOf(":") > 0) {
+          stat.pos++;
         }
-      }
-      return stat;
-    }
-
-    //find the child node and relative position and set it on range
-    function setCursorPosition(parent, range, stat) {
-      if (stat.done) return range;
-
-      let currentNode = null;
-      if (parent.childNodes.length == 0) {
-        if (parent.textContent.length >= stat.pos) {
-          range.setStart(parent, stat.pos);
+        if (currentNode === node) {
           stat.done = true;
-        } else {
-          stat.pos = stat.pos - parent.textContent.length;
-        }
-      } else {
-        for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
-          currentNode = parent.childNodes[i];
-          setCursorPosition(currentNode, range, stat);
-        }
+          return stat;
+        } else getCursorPosition(currentNode, node, offset, stat);
       }
-      return range;
+
+      return stat;
     }
 
     const addInlineIcon = (event, index) => {
@@ -861,17 +840,12 @@ export default {
         pos: 0,
         done: false,
       });
-      console.log("node", node);
-      console.log("pos", pos);
-      console.log("offset", offset);
-
-      if (offset === 0) pos.pos += 0.5;
 
       //parse and replace
-      if (editor.innerHTML.includes(":vil")) {
-        //TODO: Use regex to check if anything can be replaced
-        //Query icon service to get metadata
-        //Build image element
+      if (editor.innerHTML.includes(":vil ")) {
+        //TODO: Use regex to check if anything can be replaced?
+        //TODO: Query icon service to get metadata
+        //TODO: Build corresponding image element
         const img =
           '<img src="' +
           "/assets/pictures/unit_worker/villager.png" +
@@ -880,15 +854,13 @@ export default {
           "Villager" +
           '"><\/img>';
 
-        editor.innerHTML = editor.innerHTML.replace(":vil", img);
+        //Replace element
+        editor.innerHTML = editor.innerHTML.replace(":vil ", img);
 
         // restore the position
         sel.removeAllRanges();
-        const range = setCursorPosition(editor, document.createRange(), {
-          pos: pos.pos - 3.5, //TODO: Use length of the replaced shortcut, instead?
-          done: false,
-        });
-        console.log("range", range);
+        var range = document.createRange();
+        range.setStart(editor, pos.pos); //TODO: use correct position
         range.collapse(true);
         sel.addRange(range);
       }
