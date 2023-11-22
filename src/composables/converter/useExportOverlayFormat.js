@@ -98,8 +98,11 @@ export default function useExportOverlayFormat() {
       }
     );
 
+    //deprecated versions, keep for compatibility
     var notes = convertedDescription.split("<br>").map((it) => it.trim());
     notes = convertedDescription.split("\n").map((it) => it.trim());
+    //new versions
+    var notes = convertedDescription.split("<br />").map((it) => it.trim());
     return notes;
   }
 
