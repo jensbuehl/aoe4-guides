@@ -29,6 +29,12 @@
                     color: $vuetify.theme.current.colors.primary,
                   }"
                   >{{ icon.title }}</span
+                ><br /><span
+                  v-if="icon.shorthand"
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >[:{{ icon.shorthand }}]</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -87,7 +93,7 @@
                     height="60"
                     width="60"
                   >
-                  <v-img
+                    <v-img
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
@@ -125,6 +131,12 @@
                     color: $vuetify.theme.current.colors.primary,
                   }"
                   >{{ icon.title }}</span
+                ><br /><span
+                  v-if="icon.shorthand"
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >[:{{ icon.shorthand }}]</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -135,7 +147,7 @@
                     height="60"
                     width="60"
                   >
-                  <v-img
+                    <v-img
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
@@ -173,6 +185,12 @@
                     color: $vuetify.theme.current.colors.primary,
                   }"
                   >{{ icon.title }}</span
+                ><br /><span
+                  v-if="icon.shorthand"
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >[:{{ icon.shorthand }}]</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -183,7 +201,7 @@
                     height="60"
                     width="60"
                   >
-                  <v-img
+                    <v-img
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
@@ -225,6 +243,12 @@
                     color: $vuetify.theme.current.colors.primary,
                   }"
                   >{{ icon.title }}</span
+                ><br /><span
+                  v-if="icon.shorthand"
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >[:{{ icon.shorthand }}]</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -235,7 +259,7 @@
                     height="60"
                     width="60"
                   >
-                  <v-img
+                    <v-img
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
@@ -273,6 +297,12 @@
                     color: $vuetify.theme.current.colors.primary,
                   }"
                   >{{ icon.title }}</span
+                ><br /><span
+                  v-if="icon.shorthand"
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >[:{{ icon.shorthand }}]</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -283,7 +313,7 @@
                     height="60"
                     width="60"
                   >
-                  <v-img
+                    <v-img
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
@@ -321,6 +351,12 @@
                     color: $vuetify.theme.current.colors.primary,
                   }"
                   >{{ icon.title }}</span
+                ><br /><span
+                  v-if="icon.shorthand"
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >[:{{ icon.shorthand }}]</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -331,7 +367,7 @@
                     height="60"
                     width="60"
                   >
-                  <v-img
+                    <v-img
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
@@ -373,6 +409,12 @@
                     color: $vuetify.theme.current.colors.primary,
                   }"
                   >{{ icon.title }}</span
+                ><br /><span
+                  v-if="icon.shorthand"
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >[:{{ icon.shorthand }}]</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -383,7 +425,7 @@
                     height="60"
                     width="60"
                   >
-                  <v-img
+                    <v-img
                       v-bind:class="{
                         'icon-landmark-selector': icon.class == 'landmark',
                         'icon-tech-selector': icon.class == 'tech',
@@ -427,7 +469,9 @@ export default {
     const general = getIcons("unit_eco").concat(
       getIcons("unit_religious").concat(getIcons("resource"))
     );
-    const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious"));
+    const militaryUnits = getIcons("unit_military").concat(
+      getIcons("unit_religious")
+    );
     const ecoTechnologies = getIcons("tech_eco");
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
@@ -487,7 +531,7 @@ export default {
   height: auto;
   width: 48px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #5C457B, #4D366E);
+  background: radial-gradient(circle at top center, #5c457b, #4d366e);
 }
 .icon-tech-selector {
   vertical-align: middle;
@@ -515,13 +559,17 @@ export default {
   height: auto;
   width: 48px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background)));
+  background: radial-gradient(
+    circle at top center,
+    rgb(var(--v-theme-icon-background-highlight)),
+    rgb(var(--v-theme-icon-background))
+  );
 }
 .icon-default-selector {
   vertical-align: middle;
   height: auto;
   width: 48px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1D2432);
+  background: radial-gradient(circle at top center, #4b6382, #1d2432);
 }
 </style>
