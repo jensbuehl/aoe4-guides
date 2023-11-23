@@ -126,6 +126,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/age/age_1.png",
       civ: allCivs,
       class: "none",
+      shorthand: "age1"
     },
     {
       title: "Feudal Age",
@@ -133,6 +134,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/age/age_2.png",
       civ: allCivs,
       class: "none",
+      shorthand: "age2"
     },
     {
       title: "Castle Age",
@@ -140,6 +142,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/age/age_3.png",
       civ: allCivs,
       class: "none",
+      shorthand: "age3"
     },
     {
       title: "Imperial Age",
@@ -147,6 +150,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/age/age_4.png",
       civ: allCivs,
       class: "none",
+      shorthand: "age4"
     },
     {
       title: "Golden Age Tier 1",
@@ -196,6 +200,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/abilities/repair.png",
       civ: allCivs,
       class: "none",
+      shorthand: "build"
     },
     {
       title: "Attack",
@@ -210,6 +215,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/abb.png",
       civ: allCivs,
       class: "none",
+      shorthand: "abb"
     },
     {
       title: "Ayyubids",
@@ -217,6 +223,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/ayy.png",
       civ: allCivs,
       class: "none",
+      shorthand: "ayy"
     },
     {
       title: "Byzantines",
@@ -224,6 +231,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/byz.png",
       civ: allCivs,
       class: "none",
+      shorthand: "byz"
     },
     {
       title: "China",
@@ -231,6 +239,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/chi.png",
       civ: allCivs,
       class: "none",
+      shorthand: "chi"
     },
     {
       title: "Delhi Sultanate",
@@ -238,6 +247,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/del.png",
       civ: allCivs,
       class: "none",
+      shorthand: "del"
     },
     {
       title: "English",
@@ -245,6 +255,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/eng.png",
       civ: allCivs,
       class: "none",
+      shorthand: "eng"
     },
     {
       title: "French",
@@ -252,6 +263,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/fre.png",
       civ: allCivs,
       class: "none",
+      shorthand: "fre"
     },
     {
       title: "Holy Roman Empire",
@@ -259,6 +271,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/hre.png",
       civ: allCivs,
       class: "none",
+      shorthand: "hre"
     },
     {
       title: "Japanese",
@@ -266,6 +279,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/jap.png",
       civ: allCivs,
       class: "none",
+      shorthand: "jap"
     },
     {
       title: "Jeanne d'Arc",
@@ -273,6 +287,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/jda.png",
       civ: allCivs,
       class: "none",
+      shorthand: "jda"
     },
     {
       title: "Malians",
@@ -280,6 +295,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/mal.png",
       civ: allCivs,
       class: "none",
+      shorthand: "mal"
     },
     {
       title: "Mongols",
@@ -287,6 +303,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/mon.png",
       civ: allCivs,
       class: "none",
+      shorthand: "mon"
     },
     {
       title: "Order of the Dragon",
@@ -294,6 +311,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/dra.png",
       civ: allCivs,
       class: "none",
+      shorthand: "dra"
     },
     {
       title: "Ottomans",
@@ -301,6 +319,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/ott.png",
       civ: allCivs,
       class: "none",
+      shorthand: "ott"
     },
     {
       title: "Rus",
@@ -308,6 +327,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/rus.png",
       civ: allCivs,
       class: "none",
+      shorthand: "rus"
     },
     {
       title: "Zhu Xi's Legacy",
@@ -315,6 +335,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/civilization_flag/zxl.png",
       civ: allCivs,
       class: "none",
+      shorthand: "zxl"
     },
   ];
 
@@ -325,6 +346,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/resource_food.png",
       civ: allCivs,
       class: "none",
+      shorthand: "food"
     },
     {
       title: "Wood",
@@ -332,6 +354,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/resource_wood.png",
       civ: allCivs,
       class: "none",
+      shorthand: "wood"
     },
     {
       title: "Gold",
@@ -339,6 +362,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/resource_gold.png",
       civ: allCivs,
       class: "none",
+      shorthand: "gold"
     },
     {
       title: "Stone",
@@ -346,6 +370,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/resource_stone.png",
       civ: allCivs,
       class: "none",
+      shorthand: "stone"
     },
     {
       title: "Cattle",
@@ -353,6 +378,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/cattle.png",
       civ: ["MAL"],
       class: "none",
+      shorthand: "cattle"
     },
     {
       title: "Sheep",
@@ -360,6 +386,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/sheep.png",
       civ: allCivs,
       class: "none",
+      shorthand: "sheep"
     },
     {
       title: "Deer",
@@ -367,6 +394,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/deer.png",
       civ: allCivs,
       class: "none",
+      shorthand: "deer"
     },
     {
       title: "Berries",
@@ -374,6 +402,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/berrybush.png",
       civ: allCivs,
       class: "none",
+      shorthand: "berry"
     },
     {
       title: "Boar",
@@ -381,6 +410,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/boar.png",
       civ: allCivs,
       class: "none",
+      shorthand: "boar"
     },
     {
       title: "Relic",
@@ -388,6 +418,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/relics.png",
       civ: allCivs,
       class: "none",
+      shorthand: "relic"
     },
     {
       title: "Sacred Site",
@@ -395,6 +426,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/sacred_sites.png",
       civ: allCivs,
       class: "none",
+      shorthand: "ss"
     },
     {
       title: "Bounty",
@@ -402,6 +434,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/bounty.png",
       civ: ["RUS"],
       class: "none",
+      shorthand: "bounty"
     },
     {
       title: "Rally",
@@ -409,6 +442,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/rally.png",
       civ: allCivs,
       class: "none",
+      shorthand: "rally"
     },
     {
       title: "Fish",
@@ -416,6 +450,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/fish.png",
       civ: allCivs,
       class: "none",
+      shorthand: "fish"
     },
     {
       title: "Straggler Tree",
@@ -423,6 +458,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/resource/gaiatreeprototypetree.png",
       civ: allCivs,
       class: "none",
+      shorthand: "tree"
     },
     ,
     {
@@ -1486,6 +1522,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/bloomery.png",
       civ: allCivs.except("JAP"),
       class: "tech",
+      shorthand: "melee_dmg1"
     },
     {
       title: "Decarbonization",
@@ -1493,6 +1530,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/decarbonization.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "melee_dmg2"
     },
     {
       title: "Damascus Steel",
@@ -1500,6 +1538,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/damascus-steel.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "melee_dmg3"
     },
     {
       title: "Siege Engineering",
@@ -1514,6 +1553,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/steeled-arrow.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "ranged_dmg1"
     },
     {
       title: "Balanced Projectiles",
@@ -1521,6 +1561,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/balanced-projectiles.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "ranged_dmg2"
     },
     {
       title: "Platecutter Point",
@@ -1528,6 +1569,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/platecutter-point.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "ranged_dmg3"
     },
     {
       title: "Military Academy",
@@ -1542,6 +1584,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/fitted-leatherwork.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "melee_def1"
     },
     {
       title: "Insulated Helm",
@@ -1549,6 +1592,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/insulated-helm.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "melee_def2"
     },
     {
       title: "Master Smiths",
@@ -1556,6 +1600,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/master-smiths.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "melee_def3"
     },
     {
       title: "Elite Army Tactics",
@@ -1570,6 +1615,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/iron-undermesh.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "ranged_def1"
     },
     {
       title: "Wedge Rivets",
@@ -1577,6 +1623,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/wedge-rivets.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "ranged_def2"
     },
     {
       title: "Angled Surfaces",
@@ -1584,6 +1631,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/technology_military/angled-surfaces.png",
       civ: allCivs,
       class: "tech",
+      shorthand: "ranged_def3"
     },
     {
       title: "Incendiary Arrows",
