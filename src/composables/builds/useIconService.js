@@ -3088,6 +3088,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_religious/monk-3.png",
       civ: ["ENG", "FRE", "JDA", "RUS", "MAL", "MON", "CHI", "ZXL", "HRE", "DRA", "BYZ"],
       class: "military",
+      shorthand: ["monk"]
     },
     {
       title: "Shaolin Monk",
@@ -3154,6 +3155,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_cavalry/scout.png",
       civ: allCivs.exceptMany(["MAL"]),
       class: "military",
+      shorthand: ["scout"]
     },
     {
       title: "Spearman",
@@ -3161,6 +3163,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_infantry/spearman-1.png",
       civ: ["ENG", "FRE", "JDA", "RUS", "MON", "ABB", "AYY", "OTT", "CHI", "ZXL", "DEL", "HRE", "JAP"],
       class: "military",
+      shorthand: ["spear"]
     },
     {
       title: "Gilded Spearman",
@@ -3168,6 +3171,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_dragon/gilded-spearman-1.png",
       civ: ["DRA"],
       class: "military",
+      shorthand: ["spear"]
     },
     {
       title: "Limitanei",
@@ -3196,6 +3200,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_infantry/archer-2.png",
       civ: allCivs.exceptMany(["ENG", "JAP", "DRA", "CHI", "ZXL"]),
       class: "military",
+      shorthand: ["archer"]
     },
     {
       title: "Gilded Archer",
@@ -3203,6 +3208,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_dragon/gilded-archer-2.png",
       civ: ["DRA"],
       class: "military",
+      shorthand: ["archer"]
     },
     {
       title: "Shinobi",
@@ -3266,6 +3272,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_infantry/crossbowman-3.png",
       civ: allCivs.exceptMany(["FRE", "MAL", "JAP", "DRA"]),
       class: "military",
+      shorthand: ["xbow"]
     },
     {
       title: "Gilded Crossbowman",
@@ -3273,6 +3280,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_dragon/gilded-crossbowman-3.png",
       civ: ["DRA"],
       class: "military",
+      shorthand: ["xbow"]
     },
     {
       title: "Handcannoneer",
@@ -3301,6 +3309,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_infantry/man-at-arms-1.png",
       civ: ["ENG", "FRE", "JDA", "RUS", "MON", "OTT", "DEL", "HRE"],
       class: "military",
+      shorthand: ["maa"]
     },
     {
       title: "Gilded Man-at-Arms (MAA)",
@@ -3308,6 +3317,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_dragon/gilded-man-at-arms-2.png",
       civ: ["DRA"],
       class: "military",
+      shorthand: ["maa"]
     },
     {
       title: "Jeanne's Champion",
@@ -3756,6 +3766,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_rus/warrior-monk.png",
       civ: ["RUS"],
       class: "military",
+      shorthand: ["monk"]
     },
     {
       title: "Horse Archer",
