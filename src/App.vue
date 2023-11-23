@@ -38,3 +38,8 @@ export default {
   },
 };
 </script>
+<style>
+.v-tooltip .v-overlay__content {
+  background: rgba(var(--v-theme-surface-variant), 0.9) !important;
+}
+</style>
