@@ -2895,13 +2895,6 @@ export default function useIconService(civArg) {
 
   const building_tech = [
     {
-      title: "Ovoo",
-      age: "1",
-      imgSrc: "/assets/pictures/building_mongols/ovoo.png",
-      civ: ["MON"],
-      class: "tech",
-    },
-    {
       title: "Blacksmith",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/blacksmith.png",
