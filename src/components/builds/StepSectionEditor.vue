@@ -349,7 +349,7 @@
                     <IconSelector
                       @iconSelected="
                         (iconPath, tooltip, iconClass) =>
-                          handleShortcutInput(iconPath, tooltip, iconClass)
+                          handleIconSelected(iconPath, tooltip, iconClass)
                       "
                       :civ="civ"
                     ></IconSelector>
@@ -653,9 +653,8 @@
               v-html="item.stone"
             ></td>
             <td
-              @keyup="saveSelection"
-              @keypress="handleNewLine($event)"
-              @input="addInlineIcon($event, index)"
+              @keyup="handleKeyUp($event, index)"
+              @keypress="handleKeyPress($event, index)"
               @click="saveSelection"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
@@ -694,7 +693,7 @@
                       <IconSelector
                         @iconSelected="
                           (iconPath, tooltip, iconClass) =>
-                            handleShortcutInput(iconPath, tooltip, iconClass)
+                            handleIconSelected(iconPath, tooltip, iconClass)
                         "
                         :civ="civ"
                       ></IconSelector>
@@ -834,7 +833,7 @@ export default {
       return stat;
     }
 
-    const handleNewLine = (event) => {
+    const handleKeyPress = (event, index) => {
       //Make sure that Enter has the same behaviour across all browser
       //Also, required (!) to get cursor restore working for inline-icons (\n does not work!)
       if (event.which === 13) {
@@ -845,7 +844,15 @@ export default {
       }
     };
 
-    const addInlineIcon = (event, index) => {
+    const handleKeyUp = (event, index) => {
+      if (event.which === 32 || event.which === 0) {
+        addInlineIcon(index);
+      }
+
+      saveSelection()
+    };
+
+    const addInlineIcon = (index) => {
       const editor = stepsTable.value.rows[index].cells[7];
 
       //get current cursor position
@@ -861,7 +868,7 @@ export default {
       const match = editor.innerHTML.match(/:([a-z])\w+ /g);
 
       if (match) {
-        const shortHand = match[0].toLowerCase().trim().replace(":", "")
+        const shortHand = match[0].toLowerCase().trim().replace(":", "");
         const allCivIcons = getIcons();
         const filter = (unfiltered) => {
           return unfiltered.filter((item) =>
@@ -920,7 +927,7 @@ export default {
       }
     }
 
-    const handleShortcutInput = (iconPath, tooltipText, iconClass) => {
+    const handleIconSelected = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
       iconClass = iconClass ? "icon-" + iconClass : "icon";
 
@@ -1140,10 +1147,11 @@ export default {
       pasteImagesInfoDialog,
       mergeProps,
       handlePaste,
+      handleKeyUp,
       aggregateVillagers,
       updateStepDescription,
       addInlineIcon,
-      handleNewLine,
+      handleKeyPress,
       updateStepStone,
       updateStepGold,
       updateStepWood,
@@ -1157,7 +1165,7 @@ export default {
       unhoverItem,
       saveSelection,
       restoreSelection,
-      handleShortcutInput,
+      handleIconSelected,
     };
   },
 };
