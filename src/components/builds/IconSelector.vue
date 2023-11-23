@@ -23,7 +23,7 @@
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top">
+              <v-tooltip class="custom-tooltip" location="top">
                 <span
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
@@ -34,7 +34,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >[:{{ icon.shorthand }}]</span
+                  >({{ getFormattedShorthands(icon.shorthand) }})</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -136,7 +136,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >[:{{ icon.shorthand }}]</span
+                  >({{ getFormattedShorthands(icon.shorthand) }})</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -190,7 +190,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >[:{{ icon.shorthand }}]</span
+                  >({{ getFormattedShorthands(icon.shorthand) }})</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -248,7 +248,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >[:{{ icon.shorthand }}]</span
+                  >({{ getFormattedShorthands(icon.shorthand) }})</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -302,7 +302,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >[:{{ icon.shorthand }}]</span
+                  >({{ getFormattedShorthands(icon.shorthand) }})</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -356,7 +356,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >[:{{ icon.shorthand }}]</span
+                  >({{ getFormattedShorthands(icon.shorthand) }})</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -414,7 +414,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >[:{{ icon.shorthand }}]</span
+                  >({{ getFormattedShorthands(icon.shorthand) }})</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -499,6 +499,16 @@ export default {
       }
     };
 
+    const getFormattedShorthands = (shorthand) => {
+      if (Array.isArray(shorthand)) {
+        const withColon = shorthand.map((x) => ":" + x);
+        const joined = withColon.join(", ");
+        return joined;
+      } else {
+        return ":" + shorthand;
+      }
+    };
+
     const imageSelected = (imgSrc, tooltip, imgClass) => {
       context.emit("iconSelected", imgSrc, tooltip, imgClass);
     };
@@ -514,6 +524,7 @@ export default {
       filteredHeroes,
       searchText,
       filter,
+      getFormattedShorthands,
       imageSelected,
     };
   },
