@@ -2715,6 +2715,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_religious/monastery.png",
       civ: ["ENG", "FRE", "JDA", "RUS", "CHI", "ZXL", "HRE", "DRA", "BYZ"],
       class: "default",
+      shorthand: ["monastery", "eq"]
     },
     {
       title: "Mosque",
@@ -2760,6 +2761,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_economy/farm.png",
       civ: allCivs.exceptMany(["MON", "BYZ"]),
       class: "default",
+      shorthand: ["farm", "qa"]
     },
     {
       title: "Olive Grove",
@@ -2782,6 +2784,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_economy/lumber-camp.png",
       civ: allCivs.exceptMany(["MON"]),
       class: "default",
+      shorthand: ["lumbercamp", "qe"]
     },
     {
       title: "Mining Camp",
@@ -2789,6 +2792,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_economy/mining-camp.png",
       civ: allCivs.exceptMany(["MON"]),
       class: "default",
+      shorthand: ["miningcamp", "qr"]
     },
     {
       title: "Mill",
@@ -2825,6 +2829,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_mongols/ger.png",
       civ: ["MON"],
       class: "default",
+      shorthand: ["ger", "qw"]
     },
     {
       title: "Pasture",
@@ -2832,6 +2837,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_mongols/pasture.png",
       civ: ["MON"],
       class: "default",
+      shorthand: ["pasture", "qa"]
     },
     {
       title: "Ovoo",
@@ -2839,6 +2845,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_mongols/ovoo.png",
       civ: ["MON"],
       class: "default",
+      shorthand: ["ovoo", "qq"]
     },
     {
       title: "Hunting Cabin",
@@ -2853,6 +2860,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_economy/town-center.png",
       civ: allCivs,
       class: "default",
+      shorthand: ["tc", "we"]
     },
     {
       title: "Market",
@@ -2860,6 +2868,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_economy/market.png",
       civ: allCivs,
       class: "default",
+      shorthand: ["market", "ww"]
     },
     {
       title: "Village",
@@ -2898,6 +2907,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_technology/blacksmith.png",
       civ: allCivs.except("JAP"),
       class: "tech",
+      shorthand: ["blacksmith", "wq"]
     },
     {
       title: "Forge",
@@ -2912,6 +2922,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_technology/university.png",
       civ: ["ENG", "FRE", "JDA", "RUS", "OTT", "CHI", "ZXL", "HRE", "DRA", "BYZ", "JAP"],
       class: "tech",
+      shorthand: ["uni", "rq"]
     },
     {
       title: "Madrasa",
@@ -2929,6 +2940,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_military/barracks.png",
       civ: allCivs,
       class: "military",
+      shorthand: ["rax", "qs"]
     },
     {
       title: "Military School",
@@ -2943,6 +2955,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_military/archery-range.png",
       civ: allCivs,
       class: "military",
+      shorthand: ["archeryrange", "wa"]
     },
     {
       title: "Stable",
@@ -2950,6 +2963,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_military/stable.png",
       civ: allCivs,
       class: "military",
+      shorthand: ["stable", "ws"]
     },
     {
       title: "Mercenary House",
@@ -2964,6 +2978,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_military/siege-workshop.png",
       civ: allCivs,
       class: "military",
+      shorthand: ["workshop", "ea"]
     },
     {
       title: "Dock",
@@ -2971,6 +2986,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_military/dock.png",
       civ: allCivs,
       class: "military",
+      shorthand: ["dock", "qd"]
     },
     {
       title: "Keep",
@@ -2978,6 +2994,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_defensive/keep.png",
       civ: allCivs.exceptMany(["MON", "JAP"]),
       class: "default",
+      shorthand: ["keep", "qz", "qy"]
     },
     {
       title: "Castle",
@@ -2999,6 +3016,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_defensive/outpost.png",
       civ: allCivs.exceptMany(["RUS", "MAL"]),
       class: "default",
+      shorthand: ["outpost", "qy", "qz"]
     },
     {
       title: "Toll Outpost",
@@ -3013,6 +3031,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_defensive/palisade-gate.png",
       civ: allCivs.exceptMany(["RUS", "MON"]),
       class: "default",
+      shorthand: ["palgate", "qx"]
     },
     {
       title: "Palisade Wall",
@@ -3020,6 +3039,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_defensive/palisade-wall.png",
       civ: allCivs.exceptMany(["RUS", "MON"]),
       class: "default",
+      shorthand: ["palwall", "qc"]
     },
     {
       title: "Wooden Fortress",
@@ -3048,6 +3068,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_defensive/stone-wall.png",
       civ: allCivs.exceptMany(["MON"]),
       class: "default",
+      shorthand: ["stonewall", "qx"]
     },
     {
       title: "Stone Wall Gate",
@@ -3055,6 +3076,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_defensive/stone-wall-gate.png",
       civ: allCivs.exceptMany(["MON"]),
       class: "default",
+      shorthand: ["stonegate", "qc"]
     },
     {
       title: "Stone Wall Tower",
@@ -3062,6 +3084,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_defensive/stone-wall-tower.png",
       civ: allCivs.exceptMany(["MON"]),
       class: "default",
+      shorthand: ["stonetower", "qz", "qy"]
     },
   ];
 
