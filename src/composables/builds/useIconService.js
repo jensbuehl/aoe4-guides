@@ -4077,6 +4077,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_worker/villager.png",
       civ: ["ENG", "FRE", "JDA", "RUS", "HRE", "DRA", "BYZ"],
       class: "default",
+      shorthand: "vil"
     },
     {
       title: "Villager",
@@ -4112,6 +4113,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/unit_worker/villager-abbasid.png",
       civ: ["ABB", "AYY"],
       class: "default",
+      shorthand: "vil"
     },
     {
       title: "Villager",

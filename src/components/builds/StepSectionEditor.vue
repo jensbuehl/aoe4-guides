@@ -754,6 +754,7 @@
 import { watch, ref, computed, reactive, mergeProps } from "vue";
 import sanitizeHtml from "sanitize-html";
 import IconSelector from "../../components/builds/IconSelector.vue";
+import useIconService from "../../composables/builds/useIconService.js";
 
 export default {
   name: "StepSectionEditor",
@@ -773,6 +774,7 @@ export default {
     const stepsTable = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const pasteImagesInfoDialog = ref(false);
+    const { getIcons } = useIconService(props.civ);
 
     const civ = computed(() => {
       return props.civ;
@@ -817,7 +819,7 @@ export default {
 
       for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
         currentNode = parent.childNodes[i];
-        if(currentNode.data != "\n"){
+        if (currentNode.data != "\n") {
           stat.pos++;
         }
         if (currentNode.wholeText?.indexOf(":") > 0) {
@@ -839,9 +841,9 @@ export default {
         event.stopPropagation();
         event.preventDefault();
 
-        document.execCommand('insertHTML', false, '<br><br>');
-    }
-  }
+        document.execCommand("insertHTML", false, "<br><br>");
+      }
+    };
 
     const addInlineIcon = (event, index) => {
       const editor = stepsTable.value.rows[index].cells[7];
@@ -856,27 +858,45 @@ export default {
       });
 
       //parse and replace
-      if (editor.innerHTML.includes(":vil ")) {
-        //TODO: Use regex to check if anything can be replaced?
-        //TODO: Query icon service to get metadata
-        //TODO: Build corresponding image element
-        const img =
-          '<img src="' +
-          "/assets/pictures/unit_worker/villager.png" +
-          '" class=icon-default' +
-          ' title="' +
-          "Villager" +
-          '"><\/img>';
+      const match = editor.innerHTML.match(/:([a-z])\w+ /g);
 
-        //Replace element
-        editor.innerHTML = editor.innerHTML.replace(":vil ", img);
+      if (match) {
+        const shortHand = match[0].toLowerCase().trim().replace(":", "")
+        const allCivIcons = getIcons();
+        const filter = (unfiltered) => {
+          return unfiltered.filter((item) =>
+            item.shorthand?.includes(shortHand)
+          );
+        };
+        const filteredCivIcons = filter(allCivIcons);
+        const imageMetaData = filteredCivIcons[0];
 
-        // restore the position
-        sel.removeAllRanges();
-        var range = document.createRange();
-        range.setStart(editor, pos.pos);
-        range.collapse(true);
-        sel.addRange(range);
+        if (imageMetaData) {
+          const iconClass = imageMetaData.class
+            ? "icon-" + imageMetaData.class
+            : "icon";
+          const iconPath = imageMetaData.imgSrc;
+          const iconTooltipText = imageMetaData.title;
+
+          const img =
+            '<img src="' +
+            iconPath +
+            '" class=' +
+            iconClass +
+            ' title="' +
+            iconTooltipText +
+            '"><\/img>';
+
+          //Replace element
+          editor.innerHTML = editor.innerHTML.replace(match[0], img);
+
+          // restore the position
+          sel.removeAllRanges();
+          var range = document.createRange();
+          range.setStart(editor, pos.pos);
+          range.collapse(true);
+          sel.addRange(range);
+        }
       }
     };
 
