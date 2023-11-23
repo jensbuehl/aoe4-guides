@@ -2774,6 +2774,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_economy/house.png",
       civ: allCivs.exceptMany(["MON", "JAP"]),
       class: "default",
+      shorthand: ["house", "qq"]
     },
     {
       title: "Lumber Camp",
@@ -2795,6 +2796,7 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/building_economy/mill.png",
       civ: allCivs.exceptMany(["RUS", "MON"]),
       class: "default",
+      shorthand: ["mill", "qw"]
     },
     {
       title: "Farmhouse",
