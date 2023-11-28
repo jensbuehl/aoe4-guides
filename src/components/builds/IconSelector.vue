@@ -128,7 +128,7 @@
           :style="{
             color: $vuetify.theme.current.colors.primary,
           }"
-          >Economic Technologies</span
+          >Heroes & Abilities</span
         >
         <template v-slot:activator="{ props }">
           <v-tab v-bind="props" value="abilities" v-show="heroes.length"

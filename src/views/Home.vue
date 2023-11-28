@@ -27,7 +27,7 @@
     <v-row>
       <!-- main content -->
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <NewsCard class="mb-4"></NewsCard>
+        <NewsCard class="mb-6"></NewsCard>
         <v-card flat rounded="lg" class="mb-2">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user"
@@ -40,11 +40,6 @@
             ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
-        <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
-        <EmailVerificationAd
-          class="mt-4"
-          v-if="user && authIsReady && !user.emailVerified"
-        ></EmailVerificationAd>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -403,6 +398,13 @@
               </router-link>
             </div> </v-col
         ></v-row>
+      </v-col>
+
+      <v-col cols="12" md="4" class="hidden-md-and-up">
+        <RegisterAd v-if="!user && authIsReady"></RegisterAd>
+        <EmailVerificationAd
+          v-if="user && authIsReady && !user.emailVerified"
+        ></EmailVerificationAd>
       </v-col>
 
       <!-- sidebar -->
