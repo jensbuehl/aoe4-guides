@@ -10,400 +10,642 @@
         ></v-text-field>
       </v-col>
     </v-row>
-    <v-card fluid class="overflow-y-auto pb-2" max-height="400" flat>
-      <v-row v-show="filteredGeneral.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Workers & Resources"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredGeneral"
-          :key="icon.imgSrc"
+    <v-tabs align-tabs="center" v-model="tab" class="mb-5" color="accent">
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Workers & Resources</span
         >
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip class="custom-tooltip" location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                ><br /><span
-                  v-if="icon.shorthand"
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >({{ getFormattedShorthands(icon.shorthand) }})</span
-                >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="general">
+            <v-img
+              class="icon-default-selector"
+              src="/assets/pictures/unit_worker/villager.png"
+            ></v-img>
+          </v-tab>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Landmarks, Actions & Flags</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="landmarks">
+            <v-img
+              class="icon-landmark-selector"
+              src="/assets/pictures/landmark_english/council-hall.png"
+            ></v-img>
+          </v-tab>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Military Units</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="units_military"
+            ><v-img
+              class="icon-military-selector"
+              src="/assets/pictures/unit_cavalry/scout.png"
+            ></v-img
+          ></v-tab>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Economic Buildings</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="buildings_eco"
+            ><v-img
+              class="icon-default-selector"
+              src="/assets/pictures/building_economy/house.png"
+            ></v-img
+          ></v-tab>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Military Buildings</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="buildings_military"
+            ><v-img
+              class="icon-military-selector"
+              src="/assets/pictures/building_military/barracks.png"
+            ></v-img
+          ></v-tab>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Economic Technologies</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="tech_eco"
+            ><v-img
+              class="icon-tech-selector"
+              src="/assets/pictures/technology_economy/wheelbarrow.png"
+            ></v-img
+          ></v-tab>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Military Technologies</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="tech_military"
+            ><v-img
+              class="icon-tech-selector"
+              src="/assets/pictures/technology_military/incendiary-arrows.png"
+            ></v-img
+          ></v-tab>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Economic Technologies</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-tab v-bind="props" value="abilities" v-show="heroes.length"
+            ><v-img
+              class="icon-ability-selector"
+              src="/assets/pictures/ability_jeanne/ability-divine-arrow-1.png"
+            ></v-img
+          ></v-tab>
+        </template>
+      </v-tooltip>
+    </v-tabs>
+    <v-divider></v-divider>
+    <v-card
+      fluid
+      class="overflow-y-auto pb-2"
+      min-height="400"
+      max-height="400"
+      flat
+    >
+      <v-window v-model="tab" v-if="!searchText">
+        <v-window-item value="general">
+          <v-row v-show="general.length" no-gutters align="center">
+            <v-col cols="12">
+              <v-card
+                class="text-center"
+                flat
+                title="Workers & Resources"
+              ></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in general"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip class="custom-tooltip">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
                       }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-      <v-row v-show="filteredHeroes.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Heroes and Abilities"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredHeroes"
-          :key="icon.imgSrc"
-        >
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
+                      >{{ icon.title }}</span
+                    ><br /><span
+                      v-if="icon.shorthand"
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
                       }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-      <v-row v-show="filteredLandmarks.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Landmarks, Actions, and Flags"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredLandmarks"
-          :key="icon.imgSrc"
-        >
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                ><br /><span
-                  v-if="icon.shorthand"
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >({{ getFormattedShorthands(icon.shorthand) }})</span
-                >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
+                      >({{ getFormattedShorthands(icon.shorthand) }})</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col>
+          </v-row>
+        </v-window-item>
+        <v-window-item value="abilities"
+          ><v-row no-gutters align="center">
+            <v-col cols="12">
+              <v-card
+                class="text-center"
+                flat
+                title="Heroes & Abilities"
+              ></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in heroes"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
                       }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-      <v-row v-show="filteredEcoBuildings.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Civil Buildings"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredEcoBuildings"
-          :key="icon.imgSrc"
-        >
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                ><br /><span
-                  v-if="icon.shorthand"
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >({{ getFormattedShorthands(icon.shorthand) }})</span
-                >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
+                      >{{ icon.title }}</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col> </v-row
+        ></v-window-item>
+        <v-window-item value="landmarks"
+          ><v-row v-show="landmarks.length" no-gutters align="center">
+            <v-col cols="12">
+              <v-card
+                class="text-center"
+                flat
+                title="Landmarks, Actions & Flags"
+              ></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in landmarks"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
                       }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-      <v-row
-        v-show="filteredMilitaryBuildings.length"
-        no-gutters
-        align="center"
-      >
-        <v-col cols="12">
-          <v-card flat subtitle="Military Buildings"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredMilitaryBuildings"
-          :key="icon.imgSrc"
-        >
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                ><br /><span
-                  v-if="icon.shorthand"
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >({{ getFormattedShorthands(icon.shorthand) }})</span
-                >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
+                      >{{ icon.title }}</span
+                    ><br /><span
+                      v-if="icon.shorthand"
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
                       }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-      <v-row v-show="filteredMilitaryUnits.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Military Units"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredMilitaryUnits"
-          :key="icon.imgSrc"
-        >
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                ><br /><span
-                  v-if="icon.shorthand"
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >({{ getFormattedShorthands(icon.shorthand) }})</span
-                >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
+                      >({{ getFormattedShorthands(icon.shorthand) }})</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col> </v-row
+        ></v-window-item>
+        <v-window-item value="buildings_eco"
+          ><v-row v-show="ecoBuildings.length" no-gutters align="center">
+            <v-col cols="12">
+              <v-card
+                class="text-center"
+                flat
+                title="Economic Buildings"
+              ></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in ecoBuildings"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
                       }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-      <v-row v-show="filteredEcoTechnologies.length" no-gutters align="center">
-        <v-col cols="12">
-          <v-card flat subtitle="Economic Technologies"></v-card>
-        </v-col>
-        <v-col
-          class="mt-n2 mb-2"
-          cols="3"
-          v-for="icon in filteredEcoTechnologies"
-          :key="icon.imgSrc"
-        >
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                ><br /><span
-                  v-if="icon.shorthand"
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >({{ getFormattedShorthands(icon.shorthand) }})</span
-                >
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
+                      >{{ icon.title }}</span
+                    ><br /><span
+                      v-if="icon.shorthand"
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
                       }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
-      <v-row
-        v-show="filteredMilitaryTechnologies.length"
-        no-gutters
-        align="center"
-      >
+                      >({{ getFormattedShorthands(icon.shorthand) }})</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col> </v-row
+        ></v-window-item>
+        <v-window-item value="buildings_military"
+          ><v-row v-show="militaryBuildings.length" no-gutters align="center">
+            <v-col cols="12">
+              <v-card
+                class="text-center"
+                flat
+                title="Military Buildings"
+              ></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in militaryBuildings"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >{{ icon.title }}</span
+                    ><br /><span
+                      v-if="icon.shorthand"
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >({{ getFormattedShorthands(icon.shorthand) }})</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col> </v-row
+        ></v-window-item>
+        <v-window-item value="tech_eco"
+          ><v-row v-show="ecoTechnologies.length" no-gutters align="center">
+            <v-col cols="12">
+              <v-card
+                class="text-center"
+                flat
+                title="Economic Technologies"
+              ></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in ecoTechnologies"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >{{ icon.title }}</span
+                    ><br /><span
+                      v-if="icon.shorthand"
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >({{ getFormattedShorthands(icon.shorthand) }})</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col> </v-row
+        ></v-window-item>
+        <v-window-item value="tech_military"
+          ><v-row
+            v-show="militaryTechnologies.length"
+            no-gutters
+            align="center"
+          >
+            <v-col cols="12">
+              <v-card
+                class="text-center"
+                flat
+                title="Military Technologies"
+              ></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in militaryTechnologies"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >{{ icon.title }}</span
+                    ><br /><span
+                      v-if="icon.shorthand"
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >({{ getFormattedShorthands(icon.shorthand) }})</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col> </v-row
+        ></v-window-item>
+        <v-window-item value="units_military"
+          ><v-row v-show="militaryUnits.length" no-gutters align="center">
+            <v-col cols="12">
+              <v-card class="text-center" flat title="Military Units"></v-card>
+            </v-col>
+            <v-col
+              class="mt-n2 mb-2"
+              cols="3"
+              v-for="icon in militaryUnits"
+              :key="icon.imgSrc"
+            >
+              <v-container>
+                <v-row align="center" justify="center">
+                  <v-tooltip>
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >{{ icon.title }}</span
+                    ><br /><span
+                      v-if="icon.shorthand"
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >({{ getFormattedShorthands(icon.shorthand) }})</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <v-btn
+                        color="primary"
+                        v-bind="props"
+                        variant="text"
+                        @click="
+                          imageSelected(icon.imgSrc, icon.title, icon.class)
+                        "
+                        height="60"
+                        width="60"
+                      >
+                        <v-img
+                          v-bind:class="{
+                            'icon-landmark-selector': icon.class == 'landmark',
+                            'icon-tech-selector': icon.class == 'tech',
+                            'icon-ability-selector': icon.class == 'ability',
+                            'icon-military-selector': icon.class == 'military',
+                            'icon-default-selector': icon.class == 'default',
+                            'icon-none-selector': icon.class == 'none',
+                            'icon-selector': !icon.class,
+                          }"
+                          style="height: 48px; width: 48px"
+                          :src="icon.imgSrc"
+                        ></v-img>
+                      </v-btn>
+                    </template>
+                  </v-tooltip>
+                </v-row>
+              </v-container>
+            </v-col> </v-row
+        ></v-window-item>
+      </v-window>
+      <v-row v-if="searchText" no-gutters align="center">
         <v-col cols="12">
-          <v-card flat subtitle="Military Technologies"></v-card>
+          <v-card class="text-center" flat title="Search Results"></v-card>
         </v-col>
         <v-col
           class="mt-n2 mb-2"
           cols="3"
-          v-for="icon in filteredMilitaryTechnologies"
+          v-for="icon in searchResults"
           :key="icon.imgSrc"
         >
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip location="top">
+              <v-tooltip class="custom-tooltip">
                 <span
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
@@ -460,6 +702,7 @@ export default {
   setup(props, context) {
     const { getIcons } = useIconService(props.civ);
     const searchText = ref("");
+    const tab = ref(null);
 
     //unfiltered raw data
     const ecoBuildings = getIcons("building_eco")
@@ -476,19 +719,10 @@ export default {
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
     const heroes = getIcons("unit_hero").concat(getIcons("ability_hero"));
+    const all = getIcons();
 
     //filtered data
-    const filteredEcoBuildings = computed(() => filter(ecoBuildings));
-    const filteredMilitaryBuildings = computed(() => filter(militaryBuildings));
-    const filteredGeneral = computed(() => filter(general));
-    const filteredMilitaryUnits = computed(() => filter(militaryUnits));
-    const filteredEcoTechnologies = computed(() => filter(ecoTechnologies));
-    const filteredMilitaryTechnologies = computed(() =>
-      filter(militaryTechnologies)
-    );
-    const filteredLandmarks = computed(() => filter(landmarks));
-    const filteredHeroes = computed(() => filter(heroes));
-
+    const searchResults = computed(() => filter(all));
     const filter = (unfiltered) => {
       if (searchText.value?.length >= 2) {
         return unfiltered.filter((item) =>
@@ -514,18 +748,20 @@ export default {
     };
 
     return {
-      filteredEcoBuildings,
-      filteredMilitaryBuildings,
-      filteredGeneral,
-      filteredMilitaryUnits,
-      filteredEcoTechnologies,
-      filteredMilitaryTechnologies,
-      filteredLandmarks,
-      filteredHeroes,
+      ecoBuildings,
+      militaryBuildings,
+      general,
+      militaryUnits,
+      ecoTechnologies,
+      militaryTechnologies,
+      landmarks,
+      heroes,
+      searchResults,
       searchText,
       filter,
       getFormattedShorthands,
       imageSelected,
+      tab,
     };
   },
 };
