@@ -689,7 +689,7 @@
                         </template>
                       </v-tooltip>
                     </template>
-                    <v-card flat rounded="lg" class="mt-4" width="350px">
+                    <v-card flat rounded="lg" class="mt-4" width="600px">
                       <IconSelector
                         @iconSelected="
                           (iconPath, tooltip, iconClass) =>
