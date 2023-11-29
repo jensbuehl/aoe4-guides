@@ -654,7 +654,6 @@
             ></td>
             <td
               @keyup="handleKeyUp($event, index)"
-              @keypress="handleKeyPress($event, index)"
               @click="saveSelection"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
@@ -750,7 +749,7 @@
 </template>
 
 <script>
-import { watch, ref, computed, reactive, mergeProps } from "vue";
+import { watch, ref, computed, reactive, mergeProps, onMounted } from "vue";
 import sanitizeHtml from "sanitize-html";
 import IconSelector from "../../components/builds/IconSelector.vue";
 import useIconService from "../../composables/builds/useIconService.js";
@@ -775,6 +774,16 @@ export default {
     const pasteImagesInfoDialog = ref(false);
     var iconService = useIconService(props.civ);
 
+    onMounted(async () => {
+      //Sanitize since inline icon replacement only works with <br>, NOT with \n
+      steps.forEach((element) => {
+        element.description = element.description.replace(/\n/gm, "<br>");
+      });
+      stepsCopy.forEach((element) => {
+        element.description = element.description.replace(/\n/gm, "<br>");
+      });
+    });
+
     const civ = computed(() => {
       return props.civ;
     });
@@ -791,7 +800,6 @@ export default {
     watch(
       () => props.civ,
       (value, previousValue) => {
-        console.log("civ changed");
         iconService = useIconService(props.civ);
       }
     );
@@ -819,40 +827,53 @@ export default {
       }
     };
 
-    function getCursorPosition(parent, node, offset, stat) {
+    function getCursorPositionAfterIcon(parent, node, offset, stat) {
       if (stat.done) return stat;
 
       let currentNode = null;
 
       for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
         currentNode = parent.childNodes[i];
-        if (currentNode.data != "\n") {
-          stat.pos++;
-        }
+        stat.pos++;
         if (currentNode.wholeText?.indexOf(":") > 0) {
           stat.pos++;
         }
         if (currentNode === node) {
           stat.done = true;
           return stat;
-        } else getCursorPosition(currentNode, node, offset, stat);
+        } else getCursorPositionAfterIcon(currentNode, node, offset, stat);
       }
 
       return stat;
     }
 
-    const handleKeyPress = (event, index) => {
-      //Make sure that Enter has the same behaviour across all browser
-      //Also, required (!) to get cursor restore working for inline-icons (\n does not work!)
-      if (event.which === 13) {
-        event.stopPropagation();
-        event.preventDefault();
+    function getLineBreakPosition(parent) {
+      let currentNode = null;
 
-        document.execCommand("insertHTML", false, "<br><br>");
+      for (let i = 0; i < parent.childNodes.length; i++) {
+        currentNode = parent.childNodes[i]; 
+        if (currentNode.data === "\n") {
+          return i;
+        }
       }
-    };
+    }
 
     const handleKeyUp = (event, index) => {
+      const sel = window.getSelection();
+      if (event.which === 13) {
+        const editor = stepsTable.value.rows[index].cells[7];
+
+        //get linebreak position
+        const pos = getLineBreakPosition(editor);
+        editor.innerHTML = editor.innerHTML.replace(/\n/gm, "<br>");
+
+        // restore the position
+        sel.removeAllRanges();
+        var range = document.createRange();
+        range.setStart(editor, pos+1);
+        range.collapse(true);
+        sel.addRange(range);
+      }
       if (event.which === 32 || event.which === 0) {
         addInlineIcon(index);
       }
@@ -863,11 +884,11 @@ export default {
     const addInlineIcon = (index) => {
       const editor = stepsTable.value.rows[index].cells[7];
 
-      //get current cursor position
+      //get target cursor position
       const sel = window.getSelection();
       const node = sel.focusNode;
       const offset = sel.focusOffset;
-      const pos = getCursorPosition(editor, node, offset, {
+      const pos = getCursorPositionAfterIcon(editor, node, offset, {
         pos: 0,
         done: false,
       });
@@ -902,7 +923,6 @@ export default {
         const filteredCivIcons = filter(allCivIcons).sort(function (a, b) {
           return a.title.length - b.title.length;
         });
-        console.log(filteredCivIcons);
         const imageMetaData = filteredCivIcons[0];
 
         if (imageMetaData) {
@@ -1153,7 +1173,11 @@ export default {
         clean = e.clipboardData.getData("text/plain");
       }
 
-      document.execCommand("insertHTML", false, clean.trim());
+      document.execCommand(
+        "insertHTML",
+        false,
+        clean.trim().replace(/\n/gm, "<br>")
+      );
       e.stopPropagation();
       e.preventDefault();
     };
@@ -1178,7 +1202,6 @@ export default {
       aggregateVillagers,
       updateStepDescription,
       addInlineIcon,
-      handleKeyPress,
       updateStepStone,
       updateStepGold,
       updateStepWood,
@@ -1319,6 +1342,6 @@ td:empty {
   height: 30px;
 }
 .editor {
-  white-space: break-spaces;
+  white-space: pre-wrap;
 }
 </style>
