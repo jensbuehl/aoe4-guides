@@ -773,7 +773,7 @@ export default {
     const stepsTable = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const pasteImagesInfoDialog = ref(false);
-    const { getIcons } = useIconService(props.civ);
+    var iconService = useIconService(props.civ);
 
     const civ = computed(() => {
       return props.civ;
@@ -785,6 +785,14 @@ export default {
         if (!value) {
           selection.value = null;
         }
+      }
+    );
+
+    watch(
+      () => props.civ,
+      (value, previousValue) => {
+        console.log("civ changed");
+        iconService = useIconService(props.civ);
       }
     );
 
@@ -849,7 +857,7 @@ export default {
         addInlineIcon(index);
       }
 
-      saveSelection()
+      saveSelection();
     };
 
     const addInlineIcon = (index) => {
@@ -869,13 +877,32 @@ export default {
 
       if (match) {
         const shortHand = match[0].toLowerCase().trim().replace(":", "");
-        const allCivIcons = getIcons();
+        const allCivIcons = iconService.getIcons();
         const filter = (unfiltered) => {
-          return unfiltered.filter((item) =>
-            item.shorthand?.includes(shortHand)
-          );
+          return unfiltered.filter((item) => {
+            var elementFound = false;
+            //Search by shorthand first
+            if (Array.isArray(item.shorthand)) {
+              elementFound =
+                -1 !=
+                item.shorthand.findIndex((element) =>
+                  element.startsWith(shortHand)
+                );
+            } else {
+              elementFound = item.shorthand?.startsWith(shortHand);
+            }
+            //Search by title second
+            if (!elementFound) {
+              var title = item.title.replace(/ +/g, "").toLowerCase();
+              elementFound = title.includes(shortHand);
+            }
+            return elementFound;
+          });
         };
-        const filteredCivIcons = filter(allCivIcons);
+        const filteredCivIcons = filter(allCivIcons).sort(function (a, b) {
+          return a.title.length - b.title.length;
+        });
+        console.log(filteredCivIcons);
         const imageMetaData = filteredCivIcons[0];
 
         if (imageMetaData) {
