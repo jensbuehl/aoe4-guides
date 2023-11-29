@@ -160,7 +160,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in general"
               :key="icon.imgSrc"
             >
@@ -222,7 +222,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in heroes"
               :key="icon.imgSrc"
             >
@@ -277,7 +277,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in landmarks"
               :key="icon.imgSrc"
             >
@@ -338,7 +338,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in ecoBuildings"
               :key="icon.imgSrc"
             >
@@ -399,7 +399,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in militaryBuildings"
               :key="icon.imgSrc"
             >
@@ -460,7 +460,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in ecoTechnologies"
               :key="icon.imgSrc"
             >
@@ -525,7 +525,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in militaryTechnologies"
               :key="icon.imgSrc"
             >
@@ -582,7 +582,7 @@
             </v-col>
             <v-col
               class="mt-n2 mb-2"
-              cols="3"
+              cols="2"
               v-for="icon in militaryUnits"
               :key="icon.imgSrc"
             >
@@ -639,7 +639,7 @@
         </v-col>
         <v-col
           class="mt-n2 mb-2"
-          cols="3"
+          cols="2"
           v-for="icon in searchResults"
           :key="icon.imgSrc"
         >
