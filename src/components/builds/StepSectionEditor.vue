@@ -782,6 +782,8 @@ export default {
       stepsCopy.forEach((element) => {
         element.description = element.description.replace(/\n/gm, "<br>");
       });
+      //Force firefox to use BR instead of adding DIVs
+      document.execCommand("defaultParagraphSeparator", false, "br");
     });
 
     const civ = computed(() => {
@@ -851,7 +853,7 @@ export default {
       let currentNode = null;
 
       for (let i = 0; i < parent.childNodes.length; i++) {
-        currentNode = parent.childNodes[i]; 
+        currentNode = parent.childNodes[i];
         if (currentNode.data === "\n") {
           return i;
         }
@@ -859,20 +861,26 @@ export default {
     }
 
     const handleKeyUp = (event, index) => {
+      const editor = stepsTable.value.rows[index].cells[7];
       const sel = window.getSelection();
+
+      //handle enter and fix line-break
       if (event.which === 13) {
-        const editor = stepsTable.value.rows[index].cells[7];
+        
 
-        //get linebreak position
-        const pos = getLineBreakPosition(editor);
-        editor.innerHTML = editor.innerHTML.replace(/\n/gm, "<br>");
+        //Skip e.g. on firefox
+        if (editor.innerHTML.includes("\n")) {
+          //get linebreak position
+          const pos = getLineBreakPosition(editor);
+          editor.innerHTML = editor.innerHTML.replace(/\n/gm, "<br>");
 
-        // restore the position
-        sel.removeAllRanges();
-        var range = document.createRange();
-        range.setStart(editor, pos+1);
-        range.collapse(true);
-        sel.addRange(range);
+          // restore the position
+          sel.removeAllRanges();
+          var range = document.createRange();
+          range.setStart(editor, pos + 1);
+          range.collapse(true);
+          sel.addRange(range);
+        }
       }
       if (event.which === 32 || event.which === 0) {
         addInlineIcon(index);
@@ -882,7 +890,12 @@ export default {
     };
 
     const addInlineIcon = (index) => {
-      const editor = stepsTable.value.rows[index].cells[7];
+      var editor = stepsTable.value.rows[index].cells[7];
+
+      //if DIV wrapper, then use this element as root instead of the editor (Needed for firefox compatibility)
+      if(editor.childNodes[0].tagName === "DIV"){
+        editor = editor.childNodes[0]
+      }
 
       //get target cursor position
       const sel = window.getSelection();
