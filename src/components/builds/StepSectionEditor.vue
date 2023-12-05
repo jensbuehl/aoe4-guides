@@ -866,8 +866,6 @@ export default {
 
       //handle enter and fix line-break
       if (event.which === 13) {
-        
-
         //Skip e.g. on firefox
         if (editor.innerHTML.includes("\n")) {
           //get linebreak position
@@ -893,8 +891,8 @@ export default {
       var editor = stepsTable.value.rows[index].cells[7];
 
       //if DIV wrapper, then use this element as root instead of the editor (Needed for firefox compatibility)
-      if(editor.childNodes[0].tagName === "DIV"){
-        editor = editor.childNodes[0]
+      if (editor.childNodes[0].tagName === "DIV") {
+        editor = editor.childNodes[0];
       }
 
       //get target cursor position
@@ -1137,11 +1135,13 @@ export default {
     };
 
     const handleResourceInput = async (e) => {
-      //prevent break on hyphen
-      e.target.innerHTML = e.target.innerHTML.replace("-", "&#8209;");
+      if (e.data == "-") {
+        //prevent break on hyphen
+        e.target.innerHTML = e.target.innerHTML.replace("-", "&#8209;");
 
-      //updating innerHTML sets cursor to start, this is a workaround to set caret to end
-      placeCaretAtEnd(e.target);
+        //updating innerHTML sets cursor to start, this is a workaround to set caret to end
+        placeCaretAtEnd(e.target);
+      }
 
       context.emit("textChanged");
     };
