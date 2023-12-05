@@ -182,7 +182,7 @@
         <v-row no-gutters class="hidden-md-and-up">
           <v-col
             cols="6"
-            v-for="(creator, index) in creators"
+            v-for="(creator, index) in featuredCreators"
             :key="creator.creatorId"
           >
             <v-tooltip location="top" open-delay="1000">
@@ -191,7 +191,7 @@
                   color: $vuetify.theme.current.colors.primary,
                 }"
                 >Explore all build orders from
-                {{ getCreatorName(creator.creatorId) }}
+                {{ creator.creatorTitle }}
               </span>
               <template v-slot:activator="{ props }">
                 <v-card
@@ -238,7 +238,7 @@
                                 font-size: 0.8rem !important;
                               "
                             >
-                              {{ getCreatorName(creator.creatorId) }}
+                              {{ creator.creatorTitle }}
                             </div>
                             <!--sm title-->
                             <div
@@ -248,7 +248,7 @@
                               class="text-subtitle-2 hidden-xs"
                               style="font-family: 'Segoe UI' !important"
                             >
-                              {{ getCreatorName(creator.creatorId) }}
+                              {{ creator.creatorTitle }}
                             </div>
                           </v-col>
                         </v-row>
@@ -368,7 +368,7 @@
               >
                 <BuildListCard
                   :build="item"
-                  :creatorName="getCreatorName(item.creatorId)"
+                  :creatorName="getCreatorNameFromId(item.creatorId)"
                 ></BuildListCard>
               </router-link>
             </div> </v-col
@@ -393,7 +393,7 @@
               >
                 <BuildListCard
                   :build="item"
-                  :creatorName="getCreatorName(item.creatorId)"
+                  :creatorName="getCreatorNameFromId(item.creatorId)"
                 ></BuildListCard>
               </router-link>
             </div> </v-col
@@ -434,14 +434,14 @@
           >
             Featured Creators
           </div>
-          <v-col cols="12" v-for="creator in creators">
+          <v-col cols="12" v-for="creator in featuredCreators">
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
                 >Explore all build orders from
-                {{ getCreatorName(creator.creatorId) }}
+                {{ creator.creatorTitle }}
               </span>
               <template v-slot:activator="{ props }">
                 <v-card
@@ -484,7 +484,7 @@
                               class="text-subtitle-2 ml-4 hidden-lg-and-up"
                               style="font-family: 'Segoe UI' !important"
                             >
-                              {{ getCreatorName(creator.creatorId) }}
+                              {{ creator.creatorTitle }}
                             </div>
                             <!--large title-->
                             <v-card-title
@@ -493,7 +493,7 @@
                                 color: $vuetify.theme.current.colors.primary,
                               }"
                             >
-                              {{ getCreatorName(creator.creatorId) }}
+                              {{ creator.creatorTitle }}
                             </v-card-title>
                           </v-col>
                         </v-row>
@@ -618,6 +618,7 @@ import NewsCard from "../components/NewsCard.vue";
 import EmailVerificationAd from "../components/EmailVerificationAd.vue";
 import FilterConfig from "../components/filter/FilterConfig.vue";
 import getCivs from "../composables/filter/getCivs";
+import getFeaturedCreators from "../composables/filter/getFeaturedCreators";
 import getDefaultConfig from "../composables/filter/getDefaultConfig";
 import BuildListCard from "../components/builds/BuildListCard.vue";
 import useCollection from "../composables/useCollection";
@@ -647,7 +648,7 @@ export default {
       useCollection("creators");
     const popularBuilds = computed(() => store.state.popularBuilds);
     const mostRecentBuilds = computed(() => store.state.mostRecentBuilds);
-    const creators = computed(() => store.state.featuredCreators);
+    const featuredCreators = getFeaturedCreators().featuredCreators;
     const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
     const civs = getCivs().civs.value.filter(
@@ -667,7 +668,7 @@ export default {
       initData();
     });
 
-    const getCreatorName = (id) => {
+    const getCreatorNameFromId = (id) => {
       if (allCreators.value) {
         const currentCreator = allCreators.value.find(
           (element) => element.id === id
@@ -678,18 +679,6 @@ export default {
             : currentCreator.creatorTitle;
         }
       }
-    };
-
-    const sortByNameCompareFunction = (a, b) => {
-      var nameA = getCreatorName(a.creatorId).toUpperCase();
-      var nameB = getCreatorName(b.creatorId).toUpperCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-      return 0;
     };
 
     const initData = async () => {
@@ -715,17 +704,6 @@ export default {
       //get all creators
       if (!allCreators.value) {
         store.commit("setCreators", await getAllCreators());
-      }
-
-      //get featured creators
-      if (creators.value[0].loading) {
-        const isFeatured = true;
-        const creatorsQuery = getQueryCreators(
-          queryService.getQueryParametersForCreators(isFeatured, 6)
-        );
-        var featuredCreators = await getAllCreators(creatorsQuery);
-        featuredCreators.sort(sortByNameCompareFunction);
-        store.commit("setFeaturedCreators", featuredCreators);
       }
 
       //get villager of the day
@@ -766,8 +744,8 @@ export default {
       count,
       mostRecentBuilds,
       popularBuilds,
-      creators,
-      getCreatorName,
+      featuredCreators,
+      getCreatorNameFromId,
       villagerOfTheDay,
     };
   },

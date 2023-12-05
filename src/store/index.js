@@ -24,7 +24,6 @@ const store = createStore({
     template: null,
     //cache
     creators: null,
-    featuredCreators: Array(8).fill({ loading: true }),
     popularBuilds: Array(5).fill({ loading: true }),
     mostRecentBuilds: Array(5).fill({ loading: true }),
     villagerOfTheDay: null
@@ -96,10 +95,6 @@ const store = createStore({
     setCreators(state, payload) {
       state.creators = payload;
       console.log("creators state changed:", state.creators);
-    },
-    setFeaturedCreators(state, payload) {
-      state.featuredCreators = payload;
-      console.log("featuredCreators state changed:", state.featuredCreators);
     },
     setMostRecentBuilds(state, payload) {
       state.mostRecentBuilds = payload;
