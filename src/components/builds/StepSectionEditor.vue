@@ -486,7 +486,7 @@
         >
           <v-icon class="mr-2"
             ><v-img
-              src="http://localhost:5173/assets/pictures/age/age_4.png"
+              src="/assets/pictures/age/age_4.png"
             ></v-img></v-icon
           >Imperial Age</v-row
         ></v-card-title
