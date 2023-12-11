@@ -1,4 +1,8 @@
 <template>
+  <!--Auto Complete Menu. Extract into component!-->
+  <v-overlay :target="autocompletePos" v-model="autocompleteModel">
+    <v-card>AUTOCOMPLETE TEST</v-card>
+  </v-overlay>
   <!--Common delete confirmation dialog-->
   <v-dialog v-model="removeStepConfirmationDialog" width="auto">
     <v-card rounded="lg" class="text-center primary" flat>
@@ -485,9 +489,7 @@
           justify="start"
         >
           <v-icon class="mr-2"
-            ><v-img
-              src="/assets/pictures/age/age_4.png"
-            ></v-img></v-icon
+            ><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon
           >Imperial Age</v-row
         ></v-card-title
       >
@@ -880,11 +882,22 @@ export default {
           sel.addRange(range);
         }
       }
-      if (event.which === 32 || event.which === 0) {
+      //Handle space
+      else if (event.which === 32 || event.which === 0) {
         addInlineIcon(index);
       }
-
       saveSelection();
+
+      //TODO: Detect colon, e.g. in inuput event
+      //Show autocomplete menu
+      var cursorPosition = window.getSelection();
+      var range = cursorPosition.getRangeAt(0);
+      var rect = range.getBoundingClientRect();
+      
+      autocompletePos.value = [rect.x, rect.y];
+      autocompleteModel.value = !autocompleteModel.value;
+
+      console.log(autocompletePos.value);
     };
 
     const addInlineIcon = (index) => {
@@ -1195,6 +1208,9 @@ export default {
       e.preventDefault();
     };
 
+    const autocompleteModel = ref(null);
+    const autocompletePos = ref(0);
+
     return {
       stepsCopy,
       steps,
@@ -1229,6 +1245,8 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelected,
+      autocompleteModel,
+      autocompletePos,
     };
   },
 };
