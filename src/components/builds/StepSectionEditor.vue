@@ -1,6 +1,15 @@
 <template>
   <!--Auto Complete Menu. Extract into component!-->
-  <v-overlay :target="autocompletePos" v-model="autocompleteModel">
+  <v-overlay
+    :attach="'body'"
+    :target="autocompletePos"
+    :scrim="false"
+    :style="{ left: `${autocompletePos[0]}px`, top: `${autocompletePos[1]}px`}"
+    absolute
+    location-strategy="connected"
+    scroll-strategy="reposition"
+    v-model="autocompleteModel"
+  >
     <v-card>AUTOCOMPLETE TEST</v-card>
   </v-overlay>
   <!--Common delete confirmation dialog-->
@@ -893,11 +902,14 @@ export default {
       var cursorPosition = window.getSelection();
       var range = cursorPosition.getRangeAt(0);
       var rect = range.getBoundingClientRect();
-      
+
       autocompletePos.value = [rect.x, rect.y];
       autocompleteModel.value = !autocompleteModel.value;
+      autocompleteParent.value = stepsTable.value.rows[index].cells[7];
 
       console.log(autocompletePos.value);
+      console.log(autocompleteModel.value);
+      console.log(autocompleteParent.value);
     };
 
     const addInlineIcon = (index) => {
@@ -1210,6 +1222,7 @@ export default {
 
     const autocompleteModel = ref(null);
     const autocompletePos = ref(0);
+    const autocompleteParent = ref(null);
 
     return {
       stepsCopy,
@@ -1247,6 +1260,7 @@ export default {
       handleIconSelected,
       autocompleteModel,
       autocompletePos,
+      autocompleteParent
     };
   },
 };
