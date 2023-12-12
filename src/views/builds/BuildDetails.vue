@@ -907,7 +907,7 @@ export default {
     const handlePublish = async () => {
       //Update build order document
       build.value.isDraft = false;
-      await updateBuild(props.id, build.value);
+      await updateBuild(props.id, build.value, true);
 
       //Navigate to new build order
       if (!error.value) {

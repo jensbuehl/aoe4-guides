@@ -259,13 +259,16 @@ const useCollection = (col) => {
     }
   };
 
-  const update = async (id, document) => {
+  const update = async (id, document, updateTimestamp) => {
     error.value = null;
 
     try {
       const docRef = doc(db, col, id);
       console.log(docRef)
       document.timeUpdated = Timestamp.fromDate(new Date());
+      if(updateTimestamp){
+        document.timeCreated = Timestamp.fromDate(new Date());
+      }
       await updateDoc(docRef, document);
       console.log("Document updated with ID: ", id);
     } catch (err) {
