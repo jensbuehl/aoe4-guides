@@ -1,17 +1,15 @@
 <template>
-  <!--Auto Complete Menu. Extract into component!-->
-  <v-overlay
-    :attach="'body'"
-    :target="autocompletePos"
-    :scrim="false"
-    :style="{ left: `${autocompletePos[0]}px`, top: `${autocompletePos[1]}px`}"
-    absolute
-    location-strategy="connected"
-    scroll-strategy="reposition"
-    v-model="autocompleteModel"
-  >
-    <v-card>AUTOCOMPLETE TEST</v-card>
-  </v-overlay>
+  <IconAutoCompleteMenu
+    @iconSelected="
+      (iconPath, tooltip, iconClass) =>
+        handleIconSelected(iconPath, tooltip, iconClass)
+    "
+    v-if="searchText"
+    :civ="civ"
+    :searchText="searchText"
+    :pos="autocompletePos"
+  ></IconAutoCompleteMenu>
+
   <!--Common delete confirmation dialog-->
   <v-dialog v-model="removeStepConfirmationDialog" width="auto">
     <v-card rounded="lg" class="text-center primary" flat>
@@ -664,6 +662,7 @@
               v-html="item.stone"
             ></td>
             <td
+              @input="handleInput($event, index)"
               @keyup="handleKeyUp($event, index)"
               @click="saveSelection"
               @paste="handlePaste"
@@ -763,13 +762,14 @@
 import { watch, ref, computed, reactive, mergeProps, onMounted } from "vue";
 import sanitizeHtml from "sanitize-html";
 import IconSelector from "../../components/builds/IconSelector.vue";
+import IconAutoCompleteMenu from "../../components/builds/IconAutoCompleteMenu.vue";
 import useIconService from "../../composables/builds/useIconService.js";
 
 export default {
   name: "StepSectionEditor",
   props: ["section", "readonly", "civ", "focus"],
   emits: ["stepsChanged", "selectionChanged", "textChanged"],
-  components: { IconSelector },
+  components: { IconSelector, IconAutoCompleteMenu },
   setup(props, context) {
     //Hacky deep copy of object since working on the reference broke the current selection
     //Copy needs to be kept in sync and is used only for the description field :(
@@ -871,6 +871,24 @@ export default {
       }
     }
 
+    const handleInput = (event, index) => {
+      if (event.data === ":") {
+        //Show autocomplete menu
+        var cursorPosition = window.getSelection();
+        var range = cursorPosition.getRangeAt(0);
+        var rect = range.getBoundingClientRect();
+
+        const body = document.getElementsByTagName("body")[0];
+        const bodyRect = body.getBoundingClientRect();
+
+        autocompletePos.value = [
+          rect.x - bodyRect.x,
+          rect.y - bodyRect.y + rect.height,
+        ];
+        searchText.value = true;
+      }
+    };
+
     const handleKeyUp = (event, index) => {
       const editor = stepsTable.value.rows[index].cells[7];
       const sel = window.getSelection();
@@ -889,27 +907,20 @@ export default {
           range.setStart(editor, pos + 1);
           range.collapse(true);
           sel.addRange(range);
+
+          searchText.value = null;
         }
       }
       //Handle space
       else if (event.which === 32 || event.which === 0) {
         addInlineIcon(index);
+        searchText.value = null;
+      }
+      //Handle ESC
+      else if (event.which === 27) {
+        searchText.value = null;
       }
       saveSelection();
-
-      //TODO: Detect colon, e.g. in inuput event
-      //Show autocomplete menu
-      var cursorPosition = window.getSelection();
-      var range = cursorPosition.getRangeAt(0);
-      var rect = range.getBoundingClientRect();
-
-      autocompletePos.value = [rect.x, rect.y];
-      autocompleteModel.value = !autocompleteModel.value;
-      autocompleteParent.value = stepsTable.value.rows[index].cells[7];
-
-      console.log(autocompletePos.value);
-      console.log(autocompleteModel.value);
-      console.log(autocompleteParent.value);
     };
 
     const addInlineIcon = (index) => {
@@ -931,6 +942,9 @@ export default {
 
       //parse and replace
       const match = editor.innerHTML.match(/:([a-z])\w+ /g);
+
+      //Autocomplete search text
+      searchText.value = "TODO: Update autocomplete search text";
 
       if (match) {
         const shortHand = match[0].toLowerCase().trim().replace(":", "");
@@ -959,6 +973,7 @@ export default {
         const filteredCivIcons = filter(allCivIcons).sort(function (a, b) {
           return a.title.length - b.title.length;
         });
+        //Get first on SPACE, get selected on ENTER
         const imageMetaData = filteredCivIcons[0];
 
         if (imageMetaData) {
@@ -1220,9 +1235,8 @@ export default {
       e.preventDefault();
     };
 
-    const autocompleteModel = ref(null);
+    const searchText = ref("");
     const autocompletePos = ref(0);
-    const autocompleteParent = ref(null);
 
     return {
       stepsCopy,
@@ -1241,6 +1255,7 @@ export default {
       mergeProps,
       handlePaste,
       handleKeyUp,
+      handleInput,
       aggregateVillagers,
       updateStepDescription,
       addInlineIcon,
@@ -1258,9 +1273,8 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelected,
-      autocompleteModel,
       autocompletePos,
-      autocompleteParent
+      searchText,
     };
   },
 };
