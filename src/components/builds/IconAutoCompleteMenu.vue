@@ -11,17 +11,28 @@
   >
     <v-card style="height: 250px; min-width: 250px; overflow-y: auto"
       ><v-list v-for="icon in searchResults">
-        <v-list-item>
-          <v-btn
-            color="primary"
-            variant="text"
-            @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-            height="60"
-            width="60"
-          >
-            <v-img style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
-          </v-btn>
-          {{ icon.title }}
+        <v-list-item
+          @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
+        >
+          <v-row align="center"
+      justify="center">
+            <v-col cols="auto">
+              <v-img
+                v-bind:class="{
+                  'icon-landmark-selector': icon.class == 'landmark',
+                  'icon-tech-selector': icon.class == 'tech',
+                  'icon-ability-selector': icon.class == 'ability',
+                  'icon-military-selector': icon.class == 'military',
+                  'icon-default-selector': icon.class == 'default',
+                  'icon-none-selector': icon.class == 'none',
+                  'icon-selector': !icon.class,
+                }"
+                style="height: 48px; width: 48px"
+                :src="icon.imgSrc"
+              ></v-img
+            ></v-col>
+            <v-col >{{ icon.title }}</v-col>
+          </v-row>
         </v-list-item>
       </v-list>
     </v-card>
@@ -61,7 +72,7 @@ export default {
     const all = getIcons();
 
     //update show (show all when only colon, show filtered else)
-    const show = ref(false)
+    const show = ref(false);
 
     //filtered data
     const searchResults = computed(() => filter(all));
@@ -90,6 +101,7 @@ export default {
     };
 
     const imageSelected = (imgSrc, tooltip, imgClass) => {
+      //TODO: Make sure to replace the entire match and not just paste!
       context.emit("iconSelected", imgSrc, tooltip, imgClass);
     };
 

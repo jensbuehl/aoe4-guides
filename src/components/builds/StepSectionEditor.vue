@@ -871,9 +871,13 @@ export default {
     }
 
     const handleInput = (event, index) => {
+      const editor = stepsTable.value.rows[index].cells[7];
+
       if (event.data === ":") {
         //Show autocomplete menu
-        searchText.value = ":";
+        if(editor.innerHTML.match(/\w+:/g)?.length != editor.innerHTML.match(/:/g)?.length){
+          searchText.value = ":";
+        }
         var cursorPosition = window.getSelection();
         var range = cursorPosition.getRangeAt(0);
         var rect = range.getBoundingClientRect();
@@ -922,10 +926,10 @@ export default {
 
       //Show and hide autocomplete menu, set search text
       const match = editor.innerHTML.match(/:([a-z])+/g);
-      if (match) {
+      if (match && editor.innerHTML.match(/\w+:/g)?.length != editor.innerHTML.match(/:/g)?.length) {
         searchText.value = match[0].toLowerCase().trim().replace(":", "");
       }
-      else if(editor.innerHTML.match(/:/g)){
+      else if(editor.innerHTML.match(/\w+:/g)?.length != editor.innerHTML.match(/:/g)?.length){
         searchText.value = ":";
       }
       else{
