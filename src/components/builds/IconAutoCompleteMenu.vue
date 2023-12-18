@@ -10,12 +10,11 @@
     v-model="show"
   >
     <v-card style="height: 250px; min-width: 250px; overflow-y: auto"
-      ><v-list v-for="icon in searchResults">
-        <v-list-item
+      ><v-list >
+        <v-list-item v-for="icon in searchResults"
           @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
         >
-          <v-row align="center"
-      justify="center">
+          <v-row align="center" justify="center">
             <v-col cols="auto">
               <v-img
                 v-bind:class="{
@@ -31,7 +30,7 @@
                 :src="icon.imgSrc"
               ></v-img
             ></v-col>
-            <v-col >{{ icon.title }}</v-col>
+            <v-col>{{ icon.title }}</v-col>
           </v-row>
         </v-list-item>
       </v-list>
