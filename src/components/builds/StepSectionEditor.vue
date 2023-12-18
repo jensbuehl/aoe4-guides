@@ -4,7 +4,6 @@
       (iconPath, tooltip, iconClass) =>
         handleIconSelected(iconPath, tooltip, iconClass)
     "
-    v-if="searchText"
     :civ="civ"
     :searchText="searchText"
     :pos="autocompletePos"
@@ -874,6 +873,7 @@ export default {
     const handleInput = (event, index) => {
       if (event.data === ":") {
         //Show autocomplete menu
+        searchText.value = ":";
         var cursorPosition = window.getSelection();
         var range = cursorPosition.getRangeAt(0);
         var rect = range.getBoundingClientRect();
@@ -885,7 +885,6 @@ export default {
           rect.x - bodyRect.x,
           rect.y - bodyRect.y + rect.height,
         ];
-        searchText.value = true;
       }
     };
 
@@ -921,11 +920,15 @@ export default {
         searchText.value = null;
       }
 
-      //Autocomplete search text
+      //Show and hide autocomplete menu, set search text
       const match = editor.innerHTML.match(/:([a-z])+/g);
-      if(match){
-        searchText.value = match[0].toLowerCase().trim().replace(":", "");;
-      } else {
+      if (match) {
+        searchText.value = match[0].toLowerCase().trim().replace(":", "");
+      }
+      else if(editor.innerHTML.match(/:/g)){
+        searchText.value = ":";
+      }
+      else{
         searchText.value = null;
       }
 

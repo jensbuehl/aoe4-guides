@@ -7,9 +7,9 @@
     absolute
     location-strategy="connected"
     scroll-strategy="reposition"
-    v-model="searchText"
+    v-model="show"
   >
-    <v-card
+    <v-card style="height: 250px; min-width: 250px; overflow-y: auto"
       ><v-list v-for="icon in searchResults">
         <v-list-item>
           <v-btn
@@ -23,8 +23,8 @@
           </v-btn>
           {{ icon.title }}
         </v-list-item>
-      </v-list></v-card
-    >
+      </v-list>
+    </v-card>
   </v-overlay>
 </template>
 
@@ -39,24 +39,36 @@ export default {
   setup(props, context) {
     const { getIcons } = useIconService(props.civ);
 
-    //TODO: Watch to get updates
     const searchText = ref(props.searchText);
     const pos = ref(props.pos);
-    
+
     watch(
       () => props.searchText,
       (value, previousValue) => {
         searchText.value = value;
+        show.value = value != null;
+      }
+    );
+
+    watch(
+      () => props.pos,
+      (value, previousValue) => {
+        pos.value = value;
       }
     );
 
     //unfiltered raw data
     const all = getIcons();
 
+    //update show (show all when only colon, show filtered else)
+    const show = ref(false)
+
     //filtered data
     const searchResults = computed(() => filter(all));
     const filter = (unfiltered) => {
       return unfiltered.filter((item) => {
+        if (!searchText.value) return false;
+        if (searchText.value == ":") return true;
         var elementFound = false;
         //Search by shorthand first
         if (Array.isArray(item.shorthand)) {
@@ -87,6 +99,7 @@ export default {
       filter,
       imageSelected,
       pos,
+      show,
     };
   },
 };
