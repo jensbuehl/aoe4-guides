@@ -19,10 +19,7 @@
             height="60"
             width="60"
           >
-            <v-img
-              style="height: 48px; width: 48px"
-              :src="icon.imgSrc"
-            ></v-img>
+            <v-img style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
           </v-btn>
           {{ icon.title }}
         </v-list-item>
@@ -32,7 +29,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { watch, ref, computed } from "vue";
 import useIconService from "../../composables/builds/useIconService.js";
 
 export default {
@@ -45,9 +42,13 @@ export default {
     //TODO: Watch to get updates
     const searchText = ref(props.searchText);
     const pos = ref(props.pos);
-
-    console.log(searchText.value);
-    console.log(pos.value);
+    
+    watch(
+      () => props.searchText,
+      (value, previousValue) => {
+        searchText.value = value;
+      }
+    );
 
     //unfiltered raw data
     const all = getIcons();
@@ -55,27 +56,26 @@ export default {
     //filtered data
     const searchResults = computed(() => filter(all));
     const filter = (unfiltered) => {
-          return unfiltered.filter((item) => {
-            return true;
-            var elementFound = false;
-            //Search by shorthand first
-            if (Array.isArray(item.shorthand)) {
-              elementFound =
-                -1 !=
-                item.shorthand.findIndex((element) =>
-                  element.startsWith(searchText.value)
-                );
-            } else {
-              elementFound = item.shorthand?.startsWith(searchText.value);
-            }
-            //Search by title second
-            if (!elementFound) {
-              var title = item.title.replace(/ +/g, "").toLowerCase();
-              elementFound = title.includes(searchText.value);
-            }
-            return elementFound;
-          });
-        };
+      return unfiltered.filter((item) => {
+        var elementFound = false;
+        //Search by shorthand first
+        if (Array.isArray(item.shorthand)) {
+          elementFound =
+            -1 !=
+            item.shorthand.findIndex((element) =>
+              element.startsWith(searchText.value)
+            );
+        } else {
+          elementFound = item.shorthand?.startsWith(searchText.value);
+        }
+        //Search by title second
+        if (!elementFound) {
+          var title = item.title.replace(/ +/g, "").toLowerCase();
+          elementFound = title.includes(searchText.value);
+        }
+        return elementFound;
+      });
+    };
 
     const imageSelected = (imgSrc, tooltip, imgClass) => {
       context.emit("iconSelected", imgSrc, tooltip, imgClass);

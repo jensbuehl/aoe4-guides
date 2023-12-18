@@ -920,6 +920,15 @@ export default {
       else if (event.which === 27) {
         searchText.value = null;
       }
+
+      //Autocomplete search text
+      const match = editor.innerHTML.match(/:([a-z])+/g);
+      if(match){
+        searchText.value = match[0].toLowerCase().trim().replace(":", "");;
+      } else {
+        searchText.value = null;
+      }
+
       saveSelection();
     };
 
@@ -942,9 +951,6 @@ export default {
 
       //parse and replace
       const match = editor.innerHTML.match(/:([a-z])\w+ /g);
-
-      //Autocomplete search text
-      searchText.value = "TODO: Update autocomplete search text";
 
       if (match) {
         const shortHand = match[0].toLowerCase().trim().replace(":", "");
