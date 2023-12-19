@@ -55,15 +55,6 @@
               item-title="title"
               :items="sortOptions"
             ></v-select>
-          </v-expansion-panel-text>
-        </v-expansion-panel>
-      </v-expansion-panels>
-      <v-expansion-panels>
-        <v-expansion-panel elevation="0">
-          <v-expansion-panel-title expand-icon="mdi-tune">
-            Advanced Filters
-          </v-expansion-panel-title>
-          <v-expansion-panel-text class="mt-2">
             <v-select
               v-model="selectedMaps"
               prepend-icon="mdi-map"
@@ -216,26 +207,8 @@
         item-title="title"
         :items="sortOptions"
       ></v-select>
-      <v-btn
-        v-show="!showAdditionalFilters"
-        variant="plain"
-        block
-        append-icon="mdi-menu-down"
-        @click="showAdditionalFilters = true"
-        >More Filter Options</v-btn
-      >
-      <v-btn
-        v-show="showAdditionalFilters"
-        variant="plain"
-        block
-        class="mb-4"
-        append-icon="mdi-menu-up"
-        @click="showAdditionalFilters = false"
-        >Hide Filter Options</v-btn
-      >
       <v-autocomplete
         class="hidden-xs"
-        v-if="showAdditionalFilters"
         v-model="selectedMaps"
         prepend-icon="mdi-map"
         label="Map"
@@ -249,7 +222,6 @@
       </v-autocomplete>
       <v-select
         class="hidden-sm-and-up"
-        v-if="showAdditionalFilters"
         v-model="selectedMaps"
         prepend-icon="mdi-map"
         label="Map"
@@ -263,7 +235,6 @@
       </v-select>
       <v-autocomplete
         class="hidden-xs"
-        v-if="showAdditionalFilters"
         v-model="selectedStrategies"
         prepend-icon="mdi-strategy"
         label="Strategy"
@@ -277,7 +248,6 @@
       </v-autocomplete>
       <v-select
         class="hidden-sm-and-up"
-        v-if="showAdditionalFilters"
         v-model="selectedStrategies"
         prepend-icon="mdi-strategy"
         label="Strategy"
@@ -337,7 +307,6 @@ export default {
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
     const creators = ref([]);
-    const showAdditionalFilters = ref(false);
     const count = computed(() => store.state.resultsCount);
 
     onMounted(async () => {
@@ -471,7 +440,6 @@ export default {
       selectedSeasons,
       selectedOrderBy,
       selectedVideoCreator,
-      showAdditionalFilters,
       count,
       handleReset,
       getCreatorName,
