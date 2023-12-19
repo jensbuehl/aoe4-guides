@@ -74,13 +74,6 @@
           <v-item-group
             class="hidden-sm-and-up"
           >
-            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="x-small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in filteredMatchups">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
-            >
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -173,13 +166,6 @@
           <v-item-group
             class="hidden-xs hidden-md-and-up"
           >
-            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in filteredMatchups">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
-            >
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -522,13 +508,6 @@
           <v-item-group
             class="ml-4 hidden-sm-and-down"
           >
-            <v-chip v-if="filteredMatchups?.length" class="mr-2 mb-2" color="accent" label size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in filteredMatchups">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
-            >
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -880,7 +859,6 @@ export default {
         steps: build.value.steps,
         video: build.value.video,
         civ: build.value.civ,
-        matchup: build.value.matchup || [],
         map: build.value.map || "",
         season: build.value.season,
         strategy: build.value.strategy,
@@ -943,10 +921,7 @@ export default {
       handleDownloadOverlayFormat,
       timeSince,
       isNew,
-      creatorName,
-      filteredMatchups: computed(() =>
-        build.value.matchup?.filter((element) => element != "ANY").sort()
-      ),
+      creatorName
     };
   },
 };

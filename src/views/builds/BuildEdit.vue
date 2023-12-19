@@ -54,18 +54,6 @@
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
             <v-chip
-              v-if="filteredMatchups?.length"
-              class="mr-2 mb-2"
-              color="accent"
-              label
-              size="x-small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in filteredMatchups">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
-            >
-            <v-chip
               class="mr-2 mb-2"
               color="accent"
               v-if="build.map"
@@ -156,18 +144,6 @@
             >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
-            <v-chip
-              v-if="filteredMatchups?.length"
-              class="mr-2 mb-2"
-              color="accent"
-              label
-              size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in filteredMatchups">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
-            >
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -440,18 +416,6 @@
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip
-              v-if="filteredMatchups?.length"
-              class="mr-2 mb-2"
-              color="accent"
-              label
-              size="small"
-              ><v-icon start icon="mdi-sword-cross"></v-icon
-              ><span v-for="(item, index) in filteredMatchups">
-                <span v-if="!index">{{ item }}</span
-                ><span v-if="index" class="ml-2">{{ item }}</span></span
-              ></v-chip
-            >
-            <v-chip
               class="mr-2 mb-2"
               color="accent"
               v-if="build.map"
@@ -675,17 +639,6 @@
             >
             </v-select>
             <v-select
-              prepend-icon="mdi-sword-cross"
-              label="Matchup"
-              :items="matchups"
-              v-model="build.matchup"
-              density="compact"
-              item-value="shortName"
-              item-title="title"
-              multiple
-            >
-            </v-select>
-            <v-select
               prepend-icon="mdi-trophy"
               label="Season"
               :items="seasons"
@@ -764,7 +717,6 @@ export default {
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const matchups = getCivs().civs;
     const creatorName = ref("");
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
@@ -812,7 +764,6 @@ export default {
         steps: build.value.steps,
         video: build.value.video,
         civ: build.value.civ,
-        matchup: build.value.matchup || [],
         map: build.value.map || "",
         season: build.value.season,
         strategy: build.value.strategy,
@@ -931,7 +882,6 @@ export default {
       error,
       user,
       civs,
-      matchups,
       maps,
       strategies,
       seasons,
@@ -943,10 +893,7 @@ export default {
       handleVideoInput,
       timeSince,
       isNew,
-      creatorName,
-      filteredMatchups: computed(() =>
-        build.value.matchup?.filter((element) => element != "ANY").sort()
-      ),
+      creatorName
     };
   },
 };

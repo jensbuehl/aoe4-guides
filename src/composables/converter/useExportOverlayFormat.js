@@ -10,14 +10,9 @@ export default function useExportOverlayFormat() {
       convertStepToOverlayFormat(step)
     );
 
-    const match_ups = build.matchup?.map(
-      (matchup) => mapCivilizations[matchup]
-    );
-
     return {
       description: build.description,
       civilization: mapCivilizations[build.civ],
-      matchup: match_ups,
       name: build.title,
       author: build.author,
       source: window.location.href,

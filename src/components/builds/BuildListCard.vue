@@ -163,21 +163,6 @@
             size="x-small"
             ><v-icon start icon="mdi-strategy"></v-icon
             >{{ build.strategy }}</v-chip-->
-          <v-chip
-            v-if="build.matchup?.filter((element) => element != 'ANY').length && !$vuetify.display.xs"
-            class="mr-1 mt-1"
-            label
-            size="x-small"
-            ><v-icon start icon="mdi-sword-cross"></v-icon
-            ><span
-              v-for="(item, index) in build.matchup
-                ?.filter((element) => element != 'ANY')
-                .sort()"
-            >
-              <span v-if="!index">{{ item }}</span
-              ><span v-if="index" class="ml-2">{{ item }}</span></span
-            ></v-chip
-          >
         </v-item-group>
         <!--large title-->
         <v-card-title
@@ -266,21 +251,6 @@
           <!--v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small"
             ><v-icon start icon="mdi-strategy"></v-icon
             >{{ build.strategy }}</v-chip-->
-          <v-chip
-            v-if="build.matchup?.filter((element) => element != 'ANY').length"
-            class="mr-2 mb-2"
-            label
-            size="small"
-            ><v-icon start icon="mdi-sword-cross"></v-icon
-            ><span
-              v-for="(item, index) in build.matchup
-                ?.filter((element) => element != 'ANY')
-                .sort()"
-            >
-              <span v-if="!index">{{ item }}</span
-              ><span v-if="index" class="ml-2">{{ item }}</span></span
-            ></v-chip
-          >
         </v-item-group>
       </v-col>
     </v-row>

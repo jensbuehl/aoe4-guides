@@ -65,17 +65,6 @@
           </v-expansion-panel-title>
           <v-expansion-panel-text class="mt-2">
             <v-select
-              v-model="selectedMatchups"
-              prepend-icon="mdi-sword-cross"
-              label="Matchup"
-              density="compact"
-              :items="matchups"
-              item-value="shortName"
-              item-title="title"
-              clearable
-            >
-            </v-select>
-            <v-select
               v-model="selectedMaps"
               prepend-icon="mdi-map"
               label="Map"
@@ -247,31 +236,6 @@
       <v-autocomplete
         class="hidden-xs"
         v-if="showAdditionalFilters"
-        v-model="selectedMatchups"
-        prepend-icon="mdi-sword-cross"
-        label="Matchup"
-        density="compact"
-        :items="matchups"
-        item-value="shortName"
-        item-title="title"
-        clearable
-      ></v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-if="showAdditionalFilters"
-        v-model="selectedMatchups"
-        prepend-icon="mdi-sword-cross"
-        label="Matchup"
-        density="compact"
-        :items="matchups"
-        item-value="shortName"
-        item-title="title"
-        clearable
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-if="showAdditionalFilters"
         v-model="selectedMaps"
         prepend-icon="mdi-map"
         label="Map"
@@ -369,7 +333,6 @@ export default {
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;
     const strategies = getStrategies().strategies;
@@ -440,16 +403,6 @@ export default {
       },
     });
 
-    const selectedMatchups = computed({
-      get() {
-        return store.state.filterConfig?.matchups;
-      },
-      set(value) {
-        store.commit("setMatchups", value);
-        context.emit("configChanged");
-      },
-    });
-
     const selectedVideoCreator = computed({
       get() {
         return getCreatorName(store.state.filterConfig?.creator);
@@ -508,13 +461,11 @@ export default {
     return {
       sortOptions,
       civs,
-      matchups,
       maps,
       seasons,
       creators,
       strategies,
       selectedCivs,
-      selectedMatchups,
       selectedMaps,
       selectedStrategies,
       selectedSeasons,

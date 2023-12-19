@@ -253,17 +253,6 @@
             >
             </v-select>
             <v-select
-              prepend-icon="mdi-sword-cross"
-              label="Matchup"
-              :items="matchups"
-              v-model="build.matchup"
-              density="compact"
-              item-value="shortName"
-              item-title="title"
-              multiple
-            >
-            </v-select>
-            <v-select
               prepend-icon="mdi-trophy"
               label="Season"
               :items="seasons"
@@ -342,7 +331,6 @@ export default {
     const civs = getCivs().civs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const strategies = getStrategies().strategies;
     const seasons = getSeasons().seasons;
@@ -384,7 +372,6 @@ export default {
         map: "",
         season: "Season 6",
         strategy: "",
-        matchup: ["ANY"],
         views: 0,
         likes: 0,
         upvotes: 0,
@@ -504,7 +491,6 @@ export default {
       build,
       error,
       civs,
-      matchups,
       maps,
       strategies,
       seasons,

@@ -207,11 +207,6 @@ const filterWith = (config, favorites) => {
       queryParams.push(civsOp);
     }
 
-    if (config?.matchups) {
-      const matchupsOp = where("matchup", "array-contains", config.matchups);
-      queryParams.push(matchupsOp);
-    }
-
     if (config?.seasons.length > 0) {
       const seasonsOp = where("season", "in", config.seasons);
       queryParams.push(seasonsOp);

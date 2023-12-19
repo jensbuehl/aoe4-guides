@@ -10,13 +10,10 @@ export default function useImportOverlayFormat() {
         steps: build.build_order?.map((step) => convertStep(step)),
       },
     ];
-    var match_ups = [];
-    match_ups = build.matchup?.map((matchup) => mapCivilizations[matchup]);
 
     return {
       description: build.description || "",
       civ: mapCivilizations[build.civilization],
-      matchup: match_ups || [],
       title: build.name,
       author: build.author,
       steps: buildSteps,
