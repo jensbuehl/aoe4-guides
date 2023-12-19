@@ -321,6 +321,7 @@ import useCollection from "../../composables/useCollection";
 
 export default {
   name: "FilterConfig",
+  inheritAttrs: false,
   emits: ["configChanged"],
   setup(props, context) {
     const { getAll } = useCollection("creators");
