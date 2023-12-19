@@ -343,14 +343,13 @@
         class="fill-height d-flex flex-nowrap hidden-sm-and-down"
       >
         <v-col
-          v-if="build.civ"
           cols="2"
           md="4"
           lg="3"
           class="pa-0 ma-0 d-flex flex-column"
         >
-          <v-img
-            class="hidden-sm-and-down"
+        <v-img
+            v-if="build.civ && build.civ != 'ANY'"
             :src="
               '/' +
               civs.find((item) => {
@@ -378,16 +377,8 @@
               </v-row>
             </template>
           </v-img>
-        </v-col>
-        <v-col
-          v-if="!build.civ"
-          cols="2"
-          md="4"
-          lg="3"
-          class="pa-0 ma-0 hidden-sm-and-down"
-        >
           <v-img
-            class="hidden-sm-and-down"
+            v-else
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
             :gradient="
@@ -770,7 +761,9 @@ export default {
     const store = useStore();
     const router = useRouter();
     const user = computed(() => store.state.user);
-    const civs = getCivs().civs;
+    const civs = getCivs().civs.value.filter(
+      (element) => element.shortName != "ANY"
+    );
     const matchups = getCivs().civs;
     const creatorName = ref("");
     const maps = getMaps().maps;

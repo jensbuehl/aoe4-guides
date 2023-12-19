@@ -366,7 +366,9 @@ export default {
   setup(props, context) {
     const { getAll } = useCollection("creators");
     const store = useStore();
-    const civs = getCivs().civs;
+    const civs = getCivs().civs.value.filter(
+      (element) => element.shortName != "ANY"
+    );
     const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const seasons = getSeasons().seasons;

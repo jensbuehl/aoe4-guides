@@ -90,12 +90,12 @@
     <v-card flat rounded="lg" class="hidden-sm-and-down">
       <v-row class="d-flex align-center flex-nowrap hidden-sm-and-down">
         <v-col
-          v-if="build.civ"
           cols="2"
           md="3"
           class="pa-0 ma-0 hidden-sm-and-down"
         >
           <v-img
+            v-if="build.civ && build.civ != 'ANY'"
             :src="
               '/' +
               civs.find((item) => {
@@ -123,14 +123,8 @@
               </v-row>
             </template>
           </v-img>
-        </v-col>
-        <v-col
-          v-if="!build.civ"
-          cols="2"
-          md="3"
-          class="pa-0 ma-0 hidden-sm-and-down"
-        >
           <v-img
+            v-else
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
             :gradient="
@@ -343,9 +337,11 @@ export default {
       buildEmbedUrl,
       getVideoCreatorId,
       getVideoMetaData,
-      getChannelIcon
+      getChannelIcon,
     } = useYoutube();
-    const civs = getCivs().civs;
+    const civs = getCivs().civs.value.filter(
+      (element) => element.shortName != "ANY"
+    );
     const matchups = getCivs().civs;
     const maps = getMaps().maps;
     const strategies = getStrategies().strategies;
@@ -384,7 +380,7 @@ export default {
           },
         ],
         video: "",
-        civ: "ANY",
+        civ: "",
         map: "",
         season: "Season 6",
         strategy: "",
@@ -444,7 +440,9 @@ export default {
           const res = await getCreator(creatorDoc.creatorId);
           console.log(creatorDoc);
           if (!res) {
-            creatorDoc.creatorImage = await getChannelIcon(creatorDoc.creatorId);
+            creatorDoc.creatorImage = await getChannelIcon(
+              creatorDoc.creatorId
+            );
             await addCreator(creatorDoc, creatorDoc.creatorId);
             store.commit("addCreator", creatorDoc);
           }
@@ -457,33 +455,33 @@ export default {
       }
     };
 
-    const sanitizeSteps = () => {  
-      build.value.steps.forEach(function(stepCollection){
+    const sanitizeSteps = () => {
+      build.value.steps.forEach(function (stepCollection) {
         stepCollection.steps.forEach(function (step, index) {
-        this[index].description = sanitizeHtml(step.description, {
-          allowedTags: ["img", "br"],
-          allowedClasses: {
-            img: [
-              "icon",
-              "icon-none",
-              "icon-military",
-              "icon-tech",
-              "icon-default",
-              "icon-landmark",
-              "icon-ability",
-            ],
-          },
-          allowedAttributes: {
-            img: ["style", "class", "src", "title"],
-          },
-          allowedStyles: {
-            "*": {
-              "vertical-align": [/^middle$/],
+          this[index].description = sanitizeHtml(step.description, {
+            allowedTags: ["img", "br"],
+            allowedClasses: {
+              img: [
+                "icon",
+                "icon-none",
+                "icon-military",
+                "icon-tech",
+                "icon-default",
+                "icon-landmark",
+                "icon-ability",
+              ],
             },
-          },
-        });
-      }, stepCollection.steps);
-      })
+            allowedAttributes: {
+              img: ["style", "class", "src", "title"],
+            },
+            allowedStyles: {
+              "*": {
+                "vertical-align": [/^middle$/],
+              },
+            },
+          });
+        }, stepCollection.steps);
+      });
     };
 
     const handleStepsChanged = (steps) => {
