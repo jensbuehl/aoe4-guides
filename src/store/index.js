@@ -19,7 +19,16 @@ const store = createStore({
   state: {
     user: null,
     authIsReady: false,
-    filterConfig: null,
+    filterConfig: {
+      creator: null,
+      author: null,
+      civs: null,
+      maps: [],
+      strategies: [],
+      seasons: [],
+      orderBy: "score",
+      drafts: false
+    },
     resultsCount: 0,
     template: null,
     //cache

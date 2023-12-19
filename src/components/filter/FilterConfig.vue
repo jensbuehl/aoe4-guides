@@ -4,7 +4,7 @@
       <v-expansion-panels>
         <v-expansion-panel elevation="0">
           <v-expansion-panel-title expand-icon="mdi-filter-variant">
-            Sort & Filter
+            Filter & Sort
           </v-expansion-panel-title>
           <v-expansion-panel-text class="mt-2">
             <v-select
@@ -82,30 +82,43 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
-    </v-card-text>
-    <v-divider></v-divider>
-    <v-container class="fill-height">
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center" cols="6">
-          <span v-if="!count">Gathering...</span>
-          <span v-if="count">{{ count }} build order</span
-          ><span v-if="count > 1">s</span>
-        </v-col>
+          <v-btn
+            v-if="configChanged"
+            color="primary"
+            prepend-icon="mdi-check"
+            flat
+            @click="handleApply"
+            >Apply</v-btn
+          ></v-col
+        >
         <v-col class="d-flex justify-center" cols="6">
           <v-btn
             color="primary"
+            v-if="showReset"
             prepend-icon="mdi-close"
             variant="text"
             flat
             @click="handleReset"
-            >Reset Filters</v-btn
+            >Reset</v-btn
           ></v-col
-        >
+        ></v-row
+      >
+    </v-card-text>
+    <v-divider></v-divider>
+    <v-container class="fill-height">
+      <v-row align="center" justify="center" class="fill-height">
+        <v-col class="d-flex justify-center">
+          <span v-if="!count">Gathering...</span>
+          <span v-if="count">{{ count }} build order</span
+          ><span v-if="count > 1">s</span>
+        </v-col>
       </v-row>
     </v-container>
   </v-card>
   <v-card rounded="lg" flat class="hidden-sm-and-down">
-    <v-card-text class="pb-0 mb-4">
+    <v-card-text class="pb-0">
       <v-autocomplete
         class="hidden-xs"
         v-model="selectedCivs"
@@ -181,6 +194,58 @@
         label="Season"
         density="compact"
         :items="seasons"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedMaps"
+        prepend-icon="mdi-map"
+        label="Map"
+        density="compact"
+        :items="maps"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
+        v-model="selectedMaps"
+        prepend-icon="mdi-map"
+        label="Map"
+        density="compact"
+        :items="maps"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedStrategies"
+        prepend-icon="mdi-strategy"
+        label="Strategy"
+        density="compact"
+        :items="strategies"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
+        v-model="selectedStrategies"
+        prepend-icon="mdi-strategy"
+        label="Strategy"
+        density="compact"
+        :items="strategies"
         item-value="title"
         item-title="title"
         clearable
@@ -207,78 +272,38 @@
         item-title="title"
         :items="sortOptions"
       ></v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedMaps"
-        prepend-icon="mdi-map"
-        label="Map"
-        density="compact"
-        :items="maps"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedMaps"
-        prepend-icon="mdi-map"
-        label="Map"
-        density="compact"
-        :items="maps"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedStrategies"
-        prepend-icon="mdi-strategy"
-        label="Strategy"
-        density="compact"
-        :items="strategies"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedStrategies"
-        prepend-icon="mdi-strategy"
-        label="Strategy"
-        density="compact"
-        :items="strategies"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
     </v-card-text>
+    <v-row align="center" justify="center" class="fill-height mb-2">
+      <v-col class="d-flex justify-center" cols="6">
+        <v-btn
+          color="primary"
+          v-if="configChanged"
+          prepend-icon="mdi-check"
+          flat
+          @click="handleApply"
+          >Apply</v-btn
+        ></v-col
+      >
+      <v-col class="d-flex justify-center" cols="6">
+        <v-btn
+          color="primary"
+          v-if="showReset"
+          prepend-icon="mdi-close"
+          variant="text"
+          flat
+          @click="handleReset"
+          >Reset</v-btn
+        ></v-col
+      ></v-row
+    >
     <v-divider></v-divider>
     <v-container class="fill-height">
       <v-row align="center" justify="center" class="fill-height">
-        <v-col class="d-flex justify-center" cols="6" md="12" lg="6">
+        <v-col class="d-flex justify-center">
           <span v-if="!count">Gathering...</span>
           <span v-if="count">{{ count }} build order</span
           ><span v-if="count > 1">s</span>
         </v-col>
-        
-        <v-col class="d-flex justify-center" cols="6" md="12" lg="6">
-          <v-btn
-            color="primary"
-            prepend-icon="mdi-close"
-            variant="text"
-            flat
-            @click="handleReset"
-            >Reset Filters</v-btn
-          ></v-col
-        >
       </v-row>
     </v-container>
   </v-card>
@@ -308,6 +333,34 @@ export default {
     const strategies = getStrategies().strategies;
     const creators = ref([]);
     const count = computed(() => store.state.resultsCount);
+    //Show apply when config different from state in store
+    const configChanged = computed(() => {
+      return (
+        selectedCivs.value != store.state.filterConfig?.civs ||
+        selectedVideoCreator.value != store.state.filterConfig?.creator ||
+        JSON.stringify(selectedMaps.value) !=
+          JSON.stringify(store.state.filterConfig?.maps) ||
+        JSON.stringify(selectedStrategies.value) !=
+          JSON.stringify(store.state.filterConfig?.strategies) ||
+        JSON.stringify(selectedSeasons.value) !=
+          JSON.stringify(store.state.filterConfig?.seasons) ||
+        selectedOrderBy.value != store.state.filterConfig?.orderBy
+      );
+    });
+    //Show when state config different from default
+    const showReset = computed(() => {
+      return (
+        store.state.filterConfig?.civs != getDefaultConfig().civs ||
+        store.state.filterConfig?.creator != getDefaultConfig().creator ||
+        JSON.stringify(store.state.filterConfig?.maps) !=
+          JSON.stringify(getDefaultConfig().maps) ||
+        JSON.stringify(store.state.filterConfig?.strategies) !=
+          JSON.stringify(getDefaultConfig().strategies) ||
+        JSON.stringify(store.state.filterConfig?.seasons) !=
+          JSON.stringify(getDefaultConfig().seasons) ||
+          store.state.filterConfig?.orderBy != getDefaultConfig().orderBy
+      );
+    });
 
     onMounted(async () => {
       creators.value = await getAll();
@@ -362,68 +415,39 @@ export default {
       } else "";
     };
 
-    const selectedCivs = computed({
-      get() {
-        return store.state.filterConfig?.civs;
-      },
-      set(value) {
-        store.commit("setCivs", value);
-        context.emit("configChanged");
-      },
-    });
+    const selectedCivs = ref(store.state.filterConfig?.civs);
+    const selectedVideoCreator = ref(store.state.filterConfig?.creator);
+    const selectedMaps = ref(store.state.filterConfig?.maps);
+    const selectedStrategies = ref(store.state.filterConfig?.strategies);
+    const selectedSeasons = ref(store.state.filterConfig?.seasons);
+    const selectedOrderBy = ref(store.state.filterConfig?.orderBy);
 
-    const selectedVideoCreator = computed({
-      get() {
-        return getCreatorName(store.state.filterConfig?.creator);
-      },
-      set(value) {
-        store.commit("setCreator", value);
-        context.emit("configChanged");
-      },
-    });
-
-    const selectedMaps = computed({
-      get() {
-        return store.state.filterConfig?.maps;
-      },
-      set(value) {
-        store.commit("setMaps", value);
-        context.emit("configChanged");
-      },
-    });
-
-    const selectedStrategies = computed({
-      get() {
-        return store.state.filterConfig?.strategies;
-      },
-      set(value) {
-        store.commit("setStrategies", value);
-        context.emit("configChanged");
-      },
-    });
-
-    const selectedSeasons = computed({
-      get() {
-        return store.state.filterConfig?.seasons;
-      },
-      set(value) {
-        store.commit("setSeasons", value);
-        context.emit("configChanged");
-      },
-    });
-
-    const selectedOrderBy = computed({
-      get() {
-        return store.state.filterConfig?.orderBy;
-      },
-      set(value) {
-        store.commit("setOrderBy", value);
-        context.emit("configChanged");
-      },
-    });
+    const handleApply = () => {
+      store.commit("setCivs", selectedCivs.value);
+      store.commit("setCreator", selectedVideoCreator.value);
+      store.commit("setMaps", selectedMaps.value);
+      store.commit("setStrategies", selectedStrategies.value);
+      store.commit("setSeasons", selectedSeasons.value);
+      store.commit("setOrderBy", selectedOrderBy.value);
+      context.emit("configChanged");
+    };
 
     const handleReset = () => {
+      selectedCivs.value = getDefaultConfig().civs;
+      selectedVideoCreator.value = getDefaultConfig().creator;
+      selectedMaps.value = getDefaultConfig().maps;
+      selectedStrategies.value = getDefaultConfig().strategies;
+      selectedSeasons.value = getDefaultConfig().seasons;
+      selectedOrderBy.value = getDefaultConfig().orderBy;
+
+      store.commit("setCivs", getDefaultConfig().civs);
+      store.commit("setCreator", getDefaultConfig().creator);
+      store.commit("setMaps", getDefaultConfig().maps);
+      store.commit("setStrategies", getDefaultConfig().strategies);
+      store.commit("setSeasons", getDefaultConfig().seasons);
+      store.commit("setOrderBy", getDefaultConfig().orderBy);
       store.commit("setFilterConfig", getDefaultConfig());
+
       context.emit("configChanged");
     };
 
@@ -442,7 +466,10 @@ export default {
       selectedVideoCreator,
       count,
       handleReset,
+      handleApply,
+      configChanged,
       getCreatorName,
+      showReset,
     };
   },
 };
