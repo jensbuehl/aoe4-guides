@@ -15,6 +15,7 @@
           v-for="(icon, index) in searchResults"
           :key="index"
           :active="index === selectedItemIndex"
+          :id="'autocomplete-item-' + index"
           @click="imageSelected(icon.imgSrc, icon.title, icon.class, index)"
         >
           <v-row align="center" justify="center">
@@ -43,6 +44,7 @@
 <script>
 import { watch, ref, computed } from "vue";
 import useIconService from "../../composables/builds/useIconService.js";
+import scrollIntoView from "scroll-into-view-if-needed";
 
 export default {
   name: "IconAutoCompleteMenu",
@@ -56,14 +58,33 @@ export default {
 
     document.addEventListener("keydown", (e) => {
       if (e.code === "ArrowUp" && searchText.value) {
-        selectedItemIndex.value -= 1;
+        selectedItemIndex.value = Math.max(0, selectedItemIndex.value - 1);
+        var selectedNode = document.getElementById(
+          "autocomplete-item-" + selectedItemIndex.value
+        );
+        scrollIntoView(selectedNode, {
+          scrollMode: "if-needed",
+          block: "start",
+          inline: "start",
+        });
         e.stopPropagation();
         e.preventDefault();
       } else if (e.code === "ArrowDown" && searchText.value) {
-        selectedItemIndex.value += 1;
+        selectedItemIndex.value = Math.min(
+          searchResults.value.length-1,
+          selectedItemIndex.value + 1
+        );
+        var selectedNode = document.getElementById(
+          "autocomplete-item-" + selectedItemIndex.value
+        );
+        scrollIntoView(selectedNode, {
+          scrollMode: "if-needed",
+          block: "end",
+          inline: "end",
+        });
         e.stopPropagation();
         e.preventDefault();
-      }else if (e.code === "Enter" && searchText.value) {
+      } else if (e.code === "Enter" && searchText.value) {
         var icon = searchResults.value[selectedItemIndex.value];
         context.emit("iconSelected", icon.imgSrc, icon.title, icon.class);
         e.stopPropagation();
