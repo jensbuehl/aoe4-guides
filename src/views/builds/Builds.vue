@@ -100,14 +100,6 @@ export default {
       limit: 10,
     });
 
-    onMounted(() => {
-      if (!filterAndOrderConfig.value) {
-        store.commit("setFilterConfig", getDefaultConfig());
-      }
-      initQueryParameters();
-      initData();
-    });
-
     const initQueryParameters = () => {
       if(route.query.civ){
         store.commit("setCivs", route.query.civ);
@@ -119,6 +111,11 @@ export default {
         store.commit("setAuthor", route.query.author);
       }
     }
+
+    initQueryParameters();
+    onMounted(() => {
+      initData();
+    });
 
     const configChanged = () => {
       initData();
