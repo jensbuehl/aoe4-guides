@@ -10,9 +10,12 @@
     v-model="show"
   >
     <v-card style="height: 250px; min-width: 250px; overflow-y: auto"
-      ><v-list >
-        <v-list-item v-for="icon in searchResults"
-          @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
+      ><v-list>
+        <v-list-item
+          v-for="(icon, index) in searchResults"
+          :key="index"
+          :active="index === selectedItemIndex"
+          @click="imageSelected(icon.imgSrc, icon.title, icon.class, index)"
         >
           <v-row align="center" justify="center">
             <v-col cols="auto">
@@ -26,7 +29,6 @@
                   'icon-none-selector': icon.class == 'none',
                   'icon-selector': !icon.class,
                 }"
-                style="height: 48px; width: 48px"
                 :src="icon.imgSrc"
               ></v-img
             ></v-col>
@@ -48,14 +50,32 @@ export default {
   emits: ["iconSelected"],
   setup(props, context) {
     const { getIcons } = useIconService(props.civ);
-
     const searchText = ref(props.searchText);
     const pos = ref(props.pos);
+    const selectedItemIndex = ref(0);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "ArrowUp" && searchText.value) {
+        selectedItemIndex.value -= 1;
+        e.stopPropagation();
+        e.preventDefault();
+      } else if (e.code === "ArrowDown" && searchText.value) {
+        selectedItemIndex.value += 1;
+        e.stopPropagation();
+        e.preventDefault();
+      }else if (e.code === "Enter" && searchText.value) {
+        var icon = searchResults.value[selectedItemIndex.value];
+        context.emit("iconSelected", icon.imgSrc, icon.title, icon.class);
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    });
 
     watch(
       () => props.searchText,
       (value, previousValue) => {
         searchText.value = value;
+        selectedItemIndex.value = 0;
         show.value = value != null;
       }
     );
@@ -99,9 +119,9 @@ export default {
       });
     };
 
-    const imageSelected = (imgSrc, tooltip, imgClass) => {
+    const imageSelected = (imgSrc, title, imgClass, index) => {
       //TODO: Make sure to replace the entire match and not just paste!
-      context.emit("iconSelected", imgSrc, tooltip, imgClass);
+      context.emit("iconSelected", imgSrc, title, imgClass);
     };
 
     return {
@@ -111,6 +131,7 @@ export default {
       imageSelected,
       pos,
       show,
+      selectedItemIndex,
     };
   },
 };
