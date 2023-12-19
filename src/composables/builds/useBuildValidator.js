@@ -6,7 +6,7 @@ export default function useBuildValidator() {
       return "Title is required. Please set a build order title."
     }
 
-    if (!build.civ != "ANY"){
+    if (!build.civ || !(build.civ != "ANY")){
       return "Civilization is required. Please set a build order civilization."
     }
 
