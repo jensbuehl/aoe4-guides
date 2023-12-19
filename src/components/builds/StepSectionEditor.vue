@@ -2,7 +2,7 @@
   <IconAutoCompleteMenu
     @iconSelected="
       (iconPath, tooltip, iconClass) =>
-        handleIconSelected(iconPath, tooltip, iconClass)
+        handleAutoCompleteSelected(iconPath, tooltip, iconClass)
     "
     :civ="civ"
     :searchText="searchText"
@@ -875,7 +875,10 @@ export default {
 
       if (event.data === ":") {
         //Show autocomplete menu
-        if(editor.innerHTML.match(/\w+:/g)?.length != editor.innerHTML.match(/:/g)?.length){
+        if (
+          editor.innerHTML.match(/\w+:/g)?.length !=
+          editor.innerHTML.match(/:/g)?.length
+        ) {
           searchText.value = ":";
         }
         var cursorPosition = window.getSelection();
@@ -926,13 +929,18 @@ export default {
 
       //Show and hide autocomplete menu, set search text
       const match = editor.innerHTML.match(/:([a-z])+/g);
-      if (match && editor.innerHTML.match(/\w+:/g)?.length != editor.innerHTML.match(/:/g)?.length) {
+      if (
+        match &&
+        editor.innerHTML.match(/\w+:/g)?.length !=
+          editor.innerHTML.match(/:/g)?.length
+      ) {
         searchText.value = match[0].toLowerCase().trim().replace(":", "");
-      }
-      else if(editor.innerHTML.match(/\w+:/g)?.length != editor.innerHTML.match(/:/g)?.length){
+      } else if (
+        editor.innerHTML.match(/\w+:/g)?.length !=
+        editor.innerHTML.match(/:/g)?.length
+      ) {
         searchText.value = ":";
-      }
-      else{
+      } else {
         searchText.value = null;
       }
 
@@ -986,7 +994,6 @@ export default {
         const filteredCivIcons = filter(allCivIcons).sort(function (a, b) {
           return a.title.length - b.title.length;
         });
-        //Get first on SPACE, get selected on ENTER
         const imageMetaData = filteredCivIcons[0];
 
         if (imageMetaData) {
@@ -1037,6 +1044,60 @@ export default {
         textRange.select();
       }
     }
+
+    const handleAutoCompleteSelected = (iconPath, tooltipText, iconClass) => {
+      //TODO: Use  correct index!
+      var editor = stepsTable.value.rows[0].cells[7];
+      console.log(editor);
+
+      iconClass = iconClass ? "icon-" + iconClass : "icon";
+      const img =
+        '<img src="' +
+        iconPath +
+        '" class=' +
+        iconClass +
+        ' title="' +
+        tooltipText +
+        '"><\/img>';
+
+      //if DIV wrapper, then use this element as root instead of the editor (Needed for firefox compatibility)
+      if (editor.childNodes[0].tagName === "DIV") {
+        editor = editor.childNodes[0];
+      }
+
+      //get target cursor position
+      const sel = window.getSelection();
+      const node = sel.focusNode;
+      const offset = sel.focusOffset;
+      const pos = getCursorPositionAfterIcon(editor, node, offset, {
+        pos: 0,
+        done: false,
+      });
+
+      //parse and replace
+      //searchTextMatch
+      var match = editor.innerHTML.match(/:([a-z])+/g);
+      console.log("shorthand", match);
+      if (!match) {
+        //TODO: Test! Make sure that only colons without preceeding text are found
+        match = editor.innerHTML.match(/\w*(?<![a-zA-Z]):/g);
+        console.log("colon", match);
+      }
+
+      if (match) {
+        //Replace element
+        //TODO: Replace by Regex instead of first match (which would be just ":" in worst case)
+        editor.innerHTML = editor.innerHTML.replace(match[0], img);
+
+        // restore the position
+        sel.removeAllRanges();
+        var range = document.createRange();
+        range.setStart(editor, pos.pos);
+        range.collapse(true);
+        sel.addRange(range);
+      }
+      searchText.value = "";
+    };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
@@ -1286,6 +1347,7 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelected,
+      handleAutoCompleteSelected,
       autocompletePos,
       searchText,
     };
