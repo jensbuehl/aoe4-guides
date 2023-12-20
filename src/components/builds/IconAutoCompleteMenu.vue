@@ -141,7 +141,6 @@ export default {
     };
 
     const imageSelected = (imgSrc, title, imgClass, index) => {
-      //TODO: Make sure to replace the entire match and not just paste!
       context.emit("iconSelected", imgSrc, title, imgClass);
     };
 

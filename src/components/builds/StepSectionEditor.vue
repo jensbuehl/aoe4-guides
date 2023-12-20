@@ -1,5 +1,5 @@
 <template>
-  <IconAutoCompleteMenu
+  <IconAutoCompleteMenu ref="autoCompleteMenu"
     @iconSelected="
       (iconPath, tooltip, iconClass) =>
         handleAutoCompleteSelected(iconPath, tooltip, iconClass)
@@ -782,6 +782,7 @@ export default {
     const stepsTable = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const pasteImagesInfoDialog = ref(false);
+    const autoCompleteMenu = ref(null);
     var iconService = useIconService(props.civ);
 
     onMounted(async () => {
@@ -875,11 +876,9 @@ export default {
 
       if (event.data === ":") {
         //Show autocomplete menu
-        if (
-          editor.innerHTML.match(/\w+:/g)?.length !=
-          editor.innerHTML.match(/:/g)?.length
-        ) {
+        if (editor.innerHTML.match(/\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g)) {
           searchText.value = ":";
+        } else {
         }
         var cursorPosition = window.getSelection();
         var range = cursorPosition.getRangeAt(0);
@@ -928,20 +927,18 @@ export default {
       }
 
       //Show and hide autocomplete menu, set search text
-      const match = editor.innerHTML.match(/:([a-z])+/g);
-      if (
-        match &&
-        editor.innerHTML.match(/\w+:/g)?.length !=
-          editor.innerHTML.match(/:/g)?.length
-      ) {
-        searchText.value = match[0].toLowerCase().trim().replace(":", "");
-      } else if (
-        editor.innerHTML.match(/\w+:/g)?.length !=
-        editor.innerHTML.match(/:/g)?.length
-      ) {
-        searchText.value = ":";
-      } else {
+      const match = editor.innerHTML.match(
+        /\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g
+      );
+      if (!match) {
+        //no match found
         searchText.value = null;
+      } else if (match[0]?.length > 1) {
+        //show filtered completion menu
+        searchText.value = match[0].toLowerCase().trim().replace(":", "");
+      } else if (match[0]) {
+        //only colon => show unfiltered completion menu
+        searchText.value = ":";
       }
 
       saveSelection();
@@ -965,7 +962,9 @@ export default {
       });
 
       //parse and replace
-      const match = editor.innerHTML.match(/:([a-z])\w+ /g);
+      const match = editor.innerHTML.match(
+        /\w*(?<![a-zA-Z0-9]):(([ a-zA-Z0-9])+)?/g
+      );
 
       if (match) {
         const shortHand = match[0].toLowerCase().trim().replace(":", "");
@@ -1047,8 +1046,9 @@ export default {
 
     const handleAutoCompleteSelected = (iconPath, tooltipText, iconClass) => {
       //TODO: Use  correct index!
+      //TODO: Make sure the overlay closes when selecting element via click
+      console.log(autoCompleteMenu.value);
       var editor = stepsTable.value.rows[0].cells[7];
-      console.log(editor);
 
       iconClass = iconClass ? "icon-" + iconClass : "icon";
       const img =
@@ -1075,19 +1075,15 @@ export default {
       });
 
       //parse and replace
-      //searchTextMatch
-      var match = editor.innerHTML.match(/:([a-z])+/g);
-      console.log("shorthand", match);
-      if (!match) {
-        //TODO: Test! Make sure that only colons without preceeding text are found
-        match = editor.innerHTML.match(/\w*(?<![a-zA-Z]):/g);
-        console.log("colon", match);
-      }
-
+      var match = editor.innerHTML.match(
+        /\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g
+      );
       if (match) {
         //Replace element
-        //TODO: Replace by Regex instead of first match (which would be just ":" in worst case)
-        editor.innerHTML = editor.innerHTML.replace(match[0], img);
+        editor.innerHTML = editor.innerHTML.replace(
+          /\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g,
+          img
+        );
 
         // restore the position
         sel.removeAllRanges();
@@ -1096,7 +1092,7 @@ export default {
         range.collapse(true);
         sel.addRange(range);
       }
-      searchText.value = "";
+      searchText.value="";
     };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
