@@ -5,12 +5,12 @@
     :scrim="false"
     :style="{ left: `${pos[0]}px`, top: `${pos[1]}px` }"
     absolute
-    close-on-content-click="true"
+    :close-on-content-click="true"
     location-strategy="connected"
     scroll-strategy="reposition"
     v-model="show"
   >
-    <v-card style="height: 250px; min-width: 300px; overflow-y: auto"
+    <v-card style="height: 250px; min-width: 350px; overflow-y: auto"
       ><v-list>
         <v-list-item
           v-for="(icon, index) in searchResults"
@@ -52,10 +52,15 @@ export default {
   props: ["civ", "searchText", "pos"],
   emits: ["iconSelected"],
   setup(props, context) {
-    const { getIcons } = useIconService(props.civ);
+    const civ = computed(() => {
+      return props.civ;
+    });
+    const { getIcons } = useIconService(civ);
     const searchText = ref(props.searchText);
     const pos = ref(props.pos);
     const selectedItemIndex = ref(0);
+
+    console.log(props.civ);
 
     document.addEventListener("keydown", (e) => {
       if (e.code === "ArrowUp" && searchText.value) {
