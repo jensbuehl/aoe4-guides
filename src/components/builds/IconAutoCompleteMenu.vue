@@ -10,7 +10,7 @@
     scroll-strategy="reposition"
     v-model="show"
   >
-    <v-card style="height: 250px; min-width: 350px; overflow-y: auto"
+    <v-card style="max-height: 250px; min-width: 350px; overflow-y: auto"
       ><v-list>
         <v-list-item
           v-for="(icon, index) in searchResults"
@@ -52,15 +52,13 @@ export default {
   props: ["civ", "searchText", "pos"],
   emits: ["iconSelected"],
   setup(props, context) {
-    const civ = computed(() => {
-      return props.civ;
-    });
-    const { getIcons } = useIconService(civ);
     const searchText = ref(props.searchText);
     const pos = ref(props.pos);
     const selectedItemIndex = ref(0);
 
-    console.log(props.civ);
+    //unfiltered raw data
+    var iconService = useIconService(props.civ);
+    var all = iconService.getIcons();
 
     document.addEventListener("keydown", (e) => {
       if (e.code === "ArrowUp" && searchText.value) {
@@ -108,14 +106,19 @@ export default {
     );
 
     watch(
+      () => props.civ,
+      (value, previousValue) => {
+        iconService = useIconService(value);
+        all = iconService.getIcons();
+      }
+    );
+
+    watch(
       () => props.pos,
       (value, previousValue) => {
         pos.value = value;
       }
     );
-
-    //unfiltered raw data
-    const all = getIcons();
 
     //update show (show all when only colon, show filtered else)
     const show = ref(false);
