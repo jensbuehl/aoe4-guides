@@ -1,14 +1,4 @@
 <template>
-  <IconAutoCompleteMenu ref="autoCompleteMenu"
-    @iconSelected="
-      (iconPath, tooltip, iconClass) =>
-        handleAutoCompleteSelected(iconPath, tooltip, iconClass)
-    "
-    :civ="civ"
-    :searchText="searchText"
-    :pos="autocompletePos"
-  ></IconAutoCompleteMenu>
-
   <!--Common delete confirmation dialog-->
   <v-dialog v-model="removeStepConfirmationDialog" width="auto">
     <v-card rounded="lg" class="text-center primary" flat>
@@ -660,6 +650,16 @@
               class="text-center py-1"
               v-html="item.stone"
             ></td>
+            <IconAutoCompleteMenu
+              ref="autoCompleteMenu"
+              @iconSelected="
+                (iconPath, tooltip, iconClass) =>
+                  handleAutoCompleteSelected(iconPath, tooltip, iconClass)
+              "
+              :civ="civ"
+              :searchText="searchText"
+              :pos="autocompletePos"
+            ></IconAutoCompleteMenu>
             <td
               @input="handleInput($event, index)"
               @keyup="handleKeyUp($event, index)"
@@ -780,9 +780,10 @@ export default {
     const delteRowIndex = ref(null);
     const selection = ref(null);
     const stepsTable = ref(null);
+    const autoCompleteMenu = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const pasteImagesInfoDialog = ref(false);
-    const autoCompleteMenu = ref(null);
+    const activeStepIndex = ref(null);
     var iconService = useIconService(props.civ);
 
     onMounted(async () => {
@@ -941,6 +942,7 @@ export default {
         searchText.value = ":";
       }
 
+      activeStepIndex.value = index;
       saveSelection();
     };
 
@@ -1045,10 +1047,10 @@ export default {
     }
 
     const handleAutoCompleteSelected = (iconPath, tooltipText, iconClass) => {
-      //TODO: Use  correct index!
       //TODO: Make sure the overlay closes when selecting element via click
-      console.log(autoCompleteMenu.value);
-      var editor = stepsTable.value.rows[0].cells[7];
+      console.log(autoCompleteMenu.value[0]);    
+
+      var editor = stepsTable.value.rows[activeStepIndex.value].cells[7];
 
       iconClass = iconClass ? "icon-" + iconClass : "icon";
       const img =
@@ -1092,7 +1094,7 @@ export default {
         range.collapse(true);
         sel.addRange(range);
       }
-      searchText.value="";
+      searchText.value = "";
     };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
@@ -1312,6 +1314,7 @@ export default {
       stepsCopy,
       steps,
       stepsTable,
+      autoCompleteMenu,
       civ,
       readonly,
       hoverRowIndex,
@@ -1346,6 +1349,7 @@ export default {
       handleAutoCompleteSelected,
       autocompletePos,
       searchText,
+      activeStepIndex
     };
   },
 };
