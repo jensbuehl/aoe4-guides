@@ -10,14 +10,14 @@
     scroll-strategy="reposition"
     v-model="show"
   >
-    <v-card style="height: 250px; min-width: 250px; overflow-y: auto"
+    <v-card style="height: 250px; min-width: 300px; overflow-y: auto"
       ><v-list>
         <v-list-item
           v-for="(icon, index) in searchResults"
           :key="index"
           :active="index === selectedItemIndex"
           :id="'autocomplete-item-' + index"
-          @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
+
         >
           <v-row align="center" justify="center">
             <v-col cols="auto">
