@@ -5,6 +5,7 @@
     :scrim="false"
     :style="{ left: `${pos[0]}px`, top: `${pos[1]}px` }"
     absolute
+    close-on-content-click="true"
     location-strategy="connected"
     scroll-strategy="reposition"
     v-model="show"
@@ -16,7 +17,7 @@
           :key="index"
           :active="index === selectedItemIndex"
           :id="'autocomplete-item-' + index"
-          @click="imageSelected(icon.imgSrc, icon.title, icon.class, index)"
+          @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
         >
           <v-row align="center" justify="center">
             <v-col cols="auto">
@@ -71,7 +72,7 @@ export default {
         e.preventDefault();
       } else if (e.code === "ArrowDown" && searchText.value) {
         selectedItemIndex.value = Math.min(
-          searchResults.value.length-1,
+          searchResults.value.length - 1,
           selectedItemIndex.value + 1
         );
         var selectedNode = document.getElementById(
@@ -140,7 +141,7 @@ export default {
       });
     };
 
-    const imageSelected = (imgSrc, title, imgClass, index) => {
+    const imageSelected = (imgSrc, title, imgClass) => {
       context.emit("iconSelected", imgSrc, title, imgClass);
     };
 

@@ -651,7 +651,6 @@
               v-html="item.stone"
             ></td>
             <IconAutoCompleteMenu
-              ref="autoCompleteMenu"
               @iconSelected="
                 (iconPath, tooltip, iconClass) =>
                   handleAutoCompleteSelected(iconPath, tooltip, iconClass)
@@ -780,7 +779,6 @@ export default {
     const delteRowIndex = ref(null);
     const selection = ref(null);
     const stepsTable = ref(null);
-    const autoCompleteMenu = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const pasteImagesInfoDialog = ref(false);
     const activeStepIndex = ref(null);
@@ -1047,9 +1045,6 @@ export default {
     }
 
     const handleAutoCompleteSelected = (iconPath, tooltipText, iconClass) => {
-      //TODO: Make sure the overlay closes when selecting element via click
-      console.log(autoCompleteMenu.value[0]);    
-
       var editor = stepsTable.value.rows[activeStepIndex.value].cells[7];
 
       iconClass = iconClass ? "icon-" + iconClass : "icon";
@@ -1314,7 +1309,6 @@ export default {
       stepsCopy,
       steps,
       stepsTable,
-      autoCompleteMenu,
       civ,
       readonly,
       hoverRowIndex,
