@@ -244,7 +244,7 @@
               <v-btn
                 size="small"
                 color="primary"
-                variant="plain"
+                variant="text"
                 style="background-color: transparent"
                 to="/register"
               >

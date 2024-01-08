@@ -14,7 +14,7 @@
               class="pb-1"
               color="primary"
               style="background-color: transparent"
-              variant="plain"
+              variant="text"
               to="/register"
             >
               Register now!

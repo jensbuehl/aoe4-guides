@@ -46,9 +46,12 @@
             ></BuildListCard>
           </router-link>
         </div>
+        <div v-if="count === 0">
+          <NoResultsCard></NoResultsCard>
+        </div>
 
         <v-pagination
-          v-if="paginationConfig.totalPages > 1"
+          v-if="paginationConfig.totalPages > 1 && count != 0"
           @next="nextPage"
           @prev="previousPage"
           v-model="paginationConfig.currentPage"
@@ -60,7 +63,7 @@
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <FilterConfig @configChanged="configChanged"> </FilterConfig>
-        <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
+        
       </v-col>
     </v-row>
   </v-container>
@@ -68,8 +71,8 @@
 
 <script>
 import RegisterAd from "../../components/RegisterAd.vue";
+import NoResultsCard from "../../components/NoResultsCard.vue";
 import FilterConfig from "../../components/filter/FilterConfig.vue";
-import getDefaultConfig from "../../composables/filter/getDefaultConfig";
 import BuildListCard from "../../components/builds/BuildListCard.vue";
 import useCollection from "../../composables/useCollection";
 import queryService from "../../composables/useQueryService";
@@ -79,7 +82,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 export default {
   name: "Builds",
-  components: { FilterConfig, BuildListCard, RegisterAd },
+  components: { FilterConfig, BuildListCard, RegisterAd, NoResultsCard },
   setup() {
     window.scrollTo(0, 0);
 
@@ -92,6 +95,7 @@ export default {
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const route = useRoute();
     const router = useRouter();
+    const count = computed(() => store.state.resultsCount);
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -226,6 +230,7 @@ export default {
     return {
       builds,
       user,
+      count,
       authIsReady: computed(() => store.state.authIsReady),
       paginationConfig,
       filterAndOrderConfig,

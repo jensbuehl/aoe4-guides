@@ -32,10 +32,9 @@
 
       <v-row class="ma-2" no-gutters justify="center">
         <v-btn
-          size="small"
           color="primary"
           style="background-color: transparent"
-          variant="plain"
+          variant="text"
           to="/register"
         >
           Register now!
