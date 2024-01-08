@@ -47,15 +47,6 @@
             >
             </v-select>
             <v-select
-              v-model="selectedOrderBy"
-              prepend-icon="mdi-sort"
-              density="compact"
-              label="Order by"
-              item-value="id"
-              item-title="title"
-              :items="sortOptions"
-            ></v-select>
-            <v-select
               v-model="selectedMaps"
               prepend-icon="mdi-map"
               label="Map"
@@ -79,6 +70,15 @@
               multiple
             >
             </v-select>
+            <v-select
+              v-model="selectedOrderBy"
+              prepend-icon="mdi-sort"
+              density="compact"
+              label="Order by"
+              item-value="id"
+              item-title="title"
+              :items="sortOptions"
+            ></v-select>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
