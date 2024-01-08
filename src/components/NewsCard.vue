@@ -1,10 +1,10 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>Thank You!</v-card-title>
+      <v-card-title>Happy New Year!</v-card-title>
       <v-card-text
-        >Thank you to all the supporting villagers!<br /><br />
-        The project is funded for 2023 due to the donated olive oil and coffee! Happy scouting!</v-card-text
+        >The village is growing! More than 500 guides, approaching 1k registered villagers, thousands of views! <br /><br />
+        If you want to support the project, a new funding goal for 2024 is now live for olive oil and coffee! Happy scouting!</v-card-text
       >
 
       <v-row class="ma-2" no-gutters>
