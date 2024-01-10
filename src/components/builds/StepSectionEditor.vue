@@ -847,7 +847,7 @@ export default {
       for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
         currentNode = parent.childNodes[i];
         stat.pos++;
-        if (currentNode.wholeText?.indexOf(":") > 0) {
+        if (currentNode.wholeText?.indexOf("::") > 0) {
           stat.pos++;
         }
         if (currentNode === node) {
@@ -875,8 +875,8 @@ export default {
 
       if (event.data === ":") {
         //Show autocomplete menu
-        if (editor.innerHTML.match(/\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g)) {
-          searchText.value = ":";
+        if (editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g)) {
+          searchText.value = "::";
         } else {
         }
         var cursorPosition = window.getSelection();
@@ -927,17 +927,17 @@ export default {
 
       //Show and hide autocomplete menu, set search text
       const match = editor.innerHTML.match(
-        /\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g
+        /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g
       );
       if (!match) {
         //no match found
         searchText.value = null;
-      } else if (match[0]?.length > 1) {
+      } else if (match[0]?.length > 2) {
         //show filtered completion menu
-        searchText.value = match[0].toLowerCase().trim().replace(":", "");
+        searchText.value = match[0].toLowerCase().trim().replace("::", "");
       } else if (match[0]) {
         //only colon => show unfiltered completion menu
-        searchText.value = ":";
+        searchText.value = "::";
       }
 
       activeStepIndex.value = index;
@@ -963,11 +963,11 @@ export default {
 
       //parse and replace
       const match = editor.innerHTML.match(
-        /\w*(?<![a-zA-Z0-9]):(([ a-zA-Z0-9])+)?/g
+        /\w*(?<![a-zA-Z0-9])::(([ a-zA-Z0-9])+)?/g
       );
 
       if (match) {
-        const shortHand = match[0].toLowerCase().trim().replace(":", "");
+        const shortHand = match[0].toLowerCase().trim().replace("::", "");
         const allCivIcons = iconService.getIcons();
         const filter = (unfiltered) => {
           return unfiltered.filter((item) => {
@@ -1073,12 +1073,12 @@ export default {
 
       //parse and replace
       var match = editor.innerHTML.match(
-        /\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g
+        /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g
       );
       if (match) {
         //Replace element
         editor.innerHTML = editor.innerHTML.replace(
-          /\w*(?<![a-zA-Z0-9]):(([a-zA-Z0-9])+)?/g,
+          /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g,
           img
         );
 
@@ -1089,7 +1089,7 @@ export default {
         range.collapse(true);
         sel.addRange(range);
       }
-      searchText.value = "";
+      searchText.value = null;
     };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {

@@ -99,6 +99,7 @@ export default {
     watch(
       () => props.searchText,
       (value, previousValue) => {
+        console.log(value);
         searchText.value = value;
         selectedItemIndex.value = 0;
         show.value = value != null;
@@ -128,7 +129,7 @@ export default {
     const filter = (unfiltered) => {
       return unfiltered.filter((item) => {
         if (!searchText.value) return false;
-        if (searchText.value == ":") return true;
+        if (searchText.value == "::") return true;
         var elementFound = false;
         //Search by shorthand first
         if (Array.isArray(item.shorthand)) {
