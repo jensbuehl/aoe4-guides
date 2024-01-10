@@ -63,10 +63,11 @@ export default function useExportOverlayFormat() {
 
   const convertStepToOverlayFormat = (step) => {
     const notes = convertDescription(step.description);
+    const time = step.time.replaceAll("<br>", "");
     return {
       age: step.age > 0 ? step.age : -1,
       population_count: -1, //not supported
-      ...(step.time && { time: step.time }),
+      ...(time && { time: time }),
       villager_count: aggregateVillagers(step),
       resources: {
         food: parseInt(step.food) || 0,
