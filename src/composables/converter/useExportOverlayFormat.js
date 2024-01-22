@@ -39,16 +39,17 @@ export default function useExportOverlayFormat() {
     //Get src
     const regex = /src\s*=\s*"(.+?)"/g;
     const matches = imageElement.match(regex);
+    if (matches[0]) {
+      //Remove internal path extensions, ", and src=
+      var imageSource = matches[0].replaceAll('"', "");
+      imageSource = imageSource.replaceAll("src=", "");
 
-    //Remove internal path extensions, ", and src=
-    var imageSource = matches[0].replaceAll('"', "");
-    imageSource = imageSource.replaceAll("src=", "");
-
-    imageSource = imageSource.replace("http://localhost:5173", "");
-    imageSource = imageSource.replace("https://aoe4guides.com", "");
-    imageSource = imageSource.replace("/assets/pictures/", "");
-    //Wrap with@
-    return "@" + imageSource + "@";
+      imageSource = imageSource.replace("http://localhost:5173", "");
+      imageSource = imageSource.replace("https://aoe4guides.com", "");
+      imageSource = imageSource.replace("/assets/pictures/", "");
+      //Wrap with@
+      return "@" + imageSource + "@";
+    }
   }
 
   const aggregateVillagers = (step) => {
@@ -63,7 +64,7 @@ export default function useExportOverlayFormat() {
 
   const convertStepToOverlayFormat = (step) => {
     const notes = convertDescription(step.description);
-    const time = step.time.replaceAll("<br>", "");
+    const time = step.time?.replaceAll("<br>", "");
     return {
       age: step.age > 0 ? step.age : -1,
       population_count: -1, //not supported
@@ -120,7 +121,7 @@ export default function useExportOverlayFormat() {
     AYY: "Ayyubids",
     JDA: "Jeanne d'Arc",
     ZXL: "Zhu Xi's Legacy",
-    DRA: "Order of the Dragon"
+    DRA: "Order of the Dragon",
   };
 
   return {
