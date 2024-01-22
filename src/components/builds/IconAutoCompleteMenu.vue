@@ -99,7 +99,6 @@ export default {
     watch(
       () => props.searchText,
       (value, previousValue) => {
-        console.log(value);
         searchText.value = value;
         selectedItemIndex.value = 0;
         show.value = value != null;
