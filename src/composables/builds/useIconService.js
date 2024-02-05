@@ -2400,14 +2400,14 @@ export default function useIconService(civArg) {
     {
       title: "Shinto Rituals",
       age: "3",
-      imgSrc: "/assets/pictures/technology_japanese/shinto-rituals.png",
+      imgSrc: "/assets/pictures/technology_japanese/shinto_rituals.png",
       civ: ["JAP"],
       class: "tech",
     },
     {
       title: "Gion Festival",
       age: "3",
-      imgSrc: "/assets/pictures/technology_japanese/gion-festival.png",
+      imgSrc: "/assets/pictures/technology_japanese/gion_festival.png",
       civ: ["JAP"],
       class: "tech",
     },
@@ -2435,7 +2435,7 @@ export default function useIconService(civArg) {
     {
       title: "Five Mountain Ministries",
       age: "3",
-      imgSrc: "/assets/pictures/technology_japanese/five-mountain-ministries.png",
+      imgSrc: "/assets/pictures/technology_japanese/five_ministries.png",
       civ: ["JAP"],
       class: "tech",
     },
