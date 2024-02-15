@@ -1,50 +1,44 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>New Year, new patch!</v-card-title>
+      <v-card-title>Contract Signed?</v-card-title>
       <v-card-text
-        >The new Japanese technologies are now available. <br /><br />
+        >Byzantines update is now live: The contracts and mercenaries are finally supported. Credits to Valdemar for reporting!<br /><br />
         <v-row no-gutters>
           <v-col align="center" justify="center"
             ><v-img
               class="icon-tech-selector"
-              src="/assets/pictures/technology_japanese/shinto_rituals.png"
+              src="/assets/pictures/technology_byzantines/eastern-mercenary-contract-1.png"
             ></v-img
           ></v-col>
           <v-col align="center" justify="center"
             ><v-img
             class="icon-tech-selector"
-              src="/assets/pictures/technology_japanese/gion_festival.png"
+              src="/assets/pictures/technology_byzantines/silk-road-mercenary-contract-1.png"
             ></v-img
           ></v-col>
           <v-col align="center" justify="center"
             ><v-img
             class="icon-tech-selector"
-              src="/assets/pictures/technology_japanese/bunrei.png"
+              src="/assets/pictures/technology_byzantines/western-mercenary-contract-1.png"
             ></v-img
           ></v-col>
           <v-col align="center" justify="center"
             ><v-img
             class="icon-tech-selector"
-              src="/assets/pictures/technology_japanese/zen.png"
+              src="/assets/pictures/technology_byzantines/veteran-mercenaries-3.png"
             ></v-img
           ></v-col>
           <v-col align="center" justify="center"
             ><v-img
             class="icon-tech-selector"
-              src="/assets/pictures/technology_japanese/nehan.png"
-            ></v-img
-          ></v-col>
-          <v-col align="center" justify="center"
-            ><v-img
-            class="icon-tech-selector"
-              src="/assets/pictures/technology_japanese/five_ministries.png"
+              src="/assets/pictures/technology_byzantines/elite-mercenaries-4.png"
             ></v-img
           ></v-col>
         </v-row><br /><br />
-        If you are a happy villager, please consider supporting to cover the
+        Please consider supporting the projec to cover the
         operational costs! <br /><br />
-        A funding goal for 2024 is now live for olive oil and coffee! Happy
+        The funding goal for 2024 is live for olive oil and coffee! Happy
         scouting!<br /><br />
       </v-card-text>
 
