@@ -36,7 +36,7 @@
             ></v-img
           ></v-col>
         </v-row><br /><br />
-        Please consider supporting the projec to cover the
+        Please consider supporting the project to cover the
         operational costs! <br /><br />
         The funding goal for 2024 is live for olive oil and coffee! Happy
         scouting!<br /><br />
