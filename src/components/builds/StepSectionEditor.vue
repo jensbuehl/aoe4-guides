@@ -405,19 +405,6 @@
 
   <!--Desktop UI-->
   <v-card flat rounded="lg" class="mt-4 hidden-xs">
-    <div v-if="!steps?.length && !readonly" class="text-center">
-      <v-btn
-        variant="text"
-        color="accent"
-        class="pt-5 pb-10"
-        @click="addStep(0)"
-        >Add your first build step
-        <template v-slot:prepend>
-          <v-icon color="accent">mdi-plus</v-icon>
-        </template></v-btn
-      >
-    </div>
-
     <v-card flat align="center" class="mt-4"
       ><v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
         <v-row
@@ -753,6 +740,18 @@
           </tr>
         </tbody> </v-table
     ></v-card>
+    <div v-if="!steps?.length && !readonly" class="text-center">
+      <v-btn
+        variant="text"
+        color="accent"
+        class="pt-5 pb-10"
+        @click="addStep(0)"
+        >Add your first build step
+        <template v-slot:prepend>
+          <v-icon color="accent">mdi-plus</v-icon>
+        </template></v-btn
+      >
+    </div>
   </v-card>
 </template>
 
