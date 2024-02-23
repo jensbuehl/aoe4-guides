@@ -33,20 +33,7 @@
 
   <!--Mobile UI (XS)-->
   <v-card rounded="lg" class="mt-4 hidden-sm-and-up" flat>
-    <div v-if="!steps?.length && !readonly" class="text-center">
-      <v-btn
-        variant="text"
-        color="primary"
-        class="pt-5 pb-10"
-        @click="addStep(0)"
-      >
-        <template v-slot:prepend>
-          <v-icon color="accent">mdi-plus</v-icon>
-        </template>
-        Add your first build step</v-btn
-      >
-    </div>
-    <v-row v-if="steps?.length" no-gutters align="center" justify="center">
+    <v-row no-gutters align="center" justify="center">
       <v-col cols="12">
         <v-row
           v-if="section.age <= 1 && section.type == 'age'"
@@ -168,6 +155,19 @@
           ></v-card-title
         >
       </v-col>
+      <div v-if="!steps?.length && !readonly" class="text-center">
+      <v-btn
+        variant="text"
+        color="primary"
+        class="pt-5 pb-10"
+        @click="addStep(0)"
+      >
+        <template v-slot:prepend>
+          <v-icon color="accent">mdi-plus</v-icon>
+        </template>
+        Add your first build step</v-btn
+      >
+    </div>
     </v-row>
     <v-row
       no-gutters
