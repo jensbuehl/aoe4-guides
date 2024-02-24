@@ -51,7 +51,7 @@ const functions = getFunctions(app)
 
 self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
 const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider("6Lc0i0QlAAAAAIMMnWFd9yNtssKCmCuxodeiAjej"),
+  provider: new ReCaptchaV3Provider("6LflnX4pAAAAAGlXaNZU1F_PWEN3f-ALPcoimRKP"),
   isTokenAutoRefreshEnabled: true,
 });
 
