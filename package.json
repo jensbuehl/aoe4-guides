@@ -8,10 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@firebase/app-check": "^0.6.4",
+    "@firebase/app-check": "^0.8.2",
     "@mdi/font": "^7.1.96",
     "axios": "^1.4.0",
-    "firebase": "^9.17.2",
+    "firebase": "^10.8.0",
     "firebase-functions": "^4.4.1",
     "sanitize-html": "^2.10.0",
     "scroll-into-view-if-needed": "^3.1.0",
