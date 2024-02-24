@@ -627,7 +627,6 @@ import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 import { functions } from "../firebase";
 import { httpsCallable } from "firebase/functions";
-import seedrandom from "seedrandom";
 
 export default {
   name: "Home",
@@ -703,29 +702,6 @@ export default {
       if (!allCreators.value) {
         store.commit("setCreators", await getAllCreators());
       }
-
-      //get villager of the day
-      //disable villager of the day
-      //re-implement without reading all users on each load?
-      //e.g. get user count and use start / limit smart!
-      /*
-      const getUsers = httpsCallable(functions, "getUsers");
-      const allUsers = (await getUsers()).data;
-      console.log(allUsers);
-      const oneDayInMs = 1000 * 60 * 60 * 24;
-      const currentTimeInMs = new Date().getTime(); // UTC time
-      const timeInDays = Math.floor(currentTimeInMs / oneDayInMs);
-      const rng = seedrandom(timeInDays);
-      var user = allUsers[Math.floor(allUsers.length * rng())];
-      authorConfig.value.author = user.id;
-
-      //get build count for villager of the day
-      const authorQuery = getQuery(
-        queryService.getQueryParametersFromConfig(authorConfig.value)
-      );
-      user.count = await getSize(authorQuery);
-      villagerOfTheDay.value = user;
-      */
 
       //get count
       const allDocsQuery = getQuery(
