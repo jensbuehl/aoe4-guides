@@ -263,11 +263,9 @@ import useTimeSince from "../../composables/useTimeSince";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 
 export default {
   components: {
-    VSkeletonLoader,
   },
   name: "BuildListCard",
   props: ["build", "creatorName"],

@@ -625,7 +625,6 @@ import useCollection from "../composables/useCollection";
 import queryService from "../composables/useQueryService";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
-import { VSkeletonLoader } from "vuetify/labs/VSkeletonLoader";
 import { functions } from "../firebase";
 import { httpsCallable } from "firebase/functions";
 import seedrandom from "seedrandom";
@@ -637,7 +636,6 @@ export default {
     BuildListCard,
     RegisterAd,
     NewsCard,
-    VSkeletonLoader,
     EmailVerificationAd,
   },
   setup() {
