@@ -1,7 +1,7 @@
 <template>
   <v-overlay
     :attach="'body'"
-    :target="pos"
+    :target="(pos || null)"
     :scrim="false"
     :style="{ left: `${pos[0]}px`, top: `${pos[1]}px` }"
     absolute
