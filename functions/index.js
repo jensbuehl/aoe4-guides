@@ -11,15 +11,8 @@ const { getAuth } = require("firebase-admin/auth");
 
 initializeApp();
 
-exports.createUser = functions.auth.user().onCreate((user) => {
-  return getFirestore().collection("users").doc(user.uid).set(
-    {
-      email: user.email,
-      id: user.uid,
-    },
-    { merge: true }
-  );
-});
+const createUser = require('./createUser');
+exports.createUser = createUser.createUser;
 
 exports.getUsers = onCall(() => {
   return getFirestore()
