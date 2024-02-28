@@ -6,7 +6,7 @@ export default {
   server: {
     proxy: {
       "/api": {
-        target: "https://dog.ceo",
+        target: "https://dog.ceo/api/",
         changeOrigin: true,
         secure: false,
       },
