@@ -27,7 +27,7 @@
             class="mx-1"
             variant="text"
             color="primary"
-            to="/api"
+            to="/apidoc"
             >Interface
           </v-btn>
           <v-btn
@@ -93,7 +93,7 @@
             class="mx-1"
             variant="text"
             color="primary"
-            to="/api"
+            to="/apidoc"
             >Interface
           </v-btn>
           <v-btn

@@ -152,7 +152,7 @@ const routes = [
       beforeEnter() {location.href = 'https://github.com/jensbuehl/aoe4-guides'}
     },
     {
-      path: "/api",
+      path: "/apidoc",
       name: "api",
       beforeEnter() {location.href = 'https://aoe4guides.com/api/api-docs/'}
     },
