@@ -29,7 +29,7 @@
             </v-btn></a
           >
 
-          <a href="https://aoe4guides.com/api/api-docs"
+          <a href="/api/api-docs"
             ><v-btn
               class="mx-1"
               prepend-icon="mdi-api"
@@ -96,7 +96,7 @@
             </v-btn></a
           >
 
-          <a href="https://aoe4guides.com/api/api-docs"
+          <a href="/api/api-docs"
             ><v-btn
               class="mx-1"
               prepend-icon="mdi-api"

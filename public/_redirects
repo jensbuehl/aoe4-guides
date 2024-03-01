@@ -1,2 +1,3 @@
-/api/* https://aoe4-guides-api-qq36r4yzha-ey.a.run.app/:splat 200
+/api/apidocs https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/api-docs/ 200
+/api/* https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/:splat 200
 /* /index.html 200
