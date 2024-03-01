@@ -1,7 +1,10 @@
 <template>
   <div height="100px">
     <v-footer padless class="text-center d-flex flex-column">
-      <v-row v-if="!(platform.android || platform.ios)" justify="center" class="mt-2 mb-4 text-center"
+      <v-row
+        v-if="!(platform.android || platform.ios)"
+        justify="center"
+        class="mt-2 mb-4 text-center"
         ><v-col cols="12">
           <a href="https://ko-fi.com/jensbuehl"
             ><v-btn class="mx-1" variant="text" color="primary">
@@ -26,6 +29,19 @@
             </v-btn></a
           >
 
+          <a href="https://aoe4guides.com/api/api-docs"
+            ><v-btn
+              class="mx-1"
+              prepend-icon="mdi-api"
+              variant="text"
+              color="primary"
+            >
+              <template v-slot:prepend>
+                <v-icon color="accent">mdi-api</v-icon>
+              </template>
+              Interface
+            </v-btn></a
+          >
           <v-btn class="mx-1" variant="text" color="primary" to="/privacy"
             >Privacy Policy
           </v-btn>
@@ -80,6 +96,19 @@
             </v-btn></a
           >
 
+          <a href="https://aoe4guides.com/api/api-docs"
+            ><v-btn
+              class="mx-1"
+              prepend-icon="mdi-api"
+              variant="text"
+              color="primary"
+            >
+              <template v-slot:prepend>
+                <v-icon color="accent">mdi-api</v-icon>
+              </template>
+              Interface
+            </v-btn></a
+          >
           <v-btn class="mx-1" variant="text" color="primary" to="/privacy"
             >Privacy Policy
           </v-btn>
