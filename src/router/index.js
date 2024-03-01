@@ -147,6 +147,16 @@ const routes = [
       }
     },
     {
+      path: "/github",
+      name: "github",
+      beforeEnter() {location.href = 'https://github.com/jensbuehl/aoe4-guides'}
+    },
+    {
+      path: "/api",
+      name: "api",
+      beforeEnter() {location.href = 'https://aoe4guides.com/api/api-docs/'}
+    },
+    {
       path: "/import/:paste?",
       name: "BuildImport",
       component: BuildImport,

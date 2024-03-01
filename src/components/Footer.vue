@@ -14,38 +14,36 @@
               Support me
             </v-btn></a
           >
-
-          <a href="https://github.com/jensbuehl/aoe4-guides"
-            ><v-btn
-              class="mx-1"
-              prepend-icon="mdi-github"
-              variant="text"
-              color="primary"
-            >
-              <template v-slot:prepend>
-                <v-icon color="accent">mdi-github</v-icon>
-              </template>
-              Contribute
-            </v-btn></a
-          >
-
-          <a href="/api/api-docs"
-            ><v-btn
-              class="mx-1"
-              prepend-icon="mdi-api"
-              variant="text"
-              color="primary"
-            >
-              <template v-slot:prepend>
-                <v-icon color="accent">mdi-api</v-icon>
-              </template>
-              Interface
-            </v-btn></a
-          >
-          <v-btn prepend-icon="mdi-shield-account" class="mx-1" variant="text" color="primary" to="/privacy"
+          <v-btn
+            prepend-icon="mdi-github"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/github"
+            >Contribute
+          </v-btn>
+          <v-btn
+            prepend-icon="mdi-api"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/api"
+            >Interface
+          </v-btn>
+          <v-btn
+            prepend-icon="mdi-shield-account"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/privacy"
             >Privacy Policy
           </v-btn>
-          <v-btn  prepend-icon="mdi-information" class="mx-1" variant="text" color="primary" to="/about"
+          <v-btn
+            prepend-icon="mdi-information"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/about"
             >About
           </v-btn>
         </v-col>
@@ -82,37 +80,36 @@
             </v-btn></a
           >
 
-          <a href="https://github.com/jensbuehl/aoe4-guides"
-            ><v-btn
-              class="mx-1"
-              prepend-icon="mdi-github"
-              variant="text"
-              color="primary"
-            >
-              <template v-slot:prepend>
-                <v-icon color="accent">mdi-github</v-icon>
-              </template>
-              Contribute
-            </v-btn></a
-          >
-
-          <a href="/api/api-docs"
-            ><v-btn
-              class="mx-1"
-              prepend-icon="mdi-api"
-              variant="text"
-              color="primary"
-            >
-              <template v-slot:prepend>
-                <v-icon color="accent">mdi-api</v-icon>
-              </template>
-              Interface
-            </v-btn></a
-          >
-          <v-btn prepend-icon="mdi-shield-account" class="mx-1" variant="text" color="primary" to="/privacy"
+          <v-btn
+            prepend-icon="mdi-github"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/github"
+            >Contribute
+          </v-btn>
+          <v-btn
+            prepend-icon="mdi-api"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/api"
+            >Interface
+          </v-btn>
+          <v-btn
+            prepend-icon="mdi-shield-account"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/privacy"
             >Privacy Policy
           </v-btn>
-          <v-btn  prepend-icon="mdi-information" class="mx-1" variant="text" color="primary" to="/about"
+          <v-btn
+            prepend-icon="mdi-information"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/about"
             >About
           </v-btn>
         </v-col>
