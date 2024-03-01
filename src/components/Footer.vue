@@ -42,10 +42,10 @@
               Interface
             </v-btn></a
           >
-          <v-btn class="mx-1" variant="text" color="primary" to="/privacy"
+          <v-btn prepend-icon="mdi-shield-account" class="mx-1" variant="text" color="primary" to="/privacy"
             >Privacy Policy
           </v-btn>
-          <v-btn class="mx-1" variant="text" color="primary" to="/about"
+          <v-btn  prepend-icon="mdi-information" class="mx-1" variant="text" color="primary" to="/about"
             >About
           </v-btn>
         </v-col>
@@ -109,10 +109,10 @@
               Interface
             </v-btn></a
           >
-          <v-btn class="mx-1" variant="text" color="primary" to="/privacy"
+          <v-btn prepend-icon="mdi-shield-account" class="mx-1" variant="text" color="primary" to="/privacy"
             >Privacy Policy
           </v-btn>
-          <v-btn class="mx-1" variant="text" color="primary" to="/about"
+          <v-btn  prepend-icon="mdi-information" class="mx-1" variant="text" color="primary" to="/about"
             >About
           </v-btn>
         </v-col>
