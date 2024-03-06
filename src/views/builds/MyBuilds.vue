@@ -66,7 +66,7 @@
 </template>
 
 <script>
-import RegisterAd from "../../components/RegisterAd.vue";
+import RegisterAd from "../../components/notifications/RegisterAd.vue";
 import FilterConfig from "../../components/filter/FilterConfig.vue";
 import getDefaultConfig from "../../composables/filter/getDefaultConfig";
 import BuildListCard from "../../components/builds/BuildListCard.vue";

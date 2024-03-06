@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import RegisterAd from "../../components/RegisterAd.vue";
-import NoFilterResults from "../../components/NoFilterResults.vue";
+import RegisterAd from "../../components/notifications/RegisterAd.vue";
+import NoFilterResults from "../../components/notifications/NoFilterResults.vue";
 import FilterConfig from "../../components/filter/FilterConfig.vue";
 import BuildListCard from "../../components/builds/BuildListCard.vue";
 import useCollection from "../../composables/useCollection";

@@ -797,7 +797,7 @@ import FocusMode from "../../components/builds/FocusMode.vue";
 import Vote from "../../components/Vote.vue";
 import StepsEditor from "../../components/builds/StepsEditor.vue";
 import Discussion from "../../components/Discussion.vue";
-import BuildNotFound from "../../components/BuildNotFound.vue";
+import BuildNotFound from "../../components/notifications/BuildNotFound.vue";
 
 //composables
 import useCollection from "../../composables/useCollection";

@@ -275,8 +275,8 @@
 </template>
 
 <script>
-import RegisterAd from "../../components/RegisterAd.vue";
-import RegisterAdShort from "../../components/RegisterAdShort.vue";
+import RegisterAd from "../../components/notifications/RegisterAd.vue";
+import RegisterAdShort from "../../components/notifications/RegisterAdShort.vue";
 import StepsEditor from "../../components/builds/StepsEditor.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";

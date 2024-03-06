@@ -613,9 +613,9 @@
 </template>
 
 <script>
-import RegisterAd from "../components/RegisterAd.vue";
-import News from "../components/News.vue";
-import EmailVerificationAd from "../components/EmailVerificationAd.vue";
+import RegisterAd from "../components/notifications/RegisterAd.vue";
+import News from "../components/notifications/News.vue";
+import EmailVerificationAd from "../components/notifications/EmailVerificationAd.vue";
 import FilterConfig from "../components/filter/FilterConfig.vue";
 import getCivs from "../composables/filter/getCivs";
 import getFeaturedCreators from "../composables/filter/getFeaturedCreators";

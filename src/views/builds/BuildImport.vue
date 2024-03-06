@@ -77,7 +77,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
 //Components
-import RegisterAd from "../../components/RegisterAd.vue";
+import RegisterAd from "../../components/notifications/RegisterAd.vue";
 
 //Composables
 import useCollection from "../../composables/useCollection";
