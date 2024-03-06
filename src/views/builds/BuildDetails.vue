@@ -9,6 +9,10 @@
       :build="build"
     ></FocusMode>
   </v-dialog>
+  <v-container align="center" v-if="!build"
+    ><BuildNotFound></BuildNotFound
+  ></v-container>
+
   <v-container v-if="build">
     <v-dialog v-model="deleteDialog" width="auto">
       <v-card rounded="lg" flat class="text-center primary">
@@ -22,6 +26,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
     <v-card flat rounded="lg" elevation="0">
       <v-card-title class="hidden-md-and-up">
         {{ build.title }}
@@ -71,9 +76,7 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group
-            class="hidden-sm-and-up"
-          >
+          <v-item-group class="hidden-sm-and-up">
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -163,9 +166,7 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group
-            class="hidden-xs hidden-md-and-up"
-          >
+          <v-item-group class="hidden-xs hidden-md-and-up">
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -505,9 +506,7 @@
               >{{ build.season }}</v-chip
             >
           </v-item-group>
-          <v-item-group
-            class="ml-4 hidden-sm-and-down"
-          >
+          <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip
               class="mr-2 mb-2"
               color="accent"
@@ -798,6 +797,7 @@ import FocusMode from "../../components/builds/FocusMode.vue";
 import Vote from "../../components/Vote.vue";
 import StepsEditor from "../../components/builds/StepsEditor.vue";
 import Discussion from "../../components/Discussion.vue";
+import BuildNotFound from "../../components/BuildNotFound.vue";
 
 //composables
 import useCollection from "../../composables/useCollection";
@@ -809,7 +809,14 @@ import useDownload from "../../composables/converter/useDownload";
 
 export default {
   name: "BuildDetails",
-  components: { Favorite, Vote, Discussion, StepsEditor, FocusMode },
+  components: {
+    Favorite,
+    Vote,
+    Discussion,
+    StepsEditor,
+    FocusMode,
+    BuildNotFound,
+  },
   props: ["id"],
   setup(props) {
     window.scrollTo(0, 0);
@@ -837,16 +844,18 @@ export default {
 
     onMounted(async () => {
       const resBuild = await get(props.id);
-      if (resBuild.creatorId) {
-        const resCreator = await getCreator(resBuild.creatorId);
-        creatorName.value = resCreator.creatorDisplayTitle
-          ? resCreator.creatorDisplayTitle
-          : resCreator.creatorTitle;
-      }
+      if (resBuild) {
+        if (resBuild.creatorId) {
+          const resCreator = await getCreator(resBuild.creatorId);
+          creatorName.value = resCreator.creatorDisplayTitle
+            ? resCreator.creatorDisplayTitle
+            : resCreator.creatorTitle;
+        }
 
-      build.value = resBuild;
-      document.title = build.value.title + " - " + document.title;
-      incrementViews(props.id);
+        build.value = resBuild;
+        document.title = build.value.title + " - " + document.title;
+        incrementViews(props.id);
+      }
     });
 
     const handleDuplicate = async () => {
@@ -921,7 +930,7 @@ export default {
       handleDownloadOverlayFormat,
       timeSince,
       isNew,
-      creatorName
+      creatorName,
     };
   },
 };

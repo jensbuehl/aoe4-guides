@@ -46,8 +46,8 @@
             ></BuildListCard>
           </router-link>
         </div>
-        <div v-if="count === 0">
-          <NoResultsCard></NoResultsCard>
+        <div style="text-align: center" v-if="count === 0">
+          <NoFilterResults></NoFilterResults>
         </div>
 
         <v-pagination
@@ -63,7 +63,6 @@
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <FilterConfig @configChanged="configChanged"> </FilterConfig>
-        
       </v-col>
     </v-row>
   </v-container>
@@ -71,18 +70,18 @@
 
 <script>
 import RegisterAd from "../../components/RegisterAd.vue";
-import NoResultsCard from "../../components/NoResultsCard.vue";
+import NoFilterResults from "../../components/NoFilterResults.vue";
 import FilterConfig from "../../components/filter/FilterConfig.vue";
 import BuildListCard from "../../components/builds/BuildListCard.vue";
 import useCollection from "../../composables/useCollection";
 import queryService from "../../composables/useQueryService";
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from "vue-router";
 
 export default {
   name: "Builds",
-  components: { FilterConfig, BuildListCard, RegisterAd, NoResultsCard },
+  components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
   setup() {
     window.scrollTo(0, 0);
 
@@ -105,16 +104,16 @@ export default {
     });
 
     const initQueryParameters = () => {
-      if(route.query.civ){
+      if (route.query.civ) {
         store.commit("setCivs", route.query.civ);
       }
-      if(route.query.creator){
+      if (route.query.creator) {
         store.commit("setCreator", route.query.creator);
       }
-      if(route.query.author){
+      if (route.query.author) {
         store.commit("setAuthor", route.query.author);
       }
-    }
+    };
 
     initQueryParameters();
     onMounted(() => {
@@ -123,7 +122,7 @@ export default {
 
     const configChanged = () => {
       initData();
-      router.replace('/builds')
+      router.replace("/builds");
     };
 
     const getCreatorName = (id) => {
@@ -142,7 +141,7 @@ export default {
     const initData = async () => {
       //reset results count
       store.commit("setResultsCount", null);
-      
+
       //exclude drafts
       store.commit("setDrafts", false);
 
@@ -164,9 +163,9 @@ export default {
       builds.value = res;
 
       //get all creators
-      if(!allCreators.value){
+      if (!allCreators.value) {
         store.commit("setCreators", await getAllCreators());
-      };
+      }
 
       //init page count, current page, and commit overall results count
       const allDocsQuery = getQuery(

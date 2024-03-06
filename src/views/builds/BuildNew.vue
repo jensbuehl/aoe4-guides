@@ -1,27 +1,9 @@
 <template>
   <v-container v-if="!user && authIsReady">
     <v-row>
-      <v-col cols="12" md="8" align="center"
-        ><v-card
-          flat
-          class="d-flex justify-center align-center mb-n2"
-          height="96"
-          rounded="lg"
-        >
-          <div>
-            <span>Would you like to craft your own build orders?</span>
-            <v-btn
-              class="pb-1"
-              color="primary"
-              style="background-color: transparent"
-              variant="text"
-              to="/register"
-            >
-              Register now!
-            </v-btn>
-          </div>
-        </v-card></v-col
-      >
+      <v-col cols="12" md="8" align="center">
+        <RegisterAdShort v-if="!user && authIsReady"></RegisterAdShort
+      ></v-col>
       <v-col cols="12" md="4">
         <RegisterAd v-if="!user && authIsReady"></RegisterAd>
       </v-col>
@@ -89,11 +71,7 @@
     </v-card>
     <v-card flat rounded="lg" class="hidden-sm-and-down">
       <v-row class="d-flex align-center flex-nowrap hidden-sm-and-down">
-        <v-col
-          cols="2"
-          md="3"
-          class="pa-0 ma-0 hidden-sm-and-down"
-        >
+        <v-col cols="2" md="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             v-if="build.civ && build.civ != 'ANY'"
             :src="
@@ -298,6 +276,7 @@
 
 <script>
 import RegisterAd from "../../components/RegisterAd.vue";
+import RegisterAdShort from "../../components/RegisterAdShort.vue";
 import StepsEditor from "../../components/builds/StepsEditor.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
@@ -314,7 +293,7 @@ import queryService from "../../composables/useQueryService";
 
 export default {
   name: "BuildNew",
-  components: { StepsEditor, RegisterAd },
+  components: { StepsEditor, RegisterAd, RegisterAdShort },
   setup() {
     window.scrollTo(0, 0);
 

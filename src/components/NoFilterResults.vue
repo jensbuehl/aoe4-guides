@@ -6,11 +6,10 @@
     class="pa-1"
   >
     <v-card flat rounded="lg">
-      <v-card-title>No Build Found</v-card-title>
+      <v-card-title>No Build Orders Found</v-card-title>
       <v-card-text
         >No build order for the given filter available.<br>
-        Create new Age of Empires 4 build order and share it with your
-        friends.</v-card-text
+        Please update the filter or create a new Age of Empires 4 build order.</v-card-text
       >
 
       <v-row class="ma-2" no-gutters justify="center">
@@ -29,7 +28,7 @@
 
 <script>
 export default {
-  name: "NoResultsCard",
+  name: "BuildNotFound",
   setup() {
   },
 };

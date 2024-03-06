@@ -66,7 +66,7 @@
 
 <script>
 export default {
-  name: "NewsCard",
+  name: "News",
   setup() {},
 };
 </script>
