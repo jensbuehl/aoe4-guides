@@ -694,7 +694,7 @@ import StepsEditor from "../../components/builds/StepsEditor.vue";
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
-import getCivs from "../../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
 import getSeasons from "../../composables/filter/getSeasons";
 import getMaps from "../../composables/filter/getMaps";
 import getStrategies from "../../composables/filter/getStrategies";
@@ -714,7 +714,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const user = computed(() => store.state.user);
-    const civs = getCivs().civs.value.filter(
+    const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
     const creatorName = ref("");

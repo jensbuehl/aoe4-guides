@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-const civs = ref([
+export const civs = ref([
   {
     title: "Any Civilization",
     shortName: "ANY",
@@ -105,10 +105,7 @@ const civs = ref([
   },
 ]);
 
-const getCivs = () => {
-  return {
-    civs,
-  };
+export function getCivById (id) {
+  const civ = civs.value.find((civ) => civ.shortName === id);
+  return civ
 };
-
-export default getCivs;

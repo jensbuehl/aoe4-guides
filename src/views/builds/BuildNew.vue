@@ -281,7 +281,7 @@ import StepsEditor from "../../components/builds/StepsEditor.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import getCivs from "../../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
 import getSeasons from "../../composables/filter/getSeasons";
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
@@ -307,7 +307,7 @@ export default {
       getVideoMetaData,
       getChannelIcon,
     } = useYoutube();
-    const civs = getCivs().civs.value.filter(
+    const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
     const maps = getMaps().maps;

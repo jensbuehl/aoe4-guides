@@ -617,7 +617,7 @@ import RegisterAd from "../components/notifications/RegisterAd.vue";
 import News from "../components/notifications/News.vue";
 import EmailVerificationAd from "../components/notifications/EmailVerificationAd.vue";
 import FilterConfig from "../components/filter/FilterConfig.vue";
-import getCivs from "../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../composables/filter/getCivs";
 import getFeaturedCreators from "../composables/filter/getFeaturedCreators";
 import getDefaultConfig from "../composables/filter/getDefaultConfig";
 import BuildListCard from "../components/builds/BuildListCard.vue";
@@ -648,7 +648,7 @@ export default {
     const featuredCreators = getFeaturedCreators().featuredCreators;
     const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
-    const civs = getCivs().civs.value.filter(
+    const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
     const store = useStore();

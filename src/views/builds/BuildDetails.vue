@@ -9,7 +9,7 @@
       :build="build"
     ></FocusMode>
   </v-dialog>
-  <v-container align="center" v-if="!build"
+  <v-container align="center" v-if="!loading &&!build"
     ><BuildNotFound></BuildNotFound
   ></v-container>
 
@@ -56,6 +56,15 @@
               color="accent"
               size="x-small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.civ"
+              label
+              color="accent"
+              size="x-small"
+              ><v-icon start icon="mdi-earth"></v-icon
+              >{{ getCivById(build.civ)?.shortName }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -146,6 +155,15 @@
               color="accent"
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.civ"
+              label
+              color="accent"
+              size="small"
+              ><v-icon start icon="mdi-earth"></v-icon
+              >{{ getCivById(build.civ)?.title }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
@@ -489,6 +507,15 @@
             >
             <v-chip
               class="mr-2 mb-2"
+              v-if="build.civ"
+              label
+              color="accent"
+              size="small"
+              ><v-icon start icon="mdi-earth"></v-icon
+              >{{ getCivById(build.civ)?.title }}</v-chip
+            >
+            <v-chip
+              class="mr-2 mb-2"
               v-if="build.creatorId && creatorName"
               label
               color="accent"
@@ -801,7 +828,7 @@ import BuildNotFound from "../../components/notifications/BuildNotFound.vue";
 
 //composables
 import useCollection from "../../composables/useCollection";
-import getCivs from "../../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
 import useTimeSince from "../../composables/useTimeSince";
 import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
 import useCopyToClipboard from "../../composables/converter/useCopyToClipboard";
@@ -824,7 +851,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const user = computed(() => store.state.user);
-    const civs = getCivs().civs;
+    const civs = allCivs.value;
     const build = ref(null);
     const deleteDialog = ref(false);
     const focusDialog = ref(false);
@@ -841,6 +868,7 @@ export default {
       update: updateBuild,
     } = useCollection("builds");
     const { get: getCreator } = useCollection("creators");
+    const loading = true;
 
     onMounted(async () => {
       const resBuild = await get(props.id);
@@ -855,6 +883,7 @@ export default {
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
         incrementViews(props.id);
+        const loading = false;
       }
     });
 
@@ -918,7 +947,9 @@ export default {
       build,
       props,
       user,
+      loading,
       civs,
+      getCivById,
       error,
       deleteDialog,
       focusDialog,

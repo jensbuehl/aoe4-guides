@@ -312,7 +312,7 @@
 <script>
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import getCivs from "../../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
 import getMaps from "../../composables/filter/getMaps";
 import getSeasons from "../../composables/filter/getSeasons";
 import getDefaultConfig from "../../composables/filter/getDefaultConfig";
@@ -326,7 +326,7 @@ export default {
   setup(props, context) {
     const { getAll } = useCollection("creators");
     const store = useStore();
-    const civs = getCivs().civs.value.filter(
+    const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
     const maps = getMaps().maps;

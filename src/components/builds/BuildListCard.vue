@@ -258,7 +258,7 @@
 </template>
 
 <script>
-import getCivs from "../../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
 import useTimeSince from "../../composables/useTimeSince";
 import { useStore } from "vuex";
 import { computed } from "vue";
@@ -270,7 +270,7 @@ export default {
   name: "BuildListCard",
   props: ["build", "creatorName"],
   setup() {
-    const civs = getCivs().civs;
+    const civs = allCivs.value;
     const store = useStore();
     const { name } = useDisplay();
     const orderBy = computed(() => store.state.filterConfig.orderBy);
