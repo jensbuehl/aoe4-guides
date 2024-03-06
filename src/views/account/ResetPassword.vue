@@ -25,11 +25,7 @@
                     :rules="[(v) => !!v || 'Email is required']"
                     required
                   ></v-text-field>
-                  <v-btn
-                    variant="text"
-                    color="primary"
-                    type="submit"
-                    block
+                  <v-btn variant="text" color="primary" type="submit" block
                     >Reset Password</v-btn
                   >
                   <v-card flat v-if="error" rounded="lg" color="error">
@@ -63,16 +59,16 @@ export default {
       url: "https://aoe4guides.com/login",
     };
     const reset = async () => {
-      const validation = await form.value.validate();
-      if (!validation.valid) return;
+      try {
+        const validation = await form.value.validate();
+        if (!validation.valid) return;
 
-      await sendPasswordResetEmail(auth, email.value, actionCodeSettings)
-        .then(() => {
-          router.push("/");
-        })
-        .catch((err) => {
-          error.value = "Could not reset password. " + err.code;
-        });
+        await sendPasswordResetEmail(auth, email.value, actionCodeSettings);
+        router.push("/");
+      } catch (err) {
+        error.value = err.message;
+        console.log(error.value);
+      }
     };
     return {
       error,
