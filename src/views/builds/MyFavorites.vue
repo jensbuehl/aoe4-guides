@@ -66,14 +66,17 @@
 </template>
 
 <script>
-import RegisterAd from "../../components/notifications/RegisterAd.vue";
-import FilterConfig from "../../components/filter/FilterConfig.vue";
-import { defaultConfig } from "../../composables/filter/defaultConfigService";
-import BuildListCard from "../../components/builds/BuildListCard.vue";
-import useCollection from "../../composables/useCollection";
-import queryService from "../../composables/useQueryService";
+//External
 import { useStore } from "vuex";
 import { ref, computed, onMounted, watch } from "vue";
+//Components
+import RegisterAd from "@/components/notifications/RegisterAd.vue";
+import FilterConfig from "@/components/filter/FilterConfig.vue";
+import BuildListCard from "@/components/builds/BuildListCard.vue";
+//Composables
+import { defaultConfig } from "@/composables/filter/defaultConfigService";
+import useCollection from "@/composables/useCollection";
+import queryService from "@/composables/useQueryService";
 
 export default {
   name: "Builds",

@@ -72,16 +72,15 @@
 </template>
 
 <script>
+//External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
 //Components
-import RegisterAd from "../../components/notifications/RegisterAd.vue";
-
+import RegisterAd from "@/components/notifications/RegisterAd.vue";
 //Composables
-import useCollection from "../../composables/useCollection";
-import useImportOverlayFormat from "../../composables/converter/useImportOverlayFormat";
+import useCollection from "@/composables/useCollection";
+import useImportOverlayFormat from "@/composables/converter/useImportOverlayFormat";
 
 export default {
   name: "BuildImport",

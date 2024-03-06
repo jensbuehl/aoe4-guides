@@ -682,27 +682,26 @@
 </template>
 
 <script>
+//External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
-//Components
-import Favorite from "../../components/Favorite.vue";
-import StepsEditor from "../../components/builds/StepsEditor.vue";
-
-//Composables
-import useCollection from "../../composables/useCollection";
-import useBuildValidator from "../../composables/builds/useBuildValidator";
-import useYoutube from "../../composables/builds/useYoutube";
-import { civs as allCivs, getCivById } from "../../composables/filter/civService";
-import { seasons } from "../../composables/filter/seasonService";
-import { maps } from "../../composables/filter/mapService";
-import { strategies } from "../../composables/filter/strategyService";
-import useTimeSince from "../../composables/useTimeSince";
 import sanitizeHtml from "sanitize-html";
-import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
-import useCopyToClipboard from "../../composables/converter/useCopyToClipboard";
-import useDownload from "../../composables/converter/useDownload";
+//Components
+import Favorite from "@/components/Favorite.vue";
+import StepsEditor from "@/components/builds/StepsEditor.vue";
+//Composables
+import useCollection from "@/composables/useCollection";
+import useBuildValidator from "@/composables/builds/useBuildValidator";
+import useYoutube from "@/composables/builds/useYoutube";
+import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { seasons } from "@/composables/filter/seasonService";
+import { maps } from "@/composables/filter/mapService";
+import { strategies } from "@/composables/filter/strategyService";
+import useTimeSince from "@/composables/useTimeSince";
+import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
+import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
+import useDownload from "@/composables/converter/useDownload";
 
 export default {
   name: "BuildEdit",
