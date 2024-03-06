@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-const strategies = ref([
+export const strategies = ref([
   {
     title: "Rush",
   },
@@ -20,11 +20,3 @@ const strategies = ref([
     title: "Cheese",
   },
 ]);
-
-const strategyService = () => {
-  return {
-    strategies,
-  };
-};
-
-export default strategyService;

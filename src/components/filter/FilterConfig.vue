@@ -316,7 +316,7 @@ import { civs as allCivs, getCivById } from "../../composables/filter/civService
 import { maps } from "../../composables/filter/mapService";
 import seasonService from "../../composables/filter/seasonService";
 import { defaultConfig } from "../../composables/filter/defaultConfigService";
-import strategyService from "../../composables/filter/strategyService";
+import { strategies } from "../../composables/filter/strategyService";
 import useCollection from "../../composables/useCollection";
 
 export default {
@@ -330,7 +330,6 @@ export default {
       (element) => element.shortName != "ANY"
     );
     const seasons = seasonService().seasons;
-    const strategies = strategyService().strategies;
     const creators = ref([]);
     const count = computed(() => store.state.resultsCount);
     //Show apply when config different from state in store

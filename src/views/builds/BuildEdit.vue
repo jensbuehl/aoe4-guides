@@ -697,7 +697,7 @@ import useYoutube from "../../composables/builds/useYoutube";
 import { civs as allCivs, getCivById } from "../../composables/filter/civService";
 import seasonService from "../../composables/filter/seasonService";
 import { maps } from "../../composables/filter/mapService";
-import strategyService from "../../composables/filter/strategyService";
+import { strategies } from "../../composables/filter/strategyService";
 import useTimeSince from "../../composables/useTimeSince";
 import sanitizeHtml from "sanitize-html";
 import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
@@ -719,7 +719,6 @@ export default {
     );
     const creatorName = ref("");
     const seasons = seasonService().seasons;
-    const strategies = strategyService().strategies;
     const build = ref(null);
     const { convert } = useExportOverlayFormat();
     const { copyToClipboard } = useCopyToClipboard();
