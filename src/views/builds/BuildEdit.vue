@@ -695,7 +695,7 @@ import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
 import { civs as allCivs, getCivById } from "../../composables/filter/civService";
-import seasonService from "../../composables/filter/seasonService";
+import { seasons } from "../../composables/filter/seasonService";
 import { maps } from "../../composables/filter/mapService";
 import { strategies } from "../../composables/filter/strategyService";
 import useTimeSince from "../../composables/useTimeSince";
@@ -718,7 +718,6 @@ export default {
       (element) => element.shortName != "ANY"
     );
     const creatorName = ref("");
-    const seasons = seasonService().seasons;
     const build = ref(null);
     const { convert } = useExportOverlayFormat();
     const { copyToClipboard } = useCopyToClipboard();

@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-const seasons = ref([
+export const seasons = ref([
   {
     title: "Season 6",
     tagline: "The Sultans Ascend",
@@ -32,11 +32,3 @@ const seasons = ref([
     startDate: new Date(2022, 3, 7)
   },
 ]);
-
-const seasonService = () => {
-  return {
-    seasons,
-  };
-};
-
-export default seasonService;

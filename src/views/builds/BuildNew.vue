@@ -282,7 +282,7 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { civs as allCivs, getCivById } from "../../composables/filter/civService";
-import seasonService from "../../composables/filter/seasonService";
+import { seasons } from "../../composables/filter/seasonService";
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
@@ -310,7 +310,6 @@ export default {
     const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const seasons = seasonService().seasons;
     const store = useStore();
     const user = computed(() => store.state.user);
     const template = computed(() => store.state.template);

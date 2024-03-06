@@ -314,7 +314,7 @@ import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { civs as allCivs, getCivById } from "../../composables/filter/civService";
 import { maps } from "../../composables/filter/mapService";
-import seasonService from "../../composables/filter/seasonService";
+import { seasons } from "../../composables/filter/seasonService";
 import { defaultConfig } from "../../composables/filter/defaultConfigService";
 import { strategies } from "../../composables/filter/strategyService";
 import useCollection from "../../composables/useCollection";
@@ -329,7 +329,6 @@ export default {
     const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const seasons = seasonService().seasons;
     const creators = ref([]);
     const count = computed(() => store.state.resultsCount);
     //Show apply when config different from state in store
