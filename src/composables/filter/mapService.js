@@ -1,6 +1,6 @@
 import { ref } from "vue";
 
-const maps = ref([
+export const maps = ref([
   {
     title: "Open",
   },
@@ -14,11 +14,3 @@ const maps = ref([
     title: "Water",
   },
 ]);
-
-const mapService = () => {
-  return {
-    maps,
-  };
-};
-
-export default mapService;

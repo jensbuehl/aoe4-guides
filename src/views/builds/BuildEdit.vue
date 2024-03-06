@@ -696,7 +696,7 @@ import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
 import { civs as allCivs, getCivById } from "../../composables/filter/civService";
 import seasonService from "../../composables/filter/seasonService";
-import mapService from "../../composables/filter/mapService";
+import { maps } from "../../composables/filter/mapService";
 import strategyService from "../../composables/filter/strategyService";
 import useTimeSince from "../../composables/useTimeSince";
 import sanitizeHtml from "sanitize-html";
@@ -718,7 +718,6 @@ export default {
       (element) => element.shortName != "ANY"
     );
     const creatorName = ref("");
-    const maps = mapService().maps;
     const seasons = seasonService().seasons;
     const strategies = strategyService().strategies;
     const build = ref(null);

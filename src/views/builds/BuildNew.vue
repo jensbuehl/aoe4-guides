@@ -287,7 +287,7 @@ import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
 import sanitizeHtml from "sanitize-html";
-import mapService from "../../composables/filter/mapService";
+import { maps } from "../../composables/filter/mapService";
 import strategyService from "../../composables/filter/strategyService";
 import queryService from "../../composables/useQueryService";
 
@@ -310,7 +310,6 @@ export default {
     const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const maps = mapService().maps;
     const strategies = strategyService().strategies;
     const seasons = seasonService().seasons;
     const store = useStore();

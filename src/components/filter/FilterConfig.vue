@@ -313,7 +313,7 @@
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { civs as allCivs, getCivById } from "../../composables/filter/civService";
-import mapService from "../../composables/filter/mapService";
+import { maps } from "../../composables/filter/mapService";
 import seasonService from "../../composables/filter/seasonService";
 import { defaultConfig } from "../../composables/filter/defaultConfigService";
 import strategyService from "../../composables/filter/strategyService";
@@ -329,7 +329,6 @@ export default {
     const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const maps = mapService().maps;
     const seasons = seasonService().seasons;
     const strategies = strategyService().strategies;
     const creators = ref([]);
