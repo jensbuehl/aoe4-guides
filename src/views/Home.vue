@@ -261,94 +261,6 @@
           </v-col>
         </v-row>
 
-        <!--villager of the day xs-->
-        <!--v-row no-gutters class="hidden-md-and-up">
-          <div
-            class="text-h6 mt-2 mb-2 ml-4"
-            style="font-family: 'Segoe UI' !important"
-          >
-            Villager of the Day
-          </div>
-          <v-col cols="12" v-model="villagerOfTheDay">
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all build orders from
-                {{ villagerOfTheDay.displayName }}
-              </span>
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  rounded="lg"
-                  v-bind="props"
-                  :to="{
-                    name: 'Builds',
-                    query: { author: villagerOfTheDay.id },
-                  }"
-                >
-                  <v-row
-                    no-gutters
-                    class="fill-height"
-                    align="center"
-                    justify="center"
-                    ><v-col cols="12"
-                      ><v-skeleton-loader
-                        :color="
-                          villagerOfTheDay.loading ? 'loading' : 'surface'
-                        "
-                        height="84"
-                        :loading="villagerOfTheDay.loading"
-                      >
-                        <v-row no-gutters align="center" justify="start">
-                          <v-col cols="auto">
-                            <div>
-                              <v-avatar class="ml-4" color="accent">{{
-                                villagerOfTheDay.displayName
-                                  .slice(0, 2)
-                                  .toUpperCase()
-                              }}</v-avatar>
-                            </div>
-                          </v-col>
-                          <v-col cols="9" align="start">
-                            //small title
-                            <v-card-title
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
-                              class="text-subtitle-2 hidden-lg-and-up"
-                              style="font-family: 'Segoe UI' !important"
-                            >
-                              {{ villagerOfTheDay.displayName }}
-                            </v-card-title>
-                            <v-card-text
-                              v-if="villagerOfTheDay.count > 1"
-                              class="hidden-lg-and-up"
-                              >{{ villagerOfTheDay.count }} build orders
-                              gathered</v-card-text
-                            >
-                            <v-card-text
-                              v-else-if="villagerOfTheDay.count == 1"
-                              class="hidden-lg-and-up"
-                              >{{ villagerOfTheDay.count }} build order
-                              gathered</v-card-text
-                            >
-                            <v-card-text v-else class="hidden-lg-and-up"
-                              >No build order gathered so far. Researching
-                              wheelbarrow...</v-card-text
-                            >
-                          </v-col>
-                        </v-row>
-                      </v-skeleton-loader></v-col
-                    ></v-row
-                  >
-                </v-card>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row-->
-
         <!-- recent builds -->
         <v-row align="center" no-gutters>
           <v-col cols="12">
@@ -505,103 +417,6 @@
             </v-tooltip>
           </v-col>
         </v-row>
-
-        <!--villager of the day sm and up-->
-        <!--v-row no-gutters class="hidden-xs">
-          <div
-            class="text-h6 mt-4 mb-2 ml-4"
-            style="font-family: 'Segoe UI' !important"
-          >
-            Villager of the Day
-          </div>
-          <v-col cols="12" v-model="villagerOfTheDay">
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all build orders from
-                {{ villagerOfTheDay.displayName }}
-              </span>
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  rounded="lg"
-                  v-bind="props"
-                  :to="{
-                    name: 'Builds',
-                    query: { author: villagerOfTheDay.id },
-                  }"
-                >
-                  <v-row
-                    no-gutters
-                    class="fill-height"
-                    align="center"
-                    justify="center"
-                    ><v-col cols="12"
-                      ><v-skeleton-loader
-                        :color="
-                          villagerOfTheDay.loading ? 'loading' : 'surface'
-                        "
-                        height="84"
-                        :loading="villagerOfTheDay.loading"
-                      >
-                        <v-row no-gutters align="center" justify="start">
-                          <v-col cols="auto">
-                            <div>
-                              <v-avatar class="ml-4" color="accent">{{
-                                villagerOfTheDay.displayName
-                                  .slice(0, 2)
-                                  .toUpperCase()
-                              }}</v-avatar>
-                            </div>
-                          </v-col>
-                          <v-col cols="9" align="start">
-                            //small title
-                            <v-card-title
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
-                              class="text-subtitle-2 hidden-lg-and-up"
-                              style="font-family: 'Segoe UI' !important"
-                            >
-                              {{ villagerOfTheDay.displayName }}
-                            </v-card-title>
-                            //large title
-                            <v-card-title
-                              class="hidden-md-and-down"
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
-                            >
-                              {{ villagerOfTheDay.displayName }}
-                            </v-card-title>
-                            <v-card-text
-                              v-if="villagerOfTheDay.count > 1"
-                              class="hidden-sm-and-down"
-                              >{{ villagerOfTheDay.count }} build orders
-                              gathered</v-card-text
-                            >
-                            <v-card-text
-                              v-else-if="villagerOfTheDay.count == 1"
-                              class="hidden-sm-and-down"
-                              >{{ villagerOfTheDay.count }} build order
-                              gathered</v-card-text
-                            >
-                            <v-card-text v-else class="hidden-sm-and-down"
-                              >No build order gathered so far. Researching
-                              wheelbarrow...</v-card-text
-                            >
-                          </v-col>
-                        </v-row>
-                      </v-skeleton-loader></v-col
-                    ></v-row
-                  >
-                </v-card>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row-->
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
           class="mt-6"
@@ -618,7 +433,7 @@ import News from "../components/notifications/News.vue";
 import EmailVerificationAd from "../components/notifications/EmailVerificationAd.vue";
 import FilterConfig from "../components/filter/FilterConfig.vue";
 import { civs as allCivs, getCivById } from "../composables/filter/civService";
-import featuredCreatorService from "../composables/filter/featuredCreatorService";
+import { featuredCreators } from "../composables/filter/featuredCreatorService";
 import { defaultConfig } from "../composables/filter/defaultConfigService";
 import BuildListCard from "../components/builds/BuildListCard.vue";
 import useCollection from "../composables/useCollection";
@@ -645,7 +460,6 @@ export default {
       useCollection("creators");
     const popularBuilds = computed(() => store.state.popularBuilds);
     const mostRecentBuilds = computed(() => store.state.mostRecentBuilds);
-    const featuredCreators = featuredCreatorService().featuredCreators;
     const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
     const civs = allCivs.value.filter(

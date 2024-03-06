@@ -10,7 +10,7 @@ const sortByNameCompareFunction = (a, b) => {
   return 0;
 };
 
-const featuredCreators = [
+export const featuredCreators = [
   {
     creatorTitle: "Aussie Drongo",
     creatorId: "UC0IMY7nkVsUimZDMAWWcDsg",
@@ -52,11 +52,3 @@ const featuredCreators = [
     creatorImage: "https://yt3.ggpht.com/MqEZhK5w-qIhTFCU3SfCYOzPLMA-OP5f3vxaD8I-XqLyZus9vCEr_ujNUI0RJ9MqB4Q_LLaoERY=s176-c-k-c0x00ffffff-no-rj-mo",
   },
 ].sort(sortByNameCompareFunction);
-
-const featuredCreatorService = () => {
-  return {
-    featuredCreators,
-  };
-};
-
-export default featuredCreatorService;
