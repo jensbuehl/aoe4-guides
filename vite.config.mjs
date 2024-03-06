@@ -1,5 +1,6 @@
-import vue from '@vitejs/plugin-vue'
-import vuetify from 'vite-plugin-vuetify'
+import { fileURLToPath, URL } from "url";
+import vue from "@vitejs/plugin-vue";
+import vuetify from "vite-plugin-vuetify";
 
 // https://vitejs.dev/config/
 export default {
@@ -12,12 +13,14 @@ export default {
       },
     },
   },
-  plugins: [
-    vue(),
-    vuetify(),
-    ],
+  plugins: [vue(), vuetify()],
   resolve: {
-
+    alias: [
+      {
+        find: "@",
+        replacement: fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    ],
   },
-  build: { chunkSizeWarningLimit: 1600, }
-}
+  build: { chunkSizeWarningLimit: 1600 },
+};

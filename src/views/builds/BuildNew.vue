@@ -275,21 +275,24 @@
 </template>
 
 <script>
-import RegisterAd from "../../components/notifications/RegisterAd.vue";
-import RegisterAdShort from "../../components/notifications/RegisterAdShort.vue";
-import StepsEditor from "../../components/builds/StepsEditor.vue";
+//External
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { civs as allCivs, getCivById } from "../../composables/filter/civService";
-import { seasons } from "../../composables/filter/seasonService";
-import useCollection from "../../composables/useCollection";
-import useBuildValidator from "../../composables/builds/useBuildValidator";
-import useYoutube from "../../composables/builds/useYoutube";
 import sanitizeHtml from "sanitize-html";
-import { maps } from "../../composables/filter/mapService";
-import { strategies } from "../../composables/filter/strategyService";
-import queryService from "../../composables/useQueryService";
+//Components
+import RegisterAd from "@/components/notifications/RegisterAd.vue";
+import RegisterAdShort from "@/components/notifications/RegisterAdShort.vue";
+import StepsEditor from "@/components/builds/StepsEditor.vue";
+//Composables
+import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { seasons } from "@/composables/filter/seasonService";
+import useCollection from "@/composables/useCollection";
+import useBuildValidator from "@/composables/builds/useBuildValidator";
+import useYoutube from "@/composables/builds/useYoutube";
+import { maps } from "@/composables/filter/mapService";
+import { strategies } from "@/composables/filter/strategyService";
+import queryService from "@/composables/useQueryService";
 
 export default {
   name: "BuildNew",
@@ -307,9 +310,7 @@ export default {
       getVideoMetaData,
       getChannelIcon,
     } = useYoutube();
-    const civs = allCivs.value.filter(
-      (element) => element.shortName != "ANY"
-    );
+    const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const store = useStore();
     const user = computed(() => store.state.user);
     const template = computed(() => store.state.template);
