@@ -125,12 +125,12 @@ import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 
 //Composables
-import { defaultConfig } from "../composables/filter/defaultConfigService";
-import useCollection from "../composables/useCollection";
-import queryService from "../composables/useQueryService";
-import useImportOverlayFormat from "../composables/converter/useImportOverlayFormat";
-import useExportOverlayFormat from "../composables/converter/useExportOverlayFormat";
-import useYoutube from "../composables/builds/useYoutube";
+import { defaultConfig } from "@/composables/filter/defaultConfigService";
+import useCollection from "@/composables/useCollection";
+import queryService from "@/composables/useQueryService";
+import useImportOverlayFormat from "@/composables/converter/useImportOverlayFormat";
+import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
+import useYoutube from "@/composables/builds/useYoutube";
 
 export default {
   name: "Admin",
