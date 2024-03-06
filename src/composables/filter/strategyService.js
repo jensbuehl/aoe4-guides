@@ -21,10 +21,10 @@ const strategies = ref([
   },
 ]);
 
-const getStrategies = () => {
+const strategyService = () => {
   return {
     strategies,
   };
 };
 
-export default getStrategies;
+export default strategyService;

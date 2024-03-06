@@ -281,14 +281,14 @@ import StepsEditor from "../../components/builds/StepsEditor.vue";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
-import getSeasons from "../../composables/filter/getSeasons";
+import { civs as allCivs, getCivById } from "../../composables/filter/civService";
+import seasonService from "../../composables/filter/seasonService";
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
 import sanitizeHtml from "sanitize-html";
-import getMaps from "../../composables/filter/getMaps";
-import getStrategies from "../../composables/filter/getStrategies";
+import mapService from "../../composables/filter/mapService";
+import strategyService from "../../composables/filter/strategyService";
 import queryService from "../../composables/useQueryService";
 
 export default {
@@ -310,9 +310,9 @@ export default {
     const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const maps = getMaps().maps;
-    const strategies = getStrategies().strategies;
-    const seasons = getSeasons().seasons;
+    const maps = mapService().maps;
+    const strategies = strategyService().strategies;
+    const seasons = seasonService().seasons;
     const store = useStore();
     const user = computed(() => store.state.user);
     const template = computed(() => store.state.template);

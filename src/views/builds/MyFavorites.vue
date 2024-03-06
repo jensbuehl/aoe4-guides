@@ -68,7 +68,7 @@
 <script>
 import RegisterAd from "../../components/notifications/RegisterAd.vue";
 import FilterConfig from "../../components/filter/FilterConfig.vue";
-import getDefaultConfig from "../../composables/filter/getDefaultConfig";
+import { defaultConfig } from "../../composables/filter/defaultConfigService";
 import BuildListCard from "../../components/builds/BuildListCard.vue";
 import useCollection from "../../composables/useCollection";
 import queryService from "../../composables/useQueryService";
@@ -103,7 +103,7 @@ export default {
       () => user.value,
       () => {
         if (!filterAndOrderConfig.value) {
-          store.commit("setFilterConfig", getDefaultConfig());
+          store.commit("setFilterConfig", defaultConfig);
         }
         initData();
       }
@@ -111,7 +111,7 @@ export default {
 
     onMounted(() => {
       if (!filterAndOrderConfig.value) {
-        store.commit("setFilterConfig", getDefaultConfig());
+        store.commit("setFilterConfig", defaultConfig);
       }
       if (user.value) {
         initData();

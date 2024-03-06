@@ -125,7 +125,7 @@ import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 
 //Composables
-import getDefaultConfig from "../composables/filter/getDefaultConfig";
+import { defaultConfig } from "../composables/filter/defaultConfigService";
 import useCollection from "../composables/useCollection";
 import queryService from "../composables/useQueryService";
 import useImportOverlayFormat from "../composables/converter/useImportOverlayFormat";
@@ -157,7 +157,7 @@ export default {
 
     onMounted(() => {
       if (!filterAndOrderConfig.value) {
-        store.commit("setFilterConfig", getDefaultConfig());
+        store.commit("setFilterConfig", defaultConfig);
       }
       initData();
     });

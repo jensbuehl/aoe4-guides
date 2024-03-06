@@ -312,11 +312,11 @@
 <script>
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
-import getMaps from "../../composables/filter/getMaps";
-import getSeasons from "../../composables/filter/getSeasons";
-import getDefaultConfig from "../../composables/filter/getDefaultConfig";
-import getStrategies from "../../composables/filter/getStrategies";
+import { civs as allCivs, getCivById } from "../../composables/filter/civService";
+import mapService from "../../composables/filter/mapService";
+import seasonService from "../../composables/filter/seasonService";
+import { defaultConfig } from "../../composables/filter/defaultConfigService";
+import strategyService from "../../composables/filter/strategyService";
 import useCollection from "../../composables/useCollection";
 
 export default {
@@ -329,9 +329,9 @@ export default {
     const civs = allCivs.value.filter(
       (element) => element.shortName != "ANY"
     );
-    const maps = getMaps().maps;
-    const seasons = getSeasons().seasons;
-    const strategies = getStrategies().strategies;
+    const maps = mapService().maps;
+    const seasons = seasonService().seasons;
+    const strategies = strategyService().strategies;
     const creators = ref([]);
     const count = computed(() => store.state.resultsCount);
     //Show apply when config different from state in store
@@ -351,15 +351,15 @@ export default {
     //Show when state config different from default
     const showReset = computed(() => {
       return (
-        store.state.filterConfig?.civs != getDefaultConfig().civs ||
-        store.state.filterConfig?.creator != getDefaultConfig().creator ||
+        store.state.filterConfig?.civs != defaultConfig.civs ||
+        store.state.filterConfig?.creator != defaultConfig.creator ||
         JSON.stringify(store.state.filterConfig?.maps) !=
-          JSON.stringify(getDefaultConfig().maps) ||
+          JSON.stringify(defaultConfig.maps) ||
         JSON.stringify(store.state.filterConfig?.strategies) !=
-          JSON.stringify(getDefaultConfig().strategies) ||
+          JSON.stringify(defaultConfig.strategies) ||
         JSON.stringify(store.state.filterConfig?.seasons) !=
-          JSON.stringify(getDefaultConfig().seasons) ||
-          store.state.filterConfig?.orderBy != getDefaultConfig().orderBy
+          JSON.stringify(defaultConfig.seasons) ||
+          store.state.filterConfig?.orderBy != defaultConfig.orderBy
       );
     });
 
@@ -434,20 +434,20 @@ export default {
     };
 
     const handleReset = () => {
-      selectedCivs.value = getDefaultConfig().civs;
-      selectedVideoCreator.value = getDefaultConfig().creator;
-      selectedMaps.value = getDefaultConfig().maps;
-      selectedStrategies.value = getDefaultConfig().strategies;
-      selectedSeasons.value = getDefaultConfig().seasons;
-      selectedOrderBy.value = getDefaultConfig().orderBy;
+      selectedCivs.value = defaultConfig.civs;
+      selectedVideoCreator.value = defaultConfig.creator;
+      selectedMaps.value = defaultConfig.maps;
+      selectedStrategies.value = defaultConfig.strategies;
+      selectedSeasons.value = defaultConfig.seasons;
+      selectedOrderBy.value = defaultConfig.orderBy;
 
-      store.commit("setCivs", getDefaultConfig().civs);
-      store.commit("setCreator", getDefaultConfig().creator);
-      store.commit("setMaps", getDefaultConfig().maps);
-      store.commit("setStrategies", getDefaultConfig().strategies);
-      store.commit("setSeasons", getDefaultConfig().seasons);
-      store.commit("setOrderBy", getDefaultConfig().orderBy);
-      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setCivs", defaultConfig.civs);
+      store.commit("setCreator", defaultConfig.creator);
+      store.commit("setMaps", defaultConfig.maps);
+      store.commit("setStrategies", defaultConfig.strategies);
+      store.commit("setSeasons", defaultConfig.seasons);
+      store.commit("setOrderBy", defaultConfig.orderBy);
+      store.commit("setFilterConfig", defaultConfig);
 
       context.emit("configChanged");
     };

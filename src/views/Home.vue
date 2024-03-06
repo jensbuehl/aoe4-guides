@@ -617,9 +617,9 @@ import RegisterAd from "../components/notifications/RegisterAd.vue";
 import News from "../components/notifications/News.vue";
 import EmailVerificationAd from "../components/notifications/EmailVerificationAd.vue";
 import FilterConfig from "../components/filter/FilterConfig.vue";
-import { civs as allCivs, getCivById } from "../composables/filter/getCivs";
-import getFeaturedCreators from "../composables/filter/getFeaturedCreators";
-import getDefaultConfig from "../composables/filter/getDefaultConfig";
+import { civs as allCivs, getCivById } from "../composables/filter/civService";
+import featuredCreatorService from "../composables/filter/featuredCreatorService";
+import { defaultConfig } from "../composables/filter/defaultConfigService";
 import BuildListCard from "../components/builds/BuildListCard.vue";
 import useCollection from "../composables/useCollection";
 import queryService from "../composables/useQueryService";
@@ -645,7 +645,7 @@ export default {
       useCollection("creators");
     const popularBuilds = computed(() => store.state.popularBuilds);
     const mostRecentBuilds = computed(() => store.state.mostRecentBuilds);
-    const featuredCreators = getFeaturedCreators().featuredCreators;
+    const featuredCreators = featuredCreatorService().featuredCreators;
     const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
     const civs = allCivs.value.filter(
@@ -655,13 +655,13 @@ export default {
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
-    const popularConfig = ref(getDefaultConfig());
-    const mostRecentConfig = ref(getDefaultConfig());
-    const authorConfig = ref(getDefaultConfig());
+    const popularConfig = ref(defaultConfig);
+    const mostRecentConfig = ref(defaultConfig);
+    const authorConfig = ref(defaultConfig);
     mostRecentConfig.value.orderBy = "timeCreated";
 
     onMounted(() => {
-      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setFilterConfig", defaultConfig);
       initData();
     });
 

@@ -1,4 +1,4 @@
-const getDefaultConfig = () => ({
+export const defaultConfig = {
   creator: null,
   author: null,
   civs: null,
@@ -7,6 +7,4 @@ const getDefaultConfig = () => ({
   seasons: [],
   orderBy: "score",
   drafts: false
-});
-
-export default getDefaultConfig;
+};

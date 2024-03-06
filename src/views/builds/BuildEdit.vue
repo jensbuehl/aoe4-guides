@@ -694,10 +694,10 @@ import StepsEditor from "../../components/builds/StepsEditor.vue";
 import useCollection from "../../composables/useCollection";
 import useBuildValidator from "../../composables/builds/useBuildValidator";
 import useYoutube from "../../composables/builds/useYoutube";
-import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
-import getSeasons from "../../composables/filter/getSeasons";
-import getMaps from "../../composables/filter/getMaps";
-import getStrategies from "../../composables/filter/getStrategies";
+import { civs as allCivs, getCivById } from "../../composables/filter/civService";
+import seasonService from "../../composables/filter/seasonService";
+import mapService from "../../composables/filter/mapService";
+import strategyService from "../../composables/filter/strategyService";
 import useTimeSince from "../../composables/useTimeSince";
 import sanitizeHtml from "sanitize-html";
 import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
@@ -718,9 +718,9 @@ export default {
       (element) => element.shortName != "ANY"
     );
     const creatorName = ref("");
-    const maps = getMaps().maps;
-    const seasons = getSeasons().seasons;
-    const strategies = getStrategies().strategies;
+    const maps = mapService().maps;
+    const seasons = seasonService().seasons;
+    const strategies = strategyService().strategies;
     const build = ref(null);
     const { convert } = useExportOverlayFormat();
     const { copyToClipboard } = useCopyToClipboard();

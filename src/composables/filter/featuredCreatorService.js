@@ -53,10 +53,10 @@ const featuredCreators = [
   },
 ].sort(sortByNameCompareFunction);
 
-const getFeaturedCreators = () => {
+const featuredCreatorService = () => {
   return {
     featuredCreators,
   };
 };
 
-export default getFeaturedCreators;
+export default featuredCreatorService;

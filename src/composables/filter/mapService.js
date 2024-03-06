@@ -15,10 +15,10 @@ const maps = ref([
   },
 ]);
 
-const getMaps = () => {
+const mapService = () => {
   return {
     maps,
   };
 };
 
-export default getMaps;
+export default mapService;

@@ -258,7 +258,7 @@
 </template>
 
 <script>
-import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../../composables/filter/civService";
 import useTimeSince from "../../composables/useTimeSince";
 import { useStore } from "vuex";
 import { computed } from "vue";

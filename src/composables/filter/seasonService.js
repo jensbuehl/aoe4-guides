@@ -33,10 +33,10 @@ const seasons = ref([
   },
 ]);
 
-const getSeasons = () => {
+const seasonService = () => {
   return {
     seasons,
   };
 };
 
-export default getSeasons;
+export default seasonService;

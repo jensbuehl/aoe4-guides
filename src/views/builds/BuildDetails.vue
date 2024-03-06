@@ -828,7 +828,7 @@ import BuildNotFound from "../../components/notifications/BuildNotFound.vue";
 
 //composables
 import useCollection from "../../composables/useCollection";
-import { civs as allCivs, getCivById } from "../../composables/filter/getCivs";
+import { civs as allCivs, getCivById } from "../../composables/filter/civService";
 import useTimeSince from "../../composables/useTimeSince";
 import useExportOverlayFormat from "../../composables/converter/useExportOverlayFormat";
 import useCopyToClipboard from "../../composables/converter/useCopyToClipboard";
