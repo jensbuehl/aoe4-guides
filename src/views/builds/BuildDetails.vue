@@ -9,7 +9,7 @@
       :build="build"
     ></FocusMode>
   </v-dialog>
-  <v-container align="center" v-if="!loading &&!build"
+  <v-container align="center" v-if="!loading && !build"
     ><BuildNotFound></BuildNotFound
   ></v-container>
 
@@ -870,7 +870,7 @@ export default {
       update: updateBuild,
     } = useCollection("builds");
     const { get: getCreator } = useCollection("creators");
-    const loading = true;
+    const loading = ref(true);
 
     onMounted(async () => {
       const resBuild = await get(props.id);
@@ -881,12 +881,11 @@ export default {
             ? resCreator.creatorDisplayTitle
             : resCreator.creatorTitle;
         }
-
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
         incrementViews(props.id);
-        const loading = false;
       }
+      loading.value = false;
     });
 
     const handleDuplicate = async () => {
