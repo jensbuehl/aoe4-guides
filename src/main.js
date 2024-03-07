@@ -1,15 +1,15 @@
 import { createApp } from "vue";
-import App from "./App.vue";
+import App from "@/App.vue";
 import { createVuetify } from "vuetify";
-import router from "./router/";
+import router from "@/router/";
 
 // global styles and icons
-import "./assets/main.css";
+import "@/assets/main.css";
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/dist/vuetify.min.css";
 
 // import store
-import store from "./store";
+import store from "@/store";
 
 // theme definition
 const customDarkTheme = {

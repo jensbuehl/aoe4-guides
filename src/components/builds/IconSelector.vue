@@ -692,8 +692,14 @@
 </template>
 
 <script>
+
+//External
 import { ref, computed } from "vue";
-import useIconService from "../../composables/builds/useIconService.js";
+
+//Components
+
+//Composables
+import useIconService from "@/composables/builds/useIconService.js";
 
 export default {
   name: "IconSelector",

@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import useCollection from "../composables/useCollection";
+import useCollection from "@/composables/useCollection";
 
 // firebase imports
 import {
@@ -12,7 +12,7 @@ import {
   deleteUser,
   updatePassword,
   functions,
-} from "../firebase";
+} from "@/firebase";
 import { httpsCallable } from "firebase/functions";
 
 const store = createStore({

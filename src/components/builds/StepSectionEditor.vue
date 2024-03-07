@@ -756,11 +756,17 @@
 </template>
 
 <script>
+
+//External
 import { watch, ref, computed, reactive, mergeProps, onMounted } from "vue";
 import sanitizeHtml from "sanitize-html";
-import IconSelector from "../../components/builds/IconSelector.vue";
-import IconAutoCompleteMenu from "../../components/builds/IconAutoCompleteMenu.vue";
-import useIconService from "../../composables/builds/useIconService.js";
+
+//Components
+import IconSelector from "@/components/builds/IconSelector.vue";
+import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
+
+//Composables
+import useIconService from "@/composables/builds/useIconService.js";
 
 export default {
   name: "StepSectionEditor",

@@ -92,8 +92,14 @@
 </template>
 
 <script>
+
+//External
 import { ref, computed, reactive, onMounted } from "vue";
-import StepSectionEditor from "../../components/builds/StepSectionEditor.vue";
+
+//Components
+import StepSectionEditor from "@/components/builds/StepSectionEditor.vue";
+
+//Composables
 
 export default {
   name: "StepsEditor",

@@ -140,6 +140,8 @@
 </template>
 
 <script>
+
+//External
 import { useDisplay } from "vuetify";
 
 export default {

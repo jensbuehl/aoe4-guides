@@ -56,10 +56,14 @@
 </template>
 
 <script>
+
+//External
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
-import useTimeSince from "../composables/useTimeSince";
-import useCollection from "../composables/useCollection";
+
+//Composables
+import useTimeSince from "@/composables/useTimeSince";
+import useCollection from "@/composables/useCollection";
 
 export default {
   name: "SingleComment",

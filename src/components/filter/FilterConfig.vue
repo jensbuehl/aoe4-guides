@@ -310,14 +310,20 @@
 </template>
 
 <script>
+
+//External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
-import { civs as allCivs, getCivById } from "../../composables/filter/civService";
-import { maps } from "../../composables/filter/mapService";
-import { seasons } from "../../composables/filter/seasonService";
-import { defaultConfig } from "../../composables/filter/defaultConfigService";
-import { strategies } from "../../composables/filter/strategyService";
-import useCollection from "../../composables/useCollection";
+
+//Components
+
+//Composables
+import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { maps } from "@/composables/filter/mapService";
+import { seasons } from "@/composables/filter/seasonService";
+import { defaultConfig } from "@/composables/filter/defaultConfigService";
+import { strategies } from "@/composables/filter/strategyService";
+import useCollection from "@/composables/useCollection";
 
 export default {
   name: "FilterConfig",

@@ -258,11 +258,18 @@
 </template>
 
 <script>
-import { civs as allCivs, getCivById } from "../../composables/filter/civService";
-import useTimeSince from "../../composables/useTimeSince";
-import { useStore } from "vuex";
+
+//External
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
+import { useStore } from "vuex";
+
+//Components
+
+//Composables
+import { civs as allCivs } from "@/composables/filter/civService";
+import useTimeSince from "@/composables/useTimeSince";
+
 
 export default {
   components: {

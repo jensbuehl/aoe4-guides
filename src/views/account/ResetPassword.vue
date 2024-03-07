@@ -42,8 +42,10 @@
 </template>
 
 <script>
+
+//External
 import { ref } from "vue";
-import { auth, sendPasswordResetEmail } from "../../firebase/index.js";
+import { auth, sendPasswordResetEmail } from "@/firebase/index.js";
 import { useRouter } from "vue-router";
 
 export default {

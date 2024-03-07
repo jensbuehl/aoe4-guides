@@ -1,3 +1,4 @@
+//External
 import axios from "axios";
 
 const API_KEY = "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY"

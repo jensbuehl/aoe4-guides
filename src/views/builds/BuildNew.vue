@@ -275,15 +275,18 @@
 </template>
 
 <script>
+
 //External
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import sanitizeHtml from "sanitize-html";
+
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import RegisterAdShort from "@/components/notifications/RegisterAdShort.vue";
 import StepsEditor from "@/components/builds/StepsEditor.vue";
+
 //Composables
 import { civs as allCivs, getCivById } from "@/composables/filter/civService";
 import { seasons } from "@/composables/filter/seasonService";

@@ -69,15 +69,18 @@
 </template>
 
 <script>
+
 //External
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
+
 //Composables
 import useCollection from "@/composables/useCollection";
 import queryService from "@/composables/useQueryService";

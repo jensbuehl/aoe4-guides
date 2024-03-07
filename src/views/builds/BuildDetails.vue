@@ -814,10 +814,12 @@
 </template>
 
 <script>
+
 //External
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+
 //components
 import Favorite from "@/components/Favorite.vue";
 import FocusMode from "@/components/builds/FocusMode.vue";
@@ -825,6 +827,7 @@ import Vote from "@/components/Vote.vue";
 import StepsEditor from "@/components/builds/StepsEditor.vue";
 import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
+
 //composables
 import useCollection from "@/composables/useCollection";
 import { civs as allCivs, getCivById } from "@/composables/filter/civService";

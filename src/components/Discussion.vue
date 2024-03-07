@@ -7,9 +7,7 @@
     <v-row align="center">
       <v-col v-if="!user" align="center" class="pa-2 ma-2">
         <div>
-          <span
-            >Would you like to leave messages for other villagers?</span
-          >
+          <span>Would you like to leave messages for other villagers?</span>
           <v-btn
             class="pb-1"
             color="primary"
@@ -59,11 +57,17 @@
 </template>
 
 <script>
-import SingleComment from "./SingleComment.vue";
-import useCollection from "../composables/useCollection";
+
+//External
 import { useStore } from "vuex";
-import queryService from "../composables/useQueryService";
 import { ref, onMounted, computed } from "vue";
+
+//Components
+import SingleComment from "@/components/SingleComment.vue";
+
+//Composables
+import useCollection from "@/composables/useCollection";
+import queryService from "@/composables/useQueryService";
 
 export default {
   name: "Discussion",

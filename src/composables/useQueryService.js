@@ -1,3 +1,4 @@
+//External
 import {
   where,
   orderBy,
@@ -5,7 +6,7 @@ import {
   endBefore,
   startAfter,
   limitToLast,
-} from "../firebase";
+} from "@/firebase";
 
 const getQueryParametersPreviousPage = (
   config,

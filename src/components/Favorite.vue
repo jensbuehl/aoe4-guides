@@ -39,8 +39,14 @@
 </template>
 
 <script>
+
+//External
 import { onMounted, ref } from "vue";
-import useCollection from "../composables/useCollection";
+
+//Components
+
+//Composables
+import useCollection from "@/composables/useCollection";
 
 export default {
   name: "Favorites",

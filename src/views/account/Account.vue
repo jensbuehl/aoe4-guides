@@ -147,6 +147,8 @@
 </template>
 
 <script>
+
+//External
 import { ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";

@@ -239,7 +239,13 @@
 </template>
 
 <script>
+
+//External
 import { ref, onMounted, onBeforeUnmount } from "vue";
+
+//Components
+
+//Composables
 
 export default {
   name: "FocusMode",

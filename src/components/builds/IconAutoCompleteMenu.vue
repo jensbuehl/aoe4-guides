@@ -43,9 +43,15 @@
 </template>
 
 <script>
+
+//External
 import { watch, ref, computed } from "vue";
-import useIconService from "../../composables/builds/useIconService.js";
 import scrollIntoView from "scroll-into-view-if-needed";
+
+//Component
+
+//Composables
+import useIconService from "@/composables/builds/useIconService.js";
 
 export default {
   name: "IconAutoCompleteMenu",

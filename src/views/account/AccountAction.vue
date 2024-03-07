@@ -63,11 +63,13 @@
 </template>
 
 <script>
+
+//External
 import { onMounted, ref } from "vue";
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
-import { auth } from "../../firebase";
+import { auth } from "@/firebase";
 import {
   applyActionCode,
   verifyPasswordResetCode,

@@ -1,3 +1,4 @@
+//External
 import { ref } from "vue";
 import {
   db,
@@ -14,7 +15,7 @@ import {
   arrayUnion,
   arrayRemove,
   getCountFromServer,
-} from "../firebase";
+} from "@/firebase";
 
 const useCollection = (col) => {
   const error = ref(null);

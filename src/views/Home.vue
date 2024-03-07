@@ -428,20 +428,23 @@
 </template>
 
 <script>
-import RegisterAd from "../components/notifications/RegisterAd.vue";
-import News from "../components/notifications/News.vue";
-import EmailVerificationAd from "../components/notifications/EmailVerificationAd.vue";
-import FilterConfig from "../components/filter/FilterConfig.vue";
-import { civs as allCivs, getCivById } from "../composables/filter/civService";
-import { featuredCreators } from "../composables/filter/featuredCreatorService";
-import { defaultConfig } from "../composables/filter/defaultConfigService";
-import BuildListCard from "../components/builds/BuildListCard.vue";
-import useCollection from "../composables/useCollection";
-import queryService from "../composables/useQueryService";
+//External
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
-import { functions } from "../firebase";
-import { httpsCallable } from "firebase/functions";
+
+//Components
+import RegisterAd from "@/components/notifications/RegisterAd.vue";
+import News from "@/components/notifications/News.vue";
+import EmailVerificationAd from "@/components/notifications/EmailVerificationAd.vue";
+import FilterConfig from "@/components/filter/FilterConfig.vue";
+import BuildListCard from "@/components/builds/BuildListCard.vue";
+
+//Composables
+import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { featuredCreators } from "@/composables/filter/featuredCreatorService";
+import { defaultConfig } from "@/composables/filter/defaultConfigService";
+import useCollection from "@/composables/useCollection";
+import queryService from "@/composables/useQueryService";
 
 export default {
   name: "Home",
@@ -462,9 +465,7 @@ export default {
     const mostRecentBuilds = computed(() => store.state.mostRecentBuilds);
     const allCreators = computed(() => store.state.creators);
     const villagerOfTheDay = ref({ loading: true });
-    const civs = allCivs.value.filter(
-      (element) => element.shortName != "ANY"
-    );
+    const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const store = useStore();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);

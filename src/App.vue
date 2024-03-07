@@ -9,10 +9,15 @@
 </template>
 
 <script>
-import Header from "./components/Header.vue";
-import Footer from "./components/Footer.vue";
+//External
 import { onBeforeMount } from "vue";
-import { useVuetify } from "./composables/useVuetify";
+
+//Components
+import Header from "@/components/Header.vue";
+import Footer from "@/components/Footer.vue";
+
+//Composables
+import { useVuetify } from "@/composables/useVuetify";
 
 export default {
   name: "App",

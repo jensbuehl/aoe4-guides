@@ -682,14 +682,17 @@
 </template>
 
 <script>
+
 //External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import sanitizeHtml from "sanitize-html";
+
 //Components
 import Favorite from "@/components/Favorite.vue";
 import StepsEditor from "@/components/builds/StepsEditor.vue";
+
 //Composables
 import useCollection from "@/composables/useCollection";
 import useBuildValidator from "@/composables/builds/useBuildValidator";

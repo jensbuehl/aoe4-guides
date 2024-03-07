@@ -66,6 +66,8 @@
 </template>
 
 <script>
+
+//External
 import { ref } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";

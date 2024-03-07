@@ -1,27 +1,27 @@
 import { createWebHistory, createRouter } from "vue-router";
 
 //account
-import Login from "../views/account/Login.vue";
-import Register from "../views/account/Register.vue";
-import Account from "../views/account/Account.vue";
-import AccountAction from "../views/account/AccountAction.vue";
-import ResetPassword from "../views/account/ResetPassword.vue";
+import Login from "@/views/account/Login.vue";
+import Register from "@/views/account/Register.vue";
+import Account from "@/views/account/Account.vue";
+import AccountAction from "@/views/account/AccountAction.vue";
+import ResetPassword from "@/views/account/ResetPassword.vue";
 
 //builds
-import Builds from '../views/builds/Builds.vue'
-import BuildDetails from "../views/builds/BuildDetails.vue";
-import BuildEdit from "../views/builds/BuildEdit.vue";
-import BuildNew from "../views/builds/BuildNew.vue";
-import BuildImport from "../views/builds/BuildImport.vue";
-import MyBuilds from "../views/builds/MyBuilds.vue";
-import MyFavorites from "../views/builds/MyFavorites.vue";
+import Builds from '@/views/builds/Builds.vue'
+import BuildDetails from "@/views/builds/BuildDetails.vue";
+import BuildEdit from "@/views/builds/BuildEdit.vue";
+import BuildNew from "@/views/builds/BuildNew.vue";
+import BuildImport from "@/views/builds/BuildImport.vue";
+import MyBuilds from "@/views/builds/MyBuilds.vue";
+import MyFavorites from "@/views/builds/MyFavorites.vue";
 
-import Home from "../views/Home.vue";
-import NotFound from "../views/NotFound.vue";
-import Privacy from "../views/Privacy.vue";
-import About from "../views/About.vue";
+import Home from "@/views/Home.vue";
+import NotFound from "@/views/NotFound.vue";
+import Privacy from "@/views/Privacy.vue";
+import About from "@/views/About.vue";
 
-import Admin from "../views/Admin.vue";
+import Admin from "@/views/Admin.vue";
 
 const routes = [
     {

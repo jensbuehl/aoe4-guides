@@ -11,7 +11,7 @@ const { getAuth } = require("firebase-admin/auth");
 
 initializeApp();
 
-const createUser = require('./createUser');
+const createUser = require('@/createUser');
 exports.createUser = createUser.createUser;
 
 exports.getUsers = onCall(() => {
