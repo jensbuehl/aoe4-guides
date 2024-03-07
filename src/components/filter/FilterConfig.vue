@@ -110,9 +110,9 @@
     <v-container class="fill-height">
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center">
-          <span v-if="!count">Gathering...</span>
-          <span v-if="count">{{ count }} build order</span
-          ><span v-if="count > 1">s</span>
+          <span v-if="loading && !count">Gathering...</span>
+          <span v-else-if="count === 1">{{ count }} build order</span
+          ><span v-else-if="count > 1">{{ count }} build orders</span>
         </v-col>
       </v-row>
     </v-container>
@@ -300,9 +300,9 @@
     <v-container class="fill-height">
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center">
-          <span v-if="!count">Gathering...</span>
-          <span v-if="count">{{ count }} build order</span
-          ><span v-if="count > 1">s</span>
+          <span v-if="loading && !count">Gathering...</span>
+          <span v-else-if="count === 1">{{ count }} build order</span
+          ><span v-else-if="count > 1">{{ count }} build orders</span>
         </v-col>
       </v-row>
     </v-container>
@@ -310,7 +310,6 @@
 </template>
 
 <script>
-
 //External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -332,10 +331,9 @@ export default {
   setup(props, context) {
     const { getAll } = useCollection("creators");
     const store = useStore();
-    const civs = allCivs.value.filter(
-      (element) => element.shortName != "ANY"
-    );
+    const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const creators = ref([]);
+    const loading = computed(() => store.state.loading);
     const count = computed(() => store.state.resultsCount);
     //Show apply when config different from state in store
     const configChanged = computed(() => {
@@ -362,7 +360,7 @@ export default {
           JSON.stringify(defaultConfig.strategies) ||
         JSON.stringify(store.state.filterConfig?.seasons) !=
           JSON.stringify(defaultConfig.seasons) ||
-          store.state.filterConfig?.orderBy != defaultConfig.orderBy
+        store.state.filterConfig?.orderBy != defaultConfig.orderBy
       );
     });
 
@@ -469,6 +467,7 @@ export default {
       selectedOrderBy,
       selectedVideoCreator,
       count,
+      loading,
       handleReset,
       handleApply,
       configChanged,

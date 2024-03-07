@@ -30,6 +30,7 @@ const store = createStore({
       drafts: false
     },
     resultsCount: 0,
+    loading: true,
     template: null,
     //cache
     creators: null,
@@ -90,6 +91,10 @@ const store = createStore({
     setResultsCount(state, payload) {
       state.resultsCount = payload;
       console.log("results count state changed:", state.resultsCount);
+    },
+    setLoading(state, payload) {
+      state.loading = payload;
+      console.log("loading state changed:", state.loading);
     },
     //Template module
     setTemplate(state, payload) {

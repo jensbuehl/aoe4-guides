@@ -102,7 +102,7 @@ export default {
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
     const count = computed(() => store.state.resultsCount);
-    const loading = ref(true);
+    const loading = computed(() => store.state.loading);
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -148,7 +148,7 @@ export default {
     };
 
     const initData = async () => {
-      loading.value = true;
+      store.commit("setLoading", true);
 
       //reset results count
       store.commit("setResultsCount", null);
@@ -210,7 +210,7 @@ export default {
       builds.value = res;
 
       updatePageBoundaries();
-      loading.value = false;
+      store.commit("setLoading", false);
     };
 
     const nextPage = async () => {
