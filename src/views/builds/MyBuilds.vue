@@ -46,6 +46,10 @@
             ></BuildListCard>
           </router-link>
         </div>
+        <div style="text-align: center" v-if="!loading && count === 0">
+          <NoFilterResults></NoFilterResults>
+        </div>
+
         <v-pagination
           v-if="paginationConfig.totalPages > 1"
           @next="nextPage"
@@ -66,7 +70,6 @@
 </template>
 
 <script>
-
 //External
 import { useStore } from "vuex";
 import { ref, computed, onMounted, watch } from "vue";
@@ -75,6 +78,7 @@ import { ref, computed, onMounted, watch } from "vue";
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
+import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
 import { defaultConfig } from "@/composables/filter/defaultConfigService";
@@ -83,7 +87,7 @@ import queryService from "@/composables/useQueryService";
 
 export default {
   name: "Builds",
-  components: { FilterConfig, BuildListCard, RegisterAd },
+  components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
   setup() {
     window.scrollTo(0, 0);
 
@@ -94,6 +98,8 @@ export default {
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
+    const count = computed(() => store.state.resultsCount);
+    const loading = ref(true);
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -139,6 +145,8 @@ export default {
     };
 
     const initData = async () => {
+      loading.value = true;
+
       //reset results count
       store.commit("setResultsCount", null);
 
@@ -167,9 +175,9 @@ export default {
       builds.value = res;
 
       //get all creators
-      if(!allCreators.value){
+      if (!allCreators.value) {
         store.commit("setCreators", await getAllCreators());
-      };
+      }
 
       //init page count, current page, and commit overall results count
       const allDocsQuery = getQuery(
@@ -187,6 +195,7 @@ export default {
       paginationConfig.value.currentPage = 1;
 
       updatePageBoundaries();
+      loading.value = false;
     };
 
     const nextPage = async () => {
@@ -239,6 +248,8 @@ export default {
     return {
       builds,
       user,
+      count,
+      loading,
       authIsReady: computed(() => store.state.authIsReady),
       paginationConfig,
       configChanged,

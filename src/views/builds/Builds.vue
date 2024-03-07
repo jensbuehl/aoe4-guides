@@ -46,12 +46,12 @@
             ></BuildListCard>
           </router-link>
         </div>
-        <div style="text-align: center" v-if="count === 0">
+        <div style="text-align: center" v-if="!loading && count === 0">
           <NoFilterResults></NoFilterResults>
         </div>
 
         <v-pagination
-          v-if="paginationConfig.totalPages > 1 && count != 0"
+          v-if="paginationConfig.totalPages > 1"
           @next="nextPage"
           @prev="previousPage"
           v-model="paginationConfig.currentPage"
@@ -69,7 +69,6 @@
 </template>
 
 <script>
-
 //External
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
@@ -101,6 +100,7 @@ export default {
     const route = useRoute();
     const router = useRouter();
     const count = computed(() => store.state.resultsCount);
+    const loading = ref(true);
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -145,6 +145,8 @@ export default {
     };
 
     const initData = async () => {
+      loading.value = true;
+
       //reset results count
       store.commit("setResultsCount", null);
 
@@ -185,6 +187,7 @@ export default {
       paginationConfig.value.currentPage = 1;
 
       updatePageBoundaries();
+      loading.value = false;
     };
 
     const nextPage = async () => {
@@ -236,6 +239,7 @@ export default {
       builds,
       user,
       count,
+      loading,
       authIsReady: computed(() => store.state.authIsReady),
       paginationConfig,
       filterAndOrderConfig,
