@@ -41,9 +41,6 @@
                   placeholder="Your user id"
                   readonly
                 ></v-text-field>
-                <v-card flat v-if="error" rounded="lg" color="error">
-                  <v-card-text>{{ error }}</v-card-text>
-                </v-card>
               </v-col>
             </v-row>
           </v-card>
@@ -62,8 +59,8 @@
               <v-col cols="12">
                 <v-card-title>Verify Email</v-card-title>
                 <v-card-text
-                  >Re-send email verification link. Verification is needed for build order
-                  notifications.</v-card-text
+                  >Re-send email verification link. Verification is needed for
+                  build order notifications.</v-card-text
                 >
               </v-col>
               <v-col cols="12">
@@ -147,7 +144,6 @@
 </template>
 
 <script>
-
 //External
 import { ref } from "vue";
 import { computed } from "vue";
@@ -162,7 +158,6 @@ export default {
     const newPassword = ref("");
     const router = useRouter();
     const store = useStore();
-    const error = ref(null);
     const form = ref(null);
     const dialog = ref(false);
     const user = computed(() => store.state.user);
@@ -178,8 +173,11 @@ export default {
         });
         router.push("/");
       } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
+        await store.dispatch("showSnackbar", {
+          text: err.message,
+          type: "error",
+        });
+        console.log(err.message);
       }
     };
 
@@ -189,8 +187,11 @@ export default {
         await store.dispatch("deleteAccount");
         router.push("/");
       } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
+        await store.dispatch("showSnackbar", {
+          text: err.message,
+          type: "error",
+        });
+        console.log(err.message);
       }
     };
 
@@ -199,8 +200,11 @@ export default {
         await store.dispatch("verifyEmail");
         router.push("/");
       } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
+        await store.dispatch("showSnackbar", {
+          text: err.message,
+          type: "error",
+        });
+        console.log(err.message);
       }
     };
 
@@ -209,12 +213,11 @@ export default {
       router,
       user,
       dialog,
-      error,
       form,
       authIsReady: computed(() => store.state.authIsReady),
       changePassword,
       deleteAccount,
-      verifyEmail
+      verifyEmail,
     };
   },
 };

@@ -2,7 +2,7 @@
   <v-app-bar
     flat
     app
-    :height="(platform.android || platform.ios) ? 60 : 100 "
+    :height="platform.android || platform.ios ? 60 : 100"
     :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.accent"
   >
     <v-container class="fill-height d-flex align-center my-0 py-0">
@@ -56,21 +56,24 @@
           <v-col cols="12">
             <v-card to="/" flat width="240">
               <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
-              <v-card-title v-if="!(platform.android || platform.ios)"
+              <v-card-title
+                v-if="!(platform.android || platform.ios)"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
                 class="title my-0 py-0"
                 >{{ title }}</v-card-title
               >
-              <v-card-title v-if="(platform.android || platform.ios)"
+              <v-card-title
+                v-if="platform.android || platform.ios"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
                 class="title mb-0 mt-1 pb-0 pt-0"
                 >{{ title }}</v-card-title
               >
-              <v-card-subtitle v-if="!(platform.android || platform.ios)"
+              <v-card-subtitle
+                v-if="!(platform.android || platform.ios)"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
@@ -332,7 +335,6 @@
 </template>
 
 <script>
-
 //External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -346,7 +348,6 @@ export default {
     const subtitle = ref("Age of Empires IV Build Orders");
     const store = useStore();
     const user = computed(() => store.state.user);
-    const error = ref(null);
     const router = useRouter();
     const { mobile, platform } = useDisplay();
     const logout = async () => {
@@ -354,8 +355,11 @@ export default {
         await store.dispatch("logout");
         router.push("/");
       } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
+        await store.dispatch("showSnackbar", {
+          text: err.message,
+          type: "error",
+        });
+        console.log(err.message);
       }
     };
 

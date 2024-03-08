@@ -27,7 +27,7 @@
                   ></v-text-field>
 
                   <v-text-field
-                  rounded="0"
+                    rounded="0"
                     v-model="password"
                     name="password"
                     label="Password"
@@ -54,9 +54,6 @@
                     color="primary"
                     >Login</v-btn
                   >
-                  <v-card flat v-if="error" rounded="lg" color="error">
-                    <v-card-text>{{ error }}</v-card-text>
-                  </v-card>
                 </v-form>
               </v-col>
             </v-row>
@@ -68,7 +65,6 @@
 </template>
 
 <script>
-
 //External
 import { ref } from "vue";
 import { useStore } from "vuex";
@@ -83,7 +79,6 @@ export default {
     const email = ref("");
     const password = ref("");
     const router = useRouter();
-    const error = ref(null);
     const form = ref(null);
 
     const login = async () => {
@@ -98,15 +93,17 @@ export default {
 
         router.push("/");
       } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
+        await store.dispatch("showSnackbar", {
+          text: err.message,
+          type: "error",
+        });
+        console.log(err.message);
       }
     };
     return {
       email,
       password,
       router,
-      error,
       form,
       login,
     };

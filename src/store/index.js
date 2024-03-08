@@ -32,7 +32,7 @@ const store = createStore({
     snackbar: {
       visible: false,
       text: null,
-      timeout: 3000,
+      timeout: 5000,
       multiline: false,
     },
     resultsCount: 0,
@@ -130,20 +130,21 @@ const store = createStore({
     },
   },
   actions: {
-
     /**
-     * Asynchronously shows a snackbar with the given text.
+     * Show a snackbar with the given text and type.
      *
-     * @param {Object} context - the context object
-     * @param {string} text - the text to be displayed in the snackbar
+     * @param {Object} context - The context for the snackbar
+     * @param {string} text - The text to display in the snackbar
+     * @param {string} type - The type of snackbar (default is "info")
+     * @return {void}
      */
-    async showSnackbar(context, text) {
-      const multiline = text.length > 50 ? true : false;
+    async showSnackbar(context, { text, type }) {
+      console.log(type);
       const snackbar = {
         visible: true,
-        multiline: multiline,
-        timeout: 3000,
+        timeout: 5000,
         text: text,
+        color: type || "info",
       };
       context.commit("setSnackbar", snackbar);
     },
@@ -158,7 +159,7 @@ const store = createStore({
       const snackbar = {
         visible: false,
         multiline: false,
-        timeout: 3000,
+        timeout: 5000,
         text: null,
       };
       context.commit("setSnackbar", snackbar);
@@ -223,7 +224,7 @@ const store = createStore({
           throw new Error("Could not signin: " + error.code);
         });
     },
-    
+
     /**
      * Logout the user and clear user data from the context.
      *
@@ -254,9 +255,9 @@ const store = createStore({
     },
 
     /**
-     * Deletes the user account which is currently logged-in, 
-     * removes user from auth database, 
-     * decrements likes on all builds, 
+     * Deletes the user account which is currently logged-in,
+     * removes user from auth database,
+     * decrements likes on all builds,
      * removes user from favorites collection, and clears the state.
      *
      * @param {Object} context - the Vuex context object

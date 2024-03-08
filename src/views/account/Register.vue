@@ -52,9 +52,6 @@
                     class="mt-2"
                     >Register</v-btn
                   >
-                  <v-card flat v-if="error" rounded="lg" color="error">
-                    <v-card-text>{{ error }}</v-card-text>
-                  </v-card>
                 </v-form>
               </v-col>
             </v-row>
@@ -83,7 +80,6 @@ export default {
     const password = ref("");
     const displayName = ref("");
     const router = useRouter();
-    const error = ref(null);
 
     const register = async () => {
       try {
@@ -98,8 +94,11 @@ export default {
 
         router.push("/");
       } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
+        await store.dispatch("showSnackbar", {
+          text: err.message,
+          type: "error",
+        });
+        console.log(err.message);
       }
     };
     return {
@@ -107,7 +106,6 @@ export default {
       password,
       displayName,
       router,
-      error,
       form,
       register,
     };

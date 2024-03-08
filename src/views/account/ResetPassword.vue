@@ -28,9 +28,6 @@
                   <v-btn variant="text" color="primary" type="submit" block
                     >Reset Password</v-btn
                   >
-                  <v-card flat v-if="error" rounded="lg" color="error">
-                    <v-card-text>{{ error }}</v-card-text>
-                  </v-card>
                 </v-form>
               </v-col>
             </v-row>
@@ -42,9 +39,9 @@
 </template>
 
 <script>
-
 //External
 import { ref } from "vue";
+import { useStore } from "vuex";
 import { auth, sendPasswordResetEmail } from "@/firebase/index.js";
 import { useRouter } from "vue-router";
 
@@ -54,8 +51,8 @@ export default {
     window.scrollTo(0, 0);
     const email = ref("");
     const router = useRouter();
-    const error = ref(null);
     const form = ref(null);
+    const store = useStore();
 
     const actionCodeSettings = {
       url: "https://aoe4guides.com/login",
@@ -68,12 +65,14 @@ export default {
         await sendPasswordResetEmail(auth, email.value, actionCodeSettings);
         router.push("/");
       } catch (err) {
-        error.value = err.message;
-        console.log(error.value);
+        await store.dispatch("showSnackbar", {
+          text: err.message,
+          type: "error",
+        });
+        console.log(err.message);
       }
     };
     return {
-      error,
       email,
       form,
       reset,

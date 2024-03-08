@@ -2,6 +2,7 @@
   <v-app id="inspire">
     <Header></Header>
     <v-main class="mt-2 mx-md-2" id="main-content">
+      <Snackbar/>
       <router-view />
     </v-main>
     <Footer></Footer>
@@ -15,13 +16,14 @@ import { onBeforeMount } from "vue";
 //Components
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import Snackbar from "@/components/notifications/Snackbar.vue";
 
 //Composables
 import { useVuetify } from "@/composables/useVuetify";
 
 export default {
   name: "App",
-  components: { Header, Footer },
+  components: { Header, Footer, Snackbar },
   setup() {
     onBeforeMount(() => {
       window
