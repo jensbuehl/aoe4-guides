@@ -135,7 +135,7 @@ export default {
       store.commit("setTemplate", template);
 
       store.dispatch("showSnackbar", {
-          text: `Build order imported successfully.,
+          text: "Build order imported successfully",
           type: "success",
         });
       router.push({ name: "BuildNew" });
