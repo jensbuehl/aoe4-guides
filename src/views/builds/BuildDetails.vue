@@ -238,9 +238,9 @@
       </v-row>
       <v-card-actions class="hidden-md-and-up">
         <Vote
-          v-if="user"
+          v-if="userData"
+          v-model="userData"
           :buildId="build.id"
-          :userId="user?.uid"
           @voteUpAdded="
             () => {
               build.upvotes++;
@@ -253,9 +253,9 @@
           "
         ></Vote>
         <Favorite
-          v-if="user"
+          v-if="userData"
+          v-model="userData"
           :buildId="build.id"
-          :userId="user?.uid"
         ></Favorite>
         <v-spacer></v-spacer>
         <v-tooltip location="top">
@@ -592,9 +592,9 @@
         >
           <v-col cols="auto" class="mr-2">
             <Vote
-              v-if="user"
+              v-if="userData"
+              v-model="userData"
               :buildId="build.id"
-              :userId="user?.uid"
               @voteUpAdded="
                 () => {
                   build.upvotes++;
@@ -610,9 +610,9 @@
           <v-col cols="auto">
             <div>
               <Favorite
-                v-if="user"
+                v-if="userData"
+                v-model="userData"
                 :buildId="build.id"
-                :userId="user?.uid"
               ></Favorite>
             </div>
             <v-tooltip location="top">
@@ -871,17 +871,23 @@ export default {
       update: updateBuild,
     } = useCollection("builds");
     const { get: getCreator } = useCollection("creators");
+    const { get: getFavorites } = useCollection("favorites");
+    const userData = ref(null);
     const loading = ref(true);
 
     onMounted(async () => {
       const resBuild = await get(props.id);
       if (resBuild) {
+        //Get creator name
         if (resBuild.creatorId) {
           const resCreator = await getCreator(resBuild.creatorId);
           creatorName.value = resCreator.creatorDisplayTitle
             ? resCreator.creatorDisplayTitle
             : resCreator.creatorTitle;
         }
+        //Get user data (favorites and likes)
+        userData.value = await getFavorites(user.value.uid);
+
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
         incrementViews(props.id);
@@ -961,6 +967,7 @@ export default {
       build,
       props,
       user,
+      userData,
       loading,
       civs,
       getCivById,

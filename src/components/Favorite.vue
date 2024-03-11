@@ -39,7 +39,6 @@
 </template>
 
 <script>
-
 //External
 import { onMounted, ref } from "vue";
 
@@ -50,27 +49,29 @@ import useCollection from "@/composables/useCollection";
 
 export default {
   name: "Favorites",
-  props: ["buildId", "userId"],
+  props: ["buildId", "modelValue"],
   emits: ["favoriteRemoved", "favoriteAdded"],
   setup(props, context) {
     const { incrementLikes, decrementLikes } = useCollection("builds");
-    const { get, add, arrayUnionLikes, arrayRemoveLikes } =
-      useCollection("favorites");
+    const { arrayUnionLikes, arrayRemoveLikes } = useCollection("favorites");
+    const userId = ref(props.modelValue?.uid);
 
     const isFavorite = ref(false);
     onMounted(async () => {
-      const user = await get(props.userId);
+      const user = props.modelValue;
+      userId.value = user?.id;
       isFavorite.value = user.favorites.includes(props.buildId);
     });
     const addToFavorites = async () => {
+      console.log(userId.value);
       incrementLikes(props.buildId);
-      arrayUnionLikes(props.userId, ...[props.buildId]);
+      arrayUnionLikes(userId.value, ...[props.buildId]);
       isFavorite.value = !isFavorite.value;
       context.emit("favoriteAdded"); //Only used for live preview
     };
     const removeFromFavorites = async () => {
       decrementLikes(props.buildId);
-      arrayRemoveLikes(props.userId, ...[props.buildId]);
+      arrayRemoveLikes(userId.value, ...[props.buildId]);
       isFavorite.value = !isFavorite.value;
       context.emit("favoriteRemoved"); //Only used for live preview
     };

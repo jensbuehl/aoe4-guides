@@ -83,7 +83,7 @@ import useCollection from "@/composables/useCollection";
 
 export default {
   name: "Favorites",
-  props: ["buildId", "userId"],
+  props: ["buildId", "modelValue"],
   emits: ["voteUpAdded", "voteUpRemoved"],
   setup(props, context) {
     const { incrementUps, decrementUps, incrementDowns, decrementDowns } =
@@ -98,9 +98,11 @@ export default {
 
     const upVote = ref(false);
     const downVote = ref(false);
+    const userId = ref(props.modelValue?.uid);
 
     onMounted(async () => {
-      const user = await get(props.userId);
+      const user = props.modelValue;
+      userId.value = user?.id;
       if (user.upvotes?.includes(props.buildId)) {
         upVote.value = user.upvotes?.includes(props.buildId);
       }
@@ -111,7 +113,7 @@ export default {
     });
     const handleAddVoteUp = async () => {
       incrementUps(props.buildId);
-      arrayUnionUps(props.userId, ...[props.buildId]);
+      arrayUnionUps(userId.value, ...[props.buildId]);
       upVote.value = !upVote.value;
       context.emit("voteUpAdded");
 
@@ -122,7 +124,7 @@ export default {
     };
     const handleAddVoteDown = async () => {
       incrementDowns(props.buildId);
-      arrayUnionDowns(props.userId, ...[props.buildId]);
+      arrayUnionDowns(userId.value, ...[props.buildId]);
       downVote.value = !downVote.value;
 
       removeUpVote();
@@ -135,7 +137,7 @@ export default {
     const removeUpVote = () => {
       if (upVote.value) {
         decrementUps(props.buildId);
-        arrayRemoveUps(props.userId, ...[props.buildId]);
+        arrayRemoveUps(userId.value, ...[props.buildId]);
         upVote.value = !upVote.value;
         context.emit("voteUpRemoved");
       }
@@ -144,7 +146,7 @@ export default {
     const removeDownVote = () => {
       if (downVote.value) {
         decrementDowns(props.buildId);
-        arrayRemoveDowns(props.userId, ...[props.buildId]);
+        arrayRemoveDowns(userId.value, ...[props.buildId]);
         downVote.value = !downVote.value;
       }
     };
