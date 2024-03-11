@@ -90,7 +90,10 @@ export default {
           email: email.value,
           password: password.value,
         });
-
+        store.dispatch("showSnackbar", {
+          text: `Logged in successfully!`,
+          type: "success",
+        });
         router.push("/");
       } catch (err) {
         await store.dispatch("showSnackbar", {

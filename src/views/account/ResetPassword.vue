@@ -63,6 +63,10 @@ export default {
         if (!validation.valid) return;
 
         await sendPasswordResetEmail(auth, email.value, actionCodeSettings);
+        store.dispatch("showSnackbar", {
+          text: `Reset email sent to ${email.value}`,
+          type: "success",
+        });
         router.push("/");
       } catch (err) {
         await store.dispatch("showSnackbar", {

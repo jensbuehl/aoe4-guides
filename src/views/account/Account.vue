@@ -171,6 +171,10 @@ export default {
         await store.dispatch("changePassword", {
           password: newPassword.value,
         });
+        store.dispatch("showSnackbar", {
+          text: `Password changed successfully!`,
+          type: "success",
+        });
         router.push("/");
       } catch (err) {
         await store.dispatch("showSnackbar", {
@@ -185,6 +189,10 @@ export default {
       try {
         dialog.value = false;
         await store.dispatch("deleteAccount");
+        store.dispatch("showSnackbar", {
+          text: `Account deleted successfully!`,
+          type: "success",
+        });
         router.push("/");
       } catch (err) {
         await store.dispatch("showSnackbar", {
@@ -198,6 +206,10 @@ export default {
     const verifyEmail = async () => {
       try {
         await store.dispatch("verifyEmail");
+        store.dispatch("showSnackbar", {
+          text: `Verification email sent!`,
+          type: "success",
+        });
         router.push("/");
       } catch (err) {
         await store.dispatch("showSnackbar", {

@@ -91,6 +91,10 @@ export default {
           password: password.value,
           displayName: displayName.value,
         });
+        store.dispatch("showSnackbar", {
+          text: `Signup email sent to ${email.value}.`,
+          type: "success",
+        });
 
         router.push("/");
       } catch (err) {

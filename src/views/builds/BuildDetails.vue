@@ -22,7 +22,9 @@
           The action cannot be undone.
         </v-card-text>
         <v-card-actions>
-          <v-btn color="error" block @click="handleDelete">Delete</v-btn>
+          <v-btn type="button" color="error" block @click="handleDelete"
+            >Delete</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -814,7 +816,6 @@
 </template>
 
 <script>
-
 //External
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
@@ -914,11 +915,19 @@ export default {
     };
 
     const handleDelete = async () => {
-      deleteDialog.value = false;
       await del(props.id);
       if (!error.value) {
-        router.go(-1);
+        store.dispatch("showSnackbar", {
+          text: `Build order deleted!`,
+          type: "success",
+        });
+
+        //workaround, since router.go(-1) does not work
+        const previousRoute = window.history.state.back;
+        console.log(window.history.state);
+        router.push(previousRoute ? previousRoute : "/");
       }
+      deleteDialog.value = false;
     };
 
     const handlePublish = async () => {
@@ -928,6 +937,10 @@ export default {
 
       //Navigate to new build order
       if (!error.value) {
+        store.dispatch("showSnackbar", {
+          text: `Draft published successfully!`,
+          type: "success",
+        });
         router.replace("/builds/" + props.id);
       }
     };

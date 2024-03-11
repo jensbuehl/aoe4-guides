@@ -139,7 +139,6 @@ const store = createStore({
      * @return {void}
      */
     async showSnackbar(context, { text, type }) {
-      console.log(type);
       const snackbar = {
         visible: true,
         timeout: 5000,

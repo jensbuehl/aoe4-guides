@@ -275,7 +275,6 @@
 </template>
 
 <script>
-
 //External
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
@@ -417,6 +416,10 @@ export default {
 
         //Navigate to new build order
         if (!error.value) {
+          await store.dispatch("showSnackbar", {
+            text: `Build order created successfully!`,
+            type: "success",
+          });
           router.replace("/builds/" + id);
         }
       }

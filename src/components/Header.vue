@@ -353,6 +353,10 @@ export default {
     const logout = async () => {
       try {
         await store.dispatch("logout");
+        store.dispatch("showSnackbar", {
+          text: `Logged out successfully!`,
+          type: "success",
+        });
         router.push("/");
       } catch (err) {
         await store.dispatch("showSnackbar", {

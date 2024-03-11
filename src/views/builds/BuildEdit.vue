@@ -812,6 +812,10 @@ export default {
 
         //Navigate to new build order
         if (!error.value) {
+          await store.dispatch("showSnackbar", {
+            text: `Build order updated successfully!`,
+            type: "success",
+          });
           router.replace("/builds/" + props.id);
         }
       }
