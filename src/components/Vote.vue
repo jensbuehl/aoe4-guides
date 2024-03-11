@@ -89,7 +89,6 @@ export default {
     const { incrementUps, decrementUps, incrementDowns, decrementDowns } =
       useCollection("builds");
     const {
-      get,
       arrayUnionUps,
       arrayRemoveUps,
       arrayUnionDowns,
