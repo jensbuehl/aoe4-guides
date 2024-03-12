@@ -81,7 +81,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
-import { defaultConfig } from "@/composables/filter/defaultConfigService";
+import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
 import useCollection from "@/composables/useCollection";
 import queryService from "@/composables/useQueryService";
 
@@ -112,7 +112,7 @@ export default {
       () => user.value,
       () => {
         if (!filterAndOrderConfig.value) {
-          store.commit("setFilterConfig", defaultConfig);
+          store.commit("setFilterConfig", getDefaultConfig());
         }
         initData();
       }
@@ -120,7 +120,7 @@ export default {
 
     onMounted(() => {
       if (!filterAndOrderConfig.value) {
-        store.commit("setFilterConfig", defaultConfig);
+        store.commit("setFilterConfig", getDefaultConfig());
       }
       if (user.value) {
         initData();

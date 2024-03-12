@@ -111,6 +111,7 @@
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center">
           <span v-if="loading && !count">Gathering...</span>
+          <span v-else-if="!count">0 build orders</span>
           <span v-else-if="count === 1">{{ count }} build order</span
           ><span v-else-if="count > 1">{{ count }} build orders</span>
         </v-col>
@@ -301,6 +302,7 @@
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center">
           <span v-if="loading && !count">Gathering...</span>
+          <span v-else-if="!count">0 build orders</span>
           <span v-else-if="count === 1">{{ count }} build order</span
           ><span v-else-if="count > 1">{{ count }} build orders</span>
         </v-col>
@@ -320,7 +322,7 @@ import { useStore } from "vuex";
 import { civs as allCivs, getCivById } from "@/composables/filter/civService";
 import { maps } from "@/composables/filter/mapService";
 import { seasons } from "@/composables/filter/seasonService";
-import { defaultConfig } from "@/composables/filter/defaultConfigService";
+import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
 import { strategies } from "@/composables/filter/strategyService";
 import useCollection from "@/composables/useCollection";
 
@@ -349,18 +351,19 @@ export default {
         selectedOrderBy.value != store.state.filterConfig?.orderBy
       );
     });
-    //Show when state config different from default
+    //Show reset when state config different from default
     const showReset = computed(() => {
+      console.log("defaultConfig", getDefaultConfig());
       return (
-        store.state.filterConfig?.civs != defaultConfig.civs ||
-        store.state.filterConfig?.creator != defaultConfig.creator ||
+        store.state.filterConfig?.civs != getDefaultConfig().civs ||
+        store.state.filterConfig?.creator != getDefaultConfig().creator ||
         JSON.stringify(store.state.filterConfig?.maps) !=
-          JSON.stringify(defaultConfig.maps) ||
+          JSON.stringify(getDefaultConfig().maps) ||
         JSON.stringify(store.state.filterConfig?.strategies) !=
-          JSON.stringify(defaultConfig.strategies) ||
+          JSON.stringify(getDefaultConfig().strategies) ||
         JSON.stringify(store.state.filterConfig?.seasons) !=
-          JSON.stringify(defaultConfig.seasons) ||
-        store.state.filterConfig?.orderBy != defaultConfig.orderBy
+          JSON.stringify(getDefaultConfig().seasons) ||
+        store.state.filterConfig?.orderBy != getDefaultConfig().orderBy
       );
     });
 
@@ -435,20 +438,20 @@ export default {
     };
 
     const handleReset = () => {
-      selectedCivs.value = defaultConfig.civs;
-      selectedVideoCreator.value = defaultConfig.creator;
-      selectedMaps.value = defaultConfig.maps;
-      selectedStrategies.value = defaultConfig.strategies;
-      selectedSeasons.value = defaultConfig.seasons;
-      selectedOrderBy.value = defaultConfig.orderBy;
+      selectedCivs.value = getDefaultConfig().civs;
+      selectedVideoCreator.value = getDefaultConfig().creator;
+      selectedMaps.value = getDefaultConfig().maps;
+      selectedStrategies.value = getDefaultConfig().strategies;
+      selectedSeasons.value = getDefaultConfig().seasons;
+      selectedOrderBy.value = getDefaultConfig().orderBy;
 
-      store.commit("setCivs", defaultConfig.civs);
-      store.commit("setCreator", defaultConfig.creator);
-      store.commit("setMaps", defaultConfig.maps);
-      store.commit("setStrategies", defaultConfig.strategies);
-      store.commit("setSeasons", defaultConfig.seasons);
-      store.commit("setOrderBy", defaultConfig.orderBy);
-      store.commit("setFilterConfig", defaultConfig);
+      store.commit("setCivs", getDefaultConfig().civs);
+      store.commit("setCreator", getDefaultConfig().creator);
+      store.commit("setMaps", getDefaultConfig().maps);
+      store.commit("setStrategies", getDefaultConfig().strategies);
+      store.commit("setSeasons", getDefaultConfig().seasons);
+      store.commit("setOrderBy", getDefaultConfig().orderBy);
+      store.commit("setFilterConfig", getDefaultConfig());
 
       context.emit("configChanged");
     };

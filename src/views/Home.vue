@@ -90,10 +90,7 @@
                           color: $vuetify.theme.current.colors.primary,
                         }"
                         class="text-subtitle-2 mx-2"
-                        style="
-                          font-family: 'Segoe UI' !important;
-                          font-size: 0.8rem !important;
-                        "
+                        style="font-size: 0.8rem !important"
                       >
                         {{ civ.title }}
                       </div>
@@ -151,7 +148,6 @@
                           color: $vuetify.theme.current.colors.primary,
                         }"
                         class="text-subtitle-2 mx-2 hidden-lg-and-up"
-                        style="font-family: 'Segoe UI' !important"
                       >
                         {{ civ.title }}
                       </div>
@@ -173,10 +169,7 @@
         </v-row>
 
         <!--featured creators xs-->
-        <div
-          class="text-h6 mt-2 mb-2 ml-4 hidden-md-and-up"
-          style="font-family: 'Segoe UI' !important"
-        >
+        <div class="text-h6 mt-2 mb-2 ml-4 hidden-md-and-up">
           Featured Creators
         </div>
         <v-row no-gutters class="hidden-md-and-up">
@@ -234,7 +227,6 @@
                               }"
                               class="text-subtitle-2 hidden-sm-and-up"
                               style="
-                                font-family: 'Segoe UI' !important;
                                 font-size: 0.8rem !important;
                               "
                             >
@@ -262,14 +254,34 @@
         </v-row>
 
         <!-- recent builds -->
+        <v-row no-gutters>
+          <div class="text-h6 mt-4 ml-4" >New Build Orders</div>
+          <v-spacer />
+          <v-tooltip>
+            <span
+              :style="{
+                color: $vuetify.theme.current.colors.primary,
+              }"
+              >Show All Recent Builds</span
+            >
+            <template v-slot:activator="{ props }">
+              <v-btn
+                class="mt-3"
+                v-bind="props"
+                variant="text"
+                color="accent"
+                prepend-icon="mdi-clock-edit-outline"
+                :to="{
+                    name: 'Builds',
+                    query: { orderBy: 'timeCreated' },
+                  }"
+                >More</v-btn
+              >
+            </template>
+          </v-tooltip>
+        </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
-            <div
-              class="text-h6 mt-4 ml-4"
-              style="font-family: 'Segoe UI' !important"
-            >
-              New Build Orders
-            </div>
             <div class="mt-2" v-for="item in mostRecentBuilds">
               <router-link
                 style="text-decoration: none"
@@ -287,14 +299,34 @@
         ></v-row>
 
         <!-- popular builds -->
+        <v-row no-gutters>
+          <div class="text-h6 mt-4 ml-4">Popular Build Orders</div>
+          <v-spacer />
+          <v-tooltip>
+            <span
+              :style="{
+                color: $vuetify.theme.current.colors.primary,
+              }"
+              >Show All Popular Builds</span
+            >
+            <template v-slot:activator="{ props }">
+              <v-btn
+                class="mt-3"
+                v-bind="props"
+                variant="text"
+                color="accent"
+                prepend-icon="mdi-trending-up"
+                :to="{
+                    name: 'Builds',
+                    query: { orderBy: 'score' },
+                  }"
+                >More</v-btn
+              >
+            </template>
+          </v-tooltip>
+        </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
-            <div
-              class="text-h6 mt-4 ml-4"
-              style="font-family: 'Segoe UI' !important"
-            >
-              Popular Build Orders
-            </div>
             <div class="mt-2" v-for="item in popularBuilds">
               <router-link
                 style="text-decoration: none"
@@ -340,12 +372,7 @@
 
         <!--featured creators sm and up-->
         <v-row no-gutters class="hidden-xs">
-          <div
-            class="text-h6 mt-4 mb-2 ml-4"
-            style="font-family: 'Segoe UI' !important"
-          >
-            Featured Creators
-          </div>
+          <div class="text-h6 mt-4 mb-2 ml-4">Featured Creators</div>
           <v-col cols="12" v-for="creator in featuredCreators">
             <v-tooltip location="top" open-delay="1000">
               <span
@@ -394,7 +421,6 @@
                                 color: $vuetify.theme.current.colors.primary,
                               }"
                               class="text-subtitle-2 ml-4 hidden-lg-and-up"
-                              style="font-family: 'Segoe UI' !important"
                             >
                               {{ creator.creatorTitle }}
                             </div>
@@ -442,7 +468,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 //Composables
 import { civs as allCivs, getCivById } from "@/composables/filter/civService";
 import { featuredCreators } from "@/composables/filter/featuredCreatorService";
-import { defaultConfig } from "@/composables/filter/defaultConfigService";
+import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
 import useCollection from "@/composables/useCollection";
 import queryService from "@/composables/useQueryService";
 
@@ -470,13 +496,12 @@ export default {
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
-    const popularConfig = ref(defaultConfig);
-    const mostRecentConfig = ref(defaultConfig);
-    const authorConfig = ref(defaultConfig);
+    const popularConfig = ref(getDefaultConfig());
+    const mostRecentConfig = ref(getDefaultConfig());
     mostRecentConfig.value.orderBy = "timeCreated";
 
     onMounted(() => {
-      store.commit("setFilterConfig", defaultConfig);
+      store.commit("setFilterConfig", getDefaultConfig());
       initData();
     });
 
