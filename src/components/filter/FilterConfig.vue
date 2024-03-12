@@ -353,7 +353,6 @@ export default {
     });
     //Show reset when state config different from default
     const showReset = computed(() => {
-      console.log("defaultConfig", getDefaultConfig());
       return (
         store.state.filterConfig?.civs != getDefaultConfig().civs ||
         store.state.filterConfig?.creator != getDefaultConfig().creator ||

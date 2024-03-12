@@ -73,8 +73,6 @@ import { useRouter } from "vue-router";
 export default {
   name: "Login",
   setup() {
-    window.scrollTo(0, 0);
-
     const store = useStore();
     const email = ref("");
     const password = ref("");

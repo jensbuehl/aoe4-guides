@@ -79,8 +79,6 @@ import {
 export default {
   name: "AccountAction",
   setup() {
-    window.scrollTo(0, 0);
-
     const route = useRoute();
     const router = useRouter();
     const store = useStore();

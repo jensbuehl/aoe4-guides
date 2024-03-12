@@ -90,8 +90,6 @@ export default {
   components: { RegisterAd },
   props: ["paste"],
   setup(props) {
-    window.scrollTo(0, 0);
-
     const { error } = useCollection("builds");
     const { convert } = useImportOverlayFormat();
     const store = useStore();

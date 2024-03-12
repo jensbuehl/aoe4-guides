@@ -135,8 +135,6 @@ import useYoutube from "@/composables/builds/useYoutube";
 export default {
   name: "Admin",
   setup() {
-    window.scrollTo(0, 0);
-
     var builds = null;
 
     const { getAll, getQuery, getSize, update } = useCollection("builds");

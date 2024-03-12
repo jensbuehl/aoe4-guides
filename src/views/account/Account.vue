@@ -153,8 +153,6 @@ import { useRouter } from "vue-router";
 export default {
   name: "Account",
   setup() {
-    window.scrollTo(0, 0);
-
     const newPassword = ref("");
     const router = useRouter();
     const store = useStore();

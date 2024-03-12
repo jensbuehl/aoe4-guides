@@ -69,8 +69,6 @@
 <script>
 export default {
   name: "About",
-  setup() {
-    window.scrollTo(0,0);
-  },
+  setup() {  },
 };
 </script>

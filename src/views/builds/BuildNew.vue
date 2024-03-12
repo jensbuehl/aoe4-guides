@@ -300,8 +300,6 @@ export default {
   name: "BuildNew",
   components: { StepsEditor, RegisterAd, RegisterAdShort },
   setup() {
-    window.scrollTo(0, 0);
-
     const { add, getQuery, getSize, error } = useCollection("builds");
     const { get: getCreator, add: addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();

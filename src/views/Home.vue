@@ -482,8 +482,6 @@ export default {
     EmailVerificationAd,
   },
   setup() {
-    window.scrollTo(0, 0);
-
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { getAll: getAllCreators, getQuery: getQueryCreators } =
       useCollection("creators");

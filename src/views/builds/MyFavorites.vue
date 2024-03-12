@@ -89,8 +89,6 @@ export default {
   name: "Builds",
   components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
   setup() {
-    window.scrollTo(0, 0);
-
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { get } = useCollection("favorites");
     const { getAll: getAllCreators, getQuery: getQueryCreators } =

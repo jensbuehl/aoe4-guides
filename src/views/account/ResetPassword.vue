@@ -47,8 +47,7 @@ import { useRouter } from "vue-router";
 
 export default {
   name: "Login",
-  setup() {
-    window.scrollTo(0, 0);
+  setup() {    
     const email = ref("");
     const router = useRouter();
     const form = ref(null);

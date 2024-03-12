@@ -849,8 +849,6 @@ export default {
   },
   props: ["id"],
   setup(props) {
-    window.scrollTo(0, 0);
-
     const store = useStore();
     const router = useRouter();
     const user = computed(() => store.state.user);
