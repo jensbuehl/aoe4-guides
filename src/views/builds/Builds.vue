@@ -83,6 +83,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 //Composables
 import useCollection from "@/composables/useCollection";
 import queryService from "@/composables/useQueryService";
+import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
 
 export default {
   name: "Builds",
@@ -108,6 +109,10 @@ export default {
     });
 
     const initQueryParameters = () => {
+      //Reset config and only apply query parameters if they are set
+      if (Object.keys(route.query).length) {
+        store.commit("setFilterConfig", getDefaultConfig());
+      };
       if (route.query.civ) {
         store.commit("setCivs", route.query.civ);
       }
@@ -116,6 +121,9 @@ export default {
       }
       if (route.query.author) {
         store.commit("setAuthor", route.query.author);
+      }
+      if (route.query.orderBy) {
+        store.commit("setOrderBy", route.query.orderBy);
       }
     };
 
