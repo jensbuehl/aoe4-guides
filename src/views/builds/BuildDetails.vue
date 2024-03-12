@@ -884,7 +884,7 @@ export default {
             : resCreator.creatorTitle;
         }
         //Get user data (favorites and likes)
-        userData.value = await getFavorites(user.value.uid);
+        userData.value = await getFavorites(user.value?.uid);
 
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
