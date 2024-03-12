@@ -1,45 +1,11 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>Contract Signed?</v-card-title>
+      <v-card-title>New Hoster, new patch!</v-card-title>
       <v-card-text
-        >Byzantines update is now live: The contracts and mercenaries are finally supported. Credits to Valdemar for reporting!<br /><br />
-        <v-row no-gutters>
-          <v-col align="center" justify="center"
-            ><v-img
-              class="icon-tech-selector"
-              src="/assets/pictures/technology_byzantines/eastern-mercenary-contract-1.png"
-            ></v-img
-          ></v-col>
-          <v-col align="center" justify="center"
-            ><v-img
-            class="icon-tech-selector"
-              src="/assets/pictures/technology_byzantines/silk-road-mercenary-contract-1.png"
-            ></v-img
-          ></v-col>
-          <v-col align="center" justify="center"
-            ><v-img
-            class="icon-tech-selector"
-              src="/assets/pictures/technology_byzantines/western-mercenary-contract-1.png"
-            ></v-img
-          ></v-col>
-          <v-col align="center" justify="center"
-            ><v-img
-            class="icon-tech-selector"
-              src="/assets/pictures/technology_byzantines/veteran-mercenaries-3.png"
-            ></v-img
-          ></v-col>
-          <v-col align="center" justify="center"
-            ><v-img
-            class="icon-tech-selector"
-              src="/assets/pictures/technology_byzantines/elite-mercenaries-4.png"
-            ></v-img
-          ></v-col>
-        </v-row><br /><br />
-        Please consider supporting the project to cover the
-        operational costs! <br /><br />
-        The funding goal for 2024 is live for olive oil and coffee! Happy
-        scouting!<br /><br />
+        >The hoster has been changed in order to cut the operational costs. The funding goal has been updated accordingly.<br /><br />
+        Along with that, a new patch has been released which inlcudes improved notifications (e.g. when logging in, when creating new build orders,...) and allows to scout all new and popular build orders from home with ease. <br /><br />
+        Thank you and happy scouting!<br /><br />
       </v-card-text>
 
       <v-row class="ma-2" no-gutters>
