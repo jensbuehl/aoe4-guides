@@ -14,6 +14,9 @@ export default {
     },
   },
   plugins: [vue(), vuetify()],
+  define: {
+    APP_VERSION: JSON.stringify(process.env.npm_package_version),
+  },
   resolve: {
     alias: [
       {

@@ -135,12 +135,12 @@
           >, and it is not endorsed by or affiliated with Microsoft.</v-col
         >
       </v-row>
+      v{{ version }}
     </v-footer>
   </div>
 </template>
 
 <script>
-
 //External
 import { useDisplay } from "vuetify";
 
@@ -148,9 +148,11 @@ export default {
   name: "Footer",
   setup() {
     const { platform } = useDisplay();
+    const version = APP_VERSION;
 
     return {
       platform,
+      version,
     };
   },
 };
