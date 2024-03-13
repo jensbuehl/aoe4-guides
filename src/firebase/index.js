@@ -53,7 +53,7 @@ if(import.meta.env.VITE_DEBUG_TOKEN){
   self.FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_DEBUG_TOKEN;
 }
 const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider("6LdUH0QlAAAAACp1EF-1DMFrPExLifPmoxZT-tko"),
+  provider: new ReCaptchaV3Provider(import.meta.env.VITE_RECAPTCHA_PROVIDER_KEY),
   isTokenAutoRefreshEnabled: true,
 });
 
