@@ -874,7 +874,15 @@ export default {
     const loading = ref(true);
 
     onMounted(async () => {
-      const resBuild = await get(props.id);
+      var resBuild = null;
+      if(props.id in store.state.cache.builds){
+        //Build found in store
+        resBuild = store.state.cache.builds[props.id];
+      }
+      else{
+        //"Build not found in store, fetching from firestore"
+        resBuild = await get(props.id);
+      }
       if (resBuild) {
         //Get creator name
         if (resBuild.creatorId) {

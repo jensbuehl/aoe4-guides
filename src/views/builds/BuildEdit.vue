@@ -739,7 +739,15 @@ export default {
     } = useYoutube();
 
     onMounted(async () => {
-      const resBuild = await getBuild(props.id);
+      var resBuild = null;
+      if(props.id in store.state.cache.builds){
+        //Build found in store
+        resBuild = store.state.cache.builds[props.id];
+      }
+      else{
+        //"Build not found in store, fetching from firestore"
+        resBuild = await getBuild(props.id);
+      }
       if (resBuild.creatorId) {
         const resCreator = await getCreator(resBuild.creatorId);
         creatorName.value = resCreator.creatorDisplayTitle
