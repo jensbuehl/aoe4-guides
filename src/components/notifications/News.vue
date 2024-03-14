@@ -1,11 +1,12 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>New Hoster, new patch!</v-card-title>
+      <v-card-title>Season 7 has arrived</v-card-title>
       <v-card-text
         >The hoster has been changed in order to cut the operational costs. The funding goal has been updated accordingly.<br /><br />
-        Along with that, a new patch has been released which inlcudes improved notifications (e.g. when logging in, when creating new build orders,...) and allows to scout all new and popular build orders from home with ease. <br /><br />
-        Thank you and happy scouting!<br /><br />
+        
+        Let the games begin and figure out the next OP build order. May the extra sheep be with you!<br /><br />
+        Thank you and happy scouting!
       </v-card-text>
 
       <v-row class="ma-2" no-gutters>
