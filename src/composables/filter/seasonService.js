@@ -2,6 +2,11 @@ import { ref } from "vue";
 
 export const seasons = ref([
   {
+    title: "Season 7",
+    tagline: "Spring Tournaments",
+    startDate: new Date(2024, 3, 20)
+  },
+  {
     title: "Season 6",
     tagline: "The Sultans Ascend",
     startDate: new Date(2023, 11, 14)
