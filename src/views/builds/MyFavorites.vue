@@ -95,7 +95,7 @@ export default {
       useCollection("creators");
     const builds = ref(null);
     const favorites = ref(null);
-    const allCreators = computed(() => store.state.creators);
+    const allCreators = computed(() => store.state.cache.creators);
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
@@ -206,6 +206,7 @@ export default {
       });
       const res = await getAll(paginationQuery);
       builds.value = res;
+      store.commit("setBuilds", res);
 
       updatePageBoundaries();
       store.commit("setLoading", false);
@@ -224,6 +225,7 @@ export default {
       );
       const res = await getAll(query);
       builds.value = res;
+      store.commit("setBuilds", res);
       getSize(query);
 
       updatePageBoundaries();
@@ -243,6 +245,7 @@ export default {
       );
       const res = await getAll(query);
       builds.value = res;
+      store.commit("setBuilds", res);
       getSize(query);
 
       updatePageBoundaries();

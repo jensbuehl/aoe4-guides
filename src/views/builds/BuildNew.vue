@@ -395,6 +395,7 @@ export default {
 
         //Add build order document
         const id = await add(build.value);
+        store.commit("setBuild", build.value);
 
         if (build.value.video) {
           //Add content creator document

@@ -483,12 +483,11 @@ export default {
   },
   setup() {
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { getAll: getAllCreators, getQuery: getQueryCreators } =
+    const { getAll: getAllCreators } =
       useCollection("creators");
-    const popularBuilds = computed(() => store.state.popularBuilds);
-    const mostRecentBuilds = computed(() => store.state.mostRecentBuilds);
-    const allCreators = computed(() => store.state.creators);
-    const villagerOfTheDay = ref({ loading: true });
+    const popularBuilds = computed(() => store.state.cache.popularBuilds);
+    const mostRecentBuilds = computed(() => store.state.cache.mostRecentBuilds);
+    const allCreators = computed(() => store.state.cache.creators);
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const store = useStore();
     const count = computed(() => store.state.resultsCount);
@@ -525,7 +524,9 @@ export default {
         const mostRecentQuery = getQuery(
           queryService.getQueryParametersFromConfig(mostRecentConfig.value, 5)
         );
-        store.commit("setMostRecentBuilds", await getAll(mostRecentQuery));
+        const recentBuilds = await getAll(mostRecentQuery)
+        store.commit("setMostRecentBuilds", recentBuilds);
+        store.commit("setBuilds", recentBuilds);
       }
 
       //get popular
@@ -533,8 +534,11 @@ export default {
         const popularBuildsQuery = getQuery(
           queryService.getQueryParametersFromConfig(popularConfig.value, 5)
         );
-        store.commit("setPopularBuilds", await getAll(popularBuildsQuery));
+        const popularBuilds = await getAll(popularBuildsQuery)
+        store.commit("setPopularBuilds", popularBuilds);
+        store.commit("setBuilds", popularBuilds);
       }
+
 
       //get all creators
       if (!allCreators.value) {
@@ -558,7 +562,6 @@ export default {
       popularBuilds,
       featuredCreators,
       getCreatorNameFromId,
-      villagerOfTheDay,
     };
   },
 };

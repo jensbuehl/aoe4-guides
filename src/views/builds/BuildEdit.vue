@@ -793,6 +793,7 @@ export default {
 
         //Update build order document
         await updateBuild(props.id, build.value);
+        store.commit("setBuild", build.value);
 
         if (build.value.video) {
           //Add content creator document

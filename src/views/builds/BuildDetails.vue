@@ -922,6 +922,7 @@ export default {
 
     const handleDelete = async () => {
       await del(props.id);
+      store.commit("removeBuild", props.id);
       if (!error.value) {
         store.dispatch("showSnackbar", {
           text: `Build order deleted!`,
@@ -930,7 +931,6 @@ export default {
 
         //workaround, since router.go(-1) does not work
         const previousRoute = window.history.state.back;
-        console.log(window.history.state);
         router.push(previousRoute ? previousRoute : "/");
       }
       deleteDialog.value = false;

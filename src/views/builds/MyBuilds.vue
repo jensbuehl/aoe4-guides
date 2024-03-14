@@ -92,7 +92,7 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { getAll: getAllCreators } = useCollection("creators");
     const builds = ref(null);
-    const allCreators = computed(() => store.state.creators);
+    const allCreators = computed(() => store.state.cache.creators);
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
@@ -171,6 +171,7 @@ export default {
       });
       const res = await getAll(paginationQuery);
       builds.value = res;
+      store.commit("setBuilds", res);
 
       //get all creators
       if (!allCreators.value) {
@@ -208,6 +209,7 @@ export default {
       );
       const res = await getAll(query);
       builds.value = res;
+      store.commit("setBuilds", res);
       getSize(query);
 
       updatePageBoundaries();
@@ -226,6 +228,7 @@ export default {
       );
       const res = await getAll(query);
       builds.value = res;
+      store.commit("setBuilds", res);
       getSize(query);
 
       updatePageBoundaries();

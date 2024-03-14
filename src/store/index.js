@@ -17,8 +17,15 @@ import { httpsCallable } from "firebase/functions";
 
 const store = createStore({
   state: {
+    //general
+    loading: true,
+    resultsCount: 0,
+    //user
     user: null,
     authIsReady: false,
+    //template
+    template: null,
+    //filter configuration
     filterConfig: {
       creator: null,
       author: null,
@@ -29,20 +36,23 @@ const store = createStore({
       orderBy: "score",
       drafts: false,
     },
+    //snackbar
     snackbar: {
       visible: false,
       text: null,
       timeout: 5000,
       multiline: false,
     },
-    resultsCount: 0,
-    loading: true,
-    template: null,
     //cache
-    creators: null,
-    popularBuilds: Array(5).fill({ loading: true }),
-    mostRecentBuilds: Array(5).fill({ loading: true }),
-    villagerOfTheDay: null,
+    cache: {
+      creators: null,
+      builds: {},
+      popularBuilds: Array(5).fill({ loading: true }),
+      mostRecentBuilds: Array(5).fill({ loading: true }),
+      allBuildsList: {},
+      myBuildsList: {},
+      myFavoritesList: {},
+    }
   },
   mutations: {
     //User module
@@ -108,22 +118,42 @@ const store = createStore({
       console.log("template state changed:", state.template);
     },
     //Cache module
+    setBuild(state, payload) {
+      state.cache.builds[payload.id] = payload;
+      console.log("cache.builds updated. The following build has been added:", payload);
+    },
+    removeBuild(state, payload) {
+      delete state.cache.builds[payload];
+      console.log("cache.builds updated. The following build has been removed:", payload);
+    },
+    setBuilds(state, payload) {
+
+      for (const build of payload) {
+        state.cache.builds[build.id] = build;
+        console.log("cache.builds updated. The following build has been added:", build);
+      }
+
+      payload.forEach(build => {
+        state.cache.builds[build.id] = build;
+      });
+    },
     setCreators(state, payload) {
-      state.creators = payload;
-      console.log("creators state changed:", state.creators);
+      state.cache.creators = payload;
+      console.log("cache.creators state changed:", state.cache.creators);
     },
     setMostRecentBuilds(state, payload) {
-      state.mostRecentBuilds = payload;
-      console.log("mostRecentBuilds state changed:", state.mostRecentBuilds);
+      state.cache.mostRecentBuilds = payload;
+      console.log("mostRecentBuilds state changed:", state.cache.mostRecentBuilds);
     },
     setPopularBuilds(state, payload) {
-      state.popularBuilds = payload;
-      console.log("popularBuilds state changed:", state.popularBuilds);
+      state.cache.popularBuilds = payload;
+      console.log("popularBuilds state changed:", state.cache.popularBuilds);
     },
     addCreator(state, payload) {
-      state.creators.push(payload);
-      console.log("creators state changed:", state.creators);
+      state.cache.creators.push(payload);
+      console.log("cache.creators state changed:", state.cache.creators);
     },
+    //Snackbar module
     setSnackbar(state, payload) {
       state.snackbar = payload;
       console.log("snackbar state changed:", state.snackbar);
