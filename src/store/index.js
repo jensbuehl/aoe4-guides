@@ -47,11 +47,11 @@ const store = createStore({
     cache: {
       creators: null,
       builds: {},
-      popularBuilds: Array(5).fill({ loading: true }),
-      mostRecentBuilds: Array(5).fill({ loading: true }),
-      allBuildsList: {},
-      myBuildsList: {},
-      myFavoritesList: {},
+      popularBuildsList: Array(5).fill({ loading: true }),
+      recentBuildsList: Array(5).fill({ loading: true }),
+      allBuildsList: null,
+      myBuildsList: null,
+      myFavoritesList: null,
     }
   },
   mutations: {
@@ -141,13 +141,25 @@ const store = createStore({
       state.cache.creators = payload;
       console.log("cache.creators state changed:", state.cache.creators);
     },
-    setMostRecentBuilds(state, payload) {
-      state.cache.mostRecentBuilds = payload;
-      console.log("mostRecentBuilds state changed:", state.cache.mostRecentBuilds);
+    setRecentBuildsList(state, payload) {
+      state.cache.recentBuildsList = payload;
+      console.log("recentBuildsList state changed:", state.cache.recentBuildsList);
     },
-    setPopularBuilds(state, payload) {
-      state.cache.popularBuilds = payload;
-      console.log("popularBuilds state changed:", state.cache.popularBuilds);
+    setPopularBuildsList(state, payload) {
+      state.cache.popularBuildsList = payload;
+      console.log("popularBuildsList state changed:", state.cache.popularBuildsList);
+    },
+    setMyFavoritesList(state, payload) {
+      state.cache.myFavoritesList = payload;
+      console.log("myFavoritesList state changed:", state.cache.myFavoritesList);
+    },
+    setMyBuildsList(state, payload) {
+      state.cache.myBuildsList = payload;
+      console.log("myBuildsList state changed:", state.cache.myBuildsList);
+    },
+    setAllBuildsList(state, payload) {
+      state.cache.allBuildsList = payload;
+      console.log("allBuildsList state changed:", state.cache.allBuildsList);
     },
     addCreator(state, payload) {
       state.cache.creators.push(payload);

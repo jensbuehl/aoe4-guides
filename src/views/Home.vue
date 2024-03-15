@@ -282,7 +282,7 @@
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
-            <div class="mt-2" v-for="item in mostRecentBuilds">
+            <div class="mt-2" v-for="item in recentBuildsList">
               <router-link
                 style="text-decoration: none"
                 :to="{
@@ -327,7 +327,7 @@
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
-            <div class="mt-2" v-for="item in popularBuilds">
+            <div class="mt-2" v-for="item in popularBuildsList">
               <router-link
                 style="text-decoration: none"
                 :to="{
@@ -485,8 +485,8 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { getAll: getAllCreators } =
       useCollection("creators");
-    const popularBuilds = computed(() => store.state.cache.popularBuilds);
-    const mostRecentBuilds = computed(() => store.state.cache.mostRecentBuilds);
+    const popularBuildsList = computed(() => store.state.cache.popularBuildsList);
+    const recentBuildsList = computed(() => store.state.cache.recentBuildsList);
     const allCreators = computed(() => store.state.cache.creators);
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const store = useStore();
@@ -520,23 +520,23 @@ export default {
       store.commit("setResultsCount", null);
 
       //get most recent
-      if (mostRecentBuilds.value[0].loading) {
+      if (recentBuildsList.value[0].loading) {
         const mostRecentQuery = getQuery(
           queryService.getQueryParametersFromConfig(mostRecentConfig.value, 5)
         );
         const recentBuilds = await getAll(mostRecentQuery)
-        store.commit("setMostRecentBuilds", recentBuilds);
+        store.commit("setRecentBuildsList", recentBuilds);
         store.commit("setBuilds", recentBuilds);
       }
 
       //get popular
-      if (popularBuilds.value[0].loading) {
+      if (popularBuildsList.value[0].loading) {
         const popularBuildsQuery = getQuery(
           queryService.getQueryParametersFromConfig(popularConfig.value, 5)
         );
-        const popularBuilds = await getAll(popularBuildsQuery)
-        store.commit("setPopularBuilds", popularBuilds);
-        store.commit("setBuilds", popularBuilds);
+        const popularBuildsList = await getAll(popularBuildsQuery)
+        store.commit("setPopularBuildsList", popularBuildsList);
+        store.commit("setBuilds", popularBuildsList);
       }
 
 
@@ -558,8 +558,8 @@ export default {
       authIsReady: computed(() => store.state.authIsReady),
       civs,
       count,
-      mostRecentBuilds,
-      popularBuilds,
+      recentBuildsList,
+      popularBuildsList,
       featuredCreators,
       getCreatorNameFromId,
     };
