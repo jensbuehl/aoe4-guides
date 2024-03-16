@@ -5,7 +5,8 @@
         authIsReady &&
         user &&
         (user.uid === 'beJM1k8sm8TVm5fHQZfKUniL8Hp1' ||
-          user.uid === '6mzuhMzRCySxaFcaSrXamwHjVm02')
+          user.uid === '6mzuhMzRCySxaFcaSrXamwHjVm02' ||
+          user.uid === 'zZqq3rZZJZdKPN5TFWBr6jNzJRS2')
       "
       class="d-flex justify-center"
     >
@@ -65,52 +66,11 @@
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
                 <v-btn
-                  disabled
                   color="primary"
                   variant="text"
-                  @click="addIsDraftProperty()"
-                  >Add isDraft property</v-btn
+                  @click="processBuilds()"
+                  >Inline Creator Names</v-btn
                 >
-                <div class="ml-4 mb-3">
-                  Create isDraft field in all build orders. Defaults to false.
-                </div>
-                <v-divider></v-divider>
-                <v-btn
-                  disabled
-                  color="primary"
-                  variant="text"
-                  @click="createCreatorsCollection()"
-                  >Create creators collection</v-btn
-                >
-                <div class="ml-4 mb-3">
-                  Create creators collection based on creatorIds in build
-                  orders.
-                </div>
-                <v-divider></v-divider>
-                <v-btn
-                  disabled
-                  color="primary"
-                  variant="text"
-                  @click="rewriteImages()"
-                  >Re-write images in build step</v-btn
-                >
-                <div class="ml-4 mb-3">
-                  Re-writes all images that are included in the build step
-                  description. E.g. add tooltips to all existing images or
-                  update icons to color-coded variants.
-                </div>
-                <v-divider></v-divider>
-                <v-btn
-                  disabled
-                  color="primary"
-                  variant="text"
-                  @click="sanitizeVideoPaths()"
-                  >Sanitize video and Extract Creator</v-btn
-                >
-                <div class="ml-4 mb-3">
-                  Validate video URLs, extract video id and re-write embed URL.
-                  Extract video creator ID and update build accordingly.
-                </div>
               </v-col>
             </v-row>
           </v-card>
@@ -128,9 +88,6 @@ import { ref, computed, onMounted } from "vue";
 import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
 import useCollection from "@/composables/useCollection";
 import queryService from "@/composables/useQueryService";
-import useImportOverlayFormat from "@/composables/converter/useImportOverlayFormat";
-import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
-import useYoutube from "@/composables/builds/useYoutube";
 
 export default {
   name: "Admin",
@@ -138,127 +95,50 @@ export default {
     var builds = null;
 
     const { getAll, getQuery, getSize, update } = useCollection("builds");
-    const { get: getCreator, add: addCreator } = useCollection("creators");
-    const { convertNotes } = useImportOverlayFormat();
-    const { convertDescription } = useExportOverlayFormat();
+    const creators = computed(() => store.state.cache.creators);
     const error = ref(null);
-    const buildsCount = ref(null);
     const store = useStore();
-    const filterAndOrderConfig = computed(() => store.state.filterConfig);
+    const filterConfig = computed(() => store.state.filterConfig);
     const user = computed(() => store.state.user);
-    const {
-      extractVideoId,
-      buildEmbedUrl,
-      getVideoCreatorId,
-      getVideoMetaData,
-    } = useYoutube();
 
     onMounted(() => {
-      if (!filterAndOrderConfig.value) {
+      if (!filterConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
       initData();
     });
 
-    const updateDescription = (description) => {
-      //roundtrip export/re-import to update entire description
-      const notes = convertDescription(description);
-      const migrated = convertNotes(notes);
-      return migrated;
-    };
-
-    const rewriteImagesUpdateBuild = async (build) => {
-      if (build.steps.getSize > 0) console.log("Steps: \n" + build.steps);
-
-      //Update step descriptions
-      build.steps?.forEach((element) => {
-        console.log("Description (before): \n" + element.description);
-        element.description = updateDescription(element.description);
-        console.log("Description (after): \n" + element.description);
+    const processBuilds = () => {
+      builds.forEach((build, index) => {
+        setTimeout(() => {
+          inlineCreatorName(build);
+        }, index * 1000);
       });
-
-      //Save to database
-      if (!error.value) {
-        await update(build.id, build);
-      }
     };
 
-    const createCreatorsCollection = async () => {
-      const buildsWithVideo = builds.filter((element) => element.video);
+    const inlineCreatorName = async (element) => {
+      console.log("Build id:", element.id);
 
-      for (const element of buildsWithVideo) {
-        console.log("Build id:", element.id);
-
-        //Get creator document
-        const creatorDoc = await getVideoMetaData(
-          extractVideoId(element.video)
-        );
-        console.log("Creator document:", creatorDoc);
-
-        //Add content creator document
-        const res = await getCreator(creatorDoc.creatorId);
-        console.log(creatorDoc);
-        if (!res) {
-          await addCreator(creatorDoc, creatorDoc.creatorId);
-        }
-      }
-    };
-
-    const addIsDraftProperty = () => {
-      console.log("Builds count:", buildsCount.value);
-
-      for (const build of builds) {
-        console.log("Build:", build.id);
-
-        //Add field
-        build.isDraft = false;
+      if (element.creatorId) {
+        //TODO: Get creator name and write to document
 
         //Save to database
-        update(build.id, build);
-      }
-    };
-
-    const rewriteImages = () => {
-      console.log("Builds count:", buildsCount.value);
-
-      builds.forEach((element) => {
-        console.log("Build:", element.id);
-        rewriteImagesUpdateBuild(element);
-      });
-    };
-
-    const sanitizeVideoPaths = async () => {
-      const buildsWithVideo = builds.filter((element) => element.video);
-
-      for (const element of buildsWithVideo) {
-        console.log("Build id:", element.id);
-
-        //update video url
-        element.video = buildEmbedUrl(extractVideoId(element.video));
-        console.log("clean url:", element.video);
-
-        if (!element.creatorId) {
-          element.creatorId = await getVideoCreatorId(
-            extractVideoId(element.video)
-          );
-          console.log(element.creatorId);
-
-          //Save to database
-          update(element.id, element);
-        }
+        update(element.id, element);
       }
     };
 
     const initData = async () => {
-      //get builds
+      //get all builds
       const allDocuments = getQuery(
-        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
+        queryService.getQueryParametersFromConfig(filterConfig.value)
       );
 
-      buildsCount.value = await getSize(allDocuments);
+      console.log(await getSize(allDocuments));
 
-      const res = await getAll(allDocuments);
-      builds = res;
+      //TODO: get all builds that contain a creatorId
+      //TODO: use limit for testing to not pull hundreds of documents!
+      //const res = await getAll(allDocuments);
+      //builds = res;
     };
 
     return {
@@ -266,10 +146,7 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       error,
-      rewriteImages,
-      addIsDraftProperty,
-      sanitizeVideoPaths,
-      createCreatorsCollection,
+      processBuilds,
     };
   },
 };
