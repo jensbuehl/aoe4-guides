@@ -433,6 +433,12 @@ export default {
       store.commit("setStrategies", selectedStrategies.value);
       store.commit("setSeasons", selectedSeasons.value);
       store.commit("setOrderBy", selectedOrderBy.value);
+
+      //reset cache
+      store.commit("setAllBuildsList", null);
+      store.commit("setMyBuildsList", null);
+      store.commit("setMyFavoritesList", null);
+
       context.emit("configChanged");
     };
 
@@ -451,6 +457,11 @@ export default {
       store.commit("setSeasons", getDefaultConfig().seasons);
       store.commit("setOrderBy", getDefaultConfig().orderBy);
       store.commit("setFilterConfig", getDefaultConfig());
+
+      //reset cache
+      store.commit("setAllBuildsList", null);
+      store.commit("setMyBuildsList", null);
+      store.commit("setMyFavoritesList", null);
 
       context.emit("configChanged");
     };

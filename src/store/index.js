@@ -130,12 +130,8 @@ const store = createStore({
 
       for (const build of payload) {
         state.cache.builds[build.id] = build;
-        console.log("cache.builds updated. The following build has been added:", build);
       }
-
-      payload.forEach(build => {
-        state.cache.builds[build.id] = build;
-      });
+      console.log("cache.builds updated:", payload);
     },
     setCreators(state, payload) {
       state.cache.creators = payload;

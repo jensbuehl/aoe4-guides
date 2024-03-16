@@ -154,7 +154,7 @@ export default {
       //reset author filter
       store.commit("setAuthor", null);
 
-      //get builds that match the filter
+      //get builds query
       const paginationQuery = getQuery(
         queryService.getQueryParametersFromConfig(
           filterAndOrderConfig.value,
@@ -169,7 +169,16 @@ export default {
       builds.value = Array(currentPageSize).fill({
         loading: true,
       });
-      const res = await getAll(paginationQuery);
+
+      //get builds
+      var res = null;
+      if (store.state.cache.allBuildsList) {
+        console.log("loading from cache"); 
+        res = store.state.cache.allBuildsList;
+      } else {
+        res = await getAll(paginationQuery);
+        store.commit("setAllBuildsList", res);
+      }
       builds.value = res;
       store.commit("setBuilds", res);
 
@@ -199,6 +208,12 @@ export default {
 
     const nextPage = async () => {
       console.log("page changed to:", paginationConfig.value.currentPage);
+
+      //reset cache
+      store.commit("setAllBuildsList", null);
+      store.commit("setMyBuildsList", null);
+      store.commit("setMyFavoritesList", null);
+
       const query = getQuery(
         queryService.getQueryParametersNextPage(
           filterAndOrderConfig.value,
@@ -218,6 +233,12 @@ export default {
 
     const previousPage = async () => {
       console.log("page changed to:", paginationConfig.value.currentPage);
+
+      //reset cache
+      store.commit("setAllBuildsList", null);
+      store.commit("setMyBuildsList", null);
+      store.commit("setMyFavoritesList", null);
+      
       const query = getQuery(
         queryService.getQueryParametersPreviousPage(
           filterAndOrderConfig.value,
