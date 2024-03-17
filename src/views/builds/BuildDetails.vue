@@ -70,12 +70,12 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId && creatorName"
+              v-if="build.creatorId"
               label
               color="accent"
               size="x-small"
               ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ creatorName }}</v-chip
+              >{{ build.creatorName }}</v-chip
             >
             <v-chip
               color="accent"
@@ -169,12 +169,12 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId && creatorName"
+              v-if="build.creatorId"
               label
               color="accent"
               size="small"
               ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ creatorName }}</v-chip
+              >{{ build.creatorName }}</v-chip
             >
             <v-chip
               color="accent"
@@ -518,12 +518,12 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId && creatorName"
+              v-if="build.creatorId"
               label
               color="accent"
               size="small"
               ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ creatorName }}</v-chip
+              >{{ build.creatorName }}</v-chip
             >
             <v-chip
               color="accent"
@@ -856,7 +856,6 @@ export default {
     const build = ref(null);
     const deleteDialog = ref(false);
     const focusDialog = ref(false);
-    const creatorName = ref("");
     const { convert } = useExportOverlayFormat();
     const { copyToClipboard } = useCopyToClipboard();
     const { download } = useDownload();
@@ -868,7 +867,6 @@ export default {
       error,
       update: updateBuild,
     } = useCollection("builds");
-    const { get: getCreator } = useCollection("creators");
     const { get: getFavorites } = useCollection("favorites");
     const userData = ref(null);
     const loading = ref(true);
@@ -884,13 +882,6 @@ export default {
         resBuild = await get(props.id);
       }
       if (resBuild) {
-        //Get creator name
-        if (resBuild.creatorId) {
-          const resCreator = await getCreator(resBuild.creatorId);
-          creatorName.value = resCreator.creatorDisplayTitle
-            ? resCreator.creatorDisplayTitle
-            : resCreator.creatorTitle;
-        }
         //Get user data (favorites and likes)
         if(user.value){
           userData.value = await getFavorites(user.value.uid);
@@ -990,7 +981,6 @@ export default {
       handleDownloadOverlayFormat,
       timeSince,
       isNew,
-      creatorName,
     };
   },
 };

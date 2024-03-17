@@ -391,6 +391,9 @@ export default {
         if (!build.value.creatorId && build.value.video) {
           const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
+          build.value.creatorName = (
+          await getVideoMetaData(videoId)
+        ).creatorTitle;
         }
 
         //Add build order document
@@ -403,13 +406,11 @@ export default {
             extractVideoId(build.value.video)
           );
           const res = await getCreator(creatorDoc.creatorId);
-          console.log(creatorDoc);
           if (!res) {
             creatorDoc.creatorImage = await getChannelIcon(
               creatorDoc.creatorId
             );
             await addCreator(creatorDoc, creatorDoc.creatorId);
-            store.commit("addCreator", creatorDoc);
           }
         }
 
@@ -464,7 +465,11 @@ export default {
         const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
+        build.value.creatorName = (
+          await getVideoMetaData(videoId)
+        ).creatorTitle;
       } else {
+        build.value.creatorName = "";
         build.value.creatorId = "";
       }
     };

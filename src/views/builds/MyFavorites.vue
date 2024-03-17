@@ -42,7 +42,6 @@
           >
             <BuildListCard
               :build="item"
-              :creatorName="getCreatorName(item.creatorId)"
             ></BuildListCard>
           </router-link>
         </div>
@@ -91,11 +90,8 @@ export default {
   setup() {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { get } = useCollection("favorites");
-    const { getAll: getAllCreators, getQuery: getQueryCreators } =
-      useCollection("creators");
     const builds = ref(null);
     const favorites = ref(null);
-    const allCreators = computed(() => store.state.cache.creators);
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterAndOrderConfig = computed(() => store.state.filterConfig);
@@ -139,19 +135,6 @@ export default {
       initData();
     };
 
-    const getCreatorName = (id) => {
-      if (allCreators.value) {
-        const currentCreator = allCreators.value.find(
-          (element) => element.id === id
-        );
-        if (currentCreator) {
-          return currentCreator.creatorDisplayTitle
-            ? currentCreator.creatorDisplayTitle
-            : currentCreator.creatorTitle;
-        }
-      }
-    };
-
     const initData = async () => {
       store.commit("setLoading", true);
 
@@ -169,11 +152,6 @@ export default {
       if (!favorites.value.length > 0) {
         builds.value = null;
         return;
-      }
-
-      //get all creators
-      if (!allCreators.value) {
-        store.commit("setCreators", await getAllCreators());
       }
 
       //init page count and current page
@@ -293,7 +271,6 @@ export default {
       configChanged,
       nextPage,
       previousPage,
-      getCreatorName,
     };
   },
 };

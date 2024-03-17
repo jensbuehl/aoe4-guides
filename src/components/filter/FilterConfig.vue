@@ -320,21 +320,20 @@ import { useStore } from "vuex";
 
 //Composables
 import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { featuredCreators } from "@/composables/filter/featuredCreatorService";
 import { maps } from "@/composables/filter/mapService";
 import { seasons } from "@/composables/filter/seasonService";
 import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
 import { strategies } from "@/composables/filter/strategyService";
-import useCollection from "@/composables/useCollection";
 
 export default {
   name: "FilterConfig",
   inheritAttrs: false,
   emits: ["configChanged"],
   setup(props, context) {
-    const { getAll } = useCollection("creators");
     const store = useStore();
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
-    const creators = ref([]);
+    const creators = featuredCreators;
     const loading = computed(() => store.state.loading);
     const count = computed(() => store.state.resultsCount);
     //Show apply when config different from state in store
@@ -366,23 +365,6 @@ export default {
       );
     });
 
-    onMounted(async () => {
-      creators.value = await getAll();
-      creators.value.sort(sortByNameCompareFunction);
-    });
-
-    const sortByNameCompareFunction = (a, b) => {
-      var nameA = getCreatorName(a.creatorId).toUpperCase();
-      var nameB = getCreatorName(b.creatorId).toUpperCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-      return 0;
-    };
-
     const sortOptions = ref([
       {
         title: "Popularity",
@@ -405,19 +387,6 @@ export default {
         id: "sortTitle",
       },
     ]);
-
-    const getCreatorName = (id) => {
-      if (creators.value) {
-        const currentCreator = creators.value.find(
-          (element) => element.id === id
-        );
-        if (currentCreator) {
-          return currentCreator.creatorDisplayTitle
-            ? currentCreator.creatorDisplayTitle
-            : currentCreator.creatorTitle;
-        }
-      } else "";
-    };
 
     const selectedCivs = ref(store.state.filterConfig?.civs);
     const selectedVideoCreator = ref(store.state.filterConfig?.creator);
@@ -484,7 +453,6 @@ export default {
       handleReset,
       handleApply,
       configChanged,
-      getCreatorName,
       showReset,
     };
   },

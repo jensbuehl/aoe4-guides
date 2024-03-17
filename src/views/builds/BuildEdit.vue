@@ -35,12 +35,12 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId && creatorName"
+              v-if="build.creatorId && build.creatorName"
               label
               color="accent"
               size="x-small"
               ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ creatorName }}</v-chip
+              >{{ build.creatorName }}</v-chip
             >
             <v-chip
               color="accent"
@@ -126,12 +126,12 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId && creatorName"
+              v-if="build.creatorId && build.creatorName"
               label
               color="accent"
               size="small"
               ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ creatorName }}</v-chip
+              >{{ build.creatorName }}</v-chip
             >
             <v-chip
               color="accent"
@@ -318,13 +318,8 @@
         no-gutters
         class="fill-height d-flex flex-nowrap hidden-sm-and-down"
       >
-        <v-col
-          cols="2"
-          md="4"
-          lg="3"
-          class="pa-0 ma-0 d-flex flex-column"
-        >
-        <v-img
+        <v-col cols="2" md="4" lg="3" class="pa-0 ma-0 d-flex flex-column">
+          <v-img
             v-if="build.civ && build.civ != 'ANY'"
             :src="
               '/' +
@@ -397,12 +392,12 @@
             >
             <v-chip
               class="mr-2 mb-2"
-              v-if="build.creatorId && creatorName"
+              v-if="build.creatorId && build.creatorName"
               label
               color="accent"
               size="small"
               ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ creatorName }}</v-chip
+              >{{ build.creatorName }}</v-chip
             >
             <v-chip
               color="accent"
@@ -682,7 +677,6 @@
 </template>
 
 <script>
-
 //External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
@@ -714,10 +708,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const user = computed(() => store.state.user);
-    const civs = allCivs.value.filter(
-      (element) => element.shortName != "ANY"
-    );
-    const creatorName = ref("");
+    const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const build = ref(null);
     const { convert } = useExportOverlayFormat();
     const { copyToClipboard } = useCopyToClipboard();
@@ -735,24 +726,17 @@ export default {
       buildEmbedUrl,
       getVideoCreatorId,
       getVideoMetaData,
-      getChannelIcon
+      getChannelIcon,
     } = useYoutube();
 
     onMounted(async () => {
       var resBuild = null;
-      if(props.id in store.state.cache.builds){
+      if (props.id in store.state.cache.builds) {
         //Build found in store
         resBuild = store.state.cache.builds[props.id];
-      }
-      else{
+      } else {
         //"Build not found in store, fetching from firestore"
         resBuild = await getBuild(props.id);
-      }
-      if (resBuild.creatorId) {
-        const resCreator = await getCreator(resBuild.creatorId);
-        creatorName.value = resCreator.creatorDisplayTitle
-          ? resCreator.creatorDisplayTitle
-          : resCreator.creatorTitle;
       }
 
       build.value = resBuild;
@@ -797,6 +781,9 @@ export default {
         if (!build.value.creatorId && build.value.video) {
           const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
+          build.value.creatorName = (
+          await getVideoMetaData(videoId)
+        ).creatorTitle;
         }
 
         //Update build order document
@@ -809,11 +796,11 @@ export default {
             extractVideoId(build.value.video)
           );
           const res = await getCreator(creatorDoc.creatorId);
-          console.log(creatorDoc);
           if (!res) {
-            creatorDoc.creatorImage = await getChannelIcon(creatorDoc.creatorId);
+            creatorDoc.creatorImage = await getChannelIcon(
+              creatorDoc.creatorId
+            );
             await addCreator(creatorDoc, creatorDoc.creatorId);
-            store.commit("addCreator", creatorDoc);
           }
         }
 
@@ -828,33 +815,33 @@ export default {
       }
     };
 
-    const sanitizeSteps = () => {  
-      build.value.steps.forEach(function(stepCollection){
+    const sanitizeSteps = () => {
+      build.value.steps.forEach(function (stepCollection) {
         stepCollection.steps.forEach(function (step, index) {
-        this[index].description = sanitizeHtml(step.description, {
-          allowedTags: ["img", "br"],
-          allowedClasses: {
-            img: [
-              "icon",
-              "icon-none",
-              "icon-military",
-              "icon-tech",
-              "icon-default",
-              "icon-landmark",
-              "icon-ability",
-            ],
-          },
-          allowedAttributes: {
-            img: ["style", "class", "src", "title"],
-          },
-          allowedStyles: {
-            "*": {
-              "vertical-align": [/^middle$/],
+          this[index].description = sanitizeHtml(step.description, {
+            allowedTags: ["img", "br"],
+            allowedClasses: {
+              img: [
+                "icon",
+                "icon-none",
+                "icon-military",
+                "icon-tech",
+                "icon-default",
+                "icon-landmark",
+                "icon-ability",
+              ],
             },
-          },
-        });
-      }, stepCollection.steps);
-      })
+            allowedAttributes: {
+              img: ["style", "class", "src", "title"],
+            },
+            allowedStyles: {
+              "*": {
+                "vertical-align": [/^middle$/],
+              },
+            },
+          });
+        }, stepCollection.steps);
+      });
     };
 
     const handleCopyOverlayFormat = () => {
@@ -880,9 +867,11 @@ export default {
         const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
-        creatorName.value = (await getVideoMetaData(videoId)).creatorTitle;
+        build.value.creatorName = (
+          await getVideoMetaData(videoId)
+        ).creatorTitle;
       } else {
-        creatorName.value = "";
+        build.value.creatorName = "";
         build.value.creatorId = "";
       }
     };
@@ -903,7 +892,6 @@ export default {
       handleVideoInput,
       timeSince,
       isNew,
-      creatorName
     };
   },
 };

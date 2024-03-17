@@ -44,7 +44,6 @@ const store = createStore({
     },
     //cache
     cache: {
-      creators: null,
       builds: {},
       popularBuildsList: Array(5).fill({ loading: true }),
       recentBuildsList: Array(5).fill({ loading: true }),
@@ -133,10 +132,6 @@ const store = createStore({
       }
       console.log("cache.builds updated:", payload);
     },
-    setCreators(state, payload) {
-      state.cache.creators = payload;
-      console.log("cache.creators state changed:", state.cache.creators);
-    },
     setRecentBuildsList(state, payload) {
       state.cache.recentBuildsList = payload;
       console.log(
@@ -165,10 +160,6 @@ const store = createStore({
     setAllBuildsList(state, payload) {
       state.cache.allBuildsList = payload;
       console.log("allBuildsList state changed:", state.cache.allBuildsList);
-    },
-    addCreator(state, payload) {
-      state.cache.creators.push(payload);
-      console.log("cache.creators state changed:", state.cache.creators);
     },
     //Snackbar module
     setSnackbar(state, payload) {

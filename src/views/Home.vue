@@ -292,7 +292,6 @@
               >
                 <BuildListCard
                   :build="item"
-                  :creatorName="getCreatorNameFromId(item.creatorId)"
                 ></BuildListCard>
               </router-link>
             </div> </v-col
@@ -337,7 +336,6 @@
               >
                 <BuildListCard
                   :build="item"
-                  :creatorName="getCreatorNameFromId(item.creatorId)"
                 ></BuildListCard>
               </router-link>
             </div> </v-col
@@ -483,8 +481,6 @@ export default {
   },
   setup() {
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { getAll: getAllCreators } =
-      useCollection("creators");
     const popularBuildsList = computed(() => store.state.cache.popularBuildsList);
     const recentBuildsList = computed(() => store.state.cache.recentBuildsList);
     const allCreators = computed(() => store.state.cache.creators);
@@ -501,19 +497,6 @@ export default {
       store.commit("setFilterConfig", getDefaultConfig());
       initData();
     });
-
-    const getCreatorNameFromId = (id) => {
-      if (allCreators.value) {
-        const currentCreator = allCreators.value.find(
-          (element) => element.id === id
-        );
-        if (currentCreator) {
-          return currentCreator.creatorDisplayTitle
-            ? currentCreator.creatorDisplayTitle
-            : currentCreator.creatorTitle;
-        }
-      }
-    };
 
     const initData = async () => {
       //reset results count
@@ -539,12 +522,6 @@ export default {
         store.commit("setBuilds", popularBuildsList);
       }
 
-
-      //get all creators
-      if (!allCreators.value) {
-        store.commit("setCreators", await getAllCreators());
-      }
-
       //get count
       const allDocsQuery = getQuery(
         queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
@@ -561,7 +538,6 @@ export default {
       recentBuildsList,
       popularBuildsList,
       featuredCreators,
-      getCreatorNameFromId,
     };
   },
 };

@@ -102,7 +102,7 @@
             label
             color="accent"
             size="x-small"
-            ><v-icon start icon="mdi-youtube"></v-icon>{{ creatorName }}</v-chip
+            ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
           >
           <v-chip class="mr-1 mt-1" label size="x-small"
             ><v-icon start icon="mdi-account-edit"></v-icon
@@ -197,7 +197,7 @@
             label
             color="accent"
             size="small"
-            ><v-icon start icon="mdi-youtube"></v-icon>{{ creatorName }}</v-chip
+            ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
           >
           <v-chip class="mr-2 mb-2" label size="small"
             ><v-icon start icon="mdi-account-edit"></v-icon
@@ -275,7 +275,7 @@ export default {
   components: {
   },
   name: "BuildListCard",
-  props: ["build", "creatorName"],
+  props: ["build"],
   setup() {
     const civs = allCivs.value;
     const store = useStore();
