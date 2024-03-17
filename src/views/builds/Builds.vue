@@ -169,9 +169,6 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
-      //exclude drafts
-      store.commit("setDrafts", false);
-
       //get builds query
       const paginationQuery = getQuery(
         queryService.getQueryParametersFromConfig(

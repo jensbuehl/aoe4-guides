@@ -158,9 +158,6 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
-      //exclude drafts
-      store.commit("setDrafts", false);
-
       //reset author filter
       store.commit("setAuthor", null);
 

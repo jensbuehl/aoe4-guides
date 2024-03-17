@@ -34,7 +34,6 @@ const store = createStore({
       strategies: [],
       seasons: [],
       orderBy: "score",
-      drafts: false,
     },
     //snackbar
     snackbar: {
@@ -52,7 +51,7 @@ const store = createStore({
       allBuildsList: null,
       myBuildsList: null,
       myFavoritesList: null,
-    }
+    },
   },
   mutations: {
     //User module
@@ -75,10 +74,6 @@ const store = createStore({
     setCreator(state, payload) {
       state.filterConfig.creator = payload;
       console.log("creator state changed:", state.filterConfig.creator);
-    },
-    setDrafts(state, payload) {
-      state.filterConfig.drafts = payload;
-      console.log("drafts state changed:", state.filterConfig.drafts);
     },
     setAuthor(state, payload) {
       state.filterConfig.author = payload;
@@ -120,14 +115,19 @@ const store = createStore({
     //Cache module
     setBuild(state, payload) {
       state.cache.builds[payload.id] = payload;
-      console.log("cache.builds updated. The following build has been added:", payload);
+      console.log(
+        "cache.builds updated. The following build has been added:",
+        payload
+      );
     },
     removeBuild(state, payload) {
       delete state.cache.builds[payload];
-      console.log("cache.builds updated. The following build has been removed:", payload);
+      console.log(
+        "cache.builds updated. The following build has been removed:",
+        payload
+      );
     },
     setBuilds(state, payload) {
-
       for (const build of payload) {
         state.cache.builds[build.id] = build;
       }
@@ -139,15 +139,24 @@ const store = createStore({
     },
     setRecentBuildsList(state, payload) {
       state.cache.recentBuildsList = payload;
-      console.log("recentBuildsList state changed:", state.cache.recentBuildsList);
+      console.log(
+        "recentBuildsList state changed:",
+        state.cache.recentBuildsList
+      );
     },
     setPopularBuildsList(state, payload) {
       state.cache.popularBuildsList = payload;
-      console.log("popularBuildsList state changed:", state.cache.popularBuildsList);
+      console.log(
+        "popularBuildsList state changed:",
+        state.cache.popularBuildsList
+      );
     },
     setMyFavoritesList(state, payload) {
       state.cache.myFavoritesList = payload;
-      console.log("myFavoritesList state changed:", state.cache.myFavoritesList);
+      console.log(
+        "myFavoritesList state changed:",
+        state.cache.myFavoritesList
+      );
     },
     setMyBuildsList(state, payload) {
       state.cache.myBuildsList = payload;

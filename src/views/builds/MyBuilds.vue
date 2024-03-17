@@ -32,6 +32,28 @@
       </v-col>
 
       <v-col cols="12" md="8">
+        <v-row v-if="drafts?.length" no-gutters
+          ><div class="text-h6 mt-4 ml-4 mb-2">My Drafts</div></v-row
+        >
+        <v-row v-if="drafts?.length" align="center" no-gutters>
+          <v-col cols="12">
+            <div v-if="drafts?.length" v-for="item in drafts">
+              <router-link
+                style="text-decoration: none"
+                :to="{
+                  name: item.loading ? 'MyBuilds' : 'BuildDetails',
+                  params: { id: !item.loading ? item.id : null },
+                }"
+              >
+                <BuildListCard
+                  :build="item"
+                  :creatorName="getCreatorName(item.creatorId)"
+                ></BuildListCard>
+              </router-link></div
+          ></v-col>
+        </v-row>
+
+        <div v-if="drafts?.length" class="text-h6 mt-4 ml-4 mb-2">My Builds</div>
         <div v-if="builds" v-for="item in builds">
           <router-link
             style="text-decoration: none"
@@ -92,6 +114,7 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const { getAll: getAllCreators } = useCollection("creators");
     const builds = ref(null);
+    const drafts = ref(null);
     const allCreators = computed(() => store.state.cache.creators);
     const store = useStore();
     const user = computed(() => store.state.user);
@@ -155,11 +178,14 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
-      //include drafts
-      store.commit("setDrafts", true);
-
       //reset author filter
       store.commit("setAuthor", null);
+
+      //get drafts
+      const draftQuery = getQuery(
+        queryService.getQueryParametersForDrafts(true, user.value.uid)
+      );
+      drafts.value = await getAll(draftQuery);
 
       //get builds query
       const paginationQuery = getQuery(
@@ -240,7 +266,7 @@ export default {
 
       //reset cache
       store.commit("setMyBuildsList", null);
-      
+
       const query = getQuery(
         queryService.getQueryParametersPreviousPage(
           filterAndOrderConfig.value,
@@ -271,6 +297,7 @@ export default {
 
     return {
       builds,
+      drafts,
       user,
       count,
       loading,

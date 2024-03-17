@@ -83,7 +83,7 @@ const getQueryParametersForDrafts = (isDraft, userUid) => {
     if (userUid) {
       queryParams = queryParams.concat(filterAuthorBy(userUid));
     }
-    
+
     return queryParams;
   } catch (err) {
     console.log(err.message);
@@ -94,7 +94,8 @@ const getQueryParametersFromConfig = (
   config,
   pageLimit,
   userUid,
-  favorites) => {
+  favorites
+) => {
   try {
     var queryParams = [];
     if (pageLimit) {
@@ -193,10 +194,9 @@ const filterWith = (config, favorites) => {
       queryParams.push(creatorOp);
     }
 
-    if (config?.drafts === false) {
-      const creatorOp = where("isDraft", "==", false);
-      queryParams.push(creatorOp);
-    }
+    //do not show drafts in deftault result lists
+    const draftOp = where("isDraft", "==", false);
+    queryParams.push(draftOp);
 
     if (config?.author) {
       const authorOp = where("authorUid", "in", [config.author]);
