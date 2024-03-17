@@ -71,7 +71,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 //Components
@@ -112,7 +112,7 @@ export default {
       //Reset config and only apply query parameters if they are set
       if (Object.keys(route.query).length) {
         store.commit("setFilterConfig", getDefaultConfig());
-        
+
         //reset cache
         store.commit("setAllBuildsList", null);
         store.commit("setMyBuildsList", null);
@@ -133,8 +133,16 @@ export default {
     };
 
     initQueryParameters();
+
     onMounted(() => {
       initData();
+    });
+
+    onBeforeUnmount(() => {
+      if (paginationConfig.currentPage != 1) {
+        //reset cache
+        store.commit("setAllBuildsList", null);
+      }
     });
 
     const configChanged = () => {
@@ -182,7 +190,6 @@ export default {
       //get builds
       var res = null;
       if (store.state.cache.allBuildsList) {
-        console.log("loading from cache");
         res = store.state.cache.allBuildsList;
       } else {
         res = await getAll(paginationQuery);
@@ -212,12 +219,11 @@ export default {
     };
 
     const nextPage = async () => {
-      console.log("page changed to:", paginationConfig.value.currentPage);
+      await console.log("page changed to:", paginationConfig.value.currentPage);
+      await console.log(paginationConfig.value);
 
       //reset cache
       store.commit("setAllBuildsList", null);
-      store.commit("setMyBuildsList", null);
-      store.commit("setMyFavoritesList", null);
 
       const query = getQuery(
         queryService.getQueryParametersNextPage(
@@ -228,6 +234,7 @@ export default {
       );
       const res = await getAll(query);
       builds.value = res;
+      store.commit("setAllBuildsList", res);
       store.commit("setBuilds", res);
       getSize(query);
 
@@ -240,8 +247,6 @@ export default {
 
       //reset cache
       store.commit("setAllBuildsList", null);
-      store.commit("setMyBuildsList", null);
-      store.commit("setMyFavoritesList", null);
 
       const query = getQuery(
         queryService.getQueryParametersPreviousPage(
@@ -253,6 +258,7 @@ export default {
       const res = await getAll(query);
       getSize(query);
       builds.value = res;
+      store.commit("setAllBuildsList", res);
       store.commit("setBuilds", res);
 
       updatePageBoundaries();

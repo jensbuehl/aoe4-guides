@@ -72,7 +72,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { ref, computed, onMounted, watch } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
@@ -125,6 +125,13 @@ export default {
       }
       if (user.value) {
         initData();
+      }
+    });
+
+    onBeforeUnmount(() => {
+      if (paginationConfig.currentPage != 1) {
+        //reset cache
+        store.commit("setMyFavoritesList", null);
       }
     });
 
@@ -207,12 +214,11 @@ export default {
 
       //get builds
       var res = null;
-      if (store.state.cache.allBuildsList) {
-        console.log("loading from cache"); 
-        res = store.state.cache.allBuildsList;
+      if (store.state.cache.myfavoritesList) {
+        res = store.state.cache.myfavoritesList;
       } else {
         res = await getAll(paginationQuery);
-        store.commit("setAllBuildsList", res);
+        store.commit("setMyFavoritesList", res);
       }
       builds.value = res;
       store.commit("setBuilds", res);
@@ -225,8 +231,6 @@ export default {
       console.log("page changed to:", paginationConfig.value.currentPage);
 
       //reset cache
-      store.commit("setAllBuildsList", null);
-      store.commit("setMyBuildsList", null);
       store.commit("setMyFavoritesList", null);
 
       const query = getQuery(
@@ -251,8 +255,6 @@ export default {
       console.log("page changed to:", paginationConfig.value.currentPage);
 
       //reset cache
-      store.commit("setAllBuildsList", null);
-      store.commit("setMyBuildsList", null);
       store.commit("setMyFavoritesList", null);
 
       const query = getQuery(
