@@ -319,7 +319,7 @@ import { useStore } from "vuex";
 //Components
 
 //Composables
-import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { civs as allCivs } from "@/composables/filter/civService";
 import { featuredCreators } from "@/composables/filter/featuredCreatorService";
 import { maps } from "@/composables/filter/mapService";
 import { seasons } from "@/composables/filter/seasonService";

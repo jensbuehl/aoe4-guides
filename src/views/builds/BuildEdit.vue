@@ -691,7 +691,7 @@ import StepsEditor from "@/components/builds/StepsEditor.vue";
 import useCollection from "@/composables/useCollection";
 import useBuildValidator from "@/composables/builds/useBuildValidator";
 import useYoutube from "@/composables/builds/useYoutube";
-import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { civs as allCivs } from "@/composables/filter/civService";
 import { seasons } from "@/composables/filter/seasonService";
 import { maps } from "@/composables/filter/mapService";
 import { strategies } from "@/composables/filter/strategyService";

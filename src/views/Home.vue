@@ -464,7 +464,7 @@ import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
-import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { civs as allCivs } from "@/composables/filter/civService";
 import { featuredCreators } from "@/composables/filter/featuredCreatorService";
 import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
 import useCollection from "@/composables/useCollection";

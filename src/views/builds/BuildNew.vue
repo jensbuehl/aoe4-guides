@@ -287,7 +287,7 @@ import RegisterAdShort from "@/components/notifications/RegisterAdShort.vue";
 import StepsEditor from "@/components/builds/StepsEditor.vue";
 
 //Composables
-import { civs as allCivs, getCivById } from "@/composables/filter/civService";
+import { civs as allCivs } from "@/composables/filter/civService";
 import { seasons } from "@/composables/filter/seasonService";
 import useCollection from "@/composables/useCollection";
 import useBuildValidator from "@/composables/builds/useBuildValidator";
