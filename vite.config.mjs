@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from "url";
 import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 // https://vitejs.dev/config/
 export default {
@@ -13,24 +14,26 @@ export default {
       },
     },
   },
-  plugins: [vue({
-    template: {
-      compilerOptions: {
-        //
-        isCustomElement: (tag) => ['v-list-item-content'].includes(tag),
-      }
-    }
-  }), vuetify()],
+  plugins: [
+    nodePolyfills(),
+    vue({
+      template: {
+        compilerOptions: {
+          //
+          isCustomElement: (tag) => ["v-list-item-content"].includes(tag),
+        },
+      },
+    }),
+    vuetify(),
+  ],
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
   },
   resolve: {
-    alias: [
-      {
-        find: "@",
-        replacement: fileURLToPath(new URL("./src", import.meta.url)),
-      },
-    ],
+    alias: {
+      "source-map-js": "source-map",
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
   },
   build: { chunkSizeWarningLimit: 1600 },
 };
