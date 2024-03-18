@@ -3,10 +3,11 @@
     <v-card flat rounded="lg">
       <v-card-title>Season 7 has arrived</v-card-title>
       <v-card-text
-        >The hoster has been changed in order to cut the operational costs. The funding goal has been updated accordingly.<br /><br />
+        >We've switched up our hosting service to keep our operating costs down, and we've adjusted our funding targets to reflect this change.<br /><br />
         
-        Let the games begin and figure out the next OP build order. May the extra sheep be with you!<br /><br />
-        Thank you and happy scouting!
+        Good news for your guides: you can now label your builds with “Season 7” for easy identification. Plus, locating your drafts on the “My Builds” page is now smoother than ever.<br /><br />
+        
+        Thanks for your support and happy scouting!
       </v-card-text>
 
       <v-row class="ma-2" no-gutters>
