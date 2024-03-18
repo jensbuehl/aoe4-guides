@@ -145,7 +145,7 @@ export default {
     });
 
     onBeforeUnmount(() => {
-      if (paginationConfig.currentPage != 1) {
+      if (paginationConfig.value.currentPage != 1) {
         //reset cache
         store.commit("setMyBuildsList", null);
       }
