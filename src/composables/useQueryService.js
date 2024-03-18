@@ -246,6 +246,18 @@ const whereEqual = (field, value) => {
   }
 };
 
+const whereNotEqual = (field, value) => {
+  try {
+    const queryParams = [];
+    const whereOp = where(field, "!=", value);
+    queryParams.push(whereOp);
+
+    return queryParams;
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
 export default {
   getQueryParametersFromConfig,
   getQueryParametersForCreators,
@@ -257,4 +269,5 @@ export default {
   limitWith,
   filterWith,
   whereEqual,
+  whereNotEqual,
 };

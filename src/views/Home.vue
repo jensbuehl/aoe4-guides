@@ -483,7 +483,6 @@ export default {
     const { getAll, getQuery, getSize } = useCollection("builds");
     const popularBuildsList = computed(() => store.state.cache.popularBuildsList);
     const recentBuildsList = computed(() => store.state.cache.recentBuildsList);
-    const allCreators = computed(() => store.state.cache.creators);
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const store = useStore();
     const count = computed(() => store.state.resultsCount);

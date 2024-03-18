@@ -65,10 +65,7 @@
             >
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
-                <v-btn
-                  color="primary"
-                  variant="text"
-                  @click="processBuilds()"
+                <v-btn color="primary" variant="text" @click="processBuilds()"
                   >Inline Creator Names</v-btn
                 >
               </v-col>
@@ -93,11 +90,12 @@ export default {
   name: "Admin",
   setup() {
     var builds = null;
+    var creators = null;
 
-    const { getAll, getQuery, getSize, update } = useCollection("builds");
-    const creators = computed(() => store.state.cache.creators);
+    const { getAll, getQuery, update } = useCollection("builds");
     const error = ref(null);
     const store = useStore();
+    const { getAll: getAllCreators } = useCollection("creators");
     const filterConfig = computed(() => store.state.filterConfig);
     const user = computed(() => store.state.user);
 
@@ -116,33 +114,44 @@ export default {
       });
     };
 
-    const inlineCreatorName = async (element) => {
-      console.log("Build id:", element.id);
+    const inlineCreatorName = async (build) => {
+      console.log("Build id:", build.id);
 
-      if (element.creatorId) {
-        //TODO: Get creator name and write to document
+      if (build.creatorId) {
+        //get creator name from id
+        build.creatorName = getCreatorName(build.creatorId);
+        console.log("Creator name:", build.creatorName);
 
         //Save to database
-        update(element.id, element);
+        update(build.id, build);
+      }
+    };
+
+    const getCreatorName = (id) => {
+      const foundCreator = creators.find(
+        (creator) => creator.id === id
+      );
+      if (foundCreator) {
+        return foundCreator.creatorDisplayTitle
+          ? foundCreator.creatorDisplayTitle
+          : foundCreator.creatorTitle;
       }
     };
 
     const initData = async () => {
-      //get all builds
-      const allDocuments = getQuery(
-        queryService.getQueryParametersFromConfig(filterConfig.value)
+      const whereVideoIsSetQueryParams = queryService.whereNotEqual(
+        "creatorId",
+        ""
       );
+      const whereVideoIsSetQuery = getQuery(whereVideoIsSetQueryParams);
 
-      console.log(await getSize(allDocuments));
-
-      //TODO: get all builds that contain a creatorId
-      //TODO: use limit for testing to not pull hundreds of documents!
-      //const res = await getAll(allDocuments);
-      //builds = res;
+      builds = await getAll(whereVideoIsSetQuery);
+      creators = await getAllCreators();
     };
 
     return {
       builds,
+      creators,
       user,
       authIsReady: computed(() => store.state.authIsReady),
       error,
