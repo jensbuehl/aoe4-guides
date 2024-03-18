@@ -13,7 +13,14 @@ export default {
       },
     },
   },
-  plugins: [vue(), vuetify()],
+  plugins: [vue({
+    template: {
+      compilerOptions: {
+        //
+        isCustomElement: (tag) => ['v-list-item-content'].includes(tag),
+      }
+    }
+  }), vuetify()],
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
   },
