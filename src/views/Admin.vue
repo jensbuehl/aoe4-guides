@@ -65,7 +65,7 @@
             >
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
-                <v-btn color="primary" variant="text" @click="processBuilds()"
+                <v-btn color="primary" variant="text" @click="inlineCreatorNames()"
                   >Inline Creator Names</v-btn
                 >
               </v-col>
@@ -92,7 +92,7 @@ export default {
     var builds = null;
     var creators = null;
 
-    const { getAll, getQuery, update } = useCollection("builds");
+    const { getAll, getQuery, update, getSize } = useCollection("builds");
     const error = ref(null);
     const store = useStore();
     const { getAll: getAllCreators } = useCollection("creators");
@@ -106,7 +106,7 @@ export default {
       initData();
     });
 
-    const processBuilds = () => {
+    const inlineCreatorNames = () => {
       builds.forEach((build, index) => {
         setTimeout(() => {
           inlineCreatorName(build);
@@ -145,8 +145,9 @@ export default {
       );
       const whereVideoIsSetQuery = getQuery(whereVideoIsSetQueryParams);
 
-      builds = await getAll(whereVideoIsSetQuery);
-      creators = await getAllCreators();
+      console.log("matching builds with creatorId:", await getSize(whereVideoIsSetQuery));
+      //builds = await getAll(whereVideoIsSetQuery);
+      //creators = await getAllCreators();
     };
 
     return {
@@ -155,7 +156,7 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       error,
-      processBuilds,
+      inlineCreatorNames,
     };
   },
 };
