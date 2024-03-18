@@ -392,8 +392,8 @@ export default {
           const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
           build.value.creatorName = (
-          await getVideoMetaData(videoId)
-        ).creatorTitle;
+            await getVideoMetaData(videoId)
+          ).creatorTitle;
         }
 
         //Add build order document
@@ -411,6 +411,11 @@ export default {
               creatorDoc.creatorId
             );
             await addCreator(creatorDoc, creatorDoc.creatorId);
+          } else {
+            //Use display title from DB if it exists
+            build.value.creatorName = res.creatorDisplayTitle
+              ? res.creatorDisplayTitle
+              : res.creatorTitle;
           }
         }
 
