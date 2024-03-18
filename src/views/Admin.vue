@@ -146,8 +146,8 @@ export default {
       const whereVideoIsSetQuery = getQuery(whereVideoIsSetQueryParams);
 
       console.log("matching builds with creatorId:", await getSize(whereVideoIsSetQuery));
-      //builds = await getAll(whereVideoIsSetQuery);
-      //creators = await getAllCreators();
+      builds = await getAll(whereVideoIsSetQuery);
+      creators = await getAllCreators();
     };
 
     return {
