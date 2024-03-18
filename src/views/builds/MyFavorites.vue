@@ -189,8 +189,8 @@ export default {
 
       //get builds
       var res = null;
-      if (store.state.cache.myfavoritesList) {
-        res = store.state.cache.myfavoritesList;
+      if (store.state.cache.myFavoritesList) {
+        res = store.state.cache.myFavoritesList;
       } else {
         res = await getAll(paginationQuery);
         store.commit("setMyFavoritesList", res);
