@@ -57,7 +57,6 @@
 </template>
 
 <script>
-
 //External
 import { useStore } from "vuex";
 import { ref, onMounted, computed } from "vue";
@@ -66,15 +65,13 @@ import { ref, onMounted, computed } from "vue";
 import SingleComment from "@/components/SingleComment.vue";
 
 //Composables
-import useCollection from "@/composables/useCollection";
-import queryService from "@/composables/useQueryService";
+import { addComment, getComments } from "@/composables/data/commentService";
 
 export default {
   name: "Discussion",
   components: { SingleComment },
   props: ["buildId"],
   setup(props) {
-    const { add, getAll, getQuery } = useCollection("comments");
     const store = useStore();
     const user = computed(() => store.state.user);
     const comments = ref(null);
@@ -90,21 +87,14 @@ export default {
     });
 
     const init = async () => {
-      var queryParams = queryService.whereEqual("buildId", props.buildId);
-      queryParams = queryParams.concat(
-        queryService.orderByWith({ orderBy: "timeCreated" }, "asc")
-      );
-      const query = getQuery(queryParams);
-      const res = await getAll(query);
-      comments.value = res;
+      comments.value = await getComments(props.buildId);
+      console.log("comments", comments.value);
     };
 
     const post = async () => {
-      //Add new comment
-      await add(newComment.value);
+      await addComment(newComment.value);
       newComment.value.text = null;
 
-      //Update comments list
       init();
     };
 

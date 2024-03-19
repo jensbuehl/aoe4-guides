@@ -63,7 +63,7 @@ import { useStore } from "vuex";
 
 //Composables
 import useTimeSince from "@/composables/useTimeSince";
-import useCollection from "@/composables/useCollection";
+import { deleteComment } from "@/composables/data/commentService";
 
 export default {
   name: "SingleComment",
@@ -72,8 +72,6 @@ export default {
   setup(props, context) {
     const store = useStore();
     const user = computed(() => store.state.user);
-    const { del } = useCollection("comments");
-
     const id = props.comment.id;
     const comment = props.comment.text;
     const timeCreated = props.comment.timeCreated;
@@ -84,7 +82,7 @@ export default {
 
     const handleDelete = async () => {
       dialog.value = false;
-      await del(id);
+      await deleteComment(id);
       context.emit("commentRemoved");
     };
 

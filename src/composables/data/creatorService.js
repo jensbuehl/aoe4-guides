@@ -8,7 +8,7 @@ const { getAll, get, add } = useCollection("creators");
  * @return {Promise} A promise that resolves with the retrieved creators.
  */
 export async function getCreators() {
-  getAll();
+    return getAll();
 }
 
 /**
@@ -18,7 +18,7 @@ export async function getCreators() {
  * @return {Promise} A promise that resolves to the creator object.
  */
 export async function getCreator(id) {
-  get(id);
+    return get(id);
 }
 
 /**
@@ -26,8 +26,8 @@ export async function getCreator(id) {
  *
  * @param {any} creator - The creator to add.
  * @param {any} customId - The custom ID to assign to the creator.
- * @return {Promise<void>} 
+ * @return {Promise<void>}
  */
 export async function addCreator(creator, customId) {
-  add(creator, customId);
+    add(creator, customId);
 }
