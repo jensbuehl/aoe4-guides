@@ -38,7 +38,7 @@ export async function removeFavorite(userId, buildId) {
  * @param {string} buildId - The ID of the build to vote up.
  * @return {Promise<void>} - The function does not return anything.
  */
-export async function addVoteUp(userId, buildId) {
+export async function addUpvote(userId, buildId) {
     addElementToArray(userId, "upvotes", buildId);
 }
 
@@ -49,7 +49,7 @@ export async function addVoteUp(userId, buildId) {
  * @param {string} buildId - The ID of the build from which the upvote should be removed.
  * @return {Promise<void>} - The function does not return anything.
  */
-export async function removeVoteUp(userId, buildId) {
+export async function removeUpvote(userId, buildId) {
     removeElementFromArray(userId, "upvotes", buildId);
 }
 
@@ -60,7 +60,7 @@ export async function removeVoteUp(userId, buildId) {
  * @param {string} buildId - The ID of the build being downvoted
  * @return {Promise<void>} A promise that resolves once the downvote is added
  */
-export async function addVoteDown(userId, buildId) {
+export async function addDownvote(userId, buildId) {
     addElementToArray(userId, "downvotes", buildId);
 }
 
@@ -71,7 +71,7 @@ export async function addVoteDown(userId, buildId) {
  * @param {string} buildId - The ID of the build
  * @return {Promise<void>} 
  */
-export async function removeVoteDown(userId, buildId) {
+export async function removeDownvote(userId, buildId) {
     removeElementFromArray(userId, "downvotes", buildId);
 }
 

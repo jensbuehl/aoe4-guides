@@ -79,21 +79,24 @@
 import { onMounted, ref } from "vue";
 
 //Composables
-import useCollection from "@/composables/useCollection";
 import {
-    addVoteUp,
-    removeVoteUp,
-    addVoteDown,
-    removeVoteDown,
+    addUpvote,
+    removeUpvote,
+    addDownvote,
+    removeDownvote,
 } from "@/composables/data/favoriteService";
+import {
+    incrementDownvotes,
+    decrementDownvotes,
+    incrementUpvotes,
+    decrementUpvotes,
+} from "@/composables/data/buildService";
 
 export default {
     name: "Favorites",
     props: ["buildId", "modelValue"],
     emits: ["voteUpAdded", "voteUpRemoved"],
     setup(props, context) {
-        const { incrementUps, decrementUps, incrementDowns, decrementDowns } =
-            useCollection("builds");
         const upVote = ref(false);
         const downVote = ref(false);
         const userId = ref(props.modelValue?.uid);
@@ -110,8 +113,8 @@ export default {
             }
         });
         const handleAddVoteUp = async () => {
-            incrementUps(props.buildId);
-            addVoteUp(userId.value, props.buildId);
+            incrementUpvotes(props.buildId);
+            addUpvote(userId.value, props.buildId);
             upVote.value = !upVote.value;
             context.emit("voteUpAdded");
 
@@ -121,8 +124,8 @@ export default {
             removeUpVote();
         };
         const handleAddVoteDown = async () => {
-            incrementDowns(props.buildId);
-            addVoteDown(userId.value, props.buildId);
+            incrementDownvotes(props.buildId);
+            addDownvote(userId.value, props.buildId);
             downVote.value = !downVote.value;
 
             removeUpVote();
@@ -134,8 +137,8 @@ export default {
 
         const removeUpVote = () => {
             if (upVote.value) {
-                decrementUps(props.buildId);
-                removeVoteUp(userId.value, props.buildId);
+                decrementUpvotes(props.buildId);
+                removeUpvote(userId.value, props.buildId);
                 upVote.value = !upVote.value;
                 context.emit("voteUpRemoved");
             }
@@ -143,8 +146,8 @@ export default {
 
         const removeDownVote = () => {
             if (downVote.value) {
-                decrementDowns(props.buildId);
-                removeVoteDown(userId.value, props.buildId);
+                decrementDownvotes(props.buildId);
+                removeDownvote(userId.value, props.buildId);
                 downVote.value = !downVote.value;
             }
         };

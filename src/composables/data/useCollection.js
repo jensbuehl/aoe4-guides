@@ -131,13 +131,13 @@ const useCollection = (col) => {
         }
     };
 
-    const incrementLikes = async (id) => {
-        error.value = null;
+    const incrementNumber = async (documentId, propertyName) => {
+      error.value = null;
 
         try {
-            const docRef = doc(db, col, id);
+            const docRef = doc(db, col, documentId);
             await updateDoc(docRef, {
-                likes: increment(1),
+                [propertyName]: increment(1),
             });
         } catch (err) {
             console.log(err.message);
@@ -145,17 +145,17 @@ const useCollection = (col) => {
         }
     };
 
-    const decrementLikes = async (id) => {
-        error.value = null;
+    const decrementNumber = async (documentId, propertyName) => {
+      error.value = null;
 
         try {
-            const docRef = doc(db, col, id);
+            const docRef = doc(db, col, documentId);
             await updateDoc(docRef, {
-                likes: increment(-1),
+                [propertyName]: increment(-1),
             });
         } catch (err) {
             console.log(err.message);
-            error.value = "Like count could not be decremented";
+            error.value = "Like count could not be incremented";
         }
     };
 
@@ -276,11 +276,10 @@ const useCollection = (col) => {
         getSize,
         addElementToArray,
         removeElementFromArray,
+        incrementNumber,
+        decrementNumber,
         //Views
         incrementViews,
-        //Favorites
-        incrementLikes,
-        decrementLikes,
         //Votes
         incrementUps,
         decrementUps,

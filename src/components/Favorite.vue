@@ -45,18 +45,20 @@ import { onMounted, ref } from "vue";
 //Components
 
 //Composables
-import useCollection from "@/composables/useCollection";
 import {
     addFavorite,
     removeFavorite,
 } from "@/composables/data/favoriteService";
+import {
+    incrementLikes,
+    decrementLikes,
+} from "@/composables/data/buildService";
 
 export default {
     name: "Favorites",
     props: ["buildId", "modelValue"],
     emits: ["favoriteRemoved", "favoriteAdded"],
     setup(props, context) {
-        const { incrementLikes, decrementLikes } = useCollection("builds");
         const userId = ref(props.modelValue?.uid);
 
         const isFavorite = ref(false);
@@ -66,7 +68,6 @@ export default {
             isFavorite.value = user.favorites.includes(props.buildId);
         });
         const addToFavorites = async () => {
-            console.log(userId.value);
             incrementLikes(props.buildId);
             addFavorite(userId.value, props.buildId);
             isFavorite.value = !isFavorite.value;
