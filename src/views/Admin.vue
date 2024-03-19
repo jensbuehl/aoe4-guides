@@ -65,8 +65,8 @@
             >
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
-                <v-btn color="primary" variant="text" @click="inlineCreatorNames()"
-                  >Inline Creator Names</v-btn
+                <v-btn color="primary" variant="text" @click="runMigration()"
+                  >Implement your migration</v-btn
                 >
               </v-col>
             </v-row>
@@ -83,19 +83,15 @@ import { ref, computed, onMounted } from "vue";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
-import useCollection from "@/composables/useCollection";
-import queryService from "@/composables/useQueryService";
 
 export default {
   name: "Admin",
   setup() {
     var builds = null;
-    var creators = null;
 
     const { getAll, getQuery, update, getSize } = useCollection("builds");
     const error = ref(null);
     const store = useStore();
-    const { getAll: getAllCreators } = useCollection("creators");
     const filterConfig = computed(() => store.state.filterConfig);
     const user = computed(() => store.state.user);
 
@@ -106,57 +102,33 @@ export default {
       initData();
     });
 
-    const inlineCreatorNames = () => {
+    const runMigration = () => {
       builds.forEach((build, index) => {
         setTimeout(() => {
-          inlineCreatorName(build);
+          customActionPerBuild(build);
         }, index * 1000);
       });
     };
 
-    const inlineCreatorName = async (build) => {
+    const customActionPerBuild = async (build) => {
       console.log("Build id:", build.id);
 
       if (build.creatorId) {
-        //get creator name from id
-        build.creatorName = getCreatorName(build.creatorId);
-        console.log("Creator name:", build.creatorName);
-
-        //Save to database
-        update(build.id, build);
-      }
-    };
-
-    const getCreatorName = (id) => {
-      const foundCreator = creators.find(
-        (creator) => creator.id === id
-      );
-      if (foundCreator) {
-        return foundCreator.creatorDisplayTitle
-          ? foundCreator.creatorDisplayTitle
-          : foundCreator.creatorTitle;
+        
       }
     };
 
     const initData = async () => {
-      const whereVideoIsSetQueryParams = queryService.whereNotEqual(
-        "creatorId",
-        ""
-      );
-      const whereVideoIsSetQuery = getQuery(whereVideoIsSetQueryParams);
-
-      console.log("matching builds with creatorId:", await getSize(whereVideoIsSetQuery));
+      //init builds, filter based on use case
       builds = await getAll(whereVideoIsSetQuery);
-      creators = await getAllCreators();
     };
 
     return {
       builds,
-      creators,
       user,
       authIsReady: computed(() => store.state.authIsReady),
       error,
-      inlineCreatorNames,
+      runMigration
     };
   },
 };
