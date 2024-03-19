@@ -831,6 +831,7 @@ import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 
 //composables
 import useCollection from "@/composables/useCollection";
+import { getUserFavorites } from "@/composables/data/favoriteService";
 import { civs as allCivs, getCivById } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
@@ -867,7 +868,6 @@ export default {
       error,
       update: updateBuild,
     } = useCollection("builds");
-    const { get: getFavorites } = useCollection("favorites");
     const userData = ref(null);
     const loading = ref(true);
 
@@ -884,7 +884,7 @@ export default {
       if (resBuild) {
         //Get user data (favorites and likes)
         if(user.value){
-          userData.value = await getFavorites(user.value.uid);
+          userData.value = await getUserFavorites(user.value.uid);
         }
 
         build.value = resBuild;

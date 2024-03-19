@@ -82,6 +82,7 @@ import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import useCollection from "@/composables/useCollection";
+import { getUserFavorites } from "@/composables/data/favoriteService";
 import queryService from "@/composables/useQueryService";
 
 export default {
@@ -89,7 +90,6 @@ export default {
   components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
   setup() {
     const { getAll, getQuery, getSize } = useCollection("builds");
-    const { get } = useCollection("favorites");
     const builds = ref(null);
     const favorites = ref(null);
     const store = useStore();
@@ -145,7 +145,7 @@ export default {
       store.commit("setAuthor", null);
 
       //get favorites list
-      favorites.value = await get(user.value.uid).then((user) => {
+      favorites.value = await getUserFavorites(user.value.uid).then((user) => {
         return user.favorites;
       });
       console.log("favorites", favorites.value);
