@@ -82,7 +82,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 //Composables
 import useCollection from "@/composables/useCollection";
 import queryService from "@/composables/useQueryService";
-import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
+import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 
 export default {
   name: "Builds",

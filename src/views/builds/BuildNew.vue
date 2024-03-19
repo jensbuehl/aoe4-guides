@@ -287,13 +287,14 @@ import RegisterAdShort from "@/components/notifications/RegisterAdShort.vue";
 import StepsEditor from "@/components/builds/StepsEditor.vue";
 
 //Composables
-import { civs as allCivs } from "@/composables/filter/civService";
-import { seasons } from "@/composables/filter/seasonService";
+import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
+import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import useCollection from "@/composables/useCollection";
+import { getCreator, addCreator } from "@/composables/data/creatorService";
 import useBuildValidator from "@/composables/builds/useBuildValidator";
 import useYoutube from "@/composables/builds/useYoutube";
-import { maps } from "@/composables/filter/mapService";
-import { strategies } from "@/composables/filter/strategyService";
+import { maps } from "@/composables/filter/mapDefaultProvider";
+import { strategies } from "@/composables/filter/strategyDefaultProvider";
 import queryService from "@/composables/useQueryService";
 
 export default {
@@ -301,7 +302,6 @@ export default {
   components: { StepsEditor, RegisterAd, RegisterAdShort },
   setup() {
     const { add, getQuery, getSize, error } = useCollection("builds");
-    const { get: getCreator, add: addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();
     const {
       extractVideoId,

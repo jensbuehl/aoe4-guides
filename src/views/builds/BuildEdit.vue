@@ -689,12 +689,13 @@ import StepsEditor from "@/components/builds/StepsEditor.vue";
 
 //Composables
 import useCollection from "@/composables/useCollection";
+import { getCreator, addCreator } from "@/composables/data/creatorService";
 import useBuildValidator from "@/composables/builds/useBuildValidator";
 import useYoutube from "@/composables/builds/useYoutube";
-import { civs as allCivs } from "@/composables/filter/civService";
-import { seasons } from "@/composables/filter/seasonService";
-import { maps } from "@/composables/filter/mapService";
-import { strategies } from "@/composables/filter/strategyService";
+import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
+import { seasons } from "@/composables/filter/seasonDefaultProvider";
+import { maps } from "@/composables/filter/mapDefaultProvider";
+import { strategies } from "@/composables/filter/strategyDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
 import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
@@ -719,7 +720,6 @@ export default {
       update: updateBuild,
       error,
     } = useCollection("builds");
-    const { get: getCreator, add: addCreator } = useCollection("creators");
     const { validateBuild, validateVideo } = useBuildValidator();
     const {
       extractVideoId,

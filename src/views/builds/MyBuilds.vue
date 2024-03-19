@@ -101,7 +101,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
-import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
+import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import useCollection from "@/composables/useCollection";
 import queryService from "@/composables/useQueryService";
 

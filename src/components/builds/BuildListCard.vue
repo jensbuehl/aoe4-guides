@@ -267,7 +267,7 @@ import { useStore } from "vuex";
 //Components
 
 //Composables
-import { civs as allCivs } from "@/composables/filter/civService";
+import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
 
 

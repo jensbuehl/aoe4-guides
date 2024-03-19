@@ -319,12 +319,12 @@ import { useStore } from "vuex";
 //Components
 
 //Composables
-import { civs as allCivs } from "@/composables/filter/civService";
-import { featuredCreators } from "@/composables/filter/featuredCreatorService";
-import { maps } from "@/composables/filter/mapService";
-import { seasons } from "@/composables/filter/seasonService";
-import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
-import { strategies } from "@/composables/filter/strategyService";
+import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
+import { featuredCreators } from "@/composables/filter/featuredCreatorDefaultProvider";
+import { maps } from "@/composables/filter/mapDefaultProvider";
+import { seasons } from "@/composables/filter/seasonDefaultProvider";
+import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import { strategies } from "@/composables/filter/strategyDefaultProvider";
 
 export default {
   name: "FilterConfig",

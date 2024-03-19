@@ -82,7 +82,7 @@ import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
 
 //Composables
-import { getDefaultConfig } from "@/composables/filter/defaultConfigService";
+import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 
 export default {
   name: "Admin",
