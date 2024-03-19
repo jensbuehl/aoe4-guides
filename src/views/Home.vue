@@ -269,7 +269,7 @@
                 class="mt-3"
                 v-bind="props"
                 variant="text"
-                color="accent"
+                color="primars"
                 prepend-icon="mdi-clock-edit-outline"
                 :to="{
                     name: 'Builds',
@@ -313,7 +313,7 @@
                 class="mt-3"
                 v-bind="props"
                 variant="text"
-                color="accent"
+                color="primary"
                 prepend-icon="mdi-trending-up"
                 :to="{
                     name: 'Builds',

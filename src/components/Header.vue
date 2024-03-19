@@ -300,7 +300,7 @@
       <template v-slot:prepend>
         <v-icon color="accent">mdi-home</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
         >Home</span
       >
     </v-btn>
@@ -309,7 +309,7 @@
       <template v-slot:prepend>
         <v-icon color="accent">mdi-hammer</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
         >All Builds</span
       >
     </v-btn>
@@ -318,7 +318,7 @@
       <template v-slot:prepend>
         <v-icon color="accent">mdi-heart-outline</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
         >Favorites</span
       >
     </v-btn>
@@ -327,7 +327,7 @@
       <template v-slot:prepend>
         <v-icon color="accent">mdi-playlist-edit</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.accent"
+      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
         >My Builds</span
       >
     </v-btn>

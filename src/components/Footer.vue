@@ -135,7 +135,7 @@
           >, and it is not endorsed by or affiliated with Microsoft.</v-col
         >
       </v-row>
-      v{{ version }}
+      <v-label>v{{ version }}</v-label>
     </v-footer>
   </div>
 </template>
