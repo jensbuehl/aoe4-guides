@@ -16,7 +16,7 @@ import {
 } from "@/firebase";
 import { httpsCallable } from "firebase/functions";
 
-const store = createStore({
+export const store = createStore({
     state: {
         //general
         loading: true,
@@ -134,7 +134,7 @@ const store = createStore({
             for (const build of payload) {
                 state.cache.builds[build.id] = build;
             }
-            console.log("cache.builds updated:", payload);
+            console.log("cache.builds updated. The following builds have been added:", payload);
         },
         setRecentBuildsList(state, payload) {
             state.cache.recentBuildsList = payload;
