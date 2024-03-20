@@ -449,7 +449,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { featuredCreators } from "@/composables/filter/featuredCreatorDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { getRecentBuilds, getPopularBuilds } from "@/composables/data/buildService";
+import { getRecentBuilds, getPopularBuilds, getBuildsCount } from "@/composables/data/buildService";
 
 export default {
    name: "Home",

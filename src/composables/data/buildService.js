@@ -1,5 +1,6 @@
 //External
 import { store } from "@/store/index.js";
+import { computed } from "vue";
 
 //Composables
 import useCollection from "@/composables/data/useCollection";
@@ -7,9 +8,17 @@ import queryService from "@/composables/useQueryService";
 import {
    getMostRecentBuildsConfig,
    getPopularBuildsConfig,
+   getDefaultConfig,
 } from "@/composables/filter/configDefaultProvider";
 
-const { incrementNumber, decrementNumber, getAll, getQuery, getSize } = useCollection("builds");
+const { incrementNumber, decrementNumber, get, del, update, getAll, getQuery, getSize, error: useCollectionError } = useCollection("builds");
+
+/**
+ * Returns the error value of the useCollection composable.
+ *
+ * @return {Ref<string|null>} The error value, which is a reactive reference to a string or null.
+ */
+export const error = computed(() => useCollectionError).value;
 
 /**
  * Increments the number of likes for a build.
@@ -71,16 +80,52 @@ export async function decrementUpvotes(buildId) {
    decrementNumber(buildId, "upvotes");
 }
 
+export async function incrementViews(buildId) {
+   incrementNumber(buildId, "views");
+}
+
 /**
  * Retrieves the count of builds using the defaultConfig.
  *
  * @return {Promise<number>} Number of builds in total.
  */
 export async function getBuildsCount() {
-   const allDallBuildsQuery = getQuery(
+   const allBuildsQuery = getQuery(
       queryService.getQueryParametersFromConfig(getDefaultConfig())
    );
-   return getSize(allDallBuildsQuery);
+   return getSize(allBuildsQuery);
+}
+
+/**
+ * Retrieve a build by its ID.
+ *
+ * @param {string} buildId - The ID of the build to retrieve
+ * @return {Promise<any>} The retrieved build
+ */
+export async function getBuild(buildId) {
+   return get(buildId);
+}
+
+/**
+ * Deletes a build with the specified ID.
+ *
+ * @param {string} buildId - The ID of the build to delete.
+ * @return {Promise} A promise that resolves when the build is successfully deleted.
+ */
+export async function deleteBuild(buildId) {
+   return del(buildId);
+}
+
+/**
+ * Update a build with the given buildId and build data.
+ *
+ * @param {type} buildId - The ID of the build to update.
+ * @param {type} build - The new build data to update.
+ * @param {type} updateCreatedTimestamp - Optional parameter to update the created timestamp.
+ * @return {Promise} A promise that resolves with the updated build data.
+ */
+export async function updateBuild(buildId, build, updateCreatedTimestamp = false) {
+   return update(buildId, build, updateCreatedTimestamp);
 }
 
 /**

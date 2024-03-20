@@ -832,6 +832,7 @@ import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 //composables
 import useCollection from "@/composables/useCollection";
 import { getUserFavorites } from "@/composables/data/favoriteService";
+import { getBuild, deleteBuild, incrementViews, updateBuild, error } from "@/composables/data/buildService";
 import { civs as allCivs, getCivById } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
@@ -861,13 +862,6 @@ export default {
     const { copyToClipboard } = useCopyToClipboard();
     const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
-    const {
-      get,
-      del,
-      incrementViews,
-      error,
-      update: updateBuild,
-    } = useCollection("builds");
     const userData = ref(null);
     const loading = ref(true);
 
@@ -879,7 +873,7 @@ export default {
       }
       else{
         //"Build not found in store, fetching from firestore"
-        resBuild = await get(props.id);
+        resBuild = await getBuild(props.id);
       }
       if (resBuild) {
         //Get user data (favorites and likes)
@@ -920,8 +914,11 @@ export default {
     };
 
     const handleDelete = async () => {
-      await del(props.id);
+      await deleteBuild(props.id);
       store.commit("removeBuild", props.id);
+
+      console.log("error", error.value);
+      
       if (!error.value) {
         store.dispatch("showSnackbar", {
           text: `Build order deleted!`,
@@ -936,7 +933,6 @@ export default {
     };
 
     const handlePublish = async () => {
-      //Update build order document
       build.value.isDraft = false;
       await updateBuild(props.id, build.value, true);
 
@@ -970,7 +966,6 @@ export default {
       loading,
       civs,
       getCivById,
-      error,
       deleteDialog,
       focusDialog,
       window,
