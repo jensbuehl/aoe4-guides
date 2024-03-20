@@ -1,8 +1,5 @@
 <template>
   <v-container v-if="user && build">
-    <v-card flat v-if="error" class="mb-4" rounded="lg" color="error">
-      <v-card-text>{{ error }}</v-card-text>
-    </v-card>
     <v-card flat rounded="lg">
       <v-card-title class="hidden-md-and-up">
         {{ build.title }}
@@ -688,8 +685,8 @@ import Favorite from "@/components/Favorite.vue";
 import StepsEditor from "@/components/builds/StepsEditor.vue";
 
 //Composables
-import useCollection from "@/composables/useCollection";
 import { getCreator, addCreator } from "@/composables/data/creatorService";
+import { getBuild, updateBuild, error as buildServiceError } from "@/composables/data/buildService";
 import useBuildValidator from "@/composables/builds/useBuildValidator";
 import useYoutube from "@/composables/builds/useYoutube";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
@@ -707,6 +704,7 @@ export default {
   props: ["id"],
   setup(props) {
     const store = useStore();
+    const error = ref(null)
     const router = useRouter();
     const user = computed(() => store.state.user);
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
@@ -715,11 +713,6 @@ export default {
     const { copyToClipboard } = useCopyToClipboard();
     const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
-    const {
-      get: getBuild,
-      update: updateBuild,
-      error,
-    } = useCollection("builds");
     const { validateBuild, validateVideo } = useBuildValidator();
     const {
       extractVideoId,
@@ -810,12 +803,19 @@ export default {
         }
 
         //Navigate to new build order
-        if (!error.value) {
+        if (!error.value && !buildServiceError.value) {
           await store.dispatch("showSnackbar", {
             text: `Build order updated successfully!`,
             type: "success",
           });
           router.replace("/builds/" + props.id);
+        }
+        else {
+          var errorMessage = error.value ? error.value : buildServiceError.value
+          await store.dispatch("showSnackbar", {
+            text: errorMessage,
+            type: "error",
+          });
         }
       }
     };

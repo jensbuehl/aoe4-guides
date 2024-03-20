@@ -830,7 +830,6 @@ import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 
 //composables
-import useCollection from "@/composables/useCollection";
 import { getUserFavorites } from "@/composables/data/favoriteService";
 import { getBuild, deleteBuild, incrementViews, updateBuild, error } from "@/composables/data/buildService";
 import { civs as allCivs, getCivById } from "@/composables/filter/civDefaultProvider";
@@ -918,7 +917,7 @@ export default {
       store.commit("removeBuild", props.id);
 
       console.log("error", error.value);
-      
+
       if (!error.value) {
         store.dispatch("showSnackbar", {
           text: `Build order deleted!`,
