@@ -291,17 +291,17 @@ import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import useCollection from "@/composables/useCollection";
 import { getCreator, addCreator } from "@/composables/data/creatorService";
+import { addBuild, getUserDraftsCount, error as buildServiceError } from "@/composables/data/buildService";
 import useBuildValidator from "@/composables/builds/useBuildValidator";
 import useYoutube from "@/composables/builds/useYoutube";
 import { maps } from "@/composables/filter/mapDefaultProvider";
 import { strategies } from "@/composables/filter/strategyDefaultProvider";
-import queryService from "@/composables/useQueryService";
 
 export default {
   name: "BuildNew",
   components: { StepsEditor, RegisterAd, RegisterAdShort },
   setup() {
-    const { add, getQuery, getSize, error } = useCollection("builds");
+    const { error } = useCollection("builds");
     const { validateBuild, validateVideo } = useBuildValidator();
     const {
       extractVideoId,
@@ -363,11 +363,7 @@ export default {
       const maxDrafts = 2;
 
       build.value.isDraft = true;
-      const allDocsQuery = getQuery(
-        queryService.getQueryParametersForDrafts(true, user.value.uid)
-      );
-      const size = await getSize(allDocsQuery);
-      console.log(size);
+      const size = await getUserDraftsCount(user.value.uid);
       if (size >= maxDrafts) {
         error.value = `Villagers shall only manage ${maxDrafts} drafts at the same time. Please publish or delete your open drafts, first.`;
       } else {
@@ -397,8 +393,7 @@ export default {
         }
 
         //Add build order document
-        const id = await add(build.value);
-        store.commit("setBuild", build.value);
+        const id = await addBuild(build.value);
 
         if (build.value.video) {
           //Add content creator document

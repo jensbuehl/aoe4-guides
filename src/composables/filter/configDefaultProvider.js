@@ -18,4 +18,14 @@ export const getMostRecentBuildsConfig = () => ({
     drafts: false,
 });
 
+export const getDraftsConfig = () => ({
+    author: null,
+    civs: null,
+    maps: [],
+    strategies: [],
+    seasons: [],
+    orderBy: "timeCreated",
+    drafts: true,
+});
+
 export const getPopularBuildsConfig = () => getDefaultConfig();

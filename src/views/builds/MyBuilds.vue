@@ -103,6 +103,7 @@ import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import useCollection from "@/composables/useCollection";
+import { getUserDrafts } from "@/composables/data/buildService";
 import queryService from "@/composables/useQueryService";
 
 export default {
@@ -165,10 +166,8 @@ export default {
       store.commit("setAuthor", null);
 
       //get drafts
-      const draftQuery = getQuery(
-        queryService.getQueryParametersForDrafts(true, user.value.uid)
-      );
-      drafts.value = await getAll(draftQuery);
+      drafts.value = await getUserDrafts(user.value.uid);
+      console.log("drafts", drafts.value);
 
       //get builds query
       const paginationQuery = getQuery(

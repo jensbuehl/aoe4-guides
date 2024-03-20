@@ -9,9 +9,21 @@ import {
    getMostRecentBuildsConfig,
    getPopularBuildsConfig,
    getDefaultConfig,
+   getDraftsConfig,
 } from "@/composables/filter/configDefaultProvider";
 
-const { incrementNumber, decrementNumber, get, del, update, getAll, getQuery, getSize, error: useCollectionError } = useCollection("builds");
+const {
+   incrementNumber,
+   decrementNumber,
+   add,
+   get,
+   del,
+   update,
+   getAll,
+   getQuery,
+   getSize,
+   error: useCollectionError,
+} = useCollection("builds");
 
 /**
  * Returns the error value of the useCollection composable.
@@ -90,10 +102,36 @@ export async function incrementViews(buildId) {
  * @return {Promise<number>} Number of builds in total.
  */
 export async function getBuildsCount() {
-   const allBuildsQuery = getQuery(
-      queryService.getQueryParametersFromConfig(getDefaultConfig())
-   );
+   const allBuildsQuery = getQuery(queryService.getQueryParametersFromConfig(getDefaultConfig()));
    return getSize(allBuildsQuery);
+}
+
+/**
+ * Retrieves the count of drafts for a specific user.
+ *
+ * @param {string} userId - The unique identifier of the user
+ * @return {number} The count of drafts for the user
+ */
+export async function getUserDraftsCount(userId) {
+   const limit = null;
+   const userDraftsQuery = getQuery(
+      queryService.getQueryParametersFromConfig(getDraftsConfig(), limit, userId)
+   );
+   return getSize(userDraftsQuery);
+}
+
+/**
+ * Retrieves the user drafts from the server.
+ *
+ * @param {string} userId - The ID of the user.
+ * @param {number|null} [limit=null] - The maximum number of drafts to retrieve. If null, retrieves all drafts.
+ * @return {Promise<Array>} A promise that resolves to an array of user drafts.
+ */
+export async function getUserDrafts(userId, limit = null) {
+   const userDraftsQuery = getQuery(
+      queryService.getQueryParametersFromConfig(getDraftsConfig(), limit, userId)
+   );
+   return getAll(userDraftsQuery);
 }
 
 /**
@@ -104,6 +142,18 @@ export async function getBuildsCount() {
  */
 export async function getBuild(buildId) {
    return get(buildId);
+}
+
+/**
+ * Adds a build to the database and store, optionally uses a custom ID.
+ *
+ * @param {Object} build - The build object to be added.
+ * @param {string|null} [customId=null] - An optional custom ID for the build.
+ * @return {Promise<void>} - A promise that resolves when the build is added and operations are completed.
+ */
+export async function addBuild(build, customId = null) {
+   store.commit("setBuild", build);
+   add(build, customId);
 }
 
 /**
