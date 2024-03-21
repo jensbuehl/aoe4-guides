@@ -89,7 +89,6 @@ export default {
   setup() {
     var builds = null;
 
-    const { getAll, getQuery, update, getSize } = useCollection("builds");
     const error = ref(null);
     const store = useStore();
     const filterConfig = computed(() => store.state.filterConfig);
@@ -120,7 +119,7 @@ export default {
 
     const initData = async () => {
       //init builds, filter based on use case
-      builds = await getAll(whereVideoIsSetQuery);
+      builds = null
     };
 
     return {
