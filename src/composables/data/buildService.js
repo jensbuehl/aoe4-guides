@@ -6,23 +6,23 @@ import { computed } from "vue";
 import useCollection from "@/composables/data/useCollection";
 import queryService from "@/composables/useQueryService";
 import {
-   getMostRecentBuildsConfig,
-   getPopularBuildsConfig,
-   getDefaultConfig,
-   getDraftsConfig,
+  getMostRecentBuildsConfig,
+  getPopularBuildsConfig,
+  getDefaultConfig,
+  getDraftsConfig,
 } from "@/composables/filter/configDefaultProvider";
 
 const {
-   incrementNumber,
-   decrementNumber,
-   add,
-   get,
-   del,
-   update,
-   getAll,
-   getQuery,
-   getSize,
-   error: useCollectionError,
+  incrementNumber,
+  decrementNumber,
+  add,
+  get,
+  del,
+  update,
+  getAll,
+  getQuery,
+  getSize,
+  error: useCollectionError,
 } = useCollection("builds");
 
 /**
@@ -39,7 +39,7 @@ export const error = computed(() => useCollectionError).value;
  * @return {Promise} A promise that resolves when the number of likes has been incremented.
  */
 export async function incrementLikes(buildId) {
-   incrementNumber(buildId, "likes");
+  incrementNumber(buildId, "likes");
 }
 
 /**
@@ -49,7 +49,7 @@ export async function incrementLikes(buildId) {
  * @return {Promise<void>} This function does not return anything
  */
 export async function decrementLikes(buildId) {
-   decrementNumber(buildId, "likes");
+  decrementNumber(buildId, "likes");
 }
 
 /**
@@ -59,7 +59,7 @@ export async function decrementLikes(buildId) {
  * @return {Promise<void>} A Promise that resolves once the downvotes are incremented.
  */
 export async function incrementDownvotes(buildId) {
-   incrementNumber(buildId, "downvotes");
+  incrementNumber(buildId, "downvotes");
 }
 
 /**
@@ -69,7 +69,7 @@ export async function incrementDownvotes(buildId) {
  * @return {Promise<void>} This function does not return anything.
  */
 export async function decrementDownvotes(buildId) {
-   decrementNumber(buildId, "downvotes");
+  decrementNumber(buildId, "downvotes");
 }
 
 /**
@@ -79,7 +79,7 @@ export async function decrementDownvotes(buildId) {
  * @return {Promise<void>} This function does not return anything.
  */
 export async function incrementUpvotes(buildId) {
-   incrementNumber(buildId, "upvotes");
+  incrementNumber(buildId, "upvotes");
 }
 
 /**
@@ -89,21 +89,22 @@ export async function incrementUpvotes(buildId) {
  * @return {Promise<void>} A promise that resolves when the upvotes count is decremented.
  */
 export async function decrementUpvotes(buildId) {
-   decrementNumber(buildId, "upvotes");
+  decrementNumber(buildId, "upvotes");
 }
 
 export async function incrementViews(buildId) {
-   incrementNumber(buildId, "views");
+  incrementNumber(buildId, "views");
 }
 
 /**
- * Retrieves the count of builds using the defaultConfig.
+ * Retrieves the count of builds based on the provided filter configuration.
  *
- * @return {Promise<number>} Number of builds in total.
+ * @param {Object} filterConfig - The filter configuration object. Defaults to the default configuration if not provided.
+ * @return {Promise<number>} A Promise that resolves to the count of builds.
  */
-export async function getBuildsCount() {
-   const allBuildsQuery = getQuery(queryService.getQueryParametersFromConfig(getDefaultConfig()));
-   return getSize(allBuildsQuery);
+export async function getBuildsCount(filterConfig = getDefaultConfig()) {
+  const allBuildsQuery = getQuery(queryService.getQueryParametersFromConfig(filterConfig));
+  return getSize(allBuildsQuery);
 }
 
 /**
@@ -113,11 +114,19 @@ export async function getBuildsCount() {
  * @return {number} The count of drafts for the user
  */
 export async function getUserDraftsCount(userId) {
-   const limit = null;
-   const userDraftsQuery = getQuery(
-      queryService.getQueryParametersFromConfig(getDraftsConfig(), limit, userId)
-   );
-   return getSize(userDraftsQuery);
+  const limit = null;
+  const userDraftsQuery = getQuery(
+    queryService.getQueryParametersFromConfig(getDraftsConfig(), limit, userId)
+  );
+  return getSize(userDraftsQuery);
+}
+
+export async function getUserBuildsCount(userId, filterConfig = getDefaultConfig()) {
+  const limit = null;
+  const userDraftsQuery = getQuery(
+    queryService.getQueryParametersFromConfig(filterConfig, limit, userId)
+  );
+  return getSize(userDraftsQuery);
 }
 
 /**
@@ -128,10 +137,17 @@ export async function getUserDraftsCount(userId) {
  * @return {Promise<Array>} A promise that resolves to an array of user drafts.
  */
 export async function getUserDrafts(userId, limit = null) {
-   const userDraftsQuery = getQuery(
-      queryService.getQueryParametersFromConfig(getDraftsConfig(), limit, userId)
-   );
-   return getAll(userDraftsQuery);
+  const userDraftsQuery = getQuery(
+    queryService.getQueryParametersFromConfig(getDraftsConfig(), limit, userId)
+  );
+  return getAll(userDraftsQuery);
+}
+
+export async function getUserBuilds(userId, filterConfig = getDefaultConfig(), limit = null) {
+  const userDraftsQuery = getQuery(
+    queryService.getQueryParametersFromConfig(filterConfig, limit, userId)
+  );
+  return getAll(userDraftsQuery);
 }
 
 /**
@@ -141,7 +157,7 @@ export async function getUserDrafts(userId, limit = null) {
  * @return {Promise<any>} The retrieved build
  */
 export async function getBuild(buildId) {
-   return get(buildId);
+  return get(buildId);
 }
 
 /**
@@ -152,8 +168,8 @@ export async function getBuild(buildId) {
  * @return {Promise<void>} - A promise that resolves when the build is added and operations are completed.
  */
 export async function addBuild(build, customId = null) {
-   store.commit("setBuild", build);
-   add(build, customId);
+  store.commit("setBuild", build);
+  add(build, customId);
 }
 
 /**
@@ -163,7 +179,7 @@ export async function addBuild(build, customId = null) {
  * @return {Promise} A promise that resolves when the build is successfully deleted.
  */
 export async function deleteBuild(buildId) {
-   return del(buildId);
+  return del(buildId);
 }
 
 /**
@@ -175,7 +191,7 @@ export async function deleteBuild(buildId) {
  * @return {Promise} A promise that resolves with the updated build data.
  */
 export async function updateBuild(buildId, build, updateCreatedTimestamp = false) {
-   return update(buildId, build, updateCreatedTimestamp);
+  return update(buildId, build, updateCreatedTimestamp);
 }
 
 /**
@@ -185,12 +201,12 @@ export async function updateBuild(buildId, build, updateCreatedTimestamp = false
  * @return {Promise} The result of the operation, representing the recent builds
  */
 export async function getRecentBuilds(limit) {
-   const mostRecentQuery = getQuery(
-      queryService.getQueryParametersFromConfig(getMostRecentBuildsConfig(), limit)
-   );
-   const result = await getAll(mostRecentQuery);
-   store.commit("setBuilds", result);
-   return result;
+  const mostRecentQuery = getQuery(
+    queryService.getQueryParametersFromConfig(getMostRecentBuildsConfig(), limit)
+  );
+  const result = await getAll(mostRecentQuery);
+  store.commit("setBuilds", result);
+  return result;
 }
 
 /**
@@ -200,10 +216,10 @@ export async function getRecentBuilds(limit) {
  * @return {Promise} A Promise that resolves with the retrieved popular builds
  */
 export async function getPopularBuilds(limit) {
-   const popularQuery = getQuery(
-      queryService.getQueryParametersFromConfig(getPopularBuildsConfig(), limit)
-   );
-   const result = await getAll(popularQuery);
-   store.commit("setBuilds", result);
-   return result;
+  const popularQuery = getQuery(
+    queryService.getQueryParametersFromConfig(getPopularBuildsConfig(), limit)
+  );
+  const result = await getAll(popularQuery);
+  store.commit("setBuilds", result);
+  return result;
 }

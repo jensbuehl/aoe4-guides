@@ -26,8 +26,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" @configChanged="configChanged">
-        </FilterConfig>
+        <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
         <RegisterAd v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
@@ -45,9 +44,7 @@
                   params: { id: !item.loading ? item.id : null },
                 }"
               >
-                <BuildListCard
-                  :build="item"
-                ></BuildListCard>
+                <BuildListCard :build="item"></BuildListCard>
               </router-link></div
           ></v-col>
         </v-row>
@@ -61,9 +58,7 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <BuildListCard
-              :build="item"
-            ></BuildListCard>
+            <BuildListCard :build="item"></BuildListCard>
           </router-link>
         </div>
         <div style="text-align: center" v-if="!loading && count === 0">
@@ -103,7 +98,7 @@ import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import useCollection from "@/composables/useCollection";
-import { getUserDrafts } from "@/composables/data/buildService";
+import { getUserDrafts, getUserBuilds, getUserBuildsCount } from "@/composables/data/buildService";
 import queryService from "@/composables/useQueryService";
 
 export default {
@@ -115,7 +110,7 @@ export default {
     const drafts = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
-    const filterAndOrderConfig = computed(() => store.state.filterConfig);
+    const filterConfig = computed(() => store.state.filterConfig);
     const count = computed(() => store.state.resultsCount);
     const loading = computed(() => store.state.loading);
     const paginationConfig = ref({
@@ -129,7 +124,7 @@ export default {
     watch(
       () => user.value,
       () => {
-        if (!filterAndOrderConfig.value) {
+        if (!filterConfig.value) {
           store.commit("setFilterConfig", getDefaultConfig());
         }
         initData();
@@ -137,7 +132,7 @@ export default {
     );
 
     onMounted(() => {
-      if (!filterAndOrderConfig.value) {
+      if (!filterConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
       if (user.value) {
@@ -167,18 +162,10 @@ export default {
 
       //get drafts
       drafts.value = await getUserDrafts(user.value.uid);
-      console.log("drafts", drafts.value);
 
-      //get builds query
-      const paginationQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit,
-          user.value.uid
-        )
-      );
+      //get my builds query
       const currentPageSize = Math.min(
-        await getSize(paginationQuery),
+        await getUserBuildsCount(user.value.uid, filterConfig.value),
         paginationConfig.value.limit
       );
       builds.value = Array(currentPageSize).fill({
@@ -190,7 +177,7 @@ export default {
       if (store.state.cache.myBuildsList) {
         res = store.state.cache.myBuildsList;
       } else {
-        res = await getAll(paginationQuery);
+        res = await getUserBuilds(user.value.uid, filterConfig.value, paginationConfig.value.limit);
         store.commit("setMyBuildsList", res);
       }
       builds.value = res;
@@ -198,17 +185,11 @@ export default {
 
       //init page count, current page, and commit overall results count
       const allDocsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          filterAndOrderConfig.value,
-          null,
-          user.value.uid
-        )
+        queryService.getQueryParametersFromConfig(filterConfig.value, null, user.value.uid)
       );
       const size = await getSize(allDocsQuery);
       store.commit("setResultsCount", size);
-      paginationConfig.value.totalPages = Math.ceil(
-        size / paginationConfig.value.limit
-      );
+      paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
       paginationConfig.value.currentPage = 1;
 
       updatePageBoundaries();
@@ -223,7 +204,7 @@ export default {
 
       const query = getQuery(
         queryService.getQueryParametersNextPage(
-          filterAndOrderConfig.value,
+          filterConfig.value,
           paginationConfig.value.limit,
           paginationConfig.value.pageEnd,
           user.value.uid
@@ -246,7 +227,7 @@ export default {
 
       const query = getQuery(
         queryService.getQueryParametersPreviousPage(
-          filterAndOrderConfig.value,
+          filterConfig.value,
           paginationConfig.value.limit,
           paginationConfig.value.pageStart,
           user.value.uid
@@ -263,12 +244,9 @@ export default {
 
     const updatePageBoundaries = () => {
       if (builds.value.length) {
-        paginationConfig.value.pageStart =
-          builds.value[0][filterAndOrderConfig.value.orderBy];
+        paginationConfig.value.pageStart = builds.value[0][filterConfig.value.orderBy];
         paginationConfig.value.pageEnd =
-          builds.value[builds.value.length - 1][
-            filterAndOrderConfig.value.orderBy
-          ];
+          builds.value[builds.value.length - 1][filterConfig.value.orderBy];
       }
     };
 
