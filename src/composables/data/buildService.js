@@ -17,6 +17,7 @@ const {
   decrementNumber,
   add,
   get,
+  getSnapshot,
   del,
   update,
   getAll,
@@ -92,6 +93,12 @@ export async function decrementUpvotes(buildId) {
   decrementNumber(buildId, "upvotes");
 }
 
+/**
+ * Increments the number of views for a given build.
+ *
+ * @param {string} buildId - The ID of the build.
+ * @return {Promise<void>} A promise that resolves when the increment is complete.
+ */
 export async function incrementViews(buildId) {
   incrementNumber(buildId, "views");
 }
@@ -121,6 +128,13 @@ export async function getUserDraftsCount(userId) {
   return getSize(userDraftsQuery);
 }
 
+/**
+ * Retrieves the count of user builds based on the provided user ID and filter configuration.
+ *
+ * @param {string} userId - The ID of the user.
+ * @param {Object} [filterConfig=getDefaultConfig()] - The filter configuration to apply. Defaults to the default configuration.
+ * @return {Promise<number>} - A promise that resolves to the count of user builds.
+ */
 export async function getUserBuildsCount(userId, filterConfig = getDefaultConfig()) {
   const limit = null;
   const userDraftsQuery = getQuery(
@@ -143,11 +157,58 @@ export async function getUserDrafts(userId, limit = null) {
   return getAll(userDraftsQuery);
 }
 
+/**
+ * Retrieves the builds for a specific user based on the provided user ID and filter configuration.
+ *
+ * @param {string} userId - The ID of the user for whom the builds are being retrieved.
+ * @param {object} filterConfig - The configuration object used to filter the builds (default value is getDefaultConfig()).
+ * @param {number | null} limit - The maximum number of builds to retrieve (optional, default value is null).
+ * @return {Promise<object[]>} An array of build objects retrieved for the user.
+ */
 export async function getUserBuilds(userId, filterConfig = getDefaultConfig(), limit = null) {
   const userDraftsQuery = getQuery(
     queryService.getQueryParametersFromConfig(filterConfig, limit, userId)
   );
-  return getAll(userDraftsQuery);
+  const result = await getAll(userDraftsQuery);
+  store.commit("setBuilds", result);
+  return result;
+}
+
+export async function getUserBuildsUntil(
+  userId,
+  endBuildId,
+  filterConfig = getDefaultConfig(),
+  limit = null
+) {
+  const snapshot = await getSnapshot(endBuildId);
+
+  const query = getQuery(
+    queryService
+      .getQueryParametersFromConfig(filterConfig, null, userId)
+      .concat(queryService.limitToLastWith(limit))
+      .concat(queryService.endBeforeQueryParam(snapshot))
+  );
+  const res = await getAll(query);
+  store.commit("setBuilds", res);
+  return res;
+}
+
+export async function getUserBuildsFrom(
+  userId,
+  startBuildId,
+  filterConfig = getDefaultConfig(),
+  limit = null
+) {
+  const snapshot = await getSnapshot(startBuildId);
+
+  const query = getQuery(
+    queryService
+      .getQueryParametersFromConfig(filterConfig, limit, userId)
+      .concat(queryService.startAfterQueryParam(snapshot))
+  );
+  const res = await getAll(query);
+  store.commit("setBuilds", res);
+  return res;
 }
 
 /**

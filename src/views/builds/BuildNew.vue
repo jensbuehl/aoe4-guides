@@ -390,6 +390,10 @@ export default {
             text: `Build order created successfully!`,
             type: "success",
           });
+          //reset cache
+          store.commit("setAllBuildsList", null);
+          store.commit("setMyBuildsList", null);
+          store.commit("setMyFavoritesList", null);
           router.replace("/builds/" + buildId);
         } else {
           var errorMessage = error.value ? error.value : buildServiceError.value;

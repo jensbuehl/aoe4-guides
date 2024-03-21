@@ -52,82 +52,26 @@ const useCollection = (col) => {
 
         try {
             const docRef = doc(db, col, id);
-            const docSnap = await getDoc(docRef);
+            const snapshot = await getDoc(docRef);
             console.log("Document retrieved with ID: ", id);
-            return docSnap.data();
+            return snapshot.data();
         } catch (err) {
             console.log(err.message);
             error.value = "Document could not be retrieved";
         }
     };
 
-    const incrementViews = async (id) => {
+    const getSnapshot = async (id) => {
         error.value = null;
 
         try {
             const docRef = doc(db, col, id);
-            await updateDoc(docRef, {
-                views: increment(1),
-            });
+            const snapshot = await getDoc(docRef);
+            console.log("Snapshot retrieved with ID: ", id);
+            return snapshot;
         } catch (err) {
             console.log(err.message);
-            error.value = "Document could not be retrieved";
-        }
-    };
-
-    const incrementUps = async (id) => {
-        error.value = null;
-
-        try {
-            const docRef = doc(db, col, id);
-            await updateDoc(docRef, {
-                upvotes: increment(1),
-            });
-        } catch (err) {
-            console.log(err.message);
-            error.value = "Upvote count could not be incremented";
-        }
-    };
-
-    const decrementUps = async (id) => {
-        error.value = null;
-
-        try {
-            const docRef = doc(db, col, id);
-            await updateDoc(docRef, {
-                upvotes: increment(-1),
-            });
-        } catch (err) {
-            console.log(err.message);
-            error.value = "Upvote count could not be decremented";
-        }
-    };
-
-    const incrementDowns = async (id) => {
-        error.value = null;
-
-        try {
-            const docRef = doc(db, col, id);
-            await updateDoc(docRef, {
-                downvotes: increment(1),
-            });
-        } catch (err) {
-            console.log(err.message);
-            error.value = "Upvote count could not be incremented";
-        }
-    };
-
-    const decrementDowns = async (id) => {
-        error.value = null;
-
-        try {
-            const docRef = doc(db, col, id);
-            await updateDoc(docRef, {
-                downvotes: increment(-1),
-            });
-        } catch (err) {
-            console.log(err.message);
-            error.value = "Upvote count could not be decremented";
+            error.value = "Snapshot could not be retrieved";
         }
     };
 
@@ -269,6 +213,7 @@ const useCollection = (col) => {
         error,
         add,
         get,
+        getSnapshot,
         del,
         getAll,
         update,
@@ -277,14 +222,7 @@ const useCollection = (col) => {
         addElementToArray,
         removeElementFromArray,
         incrementNumber,
-        decrementNumber,
-        //Views
-        incrementViews,
-        //Votes
-        incrementUps,
-        decrementUps,
-        incrementDowns,
-        decrementDowns,
+        decrementNumber
     };
 };
 

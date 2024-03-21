@@ -97,15 +97,12 @@ import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import useCollection from "@/composables/useCollection";
-import { getUserDrafts, getUserBuilds, getUserBuildsCount } from "@/composables/data/buildService";
-import queryService from "@/composables/useQueryService";
+import { getUserDrafts, getUserBuilds, getUserBuildsCount, getUserBuildsFrom, getUserBuildsUntil } from "@/composables/data/buildService";
 
 export default {
   name: "Builds",
   components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
   setup() {
-    const { getAll, getQuery, getSize } = useCollection("builds");
     const builds = ref(null);
     const drafts = ref(null);
     const store = useStore();
@@ -163,36 +160,34 @@ export default {
       //get drafts
       drafts.value = await getUserDrafts(user.value.uid);
 
-      //get my builds query
-      const currentPageSize = Math.min(
-        await getUserBuildsCount(user.value.uid, filterConfig.value),
-        paginationConfig.value.limit
-      );
+      //init count
+      const size = await getUserBuildsCount(user.value.uid, filterConfig.value);
+      store.commit("setResultsCount", size);
+
+      //get page size
+      const currentPageSize = Math.min(size, paginationConfig.value.limit);
       builds.value = Array(currentPageSize).fill({
         loading: true,
       });
 
-      //get builds
-      var res = null;
+      //get my builds
       if (store.state.cache.myBuildsList) {
-        res = store.state.cache.myBuildsList;
+        builds.value = store.state.cache.myBuildsList;
       } else {
-        res = await getUserBuilds(user.value.uid, filterConfig.value, paginationConfig.value.limit);
+        const res = await getUserBuilds(
+          user.value.uid,
+          filterConfig.value,
+          paginationConfig.value.limit
+        );
+        builds.value = res;
         store.commit("setMyBuildsList", res);
       }
-      builds.value = res;
-      store.commit("setBuilds", res);
 
-      //init page count, current page, and commit overall results count
-      const allDocsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(filterConfig.value, null, user.value.uid)
-      );
-      const size = await getSize(allDocsQuery);
-      store.commit("setResultsCount", size);
+      //init pagination config
       paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
       paginationConfig.value.currentPage = 1;
-
       updatePageBoundaries();
+
       store.commit("setLoading", false);
     };
 
@@ -202,18 +197,12 @@ export default {
       //reset cache
       store.commit("setMyBuildsList", null);
 
-      const query = getQuery(
-        queryService.getQueryParametersNextPage(
-          filterConfig.value,
-          paginationConfig.value.limit,
-          paginationConfig.value.pageEnd,
-          user.value.uid
-        )
+      builds.value = await getUserBuildsFrom(
+        user.value.uid,
+        paginationConfig.value.pageEnd,
+        filterConfig.value,
+        paginationConfig.value.limit
       );
-      const res = await getAll(query);
-      builds.value = res;
-      store.commit("setBuilds", res);
-      getSize(query);
 
       updatePageBoundaries();
       window.scrollTo(0, 0);
@@ -225,28 +214,23 @@ export default {
       //reset cache
       store.commit("setMyBuildsList", null);
 
-      const query = getQuery(
-        queryService.getQueryParametersPreviousPage(
-          filterConfig.value,
-          paginationConfig.value.limit,
-          paginationConfig.value.pageStart,
-          user.value.uid
-        )
+      builds.value = await getUserBuildsUntil(
+        user.value.uid,
+        paginationConfig.value.pageStart,
+        filterConfig.value,
+        paginationConfig.value.limit
       );
-      const res = await getAll(query);
-      builds.value = res;
-      store.commit("setBuilds", res);
-      getSize(query);
 
       updatePageBoundaries();
       window.scrollTo(0, 0);
     };
 
     const updatePageBoundaries = () => {
+      var firstPageElement = builds.value[0];
+      var lastPageElement = builds.value[builds.value.length - 1];
       if (builds.value.length) {
-        paginationConfig.value.pageStart = builds.value[0][filterConfig.value.orderBy];
-        paginationConfig.value.pageEnd =
-          builds.value[builds.value.length - 1][filterConfig.value.orderBy];
+        paginationConfig.value.pageStart = firstPageElement.id;
+        paginationConfig.value.pageEnd = lastPageElement.id;
       }
     };
 
