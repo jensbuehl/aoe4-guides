@@ -263,7 +263,6 @@ import StepsEditor from "@/components/builds/StepsEditor.vue";
 //Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { seasons } from "@/composables/filter/seasonDefaultProvider";
-import useCollection from "@/composables/useCollection";
 import { getCreator, addCreator } from "@/composables/data/creatorService";
 import {
   addBuild,
@@ -279,7 +278,7 @@ export default {
   name: "BuildNew",
   components: { StepsEditor, RegisterAd, RegisterAdShort },
   setup() {
-    const { error } = ref(null);
+    const error = ref(null);
     const { validateBuild, validateVideo } = useBuildValidator();
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon } =
       useYoutube();
@@ -335,7 +334,6 @@ export default {
     const handleDraft = async () => {
       const maxDrafts = 2;
 
-      build.value.isDraft = true;
       const size = await getUserDraftsCount(user.value.uid);
       if (size >= maxDrafts) {
         const errorMessage =
@@ -345,6 +343,7 @@ export default {
           type: "error",
         });
       } else {
+        build.value.isDraft = true;
         handleSave();
       }
     };
