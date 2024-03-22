@@ -65,6 +65,34 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "authorUid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "authorUid",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "sortTitle",
           "order": "ASCENDING"
         }
@@ -205,6 +233,34 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "civ",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "civ",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "sortTitle",
           "order": "ASCENDING"
         }
@@ -332,6 +388,34 @@
         },
         {
           "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isDraft",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "isDraft",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
           "order": "DESCENDING"
         }
       ]
@@ -472,6 +556,34 @@
         },
         {
           "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "creatorId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "creatorId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
           "order": "DESCENDING"
         }
       ]
@@ -612,6 +724,34 @@
         },
         {
           "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "id",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
           "order": "DESCENDING"
         }
       ]
@@ -752,6 +892,34 @@
         },
         {
           "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "map",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "map",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
           "order": "DESCENDING"
         }
       ]
@@ -892,6 +1060,34 @@
         },
         {
           "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "season",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "season",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
           "order": "DESCENDING"
         }
       ]
@@ -1032,6 +1228,34 @@
         },
         {
           "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "strategy",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "strategy",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
           "order": "DESCENDING"
         }
       ]

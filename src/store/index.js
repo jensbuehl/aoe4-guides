@@ -48,6 +48,7 @@ export const store = createStore({
             builds: {},
             popularBuildsList: Array(5).fill({ loading: true }),
             recentBuildsList: Array(5).fill({ loading: true }),
+            allTimeClassicsList: Array(5).fill({ loading: true }),
             allBuildsList: null,
             myBuildsList: null,
             myFavoritesList: null,
@@ -141,6 +142,13 @@ export const store = createStore({
             console.log(
                 "recentBuildsList state changed:",
                 state.cache.recentBuildsList
+            );
+        },
+        setAllTimeClassicsList(state, payload) {
+            state.cache.allTimeClassicsList = payload;
+            console.log(
+                "allTimeClassicsList state changed:",
+                state.cache.allTimeClassicsList
             );
         },
         setPopularBuildsList(state, payload) {

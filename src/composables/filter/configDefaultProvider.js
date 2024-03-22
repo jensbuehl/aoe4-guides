@@ -18,6 +18,16 @@ export const getMostRecentBuildsConfig = () => ({
     drafts: false,
 });
 
+export const getAllTimeClassicsConfig = () => ({
+    author: null,
+    civs: null,
+    maps: [],
+    strategies: [],
+    seasons: [],
+    orderBy: "scoreAllTime",
+    drafts: false,
+});
+
 export const getDraftsConfig = () => ({
     author: null,
     civs: null,

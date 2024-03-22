@@ -371,6 +371,10 @@ export default {
         id: "score",
       },
       {
+        title: "All Time Classics",
+        id: "scoreAllTime",
+      },
+      {
         title: "Time Created",
         id: "timeCreated",
       },

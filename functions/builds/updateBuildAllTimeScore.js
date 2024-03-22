@@ -10,13 +10,12 @@ const logger = require("firebase-functions/logger");
  * @async
  * @memberof module:functions
  * @param {Object} event - The Firebase event object.
- * @param {Object} event.data - The event data.
  * @return {Promise} A promise that resolves when all builds have been updated.
  */
 exports.updateBuildAllTimeScore = onSchedule(
   { schedule: "0 0 1 * *" },
   async (event) => {
-    logger.log("updateBuildAllTimeScoreCalled", event.data.data());
+    logger.log("updateBuildAllTimeScoreCalled");
 
     // Get all builds
     const snapshot = await getFirestore().collection("builds").get();

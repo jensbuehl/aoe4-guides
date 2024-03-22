@@ -120,12 +120,12 @@
             class="mr-1 mt-1"
             label
             size="x-small"
-            v-show="build.views && (orderBy == 'views' || orderBy == 'score')"
+            v-show="build.views && (orderBy == 'views' || orderBy == 'score' || orderBy == 'scoreAllTime')"
           >
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip
-            v-show="build.likes > 0 && orderBy == 'likes'"
+            v-show="build.likes > 0 && (orderBy == 'likes' || orderBy == 'scoreAllTime')"
             class="mr-1 mt-1"
             label
             size="x-small"
@@ -134,7 +134,7 @@
             {{ build.likes }}</v-chip
           >
           <v-chip
-            v-show="build.upvotes > 0 && orderBy == 'score'"
+            v-show="build.upvotes > 0 && (orderBy == 'score' || orderBy == 'scoreAllTime')"
             class="mr-1 mt-1"
             label
             size="x-small"
@@ -211,12 +211,12 @@
             class="mr-2 mb-2"
             label
             size="small"
-            v-show="build.views && (orderBy == 'views' || orderBy == 'score')"
+            v-show="build.views && (orderBy == 'views' || orderBy == 'score' || orderBy == 'scoreAllTime')"
           >
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip
-            v-show="build.likes > 0 && orderBy == 'likes'"
+            v-show="build.likes > 0 && (orderBy == 'likes' || orderBy == 'scoreAllTime')"
             class="mr-2 mb-2"
             label
             size="small"
@@ -225,7 +225,7 @@
             {{ build.likes }}</v-chip
           >
           <v-chip
-            v-show="build.upvotes > 0 && orderBy == 'score'"
+            v-show="build.upvotes > 0 && (orderBy == 'score' || orderBy == 'scoreAllTime')"
             class="mr-2 mb-2"
             label
             size="small"
