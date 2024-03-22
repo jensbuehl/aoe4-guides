@@ -29,7 +29,7 @@ export const featuredCreators = [
   {
     creatorTitle: "VortiX",
     creatorId: "UCYk9AH19xF7dtzM9OY7obmA",
-    creatorImage: "https://yt3.ggpht.com/jhlPcoFtAL3qKVM-ywU4MLMa2ARU4zo5HIhh7lYLsl1GMrP8LJywEj8AhBDJ9d1V6xnUM1-OFg=s176-c-k-c0x00ffffff-no-rj-mo",
+    creatorImage: "https://yt3.googleusercontent.com/afGgL81rJrgLFG2E9nHG3Y0K8YLncTcUtUDP37_OsyJtV4crCw2uD4IgEyJ9ZmUAK22MR7kY_XA=s176-c-k-c0x00ffffff-no-rj",
   },
   {
     creatorTitle: "DeMu",
