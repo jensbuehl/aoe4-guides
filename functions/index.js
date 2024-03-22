@@ -18,3 +18,6 @@ exports.updateUserDisplayName = updateUserDisplayName.updateUserDisplayName;
 //Build related functions
 const updateBuildScore = require('./builds/updateBuildScore');
 exports.updateBuildScore = updateBuildScore.updateBuildScore;
+
+const updateBuildAllTimeScore = require('./builds/updateBuildAllTimeScore');
+exports.updateBuildAllTimeScore = updateBuildAllTimeScore.updateBuildAllTimeScore;

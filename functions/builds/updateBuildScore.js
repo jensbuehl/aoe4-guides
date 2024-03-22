@@ -3,7 +3,7 @@ const { getFirestore } = require("firebase-admin/firestore");
 const logger = require("firebase-functions/logger");
 
 /**
- * Updates the score of all builds on a schedule.
+ * Updates the score of all builds on a schedule. (weekly, every friday)
  *
  * @name updateBuildScore
  * @function
