@@ -1,7 +1,7 @@
 //External
 import { where, orderBy, limit, endBefore, startAfter, limitToLast } from "@/firebase";
 
-function getQueryParametersFromConfig (config, pageLimit, userUid, favorites) {
+export function getQueryParametersFromConfig (config, pageLimit, userUid, favorites) {
   try {
     var queryParams = [];
     if (pageLimit) {
@@ -19,7 +19,7 @@ function getQueryParametersFromConfig (config, pageLimit, userUid, favorites) {
   }
 };
 
-function filterAuthorBy (userUid) {
+export function filterAuthorBy (userUid) {
   try {
     const queryParams = [];
     const whereOp = where("authorUid", "==", userUid);
@@ -30,7 +30,7 @@ function filterAuthorBy (userUid) {
   }
 };
 
-function startAfterQueryParam(snapshot) {
+export function startAfterQueryParam(snapshot) {
   try {
     const queryParams = [];
 
@@ -43,7 +43,7 @@ function startAfterQueryParam(snapshot) {
   }
 }
 
-function endBeforeQueryParam(snapshot) {
+export function endBeforeQueryParam(snapshot) {
   try {
     const queryParams = [];
 
@@ -56,7 +56,7 @@ function endBeforeQueryParam(snapshot) {
   }
 }
 
-function limitWith (pageLimit) {
+export function limitWith (pageLimit) {
   try {
     const queryParams = [];
     const limitOp = limit(pageLimit);
@@ -67,7 +67,7 @@ function limitWith (pageLimit) {
   }
 };
 
-function limitToLastWith (pageLimit) {
+export function limitToLastWith (pageLimit) {
   try {
     const queryParams = [];
     const limitOp = limitToLast(pageLimit);
@@ -78,7 +78,7 @@ function limitToLastWith (pageLimit) {
   }
 };
 
-function orderByWith (config, dir) {
+export function orderByWith (config, dir) {
   try {
     const queryParams = [];
     var myDir = "desc";
@@ -98,7 +98,7 @@ function orderByWith (config, dir) {
   }
 };
 
-function filterWith (config, favorites) {
+export function filterWith (config, favorites) {
   try {
     const queryParams = [];
 
@@ -151,7 +151,7 @@ function filterWith (config, favorites) {
   }
 };
 
-function whereEqual (field, value) {
+export function whereEqual (field, value) {
   try {
     const queryParams = [];
     const whereOp = where(field, "==", value);
@@ -163,7 +163,7 @@ function whereEqual (field, value) {
   }
 };
 
-function whereNotEqual (field, value) {
+export function whereNotEqual (field, value) {
   try {
     const queryParams = [];
     const whereOp = where(field, "!=", value);
@@ -173,17 +173,4 @@ function whereNotEqual (field, value) {
   } catch (err) {
     console.log(err.message);
   }
-};
-
-export default {
-  getQueryParametersFromConfig,
-  filterAuthorBy,
-  orderByWith,
-  limitWith,
-  filterWith,
-  whereEqual,
-  whereNotEqual,
-  startAfterQueryParam,
-  endBeforeQueryParam,
-  limitToLastWith
 };
