@@ -246,13 +246,13 @@ export function collectionService(col) {
     }
   }
 
-/**
- * Asynchronously generates a query based on the given query parameters.
- *
- * @param {Array} queryParams - An array of query parameters.
- * @return {Promise} A promise that resolves to the generated query.
- */
-  async function getQuery(queryParams) {
+  /**
+   * Get the query based on the given query parameters.
+   *
+   * @param {array} queryParams - The array of query parameters
+   * @return {object} The built query based on the given parameters
+   */
+  function getQuery(queryParams) {
     let buildQuery = query(collection(db, col));
     try {
       queryParams.forEach((element) => {

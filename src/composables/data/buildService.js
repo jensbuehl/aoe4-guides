@@ -6,9 +6,9 @@ import { computed } from "vue";
 import collectionService from "@/composables/data/collectionService";
 import {
   getQueryParametersFromConfig,
-  startAfterQueryParam,
-  endBeforeQueryParam,
-  limitToLastWith,
+  getStartAfterQueryParam,
+  getEndBeforeQueryParam,
+  getLimitToLastQueryParam,
 } from "@/composables/data/queryParameterBuilder";
 import {
   getMostRecentBuildsConfig,
@@ -252,8 +252,8 @@ export async function getUserBuildsUntil(
   const query = getQuery(
     queryService
       .getQueryParametersFromConfig(filterConfig, null, userId)
-      .concat(limitToLastWith(limit))
-      .concat(endBeforeQueryParam(snapshot))
+      .concat(getLimitToLastQueryParam(limit))
+      .concat(getEndBeforeQueryParam(snapshot))
   );
   const res = await getAll(query);
   store.commit("setBuilds", res);
@@ -282,8 +282,8 @@ export async function getUserFavoritesUntil(
   const query = getQuery(
     queryService
       .getQueryParametersFromConfig(filterConfig, null, userId, favorites)
-      .concat(limitToLastWith(limit))
-      .concat(endBeforeQueryParam(snapshot))
+      .concat(getLimitToLastQueryParam(limit))
+      .concat(getEndBeforeQueryParam(snapshot))
   );
   const res = await getAll(query);
   store.commit("setBuilds", res);
@@ -304,8 +304,8 @@ export async function getBuildsUntil(endBuildId, filterConfig = getDefaultConfig
   const query = getQuery(
     queryService
       .getQueryParametersFromConfig(filterConfig, null)
-      .concat(limitToLastWith(limit))
-      .concat(endBeforeQueryParam(snapshot))
+      .concat(getLimitToLastQueryParam(limit))
+      .concat(getEndBeforeQueryParam(snapshot))
   );
   const res = await getAll(query);
   store.commit("setBuilds", res);
@@ -332,7 +332,7 @@ export async function getUserBuildsFrom(
   const query = getQuery(
     queryService
       .getQueryParametersFromConfig(filterConfig, limit, userId)
-      .concat(startAfterQueryParam(snapshot))
+      .concat(getStartAfterQueryParam(snapshot))
   );
   const res = await getAll(query);
   store.commit("setBuilds", res);
@@ -351,7 +351,7 @@ export async function getUserFavoritesFrom(
   const query = getQuery(
     queryService
       .getQueryParametersFromConfig(filterConfig, limit, userId, favorites)
-      .concat(startAfterQueryParam(snapshot))
+      .concat(getStartAfterQueryParam(snapshot))
   );
   const res = await getAll(query);
   store.commit("setBuilds", res);
@@ -372,7 +372,7 @@ export async function getBuildsFrom(startBuildId, filterConfig = getDefaultConfi
   const query = getQuery(
     queryService
       .getQueryParametersFromConfig(filterConfig, limit)
-      .concat(startAfterQueryParam(snapshot))
+      .concat(getStartAfterQueryParam(snapshot))
   );
   const res = await getAll(query);
   store.commit("setBuilds", res);

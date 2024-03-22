@@ -1,8 +1,8 @@
 //Composables
 import collectionService from "@/composables/data/collectionService";
 import {
-    orderByWith,
-    whereEqual,
+    getOrderByQueryParam,
+    getWhereEqualQueryParam,
   } from "@/composables/data/queryParameterBuilder";
 const { getAll, getQuery, add, del } = collectionService("comments");
 
@@ -35,9 +35,9 @@ export async function deleteComment(commentId) {
  */
 export async function getComments(buildId) {
     
-    var queryParams = whereEqual("buildId", buildId);
+    var queryParams = getWhereEqualQueryParam("buildId", buildId);
     queryParams = queryParams.concat(
-        orderByWith({ orderBy: "timeCreated" }, "asc")
+        getOrderByQueryParam({ orderBy: "timeCreated" }, "asc")
         );
         const query = getQuery(queryParams);
         
