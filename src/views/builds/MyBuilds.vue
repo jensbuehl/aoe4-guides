@@ -204,6 +204,9 @@ export default {
         paginationConfig.value.limit
       );
 
+      //set cache
+      store.commit("setMyBuildsList", builds.value);
+
       updatePageBoundaries();
       window.scrollTo(0, 0);
     };
@@ -220,6 +223,9 @@ export default {
         filterConfig.value,
         paginationConfig.value.limit
       );
+
+      //set cache
+      store.commit("setMyBuildsList", builds.value);
 
       updatePageBoundaries();
       window.scrollTo(0, 0);

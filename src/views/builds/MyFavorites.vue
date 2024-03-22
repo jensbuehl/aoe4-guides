@@ -26,8 +26,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" @configChanged="configChanged">
-        </FilterConfig>
+        <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
         <RegisterAd v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
@@ -40,9 +39,7 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <BuildListCard
-              :build="item"
-            ></BuildListCard>
+            <BuildListCard :build="item"></BuildListCard>
           </router-link>
         </div>
         <div style="text-align: center" v-if="!loading && count === 0">
@@ -81,20 +78,23 @@ import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import useCollection from "@/composables/useCollection";
-import { getUserFavorites } from "@/composables/data/favoriteService";
-import queryService from "@/composables/useQueryService";
+import { getUserFavorites as getUserFavoritesArray } from "@/composables/data/favoriteService";
+import {
+  getUserFavorites,
+  getUserFavoritesFrom,
+  getUserFavoritesUntil,
+  getUserFavoritesCount,
+} from "@/composables/data/buildService";
 
 export default {
   name: "Builds",
   components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
   setup() {
-    const { getAll, getQuery, getSize } = useCollection("builds");
     const builds = ref(null);
     const favorites = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
-    const filterAndOrderConfig = computed(() => store.state.filterConfig);
+    const filterConfig = computed(() => store.state.filterConfig);
     const count = computed(() => store.state.resultsCount);
     const loading = computed(() => store.state.loading);
     const paginationConfig = ref({
@@ -108,7 +108,7 @@ export default {
     watch(
       () => user.value,
       () => {
-        if (!filterAndOrderConfig.value) {
+        if (!filterConfig.value) {
           store.commit("setFilterConfig", getDefaultConfig());
         }
         initData();
@@ -116,7 +116,7 @@ export default {
     );
 
     onMounted(() => {
-      if (!filterAndOrderConfig.value) {
+      if (!filterConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
       if (user.value) {
@@ -144,61 +144,44 @@ export default {
       //reset author filter
       store.commit("setAuthor", null);
 
-      //get favorites list
-      favorites.value = await getUserFavorites(user.value.uid).then((user) => {
+      //get favorites array
+      favorites.value = await getUserFavoritesArray(user.value.uid).then((user) => {
         return user.favorites;
       });
-      console.log("favorites", favorites.value);
       if (!favorites.value.length > 0) {
         builds.value = null;
         return;
       }
 
-      //init page count and current page
-      const allDocsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          filterAndOrderConfig.value,
-          null,
-          null,
-          favorites.value
-        )
-      );
-      const size = await getSize(allDocsQuery);
+      //init count
+      const size = await getUserFavoritesCount(user.value.uid, favorites.value, filterConfig.value);
       store.commit("setResultsCount", size);
-      paginationConfig.value.totalPages = Math.ceil(
-        size / paginationConfig.value.limit
-      );
-      paginationConfig.value.currentPage = 1;
 
-      //get builds query
-      const paginationQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit,
-          null,
-          favorites.value
-        )
-      );
-      const currentPageSize = Math.min(
-        await getSize(paginationQuery),
-        paginationConfig.value.limit
-      );
+      //get page size
+      const currentPageSize = Math.min(size, paginationConfig.value.limit);
       builds.value = Array(currentPageSize).fill({
         loading: true,
       });
 
-      //get builds
-      var res = null;
+      //get favorites
       if (store.state.cache.myFavoritesList) {
-        res = store.state.cache.myFavoritesList;
+        builds.value = store.state.cache.myFavoritesList;
       } else {
-        res = await getAll(paginationQuery);
+        const res = await getUserFavorites(
+          user.value.uid,
+          favorites.value,
+          filterConfig.value,
+          paginationConfig.value.limit
+        );
+        builds.value = res;
         store.commit("setMyFavoritesList", res);
       }
-      builds.value = res;
-      store.commit("setBuilds", res);
 
+      //init pagination config
+      paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
+      paginationConfig.value.currentPage = 1;
       updatePageBoundaries();
+
       store.commit("setLoading", false);
     };
 
@@ -208,19 +191,16 @@ export default {
       //reset cache
       store.commit("setMyFavoritesList", null);
 
-      const query = getQuery(
-        queryService.getQueryParametersNextPage(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit,
-          paginationConfig.value.pageEnd,
-          null,
-          favorites.value
-        )
+      builds.value = await getUserFavoritesFrom(
+        user.value.uid,
+        paginationConfig.value.pageEnd,
+        favorites.value,
+        filterConfig.value,
+        paginationConfig.value.limit
       );
-      const res = await getAll(query);
-      builds.value = res;
-      store.commit("setBuilds", res);
-      getSize(query);
+
+      //set cache
+      store.commit("setMyFavoritesList", builds.value);
 
       updatePageBoundaries();
       window.scrollTo(0, 0);
@@ -232,32 +212,27 @@ export default {
       //reset cache
       store.commit("setMyFavoritesList", null);
 
-      const query = getQuery(
-        queryService.getQueryParametersPreviousPage(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit,
-          paginationConfig.value.pageStart,
-          null,
-          favorites.value
-        )
+      builds.value = await getUserFavoritesUntil(
+        user.value.uid,
+        paginationConfig.value.pageStart,
+        favorites.value,
+        filterConfig.value,
+        paginationConfig.value.limit
       );
-      const res = await getAll(query);
-      builds.value = res;
-      store.commit("setBuilds", res);
-      getSize(query);
+
+      //set cache
+      store.commit("setMyFavoritesList", builds.value);
 
       updatePageBoundaries();
       window.scrollTo(0, 0);
     };
 
     const updatePageBoundaries = () => {
+      var firstPageElement = builds.value[0];
+      var lastPageElement = builds.value[builds.value.length - 1];
       if (builds.value.length) {
-        paginationConfig.value.pageStart =
-          builds.value[0][filterAndOrderConfig.value.orderBy];
-        paginationConfig.value.pageEnd =
-          builds.value[builds.value.length - 1][
-            filterAndOrderConfig.value.orderBy
-          ];
+        paginationConfig.value.pageStart = firstPageElement.id;
+        paginationConfig.value.pageEnd = lastPageElement.id;
       }
     };
 

@@ -1,6 +1,6 @@
 //Composables
 import useCollection from "@/composables/data/useCollection";
-import queryService from "@/composables/useQueryService";
+import queryService from "@/composables/data/useQueryService";
 
 const { getAll, getQuery, add, del } = useCollection("comments");
 

@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import useCollection from "@/composables/useCollection";
+import { decrementLikes } from "@/composables/data/buildService";
 import { createUserFavorites, getUserFavorites, deleteUserFavorites } from "@/composables/data/favoriteService";
 
 // firebase imports
@@ -313,8 +313,6 @@ export const store = createStore({
          * @return {Promise} a promise that resolves when the account is deleted
          */
         async deleteAccount(context) {
-            const { decrementLikes } = useCollection("builds");
-
             //remove user from auth db
             const uid = auth.currentUser.uid;
             await deleteUser(auth.currentUser).catch((error) => {

@@ -1,7 +1,7 @@
 //External
 import { where, orderBy, limit, endBefore, startAfter, limitToLast } from "@/firebase";
 
-const getQueryParametersFromConfig = (config, pageLimit, userUid, favorites) => {
+function getQueryParametersFromConfig (config, pageLimit, userUid, favorites) {
   try {
     var queryParams = [];
     if (pageLimit) {
@@ -19,29 +19,11 @@ const getQueryParametersFromConfig = (config, pageLimit, userUid, favorites) => 
   }
 };
 
-const filterAuthorBy = (userUid) => {
+function filterAuthorBy (userUid) {
   try {
     const queryParams = [];
     const whereOp = where("authorUid", "==", userUid);
     queryParams.push(whereOp);
-    return queryParams;
-  } catch (err) {
-    console.log(err.message);
-  }
-};
-
-const filterPageWith = (start, end) => {
-  console.log(start, end);
-  try {
-    const queryParams = [];
-    if (start) {
-      const startAfterOp = startAfter(start);
-      queryParams.push(startAfterOp);
-    }
-    if (end) {
-      const endBeforeOp = endBefore(end);
-      queryParams.push(endBeforeOp);
-    }
     return queryParams;
   } catch (err) {
     console.log(err.message);
@@ -96,7 +78,7 @@ function limitToLastWith (pageLimit) {
   }
 };
 
-const orderByWith = (config, dir) => {
+function orderByWith (config, dir) {
   try {
     const queryParams = [];
     var myDir = "desc";
@@ -116,7 +98,7 @@ const orderByWith = (config, dir) => {
   }
 };
 
-const filterWith = (config, favorites) => {
+function filterWith (config, favorites) {
   try {
     const queryParams = [];
 
@@ -169,7 +151,7 @@ const filterWith = (config, favorites) => {
   }
 };
 
-const whereEqual = (field, value) => {
+function whereEqual (field, value) {
   try {
     const queryParams = [];
     const whereOp = where(field, "==", value);
@@ -181,7 +163,7 @@ const whereEqual = (field, value) => {
   }
 };
 
-const whereNotEqual = (field, value) => {
+function whereNotEqual (field, value) {
   try {
     const queryParams = [];
     const whereOp = where(field, "!=", value);

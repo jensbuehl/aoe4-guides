@@ -26,8 +26,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" @configChanged="configChanged">
-        </FilterConfig>
+        <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
@@ -40,9 +39,7 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <BuildListCard
-              :build="item"
-            ></BuildListCard>
+            <BuildListCard :build="item"></BuildListCard>
           </router-link>
         </div>
         <div style="text-align: center" v-if="!loading && count === 0">
@@ -80,19 +77,18 @@ import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
-import useCollection from "@/composables/useCollection";
-import queryService from "@/composables/useQueryService";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import { getBuilds, getBuildsCount, getBuildsFrom, getBuildsUntil } from "@/composables/data/buildService";
+
 
 export default {
   name: "Builds",
   components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
   setup() {
-    const { getAll, getQuery, getSize } = useCollection("builds");
     const builds = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
-    const filterAndOrderConfig = computed(() => store.state.filterConfig);
+    const filterConfig = computed(() => store.state.filterConfig);
     const route = useRoute();
     const router = useRouter();
     const count = computed(() => store.state.resultsCount);
@@ -153,66 +149,47 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
-      //get builds query
-      const paginationQuery = getQuery(
-        queryService.getQueryParametersFromConfig(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit
-        )
-      );
-      const currentPageSize = Math.min(
-        await getSize(paginationQuery),
-        paginationConfig.value.limit
-      );
+      //init count
+      const size = await getBuildsCount(filterConfig.value);
+      store.commit("setResultsCount", size);
+
+      //get page size
+      const currentPageSize = Math.min(size, paginationConfig.value.limit);
       builds.value = Array(currentPageSize).fill({
         loading: true,
       });
 
       //get builds
-      var res = null;
-      if (store.state.cache.allBuildsList) {
-        res = store.state.cache.allBuildsList;
+      if (store.state.cache.myBuildsList) {
+        builds.value = store.state.cache.allBuildsList;
       } else {
-        res = await getAll(paginationQuery);
+        const res = await getBuilds(filterConfig.value, paginationConfig.value.limit);
+        builds.value = res;
         store.commit("setAllBuildsList", res);
       }
-      builds.value = res;
-      store.commit("setBuilds", res);
 
-      //init page count, current page, and commit overall results count
-      const allDocsQuery = getQuery(
-        queryService.getQueryParametersFromConfig(filterAndOrderConfig.value)
-      );
-      const size = await getSize(allDocsQuery);
-      store.commit("setResultsCount", size);
-      paginationConfig.value.totalPages = Math.ceil(
-        size / paginationConfig.value.limit
-      );
+      //init pagination config
+      paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
       paginationConfig.value.currentPage = 1;
-
       updatePageBoundaries();
+
       store.commit("setLoading", false);
     };
 
     const nextPage = async () => {
-      await console.log("page changed to:", paginationConfig.value.currentPage);
-      await console.log(paginationConfig.value);
+      console.log("page changed to:", paginationConfig.value.currentPage);
 
       //reset cache
       store.commit("setAllBuildsList", null);
 
-      const query = getQuery(
-        queryService.getQueryParametersNextPage(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit,
-          paginationConfig.value.pageEnd
-        )
+      builds.value = await getBuildsFrom(
+        paginationConfig.value.pageEnd,
+        filterConfig.value,
+        paginationConfig.value.limit
       );
-      const res = await getAll(query);
-      builds.value = res;
-      store.commit("setAllBuildsList", res);
-      store.commit("setBuilds", res);
-      getSize(query);
+      
+      //set cache
+      store.commit("setAllBuildsList", builds.value);
 
       updatePageBoundaries();
       window.scrollTo(0, 0);
@@ -224,31 +201,25 @@ export default {
       //reset cache
       store.commit("setAllBuildsList", null);
 
-      const query = getQuery(
-        queryService.getQueryParametersPreviousPage(
-          filterAndOrderConfig.value,
-          paginationConfig.value.limit,
-          paginationConfig.value.pageStart
-        )
+      builds.value = await getBuildsUntil(
+        paginationConfig.value.pageStart,
+        filterConfig.value,
+        paginationConfig.value.limit
       );
-      const res = await getAll(query);
-      getSize(query);
-      builds.value = res;
-      store.commit("setAllBuildsList", res);
-      store.commit("setBuilds", res);
+
+      //set cache
+      store.commit("setAllBuildsList", builds.value);
 
       updatePageBoundaries();
       window.scrollTo(0, 0);
     };
 
     const updatePageBoundaries = () => {
+      var firstPageElement = builds.value[0];
+      var lastPageElement = builds.value[builds.value.length - 1];
       if (builds.value.length) {
-        paginationConfig.value.pageStart =
-          builds.value[0][filterAndOrderConfig.value.orderBy];
-        paginationConfig.value.pageEnd =
-          builds.value[builds.value.length - 1][
-            filterAndOrderConfig.value.orderBy
-          ];
+        paginationConfig.value.pageStart = firstPageElement.id;
+        paginationConfig.value.pageEnd = lastPageElement.id;
       }
     };
 
@@ -259,7 +230,7 @@ export default {
       loading,
       authIsReady: computed(() => store.state.authIsReady),
       paginationConfig,
-      filterAndOrderConfig,
+      filterConfig,
       configChanged,
       nextPage,
       previousPage,

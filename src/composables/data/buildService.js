@@ -4,7 +4,7 @@ import { computed } from "vue";
 
 //Composables
 import useCollection from "@/composables/data/useCollection";
-import queryService from "@/composables/useQueryService";
+import queryService from "@/composables/data/useQueryService";
 import {
   getMostRecentBuildsConfig,
   getPopularBuildsConfig,
@@ -144,6 +144,22 @@ export async function getUserBuildsCount(userId, filterConfig = getDefaultConfig
 }
 
 /**
+ * Retrieves the count of user favorites based on the provided user ID, favorites array, and optional filter configuration.
+ *
+ * @param {string} userId - The ID of the user
+ * @param {Array} favorites - The array of user favorites
+ * @param {object} filterConfig - The optional filter configuration (default: getDefaultConfig())
+ * @return {Promise<number>} The count of user favorites
+ */
+export async function getUserFavoritesCount(userId, favorites, filterConfig = getDefaultConfig()) {
+  const limit = null;
+  const userDraftsQuery = getQuery(
+    queryService.getQueryParametersFromConfig(filterConfig, limit, userId, favorites)
+  );
+  return getSize(userDraftsQuery);
+}
+
+/**
  * Retrieves the user drafts from the server.
  *
  * @param {string} userId - The ID of the user.
@@ -174,6 +190,47 @@ export async function getUserBuilds(userId, filterConfig = getDefaultConfig(), l
   return result;
 }
 
+/**
+ * Retrieves the favorites for a specific user based on the provided user ID, favorites array, filter configuration, and optional limit.
+ *
+ * @param {string} userId - The ID of the user
+ * @param {Array} favorites - Array of user's favorite items
+ * @param {Object} filterConfig - Configuration object for filtering the favorites
+ * @param {number} limit - Optional limit for the number of favorites to retrieve
+ * @return {Promise<Array>} A promise that resolves to the retrieved favorites
+ */
+export async function getUserFavorites(userId, favorites, filterConfig = getDefaultConfig(), limit = null) {
+  const userDraftsQuery = getQuery(
+    queryService.getQueryParametersFromConfig(filterConfig, limit, userId, favorites)
+  );
+  const result = await getAll(userDraftsQuery);
+  store.commit("setBuilds", result);
+  return result;
+}
+
+/**
+ * Retrieves builds based on the provided filter configuration and limit.
+ *
+ * @param {Object} filterConfig - The filter configuration to apply.
+ * @param {number} limit - The maximum number of builds to retrieve.
+ * @return {Promise} The result of the build retrieval.
+ */
+export async function getBuilds(filterConfig = getDefaultConfig(), limit = null) {
+  const userDraftsQuery = getQuery(queryService.getQueryParametersFromConfig(filterConfig, limit));
+  const result = await getAll(userDraftsQuery);
+  store.commit("setBuilds", result);
+  return result;
+}
+
+/**
+ * Retrieves user builds until a specified build ID based on provided filters and limit.
+ *
+ * @param {string} userId - The ID of the user
+ * @param {string} endBuildId - The build ID to retrieve builds until
+ * @param {object} filterConfig - The configuration object for filtering (default is getDefaultConfig())
+ * @param {number} limit - The maximum number of builds to retrieve (optional)
+ * @return {Array} An array of builds retrieved based on the provided parameters
+ */
 export async function getUserBuildsUntil(
   userId,
   endBuildId,
@@ -193,6 +250,71 @@ export async function getUserBuildsUntil(
   return res;
 }
 
+/**
+ * Retrieves user favorites until a specified build ID.
+ *
+ * @param {string} userId - The ID of the user
+ * @param {number} endBuildId - The build ID to retrieve favorites until
+ * @param {Array} favorites - List of favorites
+ * @param {object} filterConfig - Filter configuration object (default is getDefaultConfig())
+ * @param {number} limit - Maximum number of results to return
+ * @return {Promise} Resolves with the retrieved favorites
+ */
+export async function getUserFavoritesUntil(
+  userId,
+  endBuildId,
+  favorites,
+  filterConfig = getDefaultConfig(),
+  limit = null
+) {
+  const snapshot = await getSnapshot(endBuildId);
+
+  const query = getQuery(
+    queryService
+      .getQueryParametersFromConfig(filterConfig, null, userId, favorites)
+      .concat(queryService.limitToLastWith(limit))
+      .concat(queryService.endBeforeQueryParam(snapshot))
+  );
+  const res = await getAll(query);
+  store.commit("setBuilds", res);
+  return res;
+}
+
+/**
+ * Retrieves builds until a specified build ID.
+ *
+ * @param {number} endBuildId - The build ID until which builds should be retrieved.
+ * @param {Object} filterConfig - The configuration object for filtering builds. Defaults to getDefaultConfig().
+ * @param {number} limit - The maximum number of builds to retrieve.
+ * @return {Promise<Array>} An array of builds retrieved until the specified build ID.
+ */
+export async function getBuildsUntil(
+  endBuildId,
+  filterConfig = getDefaultConfig(),
+  limit = null
+) {
+  const snapshot = await getSnapshot(endBuildId);
+
+  const query = getQuery(
+    queryService
+      .getQueryParametersFromConfig(filterConfig, null)
+      .concat(queryService.limitToLastWith(limit))
+      .concat(queryService.endBeforeQueryParam(snapshot))
+  );
+  const res = await getAll(query);
+  store.commit("setBuilds", res);
+  return res;
+}
+
+/**
+ * Retrieves user builds starting from a specific build ID.
+ *
+ * @param {string} userId - The ID of the user whose builds are being retrieved.
+ * @param {number} startBuildId - The ID of the build to start from.
+ * @param {object} filterConfig - The configuration object for filtering (default is getDefaultConfig()).
+ * @param {number} limit - The maximum number of builds to retrieve.
+ * @return {Promise} Resolves with the builds retrieved.
+ */
 export async function getUserBuildsFrom(
   userId,
   startBuildId,
@@ -204,6 +326,50 @@ export async function getUserBuildsFrom(
   const query = getQuery(
     queryService
       .getQueryParametersFromConfig(filterConfig, limit, userId)
+      .concat(queryService.startAfterQueryParam(snapshot))
+  );
+  const res = await getAll(query);
+  store.commit("setBuilds", res);
+  return res;
+}
+
+export async function getUserFavoritesFrom(
+  userId,
+  startBuildId,
+  favorites,
+  filterConfig = getDefaultConfig(),
+  limit = null
+) {
+  const snapshot = await getSnapshot(startBuildId);
+
+  const query = getQuery(
+    queryService
+      .getQueryParametersFromConfig(filterConfig, limit, userId, favorites)
+      .concat(queryService.startAfterQueryParam(snapshot))
+  );
+  const res = await getAll(query);
+  store.commit("setBuilds", res);
+  return res;
+}
+
+/**
+ * Retrieves builds starting from a specified build ID, filtered by the provided configuration and limited to a specific number of builds.
+ *
+ * @param {number} startBuildId - The ID of the build to start retrieving from.
+ * @param {object} filterConfig - The configuration object used to filter the builds (defaults to getDefaultConfig()).
+ * @param {number} limit - The maximum number of builds to retrieve (defaults to null).
+ * @return {Promise<object>} The retrieved builds.
+ */
+export async function getBuildsFrom(
+  startBuildId,
+  filterConfig = getDefaultConfig(),
+  limit = null
+) {
+  const snapshot = await getSnapshot(startBuildId);
+
+  const query = getQuery(
+    queryService
+      .getQueryParametersFromConfig(filterConfig, limit)
       .concat(queryService.startAfterQueryParam(snapshot))
   );
   const res = await getAll(query);
