@@ -1,5 +1,5 @@
 //Composables
-import useCollection from "@/composables/data/useCollection";
+import collectionService from "@/composables/data/collectionService";
 
 const {
     addElementToArray,
@@ -7,7 +7,7 @@ const {
     get,
     add,
     del
-} = useCollection("favorites");
+} = collectionService("favorites");
 
 /**
  * Function to add a build to a user's favorites.

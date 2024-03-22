@@ -3,8 +3,8 @@ import { store } from "@/store/index.js";
 import { computed } from "vue";
 
 //Composables
-import useCollection from "@/composables/data/useCollection";
-import queryService from "@/composables/data/useQueryService";
+import collectionService from "@/composables/data/collectionService";
+import queryService from "@/composables/data/queryParameterBuilder";
 import {
   getMostRecentBuildsConfig,
   getPopularBuildsConfig,
@@ -23,15 +23,15 @@ const {
   getAll,
   getQuery,
   getSize,
-  error: useCollectionError,
-} = useCollection("builds");
+  error: collectionServiceError,
+} = collectionService("builds");
 
 /**
- * Returns the error value of the useCollection composable.
+ * Returns the error value of the collectionService composable.
  *
  * @return {Ref<string|null>} The error value, which is a reactive reference to a string or null.
  */
-export const error = computed(() => useCollectionError).value;
+export const error = computed(() => collectionServiceError).value;
 
 /**
  * Increments the number of likes for a build.

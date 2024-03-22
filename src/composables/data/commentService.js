@@ -1,8 +1,8 @@
 //Composables
-import useCollection from "@/composables/data/useCollection";
-import queryService from "@/composables/data/useQueryService";
+import collectionService from "@/composables/data/collectionService";
+import queryService from "@/composables/data/queryParameterBuilder";
 
-const { getAll, getQuery, add, del } = useCollection("comments");
+const { getAll, getQuery, add, del } = collectionService("comments");
 
 /**
  * A function to add a comment with a custom ID.

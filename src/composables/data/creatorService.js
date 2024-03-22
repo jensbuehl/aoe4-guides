@@ -1,6 +1,6 @@
 //Composables
-import useCollection from "@/composables/data/useCollection";
-const { getAll, get, add } = useCollection("creators");
+import collectionService from "@/composables/data/collectionService";
+const { getAll, get, add } = collectionService("creators");
 
 /**
  * Retrieves creators from the server.

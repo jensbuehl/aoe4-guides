@@ -17,7 +17,7 @@ import {
     getCountFromServer,
 } from "@/firebase";
 
-const useCollection = (col) => {
+const collectionService = (col) => {
     const error = ref(null);
 
     const add = async (document, id) => {
@@ -226,4 +226,4 @@ const useCollection = (col) => {
     };
 };
 
-export default useCollection;
+export default collectionService;
