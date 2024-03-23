@@ -154,7 +154,7 @@ export default {
       }
 
       //init count
-      const size = await getUserFavoritesCount(user.value.uid, favorites.value, filterConfig.value);
+      const size = await getUserFavoritesCount(favorites.value, filterConfig.value);
       store.commit("setResultsCount", size);
 
       //get page size
@@ -168,7 +168,6 @@ export default {
         builds.value = store.state.cache.myFavoritesList;
       } else {
         const res = await getUserFavorites(
-          user.value.uid,
           favorites.value,
           filterConfig.value,
           paginationConfig.value.limit
@@ -192,7 +191,6 @@ export default {
       store.commit("setMyFavoritesList", null);
 
       builds.value = await getUserFavoritesFrom(
-        user.value.uid,
         paginationConfig.value.pageEnd,
         favorites.value,
         filterConfig.value,
@@ -213,7 +211,6 @@ export default {
       store.commit("setMyFavoritesList", null);
 
       builds.value = await getUserFavoritesUntil(
-        user.value.uid,
         paginationConfig.value.pageStart,
         favorites.value,
         filterConfig.value,

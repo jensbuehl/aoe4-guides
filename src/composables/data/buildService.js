@@ -153,10 +153,10 @@ export async function getUserBuildsCount(userId, filterConfig = getDefaultConfig
  * @param {object} filterConfig - The optional filter configuration (default: getDefaultConfig())
  * @return {Promise<number>} The count of user favorites
  */
-export async function getUserFavoritesCount(userId, favorites, filterConfig = getDefaultConfig()) {
+export async function getUserFavoritesCount(favorites, filterConfig = getDefaultConfig()) {
   const limit = null;
   const userDraftsQuery = getQuery(
-    getQueryParametersFromConfig(filterConfig, limit, userId, favorites)
+    getQueryParametersFromConfig(filterConfig, limit, null, favorites)
   );
   return getSize(userDraftsQuery);
 }
@@ -198,13 +198,12 @@ export async function getUserBuilds(userId, filterConfig = getDefaultConfig(), l
  * @return {Promise<Array>} A promise that resolves to the retrieved favorites
  */
 export async function getUserFavorites(
-  userId,
   favorites,
   filterConfig = getDefaultConfig(),
   limit = null
 ) {
   const userDraftsQuery = getQuery(
-    getQueryParametersFromConfig(filterConfig, limit, userId, favorites)
+    getQueryParametersFromConfig(filterConfig, limit, null, favorites)
   );
   const result = await getAll(userDraftsQuery);
   store.commit("setBuilds", result);
@@ -263,7 +262,6 @@ export async function getUserBuildsUntil(
  * @return {Promise} Resolves with the retrieved favorites
  */
 export async function getUserFavoritesUntil(
-  userId,
   endBuildId,
   favorites,
   filterConfig = getDefaultConfig(),
@@ -272,7 +270,7 @@ export async function getUserFavoritesUntil(
   const snapshot = await getSnapshot(endBuildId);
 
   const query = getQuery(
-    getQueryParametersFromConfig(filterConfig, null, userId, favorites)
+    getQueryParametersFromConfig(filterConfig, null, null, favorites)
       .concat(getLimitToLastQueryParam(limit))
       .concat(getEndBeforeQueryParam(snapshot))
   );
@@ -330,7 +328,6 @@ export async function getUserBuildsFrom(
 }
 
 export async function getUserFavoritesFrom(
-  userId,
   startBuildId,
   favorites,
   filterConfig = getDefaultConfig(),
@@ -339,7 +336,7 @@ export async function getUserFavoritesFrom(
   const snapshot = await getSnapshot(startBuildId);
 
   const query = getQuery(
-    getQueryParametersFromConfig(filterConfig, limit, userId, favorites).concat(
+    getQueryParametersFromConfig(filterConfig, limit, null, favorites).concat(
       getStartAfterQueryParam(snapshot)
     )
   );
