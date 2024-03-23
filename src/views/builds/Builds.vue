@@ -78,8 +78,12 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { getBuilds, getBuildsCount, getBuildsFrom, getBuildsUntil } from "@/composables/data/buildService";
-
+import {
+  getBuilds,
+  getBuildsCount,
+  getBuildsFrom,
+  getBuildsUntil,
+} from "@/composables/data/buildService";
 
 export default {
   name: "Builds",
@@ -160,7 +164,7 @@ export default {
       });
 
       //get builds
-      if (store.state.cache.myBuildsList) {
+      if (store.state.cache.allBuildsList) {
         builds.value = store.state.cache.allBuildsList;
       } else {
         const res = await getBuilds(filterConfig.value, paginationConfig.value.limit);
@@ -187,7 +191,7 @@ export default {
         filterConfig.value,
         paginationConfig.value.limit
       );
-      
+
       //set cache
       store.commit("setAllBuildsList", builds.value);
 
