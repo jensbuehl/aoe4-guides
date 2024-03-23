@@ -164,7 +164,12 @@
         </v-row>
 
         <!--featured creators xs-->
-        <div class="text-h6 mt-2 mb-2 ml-4 hidden-md-and-up">Featured Creators</div>
+        <v-row no-gutters
+          ><v-col class="ml-4 mt-4 mb-2 hidden-md-and-up" cols="auto"
+            ><span class="text-h6">Featured Creators</span>
+          </v-col></v-row
+        >
+
         <v-row no-gutters class="hidden-md-and-up">
           <v-col cols="6" v-for="(creator, index) in featuredCreators" :key="creator.creatorId">
             <v-tooltip location="top" open-delay="1000">
@@ -237,35 +242,37 @@
         </v-row>
 
         <!-- recent builds -->
-        <v-row no-gutters>
-          <div class="text-h6 mt-4 ml-4">New Build Orders</div>
-          <v-spacer />
-          <v-tooltip>
-            <span
-              :style="{
-                color: $vuetify.theme.current.colors.primary,
-              }"
-              >Show All Recent Builds</span
-            >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                class="mt-3"
-                v-bind="props"
-                variant="text"
-                color="primary"
-                prepend-icon="mdi-clock-edit-outline"
-                :to="{
-                  name: 'Builds',
-                  query: { orderBy: 'timeCreated' },
+        <v-row no-gutters align="center">
+          <v-col class="ml-4 mt-4 mb-2" cols="auto"
+            ><span class="text-h6">New Build Orders</span>
+          </v-col>
+          <v-col class="ml-4 mt-4 mb-2" align="right"
+            ><v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
                 }"
-                >Show all</v-btn
+                >Show All Recent Builds</span
               >
-            </template>
-          </v-tooltip>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  variant="text"
+                  color="primary"
+                  prepend-icon="mdi-clock-edit-outline"
+                  :to="{
+                    name: 'Builds',
+                    query: { orderBy: 'timeCreated' },
+                  }"
+                  >></v-btn
+                >
+              </template>
+            </v-tooltip></v-col
+          >
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
-            <div class="mt-2" v-for="item in recentBuildsList">
+            <div v-for="item in recentBuildsList">
               <router-link
                 style="text-decoration: none"
                 :to="{
@@ -281,35 +288,37 @@
         ></v-row>
 
         <!-- popular builds -->
-        <v-row no-gutters>
-          <div class="text-h6 mt-4 ml-4">Popular Build Orders</div>
-          <v-spacer />
-          <v-tooltip>
-            <span
-              :style="{
-                color: $vuetify.theme.current.colors.primary,
-              }"
-              >Show All Popular Builds</span
-            >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                class="mt-3"
-                v-bind="props"
-                variant="text"
-                color="primary"
-                prepend-icon="mdi-trending-up"
-                :to="{
-                  name: 'Builds',
-                  query: { orderBy: 'score' },
+        <v-row no-gutters align="center">
+          <v-col class="ml-4 mt-4 mb-2" cols="auto"
+            ><span class="text-h6">Popular Build Orders</span>
+          </v-col>
+          <v-col class="ml-4 mt-4 mb-2" align="right"
+            ><v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
                 }"
-                >Show All</v-btn
+                >Show All Popular Builds</span
               >
-            </template>
-          </v-tooltip>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  variant="text"
+                  color="primary"
+                  prepend-icon="mdi-trending-up"
+                  :to="{
+                    name: 'Builds',
+                    query: { orderBy: 'score' },
+                  }"
+                  >></v-btn
+                >
+              </template>
+            </v-tooltip></v-col
+          >
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
-            <div class="mt-2" v-for="item in popularBuildsList">
+            <div v-for="item in popularBuildsList">
               <router-link
                 style="text-decoration: none"
                 :to="{
@@ -326,34 +335,36 @@
 
         <!-- all time classics -->
         <v-row no-gutters>
-          <div class="text-h6 mt-4 ml-4">All Time Classics</div>
-          <v-spacer />
-          <v-tooltip>
-            <span
-              :style="{
-                color: $vuetify.theme.current.colors.primary,
-              }"
-              >Show All Time Classics</span
-            >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                class="mt-3"
-                v-bind="props"
-                variant="text"
-                color="primary"
-                prepend-icon="mdi-star"
-                :to="{
-                  name: 'Builds',
-                  query: { orderBy: 'scoreAllTime' },
+          <v-col class="ml-4 mt-4 mb-2" cols="auto"
+            ><span class="text-h6">All Time Classics</span>
+          </v-col>
+          <v-col class="ml-4 mt-4 mb-2" align="right"
+            ><v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
                 }"
-                >Show All</v-btn
+                >Show All Time Classics</span
               >
-            </template>
-          </v-tooltip>
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  variant="text"
+                  color="primary"
+                  prepend-icon="mdi-star"
+                  :to="{
+                    name: 'Builds',
+                    query: { orderBy: 'scoreAllTime' },
+                  }"
+                  >></v-btn
+                >
+              </template>
+            </v-tooltip></v-col
+          >
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
-            <div class="mt-2" v-for="item in allTimeClassicsList">
+            <div v-for="item in allTimeClassicsList">
               <router-link
                 style="text-decoration: none"
                 :to="{
@@ -394,72 +405,76 @@
 
         <!--featured creators sm and up-->
         <v-row no-gutters class="hidden-xs">
-          <div class="text-h6 mt-4 mb-2 ml-4">Featured Creators</div>
-          <v-col cols="12" v-for="creator in featuredCreators">
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all build orders from
-                {{ creator.creatorTitle }}
-              </span>
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  height="56"
-                  class="mb-2"
-                  rounded="lg"
-                  v-bind="props"
-                  :to="{
-                    name: 'Builds',
-                    query: { creator: creator.creatorId },
-                  }"
-                >
-                  <v-row no-gutters class="fill-height" align="center" justify="center"
-                    ><v-col cols="12"
-                      ><v-skeleton-loader
-                        :color="creator.loading ? 'loading' : 'surface'"
-                        :loading="creator.loading"
-                      >
-                        <v-row no-gutters align="center" justify="start">
-                          <v-col cols="auto">
-                            <div>
-                              <v-avatar
-                                class="ml-4"
-                                color="accent"
-                                :image="creator.creatorImage"
-                              ></v-avatar>
-                            </div>
-                          </v-col>
-                          <v-col cols="9" align="start">
-                            <!--small title-->
-                            <div
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
-                              class="text-subtitle-2 ml-4 hidden-lg-and-up"
-                            >
-                              {{ creator.creatorTitle }}
-                            </div>
-                            <!--large title-->
-                            <v-card-title
-                              class="hidden-md-and-down"
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
-                            >
-                              {{ creator.creatorTitle }}
-                            </v-card-title>
-                          </v-col>
-                        </v-row>
-                      </v-skeleton-loader></v-col
-                    ></v-row
-                  >
-                </v-card>
-              </template>
-            </v-tooltip>
+          <v-col class="ml-4 mt-4 mb-2" cols="auto"
+            ><span class="text-h6">Featured Creators</span>
           </v-col>
+          <v-row align="center" no-gutters
+            ><v-col cols="12" v-for="creator in featuredCreators">
+              <v-tooltip location="top" open-delay="1000">
+                <span
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >Explore all build orders from
+                  {{ creator.creatorTitle }}
+                </span>
+                <template v-slot:activator="{ props }">
+                  <v-card
+                    flat
+                    height="56"
+                    class="mb-2"
+                    rounded="lg"
+                    v-bind="props"
+                    :to="{
+                      name: 'Builds',
+                      query: { creator: creator.creatorId },
+                    }"
+                  >
+                    <v-row no-gutters class="fill-height" align="center" justify="center"
+                      ><v-col cols="12"
+                        ><v-skeleton-loader
+                          :color="creator.loading ? 'loading' : 'surface'"
+                          :loading="creator.loading"
+                        >
+                          <v-row no-gutters align="center" justify="start">
+                            <v-col cols="auto">
+                              <div>
+                                <v-avatar
+                                  class="ml-4"
+                                  color="accent"
+                                  :image="creator.creatorImage"
+                                ></v-avatar>
+                              </div>
+                            </v-col>
+                            <v-col cols="9" align="start">
+                              <!--small title-->
+                              <div
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="text-subtitle-2 ml-4 hidden-lg-and-up"
+                              >
+                                {{ creator.creatorTitle }}
+                              </div>
+                              <!--large title-->
+                              <v-card-title
+                                class="hidden-md-and-down"
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                              >
+                                {{ creator.creatorTitle }}
+                              </v-card-title>
+                            </v-col>
+                          </v-row>
+                        </v-skeleton-loader></v-col
+                      ></v-row
+                    >
+                  </v-card>
+                </template>
+              </v-tooltip>
+            </v-col></v-row
+          >
         </v-row>
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
