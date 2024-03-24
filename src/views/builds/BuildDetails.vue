@@ -1,13 +1,6 @@
 <template>
-  <v-dialog
-    v-model="focusDialog"
-    fullscreen
-    transition="dialog-bottom-transition"
-  >
-    <FocusMode
-      v-on:closeDialog="focusDialog = false"
-      :build="build"
-    ></FocusMode>
+  <v-dialog v-model="focusDialog" fullscreen transition="dialog-bottom-transition">
+    <FocusMode v-on:closeDialog="focusDialog = false" :build="build"></FocusMode>
   </v-dialog>
   <v-container align="center" v-if="!loading && !build"
     ><BuildNotFound></BuildNotFound
@@ -22,9 +15,7 @@
           The action cannot be undone.
         </v-card-text>
         <v-card-actions>
-          <v-btn type="button" color="error" block @click="handleDelete"
-            >Delete</v-btn
-          >
+          <v-btn type="button" color="error" block @click="handleDelete">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -43,12 +34,7 @@
         <v-col cols="12">
           <!--xs-->
           <v-item-group class="pt-2 hidden-sm-and-up">
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.isDraft"
-              label
-              color="error"
-              size="x-small"
+            <v-chip class="mr-2 mb-2" v-if="build.isDraft" label color="error" size="x-small"
               ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
             >
             <v-chip
@@ -59,95 +45,51 @@
               size="x-small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.civ"
-              label
-              color="accent"
-              size="x-small"
+            <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="x-small"
               ><v-icon start icon="mdi-earth"></v-icon
               >{{ getCivById(build.civ)?.shortName }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.creatorId"
-              label
-              color="accent"
-              size="x-small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ build.creatorName }}</v-chip
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" label color="accent" size="x-small"
+              ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
             >
-            <v-chip
-              color="accent"
-              class="mr-2 mb-2"
-              v-if="build.season"
-              label
-              size="x-small"
-              ><v-icon start icon="mdi-trophy"></v-icon
-              >{{ build.season }}</v-chip
+            <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="x-small"
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
-            <v-chip
-              class="mr-2 mb-2"
-              color="accent"
-              v-if="build.map"
-              label
-              size="x-small"
+            <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="x-small"
               ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
-            <v-chip
-              color="accent"
-              class="mr-2 mb-2"
-              v-if="build.strategy"
-              label
-              size="x-small"
-              ><v-icon start icon="mdi-strategy"></v-icon
-              >{{ build.strategy }}</v-chip
+            <v-chip color="accent" class="mr-2 mb-2" v-if="build.strategy" label size="x-small"
+              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
             <v-chip class="mr-2 mb-2" label size="x-small"
-              ><v-icon start icon="mdi-account-edit"></v-icon
-              >{{ build.author }}</v-chip
+              ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
             <v-chip class="mr-2 mb-2" label size="x-small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
-            <v-chip
-              v-show="build.upvotes"
-              class="mr-2 mb-2"
-              label
-              size="x-small"
+            <v-chip v-if="build.comments > 0" class="mr-2 mb-2" label size="x-small"
+              ><v-icon start icon="mdi-message"></v-icon>{{ build.comments }}</v-chip
             >
+            <v-chip v-show="build.upvotes" class="mr-2 mb-2" label size="x-small">
               <v-icon start icon="mdi-thumb-up"></v-icon>
               {{ build.upvotes }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="x-small"
+            <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="x-small"
               ><v-icon start icon="mdi-clock-edit-outline"></v-icon
               >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="x-small"
+            <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="x-small"
               ><v-icon start icon="mdi-update"></v-icon
               >{{ timeSince(build.timeUpdated.toDate()) }}</v-chip
             >
           </v-item-group>
           <!--sm and up-->
           <v-item-group class="pt-2 hidden-xs hidden-md-and-up">
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.isDraft"
-              label
-              color="error"
-              size="small"
+            <v-chip class="mr-2 mb-2" v-if="build.isDraft" label color="error" size="small"
               ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
             >
             <v-chip
@@ -158,78 +100,43 @@
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.civ"
-              label
-              color="accent"
-              size="small"
-              ><v-icon start icon="mdi-earth"></v-icon
-              >{{ getCivById(build.civ)?.title }}</v-chip
+            <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="small"
+              ><v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.creatorId"
-              label
-              color="accent"
-              size="small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ build.creatorName }}</v-chip
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" label color="accent" size="small"
+              ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
             >
-            <v-chip
-              color="accent"
-              class="mr-2 mb-2"
-              v-if="build.season"
-              label
-              size="small"
-              ><v-icon start icon="mdi-trophy"></v-icon
-              >{{ build.season }}</v-chip
+            <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
-            <v-chip
-              class="mr-2 mb-2"
-              color="accent"
-              v-if="build.map"
-              label
-              size="small"
+            <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
               ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
-            <v-chip
-              color="accent"
-              class="mr-2 mb-2"
-              v-if="build.strategy"
-              label
-              size="small"
-              ><v-icon start icon="mdi-strategy"></v-icon
-              >{{ build.strategy }}</v-chip
+            <v-chip color="accent" class="mr-2 mb-2" v-if="build.strategy" label size="small"
+              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
             >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
             <v-chip class="mr-2 mb-2" label size="small"
-              ><v-icon start icon="mdi-account-edit"></v-icon
-              >{{ build.author }}</v-chip
+              ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
+            >
+            <v-chip v-if="build.comments > 0" class="mr-2 mb-2" label size="small"
+              ><v-icon start icon="mdi-message"></v-icon>{{ build.comments }}</v-chip
             >
             <v-chip v-show="build.upvotes" class="mr-2 mb-2" label size="small">
               <v-icon start icon="mdi-thumb-up"></v-icon>
               {{ build.upvotes }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="small"
+            <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
               ><v-icon start icon="mdi-clock-edit-outline"></v-icon
               >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="small"
+            <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
               ><v-icon start icon="mdi-update"></v-icon
               >{{ timeSince(build.timeUpdated.toDate()) }}</v-chip
             >
@@ -252,11 +159,7 @@
             }
           "
         ></Vote>
-        <Favorite
-          v-if="userData"
-          v-model="userData"
-          :buildId="build.id"
-        ></Favorite>
+        <Favorite v-if="userData" v-model="userData" :buildId="build.id"></Favorite>
         <v-spacer></v-spacer>
         <v-tooltip location="top">
           <span
@@ -279,12 +182,7 @@
         </v-tooltip>
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn
-              icon="mdi-dots-horizontal"
-              color="accent"
-              variant="text"
-              v-bind="props"
-            ></v-btn>
+            <v-btn icon="mdi-dots-horizontal" color="accent" variant="text" v-bind="props"></v-btn>
           </template>
           <v-list>
             <v-tooltip>
@@ -320,9 +218,7 @@
                   @click="handleDuplicate"
                   v-bind="props"
                 >
-                  <v-icon color="accent" class="mr-4"
-                    >mdi-content-duplicate</v-icon
-                  >
+                  <v-icon color="accent" class="mr-4">mdi-content-duplicate</v-icon>
                   Duplicate Build
                 </v-list-item>
               </template>
@@ -336,9 +232,7 @@
                   >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
                 >
                 <template v-slot:activator="{ props }">
-                  <v-icon color="accent" class="mr-5" v-bind="props"
-                    >mdi-content-copy
-                  </v-icon>
+                  <v-icon color="accent" class="mr-5" v-bind="props">mdi-content-copy </v-icon>
                   <v-list-item-content
                     :style="'color: ' + $vuetify.theme.current.colors.primary"
                     v-bind="props"
@@ -361,10 +255,7 @@
                       (e) => {
                         e.stopPropagation();
                         window
-                          .open(
-                            'https://github.com/FluffyMaguro/AoE4_Overlay',
-                            '_blank'
-                          )
+                          .open('https://github.com/FluffyMaguro/AoE4_Overlay', '_blank')
                           .focus();
                       }
                     "
@@ -417,17 +308,8 @@
         </v-menu>
       </v-card-actions>
       <!--md and up-->
-      <v-row
-        no-gutters
-        class="fill-height d-flex flex-nowrap hidden-sm-and-down"
-      >
-        <v-col
-          v-if="build.civ"
-          cols="2"
-          md="4"
-          lg="3"
-          class="pa-0 ma-0 d-flex flex-column"
-        >
+      <v-row no-gutters class="fill-height d-flex flex-nowrap hidden-sm-and-down">
+        <v-col v-if="build.civ" cols="2" md="4" lg="3" class="pa-0 ma-0 d-flex flex-column">
           <v-img
             class="hidden-sm-and-down"
             :src="
@@ -442,45 +324,29 @@
                 return item.shortName === build.civ;
               }).flagSmall
             "
-            :gradient="
-              'to right, transparent, ' + $vuetify.theme.current.colors.surface
-            "
+            :gradient="'to right, transparent, ' + $vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular
-                  indeterminate
-                  color="grey lighten-5"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
               </v-row>
             </template>
           </v-img>
         </v-col>
-        <v-col
-          v-if="!build.civ"
-          cols="2"
-          md="4"
-          lg="3"
-          class="pa-0 ma-0 hidden-sm-and-down"
-        >
+        <v-col v-if="!build.civ" cols="2" md="4" lg="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             class="hidden-sm-and-down"
             src="/assets/flags/any-large.png"
             lazy-src="/assets/flags/any-small.png"
-            :gradient="
-              'to right, transparent, ' + $vuetify.theme.current.colors.surface
-            "
+            :gradient="'to right, transparent, ' + $vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover
           >
             <template v-slot:placeholder>
               <v-row class="fill-height ma-0" align="center" justify="center">
-                <v-progress-circular
-                  indeterminate
-                  color="grey lighten-5"
-                ></v-progress-circular>
+                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
               </v-row>
             </template>
           </v-img>
@@ -491,12 +357,7 @@
           </v-card-title>
           <v-spacer></v-spacer>
           <v-item-group class="ml-4 pt-2 hidden-sm-and-down">
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.isDraft"
-              label
-              color="error"
-              size="small"
+            <v-chip class="mr-2 mb-2" v-if="build.isDraft" label color="error" size="small"
               ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
             >
             <v-chip
@@ -507,78 +368,43 @@
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.civ"
-              label
-              color="accent"
-              size="small"
-              ><v-icon start icon="mdi-earth"></v-icon
-              >{{ getCivById(build.civ)?.title }}</v-chip
+            <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="small"
+              ><v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.creatorId"
-              label
-              color="accent"
-              size="small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-              >{{ build.creatorName }}</v-chip
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" label color="accent" size="small"
+              ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
             >
-            <v-chip
-              color="accent"
-              class="mr-2 mb-2"
-              v-if="build.season"
-              label
-              size="small"
-              ><v-icon start icon="mdi-trophy"></v-icon
-              >{{ build.season }}</v-chip
+            <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
-            <v-chip
-              class="mr-2 mb-2"
-              color="accent"
-              v-if="build.map"
-              label
-              size="small"
+            <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
               ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
             >
-            <v-chip
-              color="accent"
-              class="mr-2 mb-2"
-              v-if="build.strategy"
-              label
-              size="small"
-              ><v-icon start icon="mdi-strategy"></v-icon
-              >{{ build.strategy }}</v-chip
+            <v-chip color="accent" class="mr-2 mb-2" v-if="build.strategy" label size="small"
+              ><v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}</v-chip
             >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip class="mr-2 mb-2" label size="small"
-              ><v-icon start icon="mdi-account-edit"></v-icon
-              >{{ build.author }}</v-chip
+              ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
+            >
+            <v-chip v-if="build.comments > 0" class="mr-2 mb-2" label size="small"
+              ><v-icon start icon="mdi-message"></v-icon>{{ build.comments }}</v-chip
             >
             <v-chip v-show="build.upvotes" class="mr-2 mb-2" label size="small">
               <v-icon start icon="mdi-thumb-up"></v-icon>
               {{ build.upvotes }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="small"
+            <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
               ><v-icon start icon="mdi-clock-edit-outline"></v-icon
               >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
             >
-            <v-chip
-              class="mr-2 mb-2"
-              v-if="build.timeCreated"
-              label
-              size="small"
+            <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
               ><v-icon start icon="mdi-update"></v-icon
               >{{ timeSince(build.timeUpdated.toDate()) }}</v-chip
             >
@@ -609,11 +435,7 @@
           </v-col>
           <v-col cols="auto">
             <div>
-              <Favorite
-                v-if="userData"
-                v-model="userData"
-                :buildId="build.id"
-              ></Favorite>
+              <Favorite v-if="userData" v-model="userData" :buildId="build.id"></Favorite>
             </div>
             <v-tooltip location="top">
               <span
@@ -679,9 +501,7 @@
                       @click="handleDuplicate"
                       v-bind="props"
                     >
-                      <v-icon color="accent" class="mr-4"
-                        >mdi-content-duplicate</v-icon
-                      >
+                      <v-icon color="accent" class="mr-4">mdi-content-duplicate</v-icon>
                       Duplicate Build
                     </v-list-item>
                   </template>
@@ -695,13 +515,9 @@
                       >Copy to Clipboard (RTS_Overlay / AoE4_Overlay)</span
                     >
                     <template v-slot:activator="{ props }">
-                      <v-icon color="accent" class="mr-5" v-bind="props"
-                        >mdi-content-copy
-                      </v-icon>
+                      <v-icon color="accent" class="mr-5" v-bind="props">mdi-content-copy </v-icon>
                       <v-list-item-content
-                        :style="
-                          'color: ' + $vuetify.theme.current.colors.primary
-                        "
+                        :style="'color: ' + $vuetify.theme.current.colors.primary"
                         v-bind="props"
                         >Overlay Tool</v-list-item-content
                       >
@@ -722,10 +538,7 @@
                           (e) => {
                             e.stopPropagation();
                             window
-                              .open(
-                                'https://github.com/FluffyMaguro/AoE4_Overlay',
-                                '_blank'
-                              )
+                              .open('https://github.com/FluffyMaguro/AoE4_Overlay', '_blank')
                               .focus();
                           }
                         "
@@ -783,9 +596,7 @@
 
     <v-card flat v-if="build.description" rounded="lg" class="mt-4">
       <v-card-title>Description</v-card-title>
-      <v-card-text style="white-space: pre-line">{{
-        build.description
-      }}</v-card-text>
+      <v-card-text style="white-space: pre-line">{{ build.description }}</v-card-text>
     </v-card>
 
     <StepsEditor
@@ -831,7 +642,13 @@ import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 
 //composables
 import { getUserFavorites } from "@/composables/data/favoriteService";
-import { getBuild, deleteBuild, incrementViews, updateBuild, error } from "@/composables/data/buildService";
+import {
+  getBuild,
+  deleteBuild,
+  incrementViews,
+  updateBuild,
+  error,
+} from "@/composables/data/buildService";
 import { civs as allCivs, getCivById } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
@@ -866,17 +683,16 @@ export default {
 
     onMounted(async () => {
       var resBuild = null;
-      if(props.id in store.state.cache.builds){
+      if (props.id in store.state.cache.builds) {
         //Build found in store
         resBuild = store.state.cache.builds[props.id];
-      }
-      else{
+      } else {
         //"Build not found in store, fetching from firestore"
         resBuild = await getBuild(props.id);
       }
       if (resBuild) {
         //Get user data (favorites and likes)
-        if(user.value){
+        if (user.value) {
           userData.value = await getUserFavorites(user.value.uid);
         }
 
