@@ -4,7 +4,7 @@ import {
     getOrderByQueryParam,
     getWhereEqualQueryParam,
   } from "@/composables/data/queryParameterBuilder";
-const { getAll, getQuery, add, del } = collectionService("comments");
+const { getAll, getQuery, getSize, add, del } = collectionService("comments");
 
 /**
  * A function to add a comment with a custom ID.
@@ -42,4 +42,15 @@ export async function getComments(buildId) {
         const query = getQuery(queryParams);
         
     return getAll(query);
+}
+
+export async function getCommentsCount(buildId) {
+    
+    var queryParams = getWhereEqualQueryParam("buildId", buildId);
+    queryParams = queryParams.concat(
+        getOrderByQueryParam({ orderBy: "timeCreated" }, "asc")
+        );
+        const query = getQuery(queryParams);
+        
+        return getSize(query);
 }

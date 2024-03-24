@@ -13,12 +13,7 @@
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col cols="12" sm="6" lg="4">
           <v-card flat rounded="lg" class="d-flex align-center mb-4">
-            <v-row
-              no-gutters
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+            <v-row no-gutters class="fill-height" align="center" justify="center">
               <v-col cols="12">
                 <v-card-title class="mb-4">Admin Console</v-card-title>
               </v-col>
@@ -57,16 +52,11 @@
             </v-row>
           </v-card>
           <v-card flat rounded="lg" class="d-flex align-center mb-4">
-            <v-row
-              no-gutters
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+            <v-row no-gutters class="fill-height" align="center" justify="center">
               <v-col cols="12">
                 <v-card-title>Actions</v-card-title>
                 <v-btn color="primary" variant="text" @click="runMigration()"
-                  >Implement your migration</v-btn
+                  >Embed comments count</v-btn
                 >
               </v-col>
             </v-row>
@@ -83,6 +73,8 @@ import { ref, computed, onMounted } from "vue";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import { getCommentsCount } from "@/composables/data/commentService";
+import { getBuilds, updateBuild } from "@/composables/data/buildService";
 
 export default {
   name: "Admin",
@@ -112,14 +104,15 @@ export default {
     const customActionPerBuild = async (build) => {
       console.log("Build id:", build.id);
 
-      if (build.creatorId) {
-        
-      }
+      const commentsCount = await getCommentsCount(build.id);
+      build.comments = commentsCount || 0;
+
+      updateBuild(build.id, build)
     };
 
     const initData = async () => {
       //init builds, filter based on use case
-      builds = null
+      builds = await getBuilds();
     };
 
     return {
@@ -127,7 +120,7 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       error,
-      runMigration
+      runMigration,
     };
   },
 };

@@ -8,7 +8,7 @@ service cloud.firestore {
     match /builds/{build} {
     	allow read;
       allow update: if (request.resource.data.diff(resource.data).affectedKeys()
-        .hasOnly(['views', 'likes', 'upvotes', 'downvotes']));
+        .hasOnly(['views', 'likes', 'upvotes', 'downvotes', 'comments']));
     }
   }
   match /databases/{database}/documents {
