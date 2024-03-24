@@ -243,11 +243,10 @@
 
         <!-- recent builds -->
         <v-row no-gutters align="center">
-          <v-col class="ml-4 mt-4 mb-2" cols="auto"
+          <v-col class="ml-2 mt-4 mb-2" cols="auto"
+            ><v-icon icon="mdi-clock-edit-outline" size="small" class="mx-2 mb-1"></v-icon
             ><span class="text-h6">New Build Orders</span>
-          </v-col>
-          <v-col class="ml-4 mt-4 mb-2" align="right"
-            ><v-tooltip>
+            <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
@@ -257,18 +256,20 @@
               <template v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
+                  size="small"
+                  class="mx-2 mb-1"
                   variant="text"
                   color="primary"
-                  prepend-icon="mdi-clock-edit-outline"
+                  icon="mdi-chevron-right"
                   :to="{
                     name: 'Builds',
                     query: { orderBy: 'timeCreated' },
                   }"
-                  >></v-btn
+                  ></v-btn
                 >
               </template>
-            </v-tooltip></v-col
-          >
+            </v-tooltip>
+          </v-col>
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
@@ -289,11 +290,10 @@
 
         <!-- popular builds -->
         <v-row no-gutters align="center">
-          <v-col class="ml-4 mt-4 mb-2" cols="auto"
+          <v-col class="ml-2 mt-4 mb-2" cols="auto"
+            ><v-icon icon="mdi-trending-up" size="small" class="mx-2 mb-1"></v-icon
             ><span class="text-h6">Popular Build Orders</span>
-          </v-col>
-          <v-col class="ml-4 mt-4 mb-2" align="right"
-            ><v-tooltip>
+            <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
@@ -303,18 +303,19 @@
               <template v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
+                  size="small"
+                  class="mx-2 mb-1"
                   variant="text"
                   color="primary"
-                  prepend-icon="mdi-trending-up"
+                  icon="mdi-chevron-right"
                   :to="{
                     name: 'Builds',
                     query: { orderBy: 'score' },
                   }"
-                  >></v-btn
-                >
+                ></v-btn>
               </template>
-            </v-tooltip></v-col
-          >
+            </v-tooltip>
+          </v-col>
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
@@ -335,11 +336,10 @@
 
         <!-- all time classics -->
         <v-row no-gutters>
-          <v-col class="ml-4 mt-4 mb-2" cols="auto"
+          <v-col class="ml-2 mt-4 mb-2" cols="auto"
+            ><v-icon icon="mdi-star" size="small" class="mx-2 mb-1"></v-icon
             ><span class="text-h6">All Time Classics</span>
-          </v-col>
-          <v-col class="ml-4 mt-4 mb-2" align="right"
-            ><v-tooltip>
+            <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
@@ -349,18 +349,19 @@
               <template v-slot:activator="{ props }">
                 <v-btn
                   v-bind="props"
+                  size="small"
+                  class="mx-2 mb-1"
                   variant="text"
                   color="primary"
-                  prepend-icon="mdi-star"
+                  icon="mdi-chevron-right"
                   :to="{
                     name: 'Builds',
                     query: { orderBy: 'scoreAllTime' },
                   }"
-                  >></v-btn
-                >
+                ></v-btn>
               </template>
-            </v-tooltip></v-col
-          >
+            </v-tooltip>
+          </v-col>
         </v-row>
         <v-row align="center" no-gutters>
           <v-col cols="12">
