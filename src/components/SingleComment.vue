@@ -74,7 +74,7 @@ export default {
     const handleDelete = async () => {
       dialog.value = false;
       await deleteComment(id);
-      await decrementComments();
+      await decrementComments(props.comment.buildId);
       context.emit("commentRemoved");
     };
 

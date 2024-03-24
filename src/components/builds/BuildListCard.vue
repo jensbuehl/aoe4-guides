@@ -94,7 +94,7 @@
           >
             <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
-          <v-chip v-if="build.comments > 0" class="mr-1 mt-1 hidden-xs" label size="x-small"
+          <v-chip v-if="build.comments > 0" class="mr-1 mt-1" label size="x-small"
             ><v-icon start icon="mdi-message"></v-icon>{{ build.comments }}</v-chip
           >
           <v-chip

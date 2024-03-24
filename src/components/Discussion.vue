@@ -92,7 +92,7 @@ export default {
 
     const post = async () => {
       await addComment(newComment.value);
-      await incrementComments();
+      await incrementComments(props.buildId);
       newComment.value.text = null;
 
       init();

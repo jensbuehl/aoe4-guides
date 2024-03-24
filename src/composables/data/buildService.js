@@ -113,7 +113,7 @@ export async function incrementViews(buildId) {
  * Increment the number of comments for a specific build.
  *
  * @param {type} buildId - The identifier of the build
- * @return {type} 
+ * @return {Promise<void>} A promise that resolves when the increment is complete.
  */
 export async function incrementComments(buildId) {
   incrementNumber(buildId, "comments");

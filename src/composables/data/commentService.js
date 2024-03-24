@@ -44,6 +44,12 @@ export async function getComments(buildId) {
     return getAll(query);
 }
 
+/**
+ * Retrieves the count of comments for a specific build.
+ *
+ * @param {string} buildId - The ID of the build to retrieve comments count for.
+ * @return {Promise<number>} The number of comments for the specified build.
+ */
 export async function getCommentsCount(buildId) {
     
     var queryParams = getWhereEqualQueryParam("buildId", buildId);

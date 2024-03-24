@@ -110,7 +110,7 @@ export function collectionService(col) {
       });
     } catch (err) {
       console.log(err.message);
-      error.value = "Like count could not be incremented";
+      error.value = "Count could not be incremented";
     }
   }
 
@@ -131,7 +131,7 @@ export function collectionService(col) {
       });
     } catch (err) {
       console.log(err.message);
-      error.value = "Like count could not be incremented";
+      error.value = "Count could not be decremented";
     }
   }
 
