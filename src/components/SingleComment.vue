@@ -1,6 +1,6 @@
 <template>
   <v-dialog v-model="dialog" width="auto">
-    <v-card rounded="lg" class="text-center primary" flat>
+    <v-card rounded="lg" class="text-center" flat>
       <v-card-title>Delete Comment</v-card-title>
       <v-card-text>
         Do you really want to delete this comment?<br />
@@ -11,52 +11,42 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
+  <v-divider></v-divider>
   <v-card-text style="white-space: pre-line">
-    <v-row>
+    <v-row class="mt-2"no-gutters align="center">
       <v-col cols="auto">
-        <v-avatar color="accent" v-bind="props" con>{{author.slice(0,2).toUpperCase()}}</v-avatar>
+        <v-avatar class="mr-4" color="accent">{{ author.slice(0, 2).toUpperCase() }}</v-avatar>
       </v-col>
-      <v-col cols="8" sm="10">{{ comment }}</v-col>
-      <v-row justify="end">
-        <v-col cols="auto" class="fill-height mr-1">
-          <v-btn
-            v-if="authorId == user?.uid"
-            color="accent"
-            variant="text"
-            block
-            icon="mdi-delete"
-            @click="dialog = true"
-          ></v-btn>
-        </v-col>
-      </v-row>
-      <v-row justify="end">
-        <v-col cols="auto">
-          <v-item-group v-if="timeCreated && author" class="mb-4">
-            <v-chip
-              class="mr-2"
-              v-if="isNew(timeCreated.toDate())"
-              label
-              color="accent"
-              size="small"
-              ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
-            >
-            <v-chip class="mr-2" label size="small"
-              ><v-icon start icon="mdi-account-edit"></v-icon
-              >{{ author }}</v-chip
-            >
-            <v-chip label size="small" class="mr-2"
-              ><v-icon start icon="mdi-clock-edit-outline"></v-icon
-              >{{ timeSince(timeCreated.toDate()) }}</v-chip
-            ></v-item-group
+      <v-col cols="*">{{ comment }}</v-col>
+      <v-col cols="auto">
+        <v-btn
+          v-if="authorId == user?.uid"
+          color="accent"
+          variant="text"
+          block
+          icon="mdi-delete"
+          @click="dialog = true"
+        ></v-btn> </v-col></v-row
+    ><v-row no-gutters justify="end">
+      <v-col cols="auto">
+        <v-item-group v-if="timeCreated && author">
+          <v-chip class="mr-2" v-if="isNew(timeCreated.toDate())" label color="accent" size="small"
+            ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
           >
-        </v-col>
-      </v-row>
-      <v-divider></v-divider> </v-row
-  ></v-card-text>
+          <v-chip class="mr-2" label size="small"
+            ><v-icon start icon="mdi-account-edit"></v-icon>{{ author }}</v-chip
+          >
+          <v-chip label size="small"
+            ><v-icon start icon="mdi-clock-edit-outline"></v-icon
+            >{{ timeSince(timeCreated.toDate()) }}</v-chip
+          ></v-item-group
+        >
+      </v-col>
+    </v-row>
+  </v-card-text>
 </template>
 
 <script>
-
 //External
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
@@ -64,6 +54,7 @@ import { useStore } from "vuex";
 //Composables
 import useTimeSince from "@/composables/useTimeSince";
 import { deleteComment } from "@/composables/data/commentService";
+import { decrementComments } from "@/composables/data/buildService";
 
 export default {
   name: "SingleComment",
@@ -83,6 +74,7 @@ export default {
     const handleDelete = async () => {
       dialog.value = false;
       await deleteComment(id);
+      await decrementComments();
       context.emit("commentRemoved");
     };
 

@@ -1,10 +1,7 @@
 <template>
   <v-card rounded="lg" flat>
     <v-card-title class="mb-4">Comments</v-card-title>
-    <div v-for="comment in comments" :key="comment.id">
-      <SingleComment @commentRemoved="init" :comment="comment"></SingleComment>
-    </div>
-    <v-row align="center">
+    <v-row no-gutters align="center" class="ma-4">
       <v-col v-if="!user" align="center" class="pa-2 ma-2">
         <div>
           <span>Would you like to leave messages for other villagers?</span>
@@ -19,40 +16,41 @@
           </v-btn>
         </div>
       </v-col>
-      <v-col v-if="user" class="mt-4">
+      <v-col v-if="user">
         <v-textarea
           label="Write a comment"
           v-model="newComment.text"
           :value="newComment.text"
-          rows="1"
+          rows="2"
           auto-grow
           clearable
         >
         </v-textarea>
       </v-col>
       <v-col v-if="user" cols="auto">
-        <v-row justify="end" align="center" class="fill-height my-2 mr-2">
-          <v-tooltip location="top">
-            <span
-              :style="{
-                color: $vuetify.theme.current.colors.primary,
-              }"
-              >Post Comment</span
-            >
-            <template v-slot:activator="{ props }">
-              <v-btn
-                v-bind="props"
-                color="accent"
-                variant="text"
-                block
-                icon="mdi-send"
-                @click="post"
-              ></v-btn>
-            </template>
-          </v-tooltip>
-        </v-row>
+        <v-tooltip location="top">
+          <span
+            :style="{
+              color: $vuetify.theme.current.colors.primary,
+            }"
+            >Post Comment</span
+          >
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              color="accent"
+              variant="text"
+              class="ml-4 mb-5"
+              icon="mdi-send"
+              @click="post"
+            ></v-btn>
+          </template>
+        </v-tooltip>
       </v-col>
     </v-row>
+    <div v-for="comment in comments" :key="comment.id">
+      <SingleComment @commentRemoved="init" :comment="comment"></SingleComment>
+    </div>
   </v-card>
 </template>
 
@@ -66,6 +64,7 @@ import SingleComment from "@/components/SingleComment.vue";
 
 //Composables
 import { addComment, getComments } from "@/composables/data/commentService";
+import { incrementComments } from "@/composables/data/buildService";
 
 export default {
   name: "Discussion",
@@ -93,6 +92,7 @@ export default {
 
     const post = async () => {
       await addComment(newComment.value);
+      await incrementComments();
       newComment.value.text = null;
 
       init();

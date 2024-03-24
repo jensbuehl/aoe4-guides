@@ -110,6 +110,26 @@ export async function incrementViews(buildId) {
 }
 
 /**
+ * Increment the number of comments for a specific build.
+ *
+ * @param {type} buildId - The identifier of the build
+ * @return {type} 
+ */
+export async function incrementComments(buildId) {
+  incrementNumber(buildId, "comments");
+}
+
+/**
+ * Decrements the number of comments associated with the given build ID.
+ *
+ * @param {any} buildId - the ID of the build
+ * @return {Promise<void>} a Promise that resolves when the comments are decremented
+ */
+export async function decrementComments(buildId) {
+  decrementNumber(buildId, "comments");
+}
+
+/**
  * Retrieves the count of builds based on the provided filter configuration.
  *
  * @param {Object} filterConfig - The filter configuration object. Defaults to the default configuration if not provided.
