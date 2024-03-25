@@ -4362,6 +4362,20 @@ export default function useIconService(civArg) {
       imgSrc: "/assets/pictures/ability_jeanne/ability-valorous-inspiration-1.png",
       civ: ["JDA"],
       class: "ability",
+    },
+    {
+      title: "Supervise",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_chinese/supervise.png",
+      civ: ["CHI"],
+      class: "ability",
+    },
+    {
+      title: "Collect Tax",
+      age: "1",
+      imgSrc: "/assets/pictures/ability_chinese/collect_tax.png",
+      civ: ["CHI"],
+      class: "ability",
     }
   ]
 
