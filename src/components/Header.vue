@@ -1,6 +1,7 @@
 <template>
   <v-app-bar
     flat
+    scroll-threshold="150"
     :scroll-behavior= "(platform.android || platform.ios) ? 'hide' : '' "
     app
     :height="platform.android || platform.ios ? 60 : 100"
