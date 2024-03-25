@@ -6,7 +6,13 @@
     ><BuildNotFound></BuildNotFound
   ></v-container>
 
-  <v-container v-if="build">
+  <v-container
+    v-if="build"
+    v-touch="{
+      up: () => swipe('Up'),
+      down: () => swipe('Down'),
+    }"
+  >
     <v-dialog v-model="deleteDialog" width="auto">
       <v-card rounded="lg" flat class="text-center primary">
         <v-card-title>Delete Build</v-card-title>
@@ -703,6 +709,13 @@ export default {
       loading.value = false;
     });
 
+    const swipe = async (dir) => {
+      switch (dir) {
+        case "Up": store.commit("setShowBottomNavigation", false); break;
+        case "Down": store.commit("setShowBottomNavigation", true); break;
+      }
+    };
+
     const handleDuplicate = async () => {
       var template = {
         author: "",
@@ -782,6 +795,7 @@ export default {
       userData,
       loading,
       civs,
+      swipe,
       getCivById,
       deleteDialog,
       focusDialog,

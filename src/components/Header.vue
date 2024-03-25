@@ -1,6 +1,7 @@
 <template>
   <v-app-bar
     flat
+    :scroll-behavior= "(platform.android || platform.ios) ? 'hide' : '' "
     app
     :height="platform.android || platform.ios ? 60 : 100"
     :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.accent"
@@ -293,6 +294,7 @@
   <v-bottom-navigation
     hide-on-scroll
     scroll-target="#main-content"
+    :active="showBottomNavigation"
     :style="'border-top: 2px solid ' + $vuetify.theme.current.colors.accent"
     v-if="mobile && (platform.android || platform.ios)"
   >
@@ -376,6 +378,7 @@ export default {
       title,
       subtitle,
       user,
+      showBottomNavigation: computed(() => store.state.showBottomNavigation),
       authIsReady: computed(() => store.state.authIsReady),
       logout,
       platform,

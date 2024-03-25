@@ -14,20 +14,10 @@
               Support me
             </v-btn></a
           >
-          <v-btn
-            prepend-icon="mdi-github"
-            class="mx-1"
-            variant="text"
-            color="primary"
-            to="/github"
+          <v-btn prepend-icon="mdi-github" class="mx-1" variant="text" color="primary" to="/github"
             >Contribute
           </v-btn>
-          <v-btn
-            prepend-icon="mdi-api"
-            class="mx-1"
-            variant="text"
-            color="primary"
-            to="/apidoc"
+          <v-btn prepend-icon="mdi-api" class="mx-1" variant="text" color="primary" to="/apidoc"
             >Interface
           </v-btn>
           <v-btn
@@ -48,8 +38,8 @@
           </v-btn>
         </v-col>
         <v-col cols="12" md="8"
-          >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was
-          created under Microsoft's
+          >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was created under
+          Microsoft's
           <a
             :style="{
               color: $vuetify.theme.current.colors.primary,
@@ -67,7 +57,7 @@
             href="https://www.ageofempires.com/games/age-of-empires-iv/"
             >Age of Empires IV</a
           >, and it is not endorsed by or affiliated with Microsoft.</v-col
-        ></v-row
+        ><v-label>v{{ version }}</v-label></v-row
       >
       <v-row v-else justify="center" class="mt-2 mb-16 text-center">
         <v-col cols="12">
@@ -80,20 +70,10 @@
             </v-btn></a
           >
 
-          <v-btn
-            prepend-icon="mdi-github"
-            class="mx-1"
-            variant="text"
-            color="primary"
-            to="/github"
+          <v-btn prepend-icon="mdi-github" class="mx-1" variant="text" color="primary" to="/github"
             >Contribute
           </v-btn>
-          <v-btn
-            prepend-icon="mdi-api"
-            class="mx-1"
-            variant="text"
-            color="primary"
-            to="/apidoc"
+          <v-btn prepend-icon="mdi-api" class="mx-1" variant="text" color="primary" to="/apidoc"
             >Interface
           </v-btn>
           <v-btn
@@ -114,8 +94,8 @@
           </v-btn>
         </v-col>
         <v-col cols="12" md="8"
-          >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was
-          created under Microsoft's
+          >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was created under
+          Microsoft's
           <a
             :style="{
               color: $vuetify.theme.current.colors.primary,
@@ -134,8 +114,8 @@
             >Age of Empires IV</a
           >, and it is not endorsed by or affiliated with Microsoft.</v-col
         >
+        <v-label>v{{ version }}</v-label>
       </v-row>
-      <v-label>v{{ version }}</v-label>
     </v-footer>
   </div>
 </template>

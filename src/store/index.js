@@ -21,6 +21,7 @@ export const store = createStore({
         //general
         loading: true,
         resultsCount: 0,
+        showBottomNavigation: true,
         //user
         user: null,
         authIsReady: false,
@@ -64,6 +65,10 @@ export const store = createStore({
             state.user.displayName = payload;
             console.log("user display name changed:", state.user.displayName);
         },
+        setShowBottomNavigation(state, payload) {
+            state.showBottomNavigation = payload;
+            console.log("showBottomNavigation changed:", state.showBottomNavigation);
+        },      
         setAuthIsReady(state, payload) {
             state.authIsReady = payload;
         },
