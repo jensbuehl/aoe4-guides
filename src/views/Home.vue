@@ -164,12 +164,12 @@
         </v-row>
 
         <!--featured creators xs-->
-        <v-row no-gutters
-          ><v-col class="ml-4 mt-4 mb-2 hidden-md-and-up" cols="auto"
+        <v-row no-gutters class="hidden-md-and-up"
+          ><v-col class="ml-2 mt-4 mb-4" cols="auto"
+            ><v-icon icon="mdi-youtube" size="small" class="mx-2 mb-1"></v-icon
             ><span class="text-h6">Featured Creators</span>
           </v-col></v-row
         >
-
         <v-row no-gutters class="hidden-md-and-up">
           <v-col cols="6" v-for="(creator, index) in featuredCreators" :key="creator.creatorId">
             <v-tooltip location="top" open-delay="1000">
@@ -265,8 +265,7 @@
                     name: 'Builds',
                     query: { orderBy: 'timeCreated' },
                   }"
-                  ></v-btn
-                >
+                ></v-btn>
               </template>
             </v-tooltip>
           </v-col>
@@ -405,10 +404,12 @@
         </v-card>
 
         <!--featured creators sm and up-->
-        <v-row no-gutters class="hidden-xs">
-          <v-col class="ml-4 mt-4 mb-2" cols="auto"
-            ><span class="text-h6">Featured Creators</span>
-          </v-col>
+        <v-row no-gutters align="center" class="hidden-xs">
+          <v-col class="ml-2 mt-4 mb-4" cols="auto"
+            ><v-icon icon="mdi-youtube" size="small" class="mx-2 mb-1"></v-icon
+            ><span class="text-h6">Featured Creators</span></v-col
+          >
+
           <v-row align="center" no-gutters
             ><v-col cols="12" v-for="creator in featuredCreators">
               <v-tooltip location="top" open-delay="1000">

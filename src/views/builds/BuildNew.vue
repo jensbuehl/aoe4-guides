@@ -365,7 +365,6 @@ export default {
         if (!build.value.creatorId && build.value.video) {
           const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
-          build.value.creatorName = (await getVideoMetaData(videoId)).creatorTitle;
         }
 
         //Add build order document
@@ -447,7 +446,6 @@ export default {
         const videoId = extractVideoId(build.value.video);
         build.value.video = buildEmbedUrl(videoId);
         build.value.creatorId = await getVideoCreatorId(videoId);
-        build.value.creatorName = (await getVideoMetaData(videoId)).creatorTitle;
       } else {
         build.value.creatorName = "";
         build.value.creatorId = "";
