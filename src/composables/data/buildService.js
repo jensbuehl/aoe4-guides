@@ -46,7 +46,7 @@ export const error = computed(() => collectionServiceError).value;
  * @return {Promise} A promise that resolves when the number of likes has been incremented.
  */
 export async function incrementLikes(buildId) {
-  incrementNumber(buildId, "likes");
+  return incrementNumber(buildId, "likes");
 }
 
 /**
@@ -56,7 +56,7 @@ export async function incrementLikes(buildId) {
  * @return {Promise<void>} This function does not return anything
  */
 export async function decrementLikes(buildId) {
-  decrementNumber(buildId, "likes");
+  return decrementNumber(buildId, "likes");
 }
 
 /**
@@ -66,7 +66,7 @@ export async function decrementLikes(buildId) {
  * @return {Promise<void>} A Promise that resolves once the downvotes are incremented.
  */
 export async function incrementDownvotes(buildId) {
-  incrementNumber(buildId, "downvotes");
+  return incrementNumber(buildId, "downvotes");
 }
 
 /**
@@ -76,7 +76,7 @@ export async function incrementDownvotes(buildId) {
  * @return {Promise<void>} This function does not return anything.
  */
 export async function decrementDownvotes(buildId) {
-  decrementNumber(buildId, "downvotes");
+  return decrementNumber(buildId, "downvotes");
 }
 
 /**
@@ -86,7 +86,7 @@ export async function decrementDownvotes(buildId) {
  * @return {Promise<void>} This function does not return anything.
  */
 export async function incrementUpvotes(buildId) {
-  incrementNumber(buildId, "upvotes");
+  return incrementNumber(buildId, "upvotes");
 }
 
 /**
@@ -96,7 +96,7 @@ export async function incrementUpvotes(buildId) {
  * @return {Promise<void>} A promise that resolves when the upvotes count is decremented.
  */
 export async function decrementUpvotes(buildId) {
-  decrementNumber(buildId, "upvotes");
+  return decrementNumber(buildId, "upvotes");
 }
 
 /**
@@ -106,7 +106,7 @@ export async function decrementUpvotes(buildId) {
  * @return {Promise<void>} A promise that resolves when the increment is complete.
  */
 export async function incrementViews(buildId) {
-  incrementNumber(buildId, "views");
+  return incrementNumber(buildId, "views");
 }
 
 /**
@@ -116,7 +116,7 @@ export async function incrementViews(buildId) {
  * @return {Promise<void>} A promise that resolves when the increment is complete.
  */
 export async function incrementComments(buildId) {
-  incrementNumber(buildId, "comments");
+  return incrementNumber(buildId, "comments");
 }
 
 /**
@@ -126,7 +126,7 @@ export async function incrementComments(buildId) {
  * @return {Promise<void>} a Promise that resolves when the comments are decremented
  */
 export async function decrementComments(buildId) {
-  decrementNumber(buildId, "comments");
+  return decrementNumber(buildId, "comments");
 }
 
 /**
@@ -403,7 +403,7 @@ export async function getBuild(buildId) {
  */
 export async function addBuild(build, customId = null) {
   store.commit("setBuild", build);
-  add(build, customId);
+  return add(build, customId);
 }
 
 /**

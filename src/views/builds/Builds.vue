@@ -29,8 +29,12 @@
         <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
-
       <v-col cols="12" md="8">
+        <v-row v-if="filterConfig.author && builds?.length > 0 && builds[0].author" no-gutters
+          ><div class="text-h6 mt-4 ml-4 mb-2">
+            {{ getAuthorsBuildsTitleString(builds[0].author) }}
+          </div></v-row
+        >
         <div v-if="builds" v-for="item in builds">
           <router-link
             style="text-decoration: none"
@@ -142,6 +146,11 @@ export default {
       }
     });
 
+    const getAuthorsBuildsTitleString = (authorName) => {
+      authorName.endsWith('s') ? authorName += "' Builds" : authorName += "'s Builds"
+      return authorName;
+    };
+
     const configChanged = () => {
       initData();
       router.replace("/builds");
@@ -238,6 +247,7 @@ export default {
       configChanged,
       nextPage,
       previousPage,
+      getAuthorsBuildsTitleString,
     };
   },
 };

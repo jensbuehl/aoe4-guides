@@ -1,9 +1,9 @@
 //Composables
 import collectionService from "@/composables/data/collectionService";
 import {
-    getOrderByQueryParam,
-    getWhereEqualQueryParam,
-  } from "@/composables/data/queryParameterBuilder";
+  getOrderByQueryParam,
+  getWhereEqualQueryParam,
+} from "@/composables/data/queryParameterBuilder";
 const { getAll, getQuery, getSize, add, del } = collectionService("comments");
 
 /**
@@ -14,17 +14,17 @@ const { getAll, getQuery, getSize, add, del } = collectionService("comments");
  * @return {Promise} a promise that resolves after the comment is added
  */
 export async function addComment(comment, customId) {
-    add(comment, customId);
+  return add(comment, customId);
 }
 
 /**
  * Deletes a comment with the specified commentId.
  *
  * @param {type} commentId - The ID of the comment to be deleted
- * @return {type} 
+ * @return {type}
  */
 export async function deleteComment(commentId) {
-    del(commentId);
+  return del(commentId);
 }
 
 /**
@@ -34,14 +34,11 @@ export async function deleteComment(commentId) {
  * @return {type} The comments retrieved based on the buildId
  */
 export async function getComments(buildId) {
-    
-    var queryParams = getWhereEqualQueryParam("buildId", buildId);
-    queryParams = queryParams.concat(
-        getOrderByQueryParam({ orderBy: "timeCreated" }, "asc")
-        );
-        const query = getQuery(queryParams);
-        
-    return getAll(query);
+  var queryParams = getWhereEqualQueryParam("buildId", buildId);
+  queryParams = queryParams.concat(getOrderByQueryParam({ orderBy: "timeCreated" }, "asc"));
+  const query = getQuery(queryParams);
+
+  return getAll(query);
 }
 
 /**
@@ -51,12 +48,9 @@ export async function getComments(buildId) {
  * @return {Promise<number>} The number of comments for the specified build.
  */
 export async function getCommentsCount(buildId) {
-    
-    var queryParams = getWhereEqualQueryParam("buildId", buildId);
-    queryParams = queryParams.concat(
-        getOrderByQueryParam({ orderBy: "timeCreated" }, "asc")
-        );
-        const query = getQuery(queryParams);
-        
-        return getSize(query);
+  var queryParams = getWhereEqualQueryParam("buildId", buildId);
+  queryParams = queryParams.concat(getOrderByQueryParam({ orderBy: "timeCreated" }, "asc"));
+  const query = getQuery(queryParams);
+
+  return getSize(query);
 }

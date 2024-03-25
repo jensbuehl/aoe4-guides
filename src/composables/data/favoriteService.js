@@ -17,7 +17,7 @@ const {
  * @return {Promise<void>} - The function does not return anything.
  */
 export async function addFavorite(userId, buildId) {
-    addElementToArray(userId, "favorites", buildId);
+    return addElementToArray(userId, "favorites", buildId);
 }
 
 /**
@@ -28,7 +28,7 @@ export async function addFavorite(userId, buildId) {
  * @return {Promise<void>} - The function does not return anything.
  */
 export async function removeFavorite(userId, buildId) {
-    removeElementFromArray(userId, "favorites", buildId);
+    return removeElementFromArray(userId, "favorites", buildId);
 }
 
 /**
@@ -39,7 +39,7 @@ export async function removeFavorite(userId, buildId) {
  * @return {Promise<void>} - The function does not return anything.
  */
 export async function addUpvote(userId, buildId) {
-    addElementToArray(userId, "upvotes", buildId);
+    return addElementToArray(userId, "upvotes", buildId);
 }
 
 /**
@@ -50,7 +50,7 @@ export async function addUpvote(userId, buildId) {
  * @return {Promise<void>} - The function does not return anything.
  */
 export async function removeUpvote(userId, buildId) {
-    removeElementFromArray(userId, "upvotes", buildId);
+    return removeElementFromArray(userId, "upvotes", buildId);
 }
 
 /**
@@ -61,7 +61,7 @@ export async function removeUpvote(userId, buildId) {
  * @return {Promise<void>} A promise that resolves once the downvote is added
  */
 export async function addDownvote(userId, buildId) {
-    addElementToArray(userId, "downvotes", buildId);
+    return addElementToArray(userId, "downvotes", buildId);
 }
 
 /**
@@ -72,7 +72,7 @@ export async function addDownvote(userId, buildId) {
  * @return {Promise<void>} 
  */
 export async function removeDownvote(userId, buildId) {
-    removeElementFromArray(userId, "downvotes", buildId);
+    return removeElementFromArray(userId, "downvotes", buildId);
 }
 
 /**
@@ -82,7 +82,7 @@ export async function removeDownvote(userId, buildId) {
  * @return {Promise<void>} - The function does not return anything.
  */
 export async function createUserFavorites(userId) {
-    add({ favorites: [] }, userId);
+    return add({ favorites: [] }, userId);
 }
 
 /**
@@ -102,5 +102,5 @@ export async function getUserFavorites(userId) {
  * @return {Promise<void>} - The function does not return anything.
  */
 export async function deleteUserFavorites(userId) {
-    del(userId);
+    return del(userId);
 }

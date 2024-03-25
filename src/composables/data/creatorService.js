@@ -8,7 +8,7 @@ const { getAll, get, add } = collectionService("creators");
  * @return {Promise} A promise that resolves with the retrieved creators.
  */
 export async function getCreators() {
-    return getAll();
+  return getAll();
 }
 
 /**
@@ -18,7 +18,7 @@ export async function getCreators() {
  * @return {Promise} A promise that resolves to the creator object.
  */
 export async function getCreator(id) {
-    return get(id);
+  return get(id);
 }
 
 /**
@@ -29,5 +29,5 @@ export async function getCreator(id) {
  * @return {Promise<void>}
  */
 export async function addCreator(creator, customId) {
-    add(creator, customId);
+  return add(creator, customId);
 }

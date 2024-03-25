@@ -166,6 +166,84 @@
         <!--featured creators xs-->
         <v-row no-gutters class="hidden-md-and-up"
           ><v-col class="ml-2 mt-4 mb-4" cols="auto"
+            ><v-icon icon="mdi-account-star" size="small" class="mx-2 mb-1"></v-icon
+            ><span class="text-h6">Featured Villagers</span>
+          </v-col></v-row
+        >
+        <v-row no-gutters class="hidden-md-and-up">
+          <v-col cols="6" v-for="(creator, index) in featuredVillagers" :key="creator.userId">
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Explore all build orders from
+                {{ creator.creatorTitle }}
+              </span>
+              <template v-slot:activator="{ props }">
+                <v-card
+                  flat
+                  height="56"
+                  v-bind:class="{
+                    'mb-2 mr-2': index % 2 == 0,
+                    'mb-2 ml-2': index % 2 != 0,
+                  }"
+                  rounded="lg"
+                  v-bind="props"
+                  :to="{
+                    name: 'Builds',
+                    query: { authorUid: creator.userId },
+                  }"
+                >
+                  <v-row no-gutters class="fill-height" align="center" justify="center"
+                    ><v-col cols="12"
+                      ><v-skeleton-loader
+                        :color="creator.loading ? 'loading' : 'surface'"
+                        :loading="creator.loading"
+                      >
+                        <v-row no-gutters align="center">
+                          <v-col cols="auto" align="center">
+                            <v-avatar
+                              class="my-2 mx-4"
+                              color="accent"
+                              :image="creator.creatorImage"
+                            ></v-avatar>
+                          </v-col>
+                          <v-col cols="auto" align="start" justify="start">
+                            <!--xs title-->
+                            <div
+                              :style="{
+                                color: $vuetify.theme.current.colors.primary,
+                              }"
+                              class="text-subtitle-2 hidden-sm-and-up"
+                              style="font-size: 0.8rem !important"
+                            >
+                              {{ creator.creatorTitle }}
+                            </div>
+                            <!--sm title-->
+                            <div
+                              :style="{
+                                color: $vuetify.theme.current.colors.primary,
+                              }"
+                              class="text-subtitle-2 hidden-xs"
+                              style="font-family: 'Segoe UI' !important"
+                            >
+                              {{ creator.creatorTitle }}
+                            </div>
+                          </v-col>
+                        </v-row>
+                      </v-skeleton-loader></v-col
+                    ></v-row
+                  >
+                </v-card>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+
+        <!--featured creators xs-->
+        <v-row no-gutters class="hidden-md-and-up"
+          ><v-col class="ml-2 mt-4 mb-4" cols="auto"
             ><v-icon icon="mdi-youtube" size="small" class="mx-2 mb-1"></v-icon
             ><span class="text-h6">Featured Creators</span>
           </v-col></v-row
@@ -406,6 +484,82 @@
         <!--featured creators sm and up-->
         <v-row no-gutters align="center" class="hidden-xs">
           <v-col class="ml-2 mt-4 mb-4" cols="auto"
+            ><v-icon icon="mdi-account-star" size="small" class="mx-2 mb-1"></v-icon
+            ><span class="text-h6">Featured Villagers</span></v-col
+          >
+
+          <v-row align="center" no-gutters
+            ><v-col cols="12" v-for="creator in featuredVillagers">
+              <v-tooltip location="top" open-delay="1000">
+                <span
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >Explore all build orders from
+                  {{ creator.creatorTitle }}
+                </span>
+                <template v-slot:activator="{ props }">
+                  <v-card
+                    flat
+                    height="56"
+                    class="mb-2"
+                    rounded="lg"
+                    v-bind="props"
+                    :to="{
+                      name: 'Builds',
+                      query: { author: creator.userId },
+                    }"
+                  >
+                    <v-row no-gutters class="fill-height" align="center" justify="center"
+                      ><v-col cols="12"
+                        ><v-skeleton-loader
+                          :color="creator.loading ? 'loading' : 'surface'"
+                          :loading="creator.loading"
+                        >
+                          <v-row no-gutters align="center" justify="start">
+                            <v-col cols="auto">
+                              <div>
+                                <v-avatar
+                                  class="ml-4"
+                                  color="accent"
+                                  :image="creator.creatorImage"
+                                ></v-avatar>
+                              </div>
+                            </v-col>
+                            <v-col cols="9" align="start">
+                              <!--small title-->
+                              <div
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="text-subtitle-2 ml-4 hidden-lg-and-up"
+                              >
+                                {{ creator.creatorTitle }}
+                              </div>
+                              <!--large title-->
+                              <v-card-title
+                                class="hidden-md-and-down"
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                              >
+                                {{ creator.creatorTitle }}
+                              </v-card-title>
+                            </v-col>
+                          </v-row>
+                        </v-skeleton-loader></v-col
+                      ></v-row
+                    >
+                  </v-card>
+                </template>
+              </v-tooltip>
+            </v-col></v-row
+          >
+        </v-row>
+
+        <!--featured creators sm and up-->
+        <v-row no-gutters align="center" class="hidden-xs">
+          <v-col class="ml-2 mt-4 mb-4" cols="auto"
             ><v-icon icon="mdi-youtube" size="small" class="mx-2 mb-1"></v-icon
             ><span class="text-h6">Featured Creators</span></v-col
           >
@@ -503,6 +657,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 //Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { featuredCreators } from "@/composables/filter/featuredCreatorDefaultProvider";
+import { featuredVillagers } from "@/composables/filter/featuredVillagerDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import {
   getRecentBuilds,
@@ -570,6 +725,7 @@ export default {
       popularBuildsList,
       allTimeClassicsList,
       featuredCreators,
+      featuredVillagers
     };
   },
 };

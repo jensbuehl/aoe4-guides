@@ -353,6 +353,7 @@ export default {
     //Show reset when state config different from default
     const showReset = computed(() => {
       return (
+        store.state.filterConfig?.author ||
         store.state.filterConfig?.civs != getDefaultConfig().civs ||
         store.state.filterConfig?.creator != getDefaultConfig().creator ||
         JSON.stringify(store.state.filterConfig?.maps) !=
