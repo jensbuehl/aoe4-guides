@@ -1,7 +1,7 @@
 <template>
   <v-overlay
     :attach="'body'"
-    :target="(pos || null)"
+    :target="pos || null"
     :scrim="false"
     :style="{ left: `${pos[0]}px`, top: `${pos[1]}px` }"
     absolute
@@ -17,7 +17,7 @@
           :key="index"
           :active="index === selectedItemIndex"
           :id="'autocomplete-item-' + index"
-
+          @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
         >
           <v-row align="center" justify="center">
             <v-col cols="auto">
@@ -43,10 +43,10 @@
 </template>
 
 <script>
-
 //External
 import { watch, ref, computed } from "vue";
 import scrollIntoView from "scroll-into-view-if-needed";
+import { useEventListener } from "@vueuse/core";
 
 //Component
 
@@ -66,12 +66,10 @@ export default {
     var iconService = useIconService(props.civ);
     var all = iconService.getIcons();
 
-    document.addEventListener("keydown", (e) => {
+    useEventListener(document, "keydown", (e) => {
       if (e.code === "ArrowUp" && searchText.value) {
         selectedItemIndex.value = Math.max(0, selectedItemIndex.value - 1);
-        var selectedNode = document.getElementById(
-          "autocomplete-item-" + selectedItemIndex.value
-        );
+        var selectedNode = document.getElementById("autocomplete-item-" + selectedItemIndex.value);
         scrollIntoView(selectedNode, {
           scrollMode: "if-needed",
           block: "start",
@@ -84,9 +82,7 @@ export default {
           searchResults.value.length - 1,
           selectedItemIndex.value + 1
         );
-        var selectedNode = document.getElementById(
-          "autocomplete-item-" + selectedItemIndex.value
-        );
+        var selectedNode = document.getElementById("autocomplete-item-" + selectedItemIndex.value);
         scrollIntoView(selectedNode, {
           scrollMode: "if-needed",
           block: "end",
@@ -139,10 +135,7 @@ export default {
         //Search by shorthand first
         if (Array.isArray(item.shorthand)) {
           elementFound =
-            -1 !=
-            item.shorthand.findIndex((element) =>
-              element.startsWith(searchText.value)
-            );
+            -1 != item.shorthand.findIndex((element) => element.startsWith(searchText.value));
         } else {
           elementFound = item.shorthand?.startsWith(searchText.value);
         }
