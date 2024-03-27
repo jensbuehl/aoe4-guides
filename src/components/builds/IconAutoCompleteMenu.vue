@@ -11,33 +11,34 @@
     v-model="show"
   >
     <v-card style="max-height: 250px; min-width: 350px; overflow-y: auto"
-      ><v-list>
-        <v-list-item
-          v-for="(icon, index) in searchResults"
-          :key="index"
-          :active="index === selectedItemIndex"
-          :id="'autocomplete-item-' + index"
-          @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-        >
-          <v-row align="center" justify="center">
-            <v-col cols="auto">
-              <v-img
-                v-bind:class="{
-                  'icon-landmark-selector': icon.class == 'landmark',
-                  'icon-tech-selector': icon.class == 'tech',
-                  'icon-ability-selector': icon.class == 'ability',
-                  'icon-military-selector': icon.class == 'military',
-                  'icon-default-selector': icon.class == 'default',
-                  'icon-none-selector': icon.class == 'none',
-                  'icon-selector': !icon.class,
-                }"
-                :src="icon.imgSrc"
-              ></v-img
-            ></v-col>
-            <v-col>{{ icon.title }}</v-col>
-          </v-row>
-        </v-list-item>
-      </v-list>
+      ><v-virtual-scroll :items="searchResults" height="250">
+        <template #default="{ item, index }">
+          <v-list-item
+            :key="index"
+            :active="index === selectedItemIndex"
+            :id="'autocomplete-item-' + index"
+            @click="imageSelected(item.imgSrc, item.title, item.class)"
+          >
+            <v-row align="center" justify="center">
+              <v-col cols="auto">
+                <v-img
+                  v-bind:class="{
+                    'icon-landmark-selector': item.class == 'landmark',
+                    'icon-tech-selector': item.class == 'tech',
+                    'icon-ability-selector': item.class == 'ability',
+                    'icon-military-selector': item.class == 'military',
+                    'icon-default-selector': item.class == 'default',
+                    'icon-none-selector': item.class == 'none',
+                    'icon-selector': !item.class,
+                  }"
+                  :src="item.imgSrc"
+                ></v-img
+              ></v-col>
+              <v-col>{{ item.title }}</v-col>
+            </v-row>
+          </v-list-item>
+        </template></v-virtual-scroll
+      >
     </v-card>
   </v-overlay>
 </template>
@@ -59,7 +60,6 @@ export default {
   emits: ["iconSelected"],
   setup(props, context) {
     const searchText = ref(props.searchText);
-    const pos = ref(props.pos);
     const selectedItemIndex = ref(0);
 
     //unfiltered raw data
@@ -115,13 +115,6 @@ export default {
       }
     );
 
-    watch(
-      () => props.pos,
-      (value, previousValue) => {
-        pos.value = value;
-      }
-    );
-
     //update show (show all when only colon, show filtered else)
     const show = ref(false);
 
@@ -157,7 +150,6 @@ export default {
       searchText,
       filter,
       imageSelected,
-      pos,
       show,
       selectedItemIndex,
     };
