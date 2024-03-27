@@ -1,12 +1,14 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>Season 7 has arrived</v-card-title>
-      <v-card-text
-        >We've switched up our hosting service to keep our operating costs down, and we've adjusted our funding targets to reflect this change.<br /><br />
+      <v-card-title>Build Faster!</v-card-title>
+      <v-card-text>
+        Attention Age of Empires fans! Say hello to "Autocomplete". 
         
-        Good news for your guides: you can now label your builds with “Season 7” for easy identification. Plus, locating your drafts on the “My Builds” page is now smoother than ever.<br /><br />
-        
+        <br /><br />The feature was designed to streamline your
+        strategy crafting and guide creation and making guide and build order creation quicker and
+        more efficient. Did you try it out, yet?
+        <v-img v-img class="pa-4 ma-4" src="/autocomplete.gif"></v-img>
         Thanks for your support and happy scouting!
       </v-card-text>
 
