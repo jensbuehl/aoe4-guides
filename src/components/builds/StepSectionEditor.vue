@@ -8,25 +8,7 @@
         The action cannot be undone.
       </v-card-text>
       <v-card-actions>
-        <v-btn color="error" block @click="removeStep(delteRowIndex)"
-          >Delete</v-btn
-        >
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-  <!--Do not copy images from age4builder dialog-->
-  <v-dialog v-model="pasteImagesInfoDialog" width="auto">
-    <v-card rounded="lg" class="text-center primary" flat>
-      <v-card-title>Unsupported Icon</v-card-title>
-      <v-card-text>
-        Unsupported icon format from age4builder detected.<br />
-        Please consider using the export/import feature to transfer build
-        orders.
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="error" block @click="pasteImagesInfoDialog = false"
-          >Close</v-btn
-        >
+        <v-btn color="error" block @click="removeStep(delteRowIndex)">Delete</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -42,132 +24,70 @@
           justify="center"
         >
           <v-col cols="3">
-            <v-img
-              class="titleIconXs ma-2"
-              src="/assets/resources/time.png"
-            ></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/time.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs ma-2"
-              src="/assets/resources/villager.png"
-            ></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/villager.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs ma-2"
-              src="/assets/resources/repair.png"
-            ></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/repair.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs ma-2"
-              src="/assets/resources/food.png"
-            ></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/food.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs ma-2"
-              src="/assets/resources/wood.png"
-            ></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/wood.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs ma-2"
-              src="/assets/resources/gold.png"
-            ></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/gold.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs ma-2"
-              src="/assets/resources/stone.png"
-            ></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/stone.png"></v-img>
           </v-col>
         </v-row>
         <v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
-          <v-row
-            style="font-weight: inherit"
-            no-gutters
-            align="center"
-            justify="start"
-            ><v-icon class="mr-2"
-              ><v-img src="/assets/pictures/age/age_2.png"></v-img
-            ></v-icon>
+          <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
+            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             Advance to Feudal Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 2 && section.type == 'age'">
-          <v-row
-            style="font-weight: inherit"
-            no-gutters
-            align="center"
-            justify="start"
-          >
-            <v-icon class="mr-2"
-              ><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon
-            >Feudal Age</v-row
+          <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
+            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>Feudal
+            Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
-          <v-row
-            style="font-weight: inherit"
-            no-gutters
-            align="center"
-            justify="start"
-            ><v-icon class="mr-2"
-              ><v-img src="/assets/pictures/age/age_3.png"></v-img
-            ></v-icon>
+          <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
+            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             Advance to Castle Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 3 && section.type == 'age'">
-          <v-row
-            style="font-weight: inherit"
-            no-gutters
-            align="center"
-            justify="start"
-          >
-            <v-icon class="mr-2"
-              ><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon
-            >Castle Age</v-row
+          <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
+            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>Castle
+            Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
-          <v-row
-            style="font-weight: inherit"
-            no-gutters
-            align="center"
-            justify="start"
-            ><v-icon class="mr-2"
-              ><v-img src="/assets/pictures/age/age_4.png"></v-img
-            ></v-icon>
+          <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
+            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             Advance to Imperial Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 4 && section.type == 'age'">
-          <v-row
-            style="font-weight: inherit"
-            no-gutters
-            align="center"
-            justify="start"
-          >
-            <v-icon class="mr-2"
-              ><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon
+          <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
+            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon
             >Imperial Age</v-row
           ></v-card-title
         >
       </v-col>
       <div v-if="!steps?.length && !readonly" class="text-center">
-      <v-btn
-        variant="text"
-        color="primary"
-        class="pt-5 pb-10"
-        @click="addStep(0)"
-      >
-        <template v-slot:prepend>
-          <v-icon color="accent">mdi-plus</v-icon>
-        </template>
-        Add your first build step</v-btn
-      >
-    </div>
+        <v-btn variant="text" color="primary" class="pt-5 pb-10" @click="addStep(0)">
+          <template v-slot:prepend>
+            <v-icon color="accent">mdi-plus</v-icon>
+          </template>
+          Add your first build step</v-btn
+        >
+      </div>
     </v-row>
     <v-row
       no-gutters
@@ -407,73 +327,37 @@
   <v-card flat rounded="lg" class="mt-4 hidden-xs">
     <v-card flat align="center" class="mt-4"
       ><v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
-        <v-row
-          style="font-weight: inherit"
-          no-gutters
-          align="center"
-          justify="start"
-          ><v-icon class="mr-2"
-            ><v-img src="/assets/pictures/age/age_2.png"></v-img
-          ></v-icon>
+        <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
+          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           Advance to Feudal Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 2 && section.type == 'age'">
-        <v-row
-          style="font-weight: inherit"
-          no-gutters
-          align="center"
-          justify="start"
-        >
-          <v-icon class="mr-2"
-            ><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon
-          >Feudal Age</v-row
+        <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
+          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>Feudal
+          Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
-        <v-row
-          style="font-weight: inherit"
-          no-gutters
-          align="center"
-          justify="start"
-          ><v-icon class="mr-2"
-            ><v-img src="/assets/pictures/age/age_3.png"></v-img
-          ></v-icon>
+        <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
+          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           Advance to Castle Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 3 && section.type == 'age'">
-        <v-row
-          style="font-weight: inherit"
-          no-gutters
-          align="center"
-          justify="start"
-        >
-          <v-icon class="mr-2"
-            ><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon
-          >Castle Age</v-row
+        <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
+          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>Castle
+          Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
-        <v-row
-          style="font-weight: inherit"
-          no-gutters
-          align="center"
-          justify="start"
-          ><v-icon class="mr-2"
-            ><v-img src="/assets/pictures/age/age_4.png"></v-img
-          ></v-icon>
+        <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
+          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           Advance to Imperial Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 4 && section.type == 'age'">
-        <v-row
-          style="font-weight: inherit"
-          no-gutters
-          align="center"
-          justify="start"
-        >
-          <v-icon class="mr-2"
-            ><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon
-          >Imperial Age</v-row
+        <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
+          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon>Imperial
+          Age</v-row
         ></v-card-title
       >
       <v-table
@@ -486,23 +370,13 @@
         "
         style="
           border-radius: 0;
-          border-bottom: thin solid
-            rgba(var(--v-border-color), var(--v-border-opacity));
+          border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
         "
       >
-        <thead
-          :style="
-            section.age <= 1 && section.type == 'age'
-              ? ''
-              : 'visibility: collapse'
-          "
-        >
+        <thead :style="section.age <= 1 && section.type == 'age' ? '' : 'visibility: collapse'">
           <tr>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img
-                class="mx-auto titleIcon"
-                src="/assets/resources/time.png"
-              ></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/time.png"></v-img>
             </th>
             <v-tooltip location="top">
               <span
@@ -512,47 +386,25 @@
                 >Villager Count</span
               >
               <template v-slot:activator="{ props }">
-                <th
-                  v-bind="props"
-                  class="text-center ma-0 pa-0"
-                  style="width: 50px"
-                >
-                  <v-img
-                    class="mx-auto titleIcon"
-                    src="/assets/resources/villager.png"
-                  ></v-img>
+                <th v-bind="props" class="text-center ma-0 pa-0" style="width: 50px">
+                  <v-img class="mx-auto titleIcon" src="/assets/resources/villager.png"></v-img>
                 </th>
               </template>
             </v-tooltip>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img
-                class="mx-auto titleIcon"
-                src="/assets/resources/repair.png"
-              ></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/repair.png"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img
-                class="mx-auto titleIcon"
-                src="/assets/resources/food.png"
-              ></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/food.png"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img
-                class="mx-auto titleIcon"
-                src="/assets/resources/wood.png"
-              ></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/wood.png"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img
-                class="mx-auto titleIcon"
-                src="/assets/resources/gold.png"
-              ></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/gold.png"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img
-                class="mx-auto titleIcon"
-                src="/assets/resources/stone.png"
-              ></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/stone.png"></v-img>
             </th>
             <th class="text-left">Description</th>
             <th v-if="!readonly" class="text-right"></th>
@@ -582,11 +434,7 @@
               class="text-center py-1"
               v-html="item.time"
             ></td>
-            <td
-              class="text-center py-1"
-              disabled
-              v-html="aggregateVillagers(index)"
-            ></td>
+            <td class="text-center py-1" disabled v-html="aggregateVillagers(index)"></td>
             <td
               style="white-space: break-spaces"
               @focusin="selection = null"
@@ -670,8 +518,7 @@
                           :style="{
                             color: $vuetify.theme.current.colors.primary,
                           }"
-                          >Add icon at current selection or cursor
-                          position</span
+                          >Add icon at current selection or cursor position</span
                         >
                         <template v-slot:activator="{ props: tooltip }">
                           <v-btn
@@ -741,11 +588,7 @@
         </tbody> </v-table
     ></v-card>
     <div v-if="!steps?.length && !readonly" class="text-center">
-      <v-btn
-        variant="text"
-        color="accent"
-        class="pt-5 pb-10"
-        @click="addStep(0)"
+      <v-btn variant="text" color="accent" class="pt-5 pb-10" @click="addStep(0)"
         >Add your first build step
         <template v-slot:prepend>
           <v-icon color="accent">mdi-plus</v-icon>
@@ -756,7 +599,6 @@
 </template>
 
 <script>
-
 //External
 import { watch, ref, computed, reactive, mergeProps, onMounted } from "vue";
 import sanitizeHtml from "sanitize-html";
@@ -785,17 +627,16 @@ export default {
     const selection = ref(null);
     const stepsTable = ref(null);
     const removeStepConfirmationDialog = ref(false);
-    const pasteImagesInfoDialog = ref(false);
     const activeStepIndex = ref(null);
     var iconService = useIconService(props.civ);
 
     onMounted(async () => {
       //Sanitize since inline icon replacement only works with <br>, NOT with \n
       steps.forEach((element) => {
-        element.description = element.description.replace(/\n/gm, "<br>");
+        element.description = element.description?.replace(/\n/gm, "<br>");
       });
       stepsCopy.forEach((element) => {
-        element.description = element.description.replace(/\n/gm, "<br>");
+        element.description = element.description?.replace(/\n/gm, "<br>");
       });
       //Force firefox to use BR instead of adding DIVs
       document.execCommand("defaultParagraphSeparator", false, "br");
@@ -891,10 +732,7 @@ export default {
         const body = document.getElementsByTagName("body")[0];
         const bodyRect = body.getBoundingClientRect();
 
-        autocompletePos.value = [
-          rect.x - bodyRect.x,
-          rect.y - bodyRect.y + rect.height,
-        ];
+        autocompletePos.value = [rect.x - bodyRect.x, rect.y - bodyRect.y + rect.height];
       }
     };
 
@@ -931,9 +769,7 @@ export default {
       }
 
       //Show and hide autocomplete menu, set search text
-      const match = editor.innerHTML.match(
-        /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g
-      );
+      const match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
       if (!match) {
         //no match found
         searchText.value = null;
@@ -967,9 +803,7 @@ export default {
       });
 
       //parse and replace
-      const match = editor.innerHTML.match(
-        /\w*(?<![a-zA-Z0-9])::(([ a-zA-Z0-9])+)?/g
-      );
+      const match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([ a-zA-Z0-9])+)?/g);
 
       if (match) {
         const shortHand = match[0].toLowerCase().trim().replace("::", "");
@@ -980,10 +814,7 @@ export default {
             //Search by shorthand first
             if (Array.isArray(item.shorthand)) {
               elementFound =
-                -1 !=
-                item.shorthand.findIndex((element) =>
-                  element.startsWith(shortHand)
-                );
+                -1 != item.shorthand.findIndex((element) => element.startsWith(shortHand));
             } else {
               elementFound = item.shorthand?.startsWith(shortHand);
             }
@@ -1001,9 +832,7 @@ export default {
         const imageMetaData = filteredCivIcons[0];
 
         if (imageMetaData) {
-          const iconClass = imageMetaData.class
-            ? "icon-" + imageMetaData.class
-            : "icon";
+          const iconClass = imageMetaData.class ? "icon-" + imageMetaData.class : "icon";
           const iconPath = imageMetaData.imgSrc;
           const iconTooltipText = imageMetaData.title;
 
@@ -1031,10 +860,7 @@ export default {
 
     function placeCaretAtEnd(el) {
       el.focus();
-      if (
-        typeof window.getSelection != "undefined" &&
-        typeof document.createRange != "undefined"
-      ) {
+      if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
         var range = document.createRange();
         range.selectNodeContents(el);
         range.collapse(false);
@@ -1054,13 +880,7 @@ export default {
 
       iconClass = iconClass ? "icon-" + iconClass : "icon";
       const img =
-        '<img src="' +
-        iconPath +
-        '" class=' +
-        iconClass +
-        ' title="' +
-        tooltipText +
-        '"><\/img>';
+        '<img src="' + iconPath + '" class=' + iconClass + ' title="' + tooltipText + '"><\/img>';
 
       //if DIV wrapper, then use this element as root instead of the editor (Needed for firefox compatibility)
       if (editor.childNodes[0].tagName === "DIV") {
@@ -1077,15 +897,10 @@ export default {
       });
 
       //parse and replace
-      var match = editor.innerHTML.match(
-        /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g
-      );
+      var match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
       if (match) {
         //Replace element
-        editor.innerHTML = editor.innerHTML.replace(
-          /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g,
-          img
-        );
+        editor.innerHTML = editor.innerHTML.replace(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g, img);
 
         // restore the position
         sel.removeAllRanges();
@@ -1102,13 +917,7 @@ export default {
       iconClass = iconClass ? "icon-" + iconClass : "icon";
 
       const img =
-        '<img src="' +
-        iconPath +
-        '" class=' +
-        iconClass +
-        ' title="' +
-        tooltipText +
-        '"><\/img>';
+        '<img src="' + iconPath + '" class=' + iconClass + ' title="' + tooltipText + '"><\/img>';
 
       document.execCommand("insertHTML", false, img);
       saveSelection();
@@ -1263,7 +1072,6 @@ export default {
       const dirty = e.clipboardData.getData("text/html");
       const ageBuilderSource = dirty.match("age4builder");
       if (ageBuilderSource) {
-        pasteImagesInfoDialog.value = true;
         e.stopPropagation();
         e.preventDefault();
         return;
@@ -1298,11 +1106,7 @@ export default {
         clean = e.clipboardData.getData("text/plain");
       }
 
-      document.execCommand(
-        "insertHTML",
-        false,
-        clean.trim().replace(/\n/gm, "<br>")
-      );
+      document.execCommand("insertHTML", false, clean.trim().replace(/\n/gm, "<br>"));
       e.stopPropagation();
       e.preventDefault();
     };
@@ -1323,7 +1127,6 @@ export default {
       selection,
       delteRowIndex,
       removeStepConfirmationDialog,
-      pasteImagesInfoDialog,
       mergeProps,
       handlePaste,
       handleKeyUp,
@@ -1348,7 +1151,7 @@ export default {
       handleAutoCompleteSelected,
       autocompletePos,
       searchText,
-      activeStepIndex
+      activeStepIndex,
     };
   },
 };
