@@ -57,7 +57,7 @@ import { deleteComment } from "@/composables/data/commentService";
 import { decrementComments } from "@/composables/data/buildService";
 
 export default {
-  name: "SingleComment",
+  name: "Comment",
   props: ["comment"],
   emits: ["commentRemoved"],
   setup(props, context) {

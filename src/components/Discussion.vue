@@ -49,7 +49,7 @@
       </v-col>
     </v-row>
     <div v-for="comment in comments" :key="comment.id">
-      <SingleComment @commentRemoved="init" :comment="comment"></SingleComment>
+      <Comment @commentRemoved="init" :comment="comment"></Comment>
     </div>
   </v-card>
 </template>
@@ -60,7 +60,7 @@ import { useStore } from "vuex";
 import { ref, onMounted, computed } from "vue";
 
 //Components
-import SingleComment from "@/components/SingleComment.vue";
+import Comment from "@/components/Comment.vue";
 
 //Composables
 import { addComment, getComments } from "@/composables/data/commentService";
@@ -68,7 +68,7 @@ import { incrementComments } from "@/composables/data/buildService";
 
 export default {
   name: "Discussion",
-  components: { SingleComment },
+  components: { Comment },
   props: ["buildId"],
   setup(props) {
     const store = useStore();
