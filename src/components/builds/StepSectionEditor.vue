@@ -732,6 +732,7 @@ export default {
         const body = document.getElementsByTagName("body")[0];
         const bodyRect = body.getBoundingClientRect();
 
+        
         autocompletePos.value = [rect.x - bodyRect.x, rect.y - bodyRect.y + rect.height];
       }
     };

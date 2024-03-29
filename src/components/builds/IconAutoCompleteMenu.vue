@@ -6,8 +6,8 @@
     :style="{ left: `${pos[0]}px`, top: `${pos[1]}px` }"
     absolute
     :close-on-content-click="true"
-    location-strategy="connected"
-    scroll-strategy="reposition"
+    :location-strategy="absoluteLocationStrategy"
+    scroll-strategy="none"
     v-model="show"
   >
     <v-card style="max-height: 250px; min-width: 350px; overflow-y: auto"
@@ -83,6 +83,7 @@ export default {
           selectedItemIndex.value + 1
         );
         var selectedNode = document.getElementById("autocomplete-item-" + selectedItemIndex.value);
+        console.log(selectedNode);
         scrollIntoView(selectedNode, {
           scrollMode: "if-needed",
           block: "end",
@@ -145,6 +146,17 @@ export default {
       context.emit("iconSelected", imgSrc, title, imgClass);
     };
 
+    function absoluteLocationStrategy(data, props, contentStyles) {
+      Object.assign(contentStyles.value, {
+        position: 'absolute'
+      })
+
+      function updateLocation() {
+      }
+
+      return { updateLocation }
+    }
+
     return {
       searchResults,
       searchText,
@@ -152,6 +164,7 @@ export default {
       imageSelected,
       show,
       selectedItemIndex,
+      absoluteLocationStrategy,
     };
   },
 };
