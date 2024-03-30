@@ -732,7 +732,6 @@ export default {
         const body = document.getElementsByTagName("body")[0];
         const bodyRect = body.getBoundingClientRect();
 
-        
         autocompletePos.value = [rect.x - bodyRect.x, rect.y - bodyRect.y + rect.height];
       }
     };
@@ -766,20 +765,21 @@ export default {
       }
       //Handle ESC
       else if (event.which === 27) {
+        console.log("ESC");
         searchText.value = null;
-      }
-
-      //Show and hide autocomplete menu, set search text
-      const match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
-      if (!match) {
-        //no match found
-        searchText.value = null;
-      } else if (match[0]?.length > 2) {
-        //show filtered completion menu
-        searchText.value = match[0].toLowerCase().trim().replace("::", "");
-      } else if (match[0]) {
-        //only colon => show unfiltered completion menu
-        searchText.value = "::";
+      } else {
+        //Show and hide autocomplete menu, set search text
+        const match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
+        if (!match) {
+          //no match found
+          searchText.value = null;
+        } else if (match[0]?.length > 2) {
+          //show filtered completion menu
+          searchText.value = match[0].toLowerCase().trim().replace("::", "");
+        } else if (match[0]) {
+          //only colon => show unfiltered completion menu
+          searchText.value = "::";
+        }
       }
 
       activeStepIndex.value = index;
