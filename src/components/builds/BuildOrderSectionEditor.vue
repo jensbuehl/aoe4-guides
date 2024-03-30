@@ -13,6 +13,15 @@
     </v-card>
   </v-dialog>
 
+  <IconAutoCompleteMenu
+    @iconSelected="
+      (iconPath, tooltip, iconClass) => handleAutoCompleteSelected(iconPath, tooltip, iconClass)
+    "
+    :civ="civ"
+    :searchText="searchText"
+    :pos="autocompletePos"
+  ></IconAutoCompleteMenu>
+
   <!--Mobile UI (XS)-->
   <v-card rounded="lg" class="mt-4 hidden-sm-and-up" flat>
     <v-row no-gutters align="center" justify="center">
@@ -485,15 +494,6 @@
               class="text-center py-1"
               v-html="item.stone"
             ></td>
-            <IconAutoCompleteMenu
-              @iconSelected="
-                (iconPath, tooltip, iconClass) =>
-                  handleAutoCompleteSelected(iconPath, tooltip, iconClass)
-              "
-              :civ="civ"
-              :searchText="searchText"
-              :pos="autocompletePos"
-            ></IconAutoCompleteMenu>
             <td
               @input="handleInput($event, index)"
               @keyup="handleKeyUp($event, index)"
@@ -628,6 +628,8 @@ export default {
     const stepsTable = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
+    const searchText = ref("");
+    const autocompletePos = ref(0);
     var iconService = useIconService(props.civ);
 
     onMounted(async () => {
@@ -1111,9 +1113,6 @@ export default {
       e.stopPropagation();
       e.preventDefault();
     };
-
-    const searchText = ref("");
-    const autocompletePos = ref(0);
 
     return {
       stepsCopy,
