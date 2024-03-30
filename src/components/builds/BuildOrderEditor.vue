@@ -4,8 +4,8 @@
     <v-card rounded="lg" class="text-center primary" flat>
       <v-card-title>Regress to {{ getPreviousAgeName() }}</v-card-title>
       <v-card-text>
-        Do you really want to regress to {{ getPreviousAgeName() }} and delete
-        all contained build order steps?<br />
+        Do you really want to regress to {{ getPreviousAgeName() }} and delete all contained build
+        order steps?<br />
         The action cannot be undone.
       </v-card-text>
       <v-card-actions>
@@ -41,7 +41,7 @@
     <v-row no-gutters align="center" justify="center">
       <v-col cols="12"
         ><div v-for="(section, index) in sections">
-          <StepSectionEditor
+          <BuildOrderSectionEditor
             v-if="section.steps"
             @textChanged="(event) => handleTextChanged(event)"
             @selectionChanged="(event) => handleSelectionChanged(event, index)"
@@ -50,7 +50,8 @@
             :readonly="readonly"
             :civ="civ"
             :focus="sectionFocus == index"
-          ></StepSectionEditor>
+          ></BuildOrderSectionEditor>
+          <span contenteditable="true">asd</span>
         </div>
         <v-row no-gutters justify="center" class="ma-4">
           <v-btn
@@ -62,18 +63,13 @@
             ><v-img
               class="mr-2"
               style="vertical-align: middle; height: auto; width: 30px"
-              :src="getNextAgeImage()"
+              :src="getNextAgeImgSrc()"
             ></v-img
             >Advance to {{ getNextAgeName() }}
           </v-btn>
 
           <v-btn
-            v-if="
-              sections[0]?.steps &&
-              !readonly &&
-              getCurrentAge() >= 1 &&
-              sections[0]?.age > 0
-            "
+            v-if="sections[0]?.steps && !readonly && getCurrentAge() >= 1 && sections[0]?.age > 0"
             variant="text"
             color="accent"
             class="ma-2"
@@ -81,7 +77,7 @@
             ><v-img
               class="mr-2"
               style="vertical-align: middle; height: auto; width: 30px"
-              :src="getPreviousAgeImage()"
+              :src="getPreviousAgeImgSrc()"
             ></v-img
             >Regress to {{ getPreviousAgeName() }}
           </v-btn>
@@ -92,20 +88,19 @@
 </template>
 
 <script>
-
 //External
 import { ref, computed, reactive, onMounted } from "vue";
 
 //Components
-import StepSectionEditor from "@/components/builds/StepSectionEditor.vue";
+import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
 
 //Composables
 
 export default {
-  name: "StepsEditor",
+  name: "BuildOrderEditor",
   props: ["steps", "readonly", "civ"],
   emits: ["stepsChanged", "activateFocusMode"],
-  components: { StepSectionEditor },
+  components: { BuildOrderSectionEditor },
   setup(props, context) {
     var sections;
     if (!props.steps[0]?.type) {
@@ -186,57 +181,35 @@ export default {
     };
 
     const getNextAgeName = () => {
-      switch (getCurrentAge()) {
-        case 1:
-          return "Feudal Age";
-        case 2:
-          return "Castle Age";
-        case 3:
-          return "Imperial Age";
-        default:
-          break;
-      }
+      const ages = ["Feudal Age", "Castle Age", "Imperial Age"];
+      const currentAgeIndex = getCurrentAge() - 1;
+      return ages[currentAgeIndex] || "";
     };
 
     const getPreviousAgeName = () => {
-      switch (getCurrentAge()) {
-        case 1:
-          return "No Particular Age";
-        case 2:
-          return "Dark Age";
-        case 3:
-          return "Feudal Age";
-        case 4:
-          return "Castle Age";
-        default:
-          break;
-      }
+      const currentAgeIndex = getCurrentAge() - 1;
+      const ageNames = ["No Particular Age", "Dark Age", "Feudal Age", "Castle Age"];
+      return ageNames[currentAgeIndex] || "";
     };
 
-    const getNextAgeImage = () => {
-      switch (getCurrentAge()) {
-        case 1:
-          return "/assets/pictures/age/age_2.png";
-        case 2:
-          return "/assets/pictures/age/age_3.png";
-        case 3:
-          return "/assets/pictures/age/age_4.png";
-        default:
-          break;
-      }
+    const getNextAgeImgSrc = () => {
+      const currentAge = getCurrentAge();
+      const imgSrcMap = {
+        1: "/assets/pictures/age/age_2.png",
+        2: "/assets/pictures/age/age_3.png",
+        3: "/assets/pictures/age/age_4.png",
+      };
+      return imgSrcMap[currentAge] || "";
     };
 
-    const getPreviousAgeImage = () => {
-      switch (getCurrentAge()) {
-        case 2:
-          return "/assets/pictures/age/age_1.png";
-        case 3:
-          return "/assets/pictures/age/age_2.png";
-        case 4:
-          return "/assets/pictures/age/age_3.png";
-        default:
-          break;
-      }
+    const getPreviousAgeImgSrc = () => {
+      const currentAge = getCurrentAge();
+      const ageImageUrlMap = {
+        2: "/assets/pictures/age/age_1.png",
+        3: "/assets/pictures/age/age_2.png",
+        4: "/assets/pictures/age/age_3.png",
+      };
+      return ageImageUrlMap[currentAge] || "";
     };
 
     function alignTableColumnWidth(class_name) {
@@ -255,44 +228,29 @@ export default {
       ];
 
       // Reset to allow shrinking
-      document
-        .querySelectorAll("." + class_name)
-        .forEach(function (element, index) {
-          element
-            .querySelectorAll("tr:first-child th")
-            .forEach(function (element2, index2) {
-              element2.style.width = col_width_defaults[index2];
-            });
+      document.querySelectorAll("." + class_name).forEach(function (element, index) {
+        element.querySelectorAll("tr:first-child th").forEach(function (element2, index2) {
+          element2.style.width = col_width_defaults[index2];
         });
+      });
 
       // Find the max width of each column across all tables
       var col_widths = [];
-      document
-        .querySelectorAll("." + class_name)
-        .forEach(function (element, index) {
-          element
-            .querySelectorAll("tr:first-child th")
-            .forEach(function (element2, index2) {
-              col_widths[index2] = Math.max(
-                col_widths[index2] || 0,
-                element2.offsetWidth
-              );
-            });
+      document.querySelectorAll("." + class_name).forEach(function (element, index) {
+        element.querySelectorAll("tr:first-child th").forEach(function (element2, index2) {
+          col_widths[index2] = Math.max(col_widths[index2] || 0, element2.offsetWidth);
         });
+      });
 
       // Keep description column on auto
       col_widths[7] = col_width_defaults[7];
 
       // Set each column in each table to the max width of that column across all tables.
-      document
-        .querySelectorAll("." + class_name)
-        .forEach(function (element, index) {
-          element
-            .querySelectorAll("tr:first-child th")
-            .forEach(function (element2, index2) {
-              element2.style.width = col_widths[index2] + "px";
-            });
+      document.querySelectorAll("." + class_name).forEach(function (element, index) {
+        element.querySelectorAll("tr:first-child th").forEach(function (element2, index2) {
+          element2.style.width = col_widths[index2] + "px";
         });
+      });
     }
 
     return {
@@ -305,8 +263,8 @@ export default {
       getCurrentAge,
       getNextAgeName,
       getPreviousAgeName,
-      getNextAgeImage,
-      getPreviousAgeImage,
+      getNextAgeImgSrc,
+      getPreviousAgeImgSrc,
       handleStepsChanged,
       handleSelectionChanged,
       handleTextChanged,

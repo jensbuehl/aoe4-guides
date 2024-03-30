@@ -239,12 +239,12 @@
           </v-card-text> </v-card
       ></v-col>
     </v-row>
-    <StepsEditor
+    <BuildOrderEditor
       v-if="build"
       @stepsChanged="handleStepsChanged"
       :steps="build.steps"
       :civ="build.civ"
-    ></StepsEditor>
+    ></BuildOrderEditor>
   </v-container>
 </template>
 
@@ -258,7 +258,7 @@ import sanitizeHtml from "sanitize-html";
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import RegisterAdShort from "@/components/notifications/RegisterAdShort.vue";
-import StepsEditor from "@/components/builds/StepsEditor.vue";
+import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 
 //Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
@@ -276,7 +276,7 @@ import { strategies } from "@/composables/filter/strategyDefaultProvider";
 
 export default {
   name: "BuildNew",
-  components: { StepsEditor, RegisterAd, RegisterAdShort },
+  components: { BuildOrderEditor, RegisterAd, RegisterAdShort },
   setup() {
     const error = ref(null);
     const { validateBuild, validateVideo } = useBuildValidator();

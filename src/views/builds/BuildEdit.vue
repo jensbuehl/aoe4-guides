@@ -527,11 +527,11 @@
           </v-card-text> </v-card
       ></v-col>
     </v-row>
-    <StepsEditor
+    <BuildOrderEditor
       @stepsChanged="handleStepsChanged"
       :steps="build.steps"
       :civ="build.civ"
-    ></StepsEditor>
+    ></BuildOrderEditor>
   </v-container>
 </template>
 
@@ -544,7 +544,7 @@ import sanitizeHtml from "sanitize-html";
 
 //Components
 import Favorite from "@/components/Favorite.vue";
-import StepsEditor from "@/components/builds/StepsEditor.vue";
+import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 
 //Composables
 import { getCreator, addCreator } from "@/composables/data/creatorService";
@@ -562,7 +562,7 @@ import useDownload from "@/composables/converter/useDownload";
 
 export default {
   name: "BuildEdit",
-  components: { Favorite, StepsEditor },
+  components: { Favorite, BuildOrderEditor },
   props: ["id"],
   setup(props) {
     const store = useStore();

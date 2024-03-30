@@ -611,7 +611,7 @@ import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 import useIconService from "@/composables/builds/useIconService.js";
 
 export default {
-  name: "StepSectionEditor",
+  name: "BuildOrderSectionEditor",
   props: ["section", "readonly", "civ", "focus"],
   emits: ["stepsChanged", "selectionChanged", "textChanged"],
   components: { IconSelector, IconAutoCompleteMenu },

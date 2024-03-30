@@ -605,12 +605,12 @@
       <v-card-text style="white-space: pre-line">{{ build.description }}</v-card-text>
     </v-card>
 
-    <StepsEditor
+    <BuildOrderEditor
       :steps="build.steps"
       :readonly="true"
       :civ="build.civ"
       @activateFocusMode="focusDialog = true"
-    ></StepsEditor>
+    ></BuildOrderEditor>
 
     <v-card flat v-if="build.video" rounded="lg" class="mt-4">
       <v-card-title>Video</v-card-title>
@@ -642,7 +642,7 @@ import { useRouter } from "vue-router";
 import Favorite from "@/components/Favorite.vue";
 import FocusMode from "@/components/builds/FocusMode.vue";
 import Vote from "@/components/Vote.vue";
-import StepsEditor from "@/components/builds/StepsEditor.vue";
+import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 
@@ -667,7 +667,7 @@ export default {
     Favorite,
     Vote,
     Discussion,
-    StepsEditor,
+    BuildOrderEditor,
     FocusMode,
     BuildNotFound,
   },
