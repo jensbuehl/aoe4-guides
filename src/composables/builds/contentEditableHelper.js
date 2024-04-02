@@ -1,11 +1,63 @@
 /**
+ * Updates the search text based on the key code pressed.
+ *
+ * @param {HTMLElement} contentEditable - The content editable element based on which the search text is being updated.
+ * @param {HTMLInputElement} searchTextRef - The reference to the search text input element.
+ * @param {number} keyCode - The key code of the key that was pressed.
+ */
+export function updateSearchText(contentEditable, searchTextRef, keyCode, icons) {
+  const sel = window.getSelection();
+
+  //handle enter and fix line-break
+  if (keyCode === 13) {
+    //Skip e.g. on firefox
+    if (contentEditable.innerHTML.includes("\n")) {
+      //get linebreak position
+      const pos = getLineBreakPosition(contentEditable);
+      contentEditable.innerHTML = contentEditable.innerHTML.replace(/\n/gm, "<br>");
+
+      // restore the position
+      sel.removeAllRanges();
+      var range = document.createRange();
+      range.setStart(contentEditable, pos + 1);
+      range.collapse(true);
+      sel.addRange(range);
+
+      searchTextRef.value = null;
+    }
+  }
+  //Handle space
+  else if (keyCode === 32 || keyCode === 0) {
+    addInlineIcon(contentEditable, icons);
+    searchTextRef.value = null;
+  }
+  //Handle ESC
+  else if (keyCode === 27) {
+    searchTextRef.value = null;
+  } else {
+    //Show and hide autocomplete menu, set search text
+    const match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
+    if (!match) {
+      //no match found
+      searchTextRef.value = null;
+    } else if (match[0]?.length > 2) {
+      //show filtered completion menu
+      searchTextRef.value = match[0].toLowerCase().trim().replace("::", "");
+    } else if (match[0]) {
+      //only colon => show unfiltered completion menu
+      searchTextRef.value = "::";
+    }
+  }
+}
+
+/**
  * Function to add an inline icon to the contentEditable element at the position of the found search text or menu activator sequence
  *
  * @param {Element} contentEditable - the contentEditable element to which the icon will be added
- * @param {Array} allCivIcons - an array containing all the civilization icons
+ * @param {Array} icons - an array containing all the civilization icons
  * @return {void} This function does not return a value
  */
-export function addInlineIcon(contentEditable, allCivIcons) {
+export function addInlineIcon(contentEditable, icons) {
   //if DIV wrapper, then use this element as root instead of the contentEditable (Needed for firefox compatibility)
   if (contentEditable.childNodes[0].tagName === "DIV") {
     contentEditable = contentEditable.childNodes[0];
@@ -42,7 +94,7 @@ export function addInlineIcon(contentEditable, allCivIcons) {
         return elementFound;
       });
     };
-    const filteredCivIcons = filter(allCivIcons).sort(function (a, b) {
+    const filteredCivIcons = filter(icons).sort(function (a, b) {
       return a.title.length - b.title.length;
     });
     const imageMetaData = filteredCivIcons[0];
@@ -105,7 +157,10 @@ export function addAutocompleteIcon(contentEditable, iconPath, tooltipText, icon
   var match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
   if (match) {
     //Replace element
-    contentEditable.innerHTML = contentEditable.innerHTML.replace(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g, img);
+    contentEditable.innerHTML = contentEditable.innerHTML.replace(
+      /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g,
+      img
+    );
 
     // restore the position
     sel.removeAllRanges();
@@ -116,13 +171,47 @@ export function addAutocompleteIcon(contentEditable, iconPath, tooltipText, icon
   }
 }
 
-function getCursorPositionAfterIcon(parent, node, offset, status) {
+/**
+ * Places the caret at the end of the given contentEditable element.
+ *
+ * @param {Element} contentEditable - The contentEditable element to place the caret at the end of.
+ * @return {void} 
+ */
+export function placeCaretAtEnd(contentEditable) {
+  contentEditable.focus();
+  if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
+    var range = document.createRange();
+    range.selectNodeContents(contentEditable);
+    range.collapse(false);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  } else if (typeof document.body.createTextRange != "undefined") {
+    var textRange = document.body.createTextRange();
+    textRange.moveToElementText(contentEditable);
+    textRange.collapse(false);
+    textRange.select();
+  }
+}
+
+function getLineBreakPosition(contentEditable) {
+  let currentNode = null;
+
+  for (let i = 0; i < contentEditable.childNodes.length; i++) {
+    currentNode = contentEditable.childNodes[i];
+    if (currentNode.data === "\n") {
+      return i;
+    }
+  }
+}
+
+function getCursorPositionAfterIcon(contentEditable, node, offset, status) {
   if (status.done) return status;
 
   let currentNode = null;
 
-  for (let i = 0; i < parent.childNodes.length && !status.done; i++) {
-    currentNode = parent.childNodes[i];
+  for (let i = 0; i < contentEditable.childNodes.length && !status.done; i++) {
+    currentNode = contentEditable.childNodes[i];
     status.pos++;
     if (currentNode.wholeText?.indexOf("::") > 0) {
       status.pos++;

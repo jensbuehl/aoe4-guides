@@ -8,7 +8,7 @@
         <br /><br />The feature was designed to streamline your
         strategy crafting and guide creation and making guide and build order creation quicker and
         more efficient. Did you try it out, yet?
-        <v-img v-img class="pa-4 ma-4" src="/autocomplete.gif"></v-img>
+        <v-img class="pa-4 ma-4" src="/autocomplete.gif"></v-img>
         Thanks for your support and happy scouting!
       </v-card-text>
 

@@ -107,8 +107,7 @@
       :key="index"
       v-on:keyup.enter.alt="addStep(index)"
       v-on:keyup.delete.alt="
-        dialog = true;
-        delteRowIndex = index;
+        removeStepConfirmationDialog = true;
         delteRowIndex = index;
       "
       @focusin="$emit('selectionChanged')"
@@ -124,7 +123,7 @@
               ><v-card-text
                 style="white-space: break-spaces"
                 @paste="handlePaste"
-                @focusout="updateStepTime($event, index)"
+                @focusout="updateStep($event, index, 'time')"
                 @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
@@ -146,7 +145,7 @@
               ><v-card-text
                 style="white-space: break-spaces"
                 @paste="handlePaste"
-                @focusout="updateStepBuilders($event, index)"
+                @focusout="updateStep($event, index, 'builders')"
                 @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
@@ -163,7 +162,7 @@
               ><v-card-text
                 style="white-space: break-spaces"
                 @paste="handlePaste"
-                @focusout="updateStepFood($event, index)"
+                @focusout="updateStep($event, index, 'food')"
                 @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
@@ -180,7 +179,7 @@
               ><v-card-text
                 style="white-space: break-spaces"
                 @paste="handlePaste"
-                @focusout="updateStepWood($event, index)"
+                @focusout="updateStep($event, index, 'wood')"
                 @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
@@ -197,7 +196,7 @@
               ><v-card-text
                 style="white-space: break-spaces"
                 @paste="handlePaste"
-                @focusout="updateStepGold($event, index)"
+                @focusout="updateStep($event, index, 'gold')"
                 @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
@@ -214,7 +213,7 @@
               ><v-card-text
                 style="white-space: break-spaces"
                 @paste="handlePaste"
-                @focusout="updateStepStone($event, index)"
+                @focusout="updateStep($event, index, 'stone')"
                 @input="handleResourceInput"
                 :contenteditable="!readonly"
                 class="text-center"
@@ -280,7 +279,7 @@
                     <IconSelector
                       @iconSelected="
                         (iconPath, tooltip, iconClass) =>
-                          handleIconSelected(iconPath, tooltip, iconClass)
+                          handleIconSelectorIconSelected(iconPath, tooltip, iconClass)
                       "
                       :civ="civ"
                     ></IconSelector>
@@ -440,7 +439,7 @@
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
-              @focusout="updateStepTime($event, index)"
+              @focusout="updateStep($event, index, 'time')"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.time"
@@ -451,7 +450,7 @@
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
-              @focusout="updateStepBuilders($event, index)"
+              @focusout="updateStep($event, index, 'builders')"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.builders ? item.builders : ''"
@@ -461,7 +460,7 @@
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
-              @focusout="updateStepFood($event, index)"
+              @focusout="updateStep($event, index, 'food')"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.food"
@@ -471,7 +470,7 @@
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
-              @focusout="updateStepWood($event, index)"
+              @focusout="updateStep($event, index, 'wood')"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.wood"
@@ -481,7 +480,7 @@
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
-              @focusout="updateStepGold($event, index)"
+              @focusout="updateStep($event, index, 'gold')"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.gold"
@@ -491,14 +490,14 @@
               @focusin="selection = null"
               @input="handleResourceInput"
               @paste="handlePaste"
-              @focusout="updateStepStone($event, index)"
+              @focusout="updateStep($event, index, 'stone')"
               :contenteditable="!readonly"
               class="text-center py-1"
               v-html="item.stone"
             ></td>
             <td
-              @input="handleInput($event, index)"
-              @keyup="handleKeyUp($event, index)"
+              @input="showAutoCompleteMenu($event, index)"
+              @keyup="handleContentEditableKeyUp($event, index)"
               @click="saveSelection"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
@@ -536,7 +535,7 @@
                       <IconSelector
                         @iconSelected="
                           (iconPath, tooltip, iconClass) =>
-                            handleIconSelected(iconPath, tooltip, iconClass)
+                            handleIconSelectorIconSelected(iconPath, tooltip, iconClass)
                         "
                         :civ="civ"
                       ></IconSelector>
@@ -603,7 +602,6 @@
 <script>
 //External
 import { watch, ref, computed, reactive, mergeProps, onMounted } from "vue";
-import sanitizeHtml from "sanitize-html";
 
 //Components
 import IconSelector from "@/components/builds/IconSelector.vue";
@@ -611,7 +609,12 @@ import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 
 //Composables
 import iconService from "@/composables/builds/iconService.js";
-import { addInlineIcon, addAutocompleteIcon } from "@/composables/builds/contentEditableHelper.js";
+import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
+import {
+  addAutocompleteIcon,
+  updateSearchText,
+  placeCaretAtEnd,
+} from "@/composables/builds/contentEditableHelper.js";
 
 export default {
   name: "BuildOrderSectionEditor",
@@ -648,10 +651,6 @@ export default {
       document.execCommand("defaultParagraphSeparator", false, "br");
     });
 
-    const civ = computed(() => {
-      return props.civ;
-    });
-
     watch(
       () => props.focus,
       (value, previousValue) => {
@@ -667,16 +666,6 @@ export default {
         civIconService = iconService(props.civ);
       }
     );
-
-    function handleAutoCompleteMenuIconSelected(iconPath, tooltip, iconClass) {
-      addAutocompleteIcon(
-        stepsTable.value.rows[activeStepIndex.value].cells[descriptionColumnIndex],
-        iconPath,
-        tooltip,
-        iconClass
-      );
-      searchText.value = null;
-    }
 
     const saveSelection = () => {
       if (window.getSelection) {
@@ -701,18 +690,7 @@ export default {
       }
     };
 
-    function getLineBreakPosition(parent) {
-      let currentNode = null;
-
-      for (let i = 0; i < parent.childNodes.length; i++) {
-        currentNode = parent.childNodes[i];
-        if (currentNode.data === "\n") {
-          return i;
-        }
-      }
-    }
-
-    const handleInput = (event, index) => {
+    const showAutoCompleteMenu = (event, index) => {
       const editor = stepsTable.value.rows[index].cells[descriptionColumnIndex];
 
       if (event.data === ":") {
@@ -732,76 +710,28 @@ export default {
       }
     };
 
-    const handleKeyUp = (event, index) => {
-      const editor = stepsTable.value.rows[index].cells[descriptionColumnIndex];
-      const sel = window.getSelection();
+    function handleAutoCompleteMenuIconSelected(iconPath, tooltip, iconClass) {
+      addAutocompleteIcon(
+        stepsTable.value.rows[activeStepIndex.value].cells[descriptionColumnIndex],
+        iconPath,
+        tooltip,
+        iconClass
+      );
+      searchText.value = null;
+    }
 
-      //handle enter and fix line-break
-      if (event.which === 13) {
-        //Skip e.g. on firefox
-        if (editor.innerHTML.includes("\n")) {
-          //get linebreak position
-          const pos = getLineBreakPosition(editor);
-          editor.innerHTML = editor.innerHTML.replace(/\n/gm, "<br>");
+    const handleContentEditableKeyUp = (event, index) => {
+      const contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+      const keyCode = event.which;
+      const allIcons = civIconService.getIcons();
 
-          // restore the position
-          sel.removeAllRanges();
-          var range = document.createRange();
-          range.setStart(editor, pos + 1);
-          range.collapse(true);
-          sel.addRange(range);
-
-          searchText.value = null;
-        }
-      }
-      //Handle space
-      else if (event.which === 32 || event.which === 0) {
-        const contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
-        const allIcons = civIconService.getIcons();
-        addInlineIcon(contentEditable, allIcons);
-        searchText.value = null;
-      }
-      //Handle ESC
-      else if (event.which === 27) {
-        console.log("ESC");
-        searchText.value = null;
-      } else {
-        //Show and hide autocomplete menu, set search text
-        const match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
-        if (!match) {
-          //no match found
-          searchText.value = null;
-        } else if (match[0]?.length > 2) {
-          //show filtered completion menu
-          searchText.value = match[0].toLowerCase().trim().replace("::", "");
-        } else if (match[0]) {
-          //only colon => show unfiltered completion menu
-          searchText.value = "::";
-        }
-      }
+      updateSearchText(contentEditable, searchText, keyCode, allIcons);
 
       activeStepIndex.value = index;
       saveSelection();
     };
 
-    function placeCaretAtEnd(el) {
-      el.focus();
-      if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
-        var range = document.createRange();
-        range.selectNodeContents(el);
-        range.collapse(false);
-        var sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
-      } else if (typeof document.body.createTextRange != "undefined") {
-        var textRange = document.body.createTextRange();
-        textRange.moveToElementText(el);
-        textRange.collapse(false);
-        textRange.select();
-      }
-    }
-
-    const handleIconSelected = (iconPath, tooltipText, iconClass) => {
+    const handleIconSelectorIconSelected = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
       iconClass = iconClass ? "icon-" + iconClass : "icon";
 
@@ -822,55 +752,17 @@ export default {
 
       return builders + food + wood + gold + stone || "-";
     };
-    const updateStepTime = (event, index) => {
-      steps[index].time = event.target.innerHTML;
-      stepsCopy[index].time = event.target.innerHTML;
-      steps[index].description = stepsCopy[index].description;
 
-      context.emit("stepsChanged", steps);
-    };
-    const updateStepBuilders = (event, index) => {
-      steps[index].builders = event.target.innerHTML;
-      stepsCopy[index].builders = event.target.innerHTML;
-      steps[index].description = stepsCopy[index].description;
+    const updateStep = (event, index, propertyName) => {
+      steps[index][propertyName] = event.target.innerHTML;
+      stepsCopy[index][propertyName] = event.target.innerHTML;
 
+      steps[index].description = stepsCopy[index].description;
       aggregateVillagers(index);
+
       context.emit("stepsChanged", steps);
     };
-    const updateStepFood = (event, index) => {
-      steps[index].food = event.target.innerHTML;
-      stepsCopy[index].food = event.target.innerHTML;
-      steps[index].description = stepsCopy[index].description;
 
-      aggregateVillagers(index);
-      context.emit("stepsChanged", steps);
-    };
-    const updateStepWood = (event, index) => {
-      const content = event.target.innerHTML;
-
-      steps[index].wood = content;
-      stepsCopy[index].wood = content;
-      steps[index].description = stepsCopy[index].description;
-
-      aggregateVillagers(index);
-      context.emit("stepsChanged", steps);
-    };
-    const updateStepGold = (event, index) => {
-      steps[index].gold = event.target.innerHTML;
-      stepsCopy[index].gold = event.target.innerHTML;
-      steps[index].description = stepsCopy[index].description;
-
-      aggregateVillagers(index);
-      context.emit("stepsChanged", steps);
-    };
-    const updateStepStone = (event, index) => {
-      steps[index].stone = event.target.innerHTML;
-      stepsCopy[index].stone = event.target.innerHTML;
-      steps[index].description = stepsCopy[index].description;
-
-      aggregateVillagers(index);
-      context.emit("stepsChanged", steps);
-    };
     const updateStepDescription = (event, index) => {
       stepsCopy[index].description = event.target.innerHTML;
 
@@ -946,11 +838,12 @@ export default {
 
     const handleResourceInput = async (e) => {
       if (e.data == "-") {
+        var contentEditable = e.target;
         //prevent break on hyphen
-        e.target.innerHTML = e.target.innerHTML.replace("-", "&#8209;");
+        contentEditable.innerHTML = contentEditable.innerHTML.replace("-", "&#8209;");
 
         //updating innerHTML sets cursor to start, this is a workaround to set caret to end
-        placeCaretAtEnd(e.target);
+        placeCaretAtEnd(contentEditable);
       }
 
       context.emit("textChanged");
@@ -959,43 +852,9 @@ export default {
     const handlePaste = async (e) => {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
-      const ageBuilderSource = dirty.match("age4builder");
-      if (ageBuilderSource) {
-        e.stopPropagation();
-        e.preventDefault();
-        return;
-      }
+      const clean = sanitizeStepDescription(dirty)
 
-      var clean = "";
-      if (dirty) {
-        clean = sanitizeHtml(dirty, {
-          allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
-          allowedClasses: {
-            img: [
-              "icon",
-              "icon-none",
-              "icon-military",
-              "icon-tech",
-              "icon-default",
-              "icon-landmark",
-              "icon-ability",
-            ],
-          },
-          allowedAttributes: {
-            img: ["style", "class", "src", "title"],
-          },
-          allowedStyles: {
-            "*": {
-              "vertical-align": [/^middle$/],
-            },
-          },
-        });
-      } else {
-        //Fallback to plain text otherwise
-        clean = e.clipboardData.getData("text/plain");
-      }
-
-      document.execCommand("insertHTML", false, clean.trim().replace(/\n/gm, "<br>"));
+      document.execCommand("insertHTML", false, clean);
       e.stopPropagation();
       e.preventDefault();
     };
@@ -1003,28 +862,21 @@ export default {
     return {
       stepsCopy,
       steps,
-      stepsTable,
-      civ,
       readonly,
+      stepsTable,
       hoverRowIndex,
       selectedRowIndex,
       handleResourceInput,
-      sanitizeHtml,
       selection,
       delteRowIndex,
       removeStepConfirmationDialog,
       mergeProps,
       handlePaste,
-      handleKeyUp,
-      handleInput,
+      handleContentEditableKeyUp,
+      showAutoCompleteMenu,
       aggregateVillagers,
+      updateStep,
       updateStepDescription,
-      updateStepStone,
-      updateStepGold,
-      updateStepWood,
-      updateStepFood,
-      updateStepBuilders,
-      updateStepTime,
       removeStep,
       addStep,
       selectRow,
@@ -1032,7 +884,7 @@ export default {
       unhoverItem,
       saveSelection,
       restoreSelection,
-      handleIconSelected,
+      handleIconSelectorIconSelected,
       autocompletePos,
       searchText,
       activeStepIndex,

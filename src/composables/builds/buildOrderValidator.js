@@ -1,3 +1,5 @@
+import sanitizeHtml from "sanitize-html";
+
 /**
  * Validates a build by checking the title, civilization, and video.
  *
@@ -36,4 +38,51 @@ export function validateVideo(video) {
     }
   }
   return null;
+}
+
+/**
+ * Sanitizes a step description by removing unwanted tags, classes, attributes, and styles.
+ *
+ * @param {string} dirty - The dirty step description to be sanitized.
+ * @return {string} The sanitized step description.
+ */
+export function sanitizeStepDescription(dirty) {
+  var clean = "";
+
+  const ageBuilderSource = dirty.match("age4builder");
+  if (ageBuilderSource) {
+    e.stopPropagation();
+    e.preventDefault();
+    return clean;
+  }
+
+  if (dirty) {
+    clean = sanitizeHtml(dirty, {
+      allowedTags: ["img", "br"], //no longer use sanitizeHtml.defaults.allowedTags, since it contains e.g. tables
+      allowedClasses: {
+        img: [
+          "icon",
+          "icon-none",
+          "icon-military",
+          "icon-tech",
+          "icon-default",
+          "icon-landmark",
+          "icon-ability",
+        ],
+      },
+      allowedAttributes: {
+        img: ["style", "class", "src", "title"],
+      },
+      allowedStyles: {
+        "*": {
+          "vertical-align": [/^middle$/],
+        },
+      },
+    });
+  } else {
+    //Fallback to plain text otherwise
+    clean = e.clipboardData.getData("text/plain");
+  }
+
+  return clean.trim().replace(/\n/gm, "<br>")
 }
