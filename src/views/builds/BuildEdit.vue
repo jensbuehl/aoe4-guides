@@ -631,7 +631,7 @@ export default {
         if (!build.value.creatorId && build.value.video) {
           const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
-          }
+        }
 
         if (build.value.video) {
           //Add content creator document
@@ -666,6 +666,12 @@ export default {
             type: "error",
           });
         }
+      } else {
+        var errorMessage = error.value ? error.value : buildServiceError.value;
+        await store.dispatch("showSnackbar", {
+          text: errorMessage,
+          type: "error",
+        });
       }
     };
 

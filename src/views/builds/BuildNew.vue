@@ -349,10 +349,10 @@ export default {
       }
     };
 
-    const handleSave = async () => {     
+    const handleSave = async () => {
       error.value = validateBuild(build.value);
       sanitizeSteps();
-      
+
       //Write to database
       if (!error.value) {
         build.value.sortTitle = build.value.title.toLowerCase() + crypto.randomUUID();
@@ -364,7 +364,7 @@ export default {
           const videoId = extractVideoId(build.value.video);
           build.value.creatorId = await getVideoCreatorId(videoId);
         }
-        
+
         if (build.value.video) {
           //Add content creator document
           const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video));
@@ -375,8 +375,8 @@ export default {
           } else {
             //Use display title from DB if it exists
             build.value.creatorName = res.creatorDisplayTitle
-            ? res.creatorDisplayTitle
-            : res.creatorTitle;
+              ? res.creatorDisplayTitle
+              : res.creatorTitle;
           }
         }
 
@@ -402,6 +402,12 @@ export default {
             type: "error",
           });
         }
+      } else {
+        var errorMessage = error.value ? error.value : buildServiceError.value;
+        await store.dispatch("showSnackbar", {
+          text: errorMessage,
+          type: "error",
+        });
       }
     };
 
