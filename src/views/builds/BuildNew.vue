@@ -302,6 +302,7 @@ export default {
           {
             type: "age",
             age: 0,
+            gameplan: "",
             steps: [
               {
                 time: "",
@@ -440,8 +441,8 @@ export default {
       });
     };
 
-    const handleStepsChanged = (steps) => {
-      build.value.steps = steps;
+    const handleStepsChanged = (sections) => {
+      build.value.steps = sections;
     };
 
     const handleVideoInput = async () => {

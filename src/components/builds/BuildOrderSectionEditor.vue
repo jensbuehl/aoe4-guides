@@ -372,7 +372,7 @@
       >
       <v-table
         v-if="steps?.length"
-        class="mx-4 mb-4 align-to-widest"
+        class="mx-4 align-to-widest"
         :style="
           section.age <= 1 && section.type == 'age'
             ? ''
@@ -417,7 +417,7 @@
               <v-img class="mx-auto titleIcon" src="/assets/resources/stone.png"></v-img>
             </th>
             <th class="text-left">Description</th>
-            <th v-if="!readonly" class="text-right"></th>
+            <th v-if="!readonly" style="width: 180px" class="text-right"></th>
           </tr>
         </thead>
         <tbody ref="stepsTable">
@@ -502,7 +502,7 @@
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
               :contenteditable="!readonly"
-              class="editor text-left py-1"
+              class="contentEditable text-left py-1"
               v-html="item.description"
             ></td>
             <td v-if="!readonly" style="width: 180px" class="text-right">
@@ -586,6 +586,71 @@
               ></v-row>
             </td>
           </tr>
+        </tbody>
+      </v-table>
+      <v-table
+        v-if="gameplan || !readonly"
+        class="mx-4 mb-4"
+        style="
+          border-radius: 0;
+
+        "
+      >
+        <thead :style="'visibility: collapse'">
+          <tr>
+            <th class="text-left"></th>
+            <th v-if="!readonly" width="60px" class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr @focusin="$emit('selectionChanged')" @mousedown="selectRow()">
+            <td
+              ref="gameplanContentEditable"
+              @input="showAutoCompleteMenu($event)"
+              @keyup="handleContentEditableKeyUp($event)"
+              @click="saveSelection"
+              @paste="handlePaste"
+              @focusout="updateSectionGameplan()"
+              :contenteditable="!readonly"
+              class="contentEditable text-left py-1"
+              v-html="gameplan"
+            ></td>
+            <td v-if="!readonly" style="width: 60px" class="text-right">
+              <v-menu
+                v-if="selection && gameplanSelected"
+                :close-on-content-click="false"
+                location="bottom"
+              >
+                <template v-slot:activator="{ props: menu }">
+                  <v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Add icon at current selection or cursor position</span
+                    >
+                    <template v-slot:activator="{ props: tooltip }">
+                      <v-btn
+                        icon="mdi-image-plus"
+                        color="accent"
+                        v-bind="mergeProps(menu, tooltip)"
+                        variant="text"
+                      ></v-btn>
+                    </template>
+                  </v-tooltip>
+                </template>
+                <v-card flat rounded="lg" class="mt-4" width="700px">
+                  <IconSelector
+                    @iconSelected="
+                      (iconPath, tooltip, iconClass) =>
+                        handleIconSelectorIconSelected(iconPath, tooltip, iconClass)
+                    "
+                    :civ="civ"
+                  ></IconSelector>
+                </v-card>
+              </v-menu>
+            </td>
+          </tr>
         </tbody> </v-table
     ></v-card>
     <div v-if="!steps?.length && !readonly" class="text-center">
@@ -617,9 +682,9 @@ import {
 } from "@/composables/builds/contentEditableHelper.js";
 
 export default {
-  name: "BuildOrderSectionEditor",
+  name: "BuildOrderSectioncontentEditable",
   props: ["section", "readonly", "civ", "focus"],
-  emits: ["stepsChanged", "selectionChanged", "textChanged"],
+  emits: ["stepsChanged", "selectionChanged", "textChanged", "gameplanChanged"],
   components: { IconSelector, IconAutoCompleteMenu },
   setup(props, context) {
     //Hacky deep copy of object since working on the reference broke the current selection
@@ -638,6 +703,11 @@ export default {
     const autocompletePos = ref(0);
     const descriptionColumnIndex = 7;
     var civIconService = iconService(props.civ);
+
+    const gameplan = ref(`${props.section.gameplan ? props.section.gameplan : ""}`);
+    const gameplanCopy = ref(`${props.section.gameplan ? props.section.gameplan : ""}`);
+    const gameplanSelected = ref(false);
+    const gameplanContentEditable = ref(null);
 
     onMounted(async () => {
       //Sanitize since inline icon replacement only works with <br>, NOT with \n
@@ -691,11 +761,16 @@ export default {
     };
 
     const showAutoCompleteMenu = (event, index) => {
-      const editor = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+      var contentEditable = null;
+      if (index != null) {
+        contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+      } else {
+        contentEditable = gameplanContentEditable.value;
+      }
 
       if (event.data === ":") {
         //Show autocomplete menu
-        if (editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g)) {
+        if (contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g)) {
           searchText.value = "::";
         } else {
         }
@@ -711,17 +786,25 @@ export default {
     };
 
     function handleAutoCompleteMenuIconSelected(iconPath, tooltip, iconClass) {
-      addAutocompleteIcon(
-        stepsTable.value.rows[activeStepIndex.value].cells[descriptionColumnIndex],
-        iconPath,
-        tooltip,
-        iconClass
-      );
+      var contentEditable = null;
+      if (!gameplanSelected.value) {
+        contentEditable =
+          stepsTable.value.rows[activeStepIndex.value].cells[descriptionColumnIndex];
+      } else {
+        contentEditable = gameplanContentEditable.value;
+      }
+
+      addAutocompleteIcon(contentEditable, iconPath, tooltip, iconClass);
       searchText.value = null;
     }
 
     const handleContentEditableKeyUp = (event, index) => {
-      const contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+      var contentEditable = null;
+      if (index != null) {
+        contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+      } else {
+        contentEditable = gameplanContentEditable.value;
+      }
       const keyCode = event.which;
       const allIcons = civIconService.getIcons();
 
@@ -758,14 +841,20 @@ export default {
       stepsCopy[index][propertyName] = event.target.innerHTML;
 
       steps[index].description = stepsCopy[index].description;
+      gameplan.value = gameplanCopy.value
+
       aggregateVillagers(index);
 
       context.emit("stepsChanged", steps);
     };
 
+    const updateSectionGameplan = () => {
+      gameplanCopy.value = gameplanContentEditable.value.innerHTML;
+      context.emit("gameplanChanged", gameplanCopy.value);
+    };
+
     const updateStepDescription = (event, index) => {
       stepsCopy[index].description = event.target.innerHTML;
-
       context.emit("stepsChanged", stepsCopy);
     };
     const addStep = (index) => {
@@ -827,7 +916,13 @@ export default {
     };
 
     const selectRow = (index) => {
-      selectedRowIndex.value = index;
+      if (index != null) {
+        selectedRowIndex.value = index;
+        gameplanSelected.value = false;
+      } else {
+        selectedRowIndex.value = null;
+        gameplanSelected.value = true;
+      }
     };
     const hoverItem = (index) => {
       hoverRowIndex.value = index;
@@ -852,7 +947,7 @@ export default {
     const handlePaste = async (e) => {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
-      const clean = sanitizeStepDescription(dirty)
+      const clean = sanitizeStepDescription(dirty);
 
       document.execCommand("insertHTML", false, clean);
       e.stopPropagation();
@@ -860,12 +955,14 @@ export default {
     };
 
     return {
-      stepsCopy,
       steps,
+      gameplan,
       readonly,
       stepsTable,
+      gameplanContentEditable,
       hoverRowIndex,
       selectedRowIndex,
+      gameplanSelected,
       handleResourceInput,
       selection,
       delteRowIndex,
@@ -877,6 +974,7 @@ export default {
       aggregateVillagers,
       updateStep,
       updateStepDescription,
+      updateSectionGameplan,
       removeStep,
       addStep,
       selectRow,
@@ -1014,7 +1112,7 @@ td:empty {
   width: auto;
   height: 30px;
 }
-.editor {
+.contentEditable {
   white-space: pre-wrap;
 }
 </style>

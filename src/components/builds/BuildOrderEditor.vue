@@ -4,7 +4,8 @@
     <v-card rounded="lg" class="text-center primary" flat>
       <v-card-title>Regress to {{ getPreviousAgeName() }}</v-card-title>
       <v-card-text>
-        Are you sure you want to turn back the clock to {{ getPreviousAgeName() }} and erase all the progress and build order steps?<br> 
+        Are you sure you want to turn back the clock to {{ getPreviousAgeName() }} and erase all the
+        progress and build order steps?<br />
         Please confirm your decision carefully. The action cannot be undone.
       </v-card-text>
       <v-card-actions>
@@ -49,6 +50,7 @@
               }
             "
             @stepsChanged="(steps) => handleStepsChanged(steps, index)"
+            @gameplanChanged="(gameplan) => handleGameplanChanged(gameplan, index)"
             :section="section"
             :readonly="readonly"
             :civ="civ"
@@ -140,6 +142,11 @@ export default {
       context.emit("stepsChanged", sections.value);
     }
 
+    function handleGameplanChanged(gameplan, index) {
+      sections.value[index].gameplan = gameplan;
+      context.emit("stepsChanged", sections.value);
+    }
+
     /**
      * Age up to the next age.
      **/
@@ -151,11 +158,13 @@ export default {
       sections.value.push({
         type: "ageUp",
         age: currentAge,
+        gameplan: "",
         steps: [{}],
       });
       sections.value.push({
         type: "age",
         age: currentAge + 1,
+        gameplan: "",
         steps: [{}],
       });
 
@@ -255,6 +264,7 @@ export default {
           {
             type: "age",
             age: 0,
+            gameplan: "",
             steps: JSON.parse(JSON.stringify(props.steps)),
           },
         ];
@@ -323,6 +333,7 @@ export default {
       getNextAgeImgSrc,
       getPreviousAgeImgSrc,
       handleStepsChanged,
+      handleGameplanChanged,
       sectionFocus,
       removeAgeConfirmationDialog,
     };

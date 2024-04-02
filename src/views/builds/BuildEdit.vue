@@ -716,8 +716,8 @@ export default {
       download(overlayBuildString, build.value.title);
     };
 
-    const handleStepsChanged = (steps) => {
-      build.value.steps = steps;
+    const handleStepsChanged = (sections) => {
+      build.value.steps = sections;
     };
 
     const handleVideoInput = async () => {
