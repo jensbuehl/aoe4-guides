@@ -1,5 +1,5 @@
 //Composables
-import useIconService from "@/composables/builds/useIconService.js";
+import iconService from "@/composables/builds/iconService.js";
 
 export default function useImportOverlayFormat() {
   const convert = (build) => {
@@ -71,7 +71,7 @@ export default function useImportOverlayFormat() {
       : "/assets/pictures/" + imageText;
 
     //Get meta data
-    const { getIconFromImgPath } = useIconService();
+    const { getIconFromImgPath } = iconService();
     const iconMetaData = getIconFromImgPath(imagePath);
 
     //Initialize image data with fallback values, so that broken images do get messed up (e.g. Valdemar used to copy from age4builder)

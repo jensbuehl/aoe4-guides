@@ -269,8 +269,8 @@ import {
   getUserDraftsCount,
   error as buildServiceError,
 } from "@/composables/data/buildService";
-import { validateBuild, validateVideo } from "@/composables/builds/useBuildValidator";
-import useYoutube from "@/composables/builds/useYoutube";
+import { validateBuild, validateVideo } from "@/composables/builds/buildOrderValidator";
+import youtubeService from "@/composables/builds/youtubeService";
 import { maps } from "@/composables/filter/mapDefaultProvider";
 import { strategies } from "@/composables/filter/strategyDefaultProvider";
 
@@ -280,7 +280,7 @@ export default {
   setup() {
     const error = ref(null);
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon } =
-      useYoutube();
+      youtubeService();
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const store = useStore();
     const user = computed(() => store.state.user);

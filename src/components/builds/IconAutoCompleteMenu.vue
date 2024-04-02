@@ -52,7 +52,7 @@ import { useEventListener } from "@vueuse/core";
 //Component
 
 //Composables
-import useIconService from "@/composables/builds/useIconService.js";
+import iconService from "@/composables/builds/iconService.js";
 
 export default {
   name: "IconAutoCompleteMenu",
@@ -63,8 +63,8 @@ export default {
     const selectedItemIndex = ref(0);
 
     //unfiltered raw data
-    var iconService = useIconService(props.civ);
-    var all = iconService.getIcons();
+    var civIconService = iconService(props.civ);
+    var allIcons = civIconService.getIcons();
 
     useEventListener(document, "keydown", (e) => {
       if (e.code === "ArrowUp" && searchText.value) {
@@ -111,16 +111,16 @@ export default {
     watch(
       () => props.civ,
       (value, previousValue) => {
-        iconService = useIconService(value);
-        all = iconService.getIcons();
+        civIconService = iconService(value);
+        allIcons = civIconService.getIcons();
       }
     );
 
-    //update show (show all when only colon, show filtered else)
+    //update show (show allIcons when only colon, show filtered else)
     const show = ref(false);
 
     //filtered data
-    const searchResults = computed(() => filter(all));
+    const searchResults = computed(() => filter(allIcons));
     const filter = (unfiltered) => {
       return unfiltered.filter((item) => {
         if (!searchText.value) return false;

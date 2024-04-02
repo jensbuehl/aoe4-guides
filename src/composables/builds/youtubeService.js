@@ -3,7 +3,7 @@ import axios from "axios";
 
 const API_KEY = "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY"
 
-export default function useYoutube() {
+export default function youtubeService() {
   const extractVideoId = (videoUrl) => {
     if (videoUrl) {
       var regExp =

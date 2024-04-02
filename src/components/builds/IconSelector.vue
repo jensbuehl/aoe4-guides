@@ -526,14 +526,14 @@ import { ref, computed } from "vue";
 //Components
 
 //Composables
-import useIconService from "@/composables/builds/useIconService.js";
+import iconService from "@/composables/builds/iconService.js";
 
 export default {
   name: "IconSelector",
   props: ["civ"],
   emits: ["iconSelected"],
   setup(props, context) {
-    const { getIcons } = useIconService(props.civ);
+    const { getIcons } = iconService(props.civ);
     const searchText = ref("");
     const tab = ref(null);
 
@@ -550,10 +550,10 @@ export default {
     const militaryTechnologies = getIcons("tech_military");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
     const heroes = getIcons("unit_hero").concat(getIcons("ability_hero"));
-    const all = getIcons();
+    const allIcons = getIcons();
 
     //filtered data
-    const searchResults = computed(() => filter(all));
+    const searchResults = computed(() => filter(allIcons));
     const filter = (unfiltered) => {
       if (searchText.value?.length >= 2) {
         return unfiltered.filter((item) =>

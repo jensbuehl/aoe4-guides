@@ -1,7 +1,7 @@
 //External
 import { ref } from "vue";
 
-export default function useIconService(civArg) {
+export default function iconService(civArg) {
   const civ = ref(civArg);
 
   //Exported methods

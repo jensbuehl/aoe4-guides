@@ -549,8 +549,8 @@ import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 //Composables
 import { getCreator, addCreator } from "@/composables/data/creatorService";
 import { getBuild, updateBuild, error as buildServiceError } from "@/composables/data/buildService";
-import { validateBuild, validateVideo } from "@/composables/builds/useBuildValidator";
-import useYoutube from "@/composables/builds/useYoutube";
+import { validateBuild, validateVideo } from "@/composables/builds/buildOrderValidator";
+import youtubeService from "@/composables/builds/youtubeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import { maps } from "@/composables/filter/mapDefaultProvider";
@@ -576,7 +576,7 @@ export default {
     const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon } =
-      useYoutube();
+      youtubeService();
 
     onMounted(async () => {
       var resBuild = null;

@@ -15,7 +15,9 @@
 
   <IconAutoCompleteMenu
     @iconSelected="
-      (iconPath, tooltip, iconClass) => handleAutoCompleteSelected(iconPath, tooltip, iconClass)
+      (iconPath, tooltip, iconClass) => {
+        handleAutoCompleteMenuIconSelected(iconPath, tooltip, iconClass);
+      }
     "
     :civ="civ"
     :searchText="searchText"
@@ -608,7 +610,8 @@ import IconSelector from "@/components/builds/IconSelector.vue";
 import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 
 //Composables
-import useIconService from "@/composables/builds/useIconService.js";
+import iconService from "@/composables/builds/iconService.js";
+import { addInlineIcon, addAutocompleteIcon } from "@/composables/builds/contentEditableHelper.js";
 
 export default {
   name: "BuildOrderSectionEditor",
@@ -630,7 +633,8 @@ export default {
     const activeStepIndex = ref(null);
     const searchText = ref("");
     const autocompletePos = ref(0);
-    var iconService = useIconService(props.civ);
+    const descriptionColumnIndex = 7;
+    var civIconService = iconService(props.civ);
 
     onMounted(async () => {
       //Sanitize since inline icon replacement only works with <br>, NOT with \n
@@ -660,9 +664,19 @@ export default {
     watch(
       () => props.civ,
       (value, previousValue) => {
-        iconService = useIconService(props.civ);
+        civIconService = iconService(props.civ);
       }
     );
+
+    function handleAutoCompleteMenuIconSelected(iconPath, tooltip, iconClass) {
+      addAutocompleteIcon(
+        stepsTable.value.rows[activeStepIndex.value].cells[descriptionColumnIndex],
+        iconPath,
+        tooltip,
+        iconClass
+      );
+      searchText.value = null;
+    }
 
     const saveSelection = () => {
       if (window.getSelection) {
@@ -687,26 +701,6 @@ export default {
       }
     };
 
-    function getCursorPositionAfterIcon(parent, node, offset, stat) {
-      if (stat.done) return stat;
-
-      let currentNode = null;
-
-      for (let i = 0; i < parent.childNodes.length && !stat.done; i++) {
-        currentNode = parent.childNodes[i];
-        stat.pos++;
-        if (currentNode.wholeText?.indexOf("::") > 0) {
-          stat.pos++;
-        }
-        if (currentNode === node) {
-          stat.done = true;
-          return stat;
-        } else getCursorPositionAfterIcon(currentNode, node, offset, stat);
-      }
-
-      return stat;
-    }
-
     function getLineBreakPosition(parent) {
       let currentNode = null;
 
@@ -719,7 +713,7 @@ export default {
     }
 
     const handleInput = (event, index) => {
-      const editor = stepsTable.value.rows[index].cells[7];
+      const editor = stepsTable.value.rows[index].cells[descriptionColumnIndex];
 
       if (event.data === ":") {
         //Show autocomplete menu
@@ -739,7 +733,7 @@ export default {
     };
 
     const handleKeyUp = (event, index) => {
-      const editor = stepsTable.value.rows[index].cells[7];
+      const editor = stepsTable.value.rows[index].cells[descriptionColumnIndex];
       const sel = window.getSelection();
 
       //handle enter and fix line-break
@@ -762,7 +756,9 @@ export default {
       }
       //Handle space
       else if (event.which === 32 || event.which === 0) {
-        addInlineIcon(index);
+        const contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+        const allIcons = civIconService.getIcons();
+        addInlineIcon(contentEditable, allIcons);
         searchText.value = null;
       }
       //Handle ESC
@@ -788,79 +784,6 @@ export default {
       saveSelection();
     };
 
-    const addInlineIcon = (index) => {
-      var editor = stepsTable.value.rows[index].cells[7];
-
-      //if DIV wrapper, then use this element as root instead of the editor (Needed for firefox compatibility)
-      if (editor.childNodes[0].tagName === "DIV") {
-        editor = editor.childNodes[0];
-      }
-
-      //get target cursor position
-      const sel = window.getSelection();
-      const node = sel.focusNode;
-      const offset = sel.focusOffset;
-      const pos = getCursorPositionAfterIcon(editor, node, offset, {
-        pos: 0,
-        done: false,
-      });
-
-      //parse and replace
-      const match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([ a-zA-Z0-9])+)?/g);
-
-      if (match) {
-        const shortHand = match[0].toLowerCase().trim().replace("::", "");
-        const allCivIcons = iconService.getIcons();
-        const filter = (unfiltered) => {
-          return unfiltered.filter((item) => {
-            var elementFound = false;
-            //Search by shorthand first
-            if (Array.isArray(item.shorthand)) {
-              elementFound =
-                -1 != item.shorthand.findIndex((element) => element.startsWith(shortHand));
-            } else {
-              elementFound = item.shorthand?.startsWith(shortHand);
-            }
-            //Search by title second
-            if (!elementFound) {
-              var title = item.title.replace(/ +/g, "").toLowerCase();
-              elementFound = title.includes(shortHand);
-            }
-            return elementFound;
-          });
-        };
-        const filteredCivIcons = filter(allCivIcons).sort(function (a, b) {
-          return a.title.length - b.title.length;
-        });
-        const imageMetaData = filteredCivIcons[0];
-
-        if (imageMetaData) {
-          const iconClass = imageMetaData.class ? "icon-" + imageMetaData.class : "icon";
-          const iconPath = imageMetaData.imgSrc;
-          const iconTooltipText = imageMetaData.title;
-
-          const img =
-            '<img src="' +
-            iconPath +
-            '" class=' +
-            iconClass +
-            ' title="' +
-            iconTooltipText +
-            '"><\/img>';
-
-          //Replace element
-          editor.innerHTML = editor.innerHTML.replace(match[0], img);
-
-          // restore the position
-          sel.removeAllRanges();
-          var range = document.createRange();
-          range.setStart(editor, pos.pos);
-          range.collapse(true);
-          sel.addRange(range);
-        }
-      }
-    };
-
     function placeCaretAtEnd(el) {
       el.focus();
       if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
@@ -877,43 +800,6 @@ export default {
         textRange.select();
       }
     }
-
-    const handleAutoCompleteSelected = (iconPath, tooltipText, iconClass) => {
-      var editor = stepsTable.value.rows[activeStepIndex.value].cells[7];
-
-      iconClass = iconClass ? "icon-" + iconClass : "icon";
-      const img =
-        '<img src="' + iconPath + '" class=' + iconClass + ' title="' + tooltipText + '"><\/img>';
-
-      //if DIV wrapper, then use this element as root instead of the editor (Needed for firefox compatibility)
-      if (editor.childNodes[0].tagName === "DIV") {
-        editor = editor.childNodes[0];
-      }
-
-      //get target cursor position
-      const sel = window.getSelection();
-      const node = sel.focusNode;
-      const offset = sel.focusOffset;
-      const pos = getCursorPositionAfterIcon(editor, node, offset, {
-        pos: 0,
-        done: false,
-      });
-
-      //parse and replace
-      var match = editor.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
-      if (match) {
-        //Replace element
-        editor.innerHTML = editor.innerHTML.replace(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g, img);
-
-        // restore the position
-        sel.removeAllRanges();
-        var range = document.createRange();
-        range.setStart(editor, pos.pos);
-        range.collapse(true);
-        sel.addRange(range);
-      }
-      searchText.value = null;
-    };
 
     const handleIconSelected = (iconPath, tooltipText, iconClass) => {
       restoreSelection();
@@ -995,7 +881,7 @@ export default {
       if (table) {
         //Pull display text into model
         for (var i = 0, row; (row = table.rows[i]); i++) {
-          steps[i].description = row.cells[7].innerHTML;
+          steps[i].description = row.cells[descriptionColumnIndex].innerHTML;
         }
       }
 
@@ -1025,7 +911,7 @@ export default {
       if (table) {
         //Sync display text again with model
         for (var i = 0, row; (row = table.rows[i]); i++) {
-          row.cells[7].innerHTML = steps[i].description;
+          row.cells[descriptionColumnIndex].innerHTML = steps[i].description;
         }
       }
       context.emit("stepsChanged", steps);
@@ -1036,7 +922,7 @@ export default {
       if (table) {
         //Pull display text into model
         for (var i = 0, row; (row = table.rows[i]); i++) {
-          steps[i].description = row.cells[7].innerHTML;
+          steps[i].description = row.cells[descriptionColumnIndex].innerHTML;
         }
       }
 
@@ -1133,7 +1019,6 @@ export default {
       handleInput,
       aggregateVillagers,
       updateStepDescription,
-      addInlineIcon,
       updateStepStone,
       updateStepGold,
       updateStepWood,
@@ -1148,10 +1033,10 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelected,
-      handleAutoCompleteSelected,
       autocompletePos,
       searchText,
       activeStepIndex,
+      handleAutoCompleteMenuIconSelected,
     };
   },
 };
