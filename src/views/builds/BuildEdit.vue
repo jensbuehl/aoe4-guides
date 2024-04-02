@@ -549,7 +549,7 @@ import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 //Composables
 import { getCreator, addCreator } from "@/composables/data/creatorService";
 import { getBuild, updateBuild, error as buildServiceError } from "@/composables/data/buildService";
-import useBuildValidator from "@/composables/builds/useBuildValidator";
+import { validateBuild, validateVideo } from "@/composables/builds/useBuildValidator";
 import useYoutube from "@/composables/builds/useYoutube";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { seasons } from "@/composables/filter/seasonDefaultProvider";
@@ -575,7 +575,6 @@ export default {
     const { copyToClipboard } = useCopyToClipboard();
     const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
-    const { validateBuild, validateVideo } = useBuildValidator();
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon } =
       useYoutube();
 

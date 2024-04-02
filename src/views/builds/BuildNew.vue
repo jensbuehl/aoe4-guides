@@ -269,7 +269,7 @@ import {
   getUserDraftsCount,
   error as buildServiceError,
 } from "@/composables/data/buildService";
-import useBuildValidator from "@/composables/builds/useBuildValidator";
+import { validateBuild, validateVideo } from "@/composables/builds/useBuildValidator";
 import useYoutube from "@/composables/builds/useYoutube";
 import { maps } from "@/composables/filter/mapDefaultProvider";
 import { strategies } from "@/composables/filter/strategyDefaultProvider";
@@ -279,7 +279,6 @@ export default {
   components: { BuildOrderEditor, RegisterAd, RegisterAdShort },
   setup() {
     const error = ref(null);
-    const { validateBuild, validateVideo } = useBuildValidator();
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon } =
       useYoutube();
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
