@@ -331,6 +331,25 @@
         ></v-card>
       </v-col>
     </v-row>
+    <v-row no-gutters v-if="gameplan">
+      <v-col cols="12" class="px-2 my-2 justify-center align-center">
+        <v-card flat rounded="0">
+          <v-table width="100%" style="border: none">
+            <tbody>
+              <tr style="border: none">
+                <td class="text-center gameplanHeader" style="border: none">Notes:</td>
+              </tr>
+              <tr style="border: none">
+                <td
+                  style="white-space: break-spaces; border: none"
+                  class="text-center"
+                  v-html="gameplan"
+                ></td>
+              </tr>
+            </tbody> </v-table
+        ></v-card>
+      </v-col>
+    </v-row>
   </v-card>
 
   <!--Desktop UI-->
@@ -444,7 +463,11 @@
               class="text-center py-1"
               v-html="item.time"
             ></td>
-            <td class="text-center py-1" disabled v-html="aggregateVillagers(index)"></td>
+            <td
+              class="text-center aggregatedVillagers py-1"
+              disabled
+              v-html="aggregateVillagers(index)"
+            ></td>
             <td
               style="white-space: break-spaces"
               @focusin="selection = null"
@@ -588,22 +611,34 @@
           </tr>
         </tbody>
       </v-table>
-      <v-table
-        v-if="gameplan || !readonly"
-        class="mx-4 mb-4"
-        style="
-          border-radius: 0;
-
-        "
-      >
+      <v-table v-if="gameplan || !readonly" class="mx-4 my-4" style="border-radius: 0">
         <thead :style="'visibility: collapse'">
           <tr>
+            <th style="width: 150px"></th>
             <th class="text-left"></th>
-            <th v-if="!readonly" width="60px" class="text-right"></th>
+            <th v-if="!readonly" style="width: 180px" class="text-right"></th>
           </tr>
         </thead>
         <tbody>
           <tr @focusin="$emit('selectionChanged')" @mousedown="selectRow()">
+            <td class="gameplanHeader">
+              <v-tooltip location="top">
+                <span
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >Gameplan or notes for this build order section</span
+                >
+                <template v-slot:activator="{ props }">
+                  <span v-bind="props"
+                    >Notes
+                    <v-icon color="accent" class="mx-auto titleIcon"
+                      >mdi-information-outline</v-icon
+                    ></span
+                  >
+                </template>
+              </v-tooltip>
+            </td>
             <td
               ref="gameplanContentEditable"
               @input="showAutoCompleteMenu($event)"
@@ -651,8 +686,9 @@
               </v-menu>
             </td>
           </tr>
-        </tbody> </v-table
-    ></v-card>
+        </tbody>
+      </v-table>
+    </v-card>
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn variant="text" color="accent" class="pt-5 pb-10" @click="addStep(0)"
         >Add your first build step
@@ -833,7 +869,7 @@ export default {
       const gold = parseInt(step.gold) || 0;
       const stone = parseInt(step.stone) || 0;
 
-      return builders + food + wood + gold + stone || "-";
+      return builders + food + wood + gold + stone || "";
     };
 
     const updateStep = (event, index, propertyName) => {
@@ -841,7 +877,7 @@ export default {
       stepsCopy[index][propertyName] = event.target.innerHTML;
 
       steps[index].description = stepsCopy[index].description;
-      gameplan.value = gameplanCopy.value
+      gameplan.value = gameplanCopy.value;
 
       aggregateVillagers(index);
 
@@ -956,13 +992,10 @@ export default {
 
     return {
       steps,
-      gameplan,
       readonly,
       stepsTable,
-      gameplanContentEditable,
       hoverRowIndex,
       selectedRowIndex,
-      gameplanSelected,
       handleResourceInput,
       selection,
       delteRowIndex,
@@ -974,7 +1007,6 @@ export default {
       aggregateVillagers,
       updateStep,
       updateStepDescription,
-      updateSectionGameplan,
       removeStep,
       addStep,
       selectRow,
@@ -987,13 +1019,23 @@ export default {
       searchText,
       activeStepIndex,
       handleAutoCompleteMenuIconSelected,
+      //Gameplan
+      gameplan,
+      gameplanSelected,
+      updateSectionGameplan,
+      gameplanContentEditable,
     };
   },
 };
 </script>
 
 <style scoped>
-table tbody tr td:nth-child(2) {
+.gameplanHeader {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.aggregatedVillagers {
   color: #828282;
 }
 
