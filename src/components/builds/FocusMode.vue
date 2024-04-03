@@ -282,7 +282,7 @@ export default {
       const gold = parseInt(currentStep.value.gold) || 0;
       const stone = parseInt(currentStep.value.stone) || 0;
 
-      return builders + food + wood + gold + stone || "-";
+      return builders + food + wood + gold + stone || "";
     };
 
     const handleKeyPressed = (e) => {
