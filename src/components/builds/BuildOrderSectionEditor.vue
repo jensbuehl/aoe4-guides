@@ -337,7 +337,24 @@
           <v-table width="100%" style="border: none">
             <tbody>
               <tr style="border: none">
-                <td class="text-center gameplanHeader" style="border: none">Notes:</td>
+                <td class="text-center gameplanHeader" style="border: none">
+                  <v-tooltip location="top">
+                    <span
+                      :style="{
+                        color: $vuetify.theme.current.colors.primary,
+                      }"
+                      >Gameplan or notes for this build order section</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <span v-bind="props"
+                        >Notes
+                        <v-icon color="accent" class="mx-auto titleIcon"
+                          >mdi-information-outline</v-icon
+                        ></span
+                      >
+                    </template>
+                  </v-tooltip>
+                </td>
               </tr>
               <tr style="border: none">
                 <td
@@ -611,17 +628,20 @@
           </tr>
         </tbody>
       </v-table>
-      <v-table v-if="gameplan || !readonly" class="mx-4 my-4" style="border-radius: 0">
-        <thead :style="'visibility: collapse'">
-          <tr>
-            <th style="width: 150px"></th>
-            <th class="text-left"></th>
-            <th v-if="!readonly" style="width: 180px" class="text-right"></th>
-          </tr>
-        </thead>
+      <v-table
+        v-if="gameplan || !readonly"
+        class="mx-4"
+        :class="readonly ? 'my-4' : ''"
+        style="border-radius: 0"
+        :style="
+          !readonly
+            ? 'border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity)); '
+            : ''
+        "
+      >
         <tbody>
-          <tr @focusin="$emit('selectionChanged')" @mousedown="selectRow()">
-            <td class="gameplanHeader">
+          <tr class="mx-4 py-8" @focusin="$emit('selectionChanged')" @mousedown="selectRow()">
+            <td style="width: 150px" class="gameplanHeader">
               <v-tooltip location="top">
                 <span
                   :style="{
@@ -650,7 +670,7 @@
               class="contentEditable text-left py-1"
               v-html="gameplan"
             ></td>
-            <td v-if="!readonly" style="width: 60px" class="text-right">
+            <td v-if="!readonly" style="width: 180px" class="text-right">
               <v-menu
                 v-if="selection && gameplanSelected"
                 :close-on-content-click="false"

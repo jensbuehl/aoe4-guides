@@ -7,13 +7,7 @@
       no-gutters
       class="justify-end"
     >
-      <v-btn
-        flat
-        color="accent"
-        class="ma-4"
-        icon="mdi-close"
-        @click="handleClose"
-      ></v-btn>
+      <v-btn flat color="accent" class="ma-4" icon="mdi-close" @click="handleClose"></v-btn>
     </v-row>
 
     <v-row
@@ -35,18 +29,47 @@
         right: () => handlePreviousStep(),
       }"
       ><v-col class="ma-4 d-flex justify-center align-center">
-        <span
-          style="text-align: center"
-          v-html="currentStep?.description ? currentStep?.description : ''"
-        /> </v-col
+        <span style="text-align: center" v-html="getContent()" /> </v-col
     ></v-row>
+
+    <v-row
+      class="py-4"
+      v-if="currentStep?.gameplan && !currentStep?.description"
+      :style="{
+        'background-color': $vuetify.theme.current.colors.background,
+      }"
+      no-gutters
+      align="center"
+      justify="center"
+    >
+      <v-tooltip location="top">
+        <div
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+        >
+          Gameplan or notes for this build order section
+        </div>
+        <template v-slot:activator="{ props }">
+          <div v-bind="props">
+            Notes
+            <v-icon
+              color="accent"
+              style="vertical-align: middle; width: auto; height: 40px"
+              class="mx-auto"
+              >mdi-information-outline</v-icon
+            >
+          </div>
+        </template>
+      </v-tooltip>
+    </v-row>
 
     <v-row
       class="py-4"
       :style="{
         'background-color': $vuetify.theme.current.colors.background,
       }"
-      v-if="$vuetify.display.xs"
+      v-if="$vuetify.display.xs && !currentStep?.gameplan"
       no-gutters
       align="center"
       justify="center"
@@ -57,16 +80,10 @@
             <v-img class="titleIconXs" src="/assets/resources/time.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs"
-              src="/assets/resources/villager.png"
-            ></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/villager.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs"
-              src="/assets/resources/repair.png"
-            ></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/repair.png"></v-img>
           </v-col>
           <v-col>
             <v-img class="titleIconXs" src="/assets/resources/food.png"></v-img>
@@ -78,10 +95,7 @@
             <v-img class="titleIconXs" src="/assets/resources/gold.png"></v-img>
           </v-col>
           <v-col>
-            <v-img
-              class="titleIconXs"
-              src="/assets/resources/stone.png"
-            ></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/stone.png"></v-img>
           </v-col>
         </v-row>
         <v-row class="mt-2" no-gutters align="center" justify="center">
@@ -111,7 +125,7 @@
     </v-row>
 
     <v-row
-      v-if="!$vuetify.display.xs"
+      v-if="!$vuetify.display.xs && !currentStep?.gameplan"
       :style="{
         'background-color': $vuetify.theme.current.colors.background,
       }"
@@ -127,46 +141,25 @@
           <thead>
             <tr>
               <th class="text-center ma-0 pa-0" width="70px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/time.png"
-                ></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/time.png"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="70px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/villager.png"
-                ></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/villager.png"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="70px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/repair.png"
-                ></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/repair.png"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="70px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/food.png"
-                ></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/food.png"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="70px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/wood.png"
-                ></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/wood.png"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="70px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/gold.png"
-                ></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/gold.png"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="70px">
-                <v-img
-                  class="mx-auto titleIcon"
-                  src="/assets/resources/stone.png"
-                ></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/stone.png"></v-img>
               </th>
             </tr>
           </thead>
@@ -213,9 +206,7 @@
           ></v-btn>
         </template>
       </v-tooltip>
-      <span style="user-select: none">
-        {{ currentStepIndex + 1 }} of {{ steps.length }}
-      </span>
+      <span style="user-select: none"> {{ currentStepIndex + 1 }} of {{ steps.length }} </span>
       <v-tooltip location="top">
         <span
           :style="{
@@ -239,7 +230,6 @@
 </template>
 
 <script>
-
 //External
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
@@ -262,12 +252,15 @@ export default {
     } else {
       props.build.steps.forEach((section) => {
         steps = steps.concat(section.steps);
+        //Include gamplan as step which is also providing content
+        if (section.gameplan) {
+          steps = steps.concat({ gameplan: section.gameplan });
+        }
       });
     }
 
     onMounted(() => {
       currentStep.value = steps[currentStepIndex.value];
-
       document.addEventListener("keyup", handleKeyPressed);
     });
 
@@ -275,7 +268,7 @@ export default {
       document.removeEventListener("keyup", handleKeyPressed);
     });
 
-    const aggregateVillagers = () => {
+    function aggregateVillagers() {
       const builders = parseInt(currentStep.value.builders) || 0;
       const food = parseInt(currentStep.value.food) || 0;
       const wood = parseInt(currentStep.value.wood) || 0;
@@ -285,7 +278,7 @@ export default {
       return builders + food + wood + gold + stone || "";
     };
 
-    const handleKeyPressed = (e) => {
+    function handleKeyPressed(e){
       switch (e.key) {
         case "ArrowLeft":
           handlePreviousStep();
@@ -296,22 +289,29 @@ export default {
       }
     };
 
-    const handleNextStep = async () => {
-      currentStepIndex.value = Math.min(
-        ++currentStepIndex.value,
-        steps.length - 1
-      );
+    function handleNextStep() {
+      currentStepIndex.value = Math.min(++currentStepIndex.value, steps.length - 1);
       currentStep.value = steps[currentStepIndex.value];
     };
 
-    const handlePreviousStep = async () => {
+    function handlePreviousStep() {
       currentStepIndex.value = Math.max(--currentStepIndex.value, 0);
       currentStep.value = steps[currentStepIndex.value];
     };
 
-    const handleClose = () => {
+    function handleClose() {
       context.emit("closeDialog");
     };
+
+    function getContent() {
+      if (currentStep.value?.description) {
+        return currentStep.value?.description;
+      } else if (currentStep.value?.gameplan) {
+        return currentStep.value?.gameplan;
+      } else {
+        return "";
+      }
+    }
 
     return {
       steps,
@@ -321,6 +321,7 @@ export default {
       currentStepIndex,
       handleClose,
       aggregateVillagers,
+      getContent,
     };
   },
 };
@@ -340,7 +341,7 @@ export default {
   width: 60px;
   margin: 2px;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #5C457B, #4D366E);
+  background: radial-gradient(circle at top center, #5c457b, #4d366e);
 }
 
 :deep(.icon-tech) {
