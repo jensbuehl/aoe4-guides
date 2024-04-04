@@ -8,6 +8,7 @@ export default function useImportOverlayFormat() {
       {
         type: "age",
         age: 0,
+        gameplan: "",
         steps: build.build_order?.map((step) => convertStep(step)),
       },
     ];
