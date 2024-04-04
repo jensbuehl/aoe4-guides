@@ -3,27 +3,10 @@
     <v-card flat rounded="lg">
       <v-card-title>Autocomplete & Notes!</v-card-title>
       <v-card-text>
-        We're thrilled to introduce a new feature for all villagers: The ability to add personalized
-        notes to each build order section. <br /><br />
+        We're thrilled to introduce a new feature for all villagers: The ability to add notes to each build order section. <br><br>       
         This addition allows you to annotate your strategies with tips, reminders, or alternative
-        tactics, ensuring that your game plan is as detailed and adaptable as possible.
-        <v-row no-gutters class="ma-2">
-          <v-col align="center" justify="center"
-            ><v-btn
-              class="ma-2"
-              size="small"
-              variant="plain"
-              color="primary"
-              to="builds/1234"
-              style="background-color: transparent"
-            >
-              <template v-slot:prepend>
-                <v-icon>mdi-hammer</v-icon>
-              </template>
-              Example Build Order
-            </v-btn></v-col
-          >
-        </v-row>
+        tactics, ensuring that your game plan is as detailed and adaptable as possible.<br><br>
+
         And for those who haven't explored it yet, the "autocomplete" feature continues to
         streamline your build order crafting process.
 
