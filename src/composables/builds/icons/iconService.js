@@ -1,5 +1,7 @@
 //External
 import { ref } from "vue";
+import { unitsEco } from "@/composables/builds/icons/unitEco.js";
+import { civs } from "@/composables/builds/icons/civs.js";
 
 export default function iconService(civArg) {
   const civ = ref(civArg);
@@ -42,8 +44,8 @@ export default function iconService(civArg) {
       case "unit_military":
         allIcons = unit_military;
         break;
-      case "unit_eco":
-        allIcons = unit_eco;
+      case "unitEco":
+        allIcons = unitsEco;
         break;
       case "unit_hero":
         allIcons = unit_hero;
@@ -53,7 +55,7 @@ export default function iconService(civArg) {
         break;
       default:
         allIcons = general.concat(
-          unit_eco,
+          unitsEco,
           unit_hero,
           ability_hero,
           landmark,
@@ -86,46 +88,12 @@ export default function iconService(civArg) {
     return match;
   };
 
-  //Internal methods
-  Array.prototype.except = function (val) {
-    return this.filter(function (x) {
-      return x !== val;
-    });
-  };
-
-  Array.prototype.exceptMany = function (val) {
-    return this.filter(function (x) {
-      return !val.includes(x);
-    });
-  };
-
-  const allCivs = [
-    "ENG",
-    "FRE",
-    "RUS",
-    "MON",
-    "ABB",
-    "CHI",
-    "DEL",
-    "HRE",
-    //Anniversairy
-    "MAL",
-    "OTT",
-    //The Sultans Ascend
-    "AYY",
-    "JDA",
-    "ZXL",
-    "BYZ",
-    "JAP",
-    "DRA",
-  ];
-
   const general = [
     {
       title: "Dark Age",
       age: "1",
       imgSrc: "/assets/pictures/age/age_1.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "age1"
     },
@@ -133,7 +101,7 @@ export default function iconService(civArg) {
       title: "Feudal Age",
       age: "2",
       imgSrc: "/assets/pictures/age/age_2.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "age2"
     },
@@ -141,7 +109,7 @@ export default function iconService(civArg) {
       title: "Castle Age",
       age: "3",
       imgSrc: "/assets/pictures/age/age_3.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "age3"
     },
@@ -149,7 +117,7 @@ export default function iconService(civArg) {
       title: "Imperial Age",
       age: "4",
       imgSrc: "/assets/pictures/age/age_4.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "age4"
     },
@@ -199,7 +167,7 @@ export default function iconService(civArg) {
       title: "Build or Repair",
       age: "1",
       imgSrc: "/assets/pictures/abilities/repair.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "build"
     },
@@ -207,14 +175,14 @@ export default function iconService(civArg) {
       title: "Attack",
       age: "1",
       imgSrc: "/assets/pictures/abilities/attack-move.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
     },
     {
       title: "Abbasid Dynasty",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/abb.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "abb"
     },
@@ -222,7 +190,7 @@ export default function iconService(civArg) {
       title: "Ayyubids",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/ayy.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "ayy"
     },
@@ -230,7 +198,7 @@ export default function iconService(civArg) {
       title: "Byzantines",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/byz.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "byz"
     },
@@ -238,7 +206,7 @@ export default function iconService(civArg) {
       title: "China",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/chi.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "chi"
     },
@@ -246,7 +214,7 @@ export default function iconService(civArg) {
       title: "Delhi Sultanate",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/del.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "del"
     },
@@ -254,7 +222,7 @@ export default function iconService(civArg) {
       title: "English",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/eng.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "eng"
     },
@@ -262,7 +230,7 @@ export default function iconService(civArg) {
       title: "French",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/fre.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "fre"
     },
@@ -270,7 +238,7 @@ export default function iconService(civArg) {
       title: "Holy Roman Empire",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/hre.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "hre"
     },
@@ -278,7 +246,7 @@ export default function iconService(civArg) {
       title: "Japanese",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/jap.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "jap"
     },
@@ -286,7 +254,7 @@ export default function iconService(civArg) {
       title: "Jeanne d'Arc",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/jda.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "jda"
     },
@@ -294,7 +262,7 @@ export default function iconService(civArg) {
       title: "Malians",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/mal.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "mal"
     },
@@ -302,7 +270,7 @@ export default function iconService(civArg) {
       title: "Mongols",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/mon.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "mon"
     },
@@ -310,7 +278,7 @@ export default function iconService(civArg) {
       title: "Order of the Dragon",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/dra.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "dra"
     },
@@ -318,7 +286,7 @@ export default function iconService(civArg) {
       title: "Ottomans",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/ott.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "ott"
     },
@@ -326,7 +294,7 @@ export default function iconService(civArg) {
       title: "Rus",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/rus.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "rus"
     },
@@ -334,7 +302,7 @@ export default function iconService(civArg) {
       title: "Zhu Xi's Legacy",
       age: "1",
       imgSrc: "/assets/pictures/civilization_flag/zxl.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "zxl"
     },
@@ -345,7 +313,7 @@ export default function iconService(civArg) {
       title: "Food",
       age: "1",
       imgSrc: "/assets/pictures/resource/resource_food.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "food"
     },
@@ -353,7 +321,7 @@ export default function iconService(civArg) {
       title: "Wood",
       age: "1",
       imgSrc: "/assets/pictures/resource/resource_wood.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "wood"
     },
@@ -361,7 +329,7 @@ export default function iconService(civArg) {
       title: "Gold",
       age: "1",
       imgSrc: "/assets/pictures/resource/resource_gold.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "gold"
     },
@@ -369,7 +337,7 @@ export default function iconService(civArg) {
       title: "Stone",
       age: "1",
       imgSrc: "/assets/pictures/resource/resource_stone.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "stone"
     },
@@ -385,7 +353,7 @@ export default function iconService(civArg) {
       title: "Sheep",
       age: "1",
       imgSrc: "/assets/pictures/resource/sheep.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "sheep"
     },
@@ -393,7 +361,7 @@ export default function iconService(civArg) {
       title: "Deer",
       age: "1",
       imgSrc: "/assets/pictures/resource/deer.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "deer"
     },
@@ -401,7 +369,7 @@ export default function iconService(civArg) {
       title: "Berries",
       age: "1",
       imgSrc: "/assets/pictures/resource/berrybush.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "berry"
     },
@@ -409,7 +377,7 @@ export default function iconService(civArg) {
       title: "Boar",
       age: "1",
       imgSrc: "/assets/pictures/resource/boar.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "boar"
     },
@@ -417,7 +385,7 @@ export default function iconService(civArg) {
       title: "Relic",
       age: "1",
       imgSrc: "/assets/pictures/resource/relics.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "relic"
     },
@@ -425,7 +393,7 @@ export default function iconService(civArg) {
       title: "Sacred Site",
       age: "1",
       imgSrc: "/assets/pictures/resource/sacred_sites.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "ss"
     },
@@ -441,7 +409,7 @@ export default function iconService(civArg) {
       title: "Rally",
       age: "1",
       imgSrc: "/assets/pictures/resource/rally.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "rally"
     },
@@ -449,7 +417,7 @@ export default function iconService(civArg) {
       title: "Fish",
       age: "1",
       imgSrc: "/assets/pictures/resource/fish.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "fish"
     },
@@ -457,7 +425,7 @@ export default function iconService(civArg) {
       title: "Straggler Tree",
       age: "1",
       imgSrc: "/assets/pictures/resource/gaiatreeprototypetree.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
       shorthand: "tree"
     },
@@ -466,7 +434,7 @@ export default function iconService(civArg) {
       title: "Wolf",
       age: "1",
       imgSrc: "/assets/pictures/resource/wolf.png",
-      civ: allCivs,
+      civ: civs,
       class: "none",
     },
   ];
@@ -1112,42 +1080,42 @@ export default function iconService(civArg) {
       title: "Double Broadaxe",
       age: "2",
       imgSrc: "/assets/pictures/technology_economy/double-broadaxe.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Lumber Preservation",
       age: "3",
       imgSrc: "/assets/pictures/technology_economy/lumber-preservation.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Crosscut Saw",
       age: "4",
       imgSrc: "/assets/pictures/technology_economy/crosscut-saw.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Forestry",
       age: "1",
       imgSrc: "/assets/pictures/technology_economy/forestry.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Horticulture",
       age: "2",
       imgSrc: "/assets/pictures/technology_economy/horticulture.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Fertilization",
       age: "3",
       imgSrc: "/assets/pictures/technology_economy/fertilization.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
@@ -1155,70 +1123,70 @@ export default function iconService(civArg) {
       age: "4",
       imgSrc:
         "/assets/pictures/technology_economy/precision-cross-breeding.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Wheelbarrow",
       age: "1",
       imgSrc: "/assets/pictures/technology_economy/wheelbarrow.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
     },
     {
       title: "Specialized Pick",
       age: "2",
       imgSrc: "/assets/pictures/technology_economy/specialized-pick.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Acid Distillation",
       age: "3",
       imgSrc: "/assets/pictures/technology_economy/acid-distilization.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Cupellation",
       age: "4",
       imgSrc: "/assets/pictures/technology_economy/cupellation.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Textiles",
       age: "2",
       imgSrc: "/assets/pictures/technology_economy/textiles.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Survival Techniques",
       age: "1",
       imgSrc: "/assets/pictures/technology_economy/survival-techniques.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Professional Scouts",
       age: "2",
       imgSrc: "/assets/pictures/technology_economy/professional-scouts.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Extended Lines",
       age: "2",
       imgSrc: "/assets/pictures/technology_economy/extended-lines.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Drift Nets",
       age: "3",
       imgSrc: "/assets/pictures/technology_economy/drift-nets.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
@@ -1521,7 +1489,7 @@ export default function iconService(civArg) {
       title: "Bloomery",
       age: "2",
       imgSrc: "/assets/pictures/technology_military/bloomery.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
       shorthand: "melee_dmg1"
     },
@@ -1529,7 +1497,7 @@ export default function iconService(civArg) {
       title: "Decarbonization",
       age: "3",
       imgSrc: "/assets/pictures/technology_military/decarbonization.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
       shorthand: "melee_dmg2"
     },
@@ -1537,7 +1505,7 @@ export default function iconService(civArg) {
       title: "Damascus Steel",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/damascus-steel.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
       shorthand: "melee_dmg3"
     },
@@ -1573,14 +1541,14 @@ export default function iconService(civArg) {
       title: "Siege Engineering",
       age: "2",
       imgSrc: "/assets/pictures/technology_military/siege-engineering.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Steeled Arrow",
       age: "2",
       imgSrc: "/assets/pictures/technology_military/steeled-arrow.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "ranged_dmg1"
     },
@@ -1588,7 +1556,7 @@ export default function iconService(civArg) {
       title: "Balanced Projectiles",
       age: "3",
       imgSrc: "/assets/pictures/technology_military/balanced-projectiles.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "ranged_dmg2"
     },
@@ -1596,7 +1564,7 @@ export default function iconService(civArg) {
       title: "Platecutter Point",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/platecutter-point.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "ranged_dmg3"
     },
@@ -1604,14 +1572,14 @@ export default function iconService(civArg) {
       title: "Military Academy",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/military-academy.png",
-      civ: allCivs.exceptMany(["OTT"]),
+      civ: civs.exceptMany(["OTT"]),
       class: "tech",
     },
     {
       title: "Fitted Leatherwork",
       age: "2",
       imgSrc: "/assets/pictures/technology_military/fitted-leatherwork.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "melee_def1"
     },
@@ -1619,7 +1587,7 @@ export default function iconService(civArg) {
       title: "Insulated Helm",
       age: "3",
       imgSrc: "/assets/pictures/technology_military/insulated-helm.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "melee_def2"
     },
@@ -1627,7 +1595,7 @@ export default function iconService(civArg) {
       title: "Master Smiths",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/master-smiths.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "melee_def3"
     },
@@ -1635,14 +1603,14 @@ export default function iconService(civArg) {
       title: "Elite Army Tactics",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/elite-army-tactics.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Iron Undermesh",
       age: "2",
       imgSrc: "/assets/pictures/technology_military/iron-undermesh.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "ranged_def1"
     },
@@ -1650,7 +1618,7 @@ export default function iconService(civArg) {
       title: "Wedge Rivets",
       age: "3",
       imgSrc: "/assets/pictures/technology_military/wedge-rivets.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "ranged_def2"
     },
@@ -1658,7 +1626,7 @@ export default function iconService(civArg) {
       title: "Angled Surfaces",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/angled-surfaces.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
       shorthand: "ranged_def3"
     },
@@ -1666,21 +1634,21 @@ export default function iconService(civArg) {
       title: "Incendiary Arrows",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/incendiary-arrows.png",
-      civ: allCivs.exceptMany(["MAL"]),
+      civ: civs.exceptMany(["MAL"]),
       class: "tech",
     },
     {
       title: "Biology",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/biology.png",
-      civ: allCivs.exceptMany(["OTT"]),
+      civ: civs.exceptMany(["OTT"]),
       class: "tech",
     },
     {
       title: "Chemistry",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/chemistry.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
@@ -1694,28 +1662,28 @@ export default function iconService(civArg) {
       title: "Geometry",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/geometry.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Greased Axles",
       age: "2",
       imgSrc: "/assets/pictures/technology_military/greased-axles.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Roller Shutter Triggers",
       age: "4",
       imgSrc: "/assets/pictures/technology_units/roller-shutter-triggers.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Spyglass",
       age: "4",
       imgSrc: "/assets/pictures/technology_units/spyglass-4.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
@@ -1771,77 +1739,77 @@ export default function iconService(civArg) {
       title: "Lightweight Beams",
       age: "4",
       imgSrc: "/assets/pictures/technology_units/lightweight-beams-4.png",
-      civ: allCivs.exceptMany("BYZ"),
+      civ: civs.exceptMany("BYZ"),
       class: "tech",
     },
     {
       title: "Adjustable Crossbars",
       age: "4",
       imgSrc: "/assets/pictures/technology_units/adjustable-crossbars.png",
-      civ: allCivs.exceptMany(["CHI", "ZXL"]),
+      civ: civs.exceptMany(["CHI", "ZXL"]),
       class: "tech",
     },
     {
       title: "Siege Works",
       age: "4",
       imgSrc: "/assets/pictures/technology_military/siege-works.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Arrowslits",
       age: "2",
       imgSrc: "/assets/pictures/technology_defensive/arrow-slits.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Springald Emplacement",
       age: "3",
       imgSrc: "/assets/pictures/technology_defensive/springald-emplacement.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Cannon Emplacement",
       age: "3",
       imgSrc: "/assets/pictures/technology_defensive/cannon-emplacement.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Boiling Oil",
       age: "3",
       imgSrc: "/assets/pictures/technology_defensive/boiling-oil.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Court Architects",
       age: "4",
       imgSrc: "/assets/pictures/technology_defensive/court-architects.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: civs.exceptMany(["MON"]),
       class: "tech",
     },
     {
       title: "Fortify Outpost",
       age: "2",
       imgSrc: "/assets/pictures/technology_defensive/fortify-outpost.png",
-      civ: allCivs.exceptMany(["MON", "RUS"]),
+      civ: civs.exceptMany(["MON", "RUS"]),
       class: "tech",
     },
     {
       title: "Extra Hammocks",
       age: "31",
       imgSrc: "/assets/pictures/technology_chinese/extra-hammocks.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Naval Arrowslits",
       age: "2",
       imgSrc: "/assets/pictures/technology_naval/naval-arrow-slits.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
@@ -2360,42 +2328,42 @@ export default function iconService(civArg) {
       title: "Armored Hull",
       age: "3",
       imgSrc: "/assets/pictures/technology_naval/armored-hull.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Shipwrights",
       age: "3",
       imgSrc: "/assets/pictures/technology_naval/shipwrights-4.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Springald Crews",
       age: "3",
       imgSrc: "/assets/pictures/technology_naval/springald-crews-3.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Incendiaries",
       age: "3",
       imgSrc: "/assets/pictures/technology_naval/incendiaries-3.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Herbal Medicine",
       age: "3",
       imgSrc: "/assets/pictures/technology_religious/herbal-medicine.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
     },
     {
       title: "Piety",
       age: "4",
       imgSrc: "/assets/pictures/technology_religious/piety.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
     },
     {
@@ -2444,7 +2412,7 @@ export default function iconService(civArg) {
       title: "Tithe Barns",
       age: "4",
       imgSrc: "/assets/pictures/technology_religious/tithe-barns.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
     },
     {
@@ -2676,21 +2644,21 @@ export default function iconService(civArg) {
       title: "Explosives",
       age: "4",
       imgSrc: "/assets/pictures/technology_japanese/explosives-4.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Heated Shot",
       age: "4",
       imgSrc: "/assets/pictures/technology_japanese/heated-shot-4.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
       title: "Swivel Cannon",
       age: "4",
       imgSrc: "/assets/pictures/technology_japanese/swivel-cannon-4.png",
-      civ: allCivs,
+      civ: civs,
       class: "tech",
     },
     {
@@ -2837,7 +2805,7 @@ export default function iconService(civArg) {
       title: "Farm",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/farm.png",
-      civ: allCivs.exceptMany(["MON", "BYZ"]),
+      civ: civs.exceptMany(["MON", "BYZ"]),
       class: "default",
       shorthand: ["farm", "qa"]
     },
@@ -2852,7 +2820,7 @@ export default function iconService(civArg) {
       title: "House",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/house.png",
-      civ: allCivs.exceptMany(["MON", "JAP"]),
+      civ: civs.exceptMany(["MON", "JAP"]),
       class: "default",
       shorthand: ["house", "qq"]
     },
@@ -2860,7 +2828,7 @@ export default function iconService(civArg) {
       title: "Lumber Camp",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/lumber-camp.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: civs.exceptMany(["MON"]),
       class: "default",
       shorthand: ["lumbercamp", "qe"]
     },
@@ -2868,7 +2836,7 @@ export default function iconService(civArg) {
       title: "Mining Camp",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/mining-camp.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: civs.exceptMany(["MON"]),
       class: "default",
       shorthand: ["miningcamp", "qr"]
     },
@@ -2876,7 +2844,7 @@ export default function iconService(civArg) {
       title: "Mill",
       age: "1",
       imgSrc: "/assets/pictures/building_economy/mill.png",
-      civ: allCivs.exceptMany(["RUS", "MON"]),
+      civ: civs.exceptMany(["RUS", "MON"]),
       class: "default",
       shorthand: ["mill", "qw"]
     },
@@ -2936,7 +2904,7 @@ export default function iconService(civArg) {
       title: "Town Center (TC)",
       age: "2",
       imgSrc: "/assets/pictures/building_economy/town-center.png",
-      civ: allCivs,
+      civ: civs,
       class: "default",
       shorthand: ["tc", "we"]
     },
@@ -2944,7 +2912,7 @@ export default function iconService(civArg) {
       title: "Market",
       age: "2",
       imgSrc: "/assets/pictures/building_economy/market.png",
-      civ: allCivs,
+      civ: civs,
       class: "default",
       shorthand: ["market", "ww"]
     },
@@ -2976,7 +2944,7 @@ export default function iconService(civArg) {
       title: "Blacksmith",
       age: "2",
       imgSrc: "/assets/pictures/building_technology/blacksmith.png",
-      civ: allCivs.except("JAP"),
+      civ: civs.except("JAP"),
       class: "tech",
       shorthand: ["blacksmith", "wq"]
     },
@@ -3009,7 +2977,7 @@ export default function iconService(civArg) {
       title: "Barracks",
       age: "1",
       imgSrc: "/assets/pictures/building_military/barracks.png",
-      civ: allCivs,
+      civ: civs,
       class: "military",
       shorthand: ["rax", "qs"]
     },
@@ -3024,7 +2992,7 @@ export default function iconService(civArg) {
       title: "Archery Range",
       age: "2",
       imgSrc: "/assets/pictures/building_military/archery-range.png",
-      civ: allCivs,
+      civ: civs,
       class: "military",
       shorthand: ["archeryrange", "wa"]
     },
@@ -3032,7 +3000,7 @@ export default function iconService(civArg) {
       title: "Stable",
       age: "2",
       imgSrc: "/assets/pictures/building_military/stable.png",
-      civ: allCivs,
+      civ: civs,
       class: "military",
       shorthand: ["stable", "ws"]
     },
@@ -3047,7 +3015,7 @@ export default function iconService(civArg) {
       title: "Siege Workshop",
       age: "3",
       imgSrc: "/assets/pictures/building_military/siege-workshop.png",
-      civ: allCivs,
+      civ: civs,
       class: "military",
       shorthand: ["workshop", "ea"]
     },
@@ -3055,7 +3023,7 @@ export default function iconService(civArg) {
       title: "Dock",
       age: "1",
       imgSrc: "/assets/pictures/building_military/dock.png",
-      civ: allCivs,
+      civ: civs,
       class: "military",
       shorthand: ["dock", "qd"]
     },
@@ -3063,7 +3031,7 @@ export default function iconService(civArg) {
       title: "Keep",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/keep.png",
-      civ: allCivs.exceptMany(["MON", "JAP"]),
+      civ: civs.exceptMany(["MON", "JAP"]),
       class: "default",
       shorthand: ["keep", "qz", "qy"]
     },
@@ -3085,7 +3053,7 @@ export default function iconService(civArg) {
       title: "Outpost",
       age: "1",
       imgSrc: "/assets/pictures/building_defensive/outpost.png",
-      civ: allCivs.exceptMany(["RUS", "MAL"]),
+      civ: civs.exceptMany(["RUS", "MAL"]),
       class: "default",
       shorthand: ["outpost", "qy", "qz"]
     },
@@ -3100,7 +3068,7 @@ export default function iconService(civArg) {
       title: "Palisade Gate",
       age: "1",
       imgSrc: "/assets/pictures/building_defensive/palisade-gate.png",
-      civ: allCivs.exceptMany(["RUS", "MON"]),
+      civ: civs.exceptMany(["RUS", "MON"]),
       class: "default",
       shorthand: ["palgate", "qx"]
     },
@@ -3108,7 +3076,7 @@ export default function iconService(civArg) {
       title: "Palisade Wall",
       age: "1",
       imgSrc: "/assets/pictures/building_defensive/palisade-wall.png",
-      civ: allCivs.exceptMany(["RUS", "MON"]),
+      civ: civs.exceptMany(["RUS", "MON"]),
       class: "default",
       shorthand: ["palwall", "qc"]
     },
@@ -3137,7 +3105,7 @@ export default function iconService(civArg) {
       title: "Stone Wall",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/stone-wall.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: civs.exceptMany(["MON"]),
       class: "default",
       shorthand: ["stonewall", "qx"]
     },
@@ -3145,7 +3113,7 @@ export default function iconService(civArg) {
       title: "Stone Wall Gate",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/stone-wall-gate.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: civs.exceptMany(["MON"]),
       class: "default",
       shorthand: ["stonegate", "qc"]
     },
@@ -3153,7 +3121,7 @@ export default function iconService(civArg) {
       title: "Stone Wall Tower",
       age: "3",
       imgSrc: "/assets/pictures/building_defensive/stone-wall-tower.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: civs.exceptMany(["MON"]),
       class: "default",
       shorthand: ["stonetower", "qz", "qy"]
     },
@@ -3231,7 +3199,7 @@ export default function iconService(civArg) {
       title: "Scout",
       age: "1",
       imgSrc: "/assets/pictures/unit_cavalry/scout.png",
-      civ: allCivs.exceptMany(["MAL"]),
+      civ: civs.exceptMany(["MAL"]),
       class: "military",
       shorthand: ["scout"]
     },
@@ -3409,7 +3377,7 @@ export default function iconService(civArg) {
       title: "Archer",
       age: "2",
       imgSrc: "/assets/pictures/unit_infantry/archer-2.png",
-      civ: allCivs.exceptMany(["ENG", "JAP", "DRA", "CHI", "ZXL"]),
+      civ: civs.exceptMany(["ENG", "JAP", "DRA", "CHI", "ZXL"]),
       class: "military",
       shorthand: ["archer"]
     },
@@ -3481,7 +3449,7 @@ export default function iconService(civArg) {
       title: "Crossbowman",
       age: "3",
       imgSrc: "/assets/pictures/unit_infantry/crossbowman-3.png",
-      civ: allCivs.exceptMany(["FRE", "MAL", "JAP", "DRA"]),
+      civ: civs.exceptMany(["FRE", "MAL", "JAP", "DRA"]),
       class: "military",
       shorthand: ["xbow"]
     },
@@ -3497,7 +3465,7 @@ export default function iconService(civArg) {
       title: "Handcannoneer",
       age: "4",
       imgSrc: "/assets/pictures/unit_infantry/handcannoneer-4.png",
-      civ: allCivs.exceptMany(["OTT", "MAL", "DRA", "JAP"]),
+      civ: civs.exceptMany(["OTT", "MAL", "DRA", "JAP"]),
       class: "military",
     },
     {
@@ -3947,7 +3915,7 @@ export default function iconService(civArg) {
       title: "Transport Ship",
       age: "1",
       imgSrc: "/assets/pictures/unit_ship/transport-ship.png",
-      civ: allCivs.exceptMany(["RUS"]),
+      civ: civs.exceptMany(["RUS"]),
       class: "military",
     },
     {
@@ -4011,14 +3979,14 @@ export default function iconService(civArg) {
       title: "Siege Tower",
       age: "2",
       imgSrc: "/assets/pictures/unit_siege/siege-tower.png",
-      civ: allCivs,
+      civ: civs,
       class: "military",
     },
     {
       title: "Battering Ram",
       age: "2",
       imgSrc: "/assets/pictures/unit_siege/battering-ram.png",
-      civ: allCivs.exceptMany("BYZ"),
+      civ: civs.exceptMany("BYZ"),
       class: "military",
     },
     {
@@ -4039,14 +4007,14 @@ export default function iconService(civArg) {
       title: "Springald",
       age: "3",
       imgSrc: "/assets/pictures/unit_siege/springald.png",
-      civ: allCivs,
+      civ: civs,
       class: "military",
     },
     {
       title: "Mangonel",
       age: "3",
       imgSrc: "/assets/pictures/unit_siege/mangonel-3.png",
-      civ: allCivs.exceptMany(["CHI", "ZXL", "AYY"]),
+      civ: civs.exceptMany(["CHI", "ZXL", "AYY"]),
       class: "military",
     },
     {
@@ -4067,7 +4035,7 @@ export default function iconService(civArg) {
       title: "Counterweight Trebuchet",
       age: "3",
       imgSrc: "/assets/pictures/unit_siege/trebuchet.png",
-      civ: allCivs.exceptMany(["MON"]),
+      civ: civs.exceptMany(["MON"]),
       class: "military",
     },
     {
@@ -4378,116 +4346,6 @@ export default function iconService(civArg) {
       class: "ability",
     }
   ]
-
-  const unit_eco = [
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager.png",
-      civ: ["ENG", "FRE", "JDA", "RUS", "HRE", "DRA", "BYZ"],
-      class: "default",
-      shorthand: "vil"
-    },
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager-delhi.png",
-      civ: ["DEL"],
-      class: "default",
-    },
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager-japanese.png",
-      civ: ["JAP"],
-      class: "default",
-    },
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager-malians.png",
-      civ: ["MAL"],
-      class: "default",
-    },
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager-china.png",
-      civ: ["CHI", "ZXL"],
-      class: "default",
-    },
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager-abbasid.png",
-      civ: ["ABB", "AYY"],
-      class: "default",
-      shorthand: "vil"
-    },
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager-ottomans.png",
-      civ: ["OTT"],
-      class: "default",
-    },
-    {
-      title: "Villager",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_worker/villager-mongols.png",
-      civ: ["MON"],
-      class: "default",
-    },
-    {
-      title: "Atabeg",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_ayyubids/atabeg-1.png",
-      civ: ["AYY"],
-      class: "default",
-    },
-    {
-      title: "Lodya Fishing Boat",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_rus/lodya-fishing-boat.png",
-      civ: ["RUS"],
-      class: "default",
-    },
-    {
-      title: "Fishing Boat",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_ship/fishing-boat.png",
-      civ: allCivs.exceptMany(["RUS"]),
-      class: "default",
-    },
-    {
-      title: "Trader",
-      age: "2",
-      imgSrc: "/assets/pictures/unit_worker/trader.png",
-      civ: allCivs,
-      class: "default",
-    },
-    {
-      title: "Imperial Official",
-      age: "1",
-      imgSrc: "/assets/pictures/unit_chinese/imperial-official.png",
-      civ: ["CHI", "ZXL"],
-      class: "default",
-    },
-    {
-      title: "Trade Ship",
-      age: "2",
-      imgSrc: "/assets/pictures/unit_ship/trade-ship.png",
-      civ: allCivs.exceptMany("RUS"),
-      class: "default",
-    },
-    {
-      title: "Lodya Trade Ship",
-      age: "2",
-      imgSrc: "/assets/pictures/unit_rus/lodya-trade-ship.png",
-      civ: ["RUS"],
-      class: "default",
-    }
-  ];
 
   return { getIcons, getIconFromImgPath };
 }

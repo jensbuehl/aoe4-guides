@@ -526,7 +526,7 @@ import { ref, computed } from "vue";
 //Components
 
 //Composables
-import iconService from "@/composables/builds/iconService.js";
+import iconService from "@/composables/builds/icons/iconService.js";
 
 export default {
   name: "IconSelector",
@@ -542,7 +542,7 @@ export default {
       .concat(getIcons("building_religious"))
       .concat(getIcons("building_tech"));
     const militaryBuildings = getIcons("building_military");
-    const general = getIcons("unit_eco").concat(
+    const general = getIcons("unitEco").concat(
       getIcons("unit_religious").concat(getIcons("resource"))
     );
     const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious"));

@@ -1,5 +1,5 @@
 //Composables
-import iconService from "@/composables/builds/iconService.js";
+import iconService from "@/composables/builds/icons/iconService.js";
 
 export default function useImportOverlayFormat() {
   const convert = (build) => {

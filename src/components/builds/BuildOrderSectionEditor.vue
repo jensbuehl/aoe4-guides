@@ -748,7 +748,7 @@ import IconSelector from "@/components/builds/IconSelector.vue";
 import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 
 //Composables
-import iconService from "@/composables/builds/iconService.js";
+import iconService from "@/composables/builds/icons/iconService.js";
 import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
 import {
   addAutocompleteIcon,

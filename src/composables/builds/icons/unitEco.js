@@ -1,0 +1,113 @@
+//Composables
+import { civs } from "@/composables/builds/icons/civs.js";
+
+//Exported methods
+export const unitsEco = [
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager.png",
+    civ: ["ENG", "FRE", "JDA", "RUS", "HRE", "DRA", "BYZ"],
+    class: "default",
+    shorthand: "vil",
+  },
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager-delhi.png",
+    civ: ["DEL"],
+    class: "default",
+  },
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager-japanese.png",
+    civ: ["JAP"],
+    class: "default",
+  },
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager-malians.png",
+    civ: ["MAL"],
+    class: "default",
+  },
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager-china.png",
+    civ: ["CHI", "ZXL"],
+    class: "default",
+  },
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager-abbasid.png",
+    civ: ["ABB", "AYY"],
+    class: "default",
+    shorthand: "vil",
+  },
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager-ottomans.png",
+    civ: ["OTT"],
+    class: "default",
+  },
+  {
+    title: "Villager",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_worker/villager-mongols.png",
+    civ: ["MON"],
+    class: "default",
+  },
+  {
+    title: "Atabeg",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_ayyubids/atabeg-1.png",
+    civ: ["AYY"],
+    class: "default",
+  },
+  {
+    title: "Lodya Fishing Boat",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_rus/lodya-fishing-boat.png",
+    civ: ["RUS"],
+    class: "default",
+  },
+  {
+    title: "Fishing Boat",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_ship/fishing-boat.png",
+    civ: civs.exceptMany(["RUS"]),
+    class: "default",
+  },
+  {
+    title: "Trader",
+    age: "2",
+    imgSrc: "/assets/pictures/unit_worker/trader.png",
+    civ: civs,
+    class: "default",
+  },
+  {
+    title: "Imperial Official",
+    age: "1",
+    imgSrc: "/assets/pictures/unit_chinese/imperial-official.png",
+    civ: ["CHI", "ZXL"],
+    class: "default",
+  },
+  {
+    title: "Trade Ship",
+    age: "2",
+    imgSrc: "/assets/pictures/unit_ship/trade-ship.png",
+    civ: civs.exceptMany("RUS"),
+    class: "default",
+  },
+  {
+    title: "Lodya Trade Ship",
+    age: "2",
+    imgSrc: "/assets/pictures/unit_rus/lodya-trade-ship.png",
+    civ: ["RUS"],
+    class: "default",
+  },
+];
