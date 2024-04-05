@@ -13,6 +13,23 @@
     </v-card>
   </v-dialog>
 
+  <v-tooltip
+    v-model="showToolTip"
+    :attach="'body'"
+    :target="toolTipPos || null"
+    :style="{ left: `${toolTipPos[0]}px`, top: `${toolTipPos[1]}px` }"
+    absolute
+    :location-strategy="absoluteLocationStrategy"
+  >
+    <span
+      ref="toolTipElement"
+      :style="{
+        color: $vuetify.theme.current.colors.primary,
+      }"
+      >My Custom Tooltip!</span
+    >
+  </v-tooltip>
+
   <IconAutoCompleteMenu
     @iconSelected="
       (iconPath, tooltip, iconClass) => {
@@ -111,9 +128,9 @@
         delteRowIndex = index;
       "
       @focusin="$emit('selectionChanged')"
-      @mousedown="selectRow(index)"
-      @mouseover="hoverItem(index)"
-      @mouseleave="unhoverItem()"
+      @mousedown="selectStep(index)"
+      @mouseover="hoverStep(index)"
+      @mouseleave="unhoverStep()"
     >
       <v-divider></v-divider>
       <v-col cols="12">
@@ -466,9 +483,9 @@
               delteRowIndex = index;
             "
             @focusin="$emit('selectionChanged')"
-            @mousedown="selectRow(index)"
-            @mouseover="hoverItem(index)"
-            @mouseleave="unhoverItem()"
+            @mousedown="selectStep(index)"
+            @mouseover="hoverStep(index)"
+            @mouseleave="unhoverStep()"
           >
             <td
               style="white-space: break-spaces"
@@ -541,6 +558,8 @@
               @click="saveSelection"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
               :contenteditable="!readonly"
               class="contentEditable text-left py-1"
               v-html="item.description"
@@ -640,7 +659,7 @@
         "
       >
         <tbody>
-          <tr class="mx-4 py-8" @focusin="$emit('selectionChanged')" @mousedown="selectRow()">
+          <tr class="mx-4 py-8" @focusin="$emit('selectionChanged')" @mousedown="selectStep()">
             <td style="width: 150px" class="gameplanHeader">
               <v-tooltip location="top">
                 <span
@@ -722,7 +741,7 @@
 
 <script>
 //External
-import { watch, ref, computed, reactive, mergeProps, onMounted } from "vue";
+import { watch, ref, reactive, mergeProps, onMounted, nextTick } from "vue";
 
 //Components
 import IconSelector from "@/components/builds/IconSelector.vue";
@@ -755,15 +774,61 @@ export default {
     const stepsTable = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
-    const searchText = ref("");
-    const autocompletePos = ref(0);
     const descriptionColumnIndex = 7;
     var civIconService = iconService(props.civ);
 
+    //Autocomplete
+    const searchText = ref("");
+    const autocompletePos = ref(0);
+
+    //Gameplan
     const gameplan = ref(`${props.section.gameplan ? props.section.gameplan : ""}`);
     const gameplanCopy = ref(`${props.section.gameplan ? props.section.gameplan : ""}`);
     const gameplanSelected = ref(false);
     const gameplanContentEditable = ref(null);
+
+    //Custom Tooltips
+    const showToolTip = ref(true);
+    const toolTipPos = ref(0);
+    const toolTipElement = ref(null);
+
+    async function handleMouseOver($event) {
+      if ($event.target.className.includes("icon-")) {
+        //show tooltip
+        showToolTip.value = true;
+
+        //prevent default tooltip from image title
+        $event.target.removeAttribute("title");
+
+        //calculate tooltip position
+        var rect = $event.target.getBoundingClientRect();
+        const body = document.getElementsByTagName("body")[0];
+        const bodyRect = body.getBoundingClientRect();
+        //wait for render to adjust tooltip position accordingly based on dynamic contents
+        await nextTick();
+        toolTipPos.value = [
+          rect.x - bodyRect.x - 0.5 * toolTipElement.value.offsetWidth + 8,
+          rect.y - bodyRect.y - toolTipElement.value.offsetHeight - 40,
+        ];
+      }
+    }
+
+    function handleMouseOut($event) {
+      if ($event.target.className.includes("icon-")) {
+        //hide tooltip
+        showToolTip.value = false;
+      }
+    }
+
+    function absoluteLocationStrategy(data, props, contentStyles) {
+      Object.assign(contentStyles.value, {
+        position: "absolute",
+      });
+
+      function updateLocation() {}
+
+      return { updateLocation };
+    }
 
     onMounted(async () => {
       //Sanitize since inline icon replacement only works with <br>, NOT with \n
@@ -971,7 +1036,7 @@ export default {
       removeStepConfirmationDialog.value = false;
     };
 
-    const selectRow = (index) => {
+    const selectStep = (index) => {
       if (index != null) {
         selectedRowIndex.value = index;
         gameplanSelected.value = false;
@@ -980,10 +1045,10 @@ export default {
         gameplanSelected.value = true;
       }
     };
-    const hoverItem = (index) => {
+    const hoverStep = (index) => {
       hoverRowIndex.value = index;
     };
-    const unhoverItem = () => {
+    const unhoverStep = () => {
       hoverRowIndex.value = null;
     };
 
@@ -1029,16 +1094,24 @@ export default {
       updateStepDescription,
       removeStep,
       addStep,
-      selectRow,
-      hoverItem,
-      unhoverItem,
+      selectStep,
+      hoverStep,
+      unhoverStep,
       saveSelection,
       restoreSelection,
       handleIconSelectorIconSelected,
-      autocompletePos,
-      searchText,
       activeStepIndex,
       handleAutoCompleteMenuIconSelected,
+      //Autocomplete
+      searchText,
+      autocompletePos,
+      //Custom Tooltips
+      handleMouseOver,
+      handleMouseOut,
+      showToolTip,
+      toolTipPos,
+      toolTipElement,
+      absoluteLocationStrategy,
       //Gameplan
       gameplan,
       gameplanSelected,
