@@ -788,7 +788,7 @@ export default {
     const gameplanContentEditable = ref(null);
 
     //Custom Tooltips
-    const showToolTip = ref(true);
+    const showToolTip = ref(false);
     const toolTipPos = ref(0);
     const toolTipElement = ref(null);
 

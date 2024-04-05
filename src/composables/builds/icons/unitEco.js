@@ -2,7 +2,7 @@
 import { civs } from "@/composables/builds/icons/civs.js";
 
 //Exported methods
-export const unitsEco = [
+export const unitEco = [
   {
     title: "Villager",
     age: "1",

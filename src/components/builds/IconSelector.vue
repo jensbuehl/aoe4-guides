@@ -80,7 +80,7 @@
           >Military Technologies</span
         >
         <template v-slot:activator="{ props }">
-          <v-tab v-bind="props" value="tech_military">Military Tec</v-tab>
+          <v-tab v-bind="props" value="techMilitary">Military Tec</v-tab>
         </template>
       </v-tooltip>
       <v-tooltip location="top">
@@ -374,7 +374,7 @@
               </v-container>
             </v-col> </v-row
         ></v-window-item>
-        <v-window-item value="tech_military">
+        <v-window-item value="techMilitary">
           <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
             <v-col class="mb-2" cols="2" v-for="icon in militaryTechnologies" :key="icon.imgSrc">
               <v-container>
@@ -539,17 +539,17 @@ export default {
 
     //unfiltered raw data
     const ecoBuildings = getIcons("buildingEco")
-      .concat(getIcons("building_religious"))
-      .concat(getIcons("building_tech"));
-    const militaryBuildings = getIcons("building_military");
+      .concat(getIcons("buildingReligious"))
+      .concat(getIcons("buildingTech"));
+    const militaryBuildings = getIcons("buildingMilitary");
     const general = getIcons("unitEco").concat(
-      getIcons("unit_religious").concat(getIcons("resource"))
+      getIcons("unitReligious").concat(getIcons("resource"))
     );
-    const militaryUnits = getIcons("unit_military").concat(getIcons("unit_religious"));
+    const militaryUnits = getIcons("unit_military").concat(getIcons("unitReligious"));
     const ecoTechnologies = getIcons("techEco");
-    const militaryTechnologies = getIcons("tech_military");
+    const militaryTechnologies = getIcons("techMilitary");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
-    const heroes = getIcons("unit_hero").concat(getIcons("ability_hero"));
+    const heroes = getIcons("unitHero").concat(getIcons("abilityHero"));
     const allIcons = getIcons();
 
     //filtered data
