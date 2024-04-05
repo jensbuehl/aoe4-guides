@@ -231,7 +231,8 @@
 
 <script>
 //External
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref } from "vue";
+import { useEventListener } from "@vueuse/core";
 
 //Components
 
@@ -259,26 +260,21 @@ export default {
       });
     }
 
-    onMounted(() => {
-      currentStep.value = steps[currentStepIndex.value];
-      document.addEventListener("keyup", handleKeyPressed);
-    });
-
-    onBeforeUnmount(() => {
-      document.removeEventListener("keyup", handleKeyPressed);
-    });
-
+    
     function aggregateVillagers() {
       const builders = parseInt(currentStep.value.builders) || 0;
       const food = parseInt(currentStep.value.food) || 0;
       const wood = parseInt(currentStep.value.wood) || 0;
       const gold = parseInt(currentStep.value.gold) || 0;
       const stone = parseInt(currentStep.value.stone) || 0;
-
+      
       return builders + food + wood + gold + stone || "";
-    };
+    }
+    
+    useEventListener(document, "keyup", (e) => handleKeyPressed(e));
+    function handleKeyPressed(e) {
+      currentStep.value = steps[currentStepIndex.value];
 
-    function handleKeyPressed(e){
       switch (e.key) {
         case "ArrowLeft":
           handlePreviousStep();
@@ -287,21 +283,21 @@ export default {
           handleNextStep();
           break;
       }
-    };
+    }
 
     function handleNextStep() {
       currentStepIndex.value = Math.min(++currentStepIndex.value, steps.length - 1);
       currentStep.value = steps[currentStepIndex.value];
-    };
+    }
 
     function handlePreviousStep() {
       currentStepIndex.value = Math.max(--currentStepIndex.value, 0);
       currentStep.value = steps[currentStepIndex.value];
-    };
+    }
 
     function handleClose() {
       context.emit("closeDialog");
-    };
+    }
 
     function getContent() {
       if (currentStep.value?.description) {
