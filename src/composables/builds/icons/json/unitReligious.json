@@ -1,0 +1,201 @@
+[
+  {
+    "title": "Monk",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_religious/monk-3.png",
+    "civ": ["BYZ", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "MAL", "MON", "RUS", "ZXL"],
+    "class": "military",
+    "shorthand": ["monk"],
+    "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Slow movement speed",
+    "id": "monk-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/monk",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 150,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 150,
+      "popcap": 1,
+      "time": 30
+    }
+  },
+  {
+    "title": "Shaolin Monk",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_zhuxi/shaolin-monk-3.png",
+    "civ": ["ZXL"],
+    "class": "military",
+    "description": "Monk with strong combat capabilities.\n+ Strong against ranged units \n+ Can heal themselves\n- Cannot heal others",
+    "id": "shaolin-monk-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/shaolin-monk",
+    "costs": {
+      "food": 200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 200,
+      "popcap": 1,
+      "time": 20
+    }
+  },
+  {
+    "title": "Imam",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_abbasid/imam.png",
+    "civ": ["ABB", "OTT"],
+    "class": "military",
+    "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed",
+    "id": "imam-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/imam",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 150,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 150,
+      "popcap": 1,
+      "time": 30
+    }
+  },
+  {
+    "title": "Dervish",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_ayyubids/dervish-3.png",
+    "civ": ["AYY"],
+    "class": "military",
+    "description": "Mounted Religious unit. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Uses a powerful Mass Heal ability to heal friendly units in an area.\n+ Gains increased Healing when carrying a relic.\n+ High speed.",
+    "id": "dervish-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/dervish",
+    "costs": {
+      "food": 60,
+      "wood": 0,
+      "stone": 0,
+      "gold": 120,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 180,
+      "popcap": 1,
+      "time": 40
+    }
+  },
+  {
+    "title": "Scholar",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_delhi/scholar.png",
+    "civ": ["DEL"],
+    "class": "military",
+    "description": "Support unit with no combat capability. Can be garrisoned in a Mosque or Madrasa to research technology more quickly. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Low health",
+    "id": "scholar-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/scholar",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 130,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 130,
+      "popcap": 1,
+      "time": 30
+    }
+  },
+  {
+    "title": "Buddhist Monk",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_japanese/buddhist-monk-3.png",
+    "civ": ["JAP"],
+    "class": "military",
+    "description": "Support unit with the ability to decrease enemy attack damage. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Reduced cost\n+ Conversion enhances friendly unit damage\n+ Automatically reduces enemy attack damage\n+ Heals units",
+    "id": "buddhist-monk-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/buddhist-monk",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 100,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 100,
+      "popcap": 1,
+      "time": 30
+    }
+  },
+  {
+    "title": "Shinto Priest",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_japanese/shinto-priest-3.png",
+    "civ": ["JAP"],
+    "class": "military",
+    "description": "Support unit with unique privileges to hold and deposit Yorishiro into buildings. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Yorishiro provide unique bonuses\n+ Heals friendly units\n- Slow move speed",
+    "id": "shinto-priest-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/shinto-priest",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 150,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 150,
+      "popcap": 1,
+      "time": 30
+    }
+  },
+  {
+    "title": "Prelate",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_hre/prelate.png",
+    "civ": ["DRA", "HRE"],
+    "class": "military",
+    "description": "Support unit with no combat capability. Automatically inspires Villagers to greatly improve their gather rate. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Low health",
+    "id": "prelate-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/prelate",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 100,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 100,
+      "popcap": 1,
+      "time": 20
+    }
+  },
+  {
+    "title": "Shaman",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_mongols/shaman.png",
+    "civ": ["MON"],
+    "class": "military",
+    "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed",
+    "id": "shaman-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/shaman",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 150,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 150,
+      "popcap": 1,
+      "time": 30
+    }
+  }
+]

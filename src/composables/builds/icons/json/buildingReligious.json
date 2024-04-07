@@ -1,0 +1,135 @@
+[
+  {
+    "title": "Monastery",
+    "age": 3,
+    "imgSrc": "/assets/pictures/building_religious/monastery.png",
+    "civ": ["BYZ", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "ZXL"],
+    "class": "default",
+    "shorthand": ["monastery", "eq"],
+    "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
+    "id": "monastery-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/monastery",
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 25
+    }
+  },
+  {
+    "title": "Mosque",
+    "age": 3,
+    "imgSrc": "/assets/pictures/building_religious/mosque.png",
+    "civ": ["ABB", "AYY", "DEL", "MAL", "OTT"],
+    "class": "default",
+    "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
+    "id": "mosque-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/mosque",
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 25
+    }
+  },
+  {
+    "title": "Prayer Tent",
+    "age": 3,
+    "imgSrc": "/assets/pictures/building_mongols/prayer-tent.png",
+    "civ": ["MON"],
+    "class": "default",
+    "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
+    "id": "prayer-tent-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/prayer-tent",
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 25
+    }
+  },
+  {
+    "title": "Buddhist Temple",
+    "age": 3,
+    "imgSrc": "/assets/pictures/building_japanese/buddhist-temple-3.png",
+    "civ": ["JAP"],
+    "class": "default",
+    "description": "Produces the Buddhist Monk and houses Unique Buddhist technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
+    "id": "buddhist-temple-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/buddhist-temple",
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 25
+    }
+  },
+  {
+    "title": "Shinto Shrine",
+    "age": 3,
+    "imgSrc": "/assets/pictures/building_japanese/shinto-shrine-3.png",
+    "civ": ["JAP"],
+    "class": "default",
+    "description": "Produces the Shinto Priest and houses Unique Shinto technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
+    "id": "shinto-shrine-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/shinto-shrine",
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 25
+    }
+  },
+  {
+    "title": "Pagoda",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_chinese/pagoda.png",
+    "civ": ["CHI", "ZXL"],
+    "class": "default",
+    "description": "Religious units can pick up Relics and place them in the Pagoda to generate +50 Gold, +25 Food, Wood, and Stone every 30 seconds.",
+    "id": "pagoda-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/pagoda",
+    "costs": {
+      "food": 0,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 150,
+      "popcap": 0,
+      "time": 20
+    }
+  }
+]
