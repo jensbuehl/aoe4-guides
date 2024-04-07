@@ -103,7 +103,7 @@ export const buildingEco = [
     class: "default",
   },
   {
-    title: "Town Center (TC)",
+    title: "Town Center",
     age: "2",
     imgSrc: "/assets/pictures/building_economy/town-center.png",
     civ: civs,

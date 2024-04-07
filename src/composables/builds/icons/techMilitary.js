@@ -394,7 +394,7 @@ export const techMilitary = [
     class: "tech",
   },
   {
-    title: "Reinforcement",
+    title: "Reinforcement\n(Bonus Military Wing)",
     age: "1",
     imgSrc: "/assets/pictures/technology_ayyubids/military-wing-reinforcement-1.png",
     civ: ["AYY"],
@@ -462,6 +462,7 @@ export const techMilitary = [
     imgSrc: "/assets/pictures/technology_chinese/reusable-barrels.png",
     civ: ["CHI"],
     class: "tech",
+    deprecated: true,
   },
   {
     title: "Battle Hardened",
@@ -729,6 +730,7 @@ export const techMilitary = [
     imgSrc: "/assets/pictures/technology_english/setup-camp.png",
     civ: ["ENG"],
     class: "tech",
+    deprecated: true,
   },
   {
     title: "Armor Clad",
@@ -1026,7 +1028,7 @@ export const techMilitary = [
     class: "tech",
   },
   {
-    title: "Knight Sabers",
+    title: "Knight Poleaxes",
     age: "4",
     imgSrc: "/assets/pictures/technology_rus/knight-sabers.png",
     civ: ["RUS"],
@@ -1052,6 +1054,7 @@ export const techMilitary = [
     imgSrc: "/assets/pictures/technology_rus/warrior_scout_2.png",
     civ: ["RUS"],
     class: "tech",
+    deprecated: true,
   },
   {
     title: "Divine Light",
@@ -1087,6 +1090,7 @@ export const techMilitary = [
     imgSrc: "/assets/pictures/technology_rus/double-time.png",
     civ: ["RUS"],
     class: "tech",
+    deprecated: true,
   },
   {
     title: "Castle Watch",

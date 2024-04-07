@@ -84,6 +84,25 @@ import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { getCommentsCount } from "@/composables/data/commentService";
 import { getBuilds, updateBuild } from "@/composables/data/buildService";
 
+import { resources } from "@/composables/builds/icons/resources.js";
+import { general } from "@/composables/builds/icons/general.js";
+
+import { unitEco } from "@/composables/builds/icons/unitEco.js";
+import { unitReligious } from "@/composables/builds/icons/unitReligious.js";
+import { unitMilitary } from "@/composables/builds/icons/unitMilitary.js";
+import { unitHero } from "@/composables/builds/icons/unitHero.js";
+
+import { techEco } from "@/composables/builds/icons/techEco.js";
+import { techMilitary } from "@/composables/builds/icons/techMilitary.js";
+import { landmarks } from "@/composables/builds/icons/landmarks.js";
+
+import { buildingEco } from "@/composables/builds/icons/buildingEco.js";
+import { buildingReligious } from "@/composables/builds/icons/buildingReligious.js";
+import { buildingTech } from "@/composables/builds/icons/buildingTech.js";
+import { buildingMilitary } from "@/composables/builds/icons/buildingMilitary.js";
+
+import { abilityHero } from "@/composables/builds/icons/abilityHero.js";
+
 export default {
   name: "Admin",
   setup() {
@@ -101,25 +120,82 @@ export default {
       initData();
     });
 
+    function sortByNameCompareFunction(a, b) {
+      var nameA = a.toUpperCase();
+      var nameB = b.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    }
+
+    async function downloadObjectAsJSONFile(object, filename) {
+      if (!filename.endsWith(".json")) {
+        filename = `${filename}.json`;
+      }
+      const json = JSON.stringify(object);
+      const blob = new Blob([json], { type: "application/json" });
+      const href = await URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = href;
+      link.download = filename;
+      link.position = "absolute";
+      link.left = "200vw";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    async function syncData(source, target, type) {
+      target.forEach((element) => {
+        var match = source.find((unit) => {
+          if (unit.id === element.id || unit.name === element.title) {
+            return true;
+          }
+        });
+
+        if (match) {
+          //Sync and enrich data
+          console.log("match", match, element);
+
+          element.description = match.description;
+          element.age = match.age;
+          element.id = match.id;
+          element.civ = element.civ.sort(sortByNameCompareFunction);
+          element.type = match.type;
+
+          if (type) {
+            element.exploreUrl =
+              "https://aoe4world.com/explorer/civs/all/" + type + "/" + match.baseId;
+          }
+          if (match.costs.total > 0) {
+            element.costs = match.costs;
+          }
+          if (match.influence) {
+            element.influences = match.influences;
+          }
+        } else {
+          if (!element.deprecated) console.warn("match not found for", element);
+        }
+      });
+    }
+
     async function updateImageMetaData() {
       var units = null;
       var buildings = null;
       var techs = null;
       var abilities = null;
-      //TODO: Remove "age" property for now since not used
-      //TODO: Only include description, influence, and costs for now
-      //TODO: Add missing resource icons (e.g. olive oil)
-      //TODO: Design tooltip and visualize data. Consider adding ID to each img entry starting now for ID lookup instead of imgSrc lookup.
 
+      //Fetch data from aoe4world
       await fetch("https://data.aoe4world.com/units/all.json")
         .then((response) => response.json())
         .then((data) => {
           units = data.data;
         });
       console.log("units", units);
-      //TODO: Map entries via name "similarity" if no ID, else use ID
-      //TODO: Get infoService data and enrich unitEco, unitMilitary, unitReligious, unitHero
-      //TODO: Download updated json to be included in iconService
 
       await fetch("https://data.aoe4world.com/buildings/all.json")
         .then((response) => response.json())
@@ -127,29 +203,56 @@ export default {
           buildings = data.data;
         });
       console.log("buildings", buildings);
-      //TODO: Map entries via name "similarity" if no ID, else use ID
-      //TODO: Get infoService data and enrich landmarks, buildingEco, buildingReligious, buildingTech, buildingMilitary
-      //TODO: Download updated json to be included in iconService
 
-      await fetch("https://data.aoe4world.com/upgrades/all.json")
+      await fetch("https://data.aoe4world.com/technologies/all.json")
         .then((response) => response.json())
         .then((data) => {
           techs = data.data;
         });
       console.log("techs", techs);
-      //TODO: Map entries via name "similarity" if no ID, else use ID
-      //TODO: Get infoService data and enrich techEco, techMilitary
-      //TODO: Download updated json to be included in iconService
 
-      await fetch("https://data.aoe4world.com/upgrades/all.json")
+      await fetch("https://data.aoe4world.com/abilities/all.json")
         .then((response) => response.json())
         .then((data) => {
           abilities = data.data;
         });
       console.log("abilities", abilities);
-      //TODO: Map entries via name "similarity" if no ID, else use ID
-      //TODO: Get infoService data and enrich abilityHero
-      //TODO: Download updated json to be included in iconService
+
+      syncData(units, unitEco, "units");
+      downloadObjectAsJSONFile(unitEco, "unitEco.json");
+
+      syncData(units, unitReligious, "units");
+      downloadObjectAsJSONFile(unitReligious, "unitReligious.json");
+
+      syncData(units, unitMilitary, "units");
+      downloadObjectAsJSONFile(unitMilitary, "unitMilitary.json");
+
+      syncData(units, unitHero, "units");
+      downloadObjectAsJSONFile(unitHero, "unitHero.json");
+
+      syncData(buildings, buildingEco, "buildings");
+      downloadObjectAsJSONFile(buildingEco, "buildingEco.json");
+
+      syncData(buildings, buildingMilitary, "buildings");
+      downloadObjectAsJSONFile(buildingMilitary, "buildingMilitary.json");
+
+      syncData(buildings, buildingReligious, "buildings");
+      downloadObjectAsJSONFile(buildingReligious, "buildingReligious.json");
+
+      syncData(buildings, buildingTech, "buildings");
+      downloadObjectAsJSONFile(buildingTech, "buildingTech.json");
+
+      syncData(buildings.concat(techs), landmarks, "buildings");
+      downloadObjectAsJSONFile(landmarks, "landmarks.json");
+
+      syncData(techs, techEco, "technologies");
+      downloadObjectAsJSONFile(techEco, "techEco.json");
+
+      syncData(techs, techMilitary, "technologies");
+      downloadObjectAsJSONFile(techMilitary, "techMilitary.json");
+
+      syncData(abilities.concat(techs), abilityHero);
+      downloadObjectAsJSONFile(abilityHero, "abilityHero.json");
     }
 
     function runMigration() {
@@ -181,6 +284,7 @@ export default {
       error,
       runMigration,
       updateImageMetaData,
+      sortByNameCompareFunction,
     };
   },
 };

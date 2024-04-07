@@ -529,7 +529,7 @@ export const landmarks = [
     class: "landmark",
   },
   {
-    title: "Great Mosque of Kairouan",
+    title: "Prayer Hall of Uqba",
     age: "4",
     imgSrc: "/assets/pictures/landmark_abbasid/prayer-hall-of-uqba.png",
     civ: ["ABB", "AYY"],

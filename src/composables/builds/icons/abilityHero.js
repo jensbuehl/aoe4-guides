@@ -71,7 +71,7 @@ export const abilityHero = [
     class: "ability",
   },
   {
-    title: "To arms, men!",
+    title: "To Arms, Men!",
     age: "1",
     imgSrc: "/assets/pictures/ability_jeanne/ability-to-arms-men-1.png",
     civ: ["JDA"],

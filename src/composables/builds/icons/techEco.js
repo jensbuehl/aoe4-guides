@@ -4,7 +4,7 @@ import { civs } from "@/composables/builds/icons/civs.js";
 //Exported methods
 export const techEco = [
   {
-    title: "Double Broadaxe",
+    title: "Double Broadax",
     age: "2",
     imgSrc: "/assets/pictures/technology_economy/double-broadaxe.png",
     civ: civs,
@@ -117,7 +117,7 @@ export const techEco = [
     class: "tech",
   },
   {
-    title: "Advancement",
+    title: "Advancement\n(Bonus Culture Wing)",
     age: "1",
     imgSrc:
       "/assets/pictures/technology_ayyubids/culture-wing-advancement-1.png",
@@ -141,7 +141,7 @@ export const techEco = [
     class: "tech",
   },
   {
-    title: "Logistics",
+    title: "Logistics\n(Bonus Culture Wing)",
     age: "1",
     imgSrc:
       "/assets/pictures/technology_ayyubids/culture-wing-logistics-1.png",
@@ -149,7 +149,7 @@ export const techEco = [
     class: "tech",
   },
   {
-    title: "Growth",
+    title: "Growth\n(Bonus Economic Wing)",
     age: "1",
     imgSrc:
       "/assets/pictures/technology_ayyubids/economic-wing-growth-1.png",
@@ -165,7 +165,7 @@ export const techEco = [
     class: "tech",
   },
   {
-    title: "Industry",
+    title: "Industry\n(Bonus Economic Wing)",
     age: "1",
     imgSrc:
       "/assets/pictures/technology_ayyubids/economic-wing-industry-1.png",
@@ -173,7 +173,7 @@ export const techEco = [
     class: "tech",
   },
   {
-    title: "Advisors",
+    title: "Advisors\n(Bonus Trade Wing)",
     age: "1",
     imgSrc:
       "/assets/pictures/technology_ayyubids/trade-wing-advisors-1.png",
@@ -181,7 +181,7 @@ export const techEco = [
     class: "tech",
   },
   {
-    title: "Bazaar",
+    title: "Bazaar\n(Bonus Trade Wing)",
     age: "1",
     imgSrc:
       "/assets/pictures/technology_ayyubids/trade-wing-bazaar-1.png",
@@ -352,6 +352,7 @@ export const techEco = [
     imgSrc: "/assets/pictures/technology_hre/benediction.png",
     civ: ["HRE", "DRA"],
     class: "tech",
+    deprecated: true,
   },
   {
     title: "Devoutness",
