@@ -845,7 +845,8 @@ export default {
     async function handleMouseOver($event) {
       if ($event.target.className.includes("icon-")) {
         //set model
-        const imageSource = $event.target.getAttribute("src");
+        var imageSource = $event.target.getAttribute("src");
+        imageSource = imageSource.replace("https://aoe4guides.com", "");
         const iconMetaData = civIconService.getIconFromImgPath(imageSource);
         toolTipModel.value = iconMetaData;
 
