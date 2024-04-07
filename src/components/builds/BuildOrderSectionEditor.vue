@@ -26,8 +26,53 @@
       :style="{
         color: $vuetify.theme.current.colors.primary,
       }"
-      >My Custom Tooltip!</span
-    >
+      ><v-card-title class="ma-0 pa-0">{{ toolTipModel.title }}</v-card-title>
+      <v-card-text
+        class="ma-0 pa-0"
+        v-if="toolTipModel.description"
+        style="white-space: pre-wrap; max-width: 350px"
+      >
+        {{ toolTipModel.description }}
+        <v-row no-gutters class="mt-4">
+          <v-col cols="3" v-if="toolTipModel.costs.food">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.food }}
+              <v-img class="titleIconXs" src="/assets/resources/food.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.wood">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.wood }}
+              <v-img class="titleIconXs" src="/assets/resources/wood.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.stone">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.stone }}
+              <v-img class="titleIconXs" src="/assets/resources/stone.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.gold">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.gold }}
+              <v-img class="titleIconXs" src="/assets/resources/gold.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.oliveoil">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.oliveoil }}
+              <v-img class="titleIconXs" src="/assets/resources/oliveoil.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.time">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.time }}s
+              <v-img class="titleIconXs" src="/assets/resources/time.png"></v-img>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </span>
   </v-tooltip>
 
   <IconAutoCompleteMenu
@@ -248,8 +293,8 @@
               <tr>
                 <td
                   style="white-space: break-spaces"
-                  @keyup="saveSelection"
-                  @click="saveSelection"
+                  @keyup="saveSelection($event)"
+                  @click="saveSelection($event)"
                   @paste="handlePaste"
                   @focusout="updateStepDescription($event, index)"
                   :contenteditable="!readonly"
@@ -669,8 +714,7 @@
                   >Gameplan or notes for this build order section</span
                 >
                 <template v-slot:activator="{ props }">
-                  <span v-bind="props"
-                    >Notes
+                  <span v-bind="props">
                     <v-icon color="accent" class="mx-auto titleIcon"
                       >mdi-information-outline</v-icon
                     ></span
@@ -682,9 +726,11 @@
               ref="gameplanContentEditable"
               @input="showAutoCompleteMenu($event)"
               @keyup="handleContentEditableKeyUp($event)"
-              @click="saveSelection"
+              @click="saveSelection($event)"
               @paste="handlePaste"
               @focusout="updateSectionGameplan()"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
               :contenteditable="!readonly"
               class="contentEditable text-left py-1"
               v-html="gameplan"
@@ -790,10 +836,16 @@ export default {
     //Custom Tooltips
     const showToolTip = ref(false);
     const toolTipPos = ref(0);
+    const toolTipModel = ref({});
     const toolTipElement = ref(null);
 
     async function handleMouseOver($event) {
       if ($event.target.className.includes("icon-")) {
+        //set model
+        const imageSource = $event.target.getAttribute("src");
+        const iconMetaData = civIconService.getIconFromImgPath(imageSource);
+        toolTipModel.value = iconMetaData;
+
         //show tooltip
         showToolTip.value = true;
 
@@ -858,7 +910,13 @@ export default {
       }
     );
 
-    const saveSelection = () => {
+    const saveSelection = (event) => {
+      //navigate to aoe4world if clicked on an image
+      if (event?.target.className.includes("icon-") && toolTipModel.value?.exploreUrl) {
+        window.open(toolTipModel.value.exploreUrl);
+      }
+
+      //store selection
       if (window.getSelection) {
         var sel = window.getSelection();
         if (sel.getRangeAt && sel.rangeCount) {
@@ -932,7 +990,7 @@ export default {
       updateSearchText(contentEditable, searchText, keyCode, allIcons);
 
       activeStepIndex.value = index;
-      saveSelection();
+      saveSelection(event);
     };
 
     const handleIconSelectorIconSelected = (iconPath, tooltipText, iconClass) => {
@@ -1110,6 +1168,7 @@ export default {
       handleMouseOut,
       showToolTip,
       toolTipPos,
+      toolTipModel,
       toolTipElement,
       absoluteLocationStrategy,
       //Gameplan
@@ -1158,6 +1217,7 @@ td:empty {
   width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 :deep(.icon-ability) {
@@ -1167,6 +1227,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #5c457b, #4d366e);
+  cursor: pointer;
 }
 
 :deep(.icon-ability + img) {
@@ -1180,6 +1241,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
+  cursor: pointer;
 }
 :deep(.icon-tech + img) {
   margin: 2px;
@@ -1192,6 +1254,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
+  cursor: pointer;
 }
 :deep(.icon-military + img) {
   margin: 2px;
@@ -1208,6 +1271,7 @@ td:empty {
     rgb(var(--v-theme-icon-background-highlight)),
     rgb(var(--v-theme-icon-background))
   );
+  cursor: pointer;
 }
 :deep(.icon-none + img) {
   margin: 2px;
@@ -1220,6 +1284,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #4b6382, #1d2432);
+  cursor: pointer;
 }
 :deep(.icon-default + img) {
   margin: 2px;
@@ -1232,6 +1297,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+  cursor: pointer;
 }
 :deep(.icon-landmark + img) {
   margin: 2px;
