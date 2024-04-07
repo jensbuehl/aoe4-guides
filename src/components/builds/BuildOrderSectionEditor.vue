@@ -13,6 +13,68 @@
     </v-card>
   </v-dialog>
 
+  <v-tooltip
+    v-model="showToolTip"
+    :attach="'body'"
+    :target="toolTipPos || null"
+    :style="{ left: `${toolTipPos[0]}px`, top: `${toolTipPos[1]}px` }"
+    absolute
+    :location-strategy="absoluteLocationStrategy"
+  >
+    <span
+      ref="toolTipElement"
+      :style="{
+        color: $vuetify.theme.current.colors.primary,
+      }"
+      ><v-card-title class="ma-0 pa-0">{{ toolTipModel.title }}</v-card-title>
+      <v-card-text
+        class="ma-0 pa-0"
+        v-if="toolTipModel.description"
+        style="white-space: pre-wrap; max-width: 350px"
+      >
+        {{ toolTipModel.description }}
+        <v-row no-gutters class="mt-4">
+          <v-col cols="3" v-if="toolTipModel.costs.food">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.food }}
+              <v-img class="titleIconXs" src="/assets/resources/food.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.wood">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.wood }}
+              <v-img class="titleIconXs" src="/assets/resources/wood.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.stone">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.stone }}
+              <v-img class="titleIconXs" src="/assets/resources/stone.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.gold">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.gold }}
+              <v-img class="titleIconXs" src="/assets/resources/gold.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.oliveoil">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.oliveoil }}
+              <v-img class="titleIconXs" src="/assets/resources/oliveoil.png"></v-img>
+            </v-row>
+          </v-col>
+          <v-col cols="3" v-if="toolTipModel.costs.time">
+            <v-row no-gutters class="mr-4" align="center" justify="start">
+              {{ toolTipModel.costs.time }}s
+              <v-img class="titleIconXs" src="/assets/resources/time.png"></v-img>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </span>
+  </v-tooltip>
+
   <IconAutoCompleteMenu
     @iconSelected="
       (iconPath, tooltip, iconClass) => {
@@ -111,9 +173,9 @@
         delteRowIndex = index;
       "
       @focusin="$emit('selectionChanged')"
-      @mousedown="selectRow(index)"
-      @mouseover="hoverItem(index)"
-      @mouseleave="unhoverItem()"
+      @mousedown="selectStep(index)"
+      @mouseover="hoverStep(index)"
+      @mouseleave="unhoverStep()"
     >
       <v-divider></v-divider>
       <v-col cols="12">
@@ -231,8 +293,8 @@
               <tr>
                 <td
                   style="white-space: break-spaces"
-                  @keyup="saveSelection"
-                  @click="saveSelection"
+                  @keyup="saveSelection($event)"
+                  @click="saveSelection($event)"
                   @paste="handlePaste"
                   @focusout="updateStepDescription($event, index)"
                   :contenteditable="!readonly"
@@ -466,9 +528,9 @@
               delteRowIndex = index;
             "
             @focusin="$emit('selectionChanged')"
-            @mousedown="selectRow(index)"
-            @mouseover="hoverItem(index)"
-            @mouseleave="unhoverItem()"
+            @mousedown="selectStep(index)"
+            @mouseover="hoverStep(index)"
+            @mouseleave="unhoverStep()"
           >
             <td
               style="white-space: break-spaces"
@@ -541,6 +603,8 @@
               @click="saveSelection"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, index)"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
               :contenteditable="!readonly"
               class="contentEditable text-left py-1"
               v-html="item.description"
@@ -640,7 +704,7 @@
         "
       >
         <tbody>
-          <tr class="mx-4 py-8" @focusin="$emit('selectionChanged')" @mousedown="selectRow()">
+          <tr class="mx-4 py-8" @focusin="$emit('selectionChanged')" @mousedown="selectStep()">
             <td style="width: 150px" class="gameplanHeader">
               <v-tooltip location="top">
                 <span
@@ -650,8 +714,7 @@
                   >Gameplan or notes for this build order section</span
                 >
                 <template v-slot:activator="{ props }">
-                  <span v-bind="props"
-                    >Notes
+                  <span v-bind="props">
                     <v-icon color="accent" class="mx-auto titleIcon"
                       >mdi-information-outline</v-icon
                     ></span
@@ -663,9 +726,11 @@
               ref="gameplanContentEditable"
               @input="showAutoCompleteMenu($event)"
               @keyup="handleContentEditableKeyUp($event)"
-              @click="saveSelection"
+              @click="saveSelection($event)"
               @paste="handlePaste"
               @focusout="updateSectionGameplan()"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
               :contenteditable="!readonly"
               class="contentEditable text-left py-1"
               v-html="gameplan"
@@ -722,14 +787,14 @@
 
 <script>
 //External
-import { watch, ref, computed, reactive, mergeProps, onMounted } from "vue";
+import { watch, ref, reactive, mergeProps, onMounted, nextTick } from "vue";
 
 //Components
 import IconSelector from "@/components/builds/IconSelector.vue";
 import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 
 //Composables
-import iconService from "@/composables/builds/iconService.js";
+import iconService from "@/composables/builds/icons/iconService.js";
 import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
 import {
   addAutocompleteIcon,
@@ -755,15 +820,67 @@ export default {
     const stepsTable = ref(null);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
-    const searchText = ref("");
-    const autocompletePos = ref(0);
     const descriptionColumnIndex = 7;
     var civIconService = iconService(props.civ);
 
+    //Autocomplete
+    const searchText = ref("");
+    const autocompletePos = ref(0);
+
+    //Gameplan
     const gameplan = ref(`${props.section.gameplan ? props.section.gameplan : ""}`);
     const gameplanCopy = ref(`${props.section.gameplan ? props.section.gameplan : ""}`);
     const gameplanSelected = ref(false);
     const gameplanContentEditable = ref(null);
+
+    //Custom Tooltips
+    const showToolTip = ref(false);
+    const toolTipPos = ref(0);
+    const toolTipModel = ref({});
+    const toolTipElement = ref(null);
+
+    async function handleMouseOver($event) {
+      if ($event.target.className.includes("icon-")) {
+        //set model
+        const imageSource = $event.target.getAttribute("src");
+        const iconMetaData = civIconService.getIconFromImgPath(imageSource);
+        toolTipModel.value = iconMetaData;
+
+        //show tooltip
+        showToolTip.value = true;
+
+        //prevent default tooltip from image title
+        $event.target.removeAttribute("title");
+
+        //calculate tooltip position
+        var rect = $event.target.getBoundingClientRect();
+        const body = document.getElementsByTagName("body")[0];
+        const bodyRect = body.getBoundingClientRect();
+        //wait for render to adjust tooltip position accordingly based on dynamic contents
+        await nextTick();
+        toolTipPos.value = [
+          rect.x - bodyRect.x - 0.5 * toolTipElement.value.offsetWidth + 8,
+          rect.y - bodyRect.y - toolTipElement.value.offsetHeight - 40,
+        ];
+      }
+    }
+
+    function handleMouseOut($event) {
+      if ($event.target.className.includes("icon-")) {
+        //hide tooltip
+        showToolTip.value = false;
+      }
+    }
+
+    function absoluteLocationStrategy(data, props, contentStyles) {
+      Object.assign(contentStyles.value, {
+        position: "absolute",
+      });
+
+      function updateLocation() {}
+
+      return { updateLocation };
+    }
 
     onMounted(async () => {
       //Sanitize since inline icon replacement only works with <br>, NOT with \n
@@ -793,7 +910,13 @@ export default {
       }
     );
 
-    const saveSelection = () => {
+    const saveSelection = (event) => {
+      //navigate to aoe4world if clicked on an image
+      if (event?.target.className.includes("icon-") && toolTipModel.value?.exploreUrl) {
+        window.open(toolTipModel.value.exploreUrl);
+      }
+
+      //store selection
       if (window.getSelection) {
         var sel = window.getSelection();
         if (sel.getRangeAt && sel.rangeCount) {
@@ -867,7 +990,7 @@ export default {
       updateSearchText(contentEditable, searchText, keyCode, allIcons);
 
       activeStepIndex.value = index;
-      saveSelection();
+      saveSelection(event);
     };
 
     const handleIconSelectorIconSelected = (iconPath, tooltipText, iconClass) => {
@@ -971,7 +1094,7 @@ export default {
       removeStepConfirmationDialog.value = false;
     };
 
-    const selectRow = (index) => {
+    const selectStep = (index) => {
       if (index != null) {
         selectedRowIndex.value = index;
         gameplanSelected.value = false;
@@ -980,10 +1103,10 @@ export default {
         gameplanSelected.value = true;
       }
     };
-    const hoverItem = (index) => {
+    const hoverStep = (index) => {
       hoverRowIndex.value = index;
     };
-    const unhoverItem = () => {
+    const unhoverStep = () => {
       hoverRowIndex.value = null;
     };
 
@@ -1029,16 +1152,25 @@ export default {
       updateStepDescription,
       removeStep,
       addStep,
-      selectRow,
-      hoverItem,
-      unhoverItem,
+      selectStep,
+      hoverStep,
+      unhoverStep,
       saveSelection,
       restoreSelection,
       handleIconSelectorIconSelected,
-      autocompletePos,
-      searchText,
       activeStepIndex,
       handleAutoCompleteMenuIconSelected,
+      //Autocomplete
+      searchText,
+      autocompletePos,
+      //Custom Tooltips
+      handleMouseOver,
+      handleMouseOut,
+      showToolTip,
+      toolTipPos,
+      toolTipModel,
+      toolTipElement,
+      absoluteLocationStrategy,
       //Gameplan
       gameplan,
       gameplanSelected,
@@ -1085,6 +1217,7 @@ td:empty {
   width: 48px;
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 :deep(.icon-ability) {
@@ -1094,6 +1227,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #5c457b, #4d366e);
+  cursor: pointer;
 }
 
 :deep(.icon-ability + img) {
@@ -1107,6 +1241,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
+  cursor: pointer;
 }
 :deep(.icon-tech + img) {
   margin: 2px;
@@ -1119,6 +1254,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
+  cursor: pointer;
 }
 :deep(.icon-military + img) {
   margin: 2px;
@@ -1135,6 +1271,7 @@ td:empty {
     rgb(var(--v-theme-icon-background-highlight)),
     rgb(var(--v-theme-icon-background))
   );
+  cursor: pointer;
 }
 :deep(.icon-none + img) {
   margin: 2px;
@@ -1147,6 +1284,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #4b6382, #1d2432);
+  cursor: pointer;
 }
 :deep(.icon-default + img) {
   margin: 2px;
@@ -1159,6 +1297,7 @@ td:empty {
   margin: 2px 2px 2px 0px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+  cursor: pointer;
 }
 :deep(.icon-landmark + img) {
   margin: 2px;

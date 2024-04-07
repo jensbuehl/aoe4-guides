@@ -1,0 +1,156 @@
+[
+  {
+    "title": "Jeanne d'Arc - Peasant",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_jeanne/jeanne-darc-peasant-1.png",
+    "civ": ["JDA"],
+    "class": "military",
+    "description": "Jeanne gathers resources and constructs buildings as a Villager. She constructs buildings more quickly, and generates more XP while constructing buildings compared to other tasks. If Jeanne is defeated, she can be brought back at a Town Center. \n - Weak in combat",
+    "id": "jeanne-darc-peasant-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jeanne-darc-peasant",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 100,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 100,
+      "time": 0,
+      "popcap": 1
+    }
+  },
+  {
+    "title": "Jeanne d'Arc - Hunter",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_jeanne/jeanne-darc-hunter-2.png",
+    "civ": ["JDA"],
+    "class": "military",
+    "description": "Strong ranged infantry with good damage vs unarmored targets, and bonus damage vs spearmen. If Jeanne is defeated, she can be brought back at a Town Center.\n+ High rate of fire\n- Countered by Horsemen",
+    "id": "jeanne-darc-hunter-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jeanne-darc-hunter",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 250,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 250,
+      "time": 0,
+      "popcap": 1
+    }
+  },
+  {
+    "title": "Jeanne d'Arc - Woman-at-Arms",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_jeanne/jeanne-darc-woman-at-arms-2.png",
+    "civ": ["JDA"],
+    "class": "military",
+    "description": "Strong heavy infantry leader with good armor and health. If Jeanne is defeated, she can be brought back at a Town Center.\n+ Heavy armor\n- Countered by Knights, Lancers, and Crossbowmen",
+    "id": "jeanne-darc-woman-at-arms-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jeanne-darc-woman-at-arms",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 250,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 250,
+      "time": 0,
+      "popcap": 1
+    }
+  },
+  {
+    "title": "Jeanne d'Arc - Mounted Archer",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_jeanne/jeanne-darc-mounted-archer-3.png",
+    "civ": ["JDA"],
+    "class": "military",
+    "description": "A powerful cavalry archer with exceptional range and damage. If Jeanne is defeated, she can be brought back at a Town Center.\n+ Long range\n+ Good damage\n- Countered by Horsemen",
+    "id": "jeanne-darc-mounted-archer-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jeanne-darc-mounted-archer",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 500,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 500,
+      "time": 0,
+      "popcap": 1
+    }
+  },
+  {
+    "title": "Jeanne d'Arc - Knight",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_jeanne/jeanne-darc-knight-3.png",
+    "civ": ["JDA"],
+    "class": "military",
+    "description": "Powerful heavy cavalry leader with high damage and health. If Jeanne is defeated, she can be brought back at a Town Center.\n+ Heavy armor\n+ Fast movement\n- Countered by Spearmen",
+    "id": "jeanne-darc-knight-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jeanne-darc-knight",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 500,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 500,
+      "time": 0,
+      "popcap": 1
+    }
+  },
+  {
+    "title": "Jeanne d'Arc - Markswoman",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_jeanne/jeanne-darc-markswoman-4.png",
+    "civ": ["JDA"],
+    "class": "military",
+    "description": "Elite heavy siege cavalry leader with high damage. Exceptionally effective vs buildings. If Jeanne is defeated, she will reappear at a Town Center.\n+ Heavy armor \n+ Long range \n+ Good damage vs buildings\n- Countered only by superior buildings",
+    "id": "jeanne-darc-markswoman-4",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jeanne-darc-markswoman",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1000,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 1000,
+      "time": 0,
+      "popcap": 1
+    }
+  },
+  {
+    "title": "Jeanne d'Arc - Blast Cannon",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_jeanne/jeanne-darc-blast-cannon-4.png",
+    "civ": ["JDA"],
+    "class": "military",
+    "description": "Elite siege cavalry leader with high damage. Exceptionally effective vs buildings. If Jeanne is defeated, she will reappear at a Town Center. \n+ Heavy armor\n+ Good damage vs buildings\n- Countered only by superior numbers",
+    "id": "jeanne-darc-blast-cannon-4",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jeanne-darc-blast-cannon",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1000,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 1000,
+      "time": 0,
+      "popcap": 1
+    }
+  }
+]

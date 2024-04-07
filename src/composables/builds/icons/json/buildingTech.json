@@ -1,0 +1,108 @@
+[
+  {
+    "title": "Blacksmith",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_technology/blacksmith.png",
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "HRE",
+      "JDA",
+      "MAL",
+      "MON",
+      "OTT",
+      "RUS",
+      "ZXL"
+    ],
+    "class": "tech",
+    "shorthand": ["blacksmith", "wq"],
+    "description": "Houses technology to improve infantry and cavalry.",
+    "id": "blacksmith-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/blacksmith",
+    "costs": {
+      "food": 0,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 150,
+      "popcap": 0,
+      "time": 25
+    }
+  },
+  {
+    "title": "Forge",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_japanese/forge-1.png",
+    "civ": ["JAP"],
+    "class": "tech",
+    "description": "Villagers can drop-off Stone and Gold at this building. Houses technologies to improve mining and military units.",
+    "id": "forge-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/forge",
+    "costs": {
+      "food": 0,
+      "wood": 50,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 50,
+      "popcap": 0,
+      "time": 20
+    }
+  },
+  {
+    "title": "University",
+    "age": 4,
+    "imgSrc": "/assets/pictures/building_technology/university.png",
+    "civ": ["BYZ", "CHI", "DRA", "ENG", "FRE", "HRE", "JAP", "JDA", "OTT", "RUS", "ZXL"],
+    "class": "tech",
+    "shorthand": ["uni", "rq"],
+    "description": "Houses advanced technology that benefit the civilization.",
+    "id": "university-4",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/university",
+    "costs": {
+      "food": 0,
+      "wood": 450,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 450,
+      "popcap": 0,
+      "time": 60
+    }
+  },
+  {
+    "title": "Madrasa",
+    "age": 4,
+    "imgSrc": "/assets/pictures/building_technology/madrasa.png",
+    "civ": ["ABB", "AYY", "DEL", "MAL"],
+    "class": "tech",
+    "description": "Houses advanced technology that benefit the civilization.",
+    "id": "madrasa-4",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/madrasa",
+    "costs": {
+      "food": 0,
+      "wood": 450,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 450,
+      "popcap": 0,
+      "time": 60
+    }
+  }
+]

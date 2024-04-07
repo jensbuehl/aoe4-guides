@@ -52,7 +52,7 @@ import { useEventListener } from "@vueuse/core";
 //Component
 
 //Composables
-import iconService from "@/composables/builds/iconService.js";
+import iconService from "@/composables/builds/icons/iconService.js";
 
 export default {
   name: "IconAutoCompleteMenu",
