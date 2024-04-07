@@ -4,22 +4,22 @@ import { ref } from "vue";
 //Composables
 import { resources } from "@/composables/builds/icons/resources.js";
 import { general } from "@/composables/builds/icons/general.js";
-import { landmarks } from "@/composables/builds/icons/landmarks.js";
 
-import { unitEco } from "@/composables/builds/icons/unitEco.js";
-import { unitReligious } from "@/composables/builds/icons/unitReligious.js";
-import { unitMilitary } from "@/composables/builds/icons/unitMilitary.js";
-import { unitHero } from "@/composables/builds/icons/unitHero.js";
+import unitEco from "@/composables/builds/icons/json/unitEco.json" with { type: "json" };
+import unitReligious from "@/composables/builds/icons/json/unitReligious.json" with { type: "json" };
+import unitMilitary from "@/composables/builds/icons/json/unitMilitary.json" with { type: "json" };
+import unitHero from "@/composables/builds/icons/json/unitHero.json" with { type: "json" };
 
-import { techEco } from "@/composables/builds/icons/techEco.js";
-import { techMilitary } from "@/composables/builds/icons/techMilitary.js";
+import techEco from "@/composables/builds/icons/json/techEco.json" with { type: "json" };
+import techMilitary from "@/composables/builds/icons/json/techMilitary.json" with { type: "json" };
 
-import { buildingEco } from "@/composables/builds/icons/buildingEco.js";
-import { buildingReligious } from "@/composables/builds/icons/buildingReligious.js";
-import { buildingTech } from "@/composables/builds/icons/buildingTech.js";
-import { buildingMilitary } from "@/composables/builds/icons/buildingMilitary.js";
+import landmarks from "@/composables/builds/icons/json/landmarks.json" with { type: "json" };
+import buildingEco from "@/composables/builds/icons/json/buildingEco.json" with { type: "json" };
+import buildingReligious from "@/composables/builds/icons/json/buildingReligious.json" with { type: "json" };
+import buildingTech from "@/composables/builds/icons/json/buildingTech.json" with { type: "json" };
+import buildingMilitary from "@/composables/builds/icons/json/buildingMilitary.json" with { type: "json" };
 
-import { abilityHero } from "@/composables/builds/icons/abilityHero.js";
+import abilityHero from "@/composables/builds/icons/json/abilityHero.json" with { type: "json" };
 
 export default function iconService(civArg) {
   const civ = ref(civArg);
@@ -74,18 +74,18 @@ export default function iconService(civArg) {
       default:
         allIcons = resources.concat(
           general,
-          landmarks,
-          techEco,
-          techMilitary,
-          buildingEco,
-          buildingTech,
-          buildingMilitary,
-          buildingReligious,
           unitEco,
           unitMilitary,
           unitReligious,
           unitHero,
-          abilityHero
+          buildingEco,
+          buildingTech,
+          buildingMilitary,
+          buildingReligious,
+          abilityHero,
+          landmarks,
+          techEco,
+          techMilitary,
         );
         break;
     }

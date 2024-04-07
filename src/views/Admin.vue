@@ -84,24 +84,19 @@ import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { getCommentsCount } from "@/composables/data/commentService";
 import { getBuilds, updateBuild } from "@/composables/data/buildService";
 
-import { resources } from "@/composables/builds/icons/resources.js";
-import { general } from "@/composables/builds/icons/general.js";
+import unitEco from "@/composables/builds/icons/json/unitEco.json" with { type: "json" };
+import unitReligious from "@/composables/builds/icons/json/unitReligious.json" with { type: "json" };
+import unitMilitary from "@/composables/builds/icons/json/unitMilitary.json" with { type: "json" };
+import unitHero from "@/composables/builds/icons/json/unitHero.json" with { type: "json" };
 
-import { unitEco } from "@/composables/builds/icons/unitEco.js";
-import { unitReligious } from "@/composables/builds/icons/unitReligious.js";
-import { unitMilitary } from "@/composables/builds/icons/unitMilitary.js";
-import { unitHero } from "@/composables/builds/icons/unitHero.js";
+import techEco from "@/composables/builds/icons/json/techEco.json" with { type: "json" };
+import techMilitary from "@/composables/builds/icons/json/techMilitary.json" with { type: "json" };
 
-import { techEco } from "@/composables/builds/icons/techEco.js";
-import { techMilitary } from "@/composables/builds/icons/techMilitary.js";
-import { landmarks } from "@/composables/builds/icons/landmarks.js";
-
-import { buildingEco } from "@/composables/builds/icons/buildingEco.js";
-import { buildingReligious } from "@/composables/builds/icons/buildingReligious.js";
-import { buildingTech } from "@/composables/builds/icons/buildingTech.js";
-import { buildingMilitary } from "@/composables/builds/icons/buildingMilitary.js";
-
-import { abilityHero } from "@/composables/builds/icons/abilityHero.js";
+import landmarks from "@/composables/builds/icons/json/landmarks.json" with { type: "json" };
+import buildingEco from "@/composables/builds/icons/json/buildingEco.json" with { type: "json" };
+import buildingReligious from "@/composables/builds/icons/json/buildingReligious.json" with { type: "json" };
+import buildingTech from "@/composables/builds/icons/json/buildingTech.json" with { type: "json" };
+import buildingMilitary from "@/composables/builds/icons/json/buildingMilitary.json" with { type: "json" };
 
 export default {
   name: "Admin",
@@ -253,6 +248,9 @@ export default {
 
       syncData(abilities.concat(techs), abilityHero);
       downloadObjectAsJSONFile(abilityHero, "abilityHero.json");
+
+      //If you pause for a second between each 10 downloads, all of them will work in Chrome. 
+      //Automatic download is limited to 10.
     }
 
     function runMigration() {
