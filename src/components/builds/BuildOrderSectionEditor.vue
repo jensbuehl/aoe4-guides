@@ -26,11 +26,14 @@
       :style="{
         color: $vuetify.theme.current.colors.primary,
       }"
-      ><v-card-title class="ma-0 pa-0">{{ toolTipModel.title }}</v-card-title>
+      ><span v-if="!toolTipModel.description">{{ toolTipModel.title }}</span
+      ><v-card-title v-if="toolTipModel.description" class="ma-0 pa-0">{{
+        toolTipModel.title
+      }}</v-card-title>
       <v-card-text
         class="ma-0 pa-0"
         v-if="toolTipModel.description"
-        style="white-space: pre-wrap; max-width: 350px"
+        style="white-space: pre-wrap; max-width: 350px; min-width: 350px"
       >
         {{ toolTipModel.description }}
         <v-row no-gutters class="mt-4">
@@ -860,7 +863,7 @@ export default {
         await nextTick();
         toolTipPos.value = [
           rect.x - bodyRect.x - 0.5 * toolTipElement.value.offsetWidth + 8,
-          rect.y - bodyRect.y - toolTipElement.value.offsetHeight - 40,
+          rect.y - bodyRect.y - toolTipElement.value.offsetHeight - 32,
         ];
       }
     }
