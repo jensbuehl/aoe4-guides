@@ -36,7 +36,7 @@
         style="white-space: pre-wrap; max-width: 350px; min-width: 350px"
       >
         {{ toolTipModel.description }}
-        <v-row no-gutters class="mt-4">
+        <v-row no-gutters class="mt-4" v-if="toolTipModel.costs">
           <v-col cols="3" v-if="toolTipModel.costs.food">
             <v-row no-gutters class="mr-4" align="center" justify="start">
               {{ toolTipModel.costs.food }}

@@ -98,6 +98,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "abb",
+    description:
+      "The Abbasid Dynasty pursues a flourishing Golden Age by concentrating structures around their House of Wisdom, allowing them to unlock significant economic advantages. The House of Wisdom also drives progress through the Ages and grants access to advanced technology. Abbasid camel units are expert at countering enemy cavalry.",
   },
   {
     title: "Ayyubids",
@@ -106,6 +108,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "ayy",
+    description:
+      "At the confluence of continents, where trade and science meet, and where empires clash, the Ayyubids use their pursuit of knowledge to gain the upper hand. The House of Wisdom is the focal point of this combination of urbanization and science, unlocking powerful Golden Age bonuses and advancing through the ages. The Ayyubids focus on versatile units to gain a tactical advantage on the battlefield.",
   },
   {
     title: "Byzantines",
@@ -114,6 +118,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "byz",
+    description:
+      "The Byzantines construct sprawling networks of life-giving Aqueducts and Cisterns. Leverage powerful unique abilities and hire Mercenaries with exquisite Olive Oil. Peasants work tirelessly to manufacture Olive Oil for the empire.",
   },
   {
     title: "China",
@@ -122,6 +128,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "chi",
+    description:
+      "The Chinese can shift their focus across the ages, deploying many unique units and building rapidly. Enemies must continually adapt if they want to keep up.",
   },
   {
     title: "Delhi Sultanate",
@@ -130,6 +138,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "del",
+    description:
+      "The Delhi Sultanate stays many steps ahead of their enemies with great networks of scholars. Fully realized, they field the intimidating War Elephant and trample those in their path.",
   },
   {
     title: "English",
@@ -138,6 +148,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "eng",
+    description:
+      "Exceptional early infantry provide the English with a powerful punch backed up by reliable Food production from the fields.",
   },
   {
     title: "French",
@@ -146,6 +158,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "fre",
+    description:
+      "The French deploy powerful cavalry units and can boost production in fortified positions. Enemies must be prepared to withstand the charges of powerful Royal Knights and other armored units.",
   },
   {
     title: "Holy Roman Empire",
@@ -154,6 +168,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "hre",
+    description:
+      "Prelates enhance the economy of the Holy Roman Empire, while powerful infantry units form the core of its military. Enemies must face an opponent able to rapidly recover from attacks and field strong counterattacks.",
   },
   {
     title: "Japanese",
@@ -162,6 +178,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "jap",
+    description:
+      "Ruling over the Japanese land, the Daimyo enhances agriculture and employs Samurai to defend their territory. The unique Forge works tirelessly to sharpen their blades to give an edge in battle. Fierce Samurai Bannermen lead their diverse army of infantry and cavalry to victory.",
   },
   {
     title: "Jeanne d'Arc",
@@ -170,6 +188,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "jda",
+    description:
+      "A spark of hope for the French people, Jeanne d'Arc takes to the battlefield and inspires courage to her followers. Starting as a humble villager, Jeanne begins the Journey of a Hero in the Dark Age. Experience forges Jeanne into a powerful leader, gaining access to trusted companions and powerful abilities which shape the empire she was destined to create.",
   },
   {
     title: "Malians",
@@ -178,6 +198,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "mal",
+    description:
+      "The Malian economy booms with options for gold and food production. Claiming gold deposits for their Pit Mines, they leverage that growth to produce unique infantry units that strike from stealth and hurl javelins at enemies.",
   },
   {
     title: "Mongols",
@@ -186,6 +208,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "mon",
+    description:
+      "Masters of mobility and mounted warfare, the Mongols can easily relocate their camps. They gain economic benefits from setting up near Stone Outcroppings and from raiding enemy buildings. Enemies must deal with cavalry attacks from the opening moments of play.",
   },
   {
     title: "Order of the Dragon",
@@ -194,6 +218,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "dra",
+    description:
+      "The Order of the Dragon is established by handpicked wealthy elites to crush hostile empires. Investing large amounts of resources into training only a few exceptional warriors, the Order succeeds in raising an elite army unlike any other.",
   },
   {
     title: "Ottomans",
@@ -202,6 +228,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "ott",
+    description:
+      "The Ottoman Army can expand to dominate the battlefield, supported by Military Schools that are able to continuously produce units to swell the ranks of their formations. Supporting those formations, the Mehter war drums signal the highly trained troops to take situational advantage.",
   },
   {
     title: "Rus",
@@ -210,6 +238,8 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "rus",
+    description:
+      "The Rus derive great benefit from the countryside. They are able to gather resources more readily from hunting and forestry and can field strong combat units. Enemies face strong early game fortifications and a diverse economy that cannot easily be disrupted.",
   },
   {
     title: "Zhu Xi's Legacy",
@@ -218,5 +248,7 @@ export const general = [
     civ: civs,
     class: "none",
     shorthand: "zxl",
+    description:
+      "The teachings of philosopher Zhu Xi reshape the Chinese civilization. With Zhu Xi’s Legacy, the Chinese boast a sophisticated administration with superior Imperial Officials and advanced technologies. The brimming treasury helps to establish powerful dynasties and research a breadth of unique technologies. Recruit Palace Guards, Zhuge Nus, and Grenadiers early on to protect the Empire.",
   },
 ];
