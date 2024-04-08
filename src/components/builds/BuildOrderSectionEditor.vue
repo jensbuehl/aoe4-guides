@@ -21,60 +21,8 @@
     absolute
     :location-strategy="absoluteLocationStrategy"
   >
-    <span
-      ref="toolTipElement"
-      :style="{
-        color: $vuetify.theme.current.colors.primary,
-      }"
-      ><span v-if="!toolTipModel.description">{{ toolTipModel.title }}</span
-      ><v-card-title v-if="toolTipModel.description" class="ma-0 pa-0">{{
-        toolTipModel.title
-      }}</v-card-title>
-      <v-card-text
-        class="ma-0 pa-0"
-        v-if="toolTipModel.description"
-        style="white-space: pre-wrap; max-width: 350px; min-width: 350px"
-      >
-        {{ toolTipModel.description }}
-        <v-row no-gutters class="mt-4" v-if="toolTipModel.costs">
-          <v-col cols="3" v-if="toolTipModel.costs.food">
-            <v-row no-gutters class="mr-4" align="center" justify="start">
-              {{ toolTipModel.costs.food }}
-              <v-img class="titleIconXs" src="/assets/resources/food.png"></v-img>
-            </v-row>
-          </v-col>
-          <v-col cols="3" v-if="toolTipModel.costs.wood">
-            <v-row no-gutters class="mr-4" align="center" justify="start">
-              {{ toolTipModel.costs.wood }}
-              <v-img class="titleIconXs" src="/assets/resources/wood.png"></v-img>
-            </v-row>
-          </v-col>
-          <v-col cols="3" v-if="toolTipModel.costs.stone">
-            <v-row no-gutters class="mr-4" align="center" justify="start">
-              {{ toolTipModel.costs.stone }}
-              <v-img class="titleIconXs" src="/assets/resources/stone.png"></v-img>
-            </v-row>
-          </v-col>
-          <v-col cols="3" v-if="toolTipModel.costs.gold">
-            <v-row no-gutters class="mr-4" align="center" justify="start">
-              {{ toolTipModel.costs.gold }}
-              <v-img class="titleIconXs" src="/assets/resources/gold.png"></v-img>
-            </v-row>
-          </v-col>
-          <v-col cols="3" v-if="toolTipModel.costs.oliveoil">
-            <v-row no-gutters class="mr-4" align="center" justify="start">
-              {{ toolTipModel.costs.oliveoil }}
-              <v-img class="titleIconXs" src="/assets/resources/oliveoil.png"></v-img>
-            </v-row>
-          </v-col>
-          <v-col cols="3" v-if="toolTipModel.costs.time">
-            <v-row no-gutters class="mr-4" align="center" justify="start">
-              {{ toolTipModel.costs.time }}s
-              <v-img class="titleIconXs" src="/assets/resources/time.png"></v-img>
-            </v-row>
-          </v-col>
-        </v-row>
-      </v-card-text>
+    <span ref="toolTipElement">
+      <IconToolTip ref="toolTipElement" :icon="toolTipModel" />
     </span>
   </v-tooltip>
 
@@ -795,6 +743,7 @@ import { watch, ref, reactive, mergeProps, onMounted, nextTick } from "vue";
 //Components
 import IconSelector from "@/components/builds/IconSelector.vue";
 import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
+import IconToolTip from "@/components/builds/IconToolTip.vue";
 
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
@@ -809,7 +758,7 @@ export default {
   name: "BuildOrderSectioncontentEditable",
   props: ["section", "readonly", "civ", "focus"],
   emits: ["stepsChanged", "selectionChanged", "textChanged", "gameplanChanged"],
-  components: { IconSelector, IconAutoCompleteMenu },
+  components: { IconSelector, IconAutoCompleteMenu, IconToolTip },
   setup(props, context) {
     //Hacky deep copy of object since working on the reference broke the current selection
     //Copy needs to be kept in sync and is used only for the description field :(
