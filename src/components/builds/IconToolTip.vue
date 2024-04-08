@@ -3,8 +3,11 @@
     :style="{
       color: $vuetify.theme.current.colors.primary,
     }"
-    ><span v-if="!icon.description">{{ icon.title }}</span
-    ><v-card-title v-if="icon.description" class="ma-0 pa-0">{{ icon.title }}</v-card-title>
+    ><span v-if="!icon.description"
+      >{{ icon.title }}{{ getFormattedShorthand(icon.shorthand) }}</span
+    ><v-card-title v-if="icon.description" class="ma-0 pa-0"
+      >{{ icon.title }}{{ getFormattedShorthand(icon.shorthand) }}</v-card-title
+    >
     <v-card-text
       class="ma-0 pa-0"
       v-if="icon.description"
@@ -63,7 +66,22 @@
 export default {
   name: "IconToolTip",
   props: ["icon"],
-  setup(props, context) {},
+  setup(props, context) {
+    function getFormattedShorthand(shorthand) {
+      if (!shorthand) return "";
+      
+      if (Array.isArray(shorthand)) {
+        const withColon = shorthand.map((x) => "::" + x);
+        const joined = withColon.join(", ");
+        return " [" + joined+"]";
+      } else {
+        return " [::" + shorthand+"]";
+      }
+    }
+    return {
+      getFormattedShorthand,
+    };
+  },
 };
 </script>
 <style>
