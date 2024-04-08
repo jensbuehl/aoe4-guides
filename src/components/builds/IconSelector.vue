@@ -102,19 +102,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in general" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip class="custom-tooltip">
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    ><br /><span
-                      v-if="icon.shorthand"
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >({{ getFormattedShorthands(icon.shorthand) }})</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -150,13 +139,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in heroes" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -191,19 +175,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in landmarks" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    ><br /><span
-                      v-if="icon.shorthand"
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >({{ getFormattedShorthands(icon.shorthand) }})</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -238,19 +211,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in ecoBuildings" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    ><br /><span
-                      v-if="icon.shorthand"
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >({{ getFormattedShorthands(icon.shorthand) }})</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -285,19 +247,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in militaryBuildings" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    ><br /><span
-                      v-if="icon.shorthand"
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >({{ getFormattedShorthands(icon.shorthand) }})</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -332,19 +283,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in ecoTechnologies" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    ><br /><span
-                      v-if="icon.shorthand"
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >({{ getFormattedShorthands(icon.shorthand) }})</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -379,19 +319,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in militaryTechnologies" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    ><br /><span
-                      v-if="icon.shorthand"
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >({{ getFormattedShorthands(icon.shorthand) }})</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -426,19 +355,8 @@
             <v-col class="mb-2" cols="2" v-for="icon in militaryUnits" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
-                  <v-tooltip>
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >{{ icon.title }}</span
-                    ><br /><span
-                      v-if="icon.shorthand"
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >({{ getFormattedShorthands(icon.shorthand) }})</span
-                    >
+                  <v-tooltip location="top">
+                    <IconToolTip :icon="icon"></IconToolTip>
                     <template v-slot:activator="{ props }">
                       <v-btn
                         color="primary"
@@ -473,19 +391,8 @@
         <v-col class="mb-2" cols="2" v-for="icon in searchResults" :key="icon.imgSrc">
           <v-container>
             <v-row align="center" justify="center">
-              <v-tooltip class="custom-tooltip">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >{{ icon.title }}</span
-                ><br /><span
-                  v-if="icon.shorthand"
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >({{ getFormattedShorthands(icon.shorthand) }})</span
-                >
+              <v-tooltip location="top">
+                <IconToolTip :icon="icon"></IconToolTip>
                 <template v-slot:activator="{ props }">
                   <v-btn
                     color="primary"
@@ -524,6 +431,7 @@
 import { ref, computed } from "vue";
 
 //Components
+import IconToolTip from "@/components/builds/IconToolTip.vue";
 
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
@@ -532,6 +440,7 @@ export default {
   name: "IconSelector",
   props: ["civ"],
   emits: ["iconSelected"],
+  components: { IconToolTip },
   setup(props, context) {
     const { getIcons } = iconService(props.civ);
     const searchText = ref("");
