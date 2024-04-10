@@ -21,6 +21,8 @@
       >
     </v-row>
 
+    <v-progress-linear v-if="autoplaySupported" color="accent" height="4" :model-value="getStepProgress()" />
+
     <v-row
       no-gutters
       class="h-75 align-center justify-center"
@@ -28,48 +30,26 @@
         left: () => handleNextStep(),
         right: () => handlePreviousStep(),
       }"
-      ><v-col class="ma-4 d-flex justify-center align-center">
-        <span style="text-align: center" v-html="getContent()" /> </v-col
-    ></v-row>
-
-    <v-row
-      class="py-4"
-      v-if="currentStep?.gameplan && !currentStep?.description"
-      :style="{
-        'background-color': $vuetify.theme.current.colors.background,
-      }"
-      no-gutters
-      align="center"
-      justify="center"
-    >
-      <v-tooltip location="top">
-        <div
-          :style="{
-            color: $vuetify.theme.current.colors.primary,
-          }"
-        >
-          Gameplan or notes for this build order section
+      ><v-col cols="12" class="ma-4" justify="center" align="center"
+        ><div class="mb-4" v-if="currentStep?.gameplan">
+          Notes
+          <v-icon
+            color="accent"
+            style="vertical-align: middle; width: auto; height: 40px"
+            class="mx-auto"
+            >mdi-information-outline</v-icon
+          >
         </div>
-        <template v-slot:activator="{ props }">
-          <div v-bind="props">
-            Notes
-            <v-icon
-              color="accent"
-              style="vertical-align: middle; width: auto; height: 40px"
-              class="mx-auto"
-              >mdi-information-outline</v-icon
-            >
-          </div>
-        </template>
-      </v-tooltip>
+        <span style="text-align: center" v-html="getContent()" />
+      </v-col>
     </v-row>
-
+    <v-progress-linear bg-color="accent" color="accent" height="4" :model-value="getProgress()" />
     <v-row
       class="py-4"
       :style="{
         'background-color': $vuetify.theme.current.colors.background,
       }"
-      v-if="$vuetify.display.xs && !currentStep?.gameplan"
+      v-if="$vuetify.display.xs"
       no-gutters
       align="center"
       justify="center"
@@ -100,7 +80,7 @@
         </v-row>
         <v-row class="mt-2" no-gutters align="center" justify="center">
           <v-col class="text-center">
-            {{ currentStep?.time }}
+            {{ getFormattedTime() }}
           </v-col>
           <v-col class="text-center">
             <span v-if="currentStep">{{ aggregateVillagers() }}</span>
@@ -125,7 +105,7 @@
     </v-row>
 
     <v-row
-      v-if="!$vuetify.display.xs && !currentStep?.gameplan"
+      v-if="!$vuetify.display.xs"
       :style="{
         'background-color': $vuetify.theme.current.colors.background,
       }"
@@ -140,46 +120,47 @@
         >
           <thead>
             <tr>
-              <th class="text-center ma-0 pa-0" width="70px">
+              <th class="text-center ma-0 pa-0" width="80px">
                 <v-img class="mx-auto titleIcon" src="/assets/resources/time.png"></v-img>
               </th>
-              <th class="text-center ma-0 pa-0" width="70px">
+              <th class="text-center ma-0 pa-0" width="80px">
                 <v-img class="mx-auto titleIcon" src="/assets/resources/villager.png"></v-img>
               </th>
-              <th class="text-center ma-0 pa-0" width="70px">
+              <th class="text-center ma-0 pa-0" width="80px">
                 <v-img class="mx-auto titleIcon" src="/assets/resources/repair.png"></v-img>
               </th>
-              <th class="text-center ma-0 pa-0" width="70px">
+              <th class="text-center ma-0 pa-0" width="80px">
                 <v-img class="mx-auto titleIcon" src="/assets/resources/food.png"></v-img>
               </th>
-              <th class="text-center ma-0 pa-0" width="70px">
+              <th class="text-center ma-0 pa-0" width="80px">
                 <v-img class="mx-auto titleIcon" src="/assets/resources/wood.png"></v-img>
               </th>
-              <th class="text-center ma-0 pa-0" width="70px">
+              <th class="text-center ma-0 pa-0" width="80px">
                 <v-img class="mx-auto titleIcon" src="/assets/resources/gold.png"></v-img>
               </th>
-              <th class="text-center ma-0 pa-0" width="70px">
+              <th class="text-center ma-0 pa-0" width="80px">
                 <v-img class="mx-auto titleIcon" src="/assets/resources/stone.png"></v-img>
               </th>
             </tr>
           </thead>
           <tbody style="user-select: none">
             <tr>
-              <td class="text-center py-1" v-html="currentStep?.time"></td>
+              <td class="text-center py-1">{{ getFormattedTime() }}</td>
               <td v-if="currentStep" class="text-center py-1">
                 {{ aggregateVillagers() }}
               </td>
-              <td
-                class="text-center py-1"
-                v-html="currentStep?.builders ? currentStep.builders : ''"
-              ></td>
-              <td class="text-center py-1" v-html="currentStep?.food"></td>
-              <td class="text-center py-1" v-html="currentStep?.wood"></td>
-              <td class="text-center py-1" v-html="currentStep?.gold"></td>
-              <td class="text-center py-1" v-html="currentStep?.stone"></td>
+              <td class="text-center py-1">{{ getBuilders() }}</td>
+              <td class="text-center py-1">
+                {{ getFood() }}
+              </td>
+              <td class="text-center py-1">{{ getWood() }}</td>
+              <td class="text-center py-1">{{ getGold() }}</td>
+              <td class="text-center py-1">{{ getStone() }}</td>
             </tr>
-          </tbody> </v-table></v-col
-    ></v-row>
+          </tbody>
+        </v-table></v-col
+      ></v-row
+    >
 
     <v-row
       :style="{
@@ -200,13 +181,31 @@
             v-bind="props"
             color="accent"
             flat
-            class="ma-4"
+            class="ma-2"
             icon="mdi-chevron-left"
             @click="handlePreviousStep"
           ></v-btn>
         </template>
       </v-tooltip>
-      <span style="user-select: none"> {{ currentStepIndex + 1 }} of {{ steps.length }} </span>
+      <span v-if="!autoplaySupported" style="user-select: none"> {{ currentStepIndex + 1 }} of {{ steps.length }} </span>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Toggle auto-playback</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn v-if="autoplaySupported"
+            v-bind="props"
+            color="accent"
+            flat
+            class="ma-2"
+            :icon="timer ? 'mdi-pause' : 'mdi-play'"
+            @click="handleTogglePlayback"
+          ></v-btn>
+        </template>
+      </v-tooltip>
       <v-tooltip location="top">
         <span
           :style="{
@@ -219,7 +218,7 @@
             v-bind="props"
             color="accent"
             flat
-            class="ma-4"
+            class="ma-2"
             icon="mdi-chevron-right"
             @click="handleNextStep"
           ></v-btn>
@@ -231,7 +230,7 @@
 
 <script>
 //External
-import { ref } from "vue";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useEventListener } from "@vueuse/core";
 
 //Components
@@ -245,35 +244,56 @@ export default {
   setup(props, context) {
     const currentStep = ref(null);
     const currentStepIndex = ref(0);
-
-    var steps = [];
-    if (!props.build.steps[0]?.type) {
-      //For backwards compatibility
-      steps = props.build.steps;
-    } else {
-      props.build.steps.forEach((section) => {
-        steps = steps.concat(section.steps);
-        //Include gamplan as step which is also providing content
-        if (section.gameplan) {
-          steps = steps.concat({ gameplan: section.gameplan });
-        }
-      });
-    }
-
+    const steps = ref([]);
     
+    const timer = ref(null);
+    const autoplaySupported = ref(false); //TODO: evaluate from timings data
+    const autoplay = ref(false); 
+    const stepsTimings = ref([]);
+    const totalElapsedTime = ref(null);
+    const currentStepTotalTime = ref(0);
+    const currentStepElapsedSeconds = ref(0);
+
+    onMounted(() => {
+      //init steps
+      if (!props.build.steps[0]?.type) {
+        //For backwards compatibility
+        steps.value = props.build.steps;
+      } else {
+        props.build.steps.forEach((section) => {
+          steps.value = steps.value.concat(section.steps);
+          //Include gamplan as step which is also providing content
+          if (section.gameplan) {
+            steps.value = steps.value.concat({ gameplan: section.gameplan });
+          }
+        });
+      }
+
+      //init current step
+      currentStep.value = steps.value[currentStepIndex.value];
+
+      //init timer
+      totalElapsedTime.value = new Date();
+      resetStepTime();
+    });
+
+    onBeforeUnmount(() => {
+      clearTimer();
+    });
+
     function aggregateVillagers() {
       const builders = parseInt(currentStep.value.builders) || 0;
       const food = parseInt(currentStep.value.food) || 0;
       const wood = parseInt(currentStep.value.wood) || 0;
       const gold = parseInt(currentStep.value.gold) || 0;
       const stone = parseInt(currentStep.value.stone) || 0;
-      
+
       return builders + food + wood + gold + stone || "";
     }
-    
+
     useEventListener(document, "keyup", (e) => handleKeyPressed(e));
     function handleKeyPressed(e) {
-      currentStep.value = steps[currentStepIndex.value];
+      currentStep.value = steps.value[currentStepIndex.value];
 
       switch (e.key) {
         case "ArrowLeft":
@@ -282,17 +302,129 @@ export default {
         case "ArrowRight":
           handleNextStep();
           break;
+        case " ":
+          handleTogglePlayback();
+          break;
       }
     }
 
+    function updateStepProgress() {
+      totalElapsedTime.value.setSeconds(totalElapsedTime.value.getSeconds() + 1);
+      currentStepElapsedSeconds.value = currentStepElapsedSeconds.value + 1;
+
+      if (currentStepElapsedSeconds.value >= currentStepTotalTime.value) {
+        const isLastStep = currentStepIndex.value == steps.value.length - 1;
+        if (!isLastStep) {
+          handleNextStep();
+        } else {
+          clearTimer();
+        }
+      }
+    }
+
+    function toDate(time) {
+      time = time ? time : "00:00";
+      let splitTime = time.split(":");
+      let dateTime = new Date();
+      dateTime.setMinutes(splitTime[0]);
+      dateTime.setSeconds(splitTime[1]);
+      return dateTime;
+    }
+
+    function getFormattedTime() {
+      var timeString = totalElapsedTime.value?.toTimeString();
+      return timeString ? timeString.split(" ")[0].substring(3) : "00:00";
+    }
+
+    function initTimer() {
+      clearInterval(timer.value);
+      timer.value = setInterval(() => {
+        updateStepProgress();
+      }, 1000);
+    }
+
+    function resetStepTime() {
+      currentStepElapsedSeconds.value = 0;
+      currentStepTotalTime.value = 10; //Todo: use from timings data
+      totalElapsedTime.value = toDate(currentStep.value.time); //Todo: use from timings data
+    }
+
+    function clearTimer() {
+      clearInterval(timer.value);
+      timer.value = null;
+    }
+
+    function handleTogglePlayback() {
+      if (timer.value) {
+        clearTimer();
+      } else {
+        if (autoplay.value) {
+          initTimer();
+        }
+      }
+    }
+
+    function getFood() {
+      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.food;
+
+      return currentStep.value?.food;
+    }
+
+    function getWood() {
+      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.wood;
+
+      return currentStep.value?.wood;
+    }
+
+    function getGold() {
+      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.gold;
+
+      return currentStep.value?.gold;
+    }
+
+    function getStone() {
+      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.stone;
+
+      return currentStep.value?.stone;
+    }
+
+    function getBuilders() {
+      if (currentStep.value?.gameplan)
+        return steps.value[currentStepIndex.value - 1]?.builders
+          ? steps.value[currentStepIndex.value - 1].builders
+          : "";
+
+      return currentStep?.builders ? currentStep.builders : "";
+    }
+
+    function getProgress() {
+      return ((currentStepIndex.value + 1) / steps.value.length) * 100;
+    }
+
+    function getStepProgress() {
+      return (currentStepElapsedSeconds.value / currentStepTotalTime.value) * 100;
+    }
+
     function handleNextStep() {
-      currentStepIndex.value = Math.min(++currentStepIndex.value, steps.length - 1);
-      currentStep.value = steps[currentStepIndex.value];
+      currentStepIndex.value = Math.min(++currentStepIndex.value, steps.value.length - 1);
+      currentStep.value = steps.value[currentStepIndex.value];
+
+      clearTimer();
+      resetStepTime();
+      if (autoplay.value) {
+        initTimer();
+      }
     }
 
     function handlePreviousStep() {
       currentStepIndex.value = Math.max(--currentStepIndex.value, 0);
-      currentStep.value = steps[currentStepIndex.value];
+      currentStep.value = steps.value[currentStepIndex.value];
+
+      clearTimer();
+      resetStepTime();
+      if (autoplay.value) {
+        initTimer();
+      }
     }
 
     function handleClose() {
@@ -311,13 +443,24 @@ export default {
 
     return {
       steps,
+      getProgress,
+      getStepProgress,
       currentStep,
+      getFormattedTime,
       handleNextStep,
       handlePreviousStep,
+      handleTogglePlayback,
+      timer,
+      autoplaySupported,
       currentStepIndex,
       handleClose,
       aggregateVillagers,
       getContent,
+      getFood,
+      getWood,
+      getGold,
+      getStone,
+      getBuilders,
     };
   },
 };
