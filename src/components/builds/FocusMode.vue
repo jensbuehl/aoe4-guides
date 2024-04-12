@@ -21,7 +21,12 @@
       >
     </v-row>
 
-    <v-progress-linear v-if="autoplaySupported" color="accent" height="4" :model-value="getStepProgress()" />
+    <v-progress-linear
+      v-if="autoplaySupported"
+      color="accent"
+      height="4"
+      :model-value="currentStepProgress"
+    />
 
     <v-row
       no-gutters
@@ -80,7 +85,7 @@
         </v-row>
         <v-row class="mt-2" no-gutters align="center" justify="center">
           <v-col class="text-center">
-            {{ getFormattedTime(totalElapsedTime) }}
+            {{ totalElapsedTimeFormattedString }}
           </v-col>
           <v-col class="text-center">
             <span v-if="currentStep">{{ aggregateVillagers() }}</span>
@@ -145,7 +150,7 @@
           </thead>
           <tbody style="user-select: none">
             <tr>
-              <td class="text-center py-1">{{ getFormattedTime(totalElapsedTime) }}</td>
+              <td class="text-center py-1">{{ totalElapsedTimeFormattedString }}</td>
               <td v-if="currentStep" class="text-center py-1">
                 {{ aggregateVillagers() }}
               </td>
@@ -187,7 +192,9 @@
           ></v-btn>
         </template>
       </v-tooltip>
-      <span v-if="!autoplaySupported" style="user-select: none"> {{ currentStepIndex + 1 }} of {{ steps.length }} </span>
+      <span v-if="!autoplaySupported" style="user-select: none">
+        {{ currentStepIndex + 1 }} of {{ steps.length }}
+      </span>
       <v-tooltip location="top">
         <span
           :style="{
@@ -196,7 +203,8 @@
           >Toggle auto-playback</span
         >
         <template v-slot:activator="{ props }">
-          <v-btn v-if="autoplaySupported"
+          <v-btn
+            v-if="autoplaySupported"
             v-bind="props"
             color="accent"
             flat
@@ -236,7 +244,12 @@ import { useEventListener } from "@vueuse/core";
 //Components
 
 //Composables
-import { getTimings, toDate, getFormattedTime } from "@/composables/builds/timingsHelper.js";
+import {
+  getTimings,
+  toDateFromString,
+  toDateFromSeconds,
+  getFormattedTime,
+} from "@/composables/builds/timingsHelper.js";
 
 export default {
   name: "FocusMode",
@@ -246,14 +259,16 @@ export default {
     const currentStep = ref(null);
     const currentStepIndex = ref(0);
     const steps = ref([]);
-    
+
     const timer = ref(null);
-    const autoplaySupported = ref(false); //TODO: evaluate from timings data
-    const autoplay = ref(false); 
+    const autoplaySupported = ref(false);
+    const autoplay = ref(false);
     const stepsTimings = ref([]);
     const totalElapsedTime = ref(null);
-    const currentStepTotalTime = ref(0);
-    const currentStepElapsedSeconds = ref(0);
+    const totalElapsedTimeFormattedString = ref(null);
+    const currentStepElapsedTime = ref(null);
+    const currentStepDuration = ref(null);
+    const currentStepProgress = ref(0);
 
     onMounted(() => {
       //init steps
@@ -276,11 +291,17 @@ export default {
       //init timings
       stepsTimings.value = getTimings(steps.value);
       autoplaySupported.value = stepsTimings.value ? true : false;
-      console.log("stepsTimings", stepsTimings.value);
+      steps.value.forEach((step, index) => {
+        step.time = getFormattedTime(toDateFromSeconds(stepsTimings.value[index].startTime));
+      });
 
       //init timer
-      totalElapsedTime.value = new Date(); //Todo: Init with 00:00 instead
-      resetStepTime();
+      totalElapsedTime.value = new Date();
+      totalElapsedTime.value.setSeconds(0);
+      totalElapsedTime.value.setMinutes(0);
+      totalElapsedTime.value.setHours(0);
+      totalElapsedTimeFormattedString.value = getFormattedTime(totalElapsedTime.value);
+      setElapsedTimeToCurrentStepStartTime();
     });
 
     onBeforeUnmount(() => {
@@ -316,19 +337,17 @@ export default {
 
     function updateStepProgress() {
       totalElapsedTime.value.setSeconds(totalElapsedTime.value.getSeconds() + 1);
-      currentStepElapsedSeconds.value = currentStepElapsedSeconds.value + 1;
+      totalElapsedTimeFormattedString.value = getFormattedTime(totalElapsedTime.value);
+      updateProgress();
 
-      if (currentStepElapsedSeconds.value >= currentStepTotalTime.value) {
-        const isLastStep = currentStepIndex.value == steps.value.length - 1;
-        if (!isLastStep) {
+      const isLastStep = currentStepIndex.value == steps.value.length - 1;
+      if (!isLastStep) {
+        var nextStep = steps.value[currentStepIndex.value + 1];
+        if (totalElapsedTime.value >= toDateFromString(nextStep.time)) {
           handleNextStep();
-        } else {
-          clearTimer();
         }
       }
     }
-
-    
 
     function initTimer() {
       clearInterval(timer.value);
@@ -337,10 +356,23 @@ export default {
       }, 1000);
     }
 
-    function resetStepTime() {
-      currentStepElapsedSeconds.value = 0;
-      currentStepTotalTime.value = 10; //Todo: use from timings data
-      totalElapsedTime.value = toDate(currentStep.value.time); //Todo: use from timings data
+    function updateProgress() {
+      var nextStep = steps.value[currentStepIndex.value + 1];
+      if (!nextStep) {
+        currentStepProgress.value = 100;
+      } else {
+        currentStepElapsedTime.value =
+          totalElapsedTime.value - toDateFromString(currentStep.value.time);
+        currentStepDuration.value =
+          toDateFromString(nextStep.time) - toDateFromString(currentStep.value.time);
+        currentStepProgress.value =
+          (currentStepElapsedTime.value / currentStepDuration.value) * 100;
+      }
+    }
+
+    function setElapsedTimeToCurrentStepStartTime() {
+      totalElapsedTime.value = toDateFromString(currentStep.value?.time);
+      totalElapsedTimeFormattedString.value = getFormattedTime(totalElapsedTime.value);
     }
 
     function clearTimer() {
@@ -357,6 +389,10 @@ export default {
           initTimer();
         }
       }
+    }
+
+    function getProgress() {
+      return ((currentStepIndex.value + 1) / steps.value.length) * 100;
     }
 
     function getFood() {
@@ -392,31 +428,29 @@ export default {
       return currentStep?.builders ? currentStep.builders : "";
     }
 
-    function getProgress() {
-      return ((currentStepIndex.value + 1) / steps.value.length) * 100;
-    }
-
-    function getStepProgress() {
-      return (currentStepElapsedSeconds.value / currentStepTotalTime.value) * 100;
-    }
-
-    function handleNextStep() {
+    function handleNextStep(event) {
       currentStepIndex.value = Math.min(++currentStepIndex.value, steps.value.length - 1);
       currentStep.value = steps.value[currentStepIndex.value];
 
       clearTimer();
-      resetStepTime();
+      if (event) {
+        setElapsedTimeToCurrentStepStartTime();
+      }
+      updateProgress();
       if (autoplay.value) {
         initTimer();
       }
     }
 
-    function handlePreviousStep() {
+    function handlePreviousStep(event) {
       currentStepIndex.value = Math.max(--currentStepIndex.value, 0);
       currentStep.value = steps.value[currentStepIndex.value];
 
       clearTimer();
-      resetStepTime();
+      if (event) {
+        setElapsedTimeToCurrentStepStartTime();
+      }
+      updateProgress();
       if (autoplay.value) {
         initTimer();
       }
@@ -439,9 +473,9 @@ export default {
     return {
       steps,
       getProgress,
-      totalElapsedTime,
-      getStepProgress,
+      totalElapsedTimeFormattedString,
       currentStep,
+      currentStepProgress,
       getFormattedTime,
       handleNextStep,
       handlePreviousStep,
