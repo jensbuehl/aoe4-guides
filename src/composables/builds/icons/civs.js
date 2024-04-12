@@ -18,16 +18,3 @@ export const civs = [
   "JAP",
   "DRA",
 ];
-
- //Internal methods
- Array.prototype.except = function (val) {
-  return this.filter(function (x) {
-    return x !== val;
-  });
-};
-
-Array.prototype.exceptMany = function (val) {
-  return this.filter(function (x) {
-    return !val.includes(x);
-  });
-};

@@ -80,7 +80,7 @@
         </v-row>
         <v-row class="mt-2" no-gutters align="center" justify="center">
           <v-col class="text-center">
-            {{ getFormattedTime() }}
+            {{ getFormattedTime(totalElapsedTime) }}
           </v-col>
           <v-col class="text-center">
             <span v-if="currentStep">{{ aggregateVillagers() }}</span>
@@ -145,7 +145,7 @@
           </thead>
           <tbody style="user-select: none">
             <tr>
-              <td class="text-center py-1">{{ getFormattedTime() }}</td>
+              <td class="text-center py-1">{{ getFormattedTime(totalElapsedTime) }}</td>
               <td v-if="currentStep" class="text-center py-1">
                 {{ aggregateVillagers() }}
               </td>
@@ -236,6 +236,7 @@ import { useEventListener } from "@vueuse/core";
 //Components
 
 //Composables
+import { getTimings, toDate, getFormattedTime } from "@/composables/builds/timingsHelper.js";
 
 export default {
   name: "FocusMode",
@@ -272,8 +273,13 @@ export default {
       //init current step
       currentStep.value = steps.value[currentStepIndex.value];
 
+      //init timings
+      stepsTimings.value = getTimings(steps.value);
+      autoplaySupported.value = stepsTimings.value ? true : false;
+      console.log("stepsTimings", stepsTimings.value);
+
       //init timer
-      totalElapsedTime.value = new Date();
+      totalElapsedTime.value = new Date(); //Todo: Init with 00:00 instead
       resetStepTime();
     });
 
@@ -322,19 +328,7 @@ export default {
       }
     }
 
-    function toDate(time) {
-      time = time ? time : "00:00";
-      let splitTime = time.split(":");
-      let dateTime = new Date();
-      dateTime.setMinutes(splitTime[0]);
-      dateTime.setSeconds(splitTime[1]);
-      return dateTime;
-    }
-
-    function getFormattedTime() {
-      var timeString = totalElapsedTime.value?.toTimeString();
-      return timeString ? timeString.split(" ")[0].substring(3) : "00:00";
-    }
+    
 
     function initTimer() {
       clearInterval(timer.value);
@@ -355,6 +349,7 @@ export default {
     }
 
     function handleTogglePlayback() {
+      autoplay.value = !autoplay.value;
       if (timer.value) {
         clearTimer();
       } else {
@@ -444,6 +439,7 @@ export default {
     return {
       steps,
       getProgress,
+      totalElapsedTime,
       getStepProgress,
       currentStep,
       getFormattedTime,
