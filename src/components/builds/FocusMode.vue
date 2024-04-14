@@ -290,6 +290,7 @@ export default {
 
       //init timings
       stepsTimings.value = getTimings(steps.value);
+      console.log(stepsTimings.value);
       autoplaySupported.value = stepsTimings.value ? true : false;
       steps.value.forEach((step, index) => {
         step.time = getFormattedTime(toDateFromSeconds(stepsTimings.value[index].startTime));

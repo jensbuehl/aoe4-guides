@@ -12,15 +12,21 @@ export function toDateFromString(timeString) {
     return null;
   }
 
-  //TODO: support other string formats!
-  let splitTime = timeString.split(":");
+  timeString = timeString.replace("~", "");
+  var selectExpr = /^(\d?\d:\d\d)$/;
+  var match = timeString.match(selectExpr);
 
-  let time = new Date();
-  time.setMinutes(splitTime[0]);
-  time.setSeconds(splitTime[1]);
-  time.setHours(0);
+  if (!match) {
+    return null;
+  } else {
+    var splitTime = match[0].split(":");
+    var time = new Date();
+    time.setMinutes(splitTime[0]);
+    time.setSeconds(splitTime[1]);
+    time.setHours(0);
 
-  return time;
+    return time;
+  }
 }
 
 export function toDateFromSeconds(secs) {
@@ -95,7 +101,9 @@ function init(timings, steps) {
       startTime: toSeconds(toDateFromString(step.time)),
       villagers: aggregateVillagers(step),
       villagerOffsetNextStep: step.gameplan ? null : getVillagerDiffToNextStep(steps, index),
-      villagerOffsetNextValidStep: step.gameplan ? null : getVillagerDiffToNextTimeStamp(steps, index),
+      villagerOffsetNextValidStep: step.gameplan
+        ? null
+        : getVillagerDiffToNextTimeStamp(steps, index),
       type: step.gameplan ? "note" : "step",
     });
   });
@@ -104,7 +112,7 @@ function init(timings, steps) {
 }
 
 function interpolate(timings, startIndex = 0) {
-  //Find first timestamp with villagers
+  //Find first valid step
   const isStep = (element) => element.type == "step";
   const hasTimestamp = (element) => element.startTime !== null;
   const hasVillagers = (element) => element.villagers;
@@ -113,7 +121,7 @@ function interpolate(timings, startIndex = 0) {
       index == startIndex && isStep(element) && hasTimestamp(element) && hasVillagers(element)
   );
 
-  //Find second timestamp
+  //Find second valid step
   const secondValidStepIndex = timings.findIndex(
     (element, index) =>
       index > firstValidStepIndex &&
@@ -122,29 +130,39 @@ function interpolate(timings, startIndex = 0) {
       hasVillagers(element)
   );
 
+  //Stop recursion if no more valid steps found
   if (secondValidStepIndex == -1) {
-    //Stop recursion if no more valid elements found
     return timings;
   } else {
     //Interpolate in between first and second match
     for (let index = firstValidStepIndex + 1; index < secondValidStepIndex; index++) {
-      if (timings[index].type == "step") {
+      if (timings[index].type == "step" && timings[index].startTime == null) {
         const element = timings[index];
         const timediff =
           timings[secondValidStepIndex].startTime - timings[firstValidStepIndex].startTime;
         const villagersThisStep = element.villagerOffsetNextStep;
         const villagersTotal = timings[firstValidStepIndex].villagerOffsetNextValidStep;
-        const referenceTimestamp = timings[index-1].startTime ? timings[index-1].startTime : timings[firstValidStepIndex].startTime;
+        const referenceTimestamp = timings[index - 1].startTime
+          ? timings[index - 1].startTime
+          : timings[firstValidStepIndex].startTime;
         element.startTime = referenceTimestamp + (timediff * villagersThisStep) / villagersTotal;
       }
     }
     interpolate(timings, secondValidStepIndex);
   }
 
-  //TODO: Integrate notes
   //Find notes
-  //Take the last 10 seconds from the previous step:
-  //notesStep.startTime=nextStep.startTime - 10
+  timings.forEach((element, index) => {
+    const defaultNoteTime = 20;
+    //treat steps without villagers and time as notes
+    if (element.type == "note" || (!element.villagers && !element.startTime)) {
+      if (index == timings.length - 1) {
+        timings[index].startTime = timings[index - 1].startTime + defaultNoteTime;
+      } else {
+        timings[index].startTime = timings[index + 1].startTime - defaultNoteTime;
+      }
+    }
+  });
 
   return timings;
 }
