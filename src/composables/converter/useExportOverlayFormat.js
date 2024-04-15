@@ -1,3 +1,5 @@
+import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+
 export default function useExportOverlayFormat() {
   const convert = (build) => {
     var steps;
@@ -52,16 +54,6 @@ export default function useExportOverlayFormat() {
     }
   }
 
-  const aggregateVillagers = (step) => {
-    const builders = parseInt(step.builders) || 0;
-    const food = parseInt(step.food) || 0;
-    const wood = parseInt(step.wood) || 0;
-    const gold = parseInt(step.gold) || 0;
-    const stone = parseInt(step.stone) || 0;
-
-    return builders + food + wood + gold + stone || -1;
-  };
-
   const convertStepToOverlayFormat = (step) => {
     const notes = convertDescription(step.description);
     const time = step.time?.replaceAll("<br>", "");
@@ -69,7 +61,7 @@ export default function useExportOverlayFormat() {
       age: step.age > 0 ? step.age : -1,
       population_count: -1, //not supported
       ...(time && { time: time }),
-      villager_count: aggregateVillagers(step),
+      villager_count: aggregateVillagers(step) || -1,
       resources: {
         food: parseInt(step.food) || 0,
         wood: parseInt(step.wood) || 0,

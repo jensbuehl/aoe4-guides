@@ -1,3 +1,5 @@
+import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+
 export function getTimings(steps) {
   var timings = [];
 
@@ -76,16 +78,6 @@ function getVillagerDiffToNextTimeStamp(steps, stepIndex) {
   var nextStepVillagerCount = aggregateVillagers(steps[nextIndex]);
 
   return nextStepVillagerCount - currentStepVillagerCount;
-}
-
-function aggregateVillagers(step) {
-  const builders = parseInt(step?.builders) || 0;
-  const food = parseInt(step?.food) || 0;
-  const wood = parseInt(step?.wood) || 0;
-  const gold = parseInt(step?.gold) || 0;
-  const stone = parseInt(step?.stone) || 0;
-
-  return builders + food + wood + gold + stone || null;
 }
 
 function toSeconds(date) {

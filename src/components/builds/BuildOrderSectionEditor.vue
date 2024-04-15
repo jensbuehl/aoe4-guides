@@ -149,7 +149,7 @@
               ><v-card-text
                 class="text-center"
                 disabled
-                v-html="aggregateVillagers(index)"
+                v-html="aggregateVillagers(item)"
               ></v-card-text
             ></v-card>
           </v-col>
@@ -496,7 +496,7 @@
             <td
               class="text-center aggregatedVillagers py-1"
               disabled
-              v-html="aggregateVillagers(index)"
+              v-html="aggregateVillagers(item)"
             ></td>
             <td
               style="white-space: break-spaces"
@@ -748,6 +748,7 @@ import IconToolTip from "@/components/builds/IconToolTip.vue";
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
 import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
+import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
 import {
   addAutocompleteIcon,
   updateSearchText,
@@ -957,17 +958,6 @@ export default {
       saveSelection();
     };
 
-    const aggregateVillagers = (index) => {
-      const step = steps[index];
-      const builders = parseInt(step.builders) || 0;
-      const food = parseInt(step.food) || 0;
-      const wood = parseInt(step.wood) || 0;
-      const gold = parseInt(step.gold) || 0;
-      const stone = parseInt(step.stone) || 0;
-
-      return builders + food + wood + gold + stone || "";
-    };
-
     const updateStep = (event, index, propertyName) => {
       steps[index][propertyName] = event.target.innerHTML;
       stepsCopy[index][propertyName] = event.target.innerHTML;
@@ -975,7 +965,7 @@ export default {
       steps[index].description = stepsCopy[index].description;
       gameplan.value = gameplanCopy.value;
 
-      aggregateVillagers(index);
+      aggregateVillagers(steps[index]);
 
       context.emit("stepsChanged", steps);
     };

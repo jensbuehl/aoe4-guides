@@ -88,7 +88,7 @@
             {{ totalElapsedTimeFormattedString }}
           </v-col>
           <v-col class="text-center">
-            <span v-if="currentStep">{{ aggregateVillagers() }}</span>
+            <span v-if="currentStep">{{ aggregateVillagers(currentStep) }}</span>
           </v-col>
           <v-col class="text-center">
             {{ currentStep?.builders ? currentStep.builders : "" }}
@@ -152,7 +152,7 @@
             <tr>
               <td class="text-center py-1">{{ totalElapsedTimeFormattedString }}</td>
               <td v-if="currentStep" class="text-center py-1">
-                {{ aggregateVillagers() }}
+                {{ aggregateVillagers(currentStep) }}
               </td>
               <td class="text-center py-1">{{ getBuilders() }}</td>
               <td class="text-center py-1">
@@ -244,6 +244,7 @@ import { useEventListener } from "@vueuse/core";
 //Components
 
 //Composables
+import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
 import {
   getTimings,
   toDateFromString,
@@ -308,16 +309,6 @@ export default {
     onBeforeUnmount(() => {
       clearTimer();
     });
-
-    function aggregateVillagers() {
-      const builders = parseInt(currentStep.value.builders) || 0;
-      const food = parseInt(currentStep.value.food) || 0;
-      const wood = parseInt(currentStep.value.wood) || 0;
-      const gold = parseInt(currentStep.value.gold) || 0;
-      const stone = parseInt(currentStep.value.stone) || 0;
-
-      return builders + food + wood + gold + stone || "";
-    }
 
     useEventListener(document, "keyup", (e) => handleKeyPressed(e));
     function handleKeyPressed(e) {
