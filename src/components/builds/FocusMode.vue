@@ -308,7 +308,7 @@ export default {
 
       //speak test
       await initTextToSpeech();
-      speak();
+      speak(currentStep.value);
     });
 
     onBeforeUnmount(() => {
@@ -437,6 +437,7 @@ export default {
       if (autoplay.value) {
         initTimer();
       }
+      speak(currentStep.value);
     }
 
     function handlePreviousStep(event) {
@@ -451,6 +452,7 @@ export default {
       if (autoplay.value) {
         initTimer();
       }
+      speak(currentStep.value);
     }
 
     function handleClose() {
