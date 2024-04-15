@@ -245,6 +245,8 @@ import { useEventListener } from "@vueuse/core";
 
 //Composables
 import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+
+import { initTextToSpeech, speak } from "@/composables/builds/textToSpeechHelper.js";
 import {
   getTimings,
   toDateFromString,
@@ -271,7 +273,7 @@ export default {
     const currentStepDuration = ref(null);
     const currentStepProgress = ref(0);
 
-    onMounted(() => {
+    onMounted(async () => {
       //init steps
       if (!props.build.steps[0]?.type) {
         //For backwards compatibility
@@ -291,7 +293,6 @@ export default {
 
       //init timings
       stepsTimings.value = getTimings(steps.value);
-      console.log(stepsTimings.value);
       autoplaySupported.value = stepsTimings.value ? true : false;
       steps.value.forEach((step, index) => {
         step.time = getFormattedTime(toDateFromSeconds(stepsTimings.value[index].startTime));
@@ -304,6 +305,10 @@ export default {
       totalElapsedTime.value.setHours(0);
       totalElapsedTimeFormattedString.value = getFormattedTime(totalElapsedTime.value);
       setElapsedTimeToCurrentStepStartTime();
+
+      //speak test
+      await initTextToSpeech();
+      speak();
     });
 
     onBeforeUnmount(() => {
