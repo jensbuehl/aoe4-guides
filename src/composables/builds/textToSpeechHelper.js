@@ -33,7 +33,7 @@ export async function speak(step) {
 }
 
 export async function stop() {
-  //TODO: Stop, e.g. on manual next step or when disabled
+  EasySpeech.cancel();
 }
 
 function getText(step){
@@ -73,7 +73,6 @@ function convertLineBreaks(description) {
 }
 
 function convertSpecialCharacters(description) {
-  console.log(description);
   description = description.replaceAll("<-", " See to the left. ");
   description = description.replaceAll("->", " See to the right. ");
   description = description.replaceAll(">", " on ");

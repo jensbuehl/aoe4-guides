@@ -219,6 +219,25 @@
           :style="{
             color: $vuetify.theme.current.colors.primary,
           }"
+          >Toggle voice over sound</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-if="autoplaySupported"
+            v-bind="props"
+            color="accent"
+            flat
+            class="ma-2"
+            :icon="audio ? 'mdi-volume-medium' : 'mdi-volume-off'"
+            @click="audio = !audio"
+          ></v-btn>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
           >Next Build Order Step (ARROW RIGHT)</span
         >
         <template v-slot:activator="{ props }">
@@ -246,7 +265,7 @@ import { useEventListener } from "@vueuse/core";
 //Composables
 import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
 
-import { initTextToSpeech, speak } from "@/composables/builds/textToSpeechHelper.js";
+import { initTextToSpeech, speak, stop } from "@/composables/builds/textToSpeechHelper.js";
 import {
   getTimings,
   toDateFromString,
@@ -264,6 +283,7 @@ export default {
     const steps = ref([]);
 
     const timer = ref(null);
+    const audio = ref(false);
     const autoplaySupported = ref(false);
     const autoplay = ref(false);
     const stepsTimings = ref([]);
@@ -308,7 +328,10 @@ export default {
 
       //speak test
       await initTextToSpeech();
-      speak(currentStep.value);
+      if (audio.value) {
+        stop();
+        speak(currentStep.value);
+      }
     });
 
     onBeforeUnmount(() => {
@@ -380,10 +403,15 @@ export default {
     function handleTogglePlayback() {
       autoplay.value = !autoplay.value;
       if (timer.value) {
+        stop();
         clearTimer();
       } else {
         if (autoplay.value) {
           initTimer();
+          if (audio.value) {
+            stop();
+            speak(currentStep.value);
+          }
         }
       }
     }
@@ -437,7 +465,10 @@ export default {
       if (autoplay.value) {
         initTimer();
       }
-      speak(currentStep.value);
+      if (audio.value) {
+        stop();
+        speak(currentStep.value);
+      }
     }
 
     function handlePreviousStep(event) {
@@ -452,7 +483,10 @@ export default {
       if (autoplay.value) {
         initTimer();
       }
-      speak(currentStep.value);
+      if (audio.value) {
+        stop();
+        speak(currentStep.value);
+      }
     }
 
     function handleClose() {
@@ -480,6 +514,7 @@ export default {
       handlePreviousStep,
       handleTogglePlayback,
       timer,
+      audio,
       autoplaySupported,
       currentStepIndex,
       handleClose,
