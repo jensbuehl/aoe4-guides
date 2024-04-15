@@ -745,8 +745,6 @@ export default {
 
     const handleDelete = async () => {
       await deleteBuild(props.id);
-      store.commit("removeBuild", props.id);
-
       console.log("error", error.value);
 
       if (!error.value) {
@@ -754,6 +752,10 @@ export default {
           text: `Build order deleted!`,
           type: "success",
         });
+
+        //Reset cache
+        store.commit("setRecentBuildsList", null);
+        store.commit("removeBuild", props.id);
 
         //workaround, since router.go(-1) does not work
         const previousRoute = window.history.state.back;
