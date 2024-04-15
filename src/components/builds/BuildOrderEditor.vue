@@ -102,7 +102,7 @@ import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor
 
 export default {
   name: "BuildOrderEditor",
-  props: ["steps", "readonly", "civ"],
+  props: ["steps", "readonly", "civ", "focus"],
   emits: ["stepsChanged", "activateFocusMode"],
   components: { BuildOrderSectionEditor },
   setup(props, context) {
@@ -116,6 +116,11 @@ export default {
 
     onMounted(async () => {
       initializeSections();
+
+      console.log(props);
+      if (props.focus){
+        activateFocusMode();
+      }
 
       //Wait until tables are rendered
       await nextTick();

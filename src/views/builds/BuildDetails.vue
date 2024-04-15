@@ -609,6 +609,7 @@
       :steps="build.steps"
       :readonly="true"
       :civ="build.civ"
+      :focus="focusMode"
       @activateFocusMode="focusDialog = true"
     ></BuildOrderEditor>
 
@@ -636,7 +637,7 @@
 //External
 import { ref, onMounted, computed } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 //components
 import Favorite from "@/components/Favorite.vue";
@@ -675,6 +676,7 @@ export default {
   setup(props) {
     const store = useStore();
     const router = useRouter();
+    const route = useRoute();
     const user = computed(() => store.state.user);
     const civs = allCivs.value;
     const build = ref(null);
@@ -686,6 +688,7 @@ export default {
     const { timeSince, isNew } = useTimeSince();
     const userData = ref(null);
     const loading = ref(true);
+    const focusMode = ref(false);
 
     onMounted(async () => {
       var resBuild = null;
@@ -705,6 +708,10 @@ export default {
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
         incrementViews(props.id);
+      }
+      if (route.query) {
+        console.log("query", route.query);
+        focusMode.value = route.query.focus;
       }
       loading.value = false;
     });
@@ -798,6 +805,7 @@ export default {
       loading,
       civs,
       swipe,
+      focusMode,
       getCivById,
       deleteDialog,
       focusDialog,
