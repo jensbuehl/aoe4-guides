@@ -6,7 +6,9 @@ export function getTimings(steps) {
   timings = init(timings, steps);
   timings = interpolate(timings);
 
-  return timings;
+  const valid = timings.every((element) => element.startTime !== null);
+
+  return valid ? timings : null;
 }
 
 export function toDateFromString(timeString) {
