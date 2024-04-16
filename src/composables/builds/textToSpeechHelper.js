@@ -18,7 +18,7 @@ export async function initTextToSpeech() {
   voice = voice ? voice : EasySpeech.filterVoices({ voiceURI: "Google UK English Male" })[0]; //Chrome on Windows
   voice = voice ? voice : EasySpeech.filterVoices({ voiceURI: "Mark" })[0]; //Firefox on Windows
   voice = voice ? voice : EasySpeech.filterVoices({ language: "en-GB" })[0]; //Fallback for Android, currenty, Edge does not support any voices at all!
-  var voices = EasySpeech.filterVoices({ language: "en-GB" }).map((voice) => voice.name).toString();
+  var voices = EasySpeech.filterVoices({ language: "en-GB" }).map((voice) => voice.voiceURI).toString();
   prompt(voices);
   console.log("Voice", voice);
   
