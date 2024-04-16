@@ -346,11 +346,11 @@ export default {
       totalElapsedTimeFormattedString.value = getFormattedTime(totalElapsedTime.value);
       setElapsedTimeToCurrentStepStartTime();
 
-      //speak test
+      //init speak
       await initTextToSpeech();
       if (audio.value) {
         stop();
-        speak(currentStep.value);
+        if (!autoplay.value) speak(currentStep.value);
       }
     });
 
@@ -441,7 +441,7 @@ export default {
       if (!audio.value) {
         stop();
       } else {
-        speak(currentStep.value);
+        if (!autoplay.value) speak(currentStep.value);
       }
     }
 
