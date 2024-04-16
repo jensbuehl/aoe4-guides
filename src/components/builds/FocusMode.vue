@@ -350,12 +350,14 @@ export default {
       await initTextToSpeech();
       if (audio.value) {
         stop();
-        if (!autoplay.value) speak(currentStep.value);
+        console.log("autoplaySupported", autoplaySupported.value);
+        if (!autoplaySupported.value) speak(currentStep.value);
       }
     });
 
     onBeforeUnmount(() => {
       clearTimer();
+      stop();
     });
 
     useEventListener(document, "keyup", (e) => handleKeyPressed(e));
@@ -441,7 +443,7 @@ export default {
       if (!audio.value) {
         stop();
       } else {
-        if (!autoplay.value) speak(currentStep.value);
+        if (!autoplaySupported.value) speak(currentStep.value);
       }
     }
 
