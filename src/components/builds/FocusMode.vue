@@ -35,17 +35,19 @@
         left: () => handleNextStep(),
         right: () => handlePreviousStep(),
       }"
-      ><v-col cols="12" class="ma-4" justify="center" align="center"
-        ><div class="mb-4" v-if="currentStep?.gameplan">
-          Notes
-          <v-icon
-            color="accent"
-            style="vertical-align: middle; width: auto; height: 40px"
-            class="mx-auto"
-            >mdi-information-outline</v-icon
-          >
+      ><v-col cols="12" class="ma-4" justify="center" align="center">
+        <div class="ma-4">
+          <div class="mb-4" v-if="currentStep?.gameplan">
+            Notes
+            <v-icon
+              color="accent"
+              style="vertical-align: middle; width: auto; height: 40px"
+              class="mx-auto"
+              >mdi-information-outline</v-icon
+            >
+          </div>
+          <span style="text-align: center" v-html="getContent()" />
         </div>
-        <span style="text-align: center" v-html="getContent()" />
       </v-col>
     </v-row>
     <v-progress-linear bg-color="accent" color="accent" height="4" :model-value="getProgress()" />
