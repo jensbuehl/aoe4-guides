@@ -77,7 +77,7 @@ export const general = [
     class: "none",
   },
   {
-    title: "Build or Repair",
+    title: "Build",
     age: "1",
     imgSrc: "/assets/pictures/abilities/repair.png",
     civ: civs,
