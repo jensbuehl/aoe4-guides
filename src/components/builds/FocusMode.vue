@@ -192,9 +192,25 @@
           ></v-btn>
         </template>
       </v-tooltip>
-      <span v-if="!autoplaySupported" style="user-select: none">
-        {{ currentStepIndex + 1 }} of {{ steps.length }}
-      </span>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
+          >Toggle voice over sound</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-if="!autoplaySupported"
+            v-bind="props"
+            color="accent"
+            flat
+            class="ma-2"
+            :icon="audio ? 'mdi-volume-medium' : 'mdi-volume-off'"
+            @click="handleToggleAudio"
+          ></v-btn>
+        </template>
+      </v-tooltip>
       <v-tooltip location="top">
         <span
           :style="{
@@ -229,7 +245,7 @@
             flat
             class="ma-2"
             :icon="audio ? 'mdi-volume-medium' : 'mdi-volume-off'"
-            @click="audio = !audio"
+            @click="handleToggleAudio"
           ></v-btn>
         </template>
       </v-tooltip>
@@ -283,7 +299,7 @@ export default {
     const steps = ref([]);
 
     const timer = ref(null);
-    const audio = ref(false);
+    const audio = ref(true);
     const autoplaySupported = ref(false);
     const autoplay = ref(false);
     const stepsTimings = ref([]);
@@ -314,9 +330,11 @@ export default {
       //init timings
       stepsTimings.value = getTimings(steps.value);
       autoplaySupported.value = stepsTimings.value ? true : false;
-      steps.value.forEach((step, index) => {
-        step.time = getFormattedTime(toDateFromSeconds(stepsTimings.value[index].startTime));
-      });
+      if (autoplaySupported.value) {
+        steps.value.forEach((step, index) => {
+          step.time = getFormattedTime(toDateFromSeconds(stepsTimings.value[index].startTime));
+        });
+      }
 
       //init timer
       totalElapsedTime.value = new Date();
@@ -413,6 +431,15 @@ export default {
             speak(currentStep.value);
           }
         }
+      }
+    }
+
+    function handleToggleAudio() {
+      audio.value = !audio.value;
+      if (!audio.value) {
+        stop();
+      } else {
+        speak(currentStep.value);
       }
     }
 
@@ -513,6 +540,7 @@ export default {
       handleNextStep,
       handlePreviousStep,
       handleTogglePlayback,
+      handleToggleAudio,
       timer,
       audio,
       autoplaySupported,
