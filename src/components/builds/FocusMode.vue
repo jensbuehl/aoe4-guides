@@ -91,19 +91,19 @@
             <span v-if="currentStep">{{ aggregateVillagers(currentStep) }}</span>
           </v-col>
           <v-col class="text-center">
-            {{ currentStep?.builders ? currentStep.builders : "" }}
+            {{ getBuilders() }}
           </v-col>
           <v-col class="text-center">
-            {{ currentStep?.food }}
+            {{ getFood() }}
           </v-col>
           <v-col class="text-center">
-            {{ currentStep?.wood }}
+            {{ getWood() }}
           </v-col>
           <v-col class="text-center">
-            {{ currentStep?.gold }}
+            {{ getGold() }}
           </v-col>
           <v-col class="text-center">
-            {{ currentStep?.stone }}
+            {{ getStone() }}
           </v-col>
         </v-row>
       </v-col>
@@ -450,7 +450,7 @@ export default {
           ? steps.value[currentStepIndex.value - 1].builders
           : "";
 
-      return currentStep?.builders ? currentStep.builders : "";
+      return currentStep.value?.builders ? currentStep.value.builders : "";
     }
 
     function handleNextStep(event) {
