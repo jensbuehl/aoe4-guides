@@ -92,21 +92,11 @@
           <v-col class="text-center">
             <span v-if="currentStep">{{ aggregateVillagers(currentStep) }}</span>
           </v-col>
-          <v-col class="text-center">
-            {{ getBuilders() }}
-          </v-col>
-          <v-col class="text-center">
-            {{ getFood() }}
-          </v-col>
-          <v-col class="text-center">
-            {{ getWood() }}
-          </v-col>
-          <v-col class="text-center">
-            {{ getGold() }}
-          </v-col>
-          <v-col class="text-center">
-            {{ getStone() }}
-          </v-col>
+          <v-col class="text-center" v-html="getBuilders()" />
+          <v-col class="text-center" v-html="getFood()" />
+          <v-col class="text-center" v-html="getWood()" />
+          <v-col class="text-center" v-html="getGold()" />
+          <v-col class="text-center" v-html="getStone()" />
         </v-row>
       </v-col>
     </v-row>
@@ -156,18 +146,14 @@
               <td v-if="currentStep" class="text-center py-1">
                 {{ aggregateVillagers(currentStep) }}
               </td>
-              <td class="text-center py-1">{{ getBuilders() }}</td>
-              <td class="text-center py-1">
-                {{ getFood() }}
-              </td>
-              <td class="text-center py-1">{{ getWood() }}</td>
-              <td class="text-center py-1">{{ getGold() }}</td>
-              <td class="text-center py-1">{{ getStone() }}</td>
+              <td class="text-center py-1" v-html="getBuilders()" />
+              <td class="text-center py-1" v-html="getFood()" />
+              <td class="text-center py-1" v-html="getWood()" />
+              <td class="text-center py-1" v-html="getGold()" />
+              <td class="text-center py-1" v-html="getStone()" />
             </tr>
-          </tbody>
-        </v-table></v-col
-      ></v-row
-    >
+          </tbody> </v-table></v-col
+    ></v-row>
 
     <v-row
       :style="{
