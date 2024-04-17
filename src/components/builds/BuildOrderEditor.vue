@@ -15,24 +15,23 @@
   </v-dialog>
   <v-card rounded="lg" class="mt-4" flat>
     <v-row no-gutters>
-      <v-card-title>Build Order</v-card-title><v-spacer></v-spacer>
+      <v-card-title>Build Order</v-card-title><v-spacer/>
       <v-tooltip>
         <span
           :style="{
             color: $vuetify.theme.current.colors.primary,
           }"
-          >Activate Focus Mode</span
+          >Switch to Focus Mode. This allows for Autoplay and Voice Over with less distraction.</span
         >
         <template v-slot:activator="{ props }">
           <v-btn
             v-if="readonly"
             class="ma-2"
             v-bind="props"
-            variant="text"
             color="accent"
-            prepend-icon="mdi-controller"
+            prepend-icon="mdi-play"
             @click="activateFocusMode"
-            >Focus Mode</v-btn
+            >Play</v-btn
           >
         </template>
       </v-tooltip>
@@ -118,7 +117,7 @@ export default {
       initializeSections();
 
       console.log(props);
-      if (props.focus){
+      if (props.focus) {
         activateFocusMode();
       }
 
