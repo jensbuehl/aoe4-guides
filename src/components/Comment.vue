@@ -13,7 +13,7 @@
   </v-dialog>
   <v-divider></v-divider>
   <v-card-text style="white-space: pre-line">
-    <v-row class="mt-2"no-gutters align="center">
+    <v-row class="my-2"no-gutters align="center">
       <v-col cols="auto">
         <v-avatar class="mr-4" color="accent">{{ author.slice(0, 2).toUpperCase() }}</v-avatar>
       </v-col>
