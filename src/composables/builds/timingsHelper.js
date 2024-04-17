@@ -43,7 +43,7 @@ export function toDateFromSeconds(secs) {
 
 export function getFormattedTime(time) {
   var timeString = time?.toTimeString();
-  return timeString ? timeString.split(" ")[0].substring(3) : "00:00";
+  return timeString ? timeString.split(" ")[0].substring(3) : "";
 }
 
 function getVillagerDiffToNextStep(steps, stepIndex) {
