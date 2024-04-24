@@ -301,10 +301,10 @@ export default {
       //init steps
       if (!props.build.steps[0]?.type) {
         //For backwards compatibility
-        steps.value = props.build.steps;
+        steps.value = JSON.parse(JSON.stringify(props.build.steps))
       } else {
         props.build.steps.forEach((section) => {
-          steps.value = steps.value.concat(section.steps);
+          steps.value = steps.value.concat(JSON.parse(JSON.stringify(section.steps)));
           //Include gamplan as step which is also providing content
           if (section.gameplan) {
             steps.value = steps.value.concat({ gameplan: section.gameplan });
