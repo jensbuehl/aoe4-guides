@@ -109,7 +109,7 @@ export default {
       limit: 10,
     });
 
-    const initQueryParameters = () => {
+    const initQueryParameters = async () => {
       //Reset config and only apply query parameters if they are set
       if (Object.keys(route.query).length) {
         store.commit("setFilterConfig", getDefaultConfig());
@@ -125,17 +125,17 @@ export default {
       if (route.query.creator) {
         store.commit("setCreator", route.query.creator);
       }
-      if (route.query.author) {
-        store.commit("setAuthor", route.query.author);
+      if (route.query.authorUid) {
+        store.commit("setAuthor", route.query.authorUid);
       }
       if (route.query.orderBy) {
         store.commit("setOrderBy", route.query.orderBy);
       }
     };
 
-    initQueryParameters();
-
-    onMounted(() => {
+    
+    onMounted(async () => {
+      await initQueryParameters();
       initData();
     });
 
