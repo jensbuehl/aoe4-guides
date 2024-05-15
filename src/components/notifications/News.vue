@@ -7,7 +7,7 @@
         
         A huge thank you to all of you for making this site a treasure trove of strategies for fellow fans of Age of Empires IV like myself. Your insights and dedication have shaped aoe4guides.com into a fantastic resource that keeps getting better.<br /><br />
 
-        Thanks for your support and happy scouting! Here's to many more games, guides, and victories! Keep those build orders coming!
+        Thanks for your support and happy scouting!<br>
 
         -exe
       </v-card-text>

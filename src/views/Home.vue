@@ -27,16 +27,16 @@
     <v-row>
       <!-- main content -->
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <News class="mb-6"></News>
-        <v-card flat rounded="lg" class="mb-2">
+        <v-card flat rounded="lg" class="mb-6">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user">Welcome, {{ user.displayName }}!</v-card-title>
           <v-card-text>
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count">Busy villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span><span>.</span></v-card-text
-          >
-        </v-card>
+              ><span v-if="count > 1">s</span><span>.</span></v-card-text
+              >
+            </v-card>
+            <News class="mb-2"></News>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -467,19 +467,19 @@
 
       <!-- sidebar -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <News class="mb-6"></News>
-        <v-card flat rounded="lg" class="mb-2">
+        <v-card flat rounded="lg" class="mb-6">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user">Welcome, {{ user.displayName }}!</v-card-title>
           <v-card-text
-            >Create new Age of Empires 4 build orders and share them with your friends and the
-            community. </v-card-text
+          >Create new Age of Empires 4 build orders and share them with your friends and the
+          community. </v-card-text
           ><v-card-text>
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count">Busy villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span><span>.</span>
-          </v-card-text>
-        </v-card>
+              ><span v-if="count > 1">s</span><span>.</span>
+            </v-card-text>
+          </v-card>
+          <News class="mb-2"></News>
 
         <!--featured creators sm and up-->
         <v-row no-gutters align="center" class="hidden-xs">
