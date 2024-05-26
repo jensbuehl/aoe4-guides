@@ -13,25 +13,37 @@ const logger = require("firebase-functions/logger");
  * @return {Promise} A promise that resolves when all builds have been updated.
  */
 exports.updateBuildScore = onSchedule(
-  { schedule: "0 0 * * 5" },
+  { schedule: "0 0 * * 5", timeoutSeconds: 3600 },
   async (event) => {
-    logger.log("updateBuildScoreCalled");
+    logger.log("start updateBuildScore");
 
     // Get all builds
     const snapshot = await getFirestore().collection("builds").get();
 
-    for (const doc of snapshot.docs) {
-      console.log(doc.id, "=>", doc.data().score);
+    //Get count
+    var countSnapshot = await getFirestore().collection("builds").count().get();
+    var count = countSnapshot.data().count;
+
+    const promise = [];
+    var index = 1;
+    snapshot.forEach((doc) => {
+      console.log("Build", doc.id, index, "of", count);
+      index++;
 
       // Set updated build
-      const buildRef = getFirestore().collection("builds").doc(doc.id);
-      await buildRef.set(
-        {
-          score: await calculateAndUpdateScore(doc.data()),
-        },
-        { merge: true }
+      promise.push(
+        getFirestore()
+          .collection("builds")
+          .doc(doc.id)
+          .set(
+            {
+              score: calculateAndUpdateScore(doc.data()),
+            },
+            { merge: true }
+          )
       );
-    }
+    });
+    return Promise.all(promise);
   }
 );
 
@@ -49,7 +61,7 @@ exports.updateBuildScore = onSchedule(
  * @param {number} [build.likes=0] - The number of likes the build has.
  * @return {Promise<number>} The updated score of the build.
  */
-const calculateAndUpdateScore = async (build) => {
+const calculateAndUpdateScore = (build) => {
   //score calculation
   var score = build.views;
   score = score + 5 * (build.upvotes ? build.upvotes : 0);
@@ -73,6 +85,8 @@ const calculateAndUpdateScore = async (build) => {
     var x = timeDiff - 6;
     baseScore = baseScore * Math.exp(-0.05 * x * x);
   }
+
+  logger.log("score", baseScore);
 
   return baseScore;
 };

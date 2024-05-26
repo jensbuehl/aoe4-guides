@@ -13,25 +13,37 @@ const logger = require("firebase-functions/logger");
  * @return {Promise} A promise that resolves when all builds have been updated.
  */
 exports.updateBuildAllTimeScore = onSchedule(
-  { schedule: "0 0 1 * *" },
+  { schedule: "0 0 1 * *", timeoutSeconds: 3600 },
   async (event) => {
-    logger.log("updateBuildAllTimeScoreCalled");
+    logger.log("start updateBuildAllTimeScore");
 
     // Get all builds
     const snapshot = await getFirestore().collection("builds").get();
 
-    for (const doc of snapshot.docs) {
-      console.log(doc.id, "=>", doc.data().score);
+    //Get count
+    var countSnapshot = await getFirestore().collection("builds").count().get();
+    var count = countSnapshot.data().count;
+
+    const promise = [];
+    var index = 1;
+    snapshot.forEach((doc) => {
+      console.log("Build", doc.id, index, "of", count);
+      index++;
 
       // Set updated build
-      const buildRef = getFirestore().collection("builds").doc(doc.id);
-      await buildRef.set(
-        {
-          scoreAllTime: await calculateAndUpdateAllTimeScore(doc.data()),
-        },
-        { merge: true }
+      promise.push(
+        getFirestore()
+          .collection("builds")
+          .doc(doc.id)
+          .set(
+            {
+              scoreAllTime: calculateAndUpdateAllTimeScore(doc.data()),
+            },
+            { merge: true }
+          )
       );
-    }
+    });
+    return Promise.all(promise);
   }
 );
 
@@ -41,7 +53,7 @@ exports.updateBuildAllTimeScore = onSchedule(
  * @param {Object} build - The build object containing the views, upvotes, downvotes, and likes.
  * @return {number} The calculated all-time score.
  */
-const calculateAndUpdateAllTimeScore = async (build) => {
+const calculateAndUpdateAllTimeScore = (build) => {
   //score calculation
   var score = build.views;
   score = score + 5 * (build.upvotes ? build.upvotes : 0);
@@ -49,6 +61,8 @@ const calculateAndUpdateAllTimeScore = async (build) => {
   score = score + 50 * (build.likes ? build.likes : 0);
 
   var baseScore = Math.log(Math.max(score, 1));
+
+  logger.log("score", baseScore);
 
   return baseScore;
 };
