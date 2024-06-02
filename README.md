@@ -35,6 +35,16 @@ UX issues with other build order tools out there. :)
 
 ## Project Setup
 
+### Select Node version
+
+```sh
+nvm use
+```
+
+> If you don't have nvm installed, you can learn how to install it [here](https://github.com/nvm-sh/nvm#installing-and-updating).
+
+### Install Dependencies
+
 ```sh
 npm install
 ```
