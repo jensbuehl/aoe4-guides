@@ -5,7 +5,7 @@ export const seasons = ref([
     title: "Season 8",
     tagline: "Summer Sights.",
     startDate: new Date(2024, 7, 18)
-  }
+  },
   {
     title: "Season 7",
     tagline: "Spring Tournaments",
