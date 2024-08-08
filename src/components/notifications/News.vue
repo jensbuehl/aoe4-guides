@@ -3,21 +3,19 @@
     <v-card flat rounded="lg">
       <v-card-title>Sounds of Victory</v-card-title>
       <v-card-text>
-        There's a new YouTube channel showcasing community-created songs inspired by Age of
-        Empires IV. <br /><br />
-
-        If you're interested in hearing unique takes on the game's themes, check it out.
+        Featured Age of Empires IV Song: <br /><br />
+        "Mein Scout Hat Fernweh" (My scout has wanderlust)
         <br /><br />
 
-        More content may come in the future, so stay tuned. Good luck, have fun!<br /><br />
+        More to come in the future. Good luck, have fun!<br /><br />
 
-        -exe
+        -exe aka Gold3Dad
 
         <div align="center">
           <iframe
             width="100%"
             height="200px"
-            src="https://www.youtube.com/embed/9u3eYzxSyE0"
+            src="https://www.youtube.com/embed/p7Z9e64gXCU"
             frameborder="0"
             class="my-5"
             allowfullscreen
