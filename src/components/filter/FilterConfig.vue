@@ -26,10 +26,7 @@
               :items="creators"
               item-value="creatorId"
               :item-title="
-                (item) =>
-                  item.creatorDisplayTitle
-                    ? item.creatorDisplayTitle
-                    : item.creatorTitle
+                (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
               "
               clearable
             >
@@ -152,10 +149,7 @@
         :items="creators"
         item-value="creatorId"
         :item-title="
-          (item) =>
-            item.creatorDisplayTitle
-              ? item.creatorDisplayTitle
-              : item.creatorTitle
+          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
         "
         clearable
       ></v-autocomplete>
@@ -168,10 +162,7 @@
         :items="creators"
         item-value="creatorId"
         :item-title="
-          (item) =>
-            item.creatorDisplayTitle
-              ? item.creatorDisplayTitle
-              : item.creatorTitle
+          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
         "
         clearable
       >
@@ -315,6 +306,7 @@
 //External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
 //Components
 
@@ -334,15 +326,29 @@ export default {
     const store = useStore();
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const creators = featuredCreators;
+    const route = useRoute();
     const loading = computed(() => store.state.loading);
     const count = computed(() => store.state.resultsCount);
+
+    const initQueryParameters = async () => {
+      if (route.query.civ) {
+        selectedCivs.value = route.query.civ;
+      }
+      if (route.query.creator) {
+        selectedVideoCreator.value = route.query.creator;
+      }
+    };
+
+    onMounted(async () => {
+      await initQueryParameters();
+    });
+
     //Show apply when config different from state in store
     const configChanged = computed(() => {
       return (
         selectedCivs.value != store.state.filterConfig?.civs ||
         selectedVideoCreator.value != store.state.filterConfig?.creator ||
-        JSON.stringify(selectedMaps.value) !=
-          JSON.stringify(store.state.filterConfig?.maps) ||
+        JSON.stringify(selectedMaps.value) != JSON.stringify(store.state.filterConfig?.maps) ||
         JSON.stringify(selectedStrategies.value) !=
           JSON.stringify(store.state.filterConfig?.strategies) ||
         JSON.stringify(selectedSeasons.value) !=
@@ -356,8 +362,7 @@ export default {
         store.state.filterConfig?.author ||
         store.state.filterConfig?.civs != getDefaultConfig().civs ||
         store.state.filterConfig?.creator != getDefaultConfig().creator ||
-        JSON.stringify(store.state.filterConfig?.maps) !=
-          JSON.stringify(getDefaultConfig().maps) ||
+        JSON.stringify(store.state.filterConfig?.maps) != JSON.stringify(getDefaultConfig().maps) ||
         JSON.stringify(store.state.filterConfig?.strategies) !=
           JSON.stringify(getDefaultConfig().strategies) ||
         JSON.stringify(store.state.filterConfig?.seasons) !=

@@ -33,10 +33,10 @@
           <v-card-text>
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count">Busy villagers have gathered {{ count }} build order</span
-              ><span v-if="count > 1">s</span><span>.</span></v-card-text
-              >
-            </v-card>
-            <News class="mb-2"></News>
+            ><span v-if="count > 1">s</span><span>.</span></v-card-text
+          >
+        </v-card>
+        <News class="mb-2"></News>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -471,15 +471,15 @@
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user">Welcome, {{ user.displayName }}!</v-card-title>
           <v-card-text
-          >Create new Age of Empires 4 build orders and share them with your friends and the
-          community. </v-card-text
+            >Create new Age of Empires 4 build orders and share them with your friends and the
+            community. </v-card-text
           ><v-card-text>
             <span v-if="!count">Gathering build orders...</span>
             <span v-if="count">Busy villagers have gathered {{ count }} build order</span
-              ><span v-if="count > 1">s</span><span>.</span>
-            </v-card-text>
-          </v-card>
-          <News class="mb-2"></News>
+            ><span v-if="count > 1">s</span><span>.</span>
+          </v-card-text>
+        </v-card>
+        <News class="mb-2"></News>
 
         <!--featured creators sm and up-->
         <v-row no-gutters align="center" class="hidden-xs">
@@ -686,6 +686,12 @@ export default {
 
     onMounted(() => {
       store.commit("setFilterConfig", getDefaultConfig());
+
+      //reset cache
+      store.commit("setAllBuildsList", null);
+      store.commit("setMyBuildsList", null);
+      store.commit("setMyFavoritesList", null);
+
       initData();
     });
 
@@ -725,7 +731,7 @@ export default {
       popularBuildsList,
       allTimeClassicsList,
       featuredCreators,
-      featuredVillagers
+      featuredVillagers,
     };
   },
 };
