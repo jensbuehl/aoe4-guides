@@ -1,21 +1,17 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1">
     <v-card flat rounded="lg">
-      <v-card-title>Sounds of Victory</v-card-title>
+      <v-card-title>Riding Dirty!</v-card-title>
       <v-card-text>
-        Featured Age of Empires IV Song: <br /><br />
-        "Mein Scout Hat Fernweh" (My scout has wanderlust)
+        Ayyubids Fight! New Age of Empires IV music: <br /><br />
+        "Riding Dirty"
         <br /><br />
-
-        More to come in the future. Good luck, have fun!<br /><br />
-
         -exe aka Gold3Dad
-
         <div align="center">
           <iframe
             width="100%"
             height="200px"
-            src="https://www.youtube.com/embed/p7Z9e64gXCU"
+            src="https://www.youtube.com/embed/MukzJnDk31o"
             frameborder="0"
             class="my-5"
             allowfullscreen
