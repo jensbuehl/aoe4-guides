@@ -245,7 +245,7 @@
         <v-row no-gutters class="hidden-md-and-up"
           ><v-col class="ml-2 mt-4 mb-4" cols="auto"
             ><v-icon icon="mdi-youtube" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Featured Creators</span>
+            ><span class="text-h6">Youtube Creators</span>
           </v-col></v-row
         >
         <v-row no-gutters class="hidden-md-and-up">
@@ -318,52 +318,6 @@
             </v-tooltip>
           </v-col>
         </v-row>
-
-        <!-- recent builds -->
-        <v-row no-gutters align="center">
-          <v-col class="ml-2 mt-4 mb-2" cols="auto"
-            ><v-icon icon="mdi-clock-edit-outline" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">New Build Orders</span>
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Show All Recent Builds</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  size="small"
-                  class="mx-2 mb-1"
-                  variant="text"
-                  color="primary"
-                  icon="mdi-chevron-right"
-                  :to="{
-                    name: 'Builds',
-                    query: { orderBy: 'timeCreated' },
-                  }"
-                ></v-btn>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-        <v-row align="center" no-gutters>
-          <v-col cols="12">
-            <div v-for="item in recentBuildsList">
-              <router-link
-                style="text-decoration: none"
-                :to="{
-                  name: item.loading ? 'Home' : 'BuildDetails',
-                  params: {
-                    id: !item.loading ? item.id : null,
-                  },
-                }"
-              >
-                <BuildListCard :build="item"></BuildListCard>
-              </router-link>
-            </div> </v-col
-        ></v-row>
 
         <!-- popular builds -->
         <v-row no-gutters align="center">
@@ -456,6 +410,52 @@
               </router-link>
             </div> </v-col
         ></v-row>
+
+        <!-- recent builds -->
+        <v-row no-gutters align="center">
+          <v-col class="ml-2 mt-4 mb-2" cols="auto"
+            ><v-icon icon="mdi-clock-edit-outline" size="small" class="mx-2 mb-1"></v-icon
+            ><span class="text-h6">New Build Orders</span>
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Show All Recent Builds</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  v-bind="props"
+                  size="small"
+                  class="mx-2 mb-1"
+                  variant="text"
+                  color="primary"
+                  icon="mdi-chevron-right"
+                  :to="{
+                    name: 'Builds',
+                    query: { orderBy: 'timeCreated' },
+                  }"
+                ></v-btn>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+        <v-row align="center" no-gutters>
+          <v-col cols="12">
+            <div v-for="item in recentBuildsList">
+              <router-link
+                style="text-decoration: none"
+                :to="{
+                  name: item.loading ? 'Home' : 'BuildDetails',
+                  params: {
+                    id: !item.loading ? item.id : null,
+                  },
+                }"
+              >
+                <BuildListCard :build="item"></BuildListCard>
+              </router-link>
+            </div> </v-col
+        ></v-row>
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-md-and-up">
@@ -485,7 +485,7 @@
         <v-row no-gutters align="center" class="hidden-xs">
           <v-col class="ml-2 mt-4 mb-4" cols="auto"
             ><v-icon icon="mdi-account-star" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Featured Villagers</span></v-col
+            ><span class="text-h6">Top Contributors</span></v-col
           >
 
           <v-row align="center" no-gutters
@@ -561,7 +561,7 @@
         <v-row no-gutters align="center" class="hidden-xs">
           <v-col class="ml-2 mt-4 mb-4" cols="auto"
             ><v-icon icon="mdi-youtube" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Featured Creators</span></v-col
+            ><span class="text-h6">Youtube Creators</span></v-col
           >
 
           <v-row align="center" no-gutters

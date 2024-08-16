@@ -334,7 +334,7 @@ export default {
       };
     }
     const handleDraft = async () => {
-      const maxDrafts = 2;
+      const maxDrafts = 10;
 
       const size = await getUserDraftsCount(user.value.uid);
       if (size >= maxDrafts) {

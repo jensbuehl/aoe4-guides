@@ -55,12 +55,12 @@
               ><v-icon start icon="mdi-earth"></v-icon
               >{{ getCivById(build.civ)?.shortName }}</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.creatorId" label color="accent" size="x-small"
-              ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
-            >
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="x-small"
-              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="text" color="accent" size="x-small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+            ></v-chip>
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="x-small"
@@ -71,7 +71,7 @@
             >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
-            <v-chip class="mr-2 mb-2" label size="x-small"
+            <v-chip class="mr-2 mb-2" label size="x-small" color="accent"
               ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
             <v-chip class="mr-2 mb-2" label size="x-small" v-show="build.views">
@@ -109,12 +109,12 @@
             <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="small"
               ><v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.creatorId" label color="accent" size="small"
-              ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
-            >
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
-              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="text" color="accent" size="small"
+              ><v-icon start icon="mdi-youtube"></v-icon
+            ></v-chip>
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
@@ -374,15 +374,18 @@
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
+            <v-chip class="mr-2 mb-2" label size="small" color="accent"
+              ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
+            >
             <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="small"
               ><v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}</v-chip
-            >
-            <v-chip class="mr-2 mb-2" v-if="build.creatorId" label color="accent" size="small"
-              ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
             >
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
               ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="text" size="small" color="accent"
+              ><v-icon start icon="mdi-youtube"></v-icon
+            ></v-chip>
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
@@ -393,9 +396,6 @@
             >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
-            <v-chip class="mr-2 mb-2" label size="small"
-              ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
-            >
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
               <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
             >
@@ -718,8 +718,12 @@ export default {
 
     const swipe = async (dir) => {
       switch (dir) {
-        case "Up": store.commit("setShowBottomNavigation", false); break;
-        case "Down": store.commit("setShowBottomNavigation", true); break;
+        case "Up":
+          store.commit("setShowBottomNavigation", false);
+          break;
+        case "Down":
+          store.commit("setShowBottomNavigation", true);
+          break;
       }
     };
 

@@ -74,12 +74,12 @@
             size="x-small"
             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
           >
-          <v-chip class="mr-1 mt-1" v-if="build.creatorId" label color="accent" size="x-small"
-            ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
-          >
-          <v-chip class="mr-1 mt-1" label size="x-small"
+          <v-chip class="mr-1 mt-1" label size="x-small" color="accent"
             ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
           >
+          <v-chip class="mr-1 mt-1" v-if="build.creatorId" color="accent" variant="text" size="x-small"
+            ><v-icon start icon="mdi-youtube"></v-icon
+          ></v-chip>
           <v-chip class="mr-1 mt-1" v-if="build.timeCreated" label size="x-small"
             ><v-icon start icon="mdi-clock-edit-outline"></v-icon
             >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
@@ -151,10 +151,7 @@
             size="small"
             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
           >
-          <v-chip class="mr-2 mb-2" v-if="build.creatorId" label color="accent" size="small"
-            ><v-icon start icon="mdi-youtube"></v-icon>{{ build.creatorName }}</v-chip
-          >
-          <v-chip class="mr-2 mb-2" label size="small"
+          <v-chip class="mr-2 mb-2" label size="small" color="accent"
             ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
           >
           <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
@@ -199,8 +196,11 @@
             ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
           <!--v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small"
-            ><v-icon start icon="mdi-strategy"></v-icon
-            >{{ build.strategy }}</v-chip-->
+              ><v-icon start icon="mdi-strategy"></v-icon
+                >{{ build.strategy }}</v-chip-->
+          <v-chip class="mr-2 mb-2" v-if="build.creatorId" color="accent" variant="text" size="small"
+            ><v-icon start icon="mdi-youtube"></v-icon
+          ></v-chip>
         </v-item-group>
       </v-col>
     </v-row>
