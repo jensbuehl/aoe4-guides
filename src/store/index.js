@@ -50,6 +50,7 @@ export const store = createStore({
             popularBuildsList: Array(5).fill({ loading: true }),
             recentBuildsList: Array(5).fill({ loading: true }),
             allTimeClassicsList: Array(5).fill({ loading: true }),
+            topContributorsList: Array(10).fill({ loading: true }),
             allBuildsList: null,
             myBuildsList: null,
             myFavoritesList: null,
@@ -141,6 +142,13 @@ export const store = createStore({
                 state.cache.builds[build.id] = build;
             }
             console.log("cache.builds updated. The following builds have been added:", payload);
+        },
+        setTopContributorsList(state, payload) {
+            state.cache.topContributorsList = payload;
+            console.log(
+                "topContributorsList state changed:",
+                state.cache.topContributorsList
+            );
         },
         setRecentBuildsList(state, payload) {
             state.cache.recentBuildsList = payload;
