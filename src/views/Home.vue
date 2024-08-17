@@ -188,7 +188,7 @@
               <template v-slot:activator="{ props }">
                 <v-card
                   flat
-                  height="70"
+                  :height="contributorsCardHeight"
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
@@ -205,7 +205,7 @@
                       ><v-skeleton-loader
                         :color="contributor.loading ? 'loading' : 'surface'"
                         :loading="contributor.loading"
-                        height="70"
+                        :height="contributorsCardHeight"
                       >
                         <v-row no-gutters align="center">
                           <v-col cols="auto" align="center">
@@ -215,7 +215,7 @@
                               :image="contributor.icon"
                             ></v-avatar>
                           </v-col>
-                          <v-col cols="*" align="start" justify="start">
+                          <v-col cols="auto" align="start" justify="start">
                             <v-row no-gutters
                               ><!--xs title-->
                               <div
@@ -238,16 +238,20 @@
                                 {{ contributor.displayName }}
                               </div></v-row
                             ><v-row no-gutters>
-                                <v-col cols="auto"
-                                  ><v-label class="hidden-xs">{{ contributor.viewCount }} views</v-label></v-col
-                                >
+                              <v-col cols="auto"
+                                ><v-chip class="mr-2 hidden-xs" label size="x-small"
+                                  ><v-icon start icon="mdi-eye"></v-icon
+                                  >{{ contributor.viewCount }}</v-chip
+                                ></v-col
+                              >
 
-                                <v-col cols="auto"
-                                  ><v-label class="ml-4 hidden-xs"
-                                    >{{ contributor.boCount }} builds</v-label
-                                  ></v-col
-                                >
-                              </v-row>
+                              <v-col cols="auto"
+                                ><v-chip class="hidden-xs" label size="x-small"
+                                  ><v-icon start icon="mdi-hammer"></v-icon
+                                  >{{ contributor.boCount }}</v-chip
+                                ></v-col
+                              >
+                            </v-row>
                           </v-col>
                         </v-row>
                       </v-skeleton-loader></v-col
@@ -277,7 +281,7 @@
               <template v-slot:activator="{ props }">
                 <v-card
                   flat
-                  height="50"
+                  :height="contributorsCardHeight"
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
@@ -294,7 +298,7 @@
                       ><v-skeleton-loader
                         :color="contributor.loading ? 'loading' : 'surface'"
                         :loading="contributor.loading"
-                        height="50"
+                        :height="contributorsCardHeight"
                       >
                         <v-row no-gutters align="center">
                           <v-col cols="auto" align="center">
@@ -327,16 +331,18 @@
                                 {{ contributor.displayName }}
                               </div></v-row
                             ><v-row no-gutters>
-                                <v-col cols="auto"
-                                  ><v-label class="hidden-xs">{{ contributor.viewCount }} views</v-label></v-col
-                                >
+                              <v-col cols="auto"
+                                ><v-label class="hidden-xs"
+                                  >{{ contributor.viewCount }} views</v-label
+                                ></v-col
+                              >
 
-                                <v-col cols="auto"
-                                  ><v-label class="ml-4 hidden-xs"
-                                    >{{ contributor.boCount }} builds</v-label
-                                  ></v-col
-                                >
-                              </v-row>
+                              <v-col cols="auto"
+                                ><v-label class="ml-4 hidden-xs"
+                                  >{{ contributor.boCount }} builds</v-label
+                                ></v-col
+                              >
+                            </v-row>
                           </v-col>
                         </v-row>
                       </v-skeleton-loader></v-col
@@ -532,13 +538,13 @@
                 <template v-slot:activator="{ props }">
                   <v-card
                     flat
-                    height="90px"
-                    class="mb-2"
+                    :height="contributorsCardHeight"
                     rounded="lg"
+                    class="mb-2"
                     v-bind="props"
                     :to="{
                       name: 'Builds',
-                      query: { author: contributor.id },
+                      query: { authorUid: contributor.id },
                     }"
                   >
                     <v-row no-gutters class="fill-height" align="center" justify="center"
@@ -546,50 +552,55 @@
                         ><v-skeleton-loader
                           :color="contributor.loading ? 'loading' : 'surface'"
                           :loading="contributor.loading"
-                          height="90"
+                          :height="contributorsCardHeight"
                         >
-                          <v-row no-gutters align="center" justify="start">
-                            <v-col cols="auto">
-                              <div>
-                                <v-avatar
-                                  class="ml-4"
-                                  color="accent"
-                                  :image="contributor.icon"
-                                ></v-avatar>
-                              </div>
+                          <v-row no-gutters align="center">
+                            <v-col cols="auto" align="center">
+                              <v-avatar
+                                class="my-2 mx-4"
+                                color="accent"
+                                :image="contributor.icon"
+                              ></v-avatar>
                             </v-col>
-
-                            <v-col cols="*" align="start">
+                            <v-col cols="*" align="start" justify="start">
                               <v-row no-gutters
-                                ><!--small title-->
+                                ><!--lg title-->
+                                <v-card-title
+                                  :style="{
+                                    color: $vuetify.theme.current.colors.primary,
+                                  }"
+                                  class="ml-n4 mt-lg-n4 hidden-md-and-down"
+                                >
+                                  {{ contributor.displayName }}
+                                </v-card-title>
+                                <!--md title-->
                                 <div
                                   :style="{
                                     color: $vuetify.theme.current.colors.primary,
                                   }"
-                                  class="text-subtitle-2 ml-4 mt-4 hidden-lg-and-up"
+                                  class="text-subtitle-2 hidden-sm-and-down hidden-lg-and-up"
+                                  style="font-family: 'Segoe UI' !important"
                                 >
                                   {{ contributor.displayName }}
-                                </div>
-                                <!--large title-->
-                                <v-card-title
-                                  class="hidden-md-and-down"
-                                  :style="{
-                                    color: $vuetify.theme.current.colors.primary,
-                                  }"
+                                </div></v-row
+                              ><v-row no-gutters class="hidden-sm-and-down hidden-lg-and-up mt-1">
+                                <v-chip class="mr-2" label size="x-small"
+                                  ><v-icon start icon="mdi-eye"></v-icon
+                                  >{{ contributor.viewCount }}</v-chip
                                 >
-                                  {{ contributor.displayName }}
-                                </v-card-title></v-row
-                              >
-
-                              <v-row no-gutters class="pl-4 mb-4">
-                                <v-col cols="auto"
-                                  ><v-label>{{ contributor.viewCount }} views</v-label></v-col
+                                <v-chip label size="x-small"
+                                  ><v-icon start icon="mdi-hammer"></v-icon
+                                  >{{ contributor.boCount }}</v-chip
                                 >
-
-                                <v-col cols="auto"
-                                  ><v-label class="ml-4"
-                                    >{{ contributor.boCount }} builds</v-label
-                                  ></v-col
+                              </v-row>
+                              <v-row no-gutters class="hidden-md-and-down mt-n1">
+                                <v-chip class="mr-2" label size="small"
+                                  ><v-icon start icon="mdi-eye"></v-icon
+                                  >{{ contributor.viewCount }}</v-chip
+                                >
+                                <v-chip label size="small"
+                                  ><v-icon start icon="mdi-hammer"></v-icon
+                                  >{{ contributor.boCount }}</v-chip
                                 >
                               </v-row>
                             </v-col>
@@ -617,6 +628,7 @@
 //External
 import { useStore } from "vuex";
 import { computed, onMounted } from "vue";
+import { useDisplay } from "vuetify";
 
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
@@ -652,8 +664,26 @@ export default {
     const topContributorsList = computed(() => store.state.cache.topContributorsList);
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const store = useStore();
+    const { name } = useDisplay();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
+
+    const contributorsCardHeight = computed(() => {
+      switch (name.value) {
+        case "xs":
+          return 50;
+        case "sm":
+          return 70;
+        case "md":
+          return 70;
+        case "lg":
+          return 70;
+        case "xl":
+          return 84;
+        case "xxl":
+          return 84;
+      }
+    });
 
     onMounted(() => {
       store.commit("setFilterConfig", getDefaultConfig());
@@ -708,6 +738,7 @@ export default {
       popularBuildsList,
       allTimeClassicsList,
       topContributorsList,
+      contributorsCardHeight
     };
   },
 };
