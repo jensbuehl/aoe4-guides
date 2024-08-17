@@ -163,14 +163,15 @@
           </v-col>
         </v-row>
 
-        <!--top contributors xs-->
         <v-row no-gutters class="hidden-md-and-up"
           ><v-col class="ml-2 mt-4 mb-4" cols="auto"
             ><v-icon icon="mdi-account-star" size="small" class="mx-2 mb-1"></v-icon
             ><span class="text-h6">Top Contributors</span>
           </v-col></v-row
         >
-        <v-row no-gutters class="hidden-md-and-up">
+
+        <!--top contributors sm-->
+        <v-row no-gutters class="hidden-xs hidden-md-and-up">
           <v-col
             cols="6"
             v-for="(contributor, index) in topContributorsList"
@@ -187,7 +188,7 @@
               <template v-slot:activator="{ props }">
                 <v-card
                   flat
-                  height="56"
+                  height="70"
                   v-bind:class="{
                     'mb-2 mr-2': index % 2 == 0,
                     'mb-2 ml-2': index % 2 != 0,
@@ -204,7 +205,7 @@
                       ><v-skeleton-loader
                         :color="contributor.loading ? 'loading' : 'surface'"
                         :loading="contributor.loading"
-                        height="56"
+                        height="70"
                       >
                         <v-row no-gutters align="center">
                           <v-col cols="auto" align="center">
@@ -214,27 +215,128 @@
                               :image="contributor.icon"
                             ></v-avatar>
                           </v-col>
-                          <v-col cols="auto" align="start" justify="start">
-                            <!--xs title-->
-                            <div
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
-                              class="text-subtitle-2 hidden-sm-and-up"
-                              style="font-size: 0.8rem !important"
-                            >
-                              {{ contributor.displayName }}
-                            </div>
-                            <!--sm title-->
-                            <div
-                              :style="{
-                                color: $vuetify.theme.current.colors.primary,
-                              }"
-                              class="text-subtitle-2 hidden-xs"
-                              style="font-family: 'Segoe UI' !important"
-                            >
-                              {{ contributor.displayName }}
-                            </div>
+                          <v-col cols="*" align="start" justify="start">
+                            <v-row no-gutters
+                              ><!--xs title-->
+                              <div
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="text-subtitle-2 hidden-sm-and-up"
+                                style="font-size: 0.8rem !important"
+                              >
+                                {{ contributor.displayName }}
+                              </div>
+                              <!--sm title-->
+                              <div
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="text-subtitle-2 hidden-xs"
+                                style="font-family: 'Segoe UI' !important"
+                              >
+                                {{ contributor.displayName }}
+                              </div></v-row
+                            ><v-row no-gutters>
+                                <v-col cols="auto"
+                                  ><v-label class="hidden-xs">{{ contributor.viewCount }} views</v-label></v-col
+                                >
+
+                                <v-col cols="auto"
+                                  ><v-label class="ml-4 hidden-xs"
+                                    >{{ contributor.boCount }} builds</v-label
+                                  ></v-col
+                                >
+                              </v-row>
+                          </v-col>
+                        </v-row>
+                      </v-skeleton-loader></v-col
+                    ></v-row
+                  >
+                </v-card>
+              </template>
+            </v-tooltip>
+          </v-col>
+        </v-row>
+
+        <!--top contributors xs-->
+        <v-row no-gutters class="hidden-sm-and-up">
+          <v-col
+            cols="6"
+            v-for="(contributor, index) in topContributorsList"
+            :key="contributor.userId"
+          >
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Explore all build orders from
+                {{ contributor.displayName }}
+              </span>
+              <template v-slot:activator="{ props }">
+                <v-card
+                  flat
+                  height="50"
+                  v-bind:class="{
+                    'mb-2 mr-2': index % 2 == 0,
+                    'mb-2 ml-2': index % 2 != 0,
+                  }"
+                  rounded="lg"
+                  v-bind="props"
+                  :to="{
+                    name: 'Builds',
+                    query: { authorUid: contributor.id },
+                  }"
+                >
+                  <v-row no-gutters class="fill-height" align="center" justify="center"
+                    ><v-col cols="12"
+                      ><v-skeleton-loader
+                        :color="contributor.loading ? 'loading' : 'surface'"
+                        :loading="contributor.loading"
+                        height="50"
+                      >
+                        <v-row no-gutters align="center">
+                          <v-col cols="auto" align="center">
+                            <v-avatar
+                              class="mx-4"
+                              color="accent"
+                              :image="contributor.icon"
+                            ></v-avatar>
+                          </v-col>
+                          <v-col cols="*" align="start" justify="start">
+                            <v-row no-gutters
+                              ><!--xs title-->
+                              <div
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="text-subtitle-2 hidden-sm-and-up"
+                                style="font-size: 0.8rem !important"
+                              >
+                                {{ contributor.displayName }}
+                              </div>
+                              <!--sm title-->
+                              <div
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="text-subtitle-2 hidden-xs"
+                                style="font-family: 'Segoe UI' !important"
+                              >
+                                {{ contributor.displayName }}
+                              </div></v-row
+                            ><v-row no-gutters>
+                                <v-col cols="auto"
+                                  ><v-label class="hidden-xs">{{ contributor.viewCount }} views</v-label></v-col
+                                >
+
+                                <v-col cols="auto"
+                                  ><v-label class="ml-4 hidden-xs"
+                                    >{{ contributor.boCount }} builds</v-label
+                                  ></v-col
+                                >
+                              </v-row>
                           </v-col>
                         </v-row>
                       </v-skeleton-loader></v-col
@@ -408,7 +510,7 @@
         </v-card>
         <News class="mb-2"></News>
 
-        <!--top contributors sm and up-->
+        <!--top contributors md and up-->
         <v-row no-gutters align="center" class="hidden-xs">
           <v-col class="ml-2 mt-4 mb-4" cols="auto"
             ><v-icon icon="mdi-account-star" size="small" class="mx-2 mb-1"></v-icon
@@ -430,7 +532,7 @@
                 <template v-slot:activator="{ props }">
                   <v-card
                     flat
-                    height="56"
+                    height="90px"
                     class="mb-2"
                     rounded="lg"
                     v-bind="props"
@@ -444,7 +546,7 @@
                         ><v-skeleton-loader
                           :color="contributor.loading ? 'loading' : 'surface'"
                           :loading="contributor.loading"
-                          height="56"
+                          height="90"
                         >
                           <v-row no-gutters align="center" justify="start">
                             <v-col cols="auto">
@@ -456,25 +558,40 @@
                                 ></v-avatar>
                               </div>
                             </v-col>
-                            <v-col cols="9" align="start">
-                              <!--small title-->
-                              <div
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                                class="text-subtitle-2 ml-4 hidden-lg-and-up"
+
+                            <v-col cols="*" align="start">
+                              <v-row no-gutters
+                                ><!--small title-->
+                                <div
+                                  :style="{
+                                    color: $vuetify.theme.current.colors.primary,
+                                  }"
+                                  class="text-subtitle-2 ml-4 mt-4 hidden-lg-and-up"
+                                >
+                                  {{ contributor.displayName }}
+                                </div>
+                                <!--large title-->
+                                <v-card-title
+                                  class="hidden-md-and-down"
+                                  :style="{
+                                    color: $vuetify.theme.current.colors.primary,
+                                  }"
+                                >
+                                  {{ contributor.displayName }}
+                                </v-card-title></v-row
                               >
-                                {{ contributor.displayName }}
-                              </div>
-                              <!--large title-->
-                              <v-card-title
-                                class="hidden-md-and-down"
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                              >
-                                {{ contributor.displayName }}
-                              </v-card-title>
+
+                              <v-row no-gutters class="pl-4 mb-4">
+                                <v-col cols="auto"
+                                  ><v-label>{{ contributor.viewCount }} views</v-label></v-col
+                                >
+
+                                <v-col cols="auto"
+                                  ><v-label class="ml-4"
+                                    >{{ contributor.boCount }} builds</v-label
+                                  ></v-col
+                                >
+                              </v-row>
                             </v-col>
                           </v-row>
                         </v-skeleton-loader></v-col
