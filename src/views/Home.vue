@@ -544,7 +544,7 @@
                     v-bind="props"
                     :to="{
                       name: 'Builds',
-                      query: { authorUid: contributor.id },
+                      query: { author: contributor.authorId },
                     }"
                   >
                     <v-row no-gutters class="fill-height" align="center" justify="center"

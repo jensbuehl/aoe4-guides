@@ -10,14 +10,16 @@ import { where, orderBy, limit, endBefore, startAfter, limitToLast } from "@/fir
  * @param {Array} favorites - The array of favorite items.
  * @return {Array} An array of query parameters.
  */
-export function getQueryParametersFromConfig (config, pageLimit, userUid, favorites) {
+export function getQueryParametersFromConfig(config, pageLimit, userUid, favorites) {
   try {
     var queryParams = [];
     if (pageLimit) {
       queryParams = getLimitQueryParam(pageLimit);
     }
     if (config) {
-      queryParams = queryParams.concat(getFilterQueryParams(config, favorites)).concat(getOrderByQueryParam(config));
+      queryParams = queryParams
+        .concat(getFilterQueryParams(config, favorites))
+        .concat(getOrderByQueryParam(config));
     }
     if (userUid) {
       queryParams = queryParams.concat(getFilterAuthorQueryParam(userUid));
@@ -26,7 +28,7 @@ export function getQueryParametersFromConfig (config, pageLimit, userUid, favori
   } catch (err) {
     console.log(err.message);
   }
-};
+}
 
 /**
  * Function to generate filter author query parameter.
@@ -34,7 +36,7 @@ export function getQueryParametersFromConfig (config, pageLimit, userUid, favori
  * @param {string} userUid - The user's unique identifier
  * @return {array} Array of query parameters
  */
-export function getFilterAuthorQueryParam (userUid) {
+export function getFilterAuthorQueryParam(userUid) {
   try {
     const queryParams = [];
     const whereOp = where("authorUid", "==", userUid);
@@ -43,7 +45,7 @@ export function getFilterAuthorQueryParam (userUid) {
   } catch (err) {
     console.log(err.message);
   }
-};
+}
 
 /**
  * Retrieves the startAfter query parameter based on the given snapshot.
@@ -89,7 +91,7 @@ export function getEndBeforeQueryParam(snapshot) {
  * @param {number} pageLimit - The maximum number of results to return.
  * @return {array} An array of query parameters.
  */
-export function getLimitQueryParam (pageLimit) {
+export function getLimitQueryParam(pageLimit) {
   try {
     const queryParams = [];
     const limitOp = limit(pageLimit);
@@ -98,7 +100,7 @@ export function getLimitQueryParam (pageLimit) {
   } catch (err) {
     console.log(err.message);
   }
-};
+}
 
 /**
  * Retrieves the last n elements from a collection.
@@ -106,7 +108,7 @@ export function getLimitQueryParam (pageLimit) {
  * @param {number} pageLimit - The number of elements to retrieve.
  * @return {Array} An array containing the last n elements.
  */
-export function getLimitToLastQueryParam (pageLimit) {
+export function getLimitToLastQueryParam(pageLimit) {
   try {
     const queryParams = [];
     const limitOp = limitToLast(pageLimit);
@@ -115,7 +117,7 @@ export function getLimitToLastQueryParam (pageLimit) {
   } catch (err) {
     console.log(err.message);
   }
-};
+}
 
 /**
  * Generates an array of query parameters for ordering the results based on the given configuration and direction.
@@ -124,7 +126,7 @@ export function getLimitToLastQueryParam (pageLimit) {
  * @param {string} [dir] - The direction of the ordering. Defaults to "desc" if not provided.
  * @return {Array} An array of query parameters for ordering the results.
  */
-export function getOrderByQueryParam (config, dir) {
+export function getOrderByQueryParam(config, sortPropertyName, dir) {
   try {
     const queryParams = [];
     var myDir = "desc";
@@ -132,17 +134,22 @@ export function getOrderByQueryParam (config, dir) {
     if (dir) {
       myDir = dir;
     }
-    if (config.orderBy === "sortTitle") {
-      myDir = "asc";
+    if (sortPropertyName) {
+      const orderByOp = orderBy(sortPropertyName, myDir);
+      queryParams.push(orderByOp);
+    } else {
+      if (config.orderBy === "sortTitle") {
+        myDir = "asc";
+      }
+      const orderByOp = orderBy(config.orderBy, myDir);
+      queryParams.push(orderByOp);
     }
-    const orderByOp = orderBy(config.orderBy, myDir);
-    queryParams.push(orderByOp);
 
     return queryParams;
   } catch (err) {
     console.log(err.message);
   }
-};
+}
 
 /**
  * Generates query parameters based on the provided configuration and favorites.
@@ -151,7 +158,7 @@ export function getOrderByQueryParam (config, dir) {
  * @param {Array} favorites - The list of favorite items to filter by.
  * @return {Array} An array of query parameters for filtering.
  */
-export function getFilterQueryParams (config, favorites) {
+export function getFilterQueryParams(config, favorites) {
   try {
     const queryParams = [];
 
@@ -202,7 +209,7 @@ export function getFilterQueryParams (config, favorites) {
   } catch (err) {
     console.log(err.message);
   }
-};
+}
 
 /**
  * Generates a query parameter array with a condition matching a field with a specific value.
@@ -211,7 +218,7 @@ export function getFilterQueryParams (config, favorites) {
  * @param {any} value - The value to match against the field.
  * @return {Array} An array containing the query parameter for matching field and value.
  */
-export function getWhereEqualQueryParam (field, value) {
+export function getWhereEqualQueryParam(field, value) {
   try {
     const queryParams = [];
     const whereOp = where(field, "==", value);
@@ -221,7 +228,7 @@ export function getWhereEqualQueryParam (field, value) {
   } catch (err) {
     console.log(err.message);
   }
-};
+}
 
 /**
  * Generates a query parameter for a "!=" (not equal) condition on a specific field.
@@ -230,7 +237,7 @@ export function getWhereEqualQueryParam (field, value) {
  * @param {any} value - the value to compare against
  * @return {Array} an array containing the generated query parameter
  */
-export function getWhereNotEqualQueryParam (field, value) {
+export function getWhereNotEqualQueryParam(field, value) {
   try {
     const queryParams = [];
     const whereOp = where(field, "!=", value);
@@ -240,4 +247,4 @@ export function getWhereNotEqualQueryParam (field, value) {
   } catch (err) {
     console.log(err.message);
   }
-};
+}

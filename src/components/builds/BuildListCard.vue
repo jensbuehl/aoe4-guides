@@ -77,14 +77,11 @@
           <v-chip class="mr-1 mt-1" label size="x-small" color="accent"
             ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
           >
-          <v-chip class="mr-1 mt-1" v-if="build.creatorId" color="accent" variant="text" size="x-small"
-            ><v-icon start icon="mdi-youtube"></v-icon
-          ></v-chip>
           <v-chip class="mr-1 mt-1" v-if="build.timeCreated" label size="x-small"
-            ><v-icon start icon="mdi-clock-edit-outline"></v-icon
+          ><v-icon start icon="mdi-clock-edit-outline"></v-icon
             >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
-          >
-          <v-chip
+            >
+            <v-chip
             class="mr-1 mt-1"
             label
             size="x-small"
@@ -92,35 +89,38 @@
               build.views && (orderBy == 'views' || orderBy == 'score' || orderBy == 'scoreAllTime')
             "
           >
-            <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
+          <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip v-if="build.comments > 0" class="mr-1 mt-1" label size="x-small"
             ><v-icon start icon="mdi-message"></v-icon>{{ build.comments }}</v-chip
-          >
-          <v-chip
+            >
+            <v-chip
             v-show="build.likes > 0 && (orderBy == 'likes' || orderBy == 'scoreAllTime')"
             class="mr-1 mt-1"
             label
             size="x-small"
-          >
+            >
             <v-icon start icon="mdi-heart"></v-icon>
             {{ build.likes }}</v-chip
-          >
-          <v-chip
+            >
+            <v-chip
             v-show="build.upvotes > 0 && (orderBy == 'score' || orderBy == 'scoreAllTime')"
             class="mr-1 mt-1"
             label
             size="x-small"
-          >
+            >
             <v-icon start icon="mdi-thumb-up"></v-icon>
             {{ build.upvotes }}</v-chip
           >
           <v-chip v-if="build.season" class="mr-1 mt-1 hidden-xs" label size="x-small"
-            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+          ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
           >
           <v-chip v-show="build.map && filterByMap" class="mr-1 mt-1 hidden-xs" label size="x-small"
-            ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
+          ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
+          <v-chip class="mr-1 mt-1" v-if="build.creatorId" color="accent" variant="text" size="x-small"
+            ><v-icon start icon="mdi-youtube"></v-icon
+          ></v-chip>
           <!--v-chip
             v-if="build.strategy"
             class="mr-1 mt-1 hidden-xs"

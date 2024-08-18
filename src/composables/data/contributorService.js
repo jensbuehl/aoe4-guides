@@ -6,6 +6,7 @@ import { computed } from "vue";
 import collectionService from "@/composables/data/collectionService";
 import {
   getQueryParametersFromConfig,
+  getOrderByQueryParam,
 } from "@/composables/data/queryParameterBuilder";
 
 const {
@@ -25,11 +26,8 @@ export const error = computed(() => collectionServiceError).value;
 
 
 export async function getTopContributors(limit) {
-  //TODO: Use limit, sort by views
-  const topContributorsQuery = getQuery(getQueryParametersFromConfig(null, limit));
+  const topContributorsQuery = getQuery(getQueryParametersFromConfig(null, limit).concat(getOrderByQueryParam(null, "viewCount"))); 
   const result = await getAll(topContributorsQuery);
 
-  //Add to cache
-  store.commit("setTopContributorsList", result);
   return result;
 }
