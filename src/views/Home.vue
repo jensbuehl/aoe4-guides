@@ -646,6 +646,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { getTopContributors } from "@/composables/data/contributorService";
+import youtubeService from "@/composables/builds/youtubeService";
 import {
   getRecentBuilds,
   getPopularBuilds,
@@ -674,6 +675,7 @@ export default {
     const { name } = useDisplay();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
+    const { search } = youtubeService();
 
     const contributorsCardHeight = computed(() => {
       switch (name.value) {
@@ -707,6 +709,8 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
+      search("aoe4 build order guide");
+
       //get popular
       if (!popularBuildsList || popularBuildsList.value[0].loading) {
         const popularBuildsList = await getPopularBuilds(5);
@@ -714,21 +718,19 @@ export default {
       }
 
       //get all time classics
-      if (!allTimeClassicsList ||allTimeClassicsList.value[0].loading) {
+      if (!allTimeClassicsList || allTimeClassicsList.value[0].loading) {
         const allTimeClassicsList = await getAllTimeClassics(5);
         store.commit("setAllTimeClassicsList", allTimeClassicsList);
       }
 
       //get most recent
-      console.log("recent", recentBuildsList);
-      
       if (!recentBuildsList || recentBuildsList.value[0].loading) {
         const recentBuilds = await getRecentBuilds(5);
         store.commit("setRecentBuildsList", recentBuilds);
       }
 
       //get top contributors
-      if (!topContributorsList ||topContributorsList.value[0].loading) {
+      if (!topContributorsList || topContributorsList.value[0].loading) {
         const topContributors = await getTopContributors(10);
         store.commit("setTopContributorsList", topContributors);
       }
