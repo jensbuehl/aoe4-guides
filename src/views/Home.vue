@@ -36,7 +36,7 @@
             ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
-        <News></News>
+        <!--News></News-->
         <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
       </v-col>
 
@@ -514,7 +514,7 @@
             ><span v-if="count > 1">s</span><span>.</span>
           </v-card-text>
         </v-card>
-        <News></News>
+        <!--News></News-->
         <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
 
         <!--top contributors md and up-->
