@@ -556,10 +556,14 @@
                         <v-row no-gutters align="center">
                           <v-col cols="auto" align="center">
                             <v-avatar
+                              v-if="contributor.icon"
                               class="mx-4"
                               color="accent"
                               :image="contributor.icon"
                             ></v-avatar>
+                            <v-avatar v-else class="mx-4" color="accent">{{
+                              contributor.displayName.slice(0, 2).toUpperCase()
+                            }}</v-avatar>
                           </v-col>
                           <v-col cols="*" align="start" justify="start">
                             <v-row no-gutters
