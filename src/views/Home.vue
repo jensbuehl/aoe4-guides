@@ -36,7 +36,7 @@
             ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
-        <!--News></News-->
+        <News></News>
         <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
       </v-col>
 
@@ -490,7 +490,7 @@
               </router-link>
             </div> </v-col
         ></v-row>
-        <YoutubeGuides class="mt-4"></YoutubeGuides>
+        <YoutubeGuides class="mt-4 hidden-md-and-up"></YoutubeGuides>
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-md-and-up">
@@ -514,7 +514,7 @@
             ><span v-if="count > 1">s</span><span>.</span>
           </v-card-text>
         </v-card>
-        <!--News></News-->
+        <News></News>
         <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
 
         <!--top contributors md and up-->
@@ -704,25 +704,27 @@ export default {
       store.commit("setResultsCount", null);
 
       //get popular
-      if (popularBuildsList.value[0].loading) {
+      if (!popularBuildsList || popularBuildsList.value[0].loading) {
         const popularBuildsList = await getPopularBuilds(5);
         store.commit("setPopularBuildsList", popularBuildsList);
       }
 
       //get all time classics
-      if (allTimeClassicsList.value[0].loading) {
+      if (!allTimeClassicsList ||allTimeClassicsList.value[0].loading) {
         const allTimeClassicsList = await getAllTimeClassics(5);
         store.commit("setAllTimeClassicsList", allTimeClassicsList);
       }
 
       //get most recent
-      if (recentBuildsList.value[0].loading) {
+      console.log("recent", recentBuildsList);
+      
+      if (!recentBuildsList || recentBuildsList.value[0].loading) {
         const recentBuilds = await getRecentBuilds(5);
         store.commit("setRecentBuildsList", recentBuilds);
       }
 
       //get top contributors
-      if (topContributorsList.value[0].loading) {
+      if (!topContributorsList ||topContributorsList.value[0].loading) {
         const topContributors = await getTopContributors(10);
         store.commit("setTopContributorsList", topContributors);
       }

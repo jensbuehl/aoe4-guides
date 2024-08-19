@@ -12,6 +12,7 @@ import {
 const {
   incrementNumber,
   decrementNumber,
+  add,
   getQuery,
   getAll,
   get,
@@ -37,6 +38,53 @@ export async function getContributor(contributorId) {
   return result;
 }
 
+/**
+ * Increments the view count for a contributor.
+ *
+ * @param {string} contributorId - The ID of the contributor to update.
+ * @return {Promise<void>} A promise that resolves when the view count has been incremented.
+ */
+export async function incrementViews(contributorId) {
+  return incrementNumber(contributorId, "viewCount");
+}
+
+/**
+ * Decrements the number of builds associated with a contributor.
+ *
+ * @param {string} contributorId - The ID of the contributor to update.
+ * @return {Promise<void>} A promise that resolves when the builds count has been decremented.
+ */
+export async function decrementBuilds(contributorId) {
+  return decrementNumber(contributorId, "boCount");
+}
+
+/**
+ * Increments the number of builds associated with a contributor.
+ *
+ * @param {string} contributorId - The ID of the contributor to update.
+ * @return {Promise<void>} A promise that resolves when the builds count has been incremented.
+ */
+export async function incrementBuilds(contributorId) {
+  return incrementNumber(contributorId, "boCount");
+}
+
+/**
+ * Add a contributor with custom ID.
+ *
+ * @param {any} contributor - The contributor to add.
+ * @param {any} customId - The custom ID to assign to the contributor.
+ * @return {Promise<void>}
+ */
+export async function addContributor(contributor, customId) {
+  return add(contributor, customId);
+}
+
+/**
+ * Retrieves the top contributors based on the specified limit.
+ *
+ * @param {number} limit - The maximum number of top contributors to retrieve.
+ * @return {Promise<any>} The list of top contributors.
+ */
 export async function getTopContributors(limit) {
   const topContributorsQuery = getQuery(getQueryParametersFromConfig(null, limit).concat(getOrderByQueryParam(null, "viewCount"))); 
   const result = await getAll(topContributorsQuery);

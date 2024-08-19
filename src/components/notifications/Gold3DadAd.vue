@@ -20,7 +20,7 @@
           ><v-btn
             class="ma-2"
             size="small"
-            variant="plain"
+            variant="text"
             color="primary"
             style="background-color: transparent"
           >
@@ -28,19 +28,6 @@
               <v-icon color="red">mdi-youtube</v-icon>
             </template>
             Check it out
-          </v-btn></a
-        ><a href="https://ko-fi.com/jensbuehl"
-          ><v-btn
-            class="ma-2"
-            size="small"
-            variant="plain"
-            color="primary"
-            style="background-color: transparent"
-          >
-            <template v-slot:prepend>
-              <v-icon color="red">mdi-heart</v-icon>
-            </template>
-            Support me
           </v-btn></a
         ></v-col
       >

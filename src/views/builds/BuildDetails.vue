@@ -649,6 +649,7 @@ import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 
 //composables
 import { getUserFavorites } from "@/composables/data/favoriteService";
+import { incrementViews as incrementContributorViews, decrementBuilds } from "@/composables/data/contributorService";
 import {
   getBuild,
   deleteBuild,
@@ -708,6 +709,9 @@ export default {
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
         incrementViews(props.id);
+
+        //icrement contributor views
+        incrementContributorViews(build.value.authorUid);
       }
       if (route.query) {
         console.log("query", route.query);
@@ -763,6 +767,9 @@ export default {
           text: `Build order deleted!`,
           type: "success",
         });
+
+        //decrement build count of contributor object
+        decrementBuilds(build.value.authorUid);
 
         //Reset cache
         store.commit("setRecentBuildsList", null);

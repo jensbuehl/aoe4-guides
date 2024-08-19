@@ -264,6 +264,7 @@ import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import { getCreator, addCreator } from "@/composables/data/creatorService";
+import { addContributor, getContributor, incrementBuilds } from "@/composables/data/contributorService";
 import {
   addBuild,
   getUserDraftsCount,
@@ -379,6 +380,14 @@ export default {
               ? res.creatorDisplayTitle
               : res.creatorTitle;
           }
+        }
+
+        //Add or Update contributor object
+        const res = await getContributor(build.value.authorUid);
+        if (!res) {
+          await addContributor({displayName: build.value.author, boCount: 1}, build.value.authorUid);
+        } else {
+          await incrementBuilds(build.value.authorUid);
         }
 
         //Add build order document
