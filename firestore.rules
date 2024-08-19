@@ -37,4 +37,11 @@ service cloud.firestore {
       allow read: if request.auth != null && request.auth.uid == userId;
     }
   }
+  match /databases/{database}/documents {
+    match /contributors/{contributor} {
+      allow read;
+      allow update: if (request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(['boCount', 'viewCount']));
+    }
+  }
 }

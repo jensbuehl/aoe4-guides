@@ -18,3 +18,18 @@ exports.createUser = functions.auth.user().onCreate((user) => {
       { merge: true }
     );
   });
+
+  /**
+ * Creates a new contributor document in the "contributors" collection in Firestore.
+ *
+ * @param {Object} contributor - The user object containing user information.
+ * @return {Promise<WriteResult>} A promise that resolves with the write result.
+ */
+exports.createContributor = functions.auth.user().onCreate((user) => {
+  return getFirestore().collection("contributors").doc(user.uid).set(
+    {
+      authorId: user.uid,
+    },
+    { merge: true }
+  );
+});

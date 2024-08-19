@@ -6,6 +6,9 @@ initializeApp();
 const createUser = require('./users/createUser');
 exports.createUser = createUser.createUser;
 
+const createContributor = require('./users/createUser');
+exports.createContributor = createContributor.createContributor;
+
 const deleteUser = require('./users/deleteUser');
 exports.deleteUser = deleteUser.deleteUser;
 
@@ -14,6 +17,9 @@ exports.getUsers = getUsers.getUsers;
 
 const updateUserDisplayName = require('./users/updateUserDisplayName');
 exports.updateUserDisplayName = updateUserDisplayName.updateUserDisplayName;
+
+const updateContributorDisplayName = require('./users/updateUserDisplayName');
+exports.updateContributorDisplayName = updateContributorDisplayName.updateContributorDisplayName;
 
 //Build related functions
 const updateBuildScore = require('./builds/updateBuildScore');

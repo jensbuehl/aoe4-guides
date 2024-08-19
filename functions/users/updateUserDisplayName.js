@@ -18,8 +18,7 @@ const logger = require("firebase-functions/logger");
 exports.updateUserDisplayName = onCall((data) => {
   logger.log("updateUserDisplayNameCalled", data.data);
 
-  if (!data.auth)
-    return { status: "error", code: 401, message: "Not signed in" };
+  if (!data.auth) return { status: "error", code: 401, message: "Not signed in" };
 
   const displayName = data.data.displayName;
   const uid = data.data.uid;
@@ -42,6 +41,41 @@ exports.updateUserDisplayName = onCall((data) => {
           return null;
         });
     })
+    .catch(function (error) {
+      logger.log(error.message);
+      return null;
+    });
+});
+
+/**
+ * Updates the display name of a contributor.
+ *
+ * @param {Object} data - The data containing the authentication and contributor data.
+ * @param {Object} data.auth - The authentication object.
+ * @param {Object} data.data - The contributor data containing the display name and uid.
+ * @param {string} data.data.displayName - The new display name of the contributor.
+ * @param {string} data.data.uid - The uid of the contributor to update.
+ * @return {Promise<Object>} A promise that resolves to an object with the status, code, and message.
+ *                            If successful, the status is "ok", the code is 200, and the message is "Success".
+ *                            If there is an error, the status is "error", the code is 401, and the message is "Not signed in".
+ */
+exports.updateContributorDisplayName = onCall((data) => {
+  logger.log("updateContributorDisplayNameCalled", data.data);
+
+  if (!data.auth) return { status: "error", code: 401, message: "Not signed in" };
+
+  const displayName = data.data.displayName;
+  const uid = data.data.uid;
+
+  return getFirestore()
+    .collection("contributors")
+    .doc(uid)
+    .set(
+      {
+        displayName: displayName,
+      },
+      { merge: true }
+    )
     .catch(function (error) {
       logger.log(error.message);
       return null;
