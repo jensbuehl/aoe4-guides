@@ -2,12 +2,12 @@
   <v-card flat rounded="lg">
     <v-card-title>Age of Empires Radio</v-card-title>
     <v-card-text>
-      "Song Title Here": Song description here: <br /><br />
+      {{ randomSong.title }} <br /><br />
       <div align="center">
         <iframe
           width="100%"
           height="190px"
-          src="https://www.youtube.com/embed/MukzJnDk31o"
+          :src="randomSong.url"
           frameborder="0"
           allowfullscreen
         ></iframe>
@@ -36,8 +36,16 @@
 </template>
 
 <script>
+import { songs } from "@/composables/filter/gold3DadVideoProvider";
+
 export default {
   name: "Gold3DadAd",
-  setup() {},
+  setup() {
+    const randomSong = songs[Math.floor(Math.random()*songs.length)]
+
+    return {
+      randomSong,
+    };
+  },
 };
 </script>
