@@ -23,7 +23,7 @@
           <v-card flat rounded="lg" class="mb-6 pa-2 text-center">
             <v-card-title>Migrations</v-card-title>
             <v-btn color="primary" variant="text" @click="runMigration()"
-              >Embed comments count</v-btn
+              >Initialize Contributors</v-btn
             >
           </v-card>
         </v-col>
@@ -78,11 +78,15 @@
 <script>
 import { useStore } from "vuex";
 import { ref, computed, onMounted } from "vue";
+import { httpsCallable } from "firebase/functions";
+import {
+  functions,
+} from "@/firebase";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { getCommentsCount } from "@/composables/data/commentService";
-import { getBuilds, updateBuild } from "@/composables/data/buildService";
+import { getBuilds } from "@/composables/data/buildService";
+import { addContributor } from "@/composables/data/contributorService";
 
 import unitEco from "@/composables/builds/icons/json/unitEco.json" with { type: "json" };
 import unitReligious from "@/composables/builds/icons/json/unitReligious.json" with { type: "json" };
@@ -102,6 +106,7 @@ export default {
   name: "Admin",
   setup() {
     var builds = null;
+    var users = null;
 
     const error = ref(null);
     const store = useStore();
@@ -249,30 +254,46 @@ export default {
       syncData(abilities.concat(techs), abilityHero);
       downloadObjectAsJSONFile(abilityHero, "abilityHero.json");
 
-      //If you pause for a second between each 10 downloads, all of them will work in Chrome. 
+      //If you pause for a second between each 10 downloads, all of them will work in Chrome.
       //Automatic download is limited to 10.
     }
 
     function runMigration() {
-      builds.forEach((build, index) => {
+      users.forEach((user, index) => {
         setTimeout(() => {
-          customActionPerBuild(build);
+          customActionPerUser(user);
         }, index * 1000);
       });
     }
 
-    async function customActionPerBuild(build) {
-      console.log("Build id:", build.id);
+    async function customActionPerUser(user) {
+      var contributorBuilds = builds.filter((build) => build.authorUid === user.id);
+      const boCount = contributorBuilds.length;
+      const viewCount = contributorBuilds.reduce((a, b) => a + b.views, 0);
 
-      const commentsCount = await getCommentsCount(build.id);
-      build.comments = commentsCount || 0;
+      var contributor = {
+        authorId: user.id,
+        displayName: user.displayName,
+        boCount: boCount,
+        viewCount: viewCount
+      };
 
-      updateBuild(build.id, build);
+      console.log(contributor);
+
+      //add contributor to db
+      await addContributor(contributor, user.id);
     }
 
     async function initData() {
       //init builds, filter based on use case
-      //builds = await getBuilds();
+      builds = await getBuilds();
+
+      //init users
+      const getUsers = httpsCallable(
+            functions,
+            "getUsers"
+          );
+      users = (await getUsers()).data;
     }
 
     return {
