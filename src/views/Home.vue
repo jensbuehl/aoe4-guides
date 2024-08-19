@@ -36,7 +36,8 @@
             ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
-        <News class="mb-2"></News>
+        <!--News></News-->
+        <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -197,7 +198,7 @@
                   v-bind="props"
                   :to="{
                     name: 'Builds',
-                    query: { authorUid: contributor.id },
+                    query: { author: contributor.authorId },
                   }"
                 >
                   <v-row no-gutters class="fill-height" align="center" justify="center"
@@ -210,29 +211,23 @@
                         <v-row no-gutters align="center">
                           <v-col cols="auto" align="center">
                             <v-avatar
-                              class="my-2 mx-4"
+                              v-if="contributor.icon"
+                              class="mx-4"
                               color="accent"
                               :image="contributor.icon"
                             ></v-avatar>
+                            <v-avatar v-else class="mx-4" color="accent">{{
+                              contributor.displayName.slice(0, 2).toUpperCase()
+                            }}</v-avatar>
                           </v-col>
                           <v-col cols="auto" align="start" justify="start">
-                            <v-row no-gutters
-                              ><!--xs title-->
-                              <div
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                                class="text-subtitle-2 hidden-sm-and-up"
-                                style="font-size: 0.8rem !important"
-                              >
-                                {{ contributor.displayName }}
-                              </div>
+                            <v-row no-gutters>
                               <!--sm title-->
                               <div
                                 :style="{
                                   color: $vuetify.theme.current.colors.primary,
                                 }"
-                                class="text-subtitle-2 hidden-xs"
+                                class="text-subtitle-2 hidden-xs mt-n1"
                                 style="font-family: 'Segoe UI' !important"
                               >
                                 {{ contributor.displayName }}
@@ -290,7 +285,7 @@
                   v-bind="props"
                   :to="{
                     name: 'Builds',
-                    query: { authorUid: contributor.id },
+                    query: { author: contributor.authorId },
                   }"
                 >
                   <v-row no-gutters class="fill-height" align="center" justify="center"
@@ -303,10 +298,14 @@
                         <v-row no-gutters align="center">
                           <v-col cols="auto" align="center">
                             <v-avatar
+                              v-show="contributor.icon"
                               class="mx-4"
                               color="accent"
                               :image="contributor.icon"
                             ></v-avatar>
+                            <v-avatar v-show="!contributor.icon" class="mx-4" color="accent">{{
+                              contributor.displayName.slice(0, 2).toUpperCase()
+                            }}</v-avatar>
                           </v-col>
                           <v-col cols="*" align="start" justify="start">
                             <v-row no-gutters
@@ -491,6 +490,7 @@
               </router-link>
             </div> </v-col
         ></v-row>
+        <YoutubeGuides class="mt-4"></YoutubeGuides>
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-md-and-up">
@@ -514,7 +514,8 @@
             ><span v-if="count > 1">s</span><span>.</span>
           </v-card-text>
         </v-card>
-        <News class="mb-2"></News>
+        <!--News></News-->
+        <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
 
         <!--top contributors md and up-->
         <v-row no-gutters align="center" class="hidden-xs">
@@ -523,97 +524,95 @@
             ><span class="text-h6">Top Contributors</span></v-col
           ></v-row
         >
-
-        <v-row no-gutters align="center">
-          <v-row align="center" no-gutters
-            ><v-col cols="12" v-for="contributor in topContributorsList">
-              <v-tooltip location="top" open-delay="1000">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
+        <v-row align="center" no-gutters
+          ><v-col cols="12" v-for="contributor in topContributorsList">
+            <v-tooltip location="top" open-delay="1000">
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Explore all build orders from
+                {{ contributor.displayName }}
+              </span>
+              <template v-slot:activator="{ props }">
+                <v-card
+                  flat
+                  :height="contributorsCardHeight"
+                  rounded="lg"
+                  class="mb-2"
+                  v-bind="props"
+                  :to="{
+                    name: 'Builds',
+                    query: { author: contributor.authorId },
                   }"
-                  >Explore all build orders from
-                  {{ contributor.displayName }}
-                </span>
-                <template v-slot:activator="{ props }">
-                  <v-card
-                    flat
-                    :height="contributorsCardHeight"
-                    rounded="lg"
-                    class="mb-2"
-                    v-bind="props"
-                    :to="{
-                      name: 'Builds',
-                      query: { author: contributor.authorId },
-                    }"
+                >
+                  <v-row no-gutters class="fill-height" align="center" justify="center"
+                    ><v-col cols="12"
+                      ><v-skeleton-loader
+                        :color="contributor.loading ? 'loading' : 'surface'"
+                        :loading="contributor.loading"
+                        :height="contributorsCardHeight"
+                      >
+                        <v-row no-gutters align="center">
+                          <v-col cols="auto" align="center">
+                            <v-avatar
+                              class="mx-4"
+                              color="accent"
+                              :image="contributor.icon"
+                            ></v-avatar>
+                          </v-col>
+                          <v-col cols="*" align="start" justify="start">
+                            <v-row no-gutters
+                              ><!--lg title-->
+                              <v-card-title
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="ml-n4 mt-lg-n4 hidden-md-and-down"
+                              >
+                                {{ contributor.displayName }}
+                              </v-card-title>
+                              <!--md title-->
+                              <div
+                                :style="{
+                                  color: $vuetify.theme.current.colors.primary,
+                                }"
+                                class="text-subtitle-2 hidden-sm-and-down hidden-lg-and-up mt-n1"
+                                style="font-family: 'Segoe UI' !important"
+                              >
+                                {{ contributor.displayName }}
+                              </div></v-row
+                            ><v-row no-gutters class="hidden-sm-and-down hidden-lg-and-up mt-2">
+                              <v-chip class="mr-2" label size="x-small"
+                                ><v-icon start icon="mdi-eye"></v-icon
+                                >{{ contributor.viewCount }}</v-chip
+                              >
+                              <v-chip label size="x-small"
+                                ><v-icon start icon="mdi-hammer"></v-icon
+                                >{{ contributor.boCount }}</v-chip
+                              >
+                            </v-row>
+                            <v-row no-gutters class="hidden-md-and-down mt-n1">
+                              <v-chip class="mr-2" label size="small"
+                                ><v-icon start icon="mdi-eye"></v-icon
+                                >{{ contributor.viewCount }}</v-chip
+                              >
+                              <v-chip label size="small"
+                                ><v-icon start icon="mdi-hammer"></v-icon
+                                >{{ contributor.boCount }}</v-chip
+                              >
+                            </v-row>
+                          </v-col>
+                        </v-row>
+                      </v-skeleton-loader></v-col
+                    ></v-row
                   >
-                    <v-row no-gutters class="fill-height" align="center" justify="center"
-                      ><v-col cols="12"
-                        ><v-skeleton-loader
-                          :color="contributor.loading ? 'loading' : 'surface'"
-                          :loading="contributor.loading"
-                          :height="contributorsCardHeight"
-                        >
-                          <v-row no-gutters align="center">
-                            <v-col cols="auto" align="center">
-                              <v-avatar
-                                class="my-2 mx-4"
-                                color="accent"
-                                :image="contributor.icon"
-                              ></v-avatar>
-                            </v-col>
-                            <v-col cols="*" align="start" justify="start">
-                              <v-row no-gutters
-                                ><!--lg title-->
-                                <v-card-title
-                                  :style="{
-                                    color: $vuetify.theme.current.colors.primary,
-                                  }"
-                                  class="ml-n4 mt-lg-n4 hidden-md-and-down"
-                                >
-                                  {{ contributor.displayName }}
-                                </v-card-title>
-                                <!--md title-->
-                                <div
-                                  :style="{
-                                    color: $vuetify.theme.current.colors.primary,
-                                  }"
-                                  class="text-subtitle-2 hidden-sm-and-down hidden-lg-and-up"
-                                  style="font-family: 'Segoe UI' !important"
-                                >
-                                  {{ contributor.displayName }}
-                                </div></v-row
-                              ><v-row no-gutters class="hidden-sm-and-down hidden-lg-and-up mt-1">
-                                <v-chip class="mr-2" label size="x-small"
-                                  ><v-icon start icon="mdi-eye"></v-icon
-                                  >{{ contributor.viewCount }}</v-chip
-                                >
-                                <v-chip label size="x-small"
-                                  ><v-icon start icon="mdi-hammer"></v-icon
-                                  >{{ contributor.boCount }}</v-chip
-                                >
-                              </v-row>
-                              <v-row no-gutters class="hidden-md-and-down mt-n1">
-                                <v-chip class="mr-2" label size="small"
-                                  ><v-icon start icon="mdi-eye"></v-icon
-                                  >{{ contributor.viewCount }}</v-chip
-                                >
-                                <v-chip label size="small"
-                                  ><v-icon start icon="mdi-hammer"></v-icon
-                                  >{{ contributor.boCount }}</v-chip
-                                >
-                              </v-row>
-                            </v-col>
-                          </v-row>
-                        </v-skeleton-loader></v-col
-                      ></v-row
-                    >
-                  </v-card>
-                </template>
-              </v-tooltip>
-            </v-col></v-row
-          >
-        </v-row>
+                </v-card>
+              </template>
+            </v-tooltip>
+          </v-col></v-row
+        >
+        <YoutubeGuides class="mt-4"></YoutubeGuides>
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
           class="mt-6"
@@ -633,6 +632,8 @@ import { useDisplay } from "vuetify";
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import News from "@/components/notifications/News.vue";
+import YoutubeGuides from "@/components/notifications/YoutubeGuides.vue";
+import Gold3DadAd from "@/components/notifications/Gold3DadAd.vue";
 import EmailVerificationAd from "@/components/notifications/EmailVerificationAd.vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
@@ -655,6 +656,8 @@ export default {
     BuildListCard,
     RegisterAd,
     News,
+    YoutubeGuides,
+    Gold3DadAd,
     EmailVerificationAd,
   },
   setup() {
@@ -738,7 +741,7 @@ export default {
       popularBuildsList,
       allTimeClassicsList,
       topContributorsList,
-      contributorsCardHeight
+      contributorsCardHeight,
     };
   },
 };

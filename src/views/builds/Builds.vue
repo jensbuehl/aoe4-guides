@@ -26,15 +26,62 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
+        <v-card
+          v-if="filterConfig.author"
+          flat
+          class="mb-6"
+          :height="contributorsCardHeight"
+          rounded="lg"
+        >
+          <v-row no-gutters class="fill-height" align="center" justify="center"
+            ><v-col cols="12"
+              ><v-skeleton-loader
+                :color="contributor == null ? 'loading' : 'surface'"
+                :loading="contributor == null"
+                :height="contributorsCardHeight"
+              >
+                <v-row no-gutters align="center" class="pa-2">
+                  <v-col cols="auto" align="center">
+                    <v-avatar
+                      v-show="contributor.icon"
+                      class="mx-4"
+                      color="accent"
+                      :image="contributor.icon"
+                    ></v-avatar>
+                    <v-avatar v-show="!contributor.icon" class="mx-4" color="accent">{{
+                      contributor.displayName.slice(0, 2).toUpperCase()
+                    }}</v-avatar>
+                  </v-col>
+                  <v-col cols="*" align="start" justify="start">
+                    <v-row no-gutters>
+                      <div
+                        :style="{
+                          color: $vuetify.theme.current.colors.primary,
+                        }"
+                        class="text-subtitle-2 hidden-lg-and-up mt-n1"
+                        style="font-family: 'Segoe UI' !important"
+                      >
+                        {{ contributor.displayName }}
+                      </div></v-row
+                    ><v-row no-gutters class="hidden-lg-and-up mt-2">
+                      <v-chip class="mr-2" label size="x-small"
+                        ><v-icon start icon="mdi-eye"></v-icon>{{ contributor.viewCount }}</v-chip
+                      >
+                      <v-chip label size="x-small"
+                        ><v-icon start icon="mdi-hammer"></v-icon>{{ contributor.boCount }}</v-chip
+                      >
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-skeleton-loader></v-col
+            ></v-row
+          >
+        </v-card>
+
         <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
       <v-col cols="12" md="8">
-        <v-row v-if="filterConfig.author && builds?.length > 0 && builds[0].author" no-gutters
-          ><div class="text-h6 mt-4 ml-4 mb-2">
-            {{ getAuthorsBuildsTitleString(builds[0].author) }}
-          </div></v-row
-        >
         <div v-if="builds" v-for="item in builds">
           <router-link
             style="text-decoration: none"
@@ -62,6 +109,75 @@
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
+        <v-card
+          v-if="filterConfig.author"
+          flat
+          :height="contributorsCardHeight"
+          rounded="lg"
+          class="mb-2"
+        >
+          <v-row no-gutters class="fill-height" align="center" justify="center"
+            ><v-col cols="12"
+              ><v-skeleton-loader
+                :color="contributor == null ? 'loading' : 'surface'"
+                :loading="contributor == null"
+                :height="contributorsCardHeight"
+              >
+                <v-row no-gutters align="center" class="pa-2">
+                  <v-col cols="auto" align="center">
+                    <v-avatar
+                      v-show="contributor.icon"
+                      class="mx-4"
+                      color="accent"
+                      :image="contributor.icon"
+                    ></v-avatar>
+                    <v-avatar v-show="!contributor.icon" class="mx-4" color="accent">{{
+                      contributor.displayName.slice(0, 2).toUpperCase()
+                    }}</v-avatar>
+                  </v-col>
+                  <v-col cols="*" align="start" justify="start">
+                    <v-row no-gutters
+                      ><!--lg title-->
+                      <v-card-title
+                        :style="{
+                          color: $vuetify.theme.current.colors.primary,
+                        }"
+                        class="ml-n4 mt-n4 hidden-md-and-down"
+                      >
+                        {{ contributor.displayName }}
+                      </v-card-title>
+                      <!--md title-->
+                      <div
+                        :style="{
+                          color: $vuetify.theme.current.colors.primary,
+                        }"
+                        class="text-subtitle-2 hidden-sm-and-down hidden-lg-and-up mt-n1"
+                        style="font-family: 'Segoe UI' !important"
+                      >
+                        {{ contributor.displayName }}
+                      </div></v-row
+                    ><v-row no-gutters class="hidden-sm-and-down hidden-lg-and-up mt-2">
+                      <v-chip class="mr-2" label size="x-small"
+                        ><v-icon start icon="mdi-eye"></v-icon>{{ contributor.viewCount }}</v-chip
+                      >
+                      <v-chip label size="x-small"
+                        ><v-icon start icon="mdi-hammer"></v-icon>{{ contributor.boCount }}</v-chip
+                      >
+                    </v-row>
+                    <v-row no-gutters class="hidden-md-and-down mt-n1">
+                      <v-chip class="mr-2" label size="small"
+                        ><v-icon start icon="mdi-eye"></v-icon>{{ contributor.viewCount }}</v-chip
+                      >
+                      <v-chip label size="small"
+                        ><v-icon start icon="mdi-hammer"></v-icon>{{ contributor.boCount }}</v-chip
+                      >
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-skeleton-loader></v-col
+            ></v-row
+          >
+        </v-card>
         <FilterConfig @configChanged="configChanged"> </FilterConfig>
       </v-col>
     </v-row>
@@ -73,6 +189,7 @@
 import { useStore } from "vuex";
 import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useDisplay } from "vuetify";
 
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
@@ -82,6 +199,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import { getContributor } from "@/composables/data/contributorService";
 import {
   getBuilds,
   getBuildsCount,
@@ -101,12 +219,31 @@ export default {
     const router = useRouter();
     const count = computed(() => store.state.resultsCount);
     const loading = computed(() => store.state.loading);
+    const contributor = ref(null);
+    const { name } = useDisplay();
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
       pageStart: null,
       pageEnd: null,
       limit: 10,
+    });
+
+    const contributorsCardHeight = computed(() => {
+      switch (name.value) {
+        case "xs":
+          return 70;
+        case "sm":
+          return 70;
+        case "md":
+          return 70;
+        case "lg":
+          return 70;
+        case "xl":
+          return 84;
+        case "xxl":
+          return 84;
+      }
     });
 
     const initQueryParameters = async () => {
@@ -133,7 +270,6 @@ export default {
       }
     };
 
-    
     onMounted(async () => {
       await initQueryParameters();
       initData();
@@ -147,11 +283,6 @@ export default {
       }
     });
 
-    const getAuthorsBuildsTitleString = (authorName) => {
-      authorName.endsWith('s') ? authorName += "' Builds" : authorName += "'s Builds"
-      return authorName;
-    };
-
     const configChanged = () => {
       initData();
       router.replace("/builds");
@@ -159,6 +290,10 @@ export default {
 
     const initData = async () => {
       store.commit("setLoading", true);
+
+      //get contributor
+      contributor.value = await getContributor(filterConfig.value.author);
+      console.log(contributor.value);
 
       //reset results count
       store.commit("setResultsCount", null);
@@ -248,7 +383,8 @@ export default {
       configChanged,
       nextPage,
       previousPage,
-      getAuthorsBuildsTitleString,
+      contributor,
+      contributorsCardHeight,
     };
   },
 };

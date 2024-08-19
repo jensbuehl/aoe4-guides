@@ -1,10 +1,10 @@
 <template>
   <v-card rounded="lg" flat class="hidden-md-and-up">
-    <v-card-text class="pb-0 mb-4">
+    <v-card-text class="mb-md-4">
       <v-expansion-panels>
         <v-expansion-panel elevation="0">
           <v-expansion-panel-title expand-icon="mdi-filter-variant">
-            Filter & Sort
+            Filter
           </v-expansion-panel-title>
           <v-expansion-panel-text class="mt-2">
             <v-select
@@ -79,8 +79,8 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
-      <v-row align="center" justify="center" class="fill-height">
-        <v-col class="d-flex justify-center" cols="6">
+      <v-row no-gutters align="center" justify="center" class="fill-height">
+        <v-col class="d-flex justify-center" cols="6" v-if="configChanged">
           <v-btn
             v-if="configChanged"
             color="primary"
@@ -103,17 +103,6 @@
         ></v-row
       >
     </v-card-text>
-    <v-divider></v-divider>
-    <v-container class="fill-height">
-      <v-row align="center" justify="center" class="fill-height">
-        <v-col class="d-flex justify-center">
-          <span v-if="loading && !count">Gathering...</span>
-          <span v-else-if="!count">0 build orders</span>
-          <span v-else-if="count === 1">{{ count }} build order</span
-          ><span v-else-if="count > 1">{{ count }} build orders</span>
-        </v-col>
-      </v-row>
-    </v-container>
   </v-card>
   <v-card rounded="lg" flat class="hidden-sm-and-down">
     <v-card-text class="pb-0">
@@ -266,7 +255,7 @@
       ></v-select>
     </v-card-text>
     <v-row align="center" justify="center" class="fill-height mb-2">
-      <v-col class="d-flex justify-center" cols="6">
+      <v-col class="d-flex justify-center" cols="6" v-if="configChanged">
         <v-btn
           color="primary"
           v-if="configChanged"
@@ -289,7 +278,7 @@
       ></v-row
     >
     <v-divider></v-divider>
-    <v-container class="fill-height">
+    <v-container>
       <v-row align="center" justify="center" class="fill-height">
         <v-col class="d-flex justify-center">
           <span v-if="loading && !count">Gathering...</span>

@@ -14,6 +14,7 @@ const {
   decrementNumber,
   getQuery,
   getAll,
+  get,
   error: collectionServiceError,
 } = collectionService("contributors");
 
@@ -24,6 +25,17 @@ const {
  */
 export const error = computed(() => collectionServiceError).value;
 
+/**
+ * Retrieve a contributor by its ID.
+ *
+ * @param {string} contributorId - The ID of the contributor to retrieve
+ * @return {Promise<any>} The retrieved contributor
+ */
+export async function getContributor(contributorId) {
+  const result =  await get(contributorId);
+  
+  return result;
+}
 
 export async function getTopContributors(limit) {
   const topContributorsQuery = getQuery(getQueryParametersFromConfig(null, limit).concat(getOrderByQueryParam(null, "viewCount"))); 

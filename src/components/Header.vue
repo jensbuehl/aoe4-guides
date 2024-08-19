@@ -236,7 +236,7 @@
                 v-if="user && user.displayName"
                 color="accent"
                 v-bind="props"
-                >{{ user.displayName.slice(0, 2) }}</v-avatar
+                >{{ user.displayName.slice(0, 2).toUpperCase() }}</v-avatar
               >
               <v-avatar v-if="!user?.displayName" color="accent" v-bind="props">
                 <v-icon icon="mdi-account"></v-icon
