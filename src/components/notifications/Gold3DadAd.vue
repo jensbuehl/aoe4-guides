@@ -6,13 +6,13 @@
     </v-col></v-row
   >
   <v-card flat rounded="lg">
-    <v-carousel color="accent" show-arrows="hover" hide-delimiter-background cycle height="190">
-      <v-carousel-item v-for="video in videos"
+    <v-carousel color="accent" show-arrows="hover" hide-delimiter-background height="190">
+      <v-carousel-item v-for="song in songs"
         ><div align="center">
           <iframe
             width="100%"
             height="190px"
-            src="https://www.youtube.com/embed/{{video.id.videoId}}"
+            :src="song.url"
             frameborder="0"
             allowfullscreen
           ></iframe></div
@@ -22,14 +22,14 @@
 </template>
 
 <script>
-import youtubeService from "@/composables/builds/youtubeService";
+import { songs, shuffleArray } from "@/composables/filter/gold3DadVideoProvider";
 
 export default {
   name: "YoutubeGuides",
   setup() {
-    const { getPlaylistItems } = youtubeService();
-    var videos = getPlaylistItems("PLKKTkXzcn_lGoj4aAf2XFhvwKNsy3vI4E");
-    return { videos };
+    shuffleArray(songs);
+    
+    return { songs };
   },
 };
 </script>

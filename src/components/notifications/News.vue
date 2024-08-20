@@ -12,12 +12,6 @@
           top-notch content on our site instead of just pointing to YouTube creators.
         </p>
 
-        <p class="mb-4">
-          <strong>YouTube Guides:</strong> Speaking of YouTube, I’ve made it easier to find the
-          latest and greatest video guides, so you don’t miss a
-          thing.
-        </p>
-
         <p class="mb-4">Cheers,<br />exe</p>
 
         <p class="mb-2">

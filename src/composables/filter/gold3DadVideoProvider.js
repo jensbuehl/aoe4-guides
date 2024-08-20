@@ -1,3 +1,10 @@
+export function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
 export const songs = [
   {
     title: "Riding Dirty [Synthwave Version] - Ayyubids",
@@ -8,19 +15,19 @@ export const songs = [
     url: "https://www.youtube.com/embed/p7Z9e64gXCU",
   },
   {
-    title: "Road To Platinum[Stadium Hymn Version]",
+    title: "Road To Platinum [Stadium Hymn Version]",
     url: "https://www.youtube.com/embed/jojzhFHPT8g",
   },
   {
-    title: "Road To Platinum[Rock Version]",
+    title: "Road To Platinum [Rock Version]",
     url: "https://www.youtube.com/embed/Pm4TQ2jCR-8",
   },
   {
-    title: "Road To Platinum[Synthwave Version]",
+    title: "Road To Platinum [Synthwave Version]",
     url: "https://www.youtube.com/embed/QP8HAk1KNLA",
   },
   {
-    title: "The Englishmen[Macklemore Version] - English",
+    title: "The Englishmen [Macklemore Version] - English",
     url: "https://www.youtube.com/embed/pQAA4qv19Jc",
   },
   {
