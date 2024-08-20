@@ -44,4 +44,9 @@ service cloud.firestore {
         .hasOnly(['boCount', 'viewCount']));
     }
   }
+  match /databases/{database}/documents {
+    match /home/{home} {
+      allow read;
+    }
+  }
 }
