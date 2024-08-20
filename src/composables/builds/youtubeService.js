@@ -4,23 +4,21 @@ import axios from "axios";
 const API_KEY = "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY"
 
 export default function youtubeService() {
-  const search = async (searchParam) => {
+  const search = async (searchParam, maxResults) => {
     return await axios
     .get("https://www.googleapis.com/youtube/v3/search", {
       params: {
         key: API_KEY,
         q: searchParam,
         part: "snippet",
-        maxResults: 1,
+        maxResults: maxResults,
         order: "date",
         type: "video",
       },
     })
     .then((response) => {
-      if (response.data.items.length > 0) {
-        console.log(response.data.items);
-        
-        //return response.data.items[0];
+      if (response.data.items.length > 0) {        
+        return response.data.items;
       } else {
         throw new Error(`No search result for term ${searchParam} found.`);
       }

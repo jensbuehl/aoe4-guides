@@ -490,7 +490,9 @@
               </router-link>
             </div> </v-col
         ></v-row>
-        <YoutubeGuides class="mt-4 hidden-md-and-up"></YoutubeGuides>
+        <v-container class="mx-0 pa-0 hidden-md-and-up"
+          ><YoutubeGuides></YoutubeGuides
+        ></v-container>
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-md-and-up">
@@ -616,7 +618,7 @@
             </v-tooltip>
           </v-col></v-row
         >
-        <YoutubeGuides class="mt-4"></YoutubeGuides>
+        <YoutubeGuides class="hidden-md-and-up mt-4"></YoutubeGuides>
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
           class="mt-6"
@@ -646,7 +648,6 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { getTopContributors } from "@/composables/data/contributorService";
-import youtubeService from "@/composables/builds/youtubeService";
 import {
   getRecentBuilds,
   getPopularBuilds,
@@ -675,7 +676,6 @@ export default {
     const { name } = useDisplay();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
-    const { search } = youtubeService();
 
     const contributorsCardHeight = computed(() => {
       switch (name.value) {
@@ -708,8 +708,6 @@ export default {
     const initData = async () => {
       //reset results count
       store.commit("setResultsCount", null);
-
-      search("aoe4 build order guide");
 
       //get popular
       if (!popularBuildsList || popularBuildsList.value[0].loading) {
