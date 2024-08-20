@@ -27,7 +27,7 @@ exports.updateRecentYoutubeVideos = onSchedule(
       return video.id.videoId;
     });
 
-    return getFirestore().collection("home").doc(0).set(
+    return getFirestore().collection("home").doc("home").set(
       {
         recentVideos: recentVideos,
       },
@@ -36,7 +36,7 @@ exports.updateRecentYoutubeVideos = onSchedule(
   }
 );
 
-const search = async (searchParam, maxResults) => {
+async function search(searchParam, maxResults) {
   return await axios
     .get("https://www.googleapis.com/youtube/v3/search", {
       params: {
@@ -58,4 +58,4 @@ const search = async (searchParam, maxResults) => {
     .catch((error) => {
       console.log("Could not retrive search result: ", error);
     });
-};
+}
