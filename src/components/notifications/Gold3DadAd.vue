@@ -7,7 +7,7 @@
   >
   <v-card flat rounded="lg">
     <v-carousel color="accent" show-arrows="hover" hide-delimiter-background height="190">
-      <v-carousel-item v-for="song in songs"
+      <v-carousel-item v-for="song in songsShortList"
         ><div align="center">
           <iframe
             width="100%"
@@ -28,8 +28,9 @@ export default {
   name: "YoutubeGuides",
   setup() {
     shuffleArray(songs);
+    const songsShortList = songs.slice(0, 3);   
     
-    return { songs };
+    return { songsShortList };
   },
 };
 </script>
