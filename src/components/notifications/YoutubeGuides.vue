@@ -7,12 +7,12 @@
   >
   <v-card flat rounded="lg">
     <v-carousel color="accent" show-arrows="hover" hide-delimiter-background cycle height="190">
-      <v-carousel-item v-for="video in videos"
+      <v-carousel-item v-for="videoId in videosIds"
         ><div align="center">
           <iframe
             width="100%"
             height="190px"
-            src="https://www.youtube.com/embed/{{video.id.videoId}}"
+            :src="'https://www.youtube.com/embed/'+videoId"
             frameborder="0"
             allowfullscreen
           ></iframe></div
@@ -22,14 +22,20 @@
 </template>
 
 <script>
-import youtubeService from "@/composables/builds/youtubeService";
+//import youtubeService from "@/composables/builds/youtubeService";
+import { getRecentYoutubeVideos } from "@/composables/data/homeService";
+import { ref, onMounted } from "vue";
 
 export default {
   name: "YoutubeGuides",
   setup() {
-    const { search } = youtubeService();
-    var videos = search("aoe4 build order guide", 5);
-    return { videos };
+    var videosIds = ref(null);
+    
+    onMounted(async () => {
+      videosIds.value = await getRecentYoutubeVideos()      
+    });
+    
+    return { videosIds };
   },
 };
 </script>

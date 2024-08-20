@@ -3,12 +3,8 @@
     <v-card flat rounded="lg">
       <v-card-title>Top Contributors!</v-card-title>
       <v-card-text>
-        <p class="mb-4">
-          I've got some cool updates for <strong>aoe4guides.com</strong> that you’ll love! 🎉
-        </p>
-
         <p class="mb-2">
-          <strong>Top Contributors:</strong> We’re now giving props to the awesome authors creating
+          We’re now giving props to the awesome authors creating
           top-notch content on our site instead of just pointing to YouTube creators.
         </p>
 

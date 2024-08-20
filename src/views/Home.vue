@@ -497,8 +497,8 @@
             </div> </v-col
         ></v-row>
         <v-container class="mx-0 pa-0 hidden-md-and-up"
-          ><!--YoutubeGuides></YoutubeGuides
-          --></v-container>
+          ><YoutubeGuides></YoutubeGuides
+        ></v-container>
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-md-and-up">
@@ -524,7 +524,6 @@
         </v-card>
         <News></News>
         <v-container class="mx-0 pa-0 mb-2"><Gold3DadAd></Gold3DadAd></v-container>
-        
 
         <!--top contributors md and up-->
         <v-row no-gutters align="center" class="hidden-xs">
@@ -625,7 +624,7 @@
             </v-tooltip>
           </v-col></v-row
         >
-        <!--YoutubeGuides class="hidden-md-and-up mt-4"></YoutubeGuides-->
+        <YoutubeGuides class="hidden-md-and-up mt-4"></YoutubeGuides>
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
           class="mt-6"
