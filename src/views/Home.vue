@@ -27,7 +27,7 @@
     <v-row>
       <!-- main content -->
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <v-card flat rounded="lg" class="mb-6">
+        <v-card flat rounded="lg" class="mb-2">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user">Welcome, {{ user.displayName }}!</v-card-title>
           <v-card-text>
@@ -36,13 +36,19 @@
             ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
-        <!--News></News-->
-        <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
+        <News></News>
+        <Gold3DadAd></Gold3DadAd>
       </v-col>
 
       <v-col cols="12" md="8">
         <!-- civilizations xs-->
-        <v-row align="center" no-gutters class="hidden-sm-and-up mt-n2">
+        <v-row no-gutters class="hidden-md-and-up"
+          ><v-col class="ml-2 mb-4" cols="auto"
+            ><v-icon icon="mdi-earth" size="small" class="mx-2 mb-1"></v-icon
+            ><span class="text-h6">Civilizations</span>
+          </v-col></v-row
+        >
+        <v-row align="center" no-gutters class="hidden-sm-and-up">
           <v-col cols="6" v-for="(civ, index) in civs" :key="civ.title">
             <v-tooltip location="top" open-delay="1000">
               <span
@@ -504,7 +510,7 @@
 
       <!-- sidebar -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <v-card flat rounded="lg" class="mb-6">
+        <v-card flat rounded="lg" class="mb-2">
           <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
           <v-card-title v-if="user">Welcome, {{ user.displayName }}!</v-card-title>
           <v-card-text
@@ -516,8 +522,9 @@
             ><span v-if="count > 1">s</span><span>.</span>
           </v-card-text>
         </v-card>
-        <!--News></News-->
-        <Gold3DadAd class="mt-6 mb-2"></Gold3DadAd>
+        <News></News>
+        <v-container class="mx-0 pa-0 mb-2"><Gold3DadAd></Gold3DadAd></v-container>
+        
 
         <!--top contributors md and up-->
         <v-row no-gutters align="center" class="hidden-xs">

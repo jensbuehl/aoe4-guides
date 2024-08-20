@@ -1,51 +1,35 @@
 <template>
+  <v-row no-gutters
+    ><v-col class="ml-2 mt-4 mb-4" cols="auto"
+      ><v-icon icon="mdi-music" size="small" class="mx-2 mb-1"></v-icon
+      ><span class="text-h6">Music</span>
+    </v-col></v-row
+  >
   <v-card flat rounded="lg">
-    <v-card-title>Age of Empires Radio</v-card-title>
-    <v-card-text>
-      {{ randomSong.title }} <br /><br />
-      <div align="center">
-        <iframe
-          width="100%"
-          height="190px"
-          :src="randomSong.url"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </v-card-text>
-
-    <v-row class="ma-2" no-gutters>
-      <v-col align="center" justify="center"
-        ><a href="https://www.youtube.com/channel/UC5hqMmEWvSyFgsvQb29clMw/videos"
-          ><v-btn
-            class="ma-2"
-            size="small"
-            variant="text"
-            color="primary"
-            style="background-color: transparent"
-          >
-            <template v-slot:prepend>
-              <v-icon color="red">mdi-youtube</v-icon>
-            </template>
-            Check it out
-          </v-btn></a
-        ></v-col
-      >
-    </v-row>
+    <v-carousel color="accent" show-arrows="hover" hide-delimiter-background cycle height="190">
+      <v-carousel-item v-for="video in videos"
+        ><div align="center">
+          <iframe
+            width="100%"
+            height="190px"
+            src="https://www.youtube.com/embed/{{video.id.videoId}}"
+            frameborder="0"
+            allowfullscreen
+          ></iframe></div
+      ></v-carousel-item>
+    </v-carousel>
   </v-card>
 </template>
 
 <script>
-import { songs } from "@/composables/filter/gold3DadVideoProvider";
+import youtubeService from "@/composables/builds/youtubeService";
 
 export default {
-  name: "Gold3DadAd",
+  name: "YoutubeGuides",
   setup() {
-    const randomSong = songs[Math.floor(Math.random()*songs.length)]
-
-    return {
-      randomSong,
-    };
+    const { getPlaylistItems } = youtubeService();
+    var videos = getPlaylistItems("PLKKTkXzcn_lGoj4aAf2XFhvwKNsy3vI4E");
+    return { videos };
   },
 };
 </script>

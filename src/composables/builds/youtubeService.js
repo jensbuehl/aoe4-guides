@@ -28,6 +28,27 @@ export default function youtubeService() {
     });
   };
 
+  const getPlaylistItems = async (playlistId) => {
+    return await axios
+    .get("https://www.googleapis.com/youtube/v3/search", {
+      params: {
+        key: API_KEY,
+        id: playlistId,
+        part: "snippet",
+      },
+    })
+    .then((response) => {
+      if (response.data.items.length > 0) {        
+        return response.data.items;
+      } else {
+        throw new Error(`No playlist with id ${playlistId} found.`);
+      }
+    })
+    .catch((error) => {
+      console.log("Could not retrive playlist results: ", error);
+    });
+  };
+
   const extractVideoId = (videoUrl) => {
     if (videoUrl) {
       var regExp =
@@ -111,5 +132,5 @@ export default function youtubeService() {
     });
   };
 
-  return { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon, search };
+  return { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon, search, getPlaylistItems };
 }
