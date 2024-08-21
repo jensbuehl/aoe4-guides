@@ -39,7 +39,7 @@ export const store = createStore({
       maps: [],
       strategies: [],
       seasons: [],
-      orderBy: "score",
+      orderBy: "scoreAllTime",
     },
     //snackbar
     snackbar: {

@@ -19,6 +19,15 @@
             >
             </v-select>
             <v-select
+              v-model="selectedOrderBy"
+              prepend-icon="mdi-sort"
+              density="compact"
+              label="Order by"
+              item-value="id"
+              item-title="title"
+              :items="sortOptions"
+            ></v-select>
+            <v-select
               v-model="selectedVideoCreator"
               prepend-icon="mdi-youtube"
               label="Video Creator"
@@ -67,15 +76,6 @@
               multiple
             >
             </v-select>
-            <v-select
-              v-model="selectedOrderBy"
-              prepend-icon="mdi-sort"
-              density="compact"
-              label="Order by"
-              item-value="id"
-              item-title="title"
-              :items="sortOptions"
-            ></v-select>
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -131,110 +131,6 @@
       </v-select>
       <v-autocomplete
         class="hidden-xs"
-        v-model="selectedVideoCreator"
-        prepend-icon="mdi-youtube"
-        label="Video Creator"
-        density="compact"
-        :items="creators"
-        item-value="creatorId"
-        :item-title="
-          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
-        "
-        clearable
-      ></v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedVideoCreator"
-        prepend-icon="mdi-youtube"
-        label="Video Creator"
-        density="compact"
-        :items="creators"
-        item-value="creatorId"
-        :item-title="
-          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
-        "
-        clearable
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedSeasons"
-        prepend-icon="mdi-trophy"
-        label="Season"
-        density="compact"
-        :items="seasons"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      ></v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedSeasons"
-        prepend-icon="mdi-trophy"
-        label="Season"
-        density="compact"
-        :items="seasons"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedMaps"
-        prepend-icon="mdi-map"
-        label="Map"
-        density="compact"
-        :items="maps"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedMaps"
-        prepend-icon="mdi-map"
-        label="Map"
-        density="compact"
-        :items="maps"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedStrategies"
-        prepend-icon="mdi-strategy"
-        label="Strategy"
-        density="compact"
-        :items="strategies"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedStrategies"
-        prepend-icon="mdi-strategy"
-        label="Strategy"
-        density="compact"
-        :items="strategies"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
         v-model="selectedOrderBy"
         prepend-icon="mdi-sort"
         density="compact"
@@ -253,6 +149,110 @@
         item-title="title"
         :items="sortOptions"
       ></v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedVideoCreator"
+        prepend-icon="mdi-youtube"
+        label="Video Creator"
+        density="compact"
+        :items="creators"
+        item-value="creatorId"
+        :item-title="
+          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
+        "
+        clearable
+      ></v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
+        v-model="selectedVideoCreator"
+        prepend-icon="mdi-youtube"
+        label="Video Creator"
+        density="compact"
+        :items="creators"
+        item-value="creatorId"
+        :item-title="
+          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
+        "
+        clearable
+      >
+      </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedSeasons"
+        prepend-icon="mdi-trophy"
+        label="Season"
+        density="compact"
+        :items="seasons"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      ></v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
+        v-model="selectedSeasons"
+        prepend-icon="mdi-trophy"
+        label="Season"
+        density="compact"
+        :items="seasons"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedMaps"
+        prepend-icon="mdi-map"
+        label="Map"
+        density="compact"
+        :items="maps"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
+        v-model="selectedMaps"
+        prepend-icon="mdi-map"
+        label="Map"
+        density="compact"
+        :items="maps"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
+      <v-autocomplete
+        class="hidden-xs"
+        v-model="selectedStrategies"
+        prepend-icon="mdi-strategy"
+        label="Strategy"
+        density="compact"
+        :items="strategies"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-autocomplete>
+      <v-select
+        class="hidden-sm-and-up"
+        v-model="selectedStrategies"
+        prepend-icon="mdi-strategy"
+        label="Strategy"
+        density="compact"
+        :items="strategies"
+        item-value="title"
+        item-title="title"
+        clearable
+        multiple
+      >
+      </v-select>
     </v-card-text>
     <v-row align="center" justify="center" class="fill-height mb-2">
       <v-col class="d-flex justify-center" cols="6" v-if="configChanged">
@@ -362,20 +362,20 @@ export default {
 
     const sortOptions = ref([
       {
-        title: "Popularity",
-        id: "score",
-      },
-      {
-        title: "All Time Classics",
+        title: "All Time Score",
         id: "scoreAllTime",
-      },
-      {
-        title: "Time Created",
-        id: "timeCreated",
       },
       {
         title: "Views",
         id: "views",
+      },
+      {
+        title: "Trending",
+        id: "score",
+      },
+      {
+        title: "Time Created",
+        id: "timeCreated",
       },
       {
         title: "Favorites",

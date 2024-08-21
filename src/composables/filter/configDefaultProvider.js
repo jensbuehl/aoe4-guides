@@ -4,6 +4,16 @@ export const getDefaultConfig = () => ({
     maps: [],
     strategies: [],
     seasons: [],
+    orderBy: "scoreAllTime",
+    drafts: false,
+});
+
+export const getPopularBuildsConfig = () => ({
+    author: null,
+    civs: null,
+    maps: [],
+    strategies: [],
+    seasons: [],
     orderBy: "score",
     drafts: false,
 });
@@ -37,5 +47,3 @@ export const getDraftsConfig = () => ({
     orderBy: "timeCreated",
     drafts: true,
 });
-
-export const getPopularBuildsConfig = () => getDefaultConfig();

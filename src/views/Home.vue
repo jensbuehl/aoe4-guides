@@ -363,13 +363,13 @@
         <v-row no-gutters align="center">
           <v-col class="ml-2 mt-4 mb-2" cols="auto"
             ><v-icon icon="mdi-trending-up" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Popular Build Orders</span>
+            ><span class="text-h6">Trending Build Orders</span>
             <v-tooltip location="top" open-delay="1000">
               <span
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
-                >Show All Popular Builds</span
+                >Show All Trending Builds</span
               >
               <template v-slot:activator="{ props }">
                 <v-btn
@@ -624,7 +624,7 @@
             </v-tooltip>
           </v-col></v-row
         >
-        <YoutubeGuides class="hidden-md-and-up mt-4"></YoutubeGuides>
+        <YoutubeGuides></YoutubeGuides>
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
           class="mt-6"
