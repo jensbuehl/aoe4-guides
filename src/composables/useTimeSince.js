@@ -13,13 +13,13 @@ export default function useTimeSince() {
         if (elapsed < msPerDay) {
           return "today";
         } else if (elapsed < msPerDay * 2) {
-          return Math.floor(elapsed / msPerDay) + " day";
+          return Math.floor(elapsed / msPerDay) + " d";
         } else if (elapsed < msPerMonth) {
-          return Math.floor(elapsed / msPerDay) + " days";
+          return Math.floor(elapsed / msPerDay) + " d";
         } else if (elapsed < msPerMonth * 2) {
-          return Math.floor(elapsed / msPerMonth) + " month";
+          return Math.floor(elapsed / msPerMonth) + " mo";
         } else if (elapsed < msPerYear) {
-          return Math.floor(elapsed / msPerMonth) + " months";
+          return Math.floor(elapsed / msPerMonth) + " mo";
         } else {
           var month = date
             .toDateString()
