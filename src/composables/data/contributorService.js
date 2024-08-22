@@ -48,6 +48,10 @@ export async function incrementViews(contributorId) {
   return incrementNumber(contributorId, "viewCount");
 }
 
+export async function decrementViews(contributorId, decrementCount = 1) {
+  return decrementNumber(contributorId, "viewCount", decrementCount);
+}
+
 /**
  * Decrements the number of builds associated with a contributor.
  *

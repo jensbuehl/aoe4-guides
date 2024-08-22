@@ -649,7 +649,7 @@ import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 
 //composables
 import { getUserFavorites } from "@/composables/data/favoriteService";
-import { incrementViews as incrementContributorViews, decrementBuilds } from "@/composables/data/contributorService";
+import { incrementViews as incrementContributorViews, decrementBuilds, decrementViews } from "@/composables/data/contributorService";
 import {
   getBuild,
   deleteBuild,
@@ -769,6 +769,9 @@ export default {
 
         //decrement build count of contributor object
         decrementBuilds(build.value.authorUid);
+        
+        //icrement contributor views
+        decrementViews(build.value.authorUid, build.value.views + 1);
 
         //Reset cache
         store.commit("setRecentBuildsList", null);

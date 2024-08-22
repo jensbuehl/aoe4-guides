@@ -121,13 +121,15 @@ export function collectionService(col) {
    * @param {string} propertyName - The name of the property to decrement.
    * @return {Promise<void>} - A promise that resolves when the value has been decremented.
    */
-  async function decrementNumber(documentId, propertyName) {
+  async function decrementNumber(documentId, propertyName, decrementCount = 1) {
     error.value = null;
+    var decrementBy = -decrementCount
+    console.log(decrementBy);
 
     try {
       const docRef = doc(db, col, documentId);
       await updateDoc(docRef, {
-        [propertyName]: increment(-1),
+        [propertyName]: increment(decrementBy),
       });
     } catch (err) {
       console.log(err.message);
