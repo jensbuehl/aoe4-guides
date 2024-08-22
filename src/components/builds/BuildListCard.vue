@@ -91,27 +91,6 @@
           >
           <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
-          <v-chip v-if="build.comments > 0" class="mr-1 mt-1" label size="x-small"
-            ><v-icon start icon="mdi-message"></v-icon>{{ build.comments }}</v-chip
-            >
-            <v-chip
-            v-show="build.likes > 0 && (orderBy == 'likes' || orderBy == 'scoreAllTime')"
-            class="mr-1 mt-1"
-            label
-            size="x-small"
-            >
-            <v-icon start icon="mdi-heart"></v-icon>
-            {{ build.likes }}</v-chip
-            >
-            <v-chip
-            v-show="build.upvotes > 0 && (orderBy == 'score' || orderBy == 'scoreAllTime')"
-            class="mr-1 mt-1"
-            label
-            size="x-small"
-            >
-            <v-icon start icon="mdi-thumb-up"></v-icon>
-            {{ build.upvotes }}</v-chip
-          >
           <v-chip v-if="build.season" class="mr-1 mt-1 hidden-xs" label size="x-small"
           ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
           >
@@ -170,24 +149,6 @@
           >
           <v-chip v-if="build.comments > 0" class="mr-2 mb-2 hidden-xs" label size="small"
             ><v-icon start icon="mdi-message"></v-icon>{{ build.comments }}</v-chip
-          >
-          <v-chip
-            v-show="build.likes > 0 && (orderBy == 'likes' || orderBy == 'scoreAllTime')"
-            class="mr-2 mb-2"
-            label
-            size="small"
-          >
-            <v-icon start icon="mdi-heart"></v-icon>
-            {{ build.likes }}</v-chip
-          >
-          <v-chip
-            v-show="build.upvotes > 0 && (orderBy == 'score' || orderBy == 'scoreAllTime')"
-            class="mr-2 mb-2"
-            label
-            size="small"
-          >
-            <v-icon start icon="mdi-thumb-up"></v-icon>
-            {{ build.upvotes }}</v-chip
           >
           <v-chip v-if="build.season" class="mr-2 mb-2 hidden-xs" label size="small">
             <v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
