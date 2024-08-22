@@ -97,7 +97,7 @@
           <v-chip v-show="build.map && filterByMap" class="mr-1 mt-1 hidden-xs" label size="x-small"
           ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
-          <v-chip class="mr-1 mt-1" v-if="build.creatorId" variant="text" size="x-small"
+          <v-chip class="mr-1 mt-1" v-if="build.creatorId" variant="plain" size="x-small"
             ><v-icon color="accent" start icon="mdi-youtube"></v-icon
           >{{ build.creatorName }}</v-chip>
           <!--v-chip
