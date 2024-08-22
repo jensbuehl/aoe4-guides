@@ -118,9 +118,9 @@
           <v-chip v-show="build.map && filterByMap" class="mr-1 mt-1 hidden-xs" label size="x-small"
           ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
-          <v-chip class="mr-1 mt-1" v-if="build.creatorId" color="accent" variant="text" size="x-small"
-            ><v-icon start icon="mdi-youtube"></v-icon
-          ></v-chip>
+          <v-chip class="mr-1 mt-1" v-if="build.creatorId" variant="text" size="x-small"
+            ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+          >{{ build.creatorName }}</v-chip>
           <!--v-chip
             v-if="build.strategy"
             class="mr-1 mt-1 hidden-xs"
@@ -198,9 +198,9 @@
           <!--v-chip v-if="build.strategy" class="mr-2 mb-2" label size="small"
               ><v-icon start icon="mdi-strategy"></v-icon
                 >{{ build.strategy }}</v-chip-->
-          <v-chip class="mr-2 mb-2" v-if="build.creatorId" color="accent" variant="text" size="small"
-            ><v-icon start icon="mdi-youtube"></v-icon
-          ></v-chip>
+          <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="plain" size="small"
+            ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+          >{{ build.creatorName }}</v-chip>
         </v-item-group>
       </v-col>
     </v-row>

@@ -56,11 +56,12 @@
               >{{ getCivById(build.civ)?.shortName }}</v-chip
             >
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="x-small"
-            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="text" color="accent" size="x-small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-            ></v-chip>
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="plain" size="x-small"
+              ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+              >{{ build.creatorName }}</v-chip
+            >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="x-small"
@@ -110,11 +111,12 @@
               ><v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}</v-chip
             >
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
-            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="text" color="accent" size="small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-            ></v-chip>
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="plain" size="small"
+              ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+              >{{ build.creatorName }}</v-chip
+            >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
@@ -383,9 +385,10 @@
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
               ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="text" size="small" color="accent"
-              ><v-icon start icon="mdi-youtube"></v-icon
-            ></v-chip>
+            <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="plain" size="small"
+              ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+              >{{ build.creatorName }}</v-chip
+            >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
@@ -649,7 +652,11 @@ import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 
 //composables
 import { getUserFavorites } from "@/composables/data/favoriteService";
-import { incrementViews as incrementContributorViews, decrementBuilds, decrementViews } from "@/composables/data/contributorService";
+import {
+  incrementViews as incrementContributorViews,
+  decrementBuilds,
+  decrementViews,
+} from "@/composables/data/contributorService";
 import {
   getBuild,
   deleteBuild,
@@ -769,7 +776,7 @@ export default {
 
         //decrement build count of contributor object
         decrementBuilds(build.value.authorUid);
-        
+
         //icrement contributor views
         decrementViews(build.value.authorUid, build.value.views + 1);
 

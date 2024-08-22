@@ -26,16 +26,16 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="x-small"
-            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
               v-if="build.creatorId && build.creatorName"
-              variant="text"
-              color="accent"
+              variant="plain"
               size="x-small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-            ></v-chip>
+              ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+              >{{ build.creatorName }}</v-chip
+            >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="x-small"
@@ -80,16 +80,16 @@
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
-            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+              ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
             <v-chip
               class="mr-2 mb-2"
               v-if="build.creatorId && build.creatorName"
-              variant="text"
-              color="accent"
+              variant="plain"
               size="small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-            ></v-chip>
+              ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+              >{{ build.creatorName }}</v-chip
+            >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
@@ -298,11 +298,11 @@
             <v-chip
               class="mr-2 mb-2"
               v-if="build.creatorId && build.creatorName"
-              variant="text"
-              color="accent"
+              variant="plain"
               size="small"
-              ><v-icon start icon="mdi-youtube"></v-icon
-            ></v-chip>
+              ><v-icon color="accent" start icon="mdi-youtube"></v-icon
+              >{{ build.creatorName }}</v-chip
+            >
           </v-item-group>
           <v-item-group class="ml-4 hidden-sm-and-down">
             <v-chip class="mr-2 mb-2" color="accent" v-if="build.map" label size="small"
