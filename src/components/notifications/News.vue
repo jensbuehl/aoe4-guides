@@ -4,17 +4,20 @@
       <v-card-title>Top Contributors!</v-card-title>
       <v-card-text>
         <p class="mb-2">
-          We’re now giving props to the awesome authors creating
+          We’re now giving props to the awesome <strong>authors</strong> creating
           top-notch content on our site instead of just pointing to YouTube creators.
+        </p>
+
+        <p class="mb-2">
+          <strong>Comments</strong> are back and visibile in the build orders again.
         </p>
 
         <p class="mb-4">Cheers,<br />exe</p>
 
         <p class="mb-2">
-          P.S. Keep in mind that '<strong>::</strong>' is the shortcut to get your builds done
+          P.S. Keep in mind that '<strong>::</strong>' is the <strong>shortcut</strong> to get your builds done
           quicker!
         </p>
-        <v-img src="/autocomplete.gif"></v-img>
       </v-card-text>
 
       <v-row class="ma-2" no-gutters>

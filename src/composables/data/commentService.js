@@ -35,7 +35,7 @@ export async function deleteComment(commentId) {
  */
 export async function getComments(buildId) {
   var queryParams = getWhereEqualQueryParam("buildId", buildId);
-  queryParams = queryParams.concat(getOrderByQueryParam({ orderBy: "timeCreated" }, "asc"));
+  queryParams = queryParams.concat(getOrderByQueryParam(null, { orderBy: "timeCreated" }, "asc"));
   const query = getQuery(queryParams);
 
   return getAll(query);
@@ -49,7 +49,6 @@ export async function getComments(buildId) {
  */
 export async function getCommentsCount(buildId) {
   var queryParams = getWhereEqualQueryParam("buildId", buildId);
-  queryParams = queryParams.concat(getOrderByQueryParam({ orderBy: "timeCreated" }, "asc"));
   const query = getQuery(queryParams);
 
   return getSize(query);

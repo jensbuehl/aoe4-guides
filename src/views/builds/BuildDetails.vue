@@ -714,7 +714,6 @@ export default {
         incrementContributorViews(build.value.authorUid);
       }
       if (route.query) {
-        console.log("query", route.query);
         focusMode.value = route.query.focus;
       }
       loading.value = false;
