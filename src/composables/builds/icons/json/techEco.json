@@ -1063,6 +1063,16 @@
     }
   },
   {
+    "title": "Public Libraries",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_abbasid/public-library.png",
+    "civ": ["ABB"],
+    "class": "tech",
+    "description": "work in progress",
+    "id": "public-library",
+    "type": "technology"
+  },
+  {
     "title": "Extra Materials",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_chinese/extra-materials.png",

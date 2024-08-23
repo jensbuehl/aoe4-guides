@@ -2197,6 +2197,28 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/honed-blades"
   },
   {
+    "title": "Paiks",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_delhi/paiks.png",
+    "civ": ["DEL"],
+    "class": "tech",
+    "description": "Archers and Crossbowman gain +0.5 Range",
+    "id": "paiks",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/paiks"
+  },
+  {
+    "title": "mahouts",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_delhi/paiks.png",
+    "civ": ["DEL"],
+    "class": "tech",
+    "description": "Elephants move 10% faster",
+    "id": "paiks",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/paiks"
+  },
+  {
     "title": "Tranquil Venue",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_delhi/tranquil-venue.png",

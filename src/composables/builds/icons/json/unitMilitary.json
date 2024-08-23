@@ -2033,6 +2033,17 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khan"
   },
   {
+    "title": "Khan’s Hunter",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_mongols/khans-hunter.png",
+    "civ": ["MON"],
+    "class": "military",
+    "description": "work in progress",
+    "id": "khans-hunter",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khans-hunter"
+  },
+  {
     "title": "Mangudai",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_mongols/mangudai.png",
