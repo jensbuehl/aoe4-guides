@@ -3,7 +3,7 @@ const { getFirestore } = require("firebase-admin/firestore");
 const logger = require("firebase-functions/logger");
 const axios = require("axios");
 
-const API_KEY = "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY";
+const API_KEY = process.env.GOOGLE_API_KEY_CLOUD_FUNCTION;
 
 /**
  * Updates the recent YT videos on a schedule. (daily)
@@ -19,6 +19,7 @@ exports.updateRecentYoutubeVideos = onSchedule(
   { schedule: "0 0 * * *", timeoutSeconds: 3600 },
   async (event) => {
     logger.log("start updateRecentYoutubeVideos");
+    logger.log("API key", API_KEY);
 
     // Get all builds
     const count = 5;
@@ -26,6 +27,8 @@ exports.updateRecentYoutubeVideos = onSchedule(
     recentVideos = recentVideos.map((video) => {
       return video.id.videoId;
     });
+
+    logger.log("recentVideos", recentVideos);
 
     return getFirestore().collection("home").doc("home").set(
       {
@@ -56,6 +59,6 @@ async function search(searchParam, maxResults) {
       }
     })
     .catch((error) => {
-      console.log("Could not retrive search result: ", error);
+      console.log("Could not retrive search result: ", error.message);
     });
 }
