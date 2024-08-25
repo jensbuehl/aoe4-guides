@@ -9,6 +9,10 @@ export function shuffleArray(array) {
 
 export const songs = [
   {
+    title: "We Are The Empire [Holy Power Version] - HRE",
+    url: "https://www.youtube.com/embed/UQtA_qlZzic",
+  },
+  {
     title: "Riding Dirty [Synthwave Version] - Ayyubids",
     url: "https://www.youtube.com/embed/MukzJnDk31o",
   },
