@@ -38,13 +38,13 @@
                       '/' +
                       civs.find((item) => {
                         return item.shortName === civ;
-                      }).flagLarge
+                      })?.flagLarge
                     "
                     :lazy-src="
                       '/' +
                       civs.find((item) => {
                         return item.shortName === civ;
-                      }).flagSmall
+                      })?.flagSmall
                     "
                     :gradient="'to right, transparent, ' + $vuetify.theme.current.colors.surface"
                     alt="{{civ}}"
@@ -67,7 +67,12 @@
             </v-card></v-col
           >
           <v-col cols="12" class="hidden-md-and-up"
-            ><span><FilterConfig></FilterConfig></span
+            ><span
+              ><FilterConfig
+                @configChanged="configChanged"
+                :hideCivs="true"
+                :defaultCivOverride="civ"
+              ></FilterConfig></span
           ></v-col>
 
           <v-col cols="12"
@@ -213,7 +218,13 @@
       <!-- sidebar -->
       <v-col cols="8" md="4" class="hidden-sm-and-down"
         ><v-row no-gutters>
-          <v-col cols="12"><FilterConfig></FilterConfig></v-col>
+          <v-col cols="12"
+            ><FilterConfig
+              @configChanged="configChanged"
+              :hideCivs="true"
+              :defaultCivOverride="civ"
+            ></FilterConfig
+          ></v-col>
         </v-row>
       </v-col>
     </v-row>
@@ -223,7 +234,8 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { useDisplay } from "vuetify";
 
 //Components
@@ -233,12 +245,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
-import {
-  getRecentBuilds,
-  getPopularBuilds,
-  getAllTimeClassics,
-  getBuildsCount,
-} from "@/composables/data/buildService";
+import { getBuilds, getBuildsCount } from "@/composables/data/buildService";
 
 export default {
   name: "Dashboard",
@@ -247,24 +254,32 @@ export default {
     BuildListCard,
   },
   setup() {
-    const allTimeClassicsList = computed(() => store.state.cache.allTimeClassicsList);
-    const popularBuildsList = computed(() => store.state.cache.popularBuildsList);
-    const recentBuildsList = computed(() => store.state.cache.recentBuildsList);
+    const allTimeClassicsList = ref(Array(5).fill({ loading: true }));
+    const popularBuildsList = ref(Array(5).fill({ loading: true }));
+    const recentBuildsList = ref(Array(5).fill({ loading: true }));
+    const route = useRoute();
     const store = useStore();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
+    const filterConfig = computed(() => store.state.filterConfig);
     const { name } = useDisplay();
     const civs = allCivs.value;
-    const civ = "DEL";
+    const civ = ref(null);
+
+    const initQueryParameters = async () => {
+      //pply query parameters if they are set
+      if (route.query.civ) {
+        store.commit("setCivs", route.query.civ);
+        civ.value = route.query.civ;
+      }
+    };
+
+    const configChanged = () => {
+      initData();
+    };
 
     onMounted(() => {
-      store.commit("setFilterConfig", getDefaultConfig());
-
-      //reset cache
-      store.commit("setAllBuildsList", null);
-      store.commit("setMyBuildsList", null);
-      store.commit("setMyFavoritesList", null);
-
+      initQueryParameters();
       initData();
     });
 
@@ -286,26 +301,26 @@ export default {
     });
 
     const initData = async () => {
+      allTimeClassicsList.value = Array(5).fill({ loading: true });
+      popularBuildsList.value = Array(5).fill({ loading: true });
+      recentBuildsList.value = Array(5).fill({ loading: true });
+      
+      civ.value = filterConfig.value.civs;
+
       //reset results count
       store.commit("setResultsCount", null);
 
       //get popular
-      if (!popularBuildsList || popularBuildsList.value[0].loading) {
-        const popularBuildsList = await getPopularBuilds(5);
-        store.commit("setPopularBuildsList", popularBuildsList);
-      }
+      popularBuildsList.value = await getBuilds(filterConfig.value, 5);
+      //TODO: set order by setting!
 
       //get all time classics
-      if (!allTimeClassicsList || allTimeClassicsList.value[0].loading) {
-        const allTimeClassicsList = await getAllTimeClassics(5);
-        store.commit("setAllTimeClassicsList", allTimeClassicsList);
-      }
+      allTimeClassicsList.value = await getBuilds(filterConfig.value, 5);
+      //TODO: set order by setting!
 
       //get most recent
-      if (!recentBuildsList || recentBuildsList.value[0].loading) {
-        const recentBuilds = await getRecentBuilds(5);
-        store.commit("setRecentBuildsList", recentBuilds);
-      }
+      recentBuildsList.value = await getBuilds(filterConfig.value, 5);
+      //TODO: set order by setting!
 
       //get count
       const size = await getBuildsCount();
@@ -320,6 +335,7 @@ export default {
       popularBuildsList,
       allTimeClassicsList,
       height,
+      configChanged,
       civs,
       civ,
     };

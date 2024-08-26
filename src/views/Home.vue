@@ -68,7 +68,7 @@
                   rounded="lg"
                   v-bind="props"
                   :to="{
-                    name: 'Builds',
+                    name: 'Dashboard',
                     query: { civ: civ.shortName },
                   }"
                 >
@@ -125,7 +125,7 @@
                   rounded="lg"
                   v-bind="props"
                   :to="{
-                    name: 'Builds',
+                    name: 'Dashboard',
                     query: { civ: civ.shortName },
                   }"
                 >

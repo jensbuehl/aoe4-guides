@@ -8,6 +8,7 @@
           </v-expansion-panel-title>
           <v-expansion-panel-text class="mt-2">
             <v-select
+              v-if="!hideCivs"
               v-model="selectedCivs"
               label="Civilization"
               density="compact"
@@ -19,6 +20,7 @@
             >
             </v-select>
             <v-select
+              v-if="!hideCivs"
               v-model="selectedOrderBy"
               prepend-icon="mdi-sort"
               density="compact"
@@ -107,6 +109,7 @@
   <v-card rounded="lg" flat class="hidden-sm-and-down">
     <v-card-text class="pb-0">
       <v-autocomplete
+        v-if="!hideCivs"
         class="hidden-xs"
         v-model="selectedCivs"
         label="Civilization"
@@ -118,6 +121,7 @@
         prepend-icon="mdi-earth"
       ></v-autocomplete>
       <v-select
+        v-if="!hideCivs"
         class="hidden-sm-and-up"
         v-model="selectedCivs"
         label="Civilization"
@@ -130,6 +134,7 @@
       >
       </v-select>
       <v-autocomplete
+        v-if="!hideCivs"
         class="hidden-xs"
         v-model="selectedOrderBy"
         prepend-icon="mdi-sort"
@@ -140,6 +145,7 @@
         :items="sortOptions"
       ></v-autocomplete>
       <v-select
+        v-if="!hideCivs"
         class="hidden-sm-and-up"
         v-model="selectedOrderBy"
         prepend-icon="mdi-sort"
@@ -311,6 +317,7 @@ export default {
   name: "FilterConfig",
   inheritAttrs: false,
   emits: ["configChanged"],
+  props: ["defaultCivOverride", "hideCivs", "hideOrderBy"],
   setup(props, context) {
     const store = useStore();
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
@@ -318,6 +325,9 @@ export default {
     const route = useRoute();
     const loading = computed(() => store.state.loading);
     const count = computed(() => store.state.resultsCount);
+    const hideCivs = computed(() => props.hideCivs);
+    const hideOrderBy = computed(() => props.hideOrderBy);
+    const defaultCivOverride = computed(() => props.defaultCivOverride);
 
     const initQueryParameters = async () => {
       if (route.query.civ) {
@@ -335,7 +345,7 @@ export default {
     //Show apply when config different from state in store
     const configChanged = computed(() => {
       return (
-        selectedCivs.value != store.state.filterConfig?.civs ||
+        selectedCivs.value != (store.state.filterConfig?.civs || defaultCivOverride.value) ||
         selectedVideoCreator.value != store.state.filterConfig?.creator ||
         JSON.stringify(selectedMaps.value) != JSON.stringify(store.state.filterConfig?.maps) ||
         JSON.stringify(selectedStrategies.value) !=
@@ -349,7 +359,7 @@ export default {
     const showReset = computed(() => {
       return (
         store.state.filterConfig?.author ||
-        store.state.filterConfig?.civs != getDefaultConfig().civs ||
+        store.state.filterConfig?.civs != (getDefaultConfig().civs || defaultCivOverride.value) ||
         store.state.filterConfig?.creator != getDefaultConfig().creator ||
         JSON.stringify(store.state.filterConfig?.maps) != JSON.stringify(getDefaultConfig().maps) ||
         JSON.stringify(store.state.filterConfig?.strategies) !=
@@ -410,21 +420,22 @@ export default {
       context.emit("configChanged");
     };
 
-    const handleReset = () => {
-      selectedCivs.value = getDefaultConfig().civs;
+    const handleReset = () => {      
+      if (defaultCivOverride.value != selectedCivs.value) {
+        selectedCivs.value = getDefaultConfig().civs;
+        store.commit("setCivs", getDefaultConfig().civs);
+      }
       selectedVideoCreator.value = getDefaultConfig().creator;
       selectedMaps.value = getDefaultConfig().maps;
       selectedStrategies.value = getDefaultConfig().strategies;
       selectedSeasons.value = getDefaultConfig().seasons;
       selectedOrderBy.value = getDefaultConfig().orderBy;
 
-      store.commit("setCivs", getDefaultConfig().civs);
       store.commit("setCreator", getDefaultConfig().creator);
       store.commit("setMaps", getDefaultConfig().maps);
       store.commit("setStrategies", getDefaultConfig().strategies);
       store.commit("setSeasons", getDefaultConfig().seasons);
       store.commit("setOrderBy", getDefaultConfig().orderBy);
-      store.commit("setFilterConfig", getDefaultConfig());
 
       //reset cache
       store.commit("setAllBuildsList", null);
@@ -453,6 +464,8 @@ export default {
       handleApply,
       configChanged,
       showReset,
+      hideCivs,
+      hideOrderBy,
     };
   },
 };
