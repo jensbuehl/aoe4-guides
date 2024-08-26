@@ -9,6 +9,7 @@ import ResetPassword from "@/views/account/ResetPassword.vue";
 
 //builds
 import Builds from '@/views/builds/Builds.vue'
+import Dashboard from '@/views/builds/Dashboard.vue'
 import BuildDetails from "@/views/builds/BuildDetails.vue";
 import BuildEdit from "@/views/builds/BuildEdit.vue";
 import BuildNew from "@/views/builds/BuildNew.vue";
@@ -28,6 +29,14 @@ const routes = [
       path: "/",
       name: "Home",
       component: Home,
+      meta: {
+        title: "Age of Empires IV Build Orders"
+      }
+    },
+    {
+      path: "/dashboard",
+      name: "Dashboard",
+      component: Dashboard,
       meta: {
         title: "Age of Empires IV Build Orders"
       }
