@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { songs, shuffleArray } from "@/composables/filter/gold3DadVideoProvider";
+import { songs, shuffleArray } from "@/composables/data/gold3DadVideoProvider";
 
 export default {
   name: "YoutubeGuides",
