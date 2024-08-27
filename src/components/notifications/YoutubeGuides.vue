@@ -6,7 +6,7 @@
     </v-col></v-row
   >
   <v-card flat rounded="lg">
-    <v-carousel color="accent" show-arrows="hover" hide-delimiter-background cycle height="190">
+    <v-carousel color="accent" show-arrows="hover" hide-delimiters cycle height="190">
       <v-carousel-item v-for="videoId in videosIds"
         ><div align="center">
           <iframe

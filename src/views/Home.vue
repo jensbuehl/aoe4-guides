@@ -735,7 +735,7 @@ export default {
 
       //get top contributors
       if (!topContributorsList || topContributorsList.value[0].loading) {
-        const topContributors = await getTopContributors(10);
+        const topContributors = await getTopContributors(8);
         store.commit("setTopContributorsList", topContributors);
       }
 

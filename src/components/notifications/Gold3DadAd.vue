@@ -2,11 +2,11 @@
   <v-row no-gutters
     ><v-col class="ml-2 mt-4 mb-4" cols="auto"
       ><v-icon icon="mdi-music" size="small" class="mx-2 mb-1"></v-icon
-      ><span class="text-h6">Music</span>
+      ><span class="text-h6">Age of Empires Radio</span>
     </v-col></v-row
   >
   <v-card flat rounded="lg">
-    <v-carousel color="accent" show-arrows="hover" hide-delimiter-background height="190">
+    <v-carousel color="accent" show-arrows="hover" hide-delimiters height="190">
       <v-carousel-item v-for="song in songsShortList"
         ><div align="center">
           <iframe
