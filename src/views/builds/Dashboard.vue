@@ -61,7 +61,20 @@
                   </v-img>
                 </v-col>
                 <v-col cols="9" align-self="center">
-                  <v-card-title> Selected Civ </v-card-title>
+                  <v-card-title>
+                    {{
+                      civs.find((item) => {
+                        return item.shortName === civ;
+                      })?.title
+                    }}
+                  </v-card-title>
+                  <v-card-text>
+                    {{
+                      civs.find((item) => {
+                        return item.shortName === civ;
+                      })?.tagLine
+                    }}
+                  </v-card-text>
                 </v-col>
               </v-row>
             </v-card></v-col
@@ -243,7 +256,6 @@ import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
-import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getBuilds, getBuildsCount } from "@/composables/data/buildService";
 
@@ -304,23 +316,26 @@ export default {
       allTimeClassicsList.value = Array(5).fill({ loading: true });
       popularBuildsList.value = Array(5).fill({ loading: true });
       recentBuildsList.value = Array(5).fill({ loading: true });
-      
+
       civ.value = filterConfig.value.civs;
 
       //reset results count
       store.commit("setResultsCount", null);
 
       //get popular
-      popularBuildsList.value = await getBuilds(filterConfig.value, 5);
-      //TODO: set order by setting!
+      var configpopularBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
+      configpopularBuildsList.orderBy = "score";
+      popularBuildsList.value = await getBuilds(configpopularBuildsList, 5);
 
       //get all time classics
-      allTimeClassicsList.value = await getBuilds(filterConfig.value, 5);
-      //TODO: set order by setting!
+      var configAllTimeClassicsList = JSON.parse(JSON.stringify(filterConfig.value));
+      configAllTimeClassicsList.orderBy = "scoreAllTime";
+      allTimeClassicsList.value = await getBuilds(configAllTimeClassicsList, 5);
 
       //get most recent
-      recentBuildsList.value = await getBuilds(filterConfig.value, 5);
-      //TODO: set order by setting!
+      var configRecentBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
+      configRecentBuildsList.orderBy = "timeCreated";
+      recentBuildsList.value = await getBuilds(configRecentBuildsList, 5);
 
       //get count
       const size = await getBuildsCount();
