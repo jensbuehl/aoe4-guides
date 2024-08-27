@@ -338,7 +338,7 @@ export default {
       recentBuildsList.value = await getBuilds(configRecentBuildsList, 5);
 
       //get count
-      const size = await getBuildsCount();
+      const size = await getBuildsCount(filterConfig.value);
       store.commit("setResultsCount", size);
     };
 
