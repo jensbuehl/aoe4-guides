@@ -87,15 +87,18 @@
                       </v-img>
                     </v-col>
                     <v-col cols="8">
-                      <!--small title-->
+                      <!--xs title-->
                       <div
                         :style="{
                           color: $vuetify.theme.current.colors.primary,
                         }"
-                        class="text-subtitle-2 mx-2"
+                        class="text-subtitle-2 ml-1 mb-n1"
                         style="font-size: 0.8rem !important"
                       >
                         {{ civ.title }}
+                        <v-chip class="pa-1" variant="plain" color="accent" size="x-small"
+                          ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                        >
                       </div>
                     </v-col>
                   </v-row>
@@ -145,23 +148,31 @@
                     </v-col>
                     <v-col cols="8">
                       <!--small title-->
-                      <div
-                        :style="{
-                          color: $vuetify.theme.current.colors.primary,
-                        }"
-                        class="text-subtitle-2 mx-2 hidden-lg-and-up"
+                      <v-row no-gutters class="hidden-lg-and-up">
+                        <div
+                          :style="{
+                            color: $vuetify.theme.current.colors.primary,
+                          }"
+                          class="text-subtitle-2 mx-2 mb-n1 hidden-lg-and-up"
+                        >
+                          {{ civ.title }}
+                          <v-chip class="px-1" variant="plain" color="accent" size="x-small"
+                            ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                          >
+                        </div></v-row
                       >
-                        {{ civ.title }}
-                      </div>
                       <!--large title-->
-                      <v-card-title
-                        class="hidden-md-and-down"
-                        :style="{
-                          color: $vuetify.theme.current.colors.primary,
-                        }"
-                      >
-                        {{ civ.title }}
-                      </v-card-title>
+                      <v-row no-gutters class="hidden-md-and-down py-0" align="center">
+                        <v-card-title class="ml-2 pa-0"
+                          :style="{
+                            color: $vuetify.theme.current.colors.primary,
+                          }"
+                        >
+                          {{ civ.title }} </v-card-title
+                        ><v-chip class="mt-1 ml-2 pl-1" variant="plain" color="accent" size="small"
+                          ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                        >
+                      </v-row>
                     </v-col>
                   </v-row>
                 </v-card>
