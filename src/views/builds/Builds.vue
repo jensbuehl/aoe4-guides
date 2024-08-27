@@ -267,7 +267,7 @@ export default {
       }
       if (route.query.orderBy) {
         store.commit("setOrderBy", route.query.orderBy);
-      }
+      }      
     };
 
     onMounted(async () => {

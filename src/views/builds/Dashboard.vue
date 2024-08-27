@@ -111,7 +111,7 @@
                       icon="mdi-chevron-right"
                       :to="{
                         name: 'Builds',
-                        query: { orderBy: 'score' },
+                        query: { orderBy: 'score', civ: civ },
                       }"
                     ></v-btn>
                   </template>
@@ -157,7 +157,7 @@
                       icon="mdi-chevron-right"
                       :to="{
                         name: 'Builds',
-                        query: { orderBy: 'scoreAllTime' },
+                        query: { orderBy: 'scoreAllTime', civ: civ },
                       }"
                     ></v-btn>
                   </template>
@@ -203,7 +203,7 @@
                       icon="mdi-chevron-right"
                       :to="{
                         name: 'Builds',
-                        query: { orderBy: 'timeCreated' },
+                        query: { orderBy: 'timeCreated', civ: civ },
                       }"
                     ></v-btn>
                   </template>

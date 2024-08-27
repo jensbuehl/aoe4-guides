@@ -329,6 +329,13 @@ export default {
     const hideOrderBy = computed(() => props.hideOrderBy);
     const defaultCivOverride = computed(() => props.defaultCivOverride);
 
+    const selectedCivs = ref(store.state.filterConfig?.civs);
+    const selectedVideoCreator = ref(store.state.filterConfig?.creator);
+    const selectedMaps = ref(store.state.filterConfig?.maps);
+    const selectedStrategies = ref(store.state.filterConfig?.strategies);
+    const selectedSeasons = ref(store.state.filterConfig?.seasons);
+    const selectedOrderBy = ref(store.state.filterConfig?.orderBy);
+
     const initQueryParameters = async () => {
       if (route.query.civ) {
         selectedCivs.value = route.query.civ;
@@ -340,6 +347,13 @@ export default {
 
     onMounted(async () => {
       await initQueryParameters();
+
+      selectedCivs.value = store.state.filterConfig.civs;
+      selectedVideoCreator.value = store.state.filterConfig.creat;
+      selectedMaps.value = store.state.filterConfig.maps;
+      selectedStrategies.value = store.state.filterConfig.strategies;
+      selectedSeasons.value = store.state.filterConfig.seasons;
+      selectedOrderBy.value = store.state.filterConfig.orderBy;      
     });
 
     //Show apply when config different from state in store
@@ -397,13 +411,6 @@ export default {
       },
     ]);
 
-    const selectedCivs = ref(store.state.filterConfig?.civs);
-    const selectedVideoCreator = ref(store.state.filterConfig?.creator);
-    const selectedMaps = ref(store.state.filterConfig?.maps);
-    const selectedStrategies = ref(store.state.filterConfig?.strategies);
-    const selectedSeasons = ref(store.state.filterConfig?.seasons);
-    const selectedOrderBy = ref(store.state.filterConfig?.orderBy);
-
     const handleApply = () => {
       store.commit("setCivs", selectedCivs.value);
       store.commit("setCreator", selectedVideoCreator.value);
@@ -420,7 +427,7 @@ export default {
       context.emit("configChanged");
     };
 
-    const handleReset = () => {      
+    const handleReset = () => {
       if (defaultCivOverride.value != selectedCivs.value) {
         selectedCivs.value = getDefaultConfig().civs;
         store.commit("setCivs", getDefaultConfig().civs);
