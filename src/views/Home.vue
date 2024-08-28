@@ -96,7 +96,18 @@
                         style="font-size: 0.8rem !important"
                       >
                         {{ civ.title }}
-                        <v-chip class="pa-1" variant="plain" color="accent" size="x-small"
+                        <v-chip
+                          v-if="
+                            isNew(
+                              recentCivBuilds
+                                .find((element) => element.civ == civ.shortName)
+                                ?.timeCreated.toDate()
+                            )
+                          "
+                          class="pa-1"
+                          variant="plain"
+                          color="accent"
+                          size="x-small"
                           ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
                         >
                       </div>
@@ -156,20 +167,43 @@
                           class="text-subtitle-2 mx-2 mb-n1 hidden-lg-and-up"
                         >
                           {{ civ.title }}
-                          <v-chip class="px-1" variant="plain" color="accent" size="x-small"
+                          <v-chip
+                            v-if="
+                              isNew(
+                                recentCivBuilds
+                                  .find((element) => element.civ == civ.shortName)
+                                  ?.timeCreated.toDate()
+                              )
+                            "
+                            class="px-1"
+                            variant="plain"
+                            color="accent"
+                            size="x-small"
                             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
                           >
                         </div></v-row
                       >
                       <!--large title-->
                       <v-row no-gutters class="hidden-md-and-down py-0" align="center">
-                        <v-card-title class="ml-2 pa-0"
+                        <v-card-title
+                          class="ml-2 pa-0"
                           :style="{
                             color: $vuetify.theme.current.colors.primary,
                           }"
                         >
                           {{ civ.title }} </v-card-title
-                        ><v-chip class="mt-1 ml-2 pl-1" variant="plain" color="accent" size="small"
+                        ><v-chip
+                          v-if="
+                            isNew(
+                              recentCivBuilds
+                                .find((element) => element.civ == civ.shortName)
+                                ?.timeCreated.toDate()
+                            )
+                          "
+                          class="mt-1 ml-2 pl-1"
+                          variant="plain"
+                          color="accent"
+                          size="small"
                           ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
                         >
                       </v-row>
@@ -649,7 +683,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useDisplay } from "vuetify";
 
 //Components
@@ -662,6 +696,8 @@ import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
+import useTimeSince from "@/composables/useTimeSince";
+import { getRecentCivBuilds } from "@/composables/data/homeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { getTopContributors } from "@/composables/data/contributorService";
@@ -693,6 +729,8 @@ export default {
     const { name } = useDisplay();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
+    const recentCivBuilds = ref([]);
+    const { isNew } = useTimeSince();
 
     const contributorsCardHeight = computed(() => {
       switch (name.value) {
@@ -753,6 +791,10 @@ export default {
       //get count
       const size = await getBuildsCount();
       store.commit("setResultsCount", size);
+
+      //get home data
+      recentCivBuilds.value = await getRecentCivBuilds();
+      console.log("-------------------------------recentCivBuilds", recentCivBuilds.value);
     };
 
     return {
@@ -765,6 +807,8 @@ export default {
       allTimeClassicsList,
       topContributorsList,
       contributorsCardHeight,
+      recentCivBuilds,
+      isNew,
     };
   },
 };

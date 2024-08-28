@@ -28,6 +28,9 @@ exports.updateBuildScore = updateBuildScore.updateBuildScore;
 const updateBuildAllTimeScore = require('./builds/updateBuildAllTimeScore');
 exports.updateBuildAllTimeScore = updateBuildAllTimeScore.updateBuildAllTimeScore;
 
+const updateRecentCivBuilds = require('./builds/updateRecentCivBuilds');
+exports.updateRecentCivBuilds = updateRecentCivBuilds.updateRecentCivBuilds;
+
 //Youtube related functions
 const updateRecentYoutubeVideos = require('./youtube/updateRecentYoutubeVideos');
 exports.updateRecentYoutubeVideos = updateRecentYoutubeVideos.updateRecentYoutubeVideos;

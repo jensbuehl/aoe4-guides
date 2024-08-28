@@ -22,7 +22,6 @@
 </template>
 
 <script>
-//import youtubeService from "@/composables/builds/youtubeService";
 import { getRecentYoutubeVideos } from "@/composables/data/homeService";
 import { ref, onMounted } from "vue";
 

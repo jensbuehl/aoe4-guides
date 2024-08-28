@@ -21,7 +21,7 @@ exports.updateRecentYoutubeVideos = onSchedule(
     logger.log("start updateRecentYoutubeVideos");
     logger.log("API key", API_KEY);
 
-    // Get all builds
+    // Get YT guides
     const count = 5;
     var recentVideos = await search("aoe4 build order guide", count);
     recentVideos = recentVideos.map((video) => {

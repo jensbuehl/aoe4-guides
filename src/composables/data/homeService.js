@@ -11,3 +11,10 @@ export async function getRecentYoutubeVideos() {
   
   return home.recentVideos;
 }
+
+export async function getRecentCivBuilds() {
+  const home = await get("home")
+  console.log(home);
+  
+  return home.recentCivBuilds;
+}
