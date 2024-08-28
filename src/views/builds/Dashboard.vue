@@ -293,6 +293,7 @@ export default {
     onMounted(() => {
       initQueryParameters();
       initData();
+      window.scrollTo(0, 0);
     });
 
     const height = computed(() => {
