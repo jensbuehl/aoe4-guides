@@ -40,7 +40,7 @@ export default function useTimeSince() {
         var elapsed = now - date;
       
         //New when created within the past 7 days
-        if (elapsed < msPerDay * 7) {
+        if (elapsed < msPerDay * 2) {
           return true;
         }
         return false;
