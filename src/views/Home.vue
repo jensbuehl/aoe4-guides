@@ -794,7 +794,7 @@ export default {
 
       //get home data
       recentCivBuilds.value = await getRecentCivBuilds();
-      console.log("-------------------------------recentCivBuilds", recentCivBuilds.value);
+      console.log("recentCivBuilds", recentCivBuilds.value);
     };
 
     return {
