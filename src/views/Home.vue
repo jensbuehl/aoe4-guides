@@ -37,7 +37,6 @@
           >
         </v-card>
         <News></News>
-        <Gold3DadAd></Gold3DadAd>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -541,6 +540,8 @@
               </router-link>
             </div> </v-col
         ></v-row>
+        <v-container class="mx-0 mb-2 pa-0 hidden-md-and-up"><Gold3DadAd></Gold3DadAd></v-container>
+
         <v-container class="mx-0 pa-0 hidden-md-and-up"
           ><YoutubeGuides></YoutubeGuides
         ></v-container>

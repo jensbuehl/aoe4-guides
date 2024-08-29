@@ -6,14 +6,14 @@
         <p>
           AoE4 Guides is a fan-made project and not affiliated with Relic or Microsoft.
           It was started as a hobby project to learn web development basics and turned into a public page 
-          for the Age of Empires 4 community in April 2023.
+          for the Age of Empires 4 community in April 2023, as a tribute to my best friend, and as a way to keep myself occupied after his loss two years ago.
         </p><br>
 
         <h2>Who made AoE4 Guides?</h2>
         <p>
           AoE4 Guides is made by Jens Bühl. It's a purely for fun project made
             out of love for the game. The goal is to be the most useful place
-            for AoE4 guides and build orders. You may find me on AoE 4 world under this "forever golden" profile as <a
+            for AoE4 guides and build orders. You may find me on AoE 4 world under the following profile as <a
             :style="{
                     color: $vuetify.theme.current.colors.primary,
             }"
@@ -32,19 +32,19 @@
         <h2>How can I contact you?</h2>
         <p>For feedback, questions, or just build order discussions:
           <ul class="pl-6">
-            <li><a
+            <li>Join my <a
             :style="{
                     color: $vuetify.theme.current.colors.primary,
             }"
-            href="https://discord.gg/ysDrdHKs9w"
-            >Join our AoE4 Guides discord server </a
-          ></li>
-          <li><a
+            href="https://discord.gg/Nau9BN5E7J"
+            >discord server</a
+            > to discuss everything about AoE4 Guides and more.</li>
+          <li>Report issue on <a
             :style="{
                     color: $vuetify.theme.current.colors.primary,
             }"
             href="https://github.com/jensbuehl/aoe4-guides/issues"
-            >Report issue on Github</a
+            >Github</a
           ></li>
           <li>Via mail: info (at) aoe4guides (dot) com</li>
           </ul>
@@ -69,6 +69,6 @@
 <script>
 export default {
   name: "About",
-  setup() {  },
+  setup() { window.scrollTo(0, 0); },
 };
 </script>

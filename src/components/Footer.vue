@@ -8,10 +8,17 @@
               <template v-slot:prepend>
                 <v-icon color="red">mdi-heart</v-icon>
               </template>
-              Support me
+              Donate
             </v-btn></a
           >
-
+          <a href="https://ko-fi.com/jensbuehl"
+            ><v-btn class="mx-1" variant="text" color="primary">
+              <template v-slot:prepend>
+                <v-icon color="primary">mdi-chat</v-icon>
+              </template>
+              Discord
+            </v-btn></a
+          >
           <v-btn prepend-icon="mdi-github" class="mx-1" variant="text" color="primary" to="/github"
             >Contribute
           </v-btn>
@@ -36,7 +43,7 @@
           </v-btn>
         </v-col>
         <v-col cols="12" md="8"
-          >Age of Empires IV&copy; Microsoft Corporation. AoE4Guides.com was created under
+          >Age of Empires IV&copy; Microsoft Corporation. aoe4guides.com was created under
           Microsoft's
           <a
             :style="{
@@ -56,7 +63,9 @@
             >Age of Empires IV</a
           >, and it is not endorsed by or affiliated with Microsoft.</v-col
         >
-        <v-col cols="12"><v-label>v{{ version }}</v-label></v-col>
+        <v-col cols="12"
+          ><v-label>v{{ version }}</v-label></v-col
+        >
       </v-row>
     </v-footer>
   </div>
