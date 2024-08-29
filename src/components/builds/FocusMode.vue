@@ -262,7 +262,7 @@
 <script>
 //External
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import { useEventListener } from "@vueuse/core";
+import { useEventListener, useWakeLock } from "@vueuse/core";
 
 //Components
 
@@ -296,6 +296,7 @@ export default {
     const currentStepElapsedTime = ref(null);
     const currentStepDuration = ref(null);
     const currentStepProgress = ref(0);
+    const { isSupported, isActive, request, release } = useWakeLock();
 
     onMounted(async () => {
       //init steps
@@ -336,14 +337,23 @@ export default {
       await initTextToSpeech();
       if (audio.value) {
         stop();
-        console.log("autoplaySupported", autoplaySupported.value);
+        console.log("autoplay supported", autoplaySupported.value);
         if (!autoplaySupported.value) speak(currentStep.value);
       }
+
+      //keep screen awake
+      console.log("wake lock supported", isSupported.value);
+      await request();
+      console.log("wake lock active", isActive.value);
     });
 
     onBeforeUnmount(() => {
       clearTimer();
       stop();
+
+      //release screen awake
+      release();
+      console.log("wake lock active", isActive.value);
     });
 
     useEventListener(document, "keyup", (e) => handleKeyPressed(e));
@@ -543,6 +553,7 @@ export default {
       getGold,
       getStone,
       getBuilders,
+      isSupported,
     };
   },
 };
