@@ -27,7 +27,7 @@ import { songs, shuffleArray } from "@/composables/data/gold3DadVideoProvider";
 export default {
   name: "YoutubeGuides",
   setup() {
-    //shuffleArray(songs); Do not shuffle for now, highlight the new video
+    shuffleArray(songs);
     const songsShortList = songs.slice(0, 3);   
     
     return { songsShortList };

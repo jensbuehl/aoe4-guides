@@ -9,6 +9,10 @@ export function shuffleArray(array) {
 
 export const songs = [
   {
+    title: "Auf in den Kampf",
+    url: "https://www.youtube.com/embed/9tcPxQhAnug",
+  },
+  {
     title: "We Are The Empire [Holy Power Version] - HRE",
     url: "https://www.youtube.com/embed/UQtA_qlZzic",
   },
