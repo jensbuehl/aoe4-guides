@@ -46,7 +46,7 @@ import { useStore } from "vuex";
 //Components
 
 //Composables
-import { addFavorite, removeFavorite } from "@/composables/data/favoriteService";
+import { addFavorite, removeFavorite, getUserFavorites as getUserFavoritesArray } from "@/composables/data/favoriteService";
 import { incrementLikes, decrementLikes } from "@/composables/data/buildService";
 
 export default {
@@ -64,15 +64,31 @@ export default {
       isFavorite.value = user.favorites.includes(props.buildId);
     });
     const addToFavorites = async () => {
-      incrementLikes(props.buildId);
-      addFavorite(userId.value, props.buildId);
-      isFavorite.value = !isFavorite.value;
+      const maxFavs = 30;
+      var favCount = 0;
 
-      //reset cache
-      store.commit("setMyFavoritesList", null);
+      favCount = (await (getUserFavoritesArray(userId.value))).favorites.length;
+      console.log("favCount", favCount);
 
-      context.emit("favoriteAdded"); //Only used for live preview
+      if (favCount >= maxFavs) {
+        const errorMessage =
+          "Oh, no! Villagers can only gather up to 30 favorites at a time. Please, remove some of your old favorites, first.";
+        await store.dispatch("showSnackbar", {
+          text: errorMessage,
+          type: "error",
+        });
+      } else {
+        incrementLikes(props.buildId);
+        addFavorite(userId.value, props.buildId);
+        isFavorite.value = !isFavorite.value;
+
+        //reset cache
+        store.commit("setMyFavoritesList", null);
+
+        context.emit("favoriteAdded"); //Only used for live preview
+      }
     };
+    
     const removeFromFavorites = async () => {
       decrementLikes(props.buildId);
       removeFavorite(userId.value, props.buildId);

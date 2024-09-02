@@ -340,7 +340,7 @@ export default {
       const size = await getUserDraftsCount(user.value.uid);
       if (size >= maxDrafts) {
         const errorMessage =
-          "Oh, no! Villagers can only work on up to two drafts at a time. Please, don't forget to publish or delete your unfinished builds.";
+          "Oh, no! Villagers can only work on up to 10 drafts at a time. Please, don't forget to publish or delete your unfinished builds.";
         await store.dispatch("showSnackbar", {
           text: errorMessage,
           type: "error",
