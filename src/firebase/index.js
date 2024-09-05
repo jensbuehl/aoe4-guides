@@ -61,6 +61,7 @@ export {
   auth,
   db,
   appCheck,
+  app,
   //Auth
   createUserWithEmailAndPassword,
   sendEmailVerification,

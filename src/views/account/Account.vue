@@ -4,12 +4,7 @@
       <v-row no-gutters class="fill-height" align="center" justify="center">
         <v-col cols="12" sm="6" lg="4">
           <v-card flat rounded="lg" class="d-flex align-center mb-4">
-            <v-row
-              no-gutters
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+            <v-row no-gutters class="fill-height" align="center" justify="center">
               <v-col cols="12">
                 <v-card-title>Account Info</v-card-title>
               </v-col>
@@ -44,41 +39,24 @@
               </v-col>
             </v-row>
           </v-card>
-          <v-card
-            v-if="!user.emailVerified"
-            flat
-            rounded="lg"
-            class="d-flex align-center mb-4"
-          >
-            <v-row
-              no-gutters
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+          <v-card v-if="!user.emailVerified" flat rounded="lg" class="d-flex align-center mb-4">
+            <v-row no-gutters class="fill-height" align="center" justify="center">
               <v-col cols="12">
                 <v-card-title>Verify Email</v-card-title>
                 <v-card-text
-                  >Re-send email verification link. Verification is needed for
-                  build order notifications.</v-card-text
+                  >Re-send email verification link. Verification is needed for build order
+                  notifications.</v-card-text
                 >
               </v-col>
               <v-col cols="12">
                 <v-form ref="form" @submit.prevent="verifyEmail()">
-                  <v-btn color="primary" variant="text" type="submit" block
-                    >Verify Email</v-btn
-                  >
+                  <v-btn color="primary" variant="text" type="submit" block>Verify Email</v-btn>
                 </v-form>
               </v-col>
             </v-row>
           </v-card>
           <v-card flat rounded="lg" class="d-flex align-center mb-4">
-            <v-row
-              no-gutters
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+            <v-row no-gutters class="fill-height" align="center" justify="center">
               <v-col cols="12">
                 <v-card-title>Change Password</v-card-title>
               </v-col>
@@ -93,32 +71,20 @@
                     placeholder="Your new password"
                     required
                   ></v-text-field>
-                  <v-btn color="primary" variant="text" type="submit" block
-                    >Change Password</v-btn
-                  >
+                  <v-btn color="primary" variant="text" type="submit" block>Change Password</v-btn>
                 </v-form>
               </v-col>
             </v-row>
           </v-card>
           <v-card flat rounded="lg" class="d-flex align-center mb-4">
-            <v-row
-              no-gutters
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
+            <v-row no-gutters class="fill-height" align="center" justify="center">
               <v-col cols="12">
                 <v-card-title>Delete Account</v-card-title>
-                <v-card-text
-                  >Permanently delete your account and leave the
-                  towncenter.</v-card-text
-                >
+                <v-card-text>Permanently delete your account and leave the towncenter.</v-card-text>
               </v-col>
               <v-col cols="12">
                 <v-form ref="form" @submit.prevent="dialog = true">
-                  <v-btn color="primary" variant="text" type="submit" block
-                    >Delete Account</v-btn
-                  >
+                  <v-btn color="primary" variant="text" type="submit" block>Delete Account</v-btn>
                   <v-dialog v-model="dialog" width="auto">
                     <v-card flat rounded="lg" class="text-center primary">
                       <v-card-title>Delete Account</v-card-title>
@@ -127,9 +93,7 @@
                         The action cannot be undone.
                       </v-card-text>
                       <v-card-actions>
-                        <v-btn color="error" block @click="deleteAccount()"
-                          >Delete</v-btn
-                        >
+                        <v-btn color="error" block @click="deleteAccount()">Delete</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -144,9 +108,13 @@
 </template>
 
 <script>
+//Composables
+import { getCheckoutUrl, getPortalUrl } from "@/composables/account/stripePayment";
+import { getSubscriptionStatus } from "@/composables/account/getSubscriptionStatus";
+
 //External
 import { ref } from "vue";
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -159,6 +127,12 @@ export default {
     const form = ref(null);
     const dialog = ref(false);
     const user = computed(() => store.state.user);
+
+    onMounted(async () => {
+      //const checkoutUrl = await getCheckoutUrl("price_1PvdIIRtu5kQ0RoUGRX41jvI");
+      //const portalUrl = await getPortalUrl("price_1PvdIIRtu5kQ0RoUGRX41jvI");
+      const subscriptionStatus = await getSubscriptionStatus("price_1PvdIIRtu5kQ0RoUGRX41jvI");
+    });
 
     const changePassword = async () => {
       try {
