@@ -48,29 +48,14 @@
                 <v-btn
                   @click="pricingTableDialog = true"
                   class="mb-2"
-                  v-if="!subscriptionStatus || subscriptionStatus == 'FREE'"
+                  v-if="true || !subscriptionStatus || subscriptionStatus == 'FREE'"
                   color="primary"
                   variant="text"
                   block
                 >
-                  <v-dialog v-model="pricingTableDialog" width="auto">
-                    <v-card flat rounded="lg" class="text-center primary">
-                      <v-card-title>Subscription Plan Selection</v-card-title>
-                      <a
-                        @click="pricingTableDialog = false"
-                        :href="checkoutUrlPRO"
-                        style="text-decoration: none"
-                        ><v-btn class="mb-2" variant="text" color="primary" block>Go PRO</v-btn></a
-                      >
-                      <a
-                        @click="pricingTableDialog = false"
-                        :href="checkoutUrlFAN"
-                        style="text-decoration: none"
-                        ><v-btn class="mb-2" variant="text" color="primary" block
-                          >Become a FAN</v-btn
-                        ></a
-                      >
-                    </v-card> </v-dialog
+                  <v-dialog v-model="pricingTableDialog">
+                    <v-row align="center" justify="center">
+                      <PlanSelection :user="user"></PlanSelection> </v-row></v-dialog
                   >Subscribe</v-btn
                 >
                 <a v-else :href="portalUrl" style="text-decoration: none"
@@ -128,16 +113,11 @@
               </v-col>
               <v-col cols="12">
                 <v-form ref="form" @submit.prevent="deleteAccountDialog = true">
-                  <v-btn
-                    class="mb-2"
-                    color="primary"
-                    variant="text"
-                    type="submit"
-                    block
+                  <v-btn class="mb-2" color="primary" variant="text" type="submit" block
                     >Delete Account</v-btn
                   >
                   <v-dialog v-model="deleteAccountDialog" width="auto">
-                    <v-card flat rounded="lg" class="text-center primary">
+                    <v-card flat rounded="lg" class="text-center">
                       <v-card-title>Delete Account</v-card-title>
                       <v-card-text>
                         Do you really want to delete your account?<br />
@@ -159,8 +139,11 @@
 </template>
 
 <script>
+//Components
+import PlanSelection from "@/components/account/PlanSelection.vue";
+
 //Composables
-import { getCheckoutUrl, getPortalUrl } from "@/composables/account/stripePayment";
+import { getPortalUrl } from "@/composables/account/stripePayment";
 import { getSubscriptionStatus } from "@/composables/account/getSubscriptionStatus";
 
 //External
@@ -171,6 +154,9 @@ import { useRouter } from "vue-router";
 
 export default {
   name: "Account",
+  components: {
+    PlanSelection,
+  },
   setup() {
     const newPassword = ref("");
     const router = useRouter();
@@ -187,11 +173,9 @@ export default {
     const checkoutUrlFAN = ref("");
 
     onMounted(async () => {
-      //TODO: Test if customer is deleted automatically when deleting the user!
       if (user.value) {
         updateSubscriptionStatus();
         updatePortalUrl();
-        updatePurchaseURLs();
       }
     });
 
@@ -199,16 +183,8 @@ export default {
       if (newUser) {
         updateSubscriptionStatus();
         updatePortalUrl();
-        updatePurchaseURLs();
       }
     });
-
-    const updatePurchaseURLs = async () => {
-      checkoutUrlPRO.value = await getCheckoutUrl(user.value, "price_1PvdIIRtu5kQ0RoUGRX41jvI");
-      checkoutUrlFAN.value = await getCheckoutUrl(user.value, "price_1PvdIIRtu5kQ0RoUGRX41jvI");
-      console.log("checkoutUrlPRO", checkoutUrlFAN.value);
-      console.log("checkoutUrlFAN", checkoutUrlPRO.value);
-    };
 
     const updateSubscriptionStatus = async () => {
       subscriptionStatus.value = await getSubscriptionStatus(user.value);
