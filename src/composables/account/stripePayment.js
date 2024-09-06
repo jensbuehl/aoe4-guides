@@ -1,15 +1,9 @@
 import { httpsCallable, getFunctions } from "firebase/functions";
 import { collection, addDoc, onSnapshot } from "firebase/firestore";
-import { useStore } from "vuex";
 import { db, app } from "@/firebase";
 
-export const getCheckoutUrl = async (priceId) => {
-  const store = useStore();
-  //todo wait for auth to be ready
-  const userId = store.state.user.uid;
-  if (!userId) throw new Error("User not logged in");
-
-  const checkoutSessionRef = collection(db, "customers", userId, "checkout_sessions");
+export const getCheckoutUrl = async (user, priceId) => {
+  const checkoutSessionRef = collection(db, "customers", user?.uid, "checkout_sessions");
   const docRef = await addDoc(checkoutSessionRef, {
     price: priceId,
     success_url: window.location.origin,
@@ -32,11 +26,7 @@ export const getCheckoutUrl = async (priceId) => {
   });
 };
 
-export const getPortalUrl = async () => {
-  const store = useStore();
-  //todo wait for auth to be ready
-  const user = store.state.user;
-
+export const getPortalUrl = async (user) => {
   let dataWithUrl;
   try {
     const functions = getFunctions(app, "europe-west3");

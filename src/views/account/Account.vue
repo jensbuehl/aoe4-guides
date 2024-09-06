@@ -36,6 +36,48 @@
                   placeholder="Your user id"
                   readonly
                 ></v-text-field>
+                <v-text-field
+                  class="text-grey"
+                  name="user id"
+                  label="Subscription plan"
+                  type="text"
+                  v-model="subscriptionStatus"
+                  placeholder="Your current subscription plan"
+                  readonly
+                ></v-text-field>
+                <v-btn
+                  @click="pricingTableDialog = true"
+                  class="mb-2"
+                  v-if="!subscriptionStatus || subscriptionStatus == 'FREE'"
+                  color="primary"
+                  variant="text"
+                  block
+                >
+                  <v-dialog v-model="pricingTableDialog" width="auto">
+                    <v-card flat rounded="lg" class="text-center primary">
+                      <v-card-title>Subscription Plan Selection</v-card-title>
+                      <a
+                        @click="pricingTableDialog = false"
+                        :href="checkoutUrlPRO"
+                        style="text-decoration: none"
+                        ><v-btn class="mb-2" variant="text" color="primary" block>Go PRO</v-btn></a
+                      >
+                      <a
+                        @click="pricingTableDialog = false"
+                        :href="checkoutUrlFAN"
+                        style="text-decoration: none"
+                        ><v-btn class="mb-2" variant="text" color="primary" block
+                          >Become a FAN</v-btn
+                        ></a
+                      >
+                    </v-card> </v-dialog
+                  >Subscribe</v-btn
+                >
+                <a v-else :href="portalUrl" style="text-decoration: none"
+                  ><v-btn class="mb-2" variant="text" color="primary" block
+                    >Manage Subscription</v-btn
+                  ></a
+                >
               </v-col>
             </v-row>
           </v-card>
@@ -71,7 +113,9 @@
                     placeholder="Your new password"
                     required
                   ></v-text-field>
-                  <v-btn color="primary" variant="text" type="submit" block>Change Password</v-btn>
+                  <v-btn class="mb-2" color="primary" variant="text" type="submit" block
+                    >Change Password</v-btn
+                  >
                 </v-form>
               </v-col>
             </v-row>
@@ -80,17 +124,24 @@
             <v-row no-gutters class="fill-height" align="center" justify="center">
               <v-col cols="12">
                 <v-card-title>Delete Account</v-card-title>
-                <v-card-text>Permanently delete your account and leave the towncenter.</v-card-text>
+                <v-card-text>Permanently delete your account.<br /> </v-card-text>
               </v-col>
               <v-col cols="12">
-                <v-form ref="form" @submit.prevent="dialog = true">
-                  <v-btn color="primary" variant="text" type="submit" block>Delete Account</v-btn>
-                  <v-dialog v-model="dialog" width="auto">
+                <v-form ref="form" @submit.prevent="deleteAccountDialog = true">
+                  <v-btn
+                    class="mb-2"
+                    color="primary"
+                    variant="text"
+                    type="submit"
+                    block
+                    >Delete Account</v-btn
+                  >
+                  <v-dialog v-model="deleteAccountDialog" width="auto">
                     <v-card flat rounded="lg" class="text-center primary">
                       <v-card-title>Delete Account</v-card-title>
                       <v-card-text>
                         Do you really want to delete your account?<br />
-                        The action cannot be undone.
+                        The action cannot be undone. Open subscriptions will be cancelled for you.
                       </v-card-text>
                       <v-card-actions>
                         <v-btn color="error" block @click="deleteAccount()">Delete</v-btn>
@@ -114,7 +165,7 @@ import { getSubscriptionStatus } from "@/composables/account/getSubscriptionStat
 
 //External
 import { ref } from "vue";
-import { computed, onMounted } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 
@@ -125,14 +176,47 @@ export default {
     const router = useRouter();
     const store = useStore();
     const form = ref(null);
-    const dialog = ref(false);
+    const deleteAccountDialog = ref(false);
     const user = computed(() => store.state.user);
 
+    //subscriptions
+    const pricingTableDialog = ref(false);
+    const subscriptionStatus = ref("");
+    const portalUrl = ref("");
+    const checkoutUrlPRO = ref("");
+    const checkoutUrlFAN = ref("");
+
     onMounted(async () => {
-      //const checkoutUrl = await getCheckoutUrl("price_1PvdIIRtu5kQ0RoUGRX41jvI");
-      //const portalUrl = await getPortalUrl("price_1PvdIIRtu5kQ0RoUGRX41jvI");
-      const subscriptionStatus = await getSubscriptionStatus("price_1PvdIIRtu5kQ0RoUGRX41jvI");
+      //TODO: Test if customer is deleted automatically when deleting the user!
+      if (user.value) {
+        updateSubscriptionStatus();
+        updatePortalUrl();
+        updatePurchaseURLs();
+      }
     });
+
+    watch(user, async (newUser, oldUser) => {
+      if (newUser) {
+        updateSubscriptionStatus();
+        updatePortalUrl();
+        updatePurchaseURLs();
+      }
+    });
+
+    const updatePurchaseURLs = async () => {
+      checkoutUrlPRO.value = await getCheckoutUrl(user.value, "price_1PvdIIRtu5kQ0RoUGRX41jvI");
+      checkoutUrlFAN.value = await getCheckoutUrl(user.value, "price_1PvdIIRtu5kQ0RoUGRX41jvI");
+      console.log("checkoutUrlPRO", checkoutUrlFAN.value);
+      console.log("checkoutUrlFAN", checkoutUrlPRO.value);
+    };
+
+    const updateSubscriptionStatus = async () => {
+      subscriptionStatus.value = await getSubscriptionStatus(user.value);
+    };
+
+    const updatePortalUrl = async () => {
+      portalUrl.value = await getPortalUrl(user);
+    };
 
     const changePassword = async () => {
       try {
@@ -159,7 +243,7 @@ export default {
 
     const deleteAccount = async () => {
       try {
-        dialog.value = false;
+        deleteAccountDialog.value = false;
         await store.dispatch("deleteAccount");
         store.dispatch("showSnackbar", {
           text: `Account deleted successfully!`,
@@ -196,12 +280,18 @@ export default {
       newPassword,
       router,
       user,
-      dialog,
+      deleteAccountDialog,
       form,
       authIsReady: computed(() => store.state.authIsReady),
       changePassword,
       deleteAccount,
       verifyEmail,
+      //subscriptions
+      pricingTableDialog,
+      portalUrl,
+      subscriptionStatus,
+      checkoutUrlPRO,
+      checkoutUrlFAN,
     };
   },
 };
