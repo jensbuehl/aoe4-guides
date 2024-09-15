@@ -1,4 +1,4 @@
-export default function useOverlayConverter() {
+export default function useDownload() {
   const download = (text, filename) => {
     const type = "text/plain";
     const blob = new Blob([text], { type });

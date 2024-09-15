@@ -231,7 +231,7 @@
                 </v-list-item>
               </template>
             </v-tooltip>
-            <v-list-item @click="handleCopyOverlayFormat">
+            <v-list-item v-if="clipboardIsSupported" click="handleCopyOverlayFormat">
               <v-tooltip>
                 <span
                   :style="{
@@ -515,7 +515,7 @@
                     </v-list-item>
                   </template>
                 </v-tooltip>
-                <v-list-item @click="handleCopyOverlayFormat">
+                <v-list-item v-if="clipboardIsSupported"  @click="handleCopyOverlayFormat">
                   <v-tooltip>
                     <span
                       :style="{
@@ -691,12 +691,13 @@ export default {
     const deleteDialog = ref(false);
     const focusDialog = ref(false);
     const { convert } = useExportOverlayFormat();
-    const { copyToClipboard } = useCopyToClipboard();
+    const { copyToClipboard, copyToClipboardSupported } = useCopyToClipboard();
     const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
     const userData = ref(null);
     const loading = ref(true);
     const focusMode = ref(false);
+    const clipboardIsSupported = ref(false);
 
     onMounted(async () => {
       var resBuild = null;
@@ -723,6 +724,8 @@ export default {
       if (route.query) {
         focusMode.value = route.query.focus;
       }
+      
+      clipboardIsSupported.value = await copyToClipboardSupported();
       loading.value = false;
     });
 
@@ -808,7 +811,7 @@ export default {
     const handleCopyOverlayFormat = () => {
       const overlayBuild = convert(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
-      copyToClipboard(overlayBuildString);
+      copyToClipboard(overlayBuildString);      
     };
 
     const handleDownloadOverlayFormat = () => {
@@ -837,6 +840,7 @@ export default {
       handleDownloadOverlayFormat,
       timeSince,
       isNew,
+      clipboardIsSupported,
     };
   },
 };

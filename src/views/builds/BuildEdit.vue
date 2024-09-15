@@ -165,7 +165,7 @@
                 </v-list-item>
               </template>
             </v-tooltip>
-            <v-list-item @click="handleCopyOverlayFormat">
+            <v-list-item v-if="clipboardIsSupported" @click="handleCopyOverlayFormat">
               <v-tooltip>
                 <span
                   :style="{
@@ -380,7 +380,7 @@
                     </v-list-item>
                   </template>
                 </v-tooltip>
-                <v-list-item @click="handleCopyOverlayFormat">
+                <v-list-item v-if="clipboardIsSupported" @click="handleCopyOverlayFormat">
                   <v-tooltip>
                     <span
                       :style="{
@@ -572,11 +572,12 @@ export default {
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
     const build = ref(null);
     const { convert } = useExportOverlayFormat();
-    const { copyToClipboard } = useCopyToClipboard();
+    const { copyToClipboard, copyToClipboardSupported } = useCopyToClipboard();
     const { download } = useDownload();
     const { timeSince, isNew } = useTimeSince();
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon } =
       youtubeService();
+    const clipboardIsSupported = ref(false);
 
     onMounted(async () => {
       var resBuild = null;
@@ -590,6 +591,8 @@ export default {
 
       build.value = resBuild;
       document.title = build.value.title + " - " + document.title;
+
+      clipboardIsSupported.value = await copyToClipboardSupported();
     });
 
     const handleDuplicate = async () => {
@@ -753,6 +756,7 @@ export default {
       handleVideoInput,
       timeSince,
       isNew,
+      clipboardIsSupported,
     };
   },
 };

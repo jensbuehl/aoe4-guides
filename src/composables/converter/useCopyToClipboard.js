@@ -1,5 +1,5 @@
-export default function useOverlayConverter() {
-  const copyToClipboard = (text) => {
+export default function useCopyToClipboard() {
+  const copyToClipboard = async (text) => {
     navigator.permissions.query({ name: "clipboard-write" }).then((result) => {
       if (result.state === "granted") {
         const type = "text/plain";
@@ -17,7 +17,17 @@ export default function useOverlayConverter() {
     });
   };
 
-  return {
-    copyToClipboard
+  const copyToClipboardSupported = async () => {
+    try {
+      const permission = await navigator.permissions.query({ name: "clipboard-write" });
+      return permission;
+    } catch (error) {
+      return false;
+    }
   };
+
+  return {
+    copyToClipboard,
+    copyToClipboardSupported
+  }
 }
