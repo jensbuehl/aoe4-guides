@@ -107,6 +107,7 @@ function init(timings, steps) {
 
 function interpolate(timings, startIndex = 0) {
   //Find first valid step
+  
   const isStep = (element) => element.type == "step";
   const hasTimestamp = (element) => element.startTime !== null;
   const hasVillagers = (element) => element.villagers;
@@ -126,9 +127,9 @@ function interpolate(timings, startIndex = 0) {
 
   //Stop recursion if no more valid steps found
   if (secondValidStepIndex == -1) {
-    return timings;
+    //ignore
   } else {
-    //Interpolate in between first and second match
+    //Interpolate in between first and second match    
     for (let index = firstValidStepIndex + 1; index < secondValidStepIndex; index++) {
       if (timings[index].type == "step" && timings[index].startTime == null) {
         const element = timings[index];
@@ -144,19 +145,6 @@ function interpolate(timings, startIndex = 0) {
     }
     interpolate(timings, secondValidStepIndex);
   }
-
-  //Find notes
-  timings.forEach((element, index) => {
-    const defaultNoteTime = 20;
-    //treat steps without villagers and time as notes
-    if (element.type == "note" || (!element.villagers && !element.startTime)) {
-      if (index == timings.length - 1) {
-        timings[index].startTime = timings[index - 1].startTime + defaultNoteTime;
-      } else {
-        timings[index].startTime = timings[index + 1].startTime - defaultNoteTime;
-      }
-    }
-  });
 
   return timings;
 }
