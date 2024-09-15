@@ -21,8 +21,7 @@ export async function initTextToSpeech() {
   voice = voice ? voice : EasySpeech.filterVoices({ name: "Englisch Vereinigtes Königreich" })[0]; //Chrome on German Android
   voice = voice ? voice : EasySpeech.filterVoices({ language: "en-GB" })[0]; //Fallback for all others, Edge does not support any voices at all!
   //var voices = EasySpeech.filterVoices({ language: "en-GB" }).map((voice) => voice.voiceURI).toString();
-  //prompt(voices);
-  //prompt(voice.name);
+
   console.log("Voice", voice);
   
 
@@ -80,15 +79,17 @@ function convertLineBreaks(description) {
 }
 
 function convertSpecialCharacters(description) {
+  description = description.replaceAll("<br>", ".");
+  description = description.replaceAll("&lt;-", " See to the left. ");
+  description = description.replaceAll("-&gt;", " ,then ");
+  description = description.replaceAll("&amp;", " and ");
   description = description.replaceAll("<-", " See to the left. ");
   description = description.replaceAll("->", " See to the right. ");
   description = description.replaceAll(">", " on ");
   description = description.replaceAll("->", " on ");
   description = description.replaceAll("=>", " on ");
-  description = description.replaceAll("&lt;-", " See to the left. ");
-  description = description.replaceAll("-&gt;", " ,then ");
-
-  return description.replaceAll(">", "on");
+  
+  return description;
 }
 
 function convertImageToText(imageElement) {
