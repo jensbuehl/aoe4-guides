@@ -72,7 +72,15 @@
             >
           </v-item-group>
           <v-item-group class="hidden-sm-and-up">
-            <v-chip class="mr-2 mb-2" label size="x-small" color="accent"
+            <v-chip
+              class="mr-2 mb-2"
+              label
+              size="x-small"
+              color="accent"
+              :to="{
+                name: 'Builds',
+                query: { author: build.authorUid },
+              }"
               ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
             <v-chip class="mr-2 mb-2" label size="x-small" v-show="build.views">
@@ -127,7 +135,14 @@
             >
           </v-item-group>
           <v-item-group class="hidden-xs hidden-md-and-up">
-            <v-chip class="mr-2 mb-2" label size="small"
+            <v-chip
+              class="mr-2 mb-2"
+              label
+              size="small"
+              :to="{
+                name: 'Builds',
+                query: { author: build.authorUid },
+              }"
               ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
             <v-chip class="mr-2 mb-2" label size="small" v-show="build.views">
@@ -376,7 +391,15 @@
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
-            <v-chip class="mr-2 mb-2" label size="small" color="accent"
+            <v-chip
+              class="mr-2 mb-2"
+              label
+              size="small"
+              color="accent"
+              :to="{
+                name: 'Builds',
+                query: { author: build.authorUid },
+              }"
               ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
             <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="small"
@@ -515,7 +538,7 @@
                     </v-list-item>
                   </template>
                 </v-tooltip>
-                <v-list-item v-if="clipboardIsSupported"  @click="handleCopyOverlayFormat">
+                <v-list-item v-if="clipboardIsSupported" @click="handleCopyOverlayFormat">
                   <v-tooltip>
                     <span
                       :style="{
@@ -724,7 +747,7 @@ export default {
       if (route.query) {
         focusMode.value = route.query.focus;
       }
-      
+
       clipboardIsSupported.value = await copyToClipboardSupported();
       loading.value = false;
     });
@@ -811,7 +834,7 @@ export default {
     const handleCopyOverlayFormat = () => {
       const overlayBuild = convert(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
-      copyToClipboard(overlayBuildString);      
+      copyToClipboard(overlayBuildString);
     };
 
     const handleDownloadOverlayFormat = () => {

@@ -74,14 +74,22 @@
             size="x-small"
             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
           >
-          <v-chip class="mr-1 mt-1" label size="x-small" color="accent"
+          <v-chip
+            class="mr-1 mt-1"
+            label
+            size="x-small"
+            color="accent"
+            :to="{
+              name: 'Builds',
+              query: { author: build.authorId },
+            }"
             ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
           >
           <v-chip class="mr-1 mt-1" v-if="build.timeCreated" label size="x-small"
-          ><v-icon start icon="mdi-clock-edit-outline"></v-icon
+            ><v-icon start icon="mdi-clock-edit-outline"></v-icon
             >{{ timeSince(build.timeCreated.toDate()) }}</v-chip
-            >
-            <v-chip
+          >
+          <v-chip
             class="mr-1 mt-1"
             label
             size="x-small"
@@ -89,17 +97,18 @@
               build.views && (orderBy == 'views' || orderBy == 'score' || orderBy == 'scoreAllTime')
             "
           >
-          <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
+            <v-icon start icon="mdi-eye"></v-icon>{{ build.views }}</v-chip
           >
           <v-chip v-if="build.season" class="mr-1 mt-1 hidden-xs" label size="x-small"
-          ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
+            ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
           >
           <v-chip v-show="build.map && filterByMap" class="mr-1 mt-1 hidden-xs" label size="x-small"
-          ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
+            ><v-icon start icon="mdi-map"></v-icon>{{ build.map }}</v-chip
           >
           <v-chip class="mr-1 mt-1" v-if="build.creatorId" variant="plain" size="x-small"
             ><v-icon color="accent" start icon="mdi-youtube"></v-icon
-          >{{ build.creatorName }}</v-chip>
+            >{{ build.creatorName }}</v-chip
+          >
           <!--v-chip
             v-if="build.strategy"
             class="mr-1 mt-1 hidden-xs"
@@ -130,7 +139,15 @@
             size="small"
             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
           >
-          <v-chip class="mr-2 mb-2" label size="small" color="accent"
+          <v-chip
+            class="mr-2 mb-2"
+            label
+            size="small"
+            color="accent"
+            :to="{
+              name: 'Builds',
+              query: { author: build.authorUid },
+            }"
             ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
           >
           <v-chip class="mr-2 mb-2" v-if="build.timeCreated" label size="small"
@@ -161,7 +178,8 @@
                 >{{ build.strategy }}</v-chip-->
           <v-chip class="mr-2 mb-2" v-if="build.creatorId" variant="plain" size="small"
             ><v-icon color="accent" start icon="mdi-youtube"></v-icon
-          >{{ build.creatorName }}</v-chip>
+            >{{ build.creatorName }}</v-chip
+          >
         </v-item-group>
       </v-col>
     </v-row>
