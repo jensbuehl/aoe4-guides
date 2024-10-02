@@ -1934,6 +1934,17 @@
     }
   },
   {
+    "title": "Mansa Musofadi",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_malians/musofadi-mansa.png",
+    "civ": ["MAL"],
+    "class": "military",
+    "description": "A tougher version of the regular Musofadi boasting higher melee armor and health. Infantry effective at ambush attacks and countering heavy armored targets.\n+ Can enter stealth\n+ Anti-armor specialist\n- Low health\n- Countered by Archers\n- Capital Town Centers, Outposts, and Scouts can spot stealth\n\nMercenary that can be purchased per 5 units for a total of 400 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
+    "id": "musofadi-mansa",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/musofadi-mansa"
+  },
+  {
     "title": "Javelin Thrower",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_malians/javelin-thrower-2.png",
@@ -1954,6 +1965,28 @@
       "popcap": 1,
       "time": 80
     }
+  },
+  {
+    "title": "Mansa Javelineer",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_malians/javelin-thrower-mansa.png",
+    "civ": ["MAL"],
+    "class": "military",
+    "description": "A faster moving Javelin thrower that deals poison damage. Ranged infantry effective against other ranged units.\n+ Anti-ranged specialist\n+ Increased weapon range\n+ Comes with ranged armor\n- Low health\n- Countered by Horsemen",
+    "id": "javelin-thrower-mansa",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/javelin-thrower-mansa"
+  },
+  {
+    "title": "Mansa Freeborn",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_malians/freeborn-mansa.png",
+    "civ": ["MAL"],
+    "class": "military",
+    "description": "A high pierce armor melee unit.",
+    "id": "freeborn-mansa",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/freeborn-mansa"
   },
   {
     "title": "Warrior Scout",

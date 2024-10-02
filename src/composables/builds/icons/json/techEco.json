@@ -353,6 +353,28 @@
     "title": "Acid Distillation",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_economy/acid-distilization.png",
+    "civ": [],
+    "class": "tech",
+    "description": "Increase Villagers' gathering rate for Gold and Stone by 15%.",
+    "id": "acid-distillation-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/acid-distillation",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 250,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 350,
+      "popcap": 0,
+      "time": 60
+    }
+  },
+  {
+    "title": "Shaft Mining",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_economy/shaft-mining.png",
     "civ": [
       "ABB",
       "AYY",
@@ -373,9 +395,9 @@
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Gold and Stone by 15%.",
-    "id": "acid-distillation-3",
+    "id": "shaft-mining",
     "type": "technology",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/acid-distillation",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/shaft-mining",
     "costs": {
       "food": 0,
       "wood": 100,
