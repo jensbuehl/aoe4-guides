@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import { songs, shuffleArray } from "@/composables/data/gold3DadVideoProvider";
+import { songs, shuffleArray } from "@/composables/data/youtubeMusicProvider";
 
 export default {
-  name: "YoutubeGuides",
+  name: "YoutubeMusic",
   setup() {
     shuffleArray(songs);
     const songsShortList = songs.slice(0, 3);   
