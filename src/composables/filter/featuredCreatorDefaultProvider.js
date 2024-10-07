@@ -52,6 +52,11 @@ export const featuredCreators = [
     creatorImage: "https://yt3.ggpht.com/MqEZhK5w-qIhTFCU3SfCYOzPLMA-OP5f3vxaD8I-XqLyZus9vCEr_ujNUI0RJ9MqB4Q_LLaoERY=s176-c-k-c0x00ffffff-no-rj-mo",
   },
   {
+    creatorTitle: "Corvinus1",
+    creatorId: "UC08uPtQCLfw-BmH5BF4yXGA",
+    creatorImage: "https://yt3.googleusercontent.com/7qDOeARNiXONzx4FvpC2cK9NrypXYUkUmaxwzY_SkU_1EFYEVmPhnojGmF-49myI-mPeLD02=s160-c-k-c0x00ffffff-no-rj",
+  }, 
+  {
     creatorTitle: "Marinelord",
     creatorId: "UCHheEmSTX_NaAHSq2uwmlMg",
     creatorImage: "https://yt3.googleusercontent.com/ytc/AIdro_n5NzV0KnkaFIRQD1C-EaqzRPm_AVyYG4AzUMoLoutSTA=s160-c-k-c0x00ffffff-no-rj",
