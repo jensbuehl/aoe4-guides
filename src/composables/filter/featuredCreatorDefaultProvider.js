@@ -55,5 +55,10 @@ export const featuredCreators = [
     creatorTitle: "Corvinus1",
     creatorId: "UC08uPtQCLfw-BmH5BF4yXGA",
     creatorImage: "https://yt3.googleusercontent.com/7qDOeARNiXONzx4FvpC2cK9NrypXYUkUmaxwzY_SkU_1EFYEVmPhnojGmF-49myI-mPeLD02=s160-c-k-c0x00ffffff-no-rj",
-  },  
+  }, 
+  {
+    creatorTitle: "Marinelord",
+    creatorId: "UCHheEmSTX_NaAHSq2uwmlMg",
+    creatorImage: "https://yt3.googleusercontent.com/ytc/AIdro_n5NzV0KnkaFIRQD1C-EaqzRPm_AVyYG4AzUMoLoutSTA=s160-c-k-c0x00ffffff-no-rj",
+  },
 ].sort(sortByNameCompareFunction);
