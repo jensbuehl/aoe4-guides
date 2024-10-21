@@ -3,8 +3,8 @@ import { ref } from "vue";
 export const seasons = ref([
   {
     title: "Season 9",
-    //tagline: "TBD",
-    //startDate: new Date(2024, 10, TBD)
+    tagline: "Hallow's Hearth",
+    startDate: new Date(2024, 10, 23)
   },
   {
     title: "Season 8",

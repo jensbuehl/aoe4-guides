@@ -2162,6 +2162,28 @@
     }
   },
   {
+    "title": "Bolt Magazines",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_zhuxi/bolt-magazines-3.png",
+    "civ": ["ZXL"],
+    "class": "tech",
+    "description": "Grants Zhuge Nu +0.5 range and +1 bonus vs Light Infantry.",
+    "id": "bolt-magazines-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/bolt-magazines",
+    "costs": {
+      "food": 75,
+      "wood": 0,
+      "stone": 0,
+      "gold": 150,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 225,
+      "popcap": 0,
+      "time": 45
+    }
+  },
+  {
     "title": "10000 Bolts",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_zhuxi/10000-bolts-4.png",
@@ -2327,15 +2349,26 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/paiks"
   },
   {
-    "title": "mahouts",
+    "title": "Mahouts",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/paiks.png",
+    "imgSrc": "/assets/pictures/technology_delhi/mahouts.png",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Elephants move 10% faster",
-    "id": "paiks",
+    "id": "mahouts",
     "type": "technology",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/paiks"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/mahouts"
+  },
+  {
+    "title": "Salvaged Materials",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_delhi/salvaged-materials.png",
+    "civ": ["DEL"],
+    "class": "tech",
+    "description": "Baghlah heal 30 health when sinking an enemy ship.",
+    "id": "salvaged-materials",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/salvaged-materials"
   },
   {
     "title": "Tranquil Venue",
