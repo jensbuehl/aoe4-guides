@@ -2164,11 +2164,11 @@
   {
     "title": "Bolt Magazines",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_zhuxi/bolt-magazines-3.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/bolt-magazines.png",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Grants Zhuge Nu +0.5 range and +1 bonus vs Light Infantry.",
-    "id": "bolt-magazines-3",
+    "id": "bolt-magazines",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/bolt-magazines",
     "costs": {
