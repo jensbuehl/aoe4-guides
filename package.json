@@ -1,6 +1,6 @@
 {
   "name": "aoe4-guides",
-  "version": "1.8.4",
+  "version": "1.9.0",
   "private": true,
   "engines": {
     "node": "22.x"
