@@ -9,31 +9,43 @@ export function shuffleArray(array) {
 
 export const songs = [
   {
+    title: "Auf die guten alten Zeiten (feat. Finn Fox)",
+    url: "https://www.youtube.com/embed/6F9u0A6iSxM",
+  },
+  {
+    title: "Wololo (feat. Finn Fox)",
+    url: "https://www.youtube.com/embed/qoTwbEOSCQU",
+  },
+  {
     title: "Auf in den Kampf",
     url: "https://www.youtube.com/embed/9tcPxQhAnug",
   },
   {
-    title: "HRE - We are the Empire - Visualizer & Lyrics - Age of Empires IV Music",
+    title: "HRE - We are the Empire",
     url: "https://www.youtube.com/embed/SbuwR7xcQjE",
   },
   {
-    title: "Ayyubids - Riding Dirty - Visualizer & Lyrics - Age of Empires IV Music",
+    title: "Ayyubids - Riding Dirty",
     url: "https://www.youtube.com/embed/o3WoS-LssNo",
   },
   {
-    title: "Mein Scout hat Fernweh - Visualizer & Lyrics - Age of Empires IV Music",
+    title: "Mein Scout hat Fernweh (feat. Finn Fox)",
     url: "https://www.youtube.com/embed/yCVoyrJVo6g",
   },
   {
-    title: "Road to Platinum (Epic Version) - Visualizer & Lyrics - Age of Empires IV Music",
+    title: "Road to Platinum (Epic Version)",
     url: "https://www.youtube.com/embed/KtXVY1GCHhQ",
   },
   {
-    title: "English - The Englishmen - Visualizer & Lyrics - Age of Empires IV Music",
+    title: "English - The Englishmen",
     url: "https://www.youtube.com/embed/PK3WyBFqJxM",
   },
   {
-    title: "Delhi - The Delhi Show - Visualizer & Lyrics - Age of Empires IV Music",
+    title: "Delhi - The Delhi Show",
     url: "https://www.youtube.com/embed/J-YxHmV2tgs",
+  },
+  {
+    title: "Auf in den Kampf rE An!mat3D",
+    url: "https://www.youtube.com/embed/EkMbpTM86X0",
   },
 ];
