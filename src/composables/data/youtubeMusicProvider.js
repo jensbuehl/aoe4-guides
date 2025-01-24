@@ -9,6 +9,10 @@ export function shuffleArray(array) {
 
 export const songs = [
   {
+    title: "Free For All | Outback Octagon Highlights",
+    url: "https://www.youtube.com/embed/EpyS2mE7vhw",
+  },
+  {
     title: "Auf die guten alten Zeiten (feat. Finn Fox)",
     url: "https://www.youtube.com/embed/6F9u0A6iSxM",
   },
@@ -41,8 +45,12 @@ export const songs = [
     url: "https://www.youtube.com/embed/PK3WyBFqJxM",
   },
   {
+    title: "Delhi - The Delhi Show | Symphonic Metal Cover",
+    url: "https://www.youtube.com/embed/MME4r1qfnxE",
+  },
+  {
     title: "Delhi - The Delhi Show",
-    url: "https://www.youtube.com/embed/J-YxHmV2tgs",
+    url: "https://www.youtube.com/embed/LHSGk2d6p04",
   },
   {
     title: "Auf in den Kampf rE An!mat3D",
