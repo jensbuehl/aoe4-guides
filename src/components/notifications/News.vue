@@ -5,20 +5,20 @@
       <v-card-text>
         <p class="mb-4">Dear AoE4 community!</p>
 
-        <p>
+        <p class="mx-2 mb-2">
         I want to thank you all for your continued support of Aoe4Guides. This platform has always been a labor of love, created to help players like you explore and master the rich strategies of <em>Age of Empires IV</em>.
         </p>
 
-        <p>
+        <p class="mx-2 mb-2">
         This year brings exciting challenges and opportunities, especially with the upcoming big DLC release. I’m committed to updating the site with fresh content. 
         However, running Aoe4Guides comes with operational costs – hosting, traffic, and the effort it takes to keep things up to date.
        </p>
         
-       <p>
+       <p class="mx-2 mb-2">
         If you’ve found value in the guides, tips, or resources on this site, I’d greatly appreciate your support. Your contributions help cover operational costs and enable me to dedicate the time needed to keep Aoe4Guides the best resource for AoE4 build orders. Together, we can continue to grow and celebrate this incredible game.
        </p>
 
-        <p>Thank you for being part of this journey. Here’s to a fantastic year ahead, full of epic battles, new civilizations, and a new DLC!</p>
+        <p class="mx-2 mb-2">Thank you for being part of this journey. Here’s to a fantastic year ahead, full of epic battles, new civilizations, and a new DLC!</p>
 
         <p class="mb-4">/3,<br />exe</p>
 
