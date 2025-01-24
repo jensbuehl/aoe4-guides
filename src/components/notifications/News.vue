@@ -1,46 +1,24 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1 mt-6 mb-2">
     <v-card flat rounded="lg">
-      <v-card-title>Season 9 Update</v-card-title>
+      <v-card-title>New Year | New DLC</v-card-title>
       <v-card-text>
-        <p class="mb-4">Hey AoE4 fans!</p>
+        <p class="mb-4">Dear AoE4 community!</p>
 
-        <p class="mb-4">
-          Season 9 has dropped, and we've got some exciting updates. New technologies and units have
-          entered the battlefield, shaking up strategies and adding depth to your gameplay. Get
-          ready to experiment with fresh tactics and master these new additions! <br /><br />
-          
-          Stay tuned for updated guides, strategies, and tips to climb the ladder in Season 9!
+        <p>
+        I want to thank you all for your continued support of Aoe4Guides. This platform has always been a labor of love, created to help players like you explore and master the rich strategies of <em>Age of Empires IV</em>.
         </p>
 
-        <br />
-        <v-row no-gutters>
-          <v-col class="mb-2" align="center" justify="center"
-            ><v-img
-              class="icon-military-selector"
-              src="/assets/pictures/unit_malians/freeborn-mansa.png"
-            ></v-img
-          ></v-col>
-          <v-col class="mb-2" align="center" justify="center"
-            ><v-img
-              class="icon-military-selector"
-              src="/assets/pictures/unit_malians/javelin-thrower-mansa.png"
-            ></v-img
-          ></v-col>
-          <v-col class="mb-2" align="center" justify="center"
-            ><v-img
-              class="icon-military-selector"
-              src="/assets/pictures/unit_malians/musofadi-mansa.png"
-            ></v-img
-          ></v-col>
-          <v-col class="mb-2" align="center" justify="center"
-            ><v-img
-              class="icon-military-selector"
-              src="/assets/pictures/unit_rus/horse-archer-3.png"
-            ></v-img
-          ></v-col>
-        </v-row>
-        <br />
+        <p>
+        This year brings exciting challenges and opportunities, especially with the upcoming big DLC release. I’m committed to updating the site with fresh content. 
+        However, running Aoe4Guides comes with operational costs – hosting, traffic, and the effort it takes to keep things up to date.
+       </p>
+        
+       <p>
+        If you’ve found value in the guides, tips, or resources on this site, I’d greatly appreciate your support. Your contributions help cover operational costs and enable me to dedicate the time needed to keep Aoe4Guides the best resource for AoE4 build orders. Together, we can continue to grow and celebrate this incredible game.
+       </p>
+
+        <p>Thank you for being part of this journey. Here’s to a fantastic year ahead, full of epic battles, new civilizations, and a new DLC!</p>
 
         <p class="mb-4">/3,<br />exe</p>
 
