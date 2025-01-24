@@ -27,10 +27,8 @@ import { songs, shuffleArray } from "@/composables/data/youtubeMusicProvider";
 export default {
   name: "YoutubeMusic",
   setup() {
-    shuffleArray(songs);
-    const songsShortList = songs.slice(0, 3);   
-    
-    return { songsShortList };
+    shuffleArray(songs);    
+    return { songs };
   },
 };
 </script>
