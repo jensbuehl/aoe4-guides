@@ -104,7 +104,6 @@
                             )
                           "
                           class="pa-1"
-                          variant="plain"
                           color="accent"
                           size="x-small"
                           ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
@@ -175,7 +174,6 @@
                               )
                             "
                             class="px-1"
-                            variant="plain"
                             color="accent"
                             size="x-small"
                             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
@@ -200,7 +198,6 @@
                             )
                           "
                           class="mt-1 ml-2 pl-1"
-                          variant="plain"
                           color="accent"
                           size="small"
                           ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
