@@ -119,6 +119,20 @@ export const civs = ref([
     flagLarge: "assets/flags/zxl-large.png",
     flagSmall: "assets/flags/zxl-small.png",
   },
+  {
+    title: "The Knights Templar",
+    shortName: "KTE",
+    tagLine: "Diplomacy, Fortification, Commanderies",
+    flagLarge: "assets/flags/kte-large.png",
+    flagSmall: "assets/flags/kte-small.png",
+  },
+  {
+    title: "House of Lancaster",
+    shortName: "HOL",
+    tagLine: "Manors, Economy, Versatility",
+    flagLarge: "assets/flags/hol-large.png",
+    flagSmall: "assets/flags/hol-small.png",
+  },
 ]);
 
 export function getCivById (id) {

@@ -251,4 +251,24 @@ export const general = [
     description:
       "The teachings of philosopher Zhu Xi reshape the Chinese civilization. With Zhu Xi’s Legacy, the Chinese boast a sophisticated administration with superior Imperial Officials and advanced technologies. The brimming treasury helps to establish powerful dynasties and research a breadth of unique technologies. Recruit Palace Guards, Zhuge Nus, and Grenadiers early on to protect the Empire.",
   },
+  {
+    title: "The Knights Templar",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/kte.png",
+    civ: civs,
+    class: "none",
+    shorthand: "kte",
+    description:
+      "Constructing powerful Fortresses cements their control over the map, while providing inspiration to military troops and acting as Landmarks to guide Pilgrims in their travels.",
+  },
+  {
+    title: "House of Lancaster",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/hol.png",
+    civ: civs,
+    class: "none",
+    shorthand: "hol",
+    description:
+      "In Age of Empires IV, the House of Lancaster variant civilization boasts a powerful economy derived from their unique building, the Manor. In addition, their versatile army offers many tactical advantages on the battlefield, allowing them to defeat even the most capable of foes.",
+  },
 ];

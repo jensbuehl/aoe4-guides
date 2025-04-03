@@ -17,4 +17,7 @@ export const civs = [
   "BYZ",
   "JAP",
   "DRA",
+  //Knights of Cross and Rose
+  "HOL",
+  "KTE",
 ];

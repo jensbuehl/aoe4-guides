@@ -115,7 +115,10 @@ export default function useImportOverlayFormat() {
     Ayyubids: "AYY",
     "Jeanne d'Arc": "JDA",
     "Zhu Xi's Legacy": "ZXL",
-    "Order of the Dragon": "DRA"
+    "Order of the Dragon": "DRA",
+    //Knights of Cross and Rose
+    "House of Lancaster": "HOL",
+    "The Knights Templar": "KTE",
   };
 
   return {

@@ -114,6 +114,9 @@ export default function useExportOverlayFormat() {
     JDA: "Jeanne d'Arc",
     ZXL: "Zhu Xi's Legacy",
     DRA: "Order of the Dragon",
+    //Knights of Cross and Rose
+    HOL: "House of Lancaster",
+    KTE: "The Knights Templar",
   };
 
   return {

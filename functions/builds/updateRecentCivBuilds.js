@@ -51,6 +51,12 @@ const civs = [
   {
     shortName: "ZXL",
   },
+  {
+    shortName: "HOL",
+  },
+  {
+    shortName: "KTE",
+  },
 ];
 
 exports.updateRecentCivBuilds = onSchedule(
