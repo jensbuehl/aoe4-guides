@@ -353,7 +353,7 @@
     "title": "Notre Dame",
     "age": 4,
     "imgSrc": "/assets/pictures/landmark_french/notre-dame.png",
-    "civ": ["FRE", "JDA"],
+    "civ": ["FRE", "JDA", "KTE"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
     "id": "notre-dame-4",

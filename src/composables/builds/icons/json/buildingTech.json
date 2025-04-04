@@ -18,7 +18,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "tech",
     "shorthand": ["blacksmith", "wq"],
@@ -64,7 +66,21 @@
     "title": "University",
     "age": 4,
     "imgSrc": "/assets/pictures/building_technology/university.png",
-    "civ": ["BYZ", "CHI", "DRA", "ENG", "FRE", "HRE", "JAP", "JDA", "OTT", "RUS", "ZXL"],
+    "civ": [
+      "BYZ",
+      "CHI",
+      "DRA",
+      "ENG",
+      "FRE",
+      "HRE",
+      "JAP",
+      "JDA",
+      "OTT",
+      "RUS",
+      "ZXL",
+      "KTE",
+      "HOL"
+    ],
     "class": "tech",
     "shorthand": ["uni", "rq"],
     "description": "Houses advanced technology that benefit the civilization.",

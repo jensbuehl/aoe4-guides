@@ -19,7 +19,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "shorthand": ["rax", "qs"],
@@ -81,7 +83,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "shorthand": ["archeryrange", "wa"],
@@ -121,7 +125,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "shorthand": ["stable", "ws"],
@@ -183,7 +189,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "shorthand": ["workshop", "ea"],
@@ -223,7 +231,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "shorthand": ["dock", "qd"],
@@ -261,7 +271,8 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["keep", "qz", "qy"],
@@ -343,7 +354,9 @@
       "JDA",
       "MON",
       "OTT",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["outpost", "qy", "qz"],
@@ -403,7 +416,9 @@
       "JDA",
       "MAL",
       "OTT",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["palgate", "qx"],
@@ -441,7 +456,9 @@
       "JDA",
       "MAL",
       "OTT",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["palwall", "qc"],
@@ -546,7 +563,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["stonewall", "qx"],
@@ -585,7 +604,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["stonegate", "qc"],
@@ -624,7 +645,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["stonetower", "qz", "qy"],

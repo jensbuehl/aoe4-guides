@@ -1953,7 +1953,7 @@
     "title": "Wynguard Army",
     "age": 4,
     "imgSrc": "/assets/pictures/unit_english/wynguard-army-1.png",
-    "civ": ["ENG"],
+    "civ": ["ENG", "HOL"],
     "class": "military",
     "description": "Produces an army including two Spearmen, two Crossbowmen, and a Trebuchet.",
     "id": "wynguard-army-4",
@@ -1969,6 +1969,72 @@
       "total": 400,
       "popcap": 7,
       "time": 75
+    }
+  },
+  {
+    "title": "Earl's Retinue",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_lancaster/earlretinue.png",
+    "civ": ["HOL"],
+    "class": "military",
+    "description": "Produces an army of 6 Demilancers and 2 Hobelar.",
+    "id": "earls-retinue",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/earls-retinue",
+    "costs": {
+      "food": 650,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 850,
+      "popcap": 8,
+      "time": 45
+    }
+  },
+  {
+    "title": "Garrison Command",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_lancaster/garrisoncommand.png",
+    "civ": ["HOL"],
+    "class": "military",
+    "description": "Produces an army of 8 Spearman and 1 Earl's Guard.",
+    "id": "garrison-command",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/garrison-command",
+    "costs": {
+      "food": 300,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 850,
+      "popcap": 9,
+      "time": 25
+    }
+  },
+  {
+    "title": "Gunpowder Contingent",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_lancaster/gunpowder_contingent.png",
+    "civ": ["HOL"],
+    "class": "military",
+    "description": "Produces an army of 2 Ribauldequins and 1 Culverin.",
+    "id": "gunpowder-contingent",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/gunpowder-contingent",
+    "costs": {
+      "food": 0,
+      "wood": 800,
+      "stone": 0,
+      "gold": 850,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 850,
+      "popcap": 9,
+      "time": 65
     }
   },
   {

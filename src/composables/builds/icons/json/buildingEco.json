@@ -17,7 +17,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["farm", "qa"],
@@ -77,7 +79,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["house", "qq"],
@@ -116,7 +120,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["lumbercamp", "qe"],
@@ -155,7 +161,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["miningcamp", "qr"],
@@ -193,7 +201,9 @@
       "JDA",
       "MAL",
       "OTT",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["mill", "qw"],
@@ -432,7 +442,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "default",
     "shorthand": ["market", "ww"],
@@ -450,6 +462,30 @@
       "total": 100,
       "popcap": 0,
       "time": 20
+    }
+  },
+  {
+    "title": "Manor",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_lancaster/manor.png",
+    "civ": [
+      "HOL"
+    ],
+    "class": "default",
+    "shorthand": ["manor"],
+    "id": "manor",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/manor",
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 100,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 300,
+      "popcap": 0,
+      "time": 45
     }
   },
   {
