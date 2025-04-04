@@ -18,7 +18,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "military",
     "shorthand": ["scout"],
@@ -1058,7 +1060,8 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE"
     ],
     "class": "military",
     "description": "Fast cavalry effective at raiding, flanking, and countering ranged units.\n+ High movement speed\n- Weak against melee units\n- Countered by Spearmen",
@@ -1125,7 +1128,7 @@
     "title": "Knight",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_cavalry/knight-2.png",
-    "civ": ["ENG", "HRE", "RUS"],
+    "civ": ["ENG", "HRE", "RUS", "HOL"],
     "class": "military",
     "description": "Expensive cavalry with high damage and melee armor. Effective against melee units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
     "id": "knight-3",
@@ -1584,6 +1587,39 @@
     }
   },
   {
+    "title": "Veteran Demilancer",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_lancaster/demilancer.png",
+    "civ": ["HOL"],
+    "class": "military",
+    "description": "",
+    "id": "demilancer",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/demilancer"
+  },
+  {
+    "title": "Hobelar",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_lancaster/hobelar_age2.png",
+    "civ": ["HOL"],
+    "class": "military",
+    "description": "",
+    "id": "hobelar",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hobelar",
+    "costs": {
+      "food": 70,
+      "wood": 0,
+      "stone": 0,
+      "gold": 20,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 90,
+      "popcap": 1,
+      "time": 15
+    }
+  },
+  {
     "title": "Serjeant",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_templar/serjeant_age_2.png",
@@ -1603,6 +1639,94 @@
       "total": 120,
       "popcap": 1,
       "time": 23
+    }
+  },
+  {
+    "title": "Chevalier Confrere",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_templar/chevalier_confrere_age_2.png",
+    "civ": ["KTE"],
+    "class": "military",
+    "description": "",
+    "id": "chevalier-confrere",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/chevalier-confrere",
+    "costs": {
+      "food": 90,
+      "wood": 0,
+      "stone": 0,
+      "gold": 80,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 170,
+      "popcap": 1,
+      "time": 26
+    }
+  },
+  {
+    "title": "Genitour",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_templar/genitour_age_3.png",
+    "civ": ["KTE"],
+    "class": "military",
+    "description": "",
+    "id": "genitour",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/genitour",
+    "costs": {
+      "food": 60,
+      "wood": 0,
+      "stone": 0,
+      "gold": 60,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 120,
+      "popcap": 1,
+      "time": 23
+    }
+  },
+  {
+    "title": "Templar Brother",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_templar/templar_brother_age_3.png",
+    "civ": ["KTE"],
+    "class": "military",
+    "description": "",
+    "id": "templar-brother",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/templar-brother",
+    "costs": {
+      "food": 120,
+      "wood": 0,
+      "stone": 0,
+      "gold": 140,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 260,
+      "popcap": 1,
+      "time": 38
+    }
+  },
+  {
+    "title": "Szlachta Cavalry",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_templar/szlachta_age_4.png",
+    "civ": ["KTE"],
+    "class": "military",
+    "description": "",
+    "id": "szlachta-cavalry",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/szlachta-cavalry",
+    "costs": {
+      "food": 180,
+      "wood": 0,
+      "stone": 0,
+      "gold": 120,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 300,
+      "popcap": 1,
+      "time": 40
     }
   },
   {
@@ -2731,7 +2855,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "description": "Tall infantry transport with no combat capability. Allows garrisoned infantry to be unloaded directly onto Stone Walls.\n+ High ranged armor\n- Cannot attack\n- Slow movement speed",
@@ -2769,7 +2895,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "description": "Durable infantry transport effective against buildings and walls.\n+ High ranged armor\n+ High health\n- Takes bonus damage from melee attacks\n- Can only attack buildings\n- Slow movement speed",
@@ -2852,7 +2980,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "description": "Effective at taking out siege engines at long range. Fires after quickly setting up.\n+ Long range\n+ Bonus damage vs. siege engines\n- Trivial damage vs. buildings",
@@ -2888,7 +3018,9 @@
       "MAL",
       "MON",
       "OTT",
-      "RUS"
+      "RUS",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "description": "Fires multiple projectiles dealing damage in an area.\n+ Effective against massed units\n- Must be set up to fire",
@@ -2970,7 +3102,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "description": "Powerful siege engine effective at destroying buildings and walls over a great distance.\n+ Bonus damage vs buildings\n- Must be set up to fire\n- Inaccurate against units",
@@ -3047,7 +3181,7 @@
     "title": "Culverin",
     "age": 4,
     "imgSrc": "/assets/pictures/unit_siege/culverin-4.png",
-    "civ": ["ABB", "AYY", "DRA", "FRE", "HRE", "JDA"],
+    "civ": ["ABB", "AYY", "DRA", "FRE", "HRE", "JDA", "KTE"],
     "class": "military",
     "description": "Long-range cannon made for destroying siege engines. Fires after quickly setting up.\n+ Bonus damage vs. siege engines\n- Low damage vs. buildings",
     "id": "culverin-4",
