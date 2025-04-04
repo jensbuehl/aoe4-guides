@@ -3,7 +3,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager.png",
-    "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS"],
+    "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "KTE", "HOL"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -286,6 +286,70 @@
       "OTT",
       "RUS",
       "ZXL"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 40,
+      "stone": 0,
+      "gold": 40,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 80,
+      "popcap": 1,
+      "time": 30
+    },
+    "description": "Traders generate Gold when assigned to trade with a Trade Post or another player’s Market. The distance between the trade target and Market determines the amount of Gold. Once assigned to trade, the Trader makes repeated trips between its Home Market and the trade target. You can assign a new Home Market if you wish to.",
+    "id": "trader-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/trader"
+  },
+  {
+    "title": "Trader",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_worker/trader.png",
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "HRE",
+      "JAP",
+      "JDA",
+      "MAL",
+      "MON",
+      "OTT",
+      "RUS",
+      "ZXL",
+      "HOL"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 40,
+      "stone": 0,
+      "gold": 40,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 80,
+      "popcap": 1,
+      "time": 30
+    },
+    "description": "Traders generate Gold when assigned to trade with a Trade Post or another player’s Market. The distance between the trade target and Market determines the amount of Gold. Once assigned to trade, the Trader makes repeated trips between its Home Market and the trade target. You can assign a new Home Market if you wish to.",
+    "id": "trader-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/trader"
+  },
+  {
+    "title": "Venetian Trader",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_worker/trader.png",
+    "civ": [
+      "KTE"
     ],
     "class": "default",
     "costs": {
