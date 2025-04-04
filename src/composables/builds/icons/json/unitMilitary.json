@@ -2258,6 +2258,16 @@
     }
   },
   {
+    "title": "Black Rider",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_hre/black-rider-1.png",
+    "civ": ["HRE"],
+    "class": "military",
+    "id": "black-rider",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/black-rider"
+  },
+  {
     "title": "Gilded Landsknecht",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_dragon/gilded-landsknecht-3.png",

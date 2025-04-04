@@ -283,6 +283,18 @@
     }
   },
   {
+    "title": "Cistercian Abbeys",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_hre/cistercian-churches.png",
+    "civ": [
+      "HRE"
+    ],
+    "class": "tech",
+    "id": "cistercian-abbeys",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/cistercian-abbeys"
+  },
+  {
     "title": "Wheelbarrow",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_economy/wheelbarrow.png",
