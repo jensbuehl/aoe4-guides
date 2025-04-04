@@ -246,7 +246,9 @@
       "MAL",
       "MON",
       "OTT",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "default",
     "costs": {
@@ -409,7 +411,9 @@
       "MAL",
       "MON",
       "OTT",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "default",
     "costs": {

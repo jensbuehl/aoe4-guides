@@ -390,7 +390,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",  
+      "KTE"
     ],
     "class": "default",
     "shorthand": ["tc", "we"],
