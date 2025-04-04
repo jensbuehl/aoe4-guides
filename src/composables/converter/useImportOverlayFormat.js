@@ -118,7 +118,7 @@ export default function useImportOverlayFormat() {
     "Order of the Dragon": "DRA",
     //Knights of Cross and Rose
     "House of Lancaster": "HOL",
-    "The Knights Templar": "KTE",
+    "Knights Templar": "KTE",
   };
 
   return {

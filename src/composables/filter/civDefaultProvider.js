@@ -64,6 +64,13 @@ export const civs = ref([
     flagSmall: "assets/flags/hre-small.png",
   },
   {
+    title: "House of Lancaster",
+    shortName: "HOL",
+    tagLine: "Manors, Economy, Versatility",
+    flagLarge: "assets/flags/hol-large.png",
+    flagSmall: "assets/flags/hol-small.png",
+  },
+  {
     title: "Japanese",
     shortName: "JAP",
     tagLine: "Agriculture, Bannermen, Infrantry",
@@ -76,6 +83,13 @@ export const civs = ref([
     tagLine: "Trade, Cavalry, Hero",
     flagLarge: "assets/flags/jda-large.png",
     flagSmall: "assets/flags/jda-small.png",
+  },
+  {
+    title: "Knights Templar",
+    shortName: "KTE",
+    tagLine: "Diplomacy, Fortification, Commanderies",
+    flagLarge: "assets/flags/kte-large.png",
+    flagSmall: "assets/flags/kte-small.png",
   },
   {
     title: "Malian",
@@ -118,20 +132,6 @@ export const civs = ref([
     tagLine: "Dynasties, Taxes, Technology",
     flagLarge: "assets/flags/zxl-large.png",
     flagSmall: "assets/flags/zxl-small.png",
-  },
-  {
-    title: "The Knights Templar",
-    shortName: "KTE",
-    tagLine: "Diplomacy, Fortification, Commanderies",
-    flagLarge: "assets/flags/kte-large.png",
-    flagSmall: "assets/flags/kte-small.png",
-  },
-  {
-    title: "House of Lancaster",
-    shortName: "HOL",
-    tagLine: "Manors, Economy, Versatility",
-    flagLarge: "assets/flags/hol-large.png",
-    flagSmall: "assets/flags/hol-small.png",
   },
 ]);
 

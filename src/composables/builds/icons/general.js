@@ -172,6 +172,16 @@ export const general = [
       "Prelates enhance the economy of the Holy Roman Empire, while powerful infantry units form the core of its military. Enemies must face an opponent able to rapidly recover from attacks and field strong counterattacks.",
   },
   {
+    title: "House of Lancaster",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/hol.png",
+    civ: civs,
+    class: "none",
+    shorthand: "hol",
+    description:
+      "In Age of Empires IV, the House of Lancaster variant civilization boasts a powerful economy derived from their unique building, the Manor. In addition, their versatile army offers many tactical advantages on the battlefield, allowing them to defeat even the most capable of foes.",
+  },
+  {
     title: "Japanese",
     age: "1",
     imgSrc: "/assets/pictures/civilization_flag/jap.png",
@@ -190,6 +200,16 @@ export const general = [
     shorthand: "jda",
     description:
       "A spark of hope for the French people, Jeanne d'Arc takes to the battlefield and inspires courage to her followers. Starting as a humble villager, Jeanne begins the Journey of a Hero in the Dark Age. Experience forges Jeanne into a powerful leader, gaining access to trusted companions and powerful abilities which shape the empire she was destined to create.",
+  },
+  {
+    title: "Knights Templar",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/kte.png",
+    civ: civs,
+    class: "none",
+    shorthand: "kte",
+    description:
+      "Constructing powerful Fortresses cements their control over the map, while providing inspiration to military troops and acting as Landmarks to guide Pilgrims in their travels.",
   },
   {
     title: "Malians",
@@ -250,25 +270,5 @@ export const general = [
     shorthand: "zxl",
     description:
       "The teachings of philosopher Zhu Xi reshape the Chinese civilization. With Zhu Xi’s Legacy, the Chinese boast a sophisticated administration with superior Imperial Officials and advanced technologies. The brimming treasury helps to establish powerful dynasties and research a breadth of unique technologies. Recruit Palace Guards, Zhuge Nus, and Grenadiers early on to protect the Empire.",
-  },
-  {
-    title: "The Knights Templar",
-    age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/kte.png",
-    civ: civs,
-    class: "none",
-    shorthand: "kte",
-    description:
-      "Constructing powerful Fortresses cements their control over the map, while providing inspiration to military troops and acting as Landmarks to guide Pilgrims in their travels.",
-  },
-  {
-    title: "House of Lancaster",
-    age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/hol.png",
-    civ: civs,
-    class: "none",
-    shorthand: "hol",
-    description:
-      "In Age of Empires IV, the House of Lancaster variant civilization boasts a powerful economy derived from their unique building, the Manor. In addition, their versatile army offers many tactical advantages on the battlefield, allowing them to defeat even the most capable of foes.",
   },
 ];

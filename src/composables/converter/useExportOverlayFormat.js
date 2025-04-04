@@ -116,7 +116,7 @@ export default function useExportOverlayFormat() {
     DRA: "Order of the Dragon",
     //Knights of Cross and Rose
     HOL: "House of Lancaster",
-    KTE: "The Knights Templar",
+    KTE: "Knights Templar",
   };
 
   return {
