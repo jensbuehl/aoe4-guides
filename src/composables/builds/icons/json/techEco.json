@@ -19,7 +19,8 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Wood by 15%.",
@@ -58,7 +59,8 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Wood by 15%.",
@@ -97,7 +99,8 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Wood by 15% and Wood gatherers carry capacity by +5.",
@@ -136,7 +139,8 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Double the rate at which Villagers chop down trees.",
@@ -175,7 +179,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Food by 15%. Does not apply to hunted meat.",
@@ -214,7 +220,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Food by 15%. Does not apply to hunted meat.",
@@ -253,7 +261,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Food by 15%. Does not apply to hunted meat.",
@@ -291,7 +301,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the carry capacity of Villagers by +5 and their movement speed by +15%.",
@@ -330,7 +342,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Gold and Stone by 15%.",
@@ -391,7 +405,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Villagers' gathering rate for Gold and Stone by 15%.",
@@ -430,7 +446,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Gold gatherers drop off 15% more resources.",
@@ -469,7 +487,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Villagers' health by +50%.",
@@ -508,7 +528,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Villagers' hunted meat gather rate by +15%.",
@@ -547,7 +569,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Scouts gain the ability to carry animal carcasses and +100% damage against wild animals.\nScouts move -35% slower while carrying and cannot pick up Boar.",
@@ -586,7 +610,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the gathering rate of Fishing Ships by +20% and carry capacity by +10.",
@@ -603,6 +629,102 @@
       "total": 250,
       "popcap": 0,
       "time": 30
+    }
+  },
+  {
+    "title": "Sanctuary",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_templar/sanctuary.png",
+    "civ": [
+      "KTE"
+    ],
+    "class": "tech",
+    "description": "Guarantees of sanctuary grant Pilgrimage 1 additional Pilgrim.",
+    "id": "sanctuary",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/sanctuary",
+    "costs": {
+      "food": 300,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 450,
+      "popcap": 0,
+      "time": 20
+    }
+  },
+  {
+    "title": "Treasure Towers",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_templar/treasure_tower.png",
+    "civ": [
+      "KTE"
+    ],
+    "class": "tech",
+    "description": "Increases the gold generation of Monasteries, Sacred Sites and Pilgrims by 20% within the aura of a Fortress.",
+    "id": "treasure-towers",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/treasure-towers",
+    "costs": {
+      "food": 300,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 450,
+      "popcap": 0,
+      "time": 20
+    }
+  },
+  {
+    "title": "Lettre de Change",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_templar/lettre_de_change.png",
+    "civ": [
+      "KTE"
+    ],
+    "class": "tech",
+    "description": "Unlocks the Pilgrim Loan abilities, which loan a large sum of food for a return in gold over time.",
+    "id": "lettre-de-change",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/lettre-de-change",
+    "costs": {
+      "food": 300,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 450,
+      "popcap": 0,
+      "time": 20
+    }
+  },
+  {
+    "title": "Safe Passage",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_templar/safepassage.png",
+    "civ": [
+      "KTE"
+    ],
+    "class": "tech",
+    "description": "Pilgrims spawn every 60 seconds. Start with 1 pilgrim, gain 1 pilgrims for each Fortress (Max 10).",
+    "id": "safe-passage",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/safe-passage",
+    "costs": {
+      "food": 300,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 450,
+      "popcap": 0,
+      "time": 20
     }
   },
   {
@@ -625,7 +747,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the gathering rate of Fishing Ships by +15%, carry capacity by +20 and move speed by +10%.",

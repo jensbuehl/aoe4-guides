@@ -1336,7 +1336,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Add defensive arrowslits to this structure and increase garrison arrow range by +1. Only one weapon emplacement can be added.",
@@ -1375,7 +1377,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Add a defensive springald emplacement to this structure.",
@@ -1414,7 +1418,8 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL"
     ],
     "class": "tech",
     "description": "Add a defensive cannon emplacement to this structure.",
@@ -1453,7 +1458,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Towers and Keeps gain a boiling oil attack against nearby units that deals 30 damage.",
@@ -1491,7 +1498,9 @@
       "MAL",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the health of all buildings by +30%.",
@@ -1528,7 +1537,9 @@
       "JDA",
       "MAL",
       "OTT",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Add +1000 health and +5 fire armor to this Outpost.",
@@ -1567,7 +1578,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increases the number of arrows fired by Archer Ships by +1.",
@@ -1606,7 +1619,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Add a defensive arrowslit to this Dock which only attacks ships.",
@@ -2888,7 +2903,7 @@
     "title": "Admiralty",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_english/admiralty-2.png",
-    "civ": ["ENG"],
+    "civ": ["ENG", "HOL"],
     "class": "tech",
     "description": "Increase the range of combat ships by +1.",
     "id": "admiralty-2",
@@ -2927,6 +2942,56 @@
       "popcap": 0,
       "time": 90
     }
+  },
+  {
+    "title": "Muster the Nobles",
+    "age": 2,
+    "imgSrc": "/assets/pictures/ability_lancaster/call_to_arms.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "id": "muster-the-nobles",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/muster-the-nobles"
+  },
+  {
+    "title": "Shire Levy",
+    "age": 2,
+    "imgSrc": "/assets/pictures/ability_lancaster/shire_levy_2.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "id": "shire-levy",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/shire-levy"
+  },
+  {
+    "title": "Exact Militia Program",
+    "age": 3,
+    "imgSrc": "/assets/pictures/ability_lancaster/shire_levy_3.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "id": "exact-militia-program",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/exact-militia-program"
+  },
+  {
+    "title": "Iron Clamps",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/iron_clamps.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "id": "iron-clamps",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/iron-clamps"
+  },
+  {
+    "title": "Trebuchet Emplacement",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/trebuchet_emplacement.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "id": "trebuchet-emplacement",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/trebuchet-emplacement"
   },
   {
     "title": "Banco Repairs",
@@ -3234,7 +3299,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the health of all military ships by +20% and ranged armor by +1.",
@@ -3273,7 +3340,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the health of all military ships by +20% and ranged armor by +1.",
@@ -3312,7 +3381,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Springald Ships gain +1 range and attack 20% faster.",
@@ -3351,7 +3422,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Incendiary Ships gain +20% explosion range.",
@@ -3389,7 +3462,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the healing rate of religious units by +60%.",
@@ -3427,7 +3502,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the health of religious units by +40.",
@@ -3597,7 +3674,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Relics placed in a Mosque provide an income of +40 Food, +40 Wood, and +10 Stone every minute.",
@@ -4246,7 +4325,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the damage of Incendiary Ships by +40%.",
@@ -4285,7 +4366,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Archer Ship arrows light enemy Ships on fire, dealing damage over time.",
@@ -4324,7 +4407,8 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL", 
+      "HOL"
     ],
     "class": "tech",
     "description": "Springald Ships gain an additional Cannon which fires in 360 degrees.",
