@@ -18,7 +18,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "melee_dmg1",
@@ -57,7 +59,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "melee_dmg2",
@@ -96,7 +100,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "melee_dmg3",
@@ -224,7 +230,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Melee and ranged infantry can construct Siege Towers and Battering Rams in the field.",
@@ -263,7 +271,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "ranged_dmg1",
@@ -303,7 +313,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "ranged_dmg2",
@@ -343,7 +355,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "ranged_dmg3",
@@ -382,7 +396,9 @@
       "MAL",
       "MON",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the production speed of infantry, cavalry, siege, and transport units at buildings by 33%.\nDoes not affect religious units or other support units.",
@@ -421,7 +437,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "melee_def1",
@@ -461,7 +479,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "melee_def2",
@@ -501,7 +521,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "melee_def3",
@@ -541,7 +563,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the health of all melee infantry by +20% and their damage by +20%.",
@@ -580,7 +604,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "ranged_def1",
@@ -620,7 +646,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "ranged_def2",
@@ -660,7 +688,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "shorthand": "ranged_def3",
@@ -699,7 +729,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the damage of ranged units by +20%. Does not apply to gunpowder units.",
@@ -736,7 +768,8 @@
       "JDA",
       "MAL",
       "MON",
-      "RUS"
+      "RUS",
+      "HOL"
     ],
     "class": "tech",
     "description": "Handcannoneers gain +8 bonus damage versus melee Infantry and a brief boost of movement speed upon firing their weapon.",
@@ -774,7 +807,9 @@
       "MAL",
       "MON",
       "OTT",
-      "RUS"
+      "RUS",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Handcannoneers gain +8 bonus damage versus melee Infantry and a brief boost of movement speed upon firing their weapon.",
@@ -812,7 +847,9 @@
       "MAL",
       "MON",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the health of all cavalry by +20%.",
@@ -893,6 +930,28 @@
     }
   },
   {
+    "title": "Hill Training",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_lancaster/hill_land_training.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Training in rugged terrain increases Hobelar charge damage by +150% and production speed by +100%.",
+    "id": "hill-training",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/hill-training",
+    "costs": {
+      "food": 200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 500,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 700,
+      "popcap": 0,
+      "time": 90
+    }
+  },
+  {
     "title": "Geometry",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_military/geometry.png",
@@ -912,7 +971,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase damage of Trebuchets by +20%.",
@@ -951,7 +1012,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the movement speed of siege engines by +15%.",
@@ -990,7 +1053,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the weapon range of Springalds by +2 tiles and increase their attack speed by +25%.",
@@ -1029,7 +1094,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the sight radius of Scouts by 30%.",
@@ -1221,7 +1288,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase Battering Ram attack speed by +20% and reduce their field construction time by -50%.",
@@ -1258,7 +1327,9 @@
       "MAL",
       "MON",
       "OTT",
-      "RUS"
+      "RUS",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the attack speed of Mangonels by +25%.",
@@ -1297,7 +1368,9 @@
       "MON",
       "OTT",
       "RUS",
-      "ZXL"
+      "ZXL",
+      "HOL",
+      "KTE"
     ],
     "class": "tech",
     "description": "Increase the health of siege engines by +20% and their ranged armor by +10.",
@@ -4304,6 +4377,292 @@
       "popcap": 0,
       "time": 60
     }
+  },
+  {
+    "title": "Billmen",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_lancaster/billmen.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Spearmen equip tempered Bills, reducing the armor of enemies by -2 when attacking.",
+    "id": "billmen",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/billmen"
+  },
+  {
+    "title": "Condensed Land Practices",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_lancaster/condensed_land_practices.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Advancements in feudal land distribution practices increase the build limit of Manors by +3 and their health by +200.",
+    "id": "condensed-land-practices",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/condensed-land-practices"
+  },
+  {
+    "title": "Open Field System",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_lancaster/open_field_system.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Advancements in feudal land distribution practices increase the build limit of Manors by +3 and their health by +300.",
+    "id": "open-field-system",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/open-field-system"
+  },
+  {
+    "title": "Burgundian Imports",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_lancaster/burgundian_imports.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Importing Burgundian Handcannons enables Handcannoneers to be trained in the Castle Age and reduces Handcannoneer cost by -25%.",
+    "id": "burgundian-imports",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/burgundian-imports"
+  },
+  {
+    "title": "Collar of Esses",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_lancaster/collar_of_esses.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Your Knights and Demilancers adorn their armor with the Lancaster livery, gaining +6 bonus damage against enemy armored units.",
+    "id": "collar-of-esses",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/collar-of-esses"
+  },
+  {
+    "title": "Synchronized Shot",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_lancaster/synchronized_shot.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Unlocks the Synchronized Shot ability for Yeomen.",
+    "id": "synchronized-shot",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/synchronized-shot"
+  },
+  {
+    "title": "Warwolf Trebuchet",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_lancaster/warwolf_trebuchet.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Experience from building larger trebuchets increases their range by +2 and health by +50%.",
+    "id": "warwolf-trebuchet",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/warwolf-trebuchet"
+  },
+  {
+    "title": "Padded Jack",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_lancaster/padded_jack.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Equip your Yeomen and Spearmen with Padded Jacks, improving their melee armor by +3.",
+    "id": "padded-jack",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/padded-jack"
+  },
+  {
+    "title": "Scutage",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_lancaster/scutage.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "The Lord of Lancaster levies a tax on all vassals to fund war efforts. Manors generate 40 gold per minute.",
+    "id": "scutage",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/scutage"
+  },
+  {
+    "title": "Ships of the Crown",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_lancaster/ships_of_the_crown.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Investing in bigger and better ship hulls increases Carrack damage by 20%, health by 20%, and range by 20%.",
+    "id": "ships-of-the-crown",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ships-of-the-crown"
+  },
+  {
+    "title": "Throwing Dagger Drills",
+    "age": 4,
+    "imgSrc": "/assets/pictures/ability_lancaster/earls_guard.png",
+    "civ": ["HOL"],
+    "class": "tech",
+    "description": "Earl's Guards are supplied with additional Daggers when throwing, these Daggers also deal a small amount of area damage. Earl's Guards now throw 2 Daggers but are less accurate.",
+    "id": "throwing-dagger-drills",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/throwing-dagger-drills"
+  },
+  {
+    "title": "Desert Citadels",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/desert_citadel.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Improves the Desert Outposts aura on Fortresses to also increase the armor of nearby units by +1/+1.",
+    "id": "desert-citadels",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/desert-citadels"
+  },
+  {
+    "title": "Kingdom of France",
+    "age": 2,
+    "imgSrc": "/assets/pictures/civilization_flag/kof.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Military units are produced +15% faster and cost -5% gold.",
+    "id": "kingdom-of-france",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/kingdom-of-france"
+  },
+  {
+    "title": "Knights Hospitaller",
+    "age": 2,
+    "imgSrc": "/assets/pictures/civilization_flag/hos.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Increases the health of all civilian units by +30% and increases healing from all sources by +30%.",
+    "id": "knights-hospitaller",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/knights-hospitaller"
+  },
+  {
+    "title": "Principality of Antioch",
+    "age": 2,
+    "imgSrc": "/assets/pictures/civilization_flag/ant.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Melee units gain +10% damage.",
+    "id": "principality-of-antioch",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/principality-of-antioch"
+  },
+  {
+    "title": "Angevin Empire",
+    "age": 3,
+    "imgSrc": "/assets/pictures/civilization_flag/ang.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Fortresses and Docks gain +30% Health.",
+    "id": "angevin-empire",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/angevin-empire"
+  },
+  {
+    "title": "Kingdom of Castile",
+    "age": 3,
+    "imgSrc": "/assets/pictures/civilization_flag/koc.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Units near Sacred Sites gain +20% damage and regenerate health.",
+    "id": "kingdom-of-castile",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/kingdom-of-castile"
+  },
+  {
+    "title": "Republic of Genoa",
+    "age": 3,
+    "imgSrc": "/assets/pictures/civilization_flag/gen.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Pilgrims generate +30% gold.",
+    "id": "republic-of-genoa",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/republic-of-genoa"
+  },
+  {
+    "title": "Kingdom of Poland",
+    "age": 4,
+    "imgSrc": "/assets/pictures/civilization_flag/pol.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "All Cavalry gain +10% health and +50% charge damage.",
+    "id": "kingdom-of-poland",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/kingdom-of-poland"
+  },
+  {
+    "title": "Republic of Venice",
+    "age": 4,
+    "imgSrc": "/assets/pictures/civilization_flag/ven.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Reduces the change in the base buy or sell price by 75% when trading resources at the Market.",
+    "id": "republic-of-venice",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/republic-of-venice"
+  },
+  {
+    "title": "Teutonic Order",
+    "age": 4,
+    "imgSrc": "/assets/pictures/civilization_flag/teu.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "All gold units gain +2 melee armor.",
+    "id": "teutonic-order",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/teutonic-order"
+  },
+  {
+    "title": "Rule of Templars",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/ruleoftemplar.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Gain +2 charge damage per nearby charging Heavy Cavalry.",
+    "id": "rule-of-templars",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/rule-of-templars"
+  },
+  {
+    "title": "Brigandine",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/brigandine.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Common soldiers are equipped with more resistant armor. Light cavalry gain +2 armor.",
+    "id": "brigandine",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/brigandine"
+  },
+  {
+    "title": "Counterweight Defenses",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/counterweight_defenses.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "All Trebuchet weapons gain +1 additional projectiles.",
+    "id": "counterweight-defenses",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/counterweight-defenses"
+  },
+  {
+    "title": "Cranequins",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/cranequins.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Crossbows are able to load stronger bolts that have +0.5 range and +2 damage.",
+    "id": "cranequins",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/cranequins"
+  },
+  {
+    "title": "Fanaticism",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_templar/fanaticism.png",
+    "civ": ["KTE"],
+    "class": "tech",
+    "description": "Templar Brothers and Commanderie units gain +10% damage when below 50% health, and +30% when below 25% health.",
+    "id": "fanaticism",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/fanaticism"
   },
   {
     "title": "Explosives",
