@@ -761,6 +761,10 @@ export default {
     });
 
     const initData = async () => {
+      //get home data
+      recentCivBuilds.value = await getRecentCivBuilds();
+      console.log("recentCivBuilds", recentCivBuilds.value);
+
       //reset results count
       store.commit("setResultsCount", null);
 
@@ -791,10 +795,6 @@ export default {
       //get count
       const size = await getBuildsCount();
       store.commit("setResultsCount", size);
-
-      //get home data
-      recentCivBuilds.value = await getRecentCivBuilds();
-      console.log("recentCivBuilds", recentCivBuilds.value);
     };
 
     return {

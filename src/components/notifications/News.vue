@@ -1,12 +1,7 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1 mt-6 mb-2">
     <v-card flat rounded="lg">
-      <v-img
-        color="surface-variant"
-        height="200"
-        src="/dlc-banner.webp"
-        cover
-      ></v-img>
+      <v-img color="surface-variant" height="200" src="/dlc-banner.webp" cover></v-img>
       <v-card-title>DLC Update | Now Live!</v-card-title>
       <v-card-text>
         <p class="mb-2">
@@ -16,9 +11,20 @@
         <p class="mb-2">
           If you stumble across anything missing or broken - yeah, it happens - just let me know.
         </p>
-        <p class="mb-2">If this update saved you some time or clicks, consider throwing a coin my way. It helps keep the site running.</p>
-        <p class="mb-2">Thanks for keeping the site alive and sharp. You're awesome. If </p>
+        <p class="mb-2">
+          If this update saved you some time or clicks, consider throwing a coin my way. It helps
+          keep the site running.
+        </p>
+        <p class="mb-2">Thanks for keeping the site alive and sharp. You're awesome.</p>
         <p class="mb-2">/3,<br />exe</p>
+        <div class="mx-n4 mb-2" align="center">
+          <iframe
+            width="100%"
+            :src="'https://www.youtube.com/embed/8ldhxf-e2m4'"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
 
         <p>
           P.S. '<strong>::</strong>' is <strong>the shortcut</strong> to get your builds done
