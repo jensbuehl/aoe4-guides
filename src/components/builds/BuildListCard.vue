@@ -81,7 +81,7 @@
             color="accent"
             :to="{
               name: 'Builds',
-              query: { author: build.authorId },
+              query: { author: build.authorUid },
             }"
             ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
           >
