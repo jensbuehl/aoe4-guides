@@ -15,12 +15,12 @@
           If this update saved you some time or clicks, consider throwing a coin my way. It helps
           keep the site running.
         </p>
-        <p class="mb-2">Thanks for keeping the site alive and sharp. You're awesome.</p>
+        <p class="mb-2">Thanks for keeping the site alive. You're awesome.</p>
         <p class="mb-2">/3,<br />exe</p>
         <div class="mx-n4 mb-2" align="center">
           <iframe
             width="100%"
-            :src="'https://www.youtube.com/embed/8ldhxf-e2m4'"
+            :src="'https://www.youtube.com/embed/pHCS8eUDk_c'"
             frameborder="0"
             allowfullscreen
           ></iframe>

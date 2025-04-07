@@ -9,6 +9,14 @@ export function shuffleArray(array) {
 
 export const songs = [
   {
+    title: "Manor Manor",
+    url: "https://www.youtube.com/embed/pHCS8eUDk_c",
+  },
+  {
+    title: "One Age | One Empire",
+    url: "https://www.youtube.com/embed/i-QW-3izLEY",
+  },
+  {
     title: "Free For All | Outback Octagon Highlights",
     url: "https://www.youtube.com/embed/EpyS2mE7vhw",
   },
