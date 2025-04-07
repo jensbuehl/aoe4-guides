@@ -200,7 +200,7 @@
                           class="mt-1 ml-2 pl-1"
                           color="accent"
                           size="small"
-                          ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                          ><v-icon class="ma-1" start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
                         >
                       </v-row>
                     </v-col>
