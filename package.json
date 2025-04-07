@@ -13,7 +13,7 @@
   "dependencies": {
     "@firebase/app-check": "^0.8.13",
     "@mdi/font": "^7.1.96",
-    "@vueuse/core": "^10.9.0",
+    "@vueuse/core": "^13.0.0",
     "axios": "^1.8.4",
     "easy-speech": "^2.4.0",
     "firebase": "^10.8.0",
