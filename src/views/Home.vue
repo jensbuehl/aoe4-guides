@@ -91,7 +91,7 @@
                         :style="{
                           color: $vuetify.theme.current.colors.primary,
                         }"
-                        class="text-subtitle-2 ml-1 mb-n1"
+                        class="text-subtitle-2 ml-1"
                         style="font-size: 0.8rem !important"
                       >
                         {{ civ.title }}
@@ -103,10 +103,10 @@
                                 ?.timeCreated.toDate()
                             )
                           "
-                          class="pa-1"
+                          class="pa-1 pr-2"
                           color="accent"
                           size="x-small"
-                          ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                          ><v-icon class="ml-1" start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
                         >
                       </div>
                     </v-col>
@@ -173,10 +173,11 @@
                                   ?.timeCreated.toDate()
                               )
                             "
-                            class="px-1"
+                            class="px-1 pr-2"
                             color="accent"
                             size="x-small"
-                            ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                            ><v-icon class="ma-1" start icon="mdi-alert-decagram"></v-icon
+                            >NEW</v-chip
                           >
                         </div></v-row
                       >
