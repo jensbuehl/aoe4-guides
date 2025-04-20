@@ -17,15 +17,6 @@
         </p>
         <p class="mb-2">Thanks for keeping the site alive. You're awesome.</p>
         <p class="mb-2">/3,<br />exe</p>
-        <div class="mx-n4 mb-2" align="center">
-          <iframe
-            width="100%"
-            :src="'https://www.youtube.com/embed/pHCS8eUDk_c'"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
-        </div>
-
         <p>
           P.S. '<strong>::</strong>' is <strong>the shortcut</strong> to get your builds done
           quicker!

@@ -538,10 +538,6 @@
               </router-link>
             </div> </v-col
         ></v-row>
-        <v-container class="mx-0 mb-2 pa-0 hidden-md-and-up"
-          ><YoutubeMusic></YoutubeMusic
-        ></v-container>
-
         <v-container class="mx-0 pa-0 hidden-md-and-up"
           ><YoutubeGuides></YoutubeGuides
         ></v-container>
@@ -669,7 +665,6 @@
             </v-tooltip>
           </v-col></v-row
         >
-        <v-container class="mx-0 pa-0 mb-2"><YoutubeMusic></YoutubeMusic></v-container>
         <YoutubeGuides></YoutubeGuides>
         <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
@@ -691,7 +686,6 @@ import { useDisplay } from "vuetify";
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import News from "@/components/notifications/News.vue";
 import YoutubeGuides from "@/components/notifications/YoutubeGuides.vue";
-import YoutubeMusic from "@/components/notifications/YoutubeMusic.vue";
 import EmailVerificationAd from "@/components/notifications/EmailVerificationAd.vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
@@ -717,7 +711,6 @@ export default {
     RegisterAd,
     News,
     YoutubeGuides,
-    YoutubeMusic,
     EmailVerificationAd,
   },
   setup() {
