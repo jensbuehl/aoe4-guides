@@ -1,26 +1,23 @@
 <template>
   <v-alert rounded="lg" outlined color="accent" class="pa-1 mt-6 mb-2">
     <v-card flat rounded="lg">
-      <v-img color="surface-variant" height="200" src="/dlc-banner.webp" cover></v-img>
-      <v-card-title>DLC Update | Now Live!</v-card-title>
+      <v-img color="surface-variant" src="/BotC-banner.webp"></v-img>
+      <v-card-title> Battle of the Creatives</v-card-title>
       <v-card-text>
-        <p class="mb-2">
-          Aoe4Guides just got a major update! All units, buildings, and techs from the new DLC
-          <strong>Knights of Cross and Rose</strong> are now added.
+        Battle of the Creatives (BotC) - Age of Empires IV Tournament
+        <br><br>
+
+        <p>📅 When: 31.05. - 01.06.2025</p>
+        <p>🌍 Language: Deutsch</p>
+        <p>🎙️ Host & Cast: <a href="https://twitch.tv/ix_lash" target="_blank">Lash</a></p>
+        <p>📺 Presented by: <a href="https://twitch.tv/aoe4togo" target="_blank">AOE IV TO GO</a></p>
+        
+        <p class="font-weight-bold ma-4" align="center"
+      justify="center">
+          Core, Avely, Striker, Lash, Crackedy, Ezra, Gullyd3ck3l
         </p>
-        <p class="mb-2">
-          If you stumble across anything missing or broken - yeah, it happens - just let me know.
-        </p>
-        <p class="mb-2">
-          If this update saved you some time or clicks, consider throwing a coin my way. It helps
-          keep the site running.
-        </p>
-        <p class="mb-2">Thanks for keeping the site alive. You're awesome.</p>
-        <p class="mb-2">/3,<br />exe</p>
-        <p>
-          P.S. '<strong>::</strong>' is <strong>the shortcut</strong> to get your builds done
-          quicker!
-        </p>
+        
+        <p class="mt-4">Don't miss this epic clash of creative strategists! Join live and support your favorite players!</p>
       </v-card-text>
 
       <v-row class="mx-2 mb-2" no-gutters>
@@ -67,8 +64,12 @@
 </template>
 
 <script>
+
+
 export default {
   name: "News",
-  setup() {},
+  setup() {
+    
+  },
 };
 </script>
