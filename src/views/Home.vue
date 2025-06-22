@@ -36,7 +36,6 @@
             ><span v-if="count > 1">s</span><span>.</span></v-card-text
           >
         </v-card>
-        <News></News>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -564,7 +563,6 @@
             ><span v-if="count > 1">s</span><span>.</span>
           </v-card-text>
         </v-card>
-        <News></News>
 
         <!--top contributors md and up-->
         <v-row no-gutters align="center" class="hidden-xs">
