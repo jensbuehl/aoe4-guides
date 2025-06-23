@@ -48,58 +48,58 @@
           justify="center"
         >
           <v-col cols="3">
-            <v-img class="titleIconXs ma-2" src="/assets/resources/time.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/time.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/villager.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/villager.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/repair.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/repair.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/food.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/food.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/wood.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/wood.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/gold.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/gold.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/stone.png"></v-img>
+            <v-img class="titleIconXs ma-2" src="/assets/resources/stone.webp"></v-img>
           </v-col>
         </v-row>
         <v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
           <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>
+            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             Age up to Feudal Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 2 && section.type == 'age'">
           <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>Feudal
-            Age</v-row
+            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon
+            >Feudal Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
           <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>
+            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             Age up to Castle Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 3 && section.type == 'age'">
           <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>Castle
-            Age</v-row
+            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon
+            >Castle Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
           <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon>
+            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon>
             <v-icon color="accent">mdi-arrow-up-bold</v-icon>
             Age up to Imperial Age</v-row
           ></v-card-title
         ><v-card-title v-if="section.age == 4 && section.type == 'age'">
           <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon
+            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon
             >Imperial Age</v-row
           ></v-card-title
         >
@@ -387,36 +387,36 @@
     <v-card flat align="center" class="mt-4"
       ><v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
         <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>
+          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           Age up to Feudal Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 2 && section.type == 'age'">
         <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.png"></v-img></v-icon>Feudal
+          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon>Feudal
           Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
         <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>
+          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           Age up to Castle Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 3 && section.type == 'age'">
         <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.png"></v-img></v-icon>Castle
+          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon>Castle
           Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
         <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon>
+          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon>
           <v-icon color="accent">mdi-arrow-up-bold</v-icon>
           Age up to Imperial Age</v-row
         ></v-card-title
       ><v-card-title v-if="section.age == 4 && section.type == 'age'">
         <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.png"></v-img></v-icon>Imperial
-          Age</v-row
+          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon
+          >Imperial Age</v-row
         ></v-card-title
       >
       <v-table
@@ -435,7 +435,7 @@
         <thead :style="section.age <= 1 && section.type == 'age' ? '' : 'visibility: collapse'">
           <tr>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img class="mx-auto titleIcon" src="/assets/resources/time.png"></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/time.webp"></v-img>
             </th>
             <v-tooltip location="top">
               <span
@@ -446,24 +446,24 @@
               >
               <template v-slot:activator="{ props }">
                 <th v-bind="props" class="text-center ma-0 pa-0" style="width: 50px">
-                  <v-img class="mx-auto titleIcon" src="/assets/resources/villager.png"></v-img>
+                  <v-img class="mx-auto titleIcon" src="/assets/resources/villager.webp"></v-img>
                 </th>
               </template>
             </v-tooltip>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img class="mx-auto titleIcon" src="/assets/resources/repair.png"></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/repair.webp"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img class="mx-auto titleIcon" src="/assets/resources/food.png"></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/food.webp"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img class="mx-auto titleIcon" src="/assets/resources/wood.png"></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/wood.webp"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img class="mx-auto titleIcon" src="/assets/resources/gold.png"></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/gold.webp"></v-img>
             </th>
             <th class="text-center ma-0 pa-0" style="width: 50px">
-              <v-img class="mx-auto titleIcon" src="/assets/resources/stone.png"></v-img>
+              <v-img class="mx-auto titleIcon" src="/assets/resources/stone.webp"></v-img>
             </th>
             <th class="text-left">Description</th>
             <th v-if="!readonly" style="width: 180px" class="text-right"></th>
@@ -837,13 +837,24 @@ export default {
     }
 
     onMounted(async () => {
-      //Sanitize since inline icon replacement only works with <br>, NOT with \n
+      //Sanitize since inline icon replacement only works with <br>, NOT with \n, replace PNG by WEBP
       steps.forEach((element) => {
-        element.description = element.description?.replace(/\n/gm, "<br>");
+        element.description = element.description
+          ?.replace(/\n/gm, "<br>")
+          .replace(/\.png\b/gi, ".webp");
       });
+
       stepsCopy.forEach((element) => {
-        element.description = element.description?.replace(/\n/gm, "<br>");
+        element.description = element.description
+          ?.replace(/\n/gm, "<br>")
+          .replace(/\.png\b/gi, ".webp");
       });
+
+      //Replace PNG by WEBP
+      gameplan.value = gameplan.value
+          ?.replace(/\.png\b/gi, ".webp");
+      
+
       //Force firefox to use BR instead of adding DIVs
       document.execCommand("defaultParagraphSeparator", false, "br");
     });

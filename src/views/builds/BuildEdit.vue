@@ -259,8 +259,8 @@
           </v-img>
           <v-img
             v-else
-            src="/assets/flags/any-large.png"
-            lazy-src="/assets/flags/any-small.png"
+            src="/assets/flags/any-large.webp"
+            lazy-src="/assets/flags/any-small.webp"
             :gradient="'to right, transparent, ' + $vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover

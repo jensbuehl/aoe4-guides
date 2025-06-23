@@ -2,7 +2,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager.webp",
     "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "KTE", "HOL"],
     "class": "default",
     "shorthand": "vil",
@@ -25,7 +25,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager-delhi.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager-delhi.webp",
     "civ": ["DEL"],
     "class": "default",
     "shorthand": "vil",
@@ -48,7 +48,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager-japanese.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager-japanese.webp",
     "civ": ["JAP"],
     "class": "default",
     "shorthand": "vil",
@@ -71,7 +71,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager-malians.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager-malians.webp",
     "civ": ["MAL"],
     "class": "default",
     "shorthand": "vil",
@@ -94,7 +94,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager-china.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager-china.webp",
     "civ": ["CHI", "ZXL"],
     "class": "default",
     "shorthand": "vil",
@@ -117,7 +117,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager-abbasid.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager-abbasid.webp",
     "civ": ["ABB", "AYY"],
     "class": "default",
     "shorthand": "vil",
@@ -140,7 +140,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager-ottomans.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager-ottomans.webp",
     "civ": ["OTT"],
     "class": "default",
     "shorthand": "vil",
@@ -163,7 +163,7 @@
   {
     "title": "Villager",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/villager-mongols.png",
+    "imgSrc": "/assets/pictures/unit_worker/villager-mongols.webp",
     "civ": ["MON"],
     "class": "default",
     "shorthand": "vil",
@@ -186,7 +186,7 @@
   {
     "title": "Atabeg",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_ayyubids/atabeg-1.png",
+    "imgSrc": "/assets/pictures/unit_ayyubids/atabeg-1.webp",
     "civ": ["AYY"],
     "class": "default",
     "costs": {
@@ -208,7 +208,7 @@
   {
     "title": "Lodya Fishing Boat",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_rus/lodya-fishing-boat.png",
+    "imgSrc": "/assets/pictures/unit_rus/lodya-fishing-boat.webp",
     "civ": ["RUS"],
     "class": "default",
     "costs": {
@@ -230,7 +230,7 @@
   {
     "title": "Fishing Boat",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/fishing-boat.png",
+    "imgSrc": "/assets/pictures/unit_ship/fishing-boat.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -270,7 +270,7 @@
   {
     "title": "Trader",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/trader.png",
+    "imgSrc": "/assets/pictures/unit_worker/trader.webp",
     "civ": [
       "AYY",
       "BYZ",
@@ -308,7 +308,7 @@
   {
     "title": "Trade Caravan",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_abbasid/trade-caravan-1.png",
+    "imgSrc": "/assets/pictures/unit_abbasid/trade-caravan-1.webp",
     "civ": [
       "ABB"
     ],
@@ -320,7 +320,7 @@
   {
     "title": "Venetian Trader",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_worker/trader.png",
+    "imgSrc": "/assets/pictures/unit_worker/trader.webp",
     "civ": [
       "KTE"
     ],
@@ -344,7 +344,7 @@
   {
     "title": "Imperial Official",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_chinese/imperial-official.png",
+    "imgSrc": "/assets/pictures/unit_chinese/imperial-official.webp",
     "civ": ["CHI", "ZXL"],
     "class": "default",
     "costs": {
@@ -366,7 +366,7 @@
   {
     "title": "Trade Ship",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/trade-ship.png",
+    "imgSrc": "/assets/pictures/unit_ship/trade-ship.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -406,7 +406,7 @@
   {
     "title": "Lodya Trade Ship",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_rus/lodya-trade-ship.png",
+    "imgSrc": "/assets/pictures/unit_rus/lodya-trade-ship.webp",
     "civ": ["RUS"],
     "class": "default",
     "costs": {

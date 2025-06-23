@@ -5,7 +5,7 @@ export const general = [
   {
     title: "Dark Age",
     age: "1",
-    imgSrc: "/assets/pictures/age/age_1.png",
+    imgSrc: "/assets/pictures/age/age_1.webp",
     civ: civs,
     class: "none",
     shorthand: "age1",
@@ -13,7 +13,7 @@ export const general = [
   {
     title: "Feudal Age",
     age: "2",
-    imgSrc: "/assets/pictures/age/age_2.png",
+    imgSrc: "/assets/pictures/age/age_2.webp",
     civ: civs,
     class: "none",
     shorthand: "age2",
@@ -21,7 +21,7 @@ export const general = [
   {
     title: "Castle Age",
     age: "3",
-    imgSrc: "/assets/pictures/age/age_3.png",
+    imgSrc: "/assets/pictures/age/age_3.webp",
     civ: civs,
     class: "none",
     shorthand: "age3",
@@ -29,7 +29,7 @@ export const general = [
   {
     title: "Imperial Age",
     age: "4",
-    imgSrc: "/assets/pictures/age/age_4.png",
+    imgSrc: "/assets/pictures/age/age_4.webp",
     civ: civs,
     class: "none",
     shorthand: "age4",
@@ -37,49 +37,49 @@ export const general = [
   {
     title: "Golden Age Tier 1",
     age: "1",
-    imgSrc: "/assets/pictures/age/goldenagetier1.png",
+    imgSrc: "/assets/pictures/age/goldenagetier1.webp",
     civ: ["ABB", "AYY"],
     class: "none",
   },
   {
     title: "Golden Age Tier 2",
     age: "4",
-    imgSrc: "/assets/pictures/age/goldenagetier2.png",
+    imgSrc: "/assets/pictures/age/goldenagetier2.webp",
     civ: ["ABB", "AYY"],
     class: "none",
   },
   {
     title: "Golden Age Tier 3",
     age: "1",
-    imgSrc: "/assets/pictures/age/goldenagetier3.png",
+    imgSrc: "/assets/pictures/age/goldenagetier3.webp",
     civ: ["ABB", "AYY"],
     class: "none",
   },
   {
     title: "Golden Age Tier 4",
     age: "1",
-    imgSrc: "/assets/pictures/age/goldenagetier4.png",
+    imgSrc: "/assets/pictures/age/goldenagetier4.webp",
     civ: ["AYY"],
     class: "none",
   },
   {
     title: "Golden Age Tier 5",
     age: "1",
-    imgSrc: "/assets/pictures/age/goldenagetier5.png",
+    imgSrc: "/assets/pictures/age/goldenagetier5.webp",
     civ: ["AYY"],
     class: "none",
   },
   {
     title: "Vizier Point",
     age: "1",
-    imgSrc: "/assets/pictures/age/vizier_point.png",
+    imgSrc: "/assets/pictures/age/vizier_point.webp",
     civ: ["OTT"],
     class: "none",
   },
   {
     title: "Build",
     age: "1",
-    imgSrc: "/assets/pictures/abilities/repair.png",
+    imgSrc: "/assets/pictures/abilities/repair.webp",
     civ: civs,
     class: "none",
     shorthand: "build",
@@ -87,14 +87,14 @@ export const general = [
   {
     title: "Attack",
     age: "1",
-    imgSrc: "/assets/pictures/abilities/attack-move.png",
+    imgSrc: "/assets/pictures/abilities/attack-move.webp",
     civ: civs,
     class: "none",
   },
   {
     title: "Abbasid Dynasty",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/abb.png",
+    imgSrc: "/assets/pictures/civilization_flag/abb.webp",
     civ: civs,
     class: "none",
     shorthand: "abb",
@@ -104,7 +104,7 @@ export const general = [
   {
     title: "Ayyubids",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/ayy.png",
+    imgSrc: "/assets/pictures/civilization_flag/ayy.webp",
     civ: civs,
     class: "none",
     shorthand: "ayy",
@@ -114,7 +114,7 @@ export const general = [
   {
     title: "Byzantines",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/byz.png",
+    imgSrc: "/assets/pictures/civilization_flag/byz.webp",
     civ: civs,
     class: "none",
     shorthand: "byz",
@@ -124,7 +124,7 @@ export const general = [
   {
     title: "China",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/chi.png",
+    imgSrc: "/assets/pictures/civilization_flag/chi.webp",
     civ: civs,
     class: "none",
     shorthand: "chi",
@@ -134,7 +134,7 @@ export const general = [
   {
     title: "Delhi Sultanate",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/del.png",
+    imgSrc: "/assets/pictures/civilization_flag/del.webp",
     civ: civs,
     class: "none",
     shorthand: "del",
@@ -144,7 +144,7 @@ export const general = [
   {
     title: "English",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/eng.png",
+    imgSrc: "/assets/pictures/civilization_flag/eng.webp",
     civ: civs,
     class: "none",
     shorthand: "eng",
@@ -154,7 +154,7 @@ export const general = [
   {
     title: "French",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/fre.png",
+    imgSrc: "/assets/pictures/civilization_flag/fre.webp",
     civ: civs,
     class: "none",
     shorthand: "fre",
@@ -164,7 +164,7 @@ export const general = [
   {
     title: "Holy Roman Empire",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/hre.png",
+    imgSrc: "/assets/pictures/civilization_flag/hre.webp",
     civ: civs,
     class: "none",
     shorthand: "hre",
@@ -174,7 +174,7 @@ export const general = [
   {
     title: "House of Lancaster",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/hol.png",
+    imgSrc: "/assets/pictures/civilization_flag/hol.webp",
     civ: civs,
     class: "none",
     shorthand: "hol",
@@ -184,7 +184,7 @@ export const general = [
   {
     title: "Japanese",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/jap.png",
+    imgSrc: "/assets/pictures/civilization_flag/jap.webp",
     civ: civs,
     class: "none",
     shorthand: "jap",
@@ -194,7 +194,7 @@ export const general = [
   {
     title: "Jeanne d'Arc",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/jda.png",
+    imgSrc: "/assets/pictures/civilization_flag/jda.webp",
     civ: civs,
     class: "none",
     shorthand: "jda",
@@ -204,7 +204,7 @@ export const general = [
   {
     title: "Knights Templar",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/kte.png",
+    imgSrc: "/assets/pictures/civilization_flag/kte.webp",
     civ: civs,
     class: "none",
     shorthand: "kte",
@@ -214,7 +214,7 @@ export const general = [
   {
     title: "Malians",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/mal.png",
+    imgSrc: "/assets/pictures/civilization_flag/mal.webp",
     civ: civs,
     class: "none",
     shorthand: "mal",
@@ -224,7 +224,7 @@ export const general = [
   {
     title: "Mongols",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/mon.png",
+    imgSrc: "/assets/pictures/civilization_flag/mon.webp",
     civ: civs,
     class: "none",
     shorthand: "mon",
@@ -234,7 +234,7 @@ export const general = [
   {
     title: "Order of the Dragon",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/dra.png",
+    imgSrc: "/assets/pictures/civilization_flag/dra.webp",
     civ: civs,
     class: "none",
     shorthand: "dra",
@@ -244,7 +244,7 @@ export const general = [
   {
     title: "Ottomans",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/ott.png",
+    imgSrc: "/assets/pictures/civilization_flag/ott.webp",
     civ: civs,
     class: "none",
     shorthand: "ott",
@@ -254,7 +254,7 @@ export const general = [
   {
     title: "Rus",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/rus.png",
+    imgSrc: "/assets/pictures/civilization_flag/rus.webp",
     civ: civs,
     class: "none",
     shorthand: "rus",
@@ -264,7 +264,7 @@ export const general = [
   {
     title: "Zhu Xi's Legacy",
     age: "1",
-    imgSrc: "/assets/pictures/civilization_flag/zxl.png",
+    imgSrc: "/assets/pictures/civilization_flag/zxl.webp",
     civ: civs,
     class: "none",
     shorthand: "zxl",

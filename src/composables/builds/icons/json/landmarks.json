@@ -2,7 +2,7 @@
   {
     "title": "Abbey of Kings",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_english/abbey-of-kings.png",
+    "imgSrc": "/assets/pictures/landmark_english/abbey-of-kings.webp",
     "civ": ["ENG", "HOL"],
     "class": "landmark",
     "description": "Heals all nearby friendly units that are out of combat by +6 every 1 seconds. May also Crown a King, a powerful cavalry leader with a healing aura. Queues production of a free King upon completion.",
@@ -24,7 +24,7 @@
   {
     "title": "Council Hall",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_english/council-hall.png",
+    "imgSrc": "/assets/pictures/landmark_english/council-hall.webp",
     "civ": ["ENG"],
     "class": "landmark",
     "description": "Acts as an Archery Range with all units and technologies. Works +100% faster.",
@@ -46,7 +46,7 @@
   {
     "title": "King's Palace",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_english/kings-palace.png",
+    "imgSrc": "/assets/pictures/landmark_english/kings-palace.webp",
     "civ": ["ENG"],
     "class": "landmark",
     "description": "Acts as a Town Center with all the behaviors, technology, units, and bonuses.",
@@ -68,7 +68,7 @@
   {
     "title": "The White Tower",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_english/the-white-tower.png",
+    "imgSrc": "/assets/pictures/landmark_english/the-white-tower.webp",
     "civ": ["ENG", "HOL"],
     "class": "landmark",
     "description": "Acts as a Keep with all the behaviors, technologies, and bonuses. Works 100% faster.",
@@ -90,7 +90,7 @@
   {
     "title": "Wynguard Palace",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_english/wynguard-palace.png",
+    "imgSrc": "/assets/pictures/landmark_english/wynguard-palace.webp",
     "civ": ["ENG", "HOL"],
     "class": "landmark",
     "description": "Allows production of 4 battalions: Wynguard Army, Wynguard Rangers, Wynguard Raiders, and Wynguard Footmen.",
@@ -112,7 +112,7 @@
   {
     "title": "Berkshire Palace",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_english/berkshire-palace.png",
+    "imgSrc": "/assets/pictures/landmark_english/berkshire-palace.webp",
     "civ": ["ENG", "HOL"],
     "class": "landmark",
     "description": "Acts as a Keep with increased health and powerful incendiary arrows. All weapons have 14.5 tiles of range.",
@@ -134,7 +134,7 @@
   {
     "title": "Lancaster Castle",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_lancaster/lancaster_castle.png",
+    "imgSrc": "/assets/pictures/landmark_lancaster/lancaster_castle.webp",
     "civ": ["ENG", "HOL"],
     "class": "landmark",
     "description": "Defensive Landmark that can do a one-time muster of units from Manors in each Age.",
@@ -156,7 +156,7 @@
   {
     "title": "King's College",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_lancaster/kings_college.png",
+    "imgSrc": "/assets/pictures/landmark_lancaster/kings_college.webp",
     "civ": ["ENG", "HOL"],
     "class": "landmark",
     "id": "kings-college",
@@ -177,7 +177,7 @@
   {
     "title": "Fortress",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_templar/fortress.png",
+    "imgSrc": "/assets/pictures/landmark_templar/fortress.webp",
     "civ": ["KTE"],
     "class": "landmark",
     "id": "fortress",
@@ -198,7 +198,7 @@
   {
     "title": "Cathedral of St. Thomas",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_english/cathedral-of-st-thomas.png",
+    "imgSrc": "/assets/pictures/landmark_english/cathedral-of-st-thomas.webp",
     "civ": ["ENG", "HOL"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -220,7 +220,7 @@
   {
     "title": "Chamber of Commerce",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_french/chamber-of-commerce.png",
+    "imgSrc": "/assets/pictures/landmark_french/chamber-of-commerce.webp",
     "civ": ["FRE", "JDA"],
     "class": "landmark",
     "description": "Acts as a Market. Trains one free Trader for each economic technology researched.",
@@ -242,7 +242,7 @@
   {
     "title": "School of Cavalry",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_french/school-of-cavalry.png",
+    "imgSrc": "/assets/pictures/landmark_french/school-of-cavalry.webp",
     "civ": ["FRE", "JDA"],
     "class": "landmark",
     "description": "Acts as a Stable. All of your stables produce units +20% faster.",
@@ -264,7 +264,7 @@
   {
     "title": "Guild Hall",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_french/guild-hall.png",
+    "imgSrc": "/assets/pictures/landmark_french/guild-hall.webp",
     "civ": ["FRE", "JDA"],
     "class": "landmark",
     "description": "Generates and stores resources over time, the more resources stored the faster they are generated. Select between Food, Wood, Stone, or Gold. Generates stone at half the rate.",
@@ -286,7 +286,7 @@
   {
     "title": "Royal Institute",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_french/royal-institute.png",
+    "imgSrc": "/assets/pictures/landmark_french/royal-institute.webp",
     "civ": ["FRE", "JDA"],
     "class": "landmark",
     "description": "Houses all technologies unique to the French. Research is -30% cheaper here and ignores Age requirements.",
@@ -308,7 +308,7 @@
   {
     "title": "College of Artillery",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_french/college-of-artillery.png",
+    "imgSrc": "/assets/pictures/landmark_french/college-of-artillery.webp",
     "civ": ["FRE", "JDA"],
     "class": "landmark",
     "description": "Produces the Royal Artillery versions of the Cannon, Ribauldequin, and Culverin, which do +30% more damage.\nUnlocks the Artillery ability for Cannons.\nContains Siege and Gunpowder Technologies, trains units and researches technologies 50% faster.",
@@ -330,7 +330,7 @@
   {
     "title": "Red Palace",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_french/red-palace.png",
+    "imgSrc": "/assets/pictures/landmark_french/red-palace.webp",
     "civ": ["FRE", "JDA"],
     "class": "landmark",
     "description": "Acts as a Keep. Features high-damage arbalest emplacements. Each garrisoned unit adds an additional arbalest.\nActivates an Arbalest emplacement on all Keeps and Town Centers.",
@@ -352,7 +352,7 @@
   {
     "title": "Notre Dame",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_french/notre-dame.png",
+    "imgSrc": "/assets/pictures/landmark_french/notre-dame.webp",
     "civ": ["FRE", "JDA", "KTE"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -374,7 +374,7 @@
   {
     "title": "Aachen Chapel",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_hre/aachen-chapel.png",
+    "imgSrc": "/assets/pictures/landmark_hre/aachen-chapel.webp",
     "civ": ["DRA", "HRE"],
     "class": "landmark",
     "description": "Inspires units in a large radius so long as a Prelate is garrisoned.\nActs as a drop-off point for all resource types.",
@@ -396,7 +396,7 @@
   {
     "title": "Meinwerk Palace",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_hre/meinwerk-palace.png",
+    "imgSrc": "/assets/pictures/landmark_hre/meinwerk-palace.webp",
     "civ": ["DRA", "HRE"],
     "class": "landmark",
     "description": "Acts like a Blacksmith. Technology researched here costs -50% and researches 50% faster. Contains Technologies unique to this Landmark.",
@@ -418,7 +418,7 @@
   {
     "title": "Burgrave Palace",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_hre/burgrave-palace.png",
+    "imgSrc": "/assets/pictures/landmark_hre/burgrave-palace.webp",
     "civ": ["DRA", "HRE"],
     "class": "landmark",
     "description": "Acts as a Barracks that produces 400% faster.",
@@ -440,7 +440,7 @@
   {
     "title": "Regnitz Cathedral",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_hre/regnitz-cathedral.png",
+    "imgSrc": "/assets/pictures/landmark_hre/regnitz-cathedral.webp",
     "civ": ["DRA", "HRE"],
     "class": "landmark",
     "description": "Acts as a Monastery. All Relics generate +100% gold while garrisoned.",
@@ -462,7 +462,7 @@
   {
     "title": "Elzbach Palace",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_hre/elzbach-palace.png",
+    "imgSrc": "/assets/pictures/landmark_hre/elzbach-palace.webp",
     "civ": ["DRA", "HRE"],
     "class": "landmark",
     "description": "Acts as a Keep with +50% health. All buildings within influence take -33% less damage.",
@@ -484,7 +484,7 @@
   {
     "title": "Palace of Swabia",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_hre/palace-of-swabia.png",
+    "imgSrc": "/assets/pictures/landmark_hre/palace-of-swabia.webp",
     "civ": ["DRA", "HRE"],
     "class": "landmark",
     "description": "Acts as a Town Center. Produces Villagers +200% faster and at -66% cost.\nCost to build this Landmark is reduced by -20%.",
@@ -506,7 +506,7 @@
   {
     "title": "Great Palace of Flensburg",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_hre/great-palace-of-flensburg.png",
+    "imgSrc": "/assets/pictures/landmark_hre/great-palace-of-flensburg.webp",
     "civ": ["DRA", "HRE"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -528,7 +528,7 @@
   {
     "title": "Saharan Trade Network",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_malians/saharan-trade-network-1.png",
+    "imgSrc": "/assets/pictures/landmark_malians/saharan-trade-network-1.webp",
     "civ": ["MAL"],
     "class": "landmark",
     "description": "Acts as a Toll Outpost that comes with Defensive Arrowslits technology researched.\nAll Traders and Trade Ships taxed will generate Food equal to the taxed Gold at this Landmark. All other Toll Outposts will generate 50% of taxed Gold as Food.",
@@ -550,7 +550,7 @@
   {
     "title": "Mansa Quarry",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_malians/mansa-quarry-2.png",
+    "imgSrc": "/assets/pictures/landmark_malians/mansa-quarry-2.webp",
     "civ": ["MAL"],
     "class": "landmark",
     "description": "Generates 75 Gold per minute. Can be toggled to generate Stone instead.",
@@ -572,7 +572,7 @@
   {
     "title": "Grand Fulani Corral",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_malians/grand-fulani-corral-2.png",
+    "imgSrc": "/assets/pictures/landmark_malians/grand-fulani-corral-2.webp",
     "civ": ["MAL"],
     "class": "landmark",
     "description": "Nearby cattle provide 20 Food per minute.",
@@ -594,7 +594,7 @@
   {
     "title": "Farimba Garrison",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_malians/farimba-garrison-2.png",
+    "imgSrc": "/assets/pictures/landmark_malians/farimba-garrison-2.webp",
     "civ": ["MAL"],
     "class": "landmark",
     "description": "Produces Barracks and Archery Range units 5 at a time. Unit cost is converted to Gold and reduced by -10%.",
@@ -616,7 +616,7 @@
   {
     "title": "Fort of the Huntress",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_malians/fort-of-the-huntress-3.png",
+    "imgSrc": "/assets/pictures/landmark_malians/fort-of-the-huntress-3.webp",
     "civ": ["MAL"],
     "class": "landmark",
     "description": "Acts as a Keep. Infantry units nearby the Landmark enter Stealth for 30 seconds.\nMusofadi Warriors and Musofadi Gunners gain First Strike, dealing more damage when breaking Stealth with an attack.",
@@ -638,7 +638,7 @@
   {
     "title": "Griot Bara",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_malians/griot-bara-3.png",
+    "imgSrc": "/assets/pictures/landmark_malians/griot-bara-3.webp",
     "civ": ["MAL"],
     "class": "landmark",
     "description": "Begin a festival for 300 Gold, providing global enhancements to Food gather rates, military production speeds, or damage of torches and siege attacks. One festival may be active at a time.",
@@ -660,7 +660,7 @@
   {
     "title": "Great Mosque",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_malians/great-mosque-4.png",
+    "imgSrc": "/assets/pictures/landmark_malians/great-mosque-4.webp",
     "civ": ["MAL"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -682,7 +682,7 @@
   {
     "title": "Deer Stones",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_mongols/deer-stones.png",
+    "imgSrc": "/assets/pictures/landmark_mongols/deer-stones.webp",
     "civ": ["MON"],
     "class": "landmark",
     "description": "Deer Stones instantly researches the Yam Network technology, increasing move speed by +15% to all units when within range of Outposts and the Landmark.\nDoes not apply to siege engines.",
@@ -704,7 +704,7 @@
   {
     "title": "The Silver Tree",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_mongols/the-silver-tree.png",
+    "imgSrc": "/assets/pictures/landmark_mongols/the-silver-tree.webp",
     "civ": ["MON"],
     "class": "landmark",
     "description": "Acts as a Market. Production speed of Traders increased by +40% with a -40% reduced Gold cost.",
@@ -726,7 +726,7 @@
   {
     "title": "Kurultai",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_mongols/kurultai.png",
+    "imgSrc": "/assets/pictures/landmark_mongols/kurultai.webp",
     "civ": ["MON"],
     "class": "landmark",
     "description": "Nearby units within its aura heal +1 health every 1 second and gain an additional +20% damage.",
@@ -748,7 +748,7 @@
   {
     "title": "Steppe Redoubt",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_mongols/steppe-redoubt.png",
+    "imgSrc": "/assets/pictures/landmark_mongols/steppe-redoubt.webp",
     "civ": ["MON"],
     "class": "landmark",
     "description": "Acts as a Ger. Gold dropped off at this Landmark is increased by +50%.",
@@ -770,7 +770,7 @@
   {
     "title": "Khaganate Palace",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_mongols/khaganate-palace.png",
+    "imgSrc": "/assets/pictures/landmark_mongols/khaganate-palace.webp",
     "civ": ["MON"],
     "class": "landmark",
     "description": "Automatically spawns diverse armies from across the Mongol Empire and its dominions.",
@@ -792,7 +792,7 @@
   {
     "title": "The White Stupa",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_mongols/the-white-stupa.png",
+    "imgSrc": "/assets/pictures/landmark_mongols/the-white-stupa.webp",
     "civ": ["MON"],
     "class": "landmark",
     "description": "Acts as an Ovoo and produces 240 Stone per minute without a Stone Outcropping.",
@@ -814,7 +814,7 @@
   {
     "title": "Monument of the Great Khan",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_mongols/monument-of-the-great-khan.png",
+    "imgSrc": "/assets/pictures/landmark_mongols/monument-of-the-great-khan.webp",
     "civ": ["MON"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -836,7 +836,7 @@
   {
     "title": "Twin Minaret Medrese",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_ottomans/twin-minaret-medrese-1.png",
+    "imgSrc": "/assets/pictures/landmark_ottomans/twin-minaret-medrese-1.webp",
     "civ": ["OTT"],
     "class": "landmark",
     "description": "Acts as a Mill. Grows 4 Berry Bushes which can be harvested +50% faster. Berry Bushes are regrown after 120 seconds if depleted.",
@@ -858,7 +858,7 @@
   {
     "title": "Sultanhani Trade Network",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_ottomans/sultanhani-trade-network-1.png",
+    "imgSrc": "/assets/pictures/landmark_ottomans/sultanhani-trade-network-1.webp",
     "civ": ["OTT"],
     "class": "landmark",
     "description": "Acts as a Market. Comes with 3 Traders garrisoned and generates +24 Gold per minute for each one. Up to 10 Traders can be garrisoned.",
@@ -880,7 +880,7 @@
   {
     "title": "Istanbul Imperial Palace",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_ottomans/istanbul-imperial-palace-2.png",
+    "imgSrc": "/assets/pictures/landmark_ottomans/istanbul-imperial-palace-2.webp",
     "civ": ["OTT"],
     "class": "landmark",
     "description": "Double the Imperial Council experience around the Landmark and increase the Vizier Point limit by +2.",
@@ -902,7 +902,7 @@
   {
     "title": "Mehmed Imperial Armory",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_ottomans/mehmed-imperial-armory-2.png",
+    "imgSrc": "/assets/pictures/landmark_ottomans/mehmed-imperial-armory-2.webp",
     "civ": ["OTT"],
     "class": "landmark",
     "description": "Produces siege engines for free but with a longer train time.",
@@ -924,7 +924,7 @@
   {
     "title": "Istanbul Observatory",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_ottomans/istanbul-observatory-3.png",
+    "imgSrc": "/assets/pictures/landmark_ottomans/istanbul-observatory-3.webp",
     "civ": ["OTT"],
     "class": "landmark",
     "description": "Acts as a University. Improves the influence provided by the University and Blacksmith to +100%.",
@@ -946,7 +946,7 @@
   {
     "title": "Sea Gate Castle",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_ottomans/sea-gate-castle-3.png",
+    "imgSrc": "/assets/pictures/landmark_ottomans/sea-gate-castle-3.webp",
     "civ": ["OTT"],
     "class": "landmark",
     "description": "Acts as a Keep. All Keeps gain an aura that increases Trader and Trade Ship movement speed by +30% and armor by +8.",
@@ -968,7 +968,7 @@
   {
     "title": "Azure Mosque",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_ottomans/azure-mosque-4.png",
+    "imgSrc": "/assets/pictures/landmark_ottomans/azure-mosque-4.webp",
     "civ": ["OTT"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -990,7 +990,7 @@
   {
     "title": "Kremlin",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_rus/kremlin.png",
+    "imgSrc": "/assets/pictures/landmark_rus/kremlin.webp",
     "civ": ["RUS"],
     "class": "landmark",
     "description": "Acts as a Wooden Fortress that comes with Arrowslits, Castle Turret, and Castle Watch technologies.\nCan Levy Militia every 80 seconds to the Capital Town Center.",
@@ -1012,7 +1012,7 @@
   {
     "title": "The Golden Gate",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_rus/the-golden-gate.png",
+    "imgSrc": "/assets/pictures/landmark_rus/the-golden-gate.webp",
     "civ": ["RUS"],
     "class": "landmark",
     "description": "Allows the exchange of resources at a favorable rate. Generates an additional exchange every minute.",
@@ -1034,7 +1034,7 @@
   {
     "title": "Abbey of the Trinity",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_rus/abbey-of-the-trinity.png",
+    "imgSrc": "/assets/pictures/landmark_rus/abbey-of-the-trinity.webp",
     "civ": ["RUS"],
     "class": "landmark",
     "description": "Acts as a Monastery. Can produce Warrior Monks at half the cost and contains unique religious technologies.",
@@ -1056,7 +1056,7 @@
   {
     "title": "High Trade House",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_rus/high-trade-house.png",
+    "imgSrc": "/assets/pictures/landmark_rus/high-trade-house.webp",
     "civ": ["RUS"],
     "class": "landmark",
     "description": "Generates Gold like a Hunting Cabin with the value increased by +400%, without claiming any trees. Spawns a Huntable Deer every 60 seconds.\nVillagers can drop off Food at this building.",
@@ -1078,7 +1078,7 @@
   {
     "title": "High Armory",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_rus/high-armory.png",
+    "imgSrc": "/assets/pictures/landmark_rus/high-armory.webp",
     "civ": ["RUS"],
     "class": "landmark",
     "description": "Decrease the cost of siege engines in nearby Siege Workshops by -20%. Contains unique siege engine technologies.",
@@ -1100,7 +1100,7 @@
   {
     "title": "Spasskaya Tower",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_rus/spasskaya-tower.png",
+    "imgSrc": "/assets/pictures/landmark_rus/spasskaya-tower.webp",
     "civ": ["RUS"],
     "class": "landmark",
     "description": "Acts as a Keep with all weapon emplacements and increased health.\nUnlocks the building of Stone Walls, Stone Gates, and Stone Wall Towers.",
@@ -1122,7 +1122,7 @@
   {
     "title": "Cathedral of the Tsar",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_rus/cathedral-of-the-tsar.png",
+    "imgSrc": "/assets/pictures/landmark_rus/cathedral-of-the-tsar.webp",
     "civ": ["RUS"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -1144,7 +1144,7 @@
   {
     "title": "House of Wisdom",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_abbasid/house-of-wisdom.png",
+    "imgSrc": "/assets/pictures/landmark_abbasid/house-of-wisdom.webp",
     "civ": ["ABB", "AYY"],
     "class": "landmark",
     "description": "Contains civilization technology for the Abbasid Dynasty.\nAbbasids advance in Ages through the House of Wisdom. Construct wings to advance to the next Age and gain additional technology.",
@@ -1166,7 +1166,7 @@
   {
     "title": "Culture Wing",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_abbasid/culture-wing.png",
+    "imgSrc": "/assets/pictures/landmark_abbasid/culture-wing.webp",
     "civ": ["ABB", "AYY"],
     "class": "landmark",
     "description": "The following cultural technologies become available:\n• Preservation of Knowledge (Age II)\n• Medical Centers (Age III)\n• Proselytization (Age IV)",
@@ -1188,7 +1188,7 @@
   {
     "title": "Economic Wing",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_abbasid/economic-wing.png",
+    "imgSrc": "/assets/pictures/landmark_abbasid/economic-wing.webp",
     "civ": ["ABB", "AYY"],
     "class": "landmark",
     "description": "Constructs the Economic Wing.\nThe following economic technologies become available:\n• Fertile Crescent (Age II)\n• Agriculture (Age III)\n• Improved Processing (Age IV)",
@@ -1210,7 +1210,7 @@
   {
     "title": "Military Wing",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_abbasid/military-wing.png",
+    "imgSrc": "/assets/pictures/landmark_abbasid/military-wing.webp",
     "civ": ["ABB", "AYY"],
     "class": "landmark",
     "description": "Constructs the Military Wing. Upon completion, grants 2 Spearmen & 2 Archers (Age II), 2 Camel Riders (Age III), or 3 Handcannoneers (Age IV).\nUnlocks:\n•Boot Camp (Age II)\n•Composite Bows (Age III)\n•Camel Support (Age IV)",
@@ -1232,7 +1232,7 @@
   {
     "title": "Trade Wing",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_abbasid/trade-wing.png",
+    "imgSrc": "/assets/pictures/landmark_abbasid/trade-wing.webp",
     "civ": ["ABB", "AYY"],
     "class": "landmark",
     "description": "Constructs the Trade Wing. Acts as a home market and grants 3, 4, or 5 Traders upon completion (based on Age).\nUnlocks:\n•Grand Bazaar (Age II)\n•Armored Caravans (Age III)\n•Spice Roads (Age IV)",
@@ -1254,7 +1254,7 @@
   {
     "title": "Meditation Gardens",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_zhuxi/meditation-gardens-1.png",
+    "imgSrc": "/assets/pictures/landmark_zhuxi/meditation-gardens-1.webp",
     "civ": ["ZXL"],
     "class": "landmark",
     "description": "Generates resources depending on the type of resources nearby. \nThe more resources are nearby, the more resources are generated. Enemy units nearby disturb the peace and reduce resources generated.",
@@ -1276,7 +1276,7 @@
   {
     "title": "Jiangnan Tower",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_zhuxi/jiangnan-tower-2.png",
+    "imgSrc": "/assets/pictures/landmark_zhuxi/jiangnan-tower-2.webp",
     "civ": ["ZXL"],
     "class": "landmark",
     "description": "Acts as a tax drop-off for Imperial Officials.\nReceive a free unit at the tower whenever a Barracks, Archery Range, or Stable is completed. Receive a free Villager whenever a Town Center is completed.",
@@ -1298,7 +1298,7 @@
   {
     "title": "Mount Lu Academy",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_zhuxi/mount-lu-academy-1.png",
+    "imgSrc": "/assets/pictures/landmark_zhuxi/mount-lu-academy-1.webp",
     "civ": ["ZXL"],
     "class": "landmark",
     "description": "Imperial Officials collect tax twice as often and also collect 20% of taxes as Food.\nContains unique upgrades that greatly improve the Imperial Official unit.",
@@ -1320,7 +1320,7 @@
   {
     "title": "Shaolin Monastery",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_zhuxi/shaolin-monastery-2.png",
+    "imgSrc": "/assets/pictures/landmark_zhuxi/shaolin-monastery-2.webp",
     "civ": ["ZXL"],
     "class": "landmark",
     "description": "Unique Monastery capable of producing Shaolin Monks. From the Yuan Dynasty onwards, Shaolin Monks can also be produced from Pagodas.",
@@ -1342,7 +1342,7 @@
   {
     "title": "Zhu Xi's Library",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_zhuxi/zhu-xis-library-3.png",
+    "imgSrc": "/assets/pictures/landmark_zhuxi/zhu-xis-library-3.webp",
     "civ": ["ZXL"],
     "class": "landmark",
     "description": "Hosts a range of highly unique upgrades.\nCan unlock Yuan Raiders and Imperial Guards. Only 2 technologies can be researched.",
@@ -1364,7 +1364,7 @@
   {
     "title": "Temple of the Sun",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_zhuxi/temple-of-the-sun-3.png",
+    "imgSrc": "/assets/pictures/landmark_zhuxi/temple-of-the-sun-3.webp",
     "civ": ["ZXL"],
     "class": "landmark",
     "description": "Activate powerful abilities that improve speed, damage, range, or regeneration of specific units.",
@@ -1386,7 +1386,7 @@
   {
     "title": "Enclave of the Emperor",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_chinese/enclave-of-the-emperor.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/enclave-of-the-emperor.webp",
     "civ": ["ZXL"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -1408,7 +1408,7 @@
   {
     "title": "Imperial Academy",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_chinese/imperial-academy.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/imperial-academy.webp",
     "civ": ["CHI"],
     "class": "landmark",
     "description": "Nearby buildings generate 100% more Gold from taxes. Imperial Officials produced here cost 30% less resources and can drop off taxes at this building.",
@@ -1430,7 +1430,7 @@
   {
     "title": "Barbican of the Sun",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_chinese/barbican-of-the-sun.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/barbican-of-the-sun.webp",
     "civ": ["CHI"],
     "class": "landmark",
     "description": "Fires a long range hand cannon and adds arrowslits while garrisoned. Can be upgraded with weaponry and offers vision into Stealth Forests. \nImperial Officials can drop off taxes at this building.",
@@ -1452,7 +1452,7 @@
   {
     "title": "Astronomical Clocktower",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_chinese/astronomical-clocktower.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/astronomical-clocktower.webp",
     "civ": ["CHI"],
     "class": "landmark",
     "description": "Acts as a Siege Workshop and produces siege engines with +50% health.",
@@ -1474,7 +1474,7 @@
   {
     "title": "Imperial Palace",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_chinese/imperial-palace.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/imperial-palace.webp",
     "civ": ["CHI"],
     "class": "landmark",
     "description": "A spy Landmark with 28 tile sight radius and the Imperial Spies ability. Activate to view location of enemy workers for 10 seconds.\nImperial Officials can drop off taxes at this building.",
@@ -1496,7 +1496,7 @@
   {
     "title": "Great Wall Gatehouse",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_chinese/great-wall-gatehouse.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/great-wall-gatehouse.webp",
     "civ": ["CHI"],
     "class": "landmark",
     "description": "Must be built over Stone Walls.\nComes with a Nest of Bees emplacement and provides +25% ranged damage to all units on walls.",
@@ -1518,7 +1518,7 @@
   {
     "title": "Spirit Way",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_chinese/spirit-way.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/spirit-way.webp",
     "civ": ["CHI"],
     "class": "landmark",
     "description": "Dynasty technology can be researched here for -50% cost and +150% research speed. When a dynasty unit is killed, nearby units receive +20% attack speed and +20 health over 10 seconds.\nImperial Officials can drop off taxes at this building.",
@@ -1540,7 +1540,7 @@
   {
     "title": "Enclave of the Emperor",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_chinese/enclave-of-the-emperor.png",
+    "imgSrc": "/assets/pictures/landmark_chinese/enclave-of-the-emperor.webp",
     "civ": ["CHI"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -1562,7 +1562,7 @@
   {
     "title": "Dome of the Faith",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_delhi/dome-of-the-faith.png",
+    "imgSrc": "/assets/pictures/landmark_delhi/dome-of-the-faith.webp",
     "civ": ["DEL"],
     "class": "landmark",
     "description": "Acts as a Mosque. Produce Scholars at a discount of 50 Gold.",
@@ -1584,7 +1584,7 @@
   {
     "title": "Tower of Victory",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_delhi/tower-of-victory.png",
+    "imgSrc": "/assets/pictures/landmark_delhi/tower-of-victory.webp",
     "civ": ["DEL"],
     "class": "landmark",
     "description": "Enables Tower of Victory, Mosques, and Madrasas to increase the attack speed of infantry by +20% when produced within their influence.",
@@ -1606,7 +1606,7 @@
   {
     "title": "Compound of the Defender",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_delhi/compound-of-the-defender.png",
+    "imgSrc": "/assets/pictures/landmark_delhi/compound-of-the-defender.webp",
     "civ": ["DEL"],
     "class": "landmark",
     "description": "Infantry units can build Stone Walls, Gates, and Towers. Reduces Stone cost of buildings and their emplacements by 20%.\nContains defensive technologies that ignore building and Imperial Age (IV) requirements.",
@@ -1628,7 +1628,7 @@
   {
     "title": "House of Learning",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_delhi/house-of-learning.png",
+    "imgSrc": "/assets/pictures/landmark_delhi/house-of-learning.webp",
     "civ": ["DEL"],
     "class": "landmark",
     "description": "Grants no immediate bonus other than advancing to the next Age, but contains many unique technologies.",
@@ -1650,7 +1650,7 @@
   {
     "title": "Hisar Academy",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_delhi/hisar-academy.png",
+    "imgSrc": "/assets/pictures/landmark_delhi/hisar-academy.webp",
     "civ": ["DEL"],
     "class": "landmark",
     "description": "Acts as Madrasa. Generates +12 Food per minute based on the number of technologies researched. Does not apply to emplacements.\nGrants 3 free Scholars upon completion.",
@@ -1672,7 +1672,7 @@
   {
     "title": "Palace of the Sultan",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_delhi/palace-of-the-sultan.png",
+    "imgSrc": "/assets/pictures/landmark_delhi/palace-of-the-sultan.webp",
     "civ": ["DEL"],
     "class": "landmark",
     "description": "Automatically produces Sultan's Elite Tower Elephants. Garrison up to 4 Scholars in the Landmark to increase production speed.",
@@ -1694,7 +1694,7 @@
   {
     "title": "Great Palace of Agra",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_delhi/great-palace-of-agra.png",
+    "imgSrc": "/assets/pictures/landmark_delhi/great-palace-of-agra.webp",
     "civ": ["DEL"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -1716,7 +1716,7 @@
   {
     "title": "Prayer Hall of Uqba",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_abbasid/prayer-hall-of-uqba.png",
+    "imgSrc": "/assets/pictures/landmark_abbasid/prayer-hall-of-uqba.webp",
     "civ": ["ABB", "AYY"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -1738,7 +1738,7 @@
   {
     "title": "Grand Winery",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_byzantines/grand-winery-1.png",
+    "imgSrc": "/assets/pictures/landmark_byzantines/grand-winery-1.webp",
     "civ": ["BYZ"],
     "class": "landmark",
     "description": "Acts as a Mill and Monastery. Nearby Villagers gather +60% Olive Oil from Berry Bushes and Olive Groves. Relics garrisoned generate Olive Oil instead of Gold.",
@@ -1760,7 +1760,7 @@
   {
     "title": "Imperial Hippodrome",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_byzantines/imperial-hippodrome-1.png",
+    "imgSrc": "/assets/pictures/landmark_byzantines/imperial-hippodrome-1.webp",
     "civ": ["BYZ"],
     "class": "landmark",
     "description": "Acts as a Stable. Contains the Triumph ability that can be activated with Supply Points to increase cavalry melee damage, move speed, and health regeneration. \nComes with 10 Supply Points and generates one every 30 seconds. Earn more points by killing enemy units.",
@@ -1782,7 +1782,7 @@
   {
     "title": "Cistern of the First Hill",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_byzantines/cistern-of-the-first-hill-2.png",
+    "imgSrc": "/assets/pictures/landmark_byzantines/cistern-of-the-first-hill-2.webp",
     "civ": ["BYZ"],
     "class": "landmark",
     "description": "Acts as a Cistern. Unlocks the Pilgrim Flask ability on non-siege military units, which can be activated to increase health regeneration by 25 per second for 6 seconds.\nFlasks refill every 30 seconds to a maximum of 20 active flasks.",
@@ -1804,7 +1804,7 @@
   {
     "title": "Golden Horn Tower",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_byzantines/golden-horn-tower-2.png",
+    "imgSrc": "/assets/pictures/landmark_byzantines/golden-horn-tower-2.webp",
     "civ": ["BYZ"],
     "class": "landmark",
     "description": "Periodically produces unlocked Mercenary Units for free.",
@@ -1826,7 +1826,7 @@
   {
     "title": "Palatine School",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_byzantines/palatine-school-3.png",
+    "imgSrc": "/assets/pictures/landmark_byzantines/palatine-school-3.webp",
     "civ": ["BYZ"],
     "class": "landmark",
     "description": "When training Limitanei, Varangian Guards, Cataphracts, or Cheirosiphons there is a 30% chance to also spawn one at this Landmark.",
@@ -1848,7 +1848,7 @@
   {
     "title": "Foreign Engineering Company",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_byzantines/foreign-engineering-company-3.png",
+    "imgSrc": "/assets/pictures/landmark_byzantines/foreign-engineering-company-3.webp",
     "civ": ["BYZ"],
     "class": "landmark",
     "description": "Allows production of Nest of Bees, Hui Hui Pao, and Royal Cannons with Olive Oil. Mercenaries receive various unique technologies from their original civilization.",
@@ -1870,7 +1870,7 @@
   {
     "title": "Cathedral of Divine Wisdom",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_byzantines/cathedral-of-divine-wisdom-4.png",
+    "imgSrc": "/assets/pictures/landmark_byzantines/cathedral-of-divine-wisdom-4.webp",
     "civ": ["BYZ"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
@@ -1892,7 +1892,7 @@
   {
     "title": "Koka Township",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_japanese/koka-township-1.png",
+    "imgSrc": "/assets/pictures/landmark_japanese/koka-township-1.webp",
     "civ": ["JAP"],
     "class": "landmark",
     "description": "Can produce Shinobi espionage units which specialize in scouting, sabotage, and assassination. Queues production of a free Shinobi upon completion.",
@@ -1914,7 +1914,7 @@
   {
     "title": "Kura Storehouse",
     "age": 1,
-    "imgSrc": "/assets/pictures/landmark_japanese/kura-storehouse-1.png",
+    "imgSrc": "/assets/pictures/landmark_japanese/kura-storehouse-1.webp",
     "civ": ["JAP"],
     "class": "landmark",
     "description": "Universal drop-off location that creates a Farm around the Landmark every 50 seconds — generates Wood instead when farmland becomes full.",
@@ -1936,7 +1936,7 @@
   {
     "title": "Floating Gate",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_japanese/floating-gate-2.png",
+    "imgSrc": "/assets/pictures/landmark_japanese/floating-gate-2.webp",
     "civ": ["JAP"],
     "class": "landmark",
     "description": "Produces a Shinto Priest carrying a Yorishiro every 2 minutes. The first priest spawns instantly. Deposit up to 4 Yorishiro in buildings to provide unique bonuses.\n \nUnlocks Shinto Shrines, which contains unique Shinto technologies and produces Shinto Priests.",
@@ -1958,7 +1958,7 @@
   {
     "title": "Temple of Equality",
     "age": 2,
-    "imgSrc": "/assets/pictures/landmark_japanese/temple-of-equality-2.png",
+    "imgSrc": "/assets/pictures/landmark_japanese/temple-of-equality-2.webp",
     "civ": ["JAP"],
     "class": "landmark",
     "description": "Produces Buddhist Monks and contains unique Buddhist technologies. Buddhist Monks provide support in combat by decreasing enemy damage with Sohei's Sutra and by enhancing damage of allies with Buddhist Conversion.\n \nAlso allows construction of 4 additional Buddhist Temples.",
@@ -1980,7 +1980,7 @@
   {
     "title": "Tanegashima Gunsmith",
     "age": 3,
-    "imgSrc": "/assets/pictures/landmark_japanese/tanegashima-gunsmith-3.png",
+    "imgSrc": "/assets/pictures/landmark_japanese/tanegashima-gunsmith-3.webp",
     "civ": ["JAP"],
     "class": "landmark",
     "description": "Stockpiles weapon supplies every 30 seconds that can be used to instantly produce gunpowder units - comes with 2 stockpiles. Produces Ozutsu, a unique heavy ranged gunpowder infantry with siege damage. Allows access to Ribauldequins.",
@@ -2002,7 +2002,7 @@
   {
     "title": "Castle of the Crow",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_japanese/castle-of-the-crow-4.png",
+    "imgSrc": "/assets/pictures/landmark_japanese/castle-of-the-crow-4.webp",
     "civ": ["JAP"],
     "class": "landmark",
     "description": "Acts as a Castle. Can periodically spawn Treasure Caravans from selected neutral Trading Posts to provide a large amount of Food, Wood, Gold, and some Stone when reaching the Castle of the Crow.",
@@ -2024,7 +2024,7 @@
   {
     "title": "Tokugawa Shrine",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_japanese/tokugawa-shrine-4.png",
+    "imgSrc": "/assets/pictures/landmark_japanese/tokugawa-shrine-4.webp",
     "civ": ["JAP"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",

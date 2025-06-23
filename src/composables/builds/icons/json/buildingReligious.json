@@ -2,7 +2,7 @@
   {
     "title": "Monastery",
     "age": 3,
-    "imgSrc": "/assets/pictures/building_religious/monastery.png",
+    "imgSrc": "/assets/pictures/building_religious/monastery.webp",
     "civ": ["BYZ", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "ZXL", "KTE", "HOL"],
     "class": "default",
     "shorthand": ["monastery", "eq"],
@@ -25,7 +25,7 @@
   {
     "title": "Mosque",
     "age": 3,
-    "imgSrc": "/assets/pictures/building_religious/mosque.png",
+    "imgSrc": "/assets/pictures/building_religious/mosque.webp",
     "civ": ["ABB", "AYY", "DEL", "MAL", "OTT"],
     "class": "default",
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
@@ -47,7 +47,7 @@
   {
     "title": "Prayer Tent",
     "age": 3,
-    "imgSrc": "/assets/pictures/building_mongols/prayer-tent.png",
+    "imgSrc": "/assets/pictures/building_mongols/prayer-tent.webp",
     "civ": ["MON"],
     "class": "default",
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
@@ -69,7 +69,7 @@
   {
     "title": "Buddhist Temple",
     "age": 3,
-    "imgSrc": "/assets/pictures/building_japanese/buddhist-temple-3.png",
+    "imgSrc": "/assets/pictures/building_japanese/buddhist-temple-3.webp",
     "civ": ["JAP"],
     "class": "default",
     "description": "Produces the Buddhist Monk and houses Unique Buddhist technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
@@ -91,7 +91,7 @@
   {
     "title": "Shinto Shrine",
     "age": 3,
-    "imgSrc": "/assets/pictures/building_japanese/shinto-shrine-3.png",
+    "imgSrc": "/assets/pictures/building_japanese/shinto-shrine-3.webp",
     "civ": ["JAP"],
     "class": "default",
     "description": "Produces the Shinto Priest and houses Unique Shinto technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
@@ -113,7 +113,7 @@
   {
     "title": "Pagoda",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_chinese/pagoda.png",
+    "imgSrc": "/assets/pictures/building_chinese/pagoda.webp",
     "civ": ["CHI", "ZXL"],
     "class": "default",
     "description": "Religious units can pick up Relics and place them in the Pagoda to generate +50 Gold, +25 Food, Wood, and Stone every 30 seconds.",

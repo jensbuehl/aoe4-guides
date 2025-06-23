@@ -2,7 +2,7 @@
   {
     "title": "Barracks",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_military/barracks.png",
+    "imgSrc": "/assets/pictures/building_military/barracks.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -44,7 +44,7 @@
   {
     "title": "Military School",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_ottomans/military-school-1.png",
+    "imgSrc": "/assets/pictures/building_ottomans/military-school-1.webp",
     "civ": ["OTT"],
     "class": "military",
     "description": "The Military School can be assigned to produce one type of unit continuously at no cost, however they are produced at a slower rate.",
@@ -66,7 +66,7 @@
   {
     "title": "Archery Range",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_military/archery-range.png",
+    "imgSrc": "/assets/pictures/building_military/archery-range.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -108,7 +108,7 @@
   {
     "title": "Stable",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_military/stable.png",
+    "imgSrc": "/assets/pictures/building_military/stable.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -150,7 +150,7 @@
   {
     "title": "Mercenary House",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_byzantines/mercenary-house-2.png",
+    "imgSrc": "/assets/pictures/building_byzantines/mercenary-house-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Produces Mercenary units for Olive Oil after purchasing a Mercenary Contract. One contract can be purchased.\nUnlock another set of Mercenaries with +50% production speed by placing this building near a Trade Post.",
@@ -172,7 +172,7 @@
   {
     "title": "Siege Workshop",
     "age": 3,
-    "imgSrc": "/assets/pictures/building_military/siege-workshop.png",
+    "imgSrc": "/assets/pictures/building_military/siege-workshop.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -214,7 +214,7 @@
   {
     "title": "Dock",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_military/dock.png",
+    "imgSrc": "/assets/pictures/building_military/dock.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -256,7 +256,7 @@
   {
     "title": "Keep",
     "age": 3,
-    "imgSrc": "/assets/pictures/building_defensive/keep.png",
+    "imgSrc": "/assets/pictures/building_defensive/keep.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -295,7 +295,7 @@
   {
     "title": "Castle",
     "age": 4,
-    "imgSrc": "/assets/pictures/building_japanese/castle-4.png",
+    "imgSrc": "/assets/pictures/building_japanese/castle-4.webp",
     "civ": ["JAP"],
     "class": "default",
     "description": "Heavy garrison and defensible position equipped with a powerful Rocket, which deals high damage to a single target. Can be upgraded with weaponry. Adds additional attacks while garrisoned.",
@@ -317,7 +317,7 @@
   {
     "title": "Aqueduct",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_byzantines/aqueduct-1.png",
+    "imgSrc": "/assets/pictures/building_byzantines/aqueduct-1.webp",
     "civ": ["BYZ"],
     "class": "default",
     "description": "Stone infrastructure to connect water between Cisterns to improve the Water Level of all connected Cisterns. Can be connected to Stone Walls.",
@@ -339,7 +339,7 @@
   {
     "title": "Outpost",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_defensive/outpost.png",
+    "imgSrc": "/assets/pictures/building_defensive/outpost.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -379,7 +379,7 @@
   {
     "title": "Toll Outpost",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_malians/toll-outpost-1.png",
+    "imgSrc": "/assets/pictures/building_malians/toll-outpost-1.webp",
     "civ": ["MAL"],
     "class": "default",
     "description": "Offers extensive line of sight and detects units stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned.\nPassing Traders and Trade Ships instantly provide an additional 8% of their carried Gold. Does not generate any bonus tax if a toll outpost is built within range of another one.",
@@ -401,7 +401,7 @@
   {
     "title": "Palisade Gate",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_defensive/palisade-gate.png",
+    "imgSrc": "/assets/pictures/building_defensive/palisade-gate.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -441,7 +441,7 @@
   {
     "title": "Palisade Wall",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_defensive/palisade-wall.png",
+    "imgSrc": "/assets/pictures/building_defensive/palisade-wall.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -481,7 +481,7 @@
   {
     "title": "Wooden Fortress",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_rus/wooden-fortress.png",
+    "imgSrc": "/assets/pictures/building_rus/wooden-fortress.webp",
     "civ": ["RUS"],
     "class": "default",
     "description": "Sturdy wooden stronghold with extensive line of sight that detects units stealth or disguises. Can be upgraded with weaponry. Attacks while garrisoned.",
@@ -503,7 +503,7 @@
   {
     "title": "Fortified Palisade Gate",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_rus/fortified-palisade-gate.png",
+    "imgSrc": "/assets/pictures/building_rus/fortified-palisade-gate.webp",
     "civ": ["RUS"],
     "class": "default",
     "description": "Relatively sturdy defensive gate. Must be built on a Fortified Palisade Wall segment.",
@@ -525,7 +525,7 @@
   {
     "title": "Fortified Palisade Wall",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_rus/fortified-palisade-wall.png",
+    "imgSrc": "/assets/pictures/building_rus/fortified-palisade-wall.webp",
     "civ": ["RUS"],
     "class": "default",
     "description": "Well-built defensive wall for quickly fortifying an area.\nInitially costs 21 Wood, with each additional section costing 7 Wood.",
@@ -547,7 +547,7 @@
   {
     "title": "Stone Wall",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_defensive/stone-wall.png",
+    "imgSrc": "/assets/pictures/building_defensive/stone-wall.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -588,7 +588,7 @@
   {
     "title": "Stone Wall Gate",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_defensive/stone-wall-gate.png",
+    "imgSrc": "/assets/pictures/building_defensive/stone-wall-gate.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -629,7 +629,7 @@
   {
     "title": "Stone Wall Tower",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_defensive/stone-wall-tower.png",
+    "imgSrc": "/assets/pictures/building_defensive/stone-wall-tower.webp",
     "civ": [
       "ABB",
       "AYY",

@@ -63,7 +63,7 @@ npm run build
 
 ## License
 
-With the exception of all visual assets (`/public/pictures/*.png`), the project is licensed under MIT.
+With the exception of all visual assets (`/public/pictures/*.webp`), the project is licensed under MIT.
 
 ## Disclaimer
 

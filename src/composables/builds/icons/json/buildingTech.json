@@ -2,7 +2,7 @@
   {
     "title": "Blacksmith",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_technology/blacksmith.png",
+    "imgSrc": "/assets/pictures/building_technology/blacksmith.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -43,7 +43,7 @@
   {
     "title": "Forge",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_japanese/forge-1.png",
+    "imgSrc": "/assets/pictures/building_japanese/forge-1.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Villagers can drop-off Stone and Gold at this building. Houses technologies to improve mining and military units.",
@@ -65,7 +65,7 @@
   {
     "title": "University",
     "age": 4,
-    "imgSrc": "/assets/pictures/building_technology/university.png",
+    "imgSrc": "/assets/pictures/building_technology/university.webp",
     "civ": [
       "BYZ",
       "CHI",
@@ -102,7 +102,7 @@
   {
     "title": "Madrasa",
     "age": 4,
-    "imgSrc": "/assets/pictures/building_technology/madrasa.png",
+    "imgSrc": "/assets/pictures/building_technology/madrasa.webp",
     "civ": ["ABB", "AYY", "DEL", "MAL"],
     "class": "tech",
     "description": "Houses advanced technology that benefit the civilization.",

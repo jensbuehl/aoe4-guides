@@ -64,25 +64,25 @@
       <v-col cols="12">
         <v-row no-gutters align="center" justify="center">
           <v-col>
-            <v-img class="titleIconXs" src="/assets/resources/time.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/time.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs" src="/assets/resources/villager.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/villager.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs" src="/assets/resources/repair.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/repair.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs" src="/assets/resources/food.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/food.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs" src="/assets/resources/wood.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/wood.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs" src="/assets/resources/gold.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/gold.webp"></v-img>
           </v-col>
           <v-col>
-            <v-img class="titleIconXs" src="/assets/resources/stone.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/stone.webp"></v-img>
           </v-col>
         </v-row>
         <v-row class="mt-2" no-gutters align="center" justify="center">
@@ -118,25 +118,25 @@
           <thead>
             <tr>
               <th class="text-center ma-0 pa-0" width="80px">
-                <v-img class="mx-auto titleIcon" src="/assets/resources/time.png"></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/time.webp"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="80px">
-                <v-img class="mx-auto titleIcon" src="/assets/resources/villager.png"></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/villager.webp"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="80px">
-                <v-img class="mx-auto titleIcon" src="/assets/resources/repair.png"></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/repair.webp"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="80px">
-                <v-img class="mx-auto titleIcon" src="/assets/resources/food.png"></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/food.webp"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="80px">
-                <v-img class="mx-auto titleIcon" src="/assets/resources/wood.png"></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/wood.webp"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="80px">
-                <v-img class="mx-auto titleIcon" src="/assets/resources/gold.png"></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/gold.webp"></v-img>
               </th>
               <th class="text-center ma-0 pa-0" width="80px">
-                <v-img class="mx-auto titleIcon" src="/assets/resources/stone.png"></v-img>
+                <v-img class="mx-auto titleIcon" src="/assets/resources/stone.webp"></v-img>
               </th>
             </tr>
           </thead>

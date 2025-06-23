@@ -361,8 +361,8 @@
         <v-col v-if="!build.civ" cols="2" md="4" lg="3" class="pa-0 ma-0 hidden-sm-and-down">
           <v-img
             class="hidden-sm-and-down"
-            src="/assets/flags/any-large.png"
-            lazy-src="/assets/flags/any-small.png"
+            src="/assets/flags/any-large.webp"
+            lazy-src="/assets/flags/any-small.webp"
             :gradient="'to right, transparent, ' + $vuetify.theme.current.colors.surface"
             alt="{{build.civ}}"
             cover

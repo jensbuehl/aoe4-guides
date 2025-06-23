@@ -235,9 +235,9 @@ export default {
     function getNextAgeImgSrc() {
       const currentAge = getCurrentAge();
       const imgSrcMap = {
-        1: "/assets/pictures/age/age_2.png",
-        2: "/assets/pictures/age/age_3.png",
-        3: "/assets/pictures/age/age_4.png",
+        1: "/assets/pictures/age/age_2.webp",
+        2: "/assets/pictures/age/age_3.webp",
+        3: "/assets/pictures/age/age_4.webp",
       };
       return imgSrcMap[currentAge] || "";
     }
@@ -250,9 +250,9 @@ export default {
     function getPreviousAgeImgSrc() {
       const currentAge = getCurrentAge();
       const ageImageUrlMap = {
-        2: "/assets/pictures/age/age_1.png",
-        3: "/assets/pictures/age/age_2.png",
-        4: "/assets/pictures/age/age_3.png",
+        2: "/assets/pictures/age/age_1.webp",
+        3: "/assets/pictures/age/age_2.webp",
+        4: "/assets/pictures/age/age_3.webp",
       };
       return ageImageUrlMap[currentAge] || "";
     }

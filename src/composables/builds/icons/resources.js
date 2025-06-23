@@ -5,7 +5,7 @@ export const resources = [
   {
     title: "Food",
     age: "1",
-    imgSrc: "/assets/pictures/resource/resource_food.png",
+    imgSrc: "/assets/pictures/resource/resource_food.webp",
     civ: civs,
     class: "none",
     shorthand: "food",
@@ -13,7 +13,7 @@ export const resources = [
   {
     title: "Wood",
     age: "1",
-    imgSrc: "/assets/pictures/resource/resource_wood.png",
+    imgSrc: "/assets/pictures/resource/resource_wood.webp",
     civ: civs,
     class: "none",
     shorthand: "wood",
@@ -21,7 +21,7 @@ export const resources = [
   {
     title: "Gold",
     age: "1",
-    imgSrc: "/assets/pictures/resource/resource_gold.png",
+    imgSrc: "/assets/pictures/resource/resource_gold.webp",
     civ: civs,
     class: "none",
     shorthand: "gold",
@@ -29,7 +29,7 @@ export const resources = [
   {
     title: "Stone",
     age: "1",
-    imgSrc: "/assets/pictures/resource/resource_stone.png",
+    imgSrc: "/assets/pictures/resource/resource_stone.webp",
     civ: civs,
     class: "none",
     shorthand: "stone",
@@ -37,7 +37,7 @@ export const resources = [
   {
     title: "Cattle",
     age: "1",
-    imgSrc: "/assets/pictures/resource/cattle.png",
+    imgSrc: "/assets/pictures/resource/cattle.webp",
     civ: ["MAL"],
     class: "none",
     shorthand: "cattle",
@@ -45,7 +45,7 @@ export const resources = [
   {
     title: "Sheep",
     age: "1",
-    imgSrc: "/assets/pictures/resource/sheep.png",
+    imgSrc: "/assets/pictures/resource/sheep.webp",
     civ: civs,
     class: "none",
     shorthand: "sheep",
@@ -53,7 +53,7 @@ export const resources = [
   {
     title: "Deer",
     age: "1",
-    imgSrc: "/assets/pictures/resource/deer.png",
+    imgSrc: "/assets/pictures/resource/deer.webp",
     civ: civs,
     class: "none",
     shorthand: "deer",
@@ -61,7 +61,7 @@ export const resources = [
   {
     title: "Berries",
     age: "1",
-    imgSrc: "/assets/pictures/resource/berrybush.png",
+    imgSrc: "/assets/pictures/resource/berrybush.webp",
     civ: civs,
     class: "none",
     shorthand: "berry",
@@ -69,7 +69,7 @@ export const resources = [
   {
     title: "Boar",
     age: "1",
-    imgSrc: "/assets/pictures/resource/boar.png",
+    imgSrc: "/assets/pictures/resource/boar.webp",
     civ: civs,
     class: "none",
     shorthand: "boar",
@@ -77,7 +77,7 @@ export const resources = [
   {
     title: "Relic",
     age: "1",
-    imgSrc: "/assets/pictures/resource/relics.png",
+    imgSrc: "/assets/pictures/resource/relics.webp",
     civ: civs,
     class: "none",
     shorthand: "relic",
@@ -85,7 +85,7 @@ export const resources = [
   {
     title: "Sacred Site",
     age: "1",
-    imgSrc: "/assets/pictures/resource/sacred_sites.png",
+    imgSrc: "/assets/pictures/resource/sacred_sites.webp",
     civ: civs,
     class: "none",
     shorthand: "ss",
@@ -93,7 +93,7 @@ export const resources = [
   {
     title: "Bounty",
     age: "1",
-    imgSrc: "/assets/pictures/resource/bounty.png",
+    imgSrc: "/assets/pictures/resource/bounty.webp",
     civ: ["RUS"],
     class: "none",
     shorthand: "bounty",
@@ -101,7 +101,7 @@ export const resources = [
   {
     title: "Rally",
     age: "1",
-    imgSrc: "/assets/pictures/resource/rally.png",
+    imgSrc: "/assets/pictures/resource/rally.webp",
     civ: civs,
     class: "none",
     shorthand: "rally",
@@ -109,7 +109,7 @@ export const resources = [
   {
     title: "Fish",
     age: "1",
-    imgSrc: "/assets/pictures/resource/fish.png",
+    imgSrc: "/assets/pictures/resource/fish.webp",
     civ: civs,
     class: "none",
     shorthand: "fish",
@@ -117,7 +117,7 @@ export const resources = [
   {
     title: "Straggler Tree",
     age: "1",
-    imgSrc: "/assets/pictures/resource/gaiatreeprototypetree.png",
+    imgSrc: "/assets/pictures/resource/gaiatreeprototypetree.webp",
     civ: civs,
     class: "none",
     shorthand: "tree",
@@ -126,7 +126,7 @@ export const resources = [
   {
     title: "Wolf",
     age: "1",
-    imgSrc: "/assets/pictures/resource/wolf.png",
+    imgSrc: "/assets/pictures/resource/wolf.webp",
     civ: civs,
     class: "none",
   },

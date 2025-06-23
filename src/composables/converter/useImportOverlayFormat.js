@@ -53,7 +53,7 @@ export default function useImportOverlayFormat() {
 
   function convertNotes(overlayNotes) {
     //Filter @imagePath@
-    const regex = /@([^@]*)png@/g;
+    const regex = /@([^@]*)webp@/g;
     const joinedNotes = overlayNotes.join("<br>");
 
     const convertedNotes = joinedNotes.replace(regex, function replacer(match) {

@@ -2,7 +2,7 @@
   {
     "title": "Farm",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_economy/farm.png",
+    "imgSrc": "/assets/pictures/building_economy/farm.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -42,7 +42,7 @@
   {
     "title": "Olive Grove",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_byzantines/olive-grove-1.png",
+    "imgSrc": "/assets/pictures/building_byzantines/olive-grove-1.webp",
     "civ": ["BYZ"],
     "class": "default",
     "description": "Harvestable Food source. Use a Villager to gather Food from the Olive Grove.\nOnly one Villager can work each Olive Grove.\nByzantine Villagers gather Olive Oil equal to 20% of Food gathered.",
@@ -64,7 +64,7 @@
   {
     "title": "House",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_economy/house.png",
+    "imgSrc": "/assets/pictures/building_economy/house.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -104,7 +104,7 @@
   {
     "title": "Lumber Camp",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_economy/lumber-camp.png",
+    "imgSrc": "/assets/pictures/building_economy/lumber-camp.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -145,7 +145,7 @@
   {
     "title": "Mining Camp",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_economy/mining-camp.png",
+    "imgSrc": "/assets/pictures/building_economy/mining-camp.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -186,7 +186,7 @@
   {
     "title": "Mill",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_economy/mill.png",
+    "imgSrc": "/assets/pictures/building_economy/mill.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -226,7 +226,7 @@
   {
     "title": "Farmhouse",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_japanese/farmhouse-1.png",
+    "imgSrc": "/assets/pictures/building_japanese/farmhouse-1.webp",
     "civ": ["JAP"],
     "class": "default",
     "description": "Increases your maximum Population and Villagers can drop-off Food at this building. Contains technologies to improve Food gathering.",
@@ -248,7 +248,7 @@
   {
     "title": "Cistern",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_byzantines/cistern-1.png",
+    "imgSrc": "/assets/pictures/building_byzantines/cistern-1.webp",
     "civ": ["BYZ"],
     "class": "default",
     "description": "Improves the gather rate of nearby villagers by +10/14/18/22/26% depending on network level. Generates influence that boosts production, research or defense. Can activate Arkitoi Defense to briefly arm nearby Villagers. \nConnect Cisterns with Aqueducts to enhance their influence and villager gather rate aura. Cistern costs increase the more Cisterns are built.",
@@ -270,7 +270,7 @@
   {
     "title": "Pit Mine",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_malians/pit-mine-1.png",
+    "imgSrc": "/assets/pictures/building_malians/pit-mine-1.webp",
     "civ": ["MAL"],
     "class": "default",
     "description": "Must be built on a Gold Vein.\nMines 35 Gold per minute without depleting the deposit. If a deposit has been depleted, the Pit Mine can be re-placed on exhausted Gold Veins.",
@@ -292,7 +292,7 @@
   {
     "title": "Ger",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_mongols/ger.png",
+    "imgSrc": "/assets/pictures/building_mongols/ger.webp",
     "civ": ["MON"],
     "class": "default",
     "shorthand": ["ger", "qw"],
@@ -315,7 +315,7 @@
   {
     "title": "Pasture",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_mongols/pasture.png",
+    "imgSrc": "/assets/pictures/building_mongols/pasture.webp",
     "civ": ["MON"],
     "class": "default",
     "shorthand": ["pasture", "qa"],
@@ -338,7 +338,7 @@
   {
     "title": "Ovoo",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_mongols/ovoo.png",
+    "imgSrc": "/assets/pictures/building_mongols/ovoo.webp",
     "civ": ["MON"],
     "class": "default",
     "shorthand": ["ovoo", "qq"],
@@ -361,7 +361,7 @@
   {
     "title": "Hunting Cabin",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_rus/hunting-cabin.png",
+    "imgSrc": "/assets/pictures/building_rus/hunting-cabin.webp",
     "civ": ["RUS"],
     "class": "default",
     "description": "Villagers can drop off Food at this building. It houses technologies to improve Food gathering and produces Scouts.\nGenerates Gold based on the number of nearby trees. Trees in overlapped areas are only counted once.",
@@ -383,7 +383,7 @@
   {
     "title": "Town Center",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_economy/town-center.png",
+    "imgSrc": "/assets/pictures/building_economy/town-center.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -425,7 +425,7 @@
   {
     "title": "Market",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_economy/market.png",
+    "imgSrc": "/assets/pictures/building_economy/market.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -467,7 +467,7 @@
   {
     "title": "Manor",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_lancaster/manor.png",
+    "imgSrc": "/assets/pictures/building_lancaster/manor.webp",
     "civ": [
       "HOL"
     ],
@@ -491,7 +491,7 @@
   {
     "title": "Village",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_chinese/village.png",
+    "imgSrc": "/assets/pictures/building_chinese/village.webp",
     "civ": ["CHI", "ZXL"],
     "class": "default",
     "description": "Increases maximum Population by 40.",
@@ -513,7 +513,7 @@
   {
     "title": "Granary",
     "age": 1,
-    "imgSrc": "/assets/pictures/building_chinese/granary.png",
+    "imgSrc": "/assets/pictures/building_chinese/granary.webp",
     "civ": ["CHI", "ZXL"],
     "class": "default",
     "description": "Villagers can drop off Food at this building. Improves the Farm gather rate of nearby Villagers by +10% (stacks with other Granaries). Generates tax each time a resource is dropped off.",
@@ -535,7 +535,7 @@
   {
     "title": "Cattle Ranch",
     "age": 2,
-    "imgSrc": "/assets/pictures/building_malians/cattle-ranch-2.png",
+    "imgSrc": "/assets/pictures/building_malians/cattle-ranch-2.webp",
     "civ": ["MAL"],
     "class": "default",
     "description": "Cattle garrisoned in this ranch generate +25 Food per minute. This value is increased by the food upgrades.",

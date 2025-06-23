@@ -2,7 +2,7 @@
   {
     "title": "Bloomery",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_military/bloomery.png",
+    "imgSrc": "/assets/pictures/technology_military/bloomery.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -43,7 +43,7 @@
   {
     "title": "Decarbonization",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_military/decarbonization.png",
+    "imgSrc": "/assets/pictures/technology_military/decarbonization.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -84,7 +84,7 @@
   {
     "title": "Damascus Steel",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/damascus-steel.png",
+    "imgSrc": "/assets/pictures/technology_military/damascus-steel.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -125,7 +125,7 @@
   {
     "title": "Tatara",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_japanese/tatara-1.png",
+    "imgSrc": "/assets/pictures/technology_japanese/tatara-1.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increase the melee damage of all non-siege units by +1.",
@@ -147,7 +147,7 @@
   {
     "title": "Hizukuri",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_japanese/hizukuri-2.png",
+    "imgSrc": "/assets/pictures/technology_japanese/hizukuri-2.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increase the melee damage of all non-siege units by +1.",
@@ -169,7 +169,7 @@
   {
     "title": "Kobuse-gitae",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_japanese/kobuse-gitae-3.png",
+    "imgSrc": "/assets/pictures/technology_japanese/kobuse-gitae-3.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increase the melee damage of all non-siege units by +1.",
@@ -191,7 +191,7 @@
   {
     "title": "Yaki-ire",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/yaki-ire-4.png",
+    "imgSrc": "/assets/pictures/technology_japanese/yaki-ire-4.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increase the melee damage of all non-siege units by +1.",
@@ -213,7 +213,7 @@
   {
     "title": "Siege Engineering",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_military/siege-engineering.png",
+    "imgSrc": "/assets/pictures/technology_military/siege-engineering.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -254,7 +254,7 @@
   {
     "title": "Steeled Arrow",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_military/steeled-arrow.png",
+    "imgSrc": "/assets/pictures/technology_military/steeled-arrow.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -296,7 +296,7 @@
   {
     "title": "Balanced Projectiles",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_military/balanced-projectiles.png",
+    "imgSrc": "/assets/pictures/technology_military/balanced-projectiles.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -338,7 +338,7 @@
   {
     "title": "Platecutter Point",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/platecutter-point.png",
+    "imgSrc": "/assets/pictures/technology_military/platecutter-point.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -380,7 +380,7 @@
   {
     "title": "Military Academy",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_military/military-academy.png",
+    "imgSrc": "/assets/pictures/technology_military/military-academy.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -420,7 +420,7 @@
   {
     "title": "Fitted Leatherwork",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_military/fitted-leatherwork.png",
+    "imgSrc": "/assets/pictures/technology_military/fitted-leatherwork.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -462,7 +462,7 @@
   {
     "title": "Insulated Helm",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_military/insulated-helm.png",
+    "imgSrc": "/assets/pictures/technology_military/insulated-helm.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -504,7 +504,7 @@
   {
     "title": "Master Smiths",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/master-smiths.png",
+    "imgSrc": "/assets/pictures/technology_military/master-smiths.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -546,7 +546,7 @@
   {
     "title": "Elite Army Tactics",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/elite-army-tactics.png",
+    "imgSrc": "/assets/pictures/technology_military/elite-army-tactics.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -587,7 +587,7 @@
   {
     "title": "Iron Undermesh",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_military/iron-undermesh.png",
+    "imgSrc": "/assets/pictures/technology_military/iron-undermesh.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -629,7 +629,7 @@
   {
     "title": "Wedge Rivets",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_military/wedge-rivets.png",
+    "imgSrc": "/assets/pictures/technology_military/wedge-rivets.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -671,7 +671,7 @@
   {
     "title": "Angled Surfaces",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/angled-surfaces.png",
+    "imgSrc": "/assets/pictures/technology_military/angled-surfaces.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -713,7 +713,7 @@
   {
     "title": "Incendiary Arrows",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/incendiary-arrows.png",
+    "imgSrc": "/assets/pictures/technology_military/incendiary-arrows.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -753,7 +753,7 @@
   {
     "title": "Serpentine Powder",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/serpentine-powder.png",
+    "imgSrc": "/assets/pictures/technology_military/serpentine-powder.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -791,7 +791,7 @@
   {
     "title": "Silk Bowstrings",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/silk-bowstrings.png",
+    "imgSrc": "/assets/pictures/technology_military/silk-bowstrings.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -831,7 +831,7 @@
   {
     "title": "Biology",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/biology.png",
+    "imgSrc": "/assets/pictures/technology_military/biology.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -871,7 +871,7 @@
   {
     "title": "Chemistry",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/chemistry.png",
+    "imgSrc": "/assets/pictures/technology_military/chemistry.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -910,7 +910,7 @@
   {
     "title": "War Horses",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_dragon/war-horses-4.png",
+    "imgSrc": "/assets/pictures/technology_dragon/war-horses-4.webp",
     "civ": ["DRA"],
     "class": "tech",
     "description": "Gilded Knights take -25% damage while charging.",
@@ -932,7 +932,7 @@
   {
     "title": "Hill Training",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_lancaster/hill_land_training.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/hill_land_training.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Training in rugged terrain increases Hobelar charge damage by +150% and production speed by +100%.",
@@ -954,7 +954,7 @@
   {
     "title": "Geometry",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/geometry.png",
+    "imgSrc": "/assets/pictures/technology_military/geometry.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -995,7 +995,7 @@
   {
     "title": "Greased Axles",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_military/greased-axles.png",
+    "imgSrc": "/assets/pictures/technology_military/greased-axles.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1036,7 +1036,7 @@
   {
     "title": "Roller Shutter Triggers",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_units/roller-shutter-triggers.png",
+    "imgSrc": "/assets/pictures/technology_units/roller-shutter-triggers.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1077,7 +1077,7 @@
   {
     "title": "Spyglass",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_units/spyglass-4.png",
+    "imgSrc": "/assets/pictures/technology_units/spyglass-4.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1118,7 +1118,7 @@
   {
     "title": "Do-maru Armor",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/do-maru-armor-4.png",
+    "imgSrc": "/assets/pictures/technology_japanese/do-maru-armor-4.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increase Mounted Samurai move speed by +10% while Deflective Armor is active.",
@@ -1140,7 +1140,7 @@
   {
     "title": "Nagae Yari",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/nagae-yari-4.png",
+    "imgSrc": "/assets/pictures/technology_japanese/nagae-yari-4.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Spearmen are equipped with a stronger spear that increases weapon range by +20% and damage against cavalry by +20%.",
@@ -1162,7 +1162,7 @@
   {
     "title": "Golden Cuirass",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_dragon/golden-cuirass-2.png",
+    "imgSrc": "/assets/pictures/technology_dragon/golden-cuirass-2.webp",
     "civ": ["DRA"],
     "class": "tech",
     "description": "Gilded Men-at-Arms who fall below 30% health take -20% damage.",
@@ -1184,7 +1184,7 @@
   {
     "title": "Dragon Fire",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_dragon/dragon-fire-2.png",
+    "imgSrc": "/assets/pictures/technology_dragon/dragon-fire-2.webp",
     "civ": ["DRA"],
     "class": "tech",
     "description": "Gilded Spearman torches deal area of effect damage.",
@@ -1206,7 +1206,7 @@
   {
     "title": "Dragon Scale Leather",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_dragon/dragon-scale-leather-3.png",
+    "imgSrc": "/assets/pictures/technology_dragon/dragon-scale-leather-3.webp",
     "civ": ["DRA"],
     "class": "tech",
     "description": "Increase the ranged armor of Gilded Archers by +3.",
@@ -1228,7 +1228,7 @@
   {
     "title": "Zornhau",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_dragon/zornhau-3.png",
+    "imgSrc": "/assets/pictures/technology_dragon/zornhau-3.webp",
     "civ": ["DRA"],
     "class": "tech",
     "description": "Gilded Landsknecht equip a halberd weapon that wounds enemies. When struck by this weapon, a unit will bleed for 2 damage every second. Lasts 10 seconds.\nAny healing effect will remove the bleed.",
@@ -1250,7 +1250,7 @@
   {
     "title": "Bodkin Bolts",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_dragon/bodkin-bolts-4.png",
+    "imgSrc": "/assets/pictures/technology_dragon/bodkin-bolts-4.webp",
     "civ": ["DRA"],
     "class": "tech",
     "description": "Gilded Crossbowmen deal +20 damage against Siege units.",
@@ -1272,7 +1272,7 @@
   {
     "title": "Lightweight Beams",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_units/lightweight-beams-4.png",
+    "imgSrc": "/assets/pictures/technology_units/lightweight-beams-4.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1312,7 +1312,7 @@
   {
     "title": "Adjustable Crossbars",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_units/adjustable-crossbars.png",
+    "imgSrc": "/assets/pictures/technology_units/adjustable-crossbars.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1351,7 +1351,7 @@
   {
     "title": "Siege Works",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_military/siege-works.png",
+    "imgSrc": "/assets/pictures/technology_military/siege-works.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1392,7 +1392,7 @@
   {
     "title": "Arrowslits",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_defensive/arrow-slits.png",
+    "imgSrc": "/assets/pictures/technology_defensive/arrow-slits.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1433,7 +1433,7 @@
   {
     "title": "Springald Emplacement",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_defensive/springald-emplacement.png",
+    "imgSrc": "/assets/pictures/technology_defensive/springald-emplacement.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1474,7 +1474,7 @@
   {
     "title": "Cannon Emplacement",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_defensive/cannon-emplacement.png",
+    "imgSrc": "/assets/pictures/technology_defensive/cannon-emplacement.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1514,7 +1514,7 @@
   {
     "title": "Boiling Oil",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_defensive/boiling-oil.png",
+    "imgSrc": "/assets/pictures/technology_defensive/boiling-oil.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1555,7 +1555,7 @@
   {
     "title": "Court Architects",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_defensive/court-architects.png",
+    "imgSrc": "/assets/pictures/technology_defensive/court-architects.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1595,7 +1595,7 @@
   {
     "title": "Fortify Outpost",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_defensive/fortify-outpost.png",
+    "imgSrc": "/assets/pictures/technology_defensive/fortify-outpost.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1634,7 +1634,7 @@
   {
     "title": "Extra Hammocks",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_chinese/extra-hammocks.png",
+    "imgSrc": "/assets/pictures/technology_chinese/extra-hammocks.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1675,7 +1675,7 @@
   {
     "title": "Naval Arrowslits",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_naval/naval-arrow-slits.png",
+    "imgSrc": "/assets/pictures/technology_naval/naval-arrow-slits.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1716,7 +1716,7 @@
   {
     "title": "Composite Bows",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_abbasid/composite-bows.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/composite-bows.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Increase the attack speed of Archers by +33%.",
@@ -1738,7 +1738,7 @@
   {
     "title": "Camel Rider Barding",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_abbasid/camel-rider-barding-4.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/camel-rider-barding-4.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Increase the armor of Camel Riders by +2.",
@@ -1760,7 +1760,7 @@
   {
     "title": "Camel Handling",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_abbasid/camel-handling.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/camel-handling.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Increase the movement speed of camel units by +15%.",
@@ -1782,7 +1782,7 @@
   {
     "title": "Camel Support",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_abbasid/camel-support.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/camel-support.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Camels increase the armor of nearby infantry by +2.",
@@ -1804,7 +1804,7 @@
   {
     "title": "Camel Rider Shields",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_abbasid/camel-rider-shields.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/camel-rider-shields.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Grant Camel Riders shields, improving their melee armor by +3.",
@@ -1826,7 +1826,7 @@
   {
     "title": "Medical Centers",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_abbasid/medical-centers.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/medical-centers.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Town Centers and Keeps heal nearby units for +2 health every 1 second.",
@@ -1848,7 +1848,7 @@
   {
     "title": "Boot Camp",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_abbasid/boot-camp.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/boot-camp.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Increase the health of all infantry by +15%.",
@@ -1870,7 +1870,7 @@
   {
     "title": "Teak Masts",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_abbasid/teak-masts.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/teak-masts.webp",
     "civ": ["ABB", "AYY"],
     "class": "tech",
     "description": "Increase the health of military ships by +10%.",
@@ -1892,7 +1892,7 @@
   {
     "title": "Copper Plating",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_japanese/copper-plating-3.png",
+    "imgSrc": "/assets/pictures/technology_japanese/copper-plating-3.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Improves the fire and ranged armor of ships by +2.",
@@ -1914,7 +1914,7 @@
   {
     "title": "Reinforcement\n(Bonus Military Wing)",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_ayyubids/military-wing-reinforcement-1.png",
+    "imgSrc": "/assets/pictures/technology_ayyubids/military-wing-reinforcement-1.webp",
     "civ": ["AYY"],
     "class": "tech",
     "description": "Constructs the Military Wing.\nUpon completion, Cavalry units gain the ability to construct siege weapons.\nThe House of Wisdom produces 7 Desert Raiders immediately and then every 2 minutes for the rest of the game.",
@@ -1936,7 +1936,7 @@
   {
     "title": "Master Smiths",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_ayyubids/military-wing-master-smiths-1.png",
+    "imgSrc": "/assets/pictures/technology_ayyubids/military-wing-master-smiths-1.webp",
     "civ": ["AYY"],
     "class": "tech",
     "description": "Increase the melee armor of all non-siege units by +1.",
@@ -1958,7 +1958,7 @@
   {
     "title": "Siege Carpentry",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_ayyubids/siege-carpentry-3.png",
+    "imgSrc": "/assets/pictures/technology_ayyubids/siege-carpentry-3.webp",
     "civ": ["AYY"],
     "class": "tech",
     "description": "Upon completion, siege units gain access to the Structural Reinforcements ability.\nSiege units gain +20 melee armor and +5 fire armor for 10 seconds.",
@@ -1980,7 +1980,7 @@
   {
     "title": "Sultan's Mamluks",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_ayyubids/sultans-mamluks-3.png",
+    "imgSrc": "/assets/pictures/technology_ayyubids/sultans-mamluks-3.webp",
     "civ": ["AYY"],
     "class": "tech",
     "description": "Infantry gains +25% damage and +20% movement speed for 10 seconds after killing a unit.",
@@ -2002,7 +2002,7 @@
   {
     "title": "Infantry Support",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_ayyubids/infantry-support-4.png",
+    "imgSrc": "/assets/pictures/technology_ayyubids/infantry-support-4.webp",
     "civ": ["AYY"],
     "class": "tech",
     "description": "Infantry increase the armor of nearby camels by 3.",
@@ -2024,7 +2024,7 @@
   {
     "title": "Proselytization",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_abbasid/faith.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/faith.webp",
     "civ": ["ABB"],
     "class": "tech",
     "description": "Imams can convert units without holding a Relic, but can only target a single unit.",
@@ -2046,7 +2046,7 @@
   {
     "title": "Phalanx",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_abbasid/phalanx.png",
+    "imgSrc": "/assets/pictures/technology_abbasid/phalanx.webp",
     "civ": ["ABB", "AYY"],
     "class": "tech",
     "description": "Increase the attack range of Spearmen by +100%.",
@@ -2068,7 +2068,7 @@
   {
     "title": "Pyrotechnics",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_chinese/pyrotechnics.png",
+    "imgSrc": "/assets/pictures/technology_chinese/pyrotechnics.webp",
     "civ": ["CHI"],
     "class": "tech",
     "description": "Increase the range of Handcannons by +1.5.",
@@ -2090,7 +2090,7 @@
   {
     "title": "Reload Drills",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_chinese/reload-drills.png",
+    "imgSrc": "/assets/pictures/technology_chinese/reload-drills.webp",
     "civ": ["CHI"],
     "class": "tech",
     "description": "Increase the attack speed of Bombards by +33%.",
@@ -2112,7 +2112,7 @@
   {
     "title": "Reusable Barrels",
     "age": "4",
-    "imgSrc": "/assets/pictures/technology_chinese/reusable-barrels.png",
+    "imgSrc": "/assets/pictures/technology_chinese/reusable-barrels.webp",
     "civ": ["CHI"],
     "class": "tech",
     "deprecated": true
@@ -2120,7 +2120,7 @@
   {
     "title": "Battle Hardened",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_chinese/battle-hardened.png",
+    "imgSrc": "/assets/pictures/technology_chinese/battle-hardened.webp",
     "civ": ["CHI"],
     "class": "tech",
     "description": "Increase the health of Palace Guards by +30.",
@@ -2142,7 +2142,7 @@
   {
     "title": "Handcannon Slits",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_chinese/handcannon-slits.png",
+    "imgSrc": "/assets/pictures/technology_chinese/handcannon-slits.webp",
     "civ": ["CHI", "ZXL"],
     "class": "tech",
     "description": "Add defensive handcannon slits to this structure and increases garrison arrow range by +1. Only one weapon emplacement can be added.",
@@ -2164,7 +2164,7 @@
   {
     "title": "Thunderclap Bombs",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_chinese/thunderclap-bombs-4.png",
+    "imgSrc": "/assets/pictures/technology_chinese/thunderclap-bombs-4.webp",
     "civ": ["CHI", "ZXL"],
     "class": "tech",
     "description": "Warships fire a Nest of Bees attack.",
@@ -2186,7 +2186,7 @@
   {
     "title": "Cloud of Terror",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_zhuxi/cloud-of-terror-4.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/cloud-of-terror-4.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Adds area of effect damage to Bombards.",
@@ -2208,7 +2208,7 @@
   {
     "title": "Roar of the Dragon",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_zhuxi/roar-of-the-dragon-4.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/roar-of-the-dragon-4.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Spearmen and Horsemen gain a Fire Lance when charging.",
@@ -2230,7 +2230,7 @@
   {
     "title": "Military Affairs Bureau",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_zhuxi/military-affairs-bureau-1.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/military-affairs-bureau-1.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Imperial Officials can now supervise Keeps and Outposts to reduce damage taken by 35%.",
@@ -2252,7 +2252,7 @@
   {
     "title": "Bolt Magazines",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_zhuxi/bolt-magazines.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/bolt-magazines.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Grants Zhuge Nu +0.5 range and +1 bonus vs Light Infantry.",
@@ -2274,7 +2274,7 @@
   {
     "title": "10000 Bolts",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_zhuxi/10000-bolts-4.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/10000-bolts-4.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Zhuge Nu and Crossbowmen fire an extra bolt. The additional bolt for Crossbowmen is 40% as effective as the previous bolt.",
@@ -2296,7 +2296,7 @@
   {
     "title": "Dali Horses",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_zhuxi/dali-horses.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/dali-horses.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "All Cavalry gain +20% Attack Speed.",
@@ -2318,7 +2318,7 @@
   {
     "title": "Hard Cased Bombs",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_zhuxi/hard-cased-bombs.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/hard-cased-bombs.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Grenadiers +2 bonus vs. Light Infantry.",
@@ -2340,7 +2340,7 @@
   {
     "title": "Dynastic Protectors",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_zhuxi/dynastic-protectors-4.png",
+    "imgSrc": "/assets/pictures/technology_zhuxi/dynastic-protectors-4.webp",
     "civ": ["ZXL"],
     "class": "tech",
     "description": "Allows production of unique cavalry units, the Imperial Guard, and the Yuan Raider.",
@@ -2362,7 +2362,7 @@
   {
     "title": "Armored Beasts",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_delhi/armored-beasts.png",
+    "imgSrc": "/assets/pictures/technology_delhi/armored-beasts.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Grant +25% health and +4 ranged armor to War Elephants.",
@@ -2373,7 +2373,7 @@
   {
     "title": "Efficient Production",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_delhi/efficient-production.png",
+    "imgSrc": "/assets/pictures/technology_delhi/efficient-production.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Allow Scholars to garrison in military buildings, boosting production speed by 100%.",
@@ -2384,7 +2384,7 @@
   {
     "title": "Howdahs",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_delhi/siege-elephant.png",
+    "imgSrc": "/assets/pictures/technology_delhi/siege-elephant.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Upgrade Tower Elephants to have Elite Crossbowmen as riders instead of Archers. Tower Elephants gain +30% health and +4 ranged armor.",
@@ -2395,7 +2395,7 @@
   {
     "title": "Forced March",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/forced-march.png",
+    "imgSrc": "/assets/pictures/technology_delhi/forced-march.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Infantry units gain the Forced March ability.\nWhen activated, infantry move +100% faster for 10 seconds, but breaks when dealing damage.",
@@ -2406,7 +2406,7 @@
   {
     "title": "Zeal",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_delhi/zeal.png",
+    "imgSrc": "/assets/pictures/technology_delhi/zeal.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Units healed by Scholars gain +50% attack speed for 3 seconds.",
@@ -2417,7 +2417,7 @@
   {
     "title": "Honed Blades",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/honed-blades.png",
+    "imgSrc": "/assets/pictures/technology_delhi/honed-blades.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Men-at-Arms and Lancers equip a Kilij, increasing their damage by +3.",
@@ -2428,7 +2428,7 @@
   {
     "title": "Paiks",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/paiks.png",
+    "imgSrc": "/assets/pictures/technology_delhi/paiks.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Archers and Crossbowman gain +0.5 Range",
@@ -2439,7 +2439,7 @@
   {
     "title": "Mahouts",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/mahouts.png",
+    "imgSrc": "/assets/pictures/technology_delhi/mahouts.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Elephants move 10% faster",
@@ -2450,7 +2450,7 @@
   {
     "title": "Salvaged Materials",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/salvaged-materials.png",
+    "imgSrc": "/assets/pictures/technology_delhi/salvaged-materials.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Baghlah heal 30 health when sinking an enemy ship.",
@@ -2461,7 +2461,7 @@
   {
     "title": "Tranquil Venue",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/tranquil-venue.png",
+    "imgSrc": "/assets/pictures/technology_delhi/tranquil-venue.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Mosques restore +4 health every second to units that are out of combat.",
@@ -2472,7 +2472,7 @@
   {
     "title": "Lookout Towers",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/lookout-towers.png",
+    "imgSrc": "/assets/pictures/technology_delhi/lookout-towers.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Increase the sight range of Outposts by 50% and weapon range by +1.",
@@ -2483,7 +2483,7 @@
   {
     "title": "Slow-Burning Defenses",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_delhi/slow-burning-defenses.png",
+    "imgSrc": "/assets/pictures/technology_delhi/slow-burning-defenses.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Increase the fire armor of Stone Wall Towers, Keeps, and Outposts by +10.",
@@ -2494,7 +2494,7 @@
   {
     "title": "Manuscript Trade",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_delhi/manuscript-trade-1.png",
+    "imgSrc": "/assets/pictures/technology_delhi/manuscript-trade-1.webp",
     "civ": ["DEL"],
     "class": "tech",
     "description": "Scholars garrisoned in Docks provide +30% faster production speed and contribute to global research.",
@@ -2505,7 +2505,7 @@
   {
     "title": "Crossbow Stirrups",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_french/crossbow-stirrups.png",
+    "imgSrc": "/assets/pictures/technology_french/crossbow-stirrups.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Increase the attack speed of Arbalétriers by +25%.",
@@ -2527,7 +2527,7 @@
   {
     "title": "Gambesons",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_french/gambesons.png",
+    "imgSrc": "/assets/pictures/technology_french/gambesons.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Increase Arbalétrier melee armor by +5.",
@@ -2549,7 +2549,7 @@
   {
     "title": "Chivalry",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_french/chivalry.png",
+    "imgSrc": "/assets/pictures/technology_french/chivalry.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Royal Knights regenerate +1 health every 1 seconds when out of combat.",
@@ -2571,7 +2571,7 @@
   {
     "title": "Companion Equipment",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_jeanne/companion-equipment-3.png",
+    "imgSrc": "/assets/pictures/technology_jeanne/companion-equipment-3.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Increase Jeanne d'Arc's health and damage by 25% and gain +1 armor. Increase the health and damage of Jeanne's Companions by 20%.",
@@ -2593,7 +2593,7 @@
   {
     "title": "Ordinance Company",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_jeanne/ordinance-company-3.png",
+    "imgSrc": "/assets/pictures/technology_jeanne/ordinance-company-3.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Consecrated buildings also reduce the Wood and Gold cost of units by 25%.",
@@ -2615,7 +2615,7 @@
   {
     "title": "Royal Bloodlines",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_french/royal-bloodlines.png",
+    "imgSrc": "/assets/pictures/technology_french/royal-bloodlines.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Increase the health of all cavalry by +35%.",
@@ -2637,7 +2637,7 @@
   {
     "title": "Cantled Saddles",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_french/cantled-saddles.png",
+    "imgSrc": "/assets/pictures/technology_french/cantled-saddles.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Increase Royal Knights' bonus damage after a charge from +3 to +10.",
@@ -2659,7 +2659,7 @@
   {
     "title": "Long Guns",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_french/long-guns.png",
+    "imgSrc": "/assets/pictures/technology_french/long-guns.webp",
     "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Increase the damage of naval cannons by +15%.",
@@ -2681,7 +2681,7 @@
   {
     "title": "Slate and Stone Construction",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_hre/slate-and-stone-construction.png",
+    "imgSrc": "/assets/pictures/technology_hre/slate-and-stone-construction.webp",
     "civ": ["DRA", "HRE"],
     "class": "tech",
     "description": "All buildings gain +5 fire armor.",
@@ -2703,7 +2703,7 @@
   {
     "title": "Reinforced Defenses",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_hre/reinforced-defenses.png",
+    "imgSrc": "/assets/pictures/technology_hre/reinforced-defenses.webp",
     "civ": ["DRA", "HRE"],
     "class": "tech",
     "description": "Increase the health of walls, towers, and gates by +40%.",
@@ -2725,7 +2725,7 @@
   {
     "title": "Marching Drills",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_hre/marching-drills.png",
+    "imgSrc": "/assets/pictures/technology_hre/marching-drills.webp",
     "civ": ["HRE"],
     "class": "tech",
     "description": "Increase the movement speed of infantry and religious units by +10%.",
@@ -2747,7 +2747,7 @@
   {
     "title": "Heavy Maces",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_hre/heavy-maces.png",
+    "imgSrc": "/assets/pictures/technology_hre/heavy-maces.webp",
     "civ": ["HRE"],
     "class": "tech",
     "description": "Men-at-Arms wield maces, increasing their bonus damage against heavy targets by +6.",
@@ -2769,7 +2769,7 @@
   {
     "title": "Two-Handed Weapons",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_hre/two-handed-weapon.png",
+    "imgSrc": "/assets/pictures/technology_hre/two-handed-weapon.webp",
     "civ": ["HRE"],
     "class": "tech",
     "description": "Men-at-Arms wield two-handed weapons, increasing their damage by +2.",
@@ -2791,7 +2791,7 @@
   {
     "title": "Fire Stations",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_hre/fire-stations.png",
+    "imgSrc": "/assets/pictures/technology_hre/fire-stations.webp",
     "civ": ["DRA", "HRE"],
     "class": "tech",
     "description": "Military Ships regenerate +1 health every 2 seconds when out of combat.",
@@ -2813,7 +2813,7 @@
   {
     "title": "Inspired Warriors",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_hre/inspired-warriors.png",
+    "imgSrc": "/assets/pictures/technology_hre/inspired-warriors.webp",
     "civ": ["DRA", "HRE"],
     "class": "tech",
     "description": "Prelates increase their move speed by 10% and can inspire military units, improving their armor by +1, and damage by +15%.",
@@ -2835,7 +2835,7 @@
   {
     "title": "Riveted Chain Mail",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_hre/riveted-chain-mail-2.png",
+    "imgSrc": "/assets/pictures/technology_hre/riveted-chain-mail-2.webp",
     "civ": [],
     "class": "tech",
     "description": "Increase the melee armor of Spearmen and Horsemen by +2.",
@@ -2857,7 +2857,7 @@
   {
     "title": "Awl Pikes",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_hre/awl-pike.png",
+    "imgSrc": "/assets/pictures/technology_hre/awl-pike.webp",
     "civ": ["HRE"],
     "class": "tech",
     "description": "Grants +3 damage to Spearmen and Horsemen.",
@@ -2879,7 +2879,7 @@
   {
     "title": "Steel Barding",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_hre/steel-barding-3.png",
+    "imgSrc": "/assets/pictures/technology_hre/steel-barding-3.webp",
     "civ": ["HRE"],
     "class": "tech",
     "description": "Grants Knights +2 melee and +2 ranged armor.",
@@ -2901,7 +2901,7 @@
   {
     "title": "Network of Citadels",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_english/network-of-citadels.png",
+    "imgSrc": "/assets/pictures/technology_english/network-of-citadels.webp",
     "civ": ["ENG"],
     "class": "tech",
     "description": "Increase the Network of Castles attack speed bonus from +20% to +40%.",
@@ -2923,7 +2923,7 @@
   {
     "title": "Arrow Volley",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_english/arrow-volley.png",
+    "imgSrc": "/assets/pictures/technology_english/arrow-volley.webp",
     "civ": ["ENG"],
     "class": "tech",
     "description": "Longbowmen gain Arrow Volley, an activated ability that reduces their time to attack by +1 second for a duration of 6 seconds.",
@@ -2945,7 +2945,7 @@
   {
     "title": "Setup Camp",
     "age": "2",
-    "imgSrc": "/assets/pictures/technology_english/setup-camp.png",
+    "imgSrc": "/assets/pictures/technology_english/setup-camp.webp",
     "civ": ["ENG"],
     "class": "tech",
     "deprecated": true
@@ -2953,7 +2953,7 @@
   {
     "title": "Armor Clad",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_english/armor-clad.png",
+    "imgSrc": "/assets/pictures/technology_english/armor-clad.webp",
     "civ": ["ENG"],
     "class": "tech",
     "description": "Increase the ranged and melee armor of Men-at-Arms by +2.",
@@ -2975,7 +2975,7 @@
   {
     "title": "Admiralty",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_english/admiralty-2.png",
+    "imgSrc": "/assets/pictures/technology_english/admiralty-2.webp",
     "civ": ["ENG", "HOL"],
     "class": "tech",
     "description": "Increase the range of combat ships by +1.",
@@ -2997,7 +2997,7 @@
   {
     "title": "Shattering Projectiles",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_english/shattering-projectiles.png",
+    "imgSrc": "/assets/pictures/technology_english/shattering-projectiles.webp",
     "civ": ["ENG"],
     "class": "tech",
     "description": "Trebuchet projectiles shatter on impact, increasing their area of effect.",
@@ -3019,7 +3019,7 @@
   {
     "title": "Muster the Nobles",
     "age": 2,
-    "imgSrc": "/assets/pictures/ability_lancaster/call_to_arms.png",
+    "imgSrc": "/assets/pictures/ability_lancaster/call_to_arms.webp",
     "civ": ["HOL"],
     "class": "tech",
     "id": "muster-the-nobles",
@@ -3029,7 +3029,7 @@
   {
     "title": "Shire Levy",
     "age": 2,
-    "imgSrc": "/assets/pictures/ability_lancaster/shire_levy_2.png",
+    "imgSrc": "/assets/pictures/ability_lancaster/shire_levy_2.webp",
     "civ": ["HOL"],
     "class": "tech",
     "id": "shire-levy",
@@ -3039,7 +3039,7 @@
   {
     "title": "Exact Militia Program",
     "age": 3,
-    "imgSrc": "/assets/pictures/ability_lancaster/shire_levy_3.png",
+    "imgSrc": "/assets/pictures/ability_lancaster/shire_levy_3.webp",
     "civ": ["HOL"],
     "class": "tech",
     "id": "exact-militia-program",
@@ -3049,7 +3049,7 @@
   {
     "title": "Iron Clamps",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/iron_clamps.png",
+    "imgSrc": "/assets/pictures/technology_templar/iron_clamps.webp",
     "civ": ["KTE"],
     "class": "tech",
     "id": "iron-clamps",
@@ -3059,7 +3059,7 @@
   {
     "title": "Trebuchet Emplacement",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/trebuchet_emplacement.png",
+    "imgSrc": "/assets/pictures/technology_templar/trebuchet_emplacement.webp",
     "civ": ["KTE"],
     "class": "tech",
     "id": "trebuchet-emplacement",
@@ -3069,7 +3069,7 @@
   {
     "title": "Banco Repairs",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_malians/banco-repairs-2.png",
+    "imgSrc": "/assets/pictures/technology_malians/banco-repairs-2.webp",
     "civ": ["MAL"],
     "class": "tech",
     "description": "Buildings are repaired +50% faster.",
@@ -3091,7 +3091,7 @@
   {
     "title": "Farima Leadership",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_malians/farima-leadership-4.png",
+    "imgSrc": "/assets/pictures/technology_malians/farima-leadership-4.webp",
     "civ": ["MAL"],
     "class": "tech",
     "description": "Sofa increase the movement speed of nearby infantry by +15%.",
@@ -3113,7 +3113,7 @@
   {
     "title": "Imported Armor",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_malians/imported-armor-3.png",
+    "imgSrc": "/assets/pictures/technology_malians/imported-armor-3.webp",
     "civ": ["MAL"],
     "class": "tech",
     "description": "Increase armor of Sofa by +2.",
@@ -3135,7 +3135,7 @@
   {
     "title": "Local Knowledge",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_malians/local-knowledge-4.png",
+    "imgSrc": "/assets/pictures/technology_malians/local-knowledge-4.webp",
     "civ": ["MAL"],
     "class": "tech",
     "description": "Musofadi units heal while in Stealth for +2 every 1 seconds.",
@@ -3157,7 +3157,7 @@
   {
     "title": "Poisoned Arrows",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_malians/poisoned-arrows-3.png",
+    "imgSrc": "/assets/pictures/technology_malians/poisoned-arrows-3.webp",
     "civ": ["MAL"],
     "class": "tech",
     "description": "Archer arrows deal an additional 3 damage over 6 seconds.",
@@ -3179,7 +3179,7 @@
   {
     "title": "Precision Training",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_malians/precision-training-4.png",
+    "imgSrc": "/assets/pictures/technology_malians/precision-training-4.webp",
     "civ": ["MAL"],
     "class": "tech",
     "description": "Increase ranged damage of Donso by +6, Archers by +2, and Javelin Throwers by +3.",
@@ -3201,7 +3201,7 @@
   {
     "title": "Canoe Tactics",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_malians/canoe-tactics-2.png",
+    "imgSrc": "/assets/pictures/technology_malians/canoe-tactics-2.webp",
     "civ": ["MAL"],
     "class": "tech",
     "description": "Archer Ships fire an additional 2 Javelin weapons.",
@@ -3223,7 +3223,7 @@
   {
     "title": "Whistling Arrows",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_mongols/whistling-arrows.png",
+    "imgSrc": "/assets/pictures/technology_mongols/whistling-arrows.webp",
     "civ": ["MON"],
     "class": "tech",
     "description": "Increase the Khan's Signal Arrow duration by +5 seconds and range by +2 tiles.",
@@ -3245,7 +3245,7 @@
   {
     "title": "Yam Network",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_mongols/yam-network.png",
+    "imgSrc": "/assets/pictures/technology_mongols/yam-network.webp",
     "civ": ["MON"],
     "class": "tech",
     "description": "Yam speed aura applies to all units instead of just Traders and cavalry units. Does not apply to siege engines.",
@@ -3267,7 +3267,7 @@
   {
     "title": "Additional Torches",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_mongols/additional-torches.png",
+    "imgSrc": "/assets/pictures/technology_mongols/additional-torches.webp",
     "civ": ["MON"],
     "class": "tech",
     "description": "Increase the torch damage of all infantry and cavalry by +3.",
@@ -3289,7 +3289,7 @@
   {
     "title": "Steppe Lancers",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_mongols/steppe-lancers.png",
+    "imgSrc": "/assets/pictures/technology_mongols/steppe-lancers.webp",
     "civ": ["MON"],
     "class": "tech",
     "description": "Increase Keshik healing by +1 Health per attack and attack speed by +10%.",
@@ -3311,7 +3311,7 @@
   {
     "title": "Monastic Shrines",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_mongols/monastic-shrines.png",
+    "imgSrc": "/assets/pictures/technology_mongols/monastic-shrines.webp",
     "civ": ["MON"],
     "class": "tech",
     "description": "Prayer Tents allow Improved Production within their influence even without an Ovoo.",
@@ -3333,7 +3333,7 @@
   {
     "title": "Siha Bow Limbs",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_mongols/siha-bow-limbs.png",
+    "imgSrc": "/assets/pictures/technology_mongols/siha-bow-limbs.webp",
     "civ": ["MON"],
     "class": "tech",
     "description": "Increase the ranged damage of Mangudai and the Khan by +1.",
@@ -3355,7 +3355,7 @@
   {
     "title": "Armored Hull",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_naval/armored-hull.png",
+    "imgSrc": "/assets/pictures/technology_naval/armored-hull.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3396,7 +3396,7 @@
   {
     "title": "Shipwrights",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_naval/shipwrights-4.png",
+    "imgSrc": "/assets/pictures/technology_naval/shipwrights-4.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3437,7 +3437,7 @@
   {
     "title": "Springald Crews",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_naval/springald-crews-3.png",
+    "imgSrc": "/assets/pictures/technology_naval/springald-crews-3.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3478,7 +3478,7 @@
   {
     "title": "Incendiaries",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_naval/incendiaries-3.png",
+    "imgSrc": "/assets/pictures/technology_naval/incendiaries-3.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3519,7 +3519,7 @@
   {
     "title": "Herbal Medicine",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_religious/herbal-medicine.png",
+    "imgSrc": "/assets/pictures/technology_religious/herbal-medicine.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3559,7 +3559,7 @@
   {
     "title": "Piety",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_religious/piety.png",
+    "imgSrc": "/assets/pictures/technology_religious/piety.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3599,7 +3599,7 @@
   {
     "title": "Shinto Rituals",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_japanese/shinto_rituals.png",
+    "imgSrc": "/assets/pictures/technology_japanese/shinto_rituals.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increases Shinto Priest health by +40, healing rate by +60%, and movement speed by +15%.",
@@ -3621,7 +3621,7 @@
   {
     "title": "Gion Festival",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/gion_festival.png",
+    "imgSrc": "/assets/pictures/technology_japanese/gion_festival.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increases the Line of Sight of all buildings by +2 tiles. Every 3 minutes, all economic units heal for 100% of their health over 3 seconds.",
@@ -3643,7 +3643,7 @@
   {
     "title": "Bunrei",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/bunrei.png",
+    "imgSrc": "/assets/pictures/technology_japanese/bunrei.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increases the maximum number of Yorishiro by +2. Immediately produces 2 Yorishiro at the Floating Gate.",
@@ -3665,7 +3665,7 @@
   {
     "title": "Zen",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_japanese/zen.png",
+    "imgSrc": "/assets/pictures/technology_japanese/zen.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Buddhist Monks generate 25 gold every 60 seconds.",
@@ -3687,7 +3687,7 @@
   {
     "title": "Nehan",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/nehan.png",
+    "imgSrc": "/assets/pictures/technology_japanese/nehan.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Upgrades Buddhist Conversion to Nehan Conversion, which has a 25% shorter cooldown and additionally improves nearby allied units movement speed by +25% when cast.",
@@ -3709,7 +3709,7 @@
   {
     "title": "Five Mountain Ministries",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/five_ministries.png",
+    "imgSrc": "/assets/pictures/technology_japanese/five_ministries.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Buddhist Temples cast Sohei Sutra on a nearby enemy every 6 seconds.",
@@ -3731,7 +3731,7 @@
   {
     "title": "Tithe Barns",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_religious/tithe-barns.png",
+    "imgSrc": "/assets/pictures/technology_religious/tithe-barns.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3771,7 +3771,7 @@
   {
     "title": "Janissary Guns",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_ottomans/janissary-guns-4.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/janissary-guns-4.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Increase Janissary gun damage by +3.",
@@ -3793,7 +3793,7 @@
   {
     "title": "Imperial Fleet",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_ottomans/imperial-fleet-4.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/imperial-fleet-4.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Increase the production speed of Gunpowder Ships by 25% and their movement speed by 25%.",
@@ -3815,7 +3815,7 @@
   {
     "title": "Advanced Academy",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/advanced-academy-1.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/advanced-academy-1.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Outfits Military Schools with the ability to produce Lancers and Janissaries.",
@@ -3826,7 +3826,7 @@
   {
     "title": "Extensive Fortifications",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/extensive-fortifications.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/extensive-fortifications.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "All garrison arrows are replaced with crossbow bolts, which deal +2 bonus damage vs. heavy units.",
@@ -3837,7 +3837,7 @@
   {
     "title": "Timariots",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/timariots.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/timariots.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Enables Cavalry Archers to be trained from the Archery Range and Military School.",
@@ -3848,7 +3848,7 @@
   {
     "title": "Pax Ottomana",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/pax-ottomana.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/pax-ottomana.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Villager production speed increased by +50% for 4 minutes.",
@@ -3859,7 +3859,7 @@
   {
     "title": "Great Bombard",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/great-bombard-vizier.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/great-bombard-vizier.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "A Great Bombard arrives at the Capital Town Center.",
@@ -3870,7 +3870,7 @@
   {
     "title": "Fast Training",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/fast-training-1.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/fast-training-1.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Increase production of Military Schools by +25%.",
@@ -3881,7 +3881,7 @@
   {
     "title": "Field Work",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/field-work-1.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/field-work-1.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Spawn 2 Imams at the Landmark Town Center. Imams area heal nearby units for 1 health every second. Increases to 2 health in Castle Age and 3 health in Imperial Age.",
@@ -3892,7 +3892,7 @@
   {
     "title": "Janissary Company",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/janissary-company-1.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/janissary-company-1.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Spawn 2 Janissaries for each of your Landmark Town Center and Military Schools at the Landmark Town Center.",
@@ -3903,7 +3903,7 @@
   {
     "title": "Mehter Drums",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/mehter-drums-1.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/mehter-drums-1.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Spawn 1 Mehter at the Landmark Town Center. Mehters increase move speed to units in the same formation by +15%.",
@@ -3914,7 +3914,7 @@
   {
     "title": "Military Campus",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/military-campus-1.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/military-campus-1.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Increase Military Schools that can be built by +1.",
@@ -3925,7 +3925,7 @@
   {
     "title": "Siege Crews",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_ottomans/siege-crews-1.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/siege-crews-1.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Allows all siege engines to be garrisoned by infantry. While garrisoned, attack and setup speed is increased by +25%.",
@@ -3936,7 +3936,7 @@
   {
     "title": "Great Bombard Emplacement",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_ottomans/great-bombard-emplacement.png",
+    "imgSrc": "/assets/pictures/technology_ottomans/great-bombard-emplacement.webp",
     "civ": ["OTT"],
     "class": "tech",
     "description": "Add a defensive Great Bombard emplacement to this structure.",
@@ -3958,7 +3958,7 @@
   {
     "title": "Fine Tuned Guns",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_rus/fine-tuned-guns.png",
+    "imgSrc": "/assets/pictures/technology_rus/fine-tuned-guns.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase damage of Bombards by +20%. Bombards gain +50% damage vs Infantry.",
@@ -3980,7 +3980,7 @@
   {
     "title": "Boyar's Fortitude",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_rus/boyars-fortitude.png",
+    "imgSrc": "/assets/pictures/technology_rus/boyars-fortitude.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase the health of Rus cavalry by +25.",
@@ -4002,7 +4002,7 @@
   {
     "title": "Mounted Training",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_rus/mounted-training.png",
+    "imgSrc": "/assets/pictures/technology_rus/mounted-training.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase weapon range of Horse Archers by +1 and unlock the Gallop ability.\nGallop: Activate to move at maximum speed with +2 tile weapon range for 8 seconds.",
@@ -4024,7 +4024,7 @@
   {
     "title": "Knight Poleaxes",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_rus/knight-sabers.png",
+    "imgSrc": "/assets/pictures/technology_rus/knight-sabers.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Knights equip a poleax, increasing their melee damage by +4.",
@@ -4046,7 +4046,7 @@
   {
     "title": "Siege Crew Training",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_rus/siege-crew-training.png",
+    "imgSrc": "/assets/pictures/technology_rus/siege-crew-training.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Setup and teardown speed of Mangonels, Trebuchets, and Bombards is instant.",
@@ -4068,7 +4068,7 @@
   {
     "title": "Wandering Town",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_rus/wandering-town.png",
+    "imgSrc": "/assets/pictures/technology_rus/wandering-town.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Ram damage increased by +25%. Rams heal 2 health every 1 second.",
@@ -4090,7 +4090,7 @@
   {
     "title": "Warrior Scout",
     "age": "2",
-    "imgSrc": "/assets/pictures/technology_rus/warrior_scout_2.png",
+    "imgSrc": "/assets/pictures/technology_rus/warrior_scout_2.webp",
     "civ": ["RUS"],
     "class": "tech",
     "deprecated": true
@@ -4098,7 +4098,7 @@
   {
     "title": "Divine Light",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_rus/blessing-duration.png",
+    "imgSrc": "/assets/pictures/technology_rus/blessing-duration.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase the duration of Saint's Blessing by +10 seconds.",
@@ -4120,7 +4120,7 @@
   {
     "title": "Fervor",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_rus/improved-blessing.png",
+    "imgSrc": "/assets/pictures/technology_rus/improved-blessing.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Improve the range of Saint's Blessing by +5 tiles and the damage granted by Saint's Blessing by +1.",
@@ -4142,7 +4142,7 @@
   {
     "title": "Saint's Veneration",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_rus/saints-veneration-4.png",
+    "imgSrc": "/assets/pictures/technology_rus/saints-veneration-4.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase the health of Warrior Monks by +100.",
@@ -4164,7 +4164,7 @@
   {
     "title": "Banded Arms",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_rus/banded-arms.png",
+    "imgSrc": "/assets/pictures/technology_rus/banded-arms.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase the range of Springalds by +0.5 tiles.",
@@ -4186,7 +4186,7 @@
   {
     "title": "Double Time",
     "age": "4",
-    "imgSrc": "/assets/pictures/technology_rus/double-time.png",
+    "imgSrc": "/assets/pictures/technology_rus/double-time.webp",
     "civ": ["RUS"],
     "class": "tech",
     "deprecated": true
@@ -4194,7 +4194,7 @@
   {
     "title": "Castle Watch",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_rus/castle-watch.png",
+    "imgSrc": "/assets/pictures/technology_rus/castle-watch.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase the sight range of this Wooden Fortress by 6 tiles.",
@@ -4216,7 +4216,7 @@
   {
     "title": "Castle Turret",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_rus/castle-turret.png",
+    "imgSrc": "/assets/pictures/technology_rus/castle-turret.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Increase the damage of arrows fired from this Wooden Fortress by +2.",
@@ -4238,7 +4238,7 @@
   {
     "title": "Adaptable Hulls",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_rus/adaptable-hulls-3.png",
+    "imgSrc": "/assets/pictures/technology_rus/adaptable-hulls-3.webp",
     "civ": ["RUS"],
     "class": "tech",
     "description": "Converting between Lodya Ship types is 50% faster and no longer has a cost penalty.",
@@ -4260,7 +4260,7 @@
   {
     "title": "Heavy Dromon",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_byzantines/heavy-dromon-3.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/heavy-dromon-3.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Upgrade all Dromons to leave Greek Fire on the surface or ground where they attack. Man The Sails cooldown also reduced to 20 seconds.",
@@ -4282,7 +4282,7 @@
   {
     "title": "Liquid Explosives",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_byzantines/liquid-explosives-3.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/liquid-explosives-3.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Incendiary Ships deal full damage to all enemies in their explosion radius.",
@@ -4304,7 +4304,7 @@
   {
     "title": "Eastern Mercenary Contract",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_byzantines/eastern-mercenary-contract-1.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/eastern-mercenary-contract-1.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Unlocks production of Keshik, Ghulam, and Tower Elephant mercenaries.\nKeshik: Feudal Age\nGhulam: Veteran contract\nTower Elephant: Elite contract",
@@ -4315,7 +4315,7 @@
   {
     "title": "Silk Road Mercenary Contract",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_byzantines/silk-road-mercenary-contract-1.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/silk-road-mercenary-contract-1.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Unlocks production of Javelin Thrower, Camel Rider, and Grenadier mercenaries.\nJavelin Thrower: Feudal Age\nCamel Rider: Veteran contract\nGrenadier: Elite contract",
@@ -4326,7 +4326,7 @@
   {
     "title": "Western Mercenary Contract",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_byzantines/western-mercenary-contract-1.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/western-mercenary-contract-1.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Unlocks production of Longbowman, Landsknecht, and Streltsy mercenaries.\nLongbowman: Feudal Age\nLandsknecht: Veteran contract\nStreltsy: Elite contract",
@@ -4337,7 +4337,7 @@
   {
     "title": "Veteran Contract",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_byzantines/veteran-mercenaries-3.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/veteran-mercenaries-3.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Upgrade Hardened Mercenaries to Veteran Mercenaries.",
@@ -4359,7 +4359,7 @@
   {
     "title": "Elite Contract",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_byzantines/elite-mercenaries-4.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/elite-mercenaries-4.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Upgrade Veteran Mercenaries to Elite Mercenaries.",
@@ -4381,7 +4381,7 @@
   {
     "title": "Billmen",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_lancaster/billmen.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/billmen.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Spearmen equip tempered Bills, reducing the armor of enemies by -2 when attacking.",
@@ -4392,7 +4392,7 @@
   {
     "title": "Condensed Land Practices",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_lancaster/condensed_land_practices.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/condensed_land_practices.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Advancements in feudal land distribution practices increase the build limit of Manors by +3 and their health by +200.",
@@ -4403,7 +4403,7 @@
   {
     "title": "Open Field System",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_lancaster/open_field_system.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/open_field_system.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Advancements in feudal land distribution practices increase the build limit of Manors by +3 and their health by +300.",
@@ -4414,7 +4414,7 @@
   {
     "title": "Burgundian Imports",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_lancaster/burgundian_imports.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/burgundian_imports.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Importing Burgundian Handcannons enables Handcannoneers to be trained in the Castle Age and reduces Handcannoneer cost by -25%.",
@@ -4425,7 +4425,7 @@
   {
     "title": "Collar of Esses",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_lancaster/collar_of_esses.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/collar_of_esses.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Your Knights and Demilancers adorn their armor with the Lancaster livery, gaining +6 bonus damage against enemy armored units.",
@@ -4436,7 +4436,7 @@
   {
     "title": "Synchronized Shot",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_lancaster/synchronized_shot.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/synchronized_shot.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Unlocks the Synchronized Shot ability for Yeomen.",
@@ -4447,7 +4447,7 @@
   {
     "title": "Warwolf Trebuchet",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_lancaster/warwolf_trebuchet.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/warwolf_trebuchet.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Experience from building larger trebuchets increases their range by +2 and health by +50%.",
@@ -4458,7 +4458,7 @@
   {
     "title": "Padded Jack",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_lancaster/padded_jack.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/padded_jack.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Equip your Yeomen and Spearmen with Padded Jacks, improving their melee armor by +3.",
@@ -4469,7 +4469,7 @@
   {
     "title": "Scutage",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_lancaster/scutage.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/scutage.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "The Lord of Lancaster levies a tax on all vassals to fund war efforts. Manors generate 40 gold per minute.",
@@ -4480,7 +4480,7 @@
   {
     "title": "Ships of the Crown",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_lancaster/ships_of_the_crown.png",
+    "imgSrc": "/assets/pictures/technology_lancaster/ships_of_the_crown.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Investing in bigger and better ship hulls increases Carrack damage by 20%, health by 20%, and range by 20%.",
@@ -4491,7 +4491,7 @@
   {
     "title": "Throwing Dagger Drills",
     "age": 4,
-    "imgSrc": "/assets/pictures/ability_lancaster/earls_guard.png",
+    "imgSrc": "/assets/pictures/ability_lancaster/earls_guard.webp",
     "civ": ["HOL"],
     "class": "tech",
     "description": "Earl's Guards are supplied with additional Daggers when throwing, these Daggers also deal a small amount of area damage. Earl's Guards now throw 2 Daggers but are less accurate.",
@@ -4502,7 +4502,7 @@
   {
     "title": "Desert Citadels",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/desert_citadel.png",
+    "imgSrc": "/assets/pictures/technology_templar/desert_citadel.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Improves the Desert Outposts aura on Fortresses to also increase the armor of nearby units by +1/+1.",
@@ -4513,7 +4513,7 @@
   {
     "title": "Kingdom of France",
     "age": 2,
-    "imgSrc": "/assets/pictures/civilization_flag/kof.png",
+    "imgSrc": "/assets/pictures/civilization_flag/kof.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Military units are produced +15% faster and cost -5% gold.",
@@ -4524,7 +4524,7 @@
   {
     "title": "Knights Hospitaller",
     "age": 2,
-    "imgSrc": "/assets/pictures/civilization_flag/hos.png",
+    "imgSrc": "/assets/pictures/civilization_flag/hos.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Increases the health of all civilian units by +30% and increases healing from all sources by +30%.",
@@ -4535,7 +4535,7 @@
   {
     "title": "Principality of Antioch",
     "age": 2,
-    "imgSrc": "/assets/pictures/civilization_flag/ant.png",
+    "imgSrc": "/assets/pictures/civilization_flag/ant.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Melee units gain +10% damage.",
@@ -4546,7 +4546,7 @@
   {
     "title": "Angevin Empire",
     "age": 3,
-    "imgSrc": "/assets/pictures/civilization_flag/ang.png",
+    "imgSrc": "/assets/pictures/civilization_flag/ang.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Fortresses and Docks gain +30% Health.",
@@ -4557,7 +4557,7 @@
   {
     "title": "Kingdom of Castile",
     "age": 3,
-    "imgSrc": "/assets/pictures/civilization_flag/koc.png",
+    "imgSrc": "/assets/pictures/civilization_flag/koc.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Units near Sacred Sites gain +20% damage and regenerate health.",
@@ -4568,7 +4568,7 @@
   {
     "title": "Republic of Genoa",
     "age": 3,
-    "imgSrc": "/assets/pictures/civilization_flag/gen.png",
+    "imgSrc": "/assets/pictures/civilization_flag/gen.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Pilgrims generate +30% gold.",
@@ -4579,7 +4579,7 @@
   {
     "title": "Kingdom of Poland",
     "age": 4,
-    "imgSrc": "/assets/pictures/civilization_flag/pol.png",
+    "imgSrc": "/assets/pictures/civilization_flag/pol.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "All Cavalry gain +10% health and +50% charge damage.",
@@ -4590,7 +4590,7 @@
   {
     "title": "Republic of Venice",
     "age": 4,
-    "imgSrc": "/assets/pictures/civilization_flag/ven.png",
+    "imgSrc": "/assets/pictures/civilization_flag/ven.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Reduces the change in the base buy or sell price by 75% when trading resources at the Market.",
@@ -4601,7 +4601,7 @@
   {
     "title": "Teutonic Order",
     "age": 4,
-    "imgSrc": "/assets/pictures/civilization_flag/teu.png",
+    "imgSrc": "/assets/pictures/civilization_flag/teu.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "All gold units gain +2 melee armor.",
@@ -4612,7 +4612,7 @@
   {
     "title": "Rule of Templars",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/ruleoftemplar.png",
+    "imgSrc": "/assets/pictures/technology_templar/ruleoftemplar.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Gain +2 charge damage per nearby charging Heavy Cavalry.",
@@ -4623,7 +4623,7 @@
   {
     "title": "Brigandine",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/brigandine.png",
+    "imgSrc": "/assets/pictures/technology_templar/brigandine.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Common soldiers are equipped with more resistant armor. Light cavalry gain +2 armor.",
@@ -4634,7 +4634,7 @@
   {
     "title": "Counterweight Defenses",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/counterweight_defenses.png",
+    "imgSrc": "/assets/pictures/technology_templar/counterweight_defenses.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "All Trebuchet weapons gain +1 additional projectiles.",
@@ -4645,7 +4645,7 @@
   {
     "title": "Cranequins",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/cranequins.png",
+    "imgSrc": "/assets/pictures/technology_templar/cranequins.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Crossbows are able to load stronger bolts that have +0.5 range and +2 damage.",
@@ -4656,7 +4656,7 @@
   {
     "title": "Fanaticism",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_templar/fanaticism.png",
+    "imgSrc": "/assets/pictures/technology_templar/fanaticism.webp",
     "civ": ["KTE"],
     "class": "tech",
     "description": "Templar Brothers and Commanderie units gain +10% damage when below 50% health, and +30% when below 25% health.",
@@ -4667,7 +4667,7 @@
   {
     "title": "Explosives",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/explosives-4.png",
+    "imgSrc": "/assets/pictures/technology_japanese/explosives-4.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -4708,7 +4708,7 @@
   {
     "title": "Heated Shot",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/heated-shot-4.png",
+    "imgSrc": "/assets/pictures/technology_japanese/heated-shot-4.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -4749,7 +4749,7 @@
   {
     "title": "Swivel Cannon",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/swivel-cannon-4.png",
+    "imgSrc": "/assets/pictures/technology_japanese/swivel-cannon-4.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -4789,7 +4789,7 @@
   {
     "title": "Oda Tactics",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_japanese/oda-tactics-4.png",
+    "imgSrc": "/assets/pictures/technology_japanese/oda-tactics-4.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increase health, damage, and torch damage of melee infantry by 20%.",
@@ -4811,7 +4811,7 @@
   {
     "title": "Daimyo Manor",
     "age": 1,
-    "imgSrc": "/assets/pictures/technology_japanese/daimyo-manor-1.png",
+    "imgSrc": "/assets/pictures/technology_japanese/daimyo-manor-1.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increases the production cap of Bannerman Samurai by +1 and provides a free Villager.\nIncreases Town Center health by +1000, adds an additional arrow slit, and adds an aura which enhances Villagers harvest rate from Farms by +25%.",
@@ -4833,7 +4833,7 @@
   {
     "title": "Daimyo Palace",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_japanese/daimyo-palace-2.png",
+    "imgSrc": "/assets/pictures/technology_japanese/daimyo-palace-2.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increases the production cap of Bannerman Samurai by +2 and provides a free Villager.\nIncreases Town Center health by +2000, fire armor by +2, adds an additional arrow slit, and adds an aura which enhances Villagers harvest rate from Farms by +50%.",
@@ -4855,7 +4855,7 @@
   {
     "title": "Shogunate Castle",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_japanese/shogunate-castle-3.png",
+    "imgSrc": "/assets/pictures/technology_japanese/shogunate-castle-3.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Increases the production cap of Bannerman Samurai by +3 and provides a free Villager.\nIncreases Town Center health by +3000, fire armor by +3, adds an aura which enhances Villagers harvest rate from Farms by +75%, and equips a Rocket Emplacement.",
@@ -4877,7 +4877,7 @@
   {
     "title": "Kabura-ya Whistling Arrow",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_japanese/kabura-ya-whistling-arrow-3.png",
+    "imgSrc": "/assets/pictures/technology_japanese/kabura-ya-whistling-arrow-3.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Onna-Musha fire a whistling arrow when an enemy is seen, increasing move speed for 10 seconds.",
@@ -4899,7 +4899,7 @@
   {
     "title": "Odachi",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_japanese/odachi-3.png",
+    "imgSrc": "/assets/pictures/technology_japanese/odachi-3.webp",
     "civ": ["JAP"],
     "class": "tech",
     "description": "Equip Samurai with an Odachi, a long sword that deals +4 bonus damage against infantry.",
@@ -4921,7 +4921,7 @@
   {
     "title": "Border Settlements",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_byzantines/border-settlements-2.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/border-settlements-2.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Increase House line of sight by 7 tiles and improve their construction speed by 500%.",
@@ -4943,7 +4943,7 @@
   {
     "title": "Expilatores",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_byzantines/expilatores-2.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/expilatores-2.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Horseman damage vs. Workers increased by +2. Workers killed by your Horsemen reward +20 Gold.",
@@ -4965,7 +4965,7 @@
   {
     "title": "Trapezites",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_byzantines/trapezites-2.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/trapezites-2.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Scouts enhance the torch damage of nearby units by 25%",
@@ -4987,7 +4987,7 @@
   {
     "title": "Greek Fire Projectiles",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_byzantines/greek-fire-projectiles-4.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/greek-fire-projectiles-4.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Counterweight Trebuchets deal +30% increased damage and engulf their target with Greek Fire, dealing area damage. Greek Fire does not stack with other patches.",
@@ -5009,7 +5009,7 @@
   {
     "title": "Numeri",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_byzantines/numeri-4.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/numeri-4.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Enemy units hit by Trample become vulnerable and receive +15% increased damage for 12 seconds.",
@@ -5031,7 +5031,7 @@
   {
     "title": "Teardrop Shields",
     "age": 3,
-    "imgSrc": "/assets/pictures/technology_byzantines/teardrop-shields-3.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/teardrop-shields-3.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Increase the armor of Cataphracts by +1, move speed of Limitanei by +15%, and attack speed of Varangian Guard by +15%.",
@@ -5053,7 +5053,7 @@
   {
     "title": "Ferocious Speed",
     "age": 4,
-    "imgSrc": "/assets/pictures/technology_byzantines/ferocious-speed-4.png",
+    "imgSrc": "/assets/pictures/technology_byzantines/ferocious-speed-4.webp",
     "civ": ["BYZ"],
     "class": "tech",
     "description": "Varangian Guard increase their move speed by +30% when activating Berserking.",

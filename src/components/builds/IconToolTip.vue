@@ -18,37 +18,37 @@
         <v-col cols="3" v-if="icon.costs.food">
           <v-row no-gutters class="mr-4" align="center" justify="start">
             {{ icon.costs.food }}
-            <v-img class="titleIconXs" src="/assets/resources/food.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/food.webp"></v-img>
           </v-row>
         </v-col>
         <v-col cols="3" v-if="icon.costs.wood">
           <v-row no-gutters class="mr-4" align="center" justify="start">
             {{ icon.costs.wood }}
-            <v-img class="titleIconXs" src="/assets/resources/wood.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/wood.webp"></v-img>
           </v-row>
         </v-col>
         <v-col cols="3" v-if="icon.costs.stone">
           <v-row no-gutters class="mr-4" align="center" justify="start">
             {{ icon.costs.stone }}
-            <v-img class="titleIconXs" src="/assets/resources/stone.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/stone.webp"></v-img>
           </v-row>
         </v-col>
         <v-col cols="3" v-if="icon.costs.gold">
           <v-row no-gutters class="mr-4" align="center" justify="start">
             {{ icon.costs.gold }}
-            <v-img class="titleIconXs" src="/assets/resources/gold.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/gold.webp"></v-img>
           </v-row>
         </v-col>
         <v-col cols="3" v-if="icon.costs.oliveoil">
           <v-row no-gutters class="mr-4" align="center" justify="start">
             {{ icon.costs.oliveoil }}
-            <v-img class="titleIconXs" src="/assets/resources/oliveoil.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/oliveoil.webp"></v-img>
           </v-row>
         </v-col>
         <v-col cols="3" v-if="icon.costs.time">
           <v-row no-gutters class="mr-4" align="center" justify="start">
             {{ icon.costs.time }}s
-            <v-img class="titleIconXs" src="/assets/resources/time.png"></v-img>
+            <v-img class="titleIconXs" src="/assets/resources/time.webp"></v-img>
           </v-row>
         </v-col>
       </v-row>

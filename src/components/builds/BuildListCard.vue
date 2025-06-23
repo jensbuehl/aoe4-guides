@@ -37,8 +37,8 @@
       <v-col v-if="!build.civ" cols="3" class="pa-0 ma-0">
         <v-img
           :min-height="height"
-          src="/assets/flags/any-large.png"
-          lazy-src="/assets/flags/any-small.png"
+          src="/assets/flags/any-large.webp"
+          lazy-src="/assets/flags/any-small.webp"
           :gradient="'to right, transparent, ' + $vuetify.theme.current.colors.surface"
           alt="{{build.civ}}"
           cover

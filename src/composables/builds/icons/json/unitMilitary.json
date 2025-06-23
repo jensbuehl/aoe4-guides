@@ -2,7 +2,7 @@
   {
     "title": "Scout",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_cavalry/scout.png",
+    "imgSrc": "/assets/pictures/unit_cavalry/scout.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -43,7 +43,7 @@
   {
     "title": "Spearman",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_infantry/spearman-1.png",
+    "imgSrc": "/assets/pictures/unit_infantry/spearman-1.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -82,7 +82,7 @@
   {
     "title": "Gilded Spearman",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-spearman-1.png",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-spearman-1.webp",
     "civ": ["DRA"],
     "class": "military",
     "shorthand": ["spear"],
@@ -105,7 +105,7 @@
   {
     "title": "Limitanei",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_byzantines/limitanei-1.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/limitanei-1.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Infantry best used against cavalry. Can enter Shield Wall to take reduced ranged damage.\n+ Anti-cavalry specialist\n+ Increased health\n- Shield Wall reduces move speed\n- Weak vs armored infantry\n- Countered by Archers",
@@ -127,7 +127,7 @@
   {
     "title": "Camel Archer",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/camel-archer-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/camel-archer-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Highly mobile and durable ranged unit.\n+Bonus damage vs Spearmen\n-High cost",
@@ -149,7 +149,7 @@
   {
     "title": "Camel Rider",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/camel-rider-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/camel-rider-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Highly mobile and durable melee unit effective against all cavalry.\n+Bonus damage to cavalry\n+Causes enemy cavalry to deal less damage\n-High cost",
@@ -171,7 +171,7 @@
   {
     "title": "Ghulam",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/ghulam-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/ghulam-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Tough infantry that deal two attacks in rapid succession.\n+ High armor\n+ Higher attack damage on charge\n- Lower base attack damage than a Man-at-Arms\n- Slow movement\n- Countered by Knights, Lancers, and Crossbowmen",
@@ -193,7 +193,7 @@
   {
     "title": "Desert Raider",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/desert-raider-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/desert-raider-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Versatile Cavalry unit that can swap between ranged and melee attacks with a toggle.\n+ Effective against Light Infantry in Ranged Mode\n+ Effective against Cavalry in Melee Mode\n- High cost\n- Weak to Ranged units",
@@ -215,7 +215,7 @@
   {
     "title": "Arbalétrier",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/arbaletrier-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/arbaletrier-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "High damage ranged unit with a defensive pavise shield. Best used when supported by others.\n+ Anti-armor specialist\n+ Comes with melee armor\n- Low health\n- Countered by Horsemen\n\nMercenary that can be purchased per 4 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -237,7 +237,7 @@
   {
     "title": "Grenadier",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_byzantines/grenadier-4.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/grenadier-4.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Advanced ranged infantry with thrown explosive canisters that deal damage in a small area.\n+ Deals area damage\n- Low single target damage\n- Slow movement speed\n\nMercenary that can be purchased per 2 units for a total of 480 Olive Oil.\n\nRequires the Silk Road Contract.",
@@ -259,7 +259,7 @@
   {
     "title": "Horse Archer",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/horse-archer-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/horse-archer-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Highly mobile ranged cavalry effective against slower melee units.\n+ High mobility\n- Weak vs ranged units\n\nMercenary that can be purchased per 3 units for a total of 360 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -281,7 +281,7 @@
   {
     "title": "Javelin Thrower",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/javelin-thrower-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/javelin-thrower-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Ranged infantry effective against other ranged units.\n+ Anti-ranged specialist\n+ Increased weapon range\n+ Comes with ranged armor\n- Low health\n- Countered by Horsemen",
@@ -303,7 +303,7 @@
   {
     "title": "Keshik",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/keshik-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/keshik-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Expensive cavalry with high damage and a powerful charge attack. Effective against most units.\n+ Heavy armor\n+ Strong in melee combat\n+ Restores health after every attack\n- Less health than Lancers\n- Countered by Spearmen and Crossbowmen\n\nMercenary that can be purchased per 2 units for a total of 400 Olive Oil.\n\nRequires the Eastern Mercenary Contract.",
@@ -325,7 +325,7 @@
   {
     "title": "Landsknecht",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/landsknecht-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/landsknecht-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Brave unarmored infantry with an enormous two-handed sword, effective in mixed armies.\n+ Melee attack deals area damage\n- Low health\n- Countered by Archers\n\nMercenary that can be purchased per 3 units for a total of 480 Olive Oil.\n\nRequires the Western Mercenary Contract.",
@@ -347,7 +347,7 @@
   {
     "title": "Longbowman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/longbowman-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/longbowman-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Cheap long-ranged infantry with good damage vs. unarmored targets.\n+ Long range\n+ Can construct Palings to fend off cavalry charges\n- Slow movement speed\n- Countered by Horsemen\n\nMercenary that can be purchased per 5 units for a total of 450 Olive Oil.\n\nRequires the Western Mercenary Contract.",
@@ -369,7 +369,7 @@
   {
     "title": "Mangudai",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/mangudai.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/mangudai.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Confounding mobile ranged cavalry that can fire while moving.\n+ High rate of fire\n- Low weapon range\n\nMercenary that can be purchased per 3 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -391,7 +391,7 @@
   {
     "title": "Musofadi Warrior",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/musofadi-warrior-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/musofadi-warrior-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Infantry effective at ambush attacks and countering heavy armored targets.\n+ Can enter stealth\n+ Anti-armor specialist\n- Low health\n- Countered by Archers\n- Capital Town Centers, Outposts, and Scouts can spot stealth\n\nMercenary that can be purchased per 5 units for a total of 400 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -413,7 +413,7 @@
   {
     "title": "Royal Knight",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/royal-knight-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/royal-knight-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Gain bonus damage for 5 seconds after charging. Effective against most units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen\n\nMercenary that can be purchased per 2 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -435,7 +435,7 @@
   {
     "title": "Sipahi",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/sipahi-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/sipahi-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Fast cavalry effective at raiding, flanking, and countering ranged units. Can gain attack speed at the cost of melee defense.\n+ High movement speed\n+ Strong against ranged units\n- Weak against melee units\n- Countered by Spearmen\n\nMercenary that can be purchased per 3 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -457,7 +457,7 @@
   {
     "title": "Streltsy",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_byzantines/streltsy.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/streltsy.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Most powerful ranged infantry with reasonable melee capabilities. Increased attack speed while stationary.\n+ High damage\n+ Lower cost than Handcannoneer\n- Slow movement speed\n\nMercenary that can be purchased per 3 units for a total of 720 Olive Oil.\n\nRequires the Western Mercenary Contract.",
@@ -479,7 +479,7 @@
   {
     "title": "Tower Elephant",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_byzantines/tower-elephant-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/tower-elephant-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Powerful ranged cavalry that can fire while moving.\n+ High health\n+ Mounted with powerful Archers\n+ Capable of attacking Stone Walls\n- Slow movement speed\n\nMercenary that can be purchased for 1000 Olive Oil.\n\nRequires the Eastern Mercenary Contract.",
@@ -501,7 +501,7 @@
   {
     "title": "War Elephant",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/war-elephant.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/war-elephant.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Heavy cavalry effective against cavalry, siege engines, walls, and buildings.\n+ High health and armor\n+ Mounted with an advanced Spearman\n+ Capable of attacking Stone Walls\n- Slow movement speed\n\nMercenary that can be purchased for 750 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -523,7 +523,7 @@
   {
     "title": "Zhuge Nu",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/zhuge-nu-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/zhuge-nu-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Fires bolts with a ferocious damage potential against enemy units.\n+ High rate of fire\n- Ineffective vs armored targets\n- Countered by Horsemen\n\nMercenary that can be purchased per 5 units for a total of 400 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -545,7 +545,7 @@
   {
     "title": "Samurai",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_japanese/samurai-1.png",
+    "imgSrc": "/assets/pictures/unit_japanese/samurai-1.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Heavy infantry with good damage and defense. Comes with the Deflective Armor ability that periodically blocks attacks.\n+ Heavy armor\n+ Deflective Armor recharges out of combat\n- Slow move speed\n- Countered by Knights, Lancers, and Crossbowmen",
@@ -567,7 +567,7 @@
   {
     "title": "Yumi Ashigaru",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_japanese/yumi-ashigaru-2.png",
+    "imgSrc": "/assets/pictures/unit_japanese/yumi-ashigaru-2.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Quick and cheap ranged infantry with good damage vs. unarmored targets.\n+ Increased move speed\n+ Cheaper than Archers\n- Reduced health\n- Weak against armored targets\n- Countered by Horsemen",
@@ -589,7 +589,7 @@
   {
     "title": "Archer",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_infantry/archer-2.png",
+    "imgSrc": "/assets/pictures/unit_infantry/archer-2.webp",
     "civ": ["ABB", "AYY", "BYZ", "DEL", "FRE", "HRE", "JDA", "MAL", "MON", "OTT", "RUS", "CHI", "KTE"],
     "class": "military",
     "shorthand": ["archer"],
@@ -612,7 +612,7 @@
   {
     "title": "Gilded Archer",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-archer-2.png",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-archer-2.webp",
     "civ": ["DRA"],
     "class": "military",
     "shorthand": ["archer"],
@@ -635,7 +635,7 @@
   {
     "title": "Shinobi",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_japanese/shinobi-2.png",
+    "imgSrc": "/assets/pictures/unit_japanese/shinobi-2.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Melee infantry that specializes in scouting, sabotage, and assassination.\n+ Disguise as enemy Villagers\n+ Bonus damage vs. melee\n+ Health regeneration\n- Capital Town Centers, Outposts, and Scouts can spot disguises\n\nHeals passively.",
@@ -646,7 +646,7 @@
   {
     "title": "Imperial Guard",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_zhuxi/imperial-guard-1.png",
+    "imgSrc": "/assets/pictures/unit_zhuxi/imperial-guard-1.webp",
     "civ": ["ZXL"],
     "class": "military",
     "description": "Expensive cavalry with high damage and melee armor. Effective against melee units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen\n\nRequires Dynastic Protectors researched at Zhu Xi's Library.",
@@ -668,7 +668,7 @@
   {
     "title": "Onna-Bugeisha",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_japanese/onna-bugeisha-2.png",
+    "imgSrc": "/assets/pictures/unit_japanese/onna-bugeisha-2.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Light melee infantry with fast attack speed and long weapon range.\n+ Fast attack speed\n+ Fast move speed\n+ Long weapon range\n- Weak against armored targets\n- Countered by Archers, Knights",
@@ -690,7 +690,7 @@
   {
     "title": "Yumi Bannerman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_japanese/yumi-bannerman-2.png",
+    "imgSrc": "/assets/pictures/unit_japanese/yumi-bannerman-2.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Ranged Samurai with an aura that increases damage of ranged infantry. Comes with the Deflective Armor ability that periodically blocks attacks.\n+ Banner drops on death\n+ Fast move speed\n- Weak against armored targets\n- Countered by Horsemen",
@@ -712,7 +712,7 @@
   {
     "title": "Katana Bannerman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_japanese/katana-bannerman-2.png",
+    "imgSrc": "/assets/pictures/unit_japanese/katana-bannerman-2.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Samurai with an aura that increases damage of melee infantry. Comes with the Deflective Armor ability that periodically blocks attacks.\n+ Banner drops on death\n+ Heavy armor\n+ Increased move speed\n- Countered by Knights, Lancers, and Crossbowmen",
@@ -734,7 +734,7 @@
   {
     "title": "Uma Bannerman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_japanese/uma-bannerman-2.png",
+    "imgSrc": "/assets/pictures/unit_japanese/uma-bannerman-2.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Mounted Samurai with an aura that increases damage of cavalry. Comes with the Deflective Armor ability that periodically blocks attacks.\n+ Banner drops on death\n+ Fast move speed\n+ Heavy armor\n- Countered by Spearmen and Crossbowmen",
@@ -756,7 +756,7 @@
   {
     "title": "Onna-Musha",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_japanese/onna-musha-3.png",
+    "imgSrc": "/assets/pictures/unit_japanese/onna-musha-3.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Highly mobile ranged cavalry effective against heavy units.\n+ Fast move speed\n+ Long weapon range\n+ Bonus damage vs. heavy units\n- Weak vs ranged units",
@@ -778,7 +778,7 @@
   {
     "title": "Mounted Samurai",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_japanese/mounted-samurai-3.png",
+    "imgSrc": "/assets/pictures/unit_japanese/mounted-samurai-3.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Expensive cavalry with high damage and a powerful charge attack. Comes with the Deflective Armor ability that periodically blocks attacks.\n+ Heavy armor\n+ Deflective Armor recharges out of combat\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -800,7 +800,7 @@
   {
     "title": "Crossbowman",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_infantry/crossbowman-3.png",
+    "imgSrc": "/assets/pictures/unit_infantry/crossbowman-3.webp",
     "civ": ["ABB", "AYY", "BYZ", "CHI", "DEL", "ENG", "HRE", "JDA", "MON", "OTT", "RUS", "ZXL", "KTE", "HOL"],
     "class": "military",
     "shorthand": ["xbow"],
@@ -823,7 +823,7 @@
   {
     "title": "Gilded Crossbowman",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-crossbowman-3.png",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-crossbowman-3.webp",
     "civ": ["DRA"],
     "class": "military",
     "shorthand": ["xbow"],
@@ -846,7 +846,7 @@
   {
     "title": "Handcannoneer",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_infantry/handcannoneer-4.png",
+    "imgSrc": "/assets/pictures/unit_infantry/handcannoneer-4.webp",
     "civ": ["ABB", "AYY", "BYZ", "CHI", "DEL", "ENG", "FRE", "HRE", "JDA", "MON", "RUS", "ZXL", "HOL"],
     "class": "military",
     "description": "Powerful all-purpose ranged infantry.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
@@ -868,7 +868,7 @@
   {
     "title": "Handcannon Ashigaru",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_infantry/handcannoneer-4.png",
+    "imgSrc": "/assets/pictures/unit_infantry/handcannoneer-4.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Powerful all-purpose ranged infantry.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
@@ -890,7 +890,7 @@
   {
     "title": "Dragon Handcannoneer",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_dragon/dragon-handcannoneer-4.png",
+    "imgSrc": "/assets/pictures/unit_dragon/dragon-handcannoneer-4.webp",
     "civ": ["DRA"],
     "class": "military",
     "description": "More powerful all-purpose ranged infantry with increased attack speed.\n+ High damage\n+ Increased attack speed\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
@@ -912,7 +912,7 @@
   {
     "title": "Ozutsu",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_japanese/ozutsu-4.png",
+    "imgSrc": "/assets/pictures/unit_japanese/ozutsu-4.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Heavy ranged infantry equipped with a huge gunpowder weapon that has good weapon range, siege, and splash damage.\n+ Heavy armor\n+ Anti-building\n- Slow move speed\n- Slow attack speed\n- Countered by Horsemen and Crossbowmen",
@@ -934,7 +934,7 @@
   {
     "title": "Man-at-Arms",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_infantry/man-at-arms-1.png",
+    "imgSrc": "/assets/pictures/unit_infantry/man-at-arms-1.webp",
     "civ": ["DEL", "ENG", "FRE", "HRE", "JDA", "MON", "OTT", "RUS", "KTE"],
     "class": "military",
     "shorthand": ["maa"],
@@ -957,7 +957,7 @@
   {
     "title": "Gilded Man-at-Arms",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-man-at-arms-2.png",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-man-at-arms-2.webp",
     "civ": ["DRA"],
     "class": "military",
     "shorthand": ["maa"],
@@ -980,7 +980,7 @@
   {
     "title": "Jeanne's Champion",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_jeanne/jeannes-champion-3.png",
+    "imgSrc": "/assets/pictures/unit_jeanne/jeannes-champion-3.webp",
     "civ": ["JDA"],
     "class": "military",
     "description": "Tough infantry that excels at countering Spearmen.\n+ High armor\n+ Bonus damage against Spearmen\n- Slow move speed\n- Countered by Knights, Lancers, and Crossbowmen\n\nUpgrades to Elite when Jeanne reaches level 4.",
@@ -1002,7 +1002,7 @@
   {
     "title": "Ghulam",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_abbasid/ghulam-3.png",
+    "imgSrc": "/assets/pictures/unit_abbasid/ghulam-3.webp",
     "civ": ["ABB", "AYY"],
     "class": "military",
     "description": "Tough infantry that deal two attacks in rapid succession.\n+ High armor\n+ Higher attack damage on charge\n- Lower base attack damage than a Man-at-Arms\n- Slow movement\n- Countered by Knights, Lancers, and Crossbowmen",
@@ -1024,7 +1024,7 @@
   {
     "title": "Varangian Guard",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/varangian-guard-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/varangian-guard-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Tough infantry with good damage. Can use Berserking to increase damage for reduced armor.\n+ Heavy armor\n+ Increases armor of Transports\n+ Increased armor near allied Wonders\n- Slow move speed\n- Countered by Crossbowmen",
@@ -1046,7 +1046,7 @@
   {
     "title": "Horseman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_cavalry/horseman-1.png",
+    "imgSrc": "/assets/pictures/unit_cavalry/horseman-1.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -1083,7 +1083,7 @@
   {
     "title": "Gilded Horseman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-horseman-2.png",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-horseman-2.webp",
     "civ": ["DRA"],
     "class": "military",
     "description": "Fast cavalry effective at raiding, flanking, and countering ranged units.\n+ High movement speed\n- Weak against melee units\n- Countered by Spearmen",
@@ -1105,7 +1105,7 @@
   {
     "title": "Ghazi Raider",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_delhi/ghazi-raider-2.png",
+    "imgSrc": "/assets/pictures/unit_delhi/ghazi-raider-2.webp",
     "civ": ["DEL"],
     "class": "military",
     "description": "Fast cavalry effective at raiding, flanking, and countering ranged units.\n+ High movement speed\n+ Increased effectiveness against armored units\n- Countered by Spearmen",
@@ -1127,7 +1127,7 @@
   {
     "title": "Knight",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_cavalry/knight-2.png",
+    "imgSrc": "/assets/pictures/unit_cavalry/knight-2.webp",
     "civ": ["ENG", "HRE", "RUS", "HOL"],
     "class": "military",
     "description": "Expensive cavalry with high damage and melee armor. Effective against melee units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -1149,7 +1149,7 @@
   {
     "title": "Gilded Knight",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-knight-3.png",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-knight-3.webp",
     "civ": ["DRA"],
     "class": "military",
     "description": "Expensive cavalry with a powerful charge.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -1171,7 +1171,7 @@
   {
     "title": "Cataphract",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/cataphract-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/cataphract-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Expensive cavalry with high damage and a powerful Trample ability that charges through enemies.\n+ Heavy armor\n+ Trample deals area damage\n- No base charge attack\n- Slower move speed\n- Countered by Spearmen and Crossbowmen",
@@ -1193,7 +1193,7 @@
   {
     "title": "Lancer",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_cavalry/lancer-3.png",
+    "imgSrc": "/assets/pictures/unit_cavalry/lancer-3.webp",
     "civ": ["ABB", "AYY", "CHI", "DEL", "OTT", "ZXL"],
     "class": "military",
     "description": "Expensive cavalry with high damage and melee armor. Effective against melee units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -1215,7 +1215,7 @@
   {
     "title": "Bedouin Swordsman",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_ayyubids/bedouin-swordsman-1.png",
+    "imgSrc": "/assets/pictures/unit_ayyubids/bedouin-swordsman-1.webp",
     "civ": ["AYY"],
     "class": "military",
     "description": "Master Swordsman who excels in melee combat\n+ Bonus vs Melee units\n- Weak to ranged units\n\nRequires the Trade Wing - Bazaar",
@@ -1237,7 +1237,7 @@
   {
     "title": "Bedouin Skirmisher",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ayyubids/bedouin-skirmisher-2.png",
+    "imgSrc": "/assets/pictures/unit_ayyubids/bedouin-skirmisher-2.webp",
     "civ": ["AYY"],
     "class": "military",
     "description": "Ranged infantry wielding a javelin to fend off lightly armored enemies.\n+ Bonus against light infantry\n+ Long Range\n- Weak against cavalry\n\nRequires the Trade Wing - Bazaar",
@@ -1259,7 +1259,7 @@
   {
     "title": "Desert Raider",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ayyubids/desert-raider-2.png",
+    "imgSrc": "/assets/pictures/unit_ayyubids/desert-raider-2.webp",
     "civ": ["AYY"],
     "class": "military",
     "description": "Versatile Cavalry unit that can swap between ranged and melee attacks with a toggle.\n+ Effective against Light Infantry in Ranged Mode\n+ Effective against Cavalry in Melee Mode\n- High cost\n- Weak to Ranged units",
@@ -1281,7 +1281,7 @@
   {
     "title": "Camel Lancer",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ayyubids/camel-lancer-3.png",
+    "imgSrc": "/assets/pictures/unit_ayyubids/camel-lancer-3.webp",
     "civ": ["AYY"],
     "class": "military",
     "description": "Higher mobility Lancer with a more powerful charge, but less powerful melee attack. Effective against most units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -1303,7 +1303,7 @@
   {
     "title": "Camel Rider",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_abbasid/camel-rider-3.png",
+    "imgSrc": "/assets/pictures/unit_abbasid/camel-rider-3.webp",
     "civ": ["ABB"],
     "class": "military",
     "description": "Highly mobile and durable melee unit effective against all cavalry.\n+Bonus damage to cavalry\n+Causes enemy cavalry to deal less damage\n-High cost",
@@ -1325,7 +1325,7 @@
   {
     "title": "Camel Archer",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_abbasid/camel-archer-2.png",
+    "imgSrc": "/assets/pictures/unit_abbasid/camel-archer-2.webp",
     "civ": ["ABB"],
     "class": "military",
     "description": "Highly mobile and durable ranged unit.\n+Bonus damage vs Spearmen\n-High cost",
@@ -1347,7 +1347,7 @@
   {
     "title": "Zhuge Nu",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_chinese/zhuge-nu-2.png",
+    "imgSrc": "/assets/pictures/unit_chinese/zhuge-nu-2.webp",
     "civ": ["CHI", "ZXL"],
     "class": "military",
     "description": "Fires bolts with a ferocious damage potential against enemy units.\n+ High rate of fire\n- Ineffective vs armored targets\n- Countered by Horsemen\n\nMercenary that can be purchased per 5 units for a total of 400 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -1369,7 +1369,7 @@
   {
     "title": "Palace Guard",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_chinese/palace-guard-3.png",
+    "imgSrc": "/assets/pictures/unit_chinese/palace-guard-3.webp",
     "civ": ["CHI", "ZXL"],
     "class": "military",
     "description": "Tough infantry with good damage. Move faster than Men-At-Arms, but with reduced armor.\n+ Armored\n- Countered by Knights, Lancers, and Crossbowmen.",
@@ -1391,7 +1391,7 @@
   {
     "title": "Nest of Bees",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_chinese/nest-of-bees.png",
+    "imgSrc": "/assets/pictures/unit_chinese/nest-of-bees.webp",
     "civ": ["CHI", "ZXL"],
     "class": "military",
     "description": "Innovative field weapon capable of firing a barrage of rockets to damage defensive positions and clumped enemy troops.\n+ Good area of effect damage against most targets\n- Slowest movement speed\n- Weak if surrounded\n\nMercenary that can be purchased for 600 Olive Oil.",
@@ -1413,7 +1413,7 @@
   {
     "title": "Fire Lancer",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_chinese/fire-lancer-3.png",
+    "imgSrc": "/assets/pictures/unit_chinese/fire-lancer-3.webp",
     "civ": ["CHI"],
     "class": "military",
     "description": "Cavalry wielding explosive-tipped lances.\n+ Charge deals area damage\n+ Effective at raiding buildings and siege engines\n+ Good ranged armor\n- Weak in melee combat\n- Countered by Spearmen",
@@ -1435,7 +1435,7 @@
   {
     "title": "Yuan Raider",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_zhuxi/yuan-raider-4.png",
+    "imgSrc": "/assets/pictures/unit_zhuxi/yuan-raider-4.webp",
     "civ": ["ZXL"],
     "class": "military",
     "description": "Extremely swift light cavalry which deals bonus damage to economic units.\n+ Fast move speed\n+ Bonus damage vs Villagers\n- Weak in melee combat\n- Countered by Spearmen\n\nRequires Dynastic Protectors researched at Zhu Xi's Library.",
@@ -1457,7 +1457,7 @@
   {
     "title": "Grenadier",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_chinese/grenadier-4.png",
+    "imgSrc": "/assets/pictures/unit_chinese/grenadier-4.webp",
     "civ": ["CHI", "ZXL"],
     "class": "military",
     "description": "Advanced ranged infantry with thrown explosive canisters that deal damage in a small area.\n+ Deals area damage\n- Low single target damage\n- Slow movement speed\n\nMercenary that can be purchased per 2 units for a total of 480 Olive Oil.\n\nRequires the Silk Road Contract.",
@@ -1479,7 +1479,7 @@
   {
     "title": "Tower Elephant",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_delhi/tower-elephant-3.png",
+    "imgSrc": "/assets/pictures/unit_delhi/tower-elephant-3.webp",
     "civ": ["DEL"],
     "class": "military",
     "description": "Powerful ranged cavalry that can fire while moving.\n+ High health\n+ Mounted with powerful Archers\n+ Capable of attacking Stone Walls\n- Slow movement speed\n\nMercenary that can be purchased for 1000 Olive Oil.\n\nRequires the Eastern Mercenary Contract.",
@@ -1501,7 +1501,7 @@
   {
     "title": "Sultan's Elite Tower Elephant",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_delhi/sultans-elite-tower-elephant-4.png",
+    "imgSrc": "/assets/pictures/unit_delhi/sultans-elite-tower-elephant-4.webp",
     "civ": ["DEL"],
     "class": "military",
     "description": "Powerful ranged cavalry that can fire while moving.\n+ High health\n+ Mounted with Handcannoneers\n+ Capable of attacking Stone Walls\n- Slow movement speed",
@@ -1523,7 +1523,7 @@
   {
     "title": "War Elephant",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_delhi/war-elephant.png",
+    "imgSrc": "/assets/pictures/unit_delhi/war-elephant.webp",
     "civ": ["DEL"],
     "class": "military",
     "description": "Heavy cavalry effective against cavalry, siege engines, walls, and buildings.\n+ High health and armor\n+ Mounted with an advanced Spearman\n+ Capable of attacking Stone Walls\n- Slow movement speed\n\nMercenary that can be purchased for 750 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -1545,7 +1545,7 @@
   {
     "title": "Longbowman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_english/longbowman-2.png",
+    "imgSrc": "/assets/pictures/unit_english/longbowman-2.webp",
     "civ": ["ENG"],
     "class": "military",
     "description": "Cheap long-ranged infantry with good damage vs. unarmored targets.\n+ Long range\n+ Can construct Palings to fend off cavalry charges\n- Slow movement speed\n- Countered by Horsemen\n\nMercenary that can be purchased per 5 units for a total of 450 Olive Oil.\n\nRequires the Western Mercenary Contract.",
@@ -1567,7 +1567,7 @@
   {
     "title": "Yeoman",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_lancaster/yeoman_age2.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/yeoman_age2.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "",
@@ -1589,7 +1589,7 @@
   {
     "title": "Veteran Demilancer",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_lancaster/demilancer.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/demilancer.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "",
@@ -1600,7 +1600,7 @@
   {
     "title": "Hobelar",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_lancaster/hobelar_age2.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/hobelar_age2.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "",
@@ -1622,7 +1622,7 @@
   {
     "title": "Serjeant",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_templar/serjeant_age_2.png",
+    "imgSrc": "/assets/pictures/unit_templar/serjeant_age_2.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1644,7 +1644,7 @@
   {
     "title": "Chevalier Confrere",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_templar/chevalier_confrere_age_2.png",
+    "imgSrc": "/assets/pictures/unit_templar/chevalier_confrere_age_2.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1666,7 +1666,7 @@
   {
     "title": "Genitour",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_templar/genitour_age_3.png",
+    "imgSrc": "/assets/pictures/unit_templar/genitour_age_3.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1688,7 +1688,7 @@
   {
     "title": "Templar Brother",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_templar/templar_brother_age_3.png",
+    "imgSrc": "/assets/pictures/unit_templar/templar_brother_age_3.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1710,7 +1710,7 @@
   {
     "title": "Szlachta Cavalry",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_templar/szlachta_age_4.png",
+    "imgSrc": "/assets/pictures/unit_templar/szlachta_age_4.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1732,7 +1732,7 @@
   {
     "title": "Hospitaller Knight",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_templar/hospitaller_knight_age_2.png",
+    "imgSrc": "/assets/pictures/unit_templar/hospitaller_knight_age_2.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1754,7 +1754,7 @@
   {
     "title": "Heavy Spearman",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_templar/heavy_spearman_age_3.png",
+    "imgSrc": "/assets/pictures/unit_templar/heavy_spearman_age_3.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1776,7 +1776,7 @@
   {
     "title": "Earl's Guard",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_lancaster/elitechampion.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/elitechampion.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "",
@@ -1798,7 +1798,7 @@
   {
     "title": "Lord of Lancaster",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_lancaster/lord_lancaster.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/lord_lancaster.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "",
@@ -1820,7 +1820,7 @@
   {
     "title": "Teutonic Knight",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_templar/teutonic_knight.png",
+    "imgSrc": "/assets/pictures/unit_templar/teutonic_knight.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1842,7 +1842,7 @@
   {
     "title": "Condottiero",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_templar/condottiere.png",
+    "imgSrc": "/assets/pictures/unit_templar/condottiere.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
@@ -1864,13 +1864,13 @@
   {
     "title": "Genoese Crossbowman",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_templar/genoese_crossbowman_age_3.png",
+    "imgSrc": "/assets/pictures/unit_templar/genoese_crossbowman_age_3.webp",
     "civ": ["KTE"],
     "class": "military",
     "description": "",
     "id": "genoese-crossbowman",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/genoese-crossbowman.png",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/genoese-crossbowman.webp",
     "costs": {
       "food": 80,
       "wood": 0,
@@ -1886,7 +1886,7 @@
   {
     "title": "King",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_english/king-2.png",
+    "imgSrc": "/assets/pictures/unit_english/king-2.webp",
     "civ": ["ENG"],
     "class": "military",
     "description": "A mighty King, a powerful heavy cavalry unit. Heals nearby out of combat units by 2 health every 1 seconds.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -1908,7 +1908,7 @@
   {
     "title": "Wynguard Ranger",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_english/wynguard-ranger-4.png",
+    "imgSrc": "/assets/pictures/unit_english/wynguard-ranger-4.webp",
     "civ": ["ENG"],
     "class": "military",
     "description": "Master longbowmen with increased range and damage, good vs. unarmored targets.\n+ Long range\n+ Can construct Palings to fend off cavalry charges\n- Slow movement speed\n- Countered by Horsemen",
@@ -1930,7 +1930,7 @@
   {
     "title": "Wynguard Footmen",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_english/wynguard-footmen-1.png",
+    "imgSrc": "/assets/pictures/unit_english/wynguard-footmen-1.webp",
     "civ": ["ENG"],
     "class": "military",
     "description": "Produces an army of 6 Wynguard Footmen.",
@@ -1952,7 +1952,7 @@
   {
     "title": "Wynguard Army",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_english/wynguard-army-1.png",
+    "imgSrc": "/assets/pictures/unit_english/wynguard-army-1.webp",
     "civ": ["ENG", "HOL"],
     "class": "military",
     "description": "Produces an army including two Spearmen, two Crossbowmen, and a Trebuchet.",
@@ -1974,7 +1974,7 @@
   {
     "title": "Earl's Retinue",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_lancaster/earlretinue.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/earlretinue.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "Produces an army of 6 Demilancers and 2 Hobelar.",
@@ -1996,7 +1996,7 @@
   {
     "title": "Garrison Command",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_lancaster/garrisoncommand.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/garrisoncommand.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "Produces an army of 8 Spearman and 1 Earl's Guard.",
@@ -2018,7 +2018,7 @@
   {
     "title": "Gunpowder Contingent",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_lancaster/gunpowder_contingent.png",
+    "imgSrc": "/assets/pictures/unit_lancaster/gunpowder_contingent.webp",
     "civ": ["HOL"],
     "class": "military",
     "description": "Produces an army of 2 Ribauldequins and 1 Culverin.",
@@ -2040,7 +2040,7 @@
   {
     "title": "Wynguard Raiders",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_english/wynguard-raiders-1.png",
+    "imgSrc": "/assets/pictures/unit_english/wynguard-raiders-1.webp",
     "civ": ["ENG"],
     "class": "military",
     "description": "Produces an army of 3 Horsemen and 3 Knights.",
@@ -2062,7 +2062,7 @@
   {
     "title": "Royal Knight",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_french/royal-knight-2.png",
+    "imgSrc": "/assets/pictures/unit_french/royal-knight-2.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "Gain bonus damage for 5 seconds after charging. Effective against most units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen\n\nMercenary that can be purchased per 2 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -2084,7 +2084,7 @@
   {
     "title": "Jeanne's Rider",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_jeanne/jeannes-rider-3.png",
+    "imgSrc": "/assets/pictures/unit_jeanne/jeannes-rider-3.webp",
     "civ": ["JDA"],
     "class": "military",
     "description": "Fast cavalry effective at raiding, flanking, and countering Crossbowmen.\n+ High movement speed\n+ Bonus damage against Crossbowmen\n- Weak against melee units\n- Countered by Spearmen\n\nUpgrades to Elite when Jeanne reaches level 4.",
@@ -2106,7 +2106,7 @@
   {
     "title": "Arbalétrier",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_french/arbaletrier-3.png",
+    "imgSrc": "/assets/pictures/unit_french/arbaletrier-3.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "High damage ranged unit with a defensive pavise shield. Best used when supported by others.\n+ Anti-armor specialist\n+ Comes with melee armor\n- Low health\n- Countered by Horsemen\n\nMercenary that can be purchased per 4 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -2128,7 +2128,7 @@
   {
     "title": "Galleass",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_french/galleass.png",
+    "imgSrc": "/assets/pictures/unit_french/galleass.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "Large oared vessel with a powerful forward mounted bombard.\n+ Long Range\n+ Anti-structure specialist",
@@ -2150,7 +2150,7 @@
   {
     "title": "Cannon",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_french/cannon-4.png",
+    "imgSrc": "/assets/pictures/unit_french/cannon-4.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "Most powerful siege cannon. Excellent against buildings or any stubborn targets.\n+ Bonus damage to buildings",
@@ -2172,7 +2172,7 @@
   {
     "title": "Royal Cannon",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_french/royal-cannon-4.png",
+    "imgSrc": "/assets/pictures/unit_french/royal-cannon-4.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "Most powerful siege cannon. Excellent against buildings or any stubborn targets.\n+ Bonus damage to buildings\n\nMercenary that can be purchased for 900 Olive Oil.",
@@ -2194,7 +2194,7 @@
   {
     "title": "Royal Culverin",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_french/royal-culverin-4.png",
+    "imgSrc": "/assets/pictures/unit_french/royal-culverin-4.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "Long-range cannon made for destroying siege engines. Fires after quickly setting up.\n+ Bonus damage vs. siege engines\n- Low damage vs. buildings",
@@ -2216,7 +2216,7 @@
   {
     "title": "Royal Ribauldequin",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_french/royal-ribauldequin-4.png",
+    "imgSrc": "/assets/pictures/unit_french/royal-ribauldequin-4.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "Five-barreled gunpowder weapon effective against massed units. Deals little damage to buildings.\n+ Can hit multiple targets in a single volley\n- Short range\n- Low ranged armor",
@@ -2238,7 +2238,7 @@
   {
     "title": "Landsknecht",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_hre/landsknecht-3.png",
+    "imgSrc": "/assets/pictures/unit_hre/landsknecht-3.webp",
     "civ": ["HRE"],
     "class": "military",
     "description": "Brave unarmored infantry with an enormous two-handed sword, effective in mixed armies.\n+ Melee attack deals area damage\n- Low health\n- Countered by Archers\n\nMercenary that can be purchased per 3 units for a total of 480 Olive Oil.\n\nRequires the Western Mercenary Contract.",
@@ -2260,7 +2260,7 @@
   {
     "title": "Black Rider",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_hre/black-rider-1.png",
+    "imgSrc": "/assets/pictures/unit_hre/black-rider-1.webp",
     "civ": ["HRE"],
     "class": "military",
     "id": "black-rider",
@@ -2270,7 +2270,7 @@
   {
     "title": "Gilded Landsknecht",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-landsknecht-3.png",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-landsknecht-3.webp",
     "civ": ["DRA"],
     "class": "military",
     "description": "Brave unarmored infantry with an enormous two-handed sword, effective in mixed armies.\n+ Melee attack deals area damage\n- Low health\n- Countered by Archers",
@@ -2292,7 +2292,7 @@
   {
     "title": "Donso",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_malians/donso-1.png",
+    "imgSrc": "/assets/pictures/unit_malians/donso-1.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Infantry best used against mounted units. Periodically throws a javelin when attacking from ranged.\n+ Anti-cavalry specialist\n+ Comes with melee armor\n- Weak against armored infantry\n- Countered by Archers and Longbowmen",
@@ -2314,7 +2314,7 @@
   {
     "title": "Musofadi Warrior",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_malians/musofadi-warrior-2.png",
+    "imgSrc": "/assets/pictures/unit_malians/musofadi-warrior-2.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Infantry effective at ambush attacks and countering heavy armored targets.\n+ Can enter stealth\n+ Anti-armor specialist\n- Low health\n- Countered by Archers\n- Capital Town Centers, Outposts, and Scouts can spot stealth\n\nMercenary that can be purchased per 5 units for a total of 400 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -2336,7 +2336,7 @@
   {
     "title": "Mansa Musofadi",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_malians/musofadi-mansa.png",
+    "imgSrc": "/assets/pictures/unit_malians/musofadi-mansa.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "A tougher version of the regular Musofadi boasting higher melee armor and health. Infantry effective at ambush attacks and countering heavy armored targets.\n+ Can enter stealth\n+ Anti-armor specialist\n- Low health\n- Countered by Archers\n- Capital Town Centers, Outposts, and Scouts can spot stealth\n\nMercenary that can be purchased per 5 units for a total of 400 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -2347,7 +2347,7 @@
   {
     "title": "Javelin Thrower",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_malians/javelin-thrower-2.png",
+    "imgSrc": "/assets/pictures/unit_malians/javelin-thrower-2.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Ranged infantry effective against other ranged units.\n+ Anti-ranged specialist\n+ Increased weapon range\n+ Comes with ranged armor\n- Low health\n- Countered by Horsemen",
@@ -2369,7 +2369,7 @@
   {
     "title": "Mansa Javelineer",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_malians/javelin-thrower-mansa.png",
+    "imgSrc": "/assets/pictures/unit_malians/javelin-thrower-mansa.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "A faster moving Javelin thrower that deals poison damage. Ranged infantry effective against other ranged units.\n+ Anti-ranged specialist\n+ Increased weapon range\n+ Comes with ranged armor\n- Low health\n- Countered by Horsemen",
@@ -2380,7 +2380,7 @@
   {
     "title": "Mansa Freeborn",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_malians/freeborn-mansa.png",
+    "imgSrc": "/assets/pictures/unit_malians/freeborn-mansa.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "A high pierce armor melee unit.",
@@ -2391,7 +2391,7 @@
   {
     "title": "Warrior Scout",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_malians/warrior-scout-2.png",
+    "imgSrc": "/assets/pictures/unit_malians/warrior-scout-2.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Fast cavalry effective at raiding, exploring the world, hunting wildlife, and herding Sheep.\n+ Increased health regeneration\n+ Increased move speed\n+ Able to see into Stealth Forests\n- Weak in combat",
@@ -2413,7 +2413,7 @@
   {
     "title": "Sofa",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_malians/sofa-2.png",
+    "imgSrc": "/assets/pictures/unit_malians/sofa-2.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Cheaper heavy cavalry for reduced health and armor.\n+ High movement speed\n+ Cheaper cost\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -2435,7 +2435,7 @@
   {
     "title": "Musofadi Gunner",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_malians/musofadi-gunner-4.png",
+    "imgSrc": "/assets/pictures/unit_malians/musofadi-gunner-4.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Powerful ranged infantry effective at ambush attacks.\n+ Increased movement speed\n+ Can enter stealth\n+ High damage\n- High cost",
@@ -2457,7 +2457,7 @@
   {
     "title": "Khan",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_mongols/khan-1.png",
+    "imgSrc": "/assets/pictures/unit_mongols/khan-1.webp",
     "civ": ["MON"],
     "class": "military",
     "description": "Ranged cavalry leader able to use Signal Arrows to enhance nearby military units. Reappears at a Town Center if killed.\n+ Vision and herding of a Scout\n+ Automatically improves with each Age\n- Only one Khan per Mongol player",
@@ -2468,7 +2468,7 @@
   {
     "title": "Khan’s Hunter",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_mongols/khans-hunter.png",
+    "imgSrc": "/assets/pictures/unit_mongols/khans-hunter.webp",
     "civ": ["MON"],
     "class": "military",
     "description": "work in progress",
@@ -2479,7 +2479,7 @@
   {
     "title": "Mangudai",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_mongols/mangudai.png",
+    "imgSrc": "/assets/pictures/unit_mongols/mangudai.webp",
     "civ": ["MON"],
     "class": "military",
     "description": "Confounding mobile ranged cavalry that can fire while moving.\n+ High rate of fire\n- Low weapon range\n\nMercenary that can be purchased per 3 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -2501,7 +2501,7 @@
   {
     "title": "Keshik",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_mongols/keshik-2.png",
+    "imgSrc": "/assets/pictures/unit_mongols/keshik-2.webp",
     "civ": ["MON"],
     "class": "military",
     "description": "Expensive cavalry with high damage and a powerful charge attack. Effective against most units.\n+ Heavy armor\n+ Strong in melee combat\n+ Restores health after every attack\n- Less health than Lancers\n- Countered by Spearmen and Crossbowmen\n\nMercenary that can be purchased per 2 units for a total of 400 Olive Oil.\n\nRequires the Eastern Mercenary Contract.",
@@ -2523,7 +2523,7 @@
   {
     "title": "Traction Trebuchet",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_mongols/traction-trebuchet.png",
+    "imgSrc": "/assets/pictures/unit_mongols/traction-trebuchet.webp",
     "civ": ["MON"],
     "class": "military",
     "description": "Powerful siege engine effective at destroying buildings and walls over a long distance.\n+ Bonus damage vs buildings\n+ High mobility\n- Must be set up to fire\n- Inaccurate against units",
@@ -2545,7 +2545,7 @@
   {
     "title": "Huihui Pao",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_mongols/huihui-pao-1.png",
+    "imgSrc": "/assets/pictures/unit_mongols/huihui-pao-1.webp",
     "civ": ["MON"],
     "class": "military",
     "description": "Massive siege engine with incredible range, extra effective at destroying buildings and walls.\n+ Extremely long range\n- Must be set up to fire\n\nMercenary that can be purchased for 1000 Olive Oil.",
@@ -2567,7 +2567,7 @@
   {
     "title": "Sipahi",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ottomans/sipahi-2.png",
+    "imgSrc": "/assets/pictures/unit_ottomans/sipahi-2.webp",
     "civ": ["OTT"],
     "class": "military",
     "description": "Fast cavalry effective at raiding, flanking, and countering ranged units. Can gain attack speed at the cost of melee defense.\n+ High movement speed\n+ Strong against ranged units\n- Weak against melee units\n- Countered by Spearmen\n\nMercenary that can be purchased per 3 units for a total of 480 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -2589,7 +2589,7 @@
   {
     "title": "Mehter",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ottomans/mehter-2.png",
+    "imgSrc": "/assets/pictures/unit_ottomans/mehter-2.webp",
     "civ": ["OTT"],
     "class": "military",
     "description": "War drummer that enhances units in an area, except Villagers and Traders.\n+ War drum military enhancements\n+ High movement speed\n- No weapons",
@@ -2611,7 +2611,7 @@
   {
     "title": "Janissary",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ottomans/janissary-3.png",
+    "imgSrc": "/assets/pictures/unit_ottomans/janissary-3.webp",
     "civ": ["OTT"],
     "class": "military",
     "description": "Powerful infantry effective against cavalry and can repair siege engines.\n+ High damage\n+ Bonus damage against cavalry\n- High cost\n- Slow movement speed\n- Receives +50% ranged damage",
@@ -2633,7 +2633,7 @@
   {
     "title": "Great Bombard",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_ottomans/great-bombard-4.png",
+    "imgSrc": "/assets/pictures/unit_ottomans/great-bombard-4.webp",
     "civ": ["OTT"],
     "class": "military",
     "description": "Largest cannon that can be fielded. Excellent against buildings or groups of targets.\n+ High damage\n+ Area damage\n+ Long Range\n- Must be set up to fire",
@@ -2655,7 +2655,7 @@
   {
     "title": "Grand Galley",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_ottomans/grand-galley-4.png",
+    "imgSrc": "/assets/pictures/unit_ottomans/grand-galley-4.webp",
     "civ": ["OTT"],
     "class": "military",
     "description": "Large oared vessel which can be upgraded into a naval Military School.\n+ Large hold which can be garrisoned by any unit once upgraded into a Military School\n+ Very long range\n- Lower damage",
@@ -2677,7 +2677,7 @@
   {
     "title": "Venetian Galley",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_templar/venetian_galley.png",
+    "imgSrc": "/assets/pictures/unit_templar/venetian_galley.webp",
     "civ": ["KTE"],
     "class": "military",
     "id": "venetian-galley",
@@ -2698,7 +2698,7 @@
   {
     "title": "Dromon",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_byzantines/dromon-2.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/dromon-2.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Military ship equipped a flamethrower that can be upgraded to use Greek Fire.\n+ Strong against Arrow Ships\n- Low weapon range\n- Countered by Demolition Ships",
@@ -2720,7 +2720,7 @@
   {
     "title": "Transport Ship",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/transport-ship.png",
+    "imgSrc": "/assets/pictures/unit_ship/transport-ship.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -2760,7 +2760,7 @@
   {
     "title": "Lodya Transport Ship",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_rus/lodya-transport-ship.png",
+    "imgSrc": "/assets/pictures/unit_rus/lodya-transport-ship.webp",
     "civ": ["RUS"],
     "class": "military",
     "description": "Can be garrisoned by any unit and uses their sight range. Allows garrisoned units to be transport across water.\nThe Lodya can be converted to any other type of ship.",
@@ -2782,7 +2782,7 @@
   {
     "title": "Lodya Galley",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_rus/lodya-galley-3.png",
+    "imgSrc": "/assets/pictures/unit_rus/lodya-galley-3.webp",
     "civ": ["RUS"],
     "class": "military",
     "description": "Oared war vessel armed with a crew of archers.\n+ Increased maneuverability\n+ Benefits from ranged damage Blacksmith technology",
@@ -2804,7 +2804,7 @@
   {
     "title": "Lodya Demolition Ship",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_rus/lodya-demolition-ship.png",
+    "imgSrc": "/assets/pictures/unit_rus/lodya-demolition-ship.webp",
     "civ": ["RUS"],
     "class": "military",
     "description": "Small ship packed with explosives. Detonates when killed, damaging any units in the area.\n+ The Lodya can be converted to any other type of ship\n- Damage is reduced further from the explosion center\n- No weapons other than self-destruction",
@@ -2826,7 +2826,7 @@
   {
     "title": "Lodya Attack Ship",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_rus/lodya-attack-ship.png",
+    "imgSrc": "/assets/pictures/unit_rus/lodya-attack-ship.webp",
     "civ": ["RUS"],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -2848,7 +2848,7 @@
   {
     "title": "Warrior Monk",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_rus/warrior-monk.png",
+    "imgSrc": "/assets/pictures/unit_rus/warrior-monk.webp",
     "civ": ["RUS"],
     "class": "military",
     "shorthand": ["monk"],
@@ -2871,7 +2871,7 @@
   {
     "title": "Horse Archer",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_rus/horse-archer-3.png",
+    "imgSrc": "/assets/pictures/unit_rus/horse-archer-3.webp",
     "civ": ["RUS"],
     "class": "military",
     "description": "Highly mobile ranged cavalry effective against slower melee units.\n+ High mobility\n- Weak vs ranged units\n\nMercenary that can be purchased per 3 units for a total of 360 Olive Oil.\n\nThis Mercenary can only be purchased on Mercenary Houses built near a neutral Trade Post that list this unit. The chance of this unit being available on a Trade Post is 20%.",
@@ -2893,7 +2893,7 @@
   {
     "title": "Streltsy",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_rus/streltsy.png",
+    "imgSrc": "/assets/pictures/unit_rus/streltsy.webp",
     "civ": ["RUS"],
     "class": "military",
     "description": "Most powerful ranged infantry with reasonable melee capabilities. Increased attack speed while stationary.\n+ High damage\n+ Lower cost than Handcannoneer\n- Slow movement speed\n\nMercenary that can be purchased per 3 units for a total of 720 Olive Oil.\n\nRequires the Western Mercenary Contract.",
@@ -2915,7 +2915,7 @@
   {
     "title": "Militia",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_rus/militia-2.png",
+    "imgSrc": "/assets/pictures/unit_rus/militia-2.webp",
     "civ": ["RUS"],
     "class": "military",
     "description": "Light melee infantry equipped with a polearm.\n+ Fast moving\n- Countered by Archers\n- Can't garrison\n- Has a 65 second lifespan",
@@ -2937,7 +2937,7 @@
   {
     "title": "Siege Tower",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_siege/siege-tower.png",
+    "imgSrc": "/assets/pictures/unit_siege/siege-tower.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -2978,7 +2978,7 @@
   {
     "title": "Battering Ram",
     "age": 1,
-    "imgSrc": "/assets/pictures/unit_siege/battering-ram.png",
+    "imgSrc": "/assets/pictures/unit_siege/battering-ram.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3018,7 +3018,7 @@
   {
     "title": "Cheirosiphon",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/cheirosiphon-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/cheirosiphon-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Durable infantry transport equipped with Greek Fire, effective against Buildings and Walls.\n+ Greek Fire persists on ground\n+ High ranged armor\n+ High health\n- Only attacks buildings\n- Slow move speed",
@@ -3040,7 +3040,7 @@
   {
     "title": "Tower of the Sultan",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_byzantines/tower-of-the-sultan-3.png",
+    "imgSrc": "/assets/pictures/unit_byzantines/tower-of-the-sultan-3.webp",
     "civ": ["BYZ"],
     "class": "military",
     "description": "Massive infantry transport effective against buildings and walls. Move speed increases for each unit garrisoned inside.\n+ Fires arrows\n+ High ranged armor\n+ High health\n- Slow move speed when empty",
@@ -3062,7 +3062,7 @@
   {
     "title": "Springald",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_siege/springald.png",
+    "imgSrc": "/assets/pictures/unit_siege/springald.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3103,7 +3103,7 @@
   {
     "title": "Mangonel",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_siege/mangonel-3.png",
+    "imgSrc": "/assets/pictures/unit_siege/mangonel-3.webp",
     "civ": [
       "ABB",
       "BYZ",
@@ -3141,7 +3141,7 @@
   {
     "title": "Manjaniq",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ayyubids/manjaniq-3.png",
+    "imgSrc": "/assets/pictures/unit_ayyubids/manjaniq-3.webp",
     "civ": ["AYY"],
     "class": "military",
     "description": "Fires multiple projectiles dealing damage in an area.\n+ Effective against massed units\n+ Can use Incendiary projectiles for devastating area damage\n - Must be set up to fire",
@@ -3163,7 +3163,7 @@
   {
     "title": "Tower of the Sultan",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ayyubids/tower-of-the-sultan-3.png",
+    "imgSrc": "/assets/pictures/unit_ayyubids/tower-of-the-sultan-3.webp",
     "civ": ["AYY"],
     "class": "military",
     "description": "Massive infantry transport effective against buildings and walls. Move speed increases for each unit garrisoned inside.\n+ Fires arrows\n+ High ranged armor\n+ High health\n- Slow move speed when empty",
@@ -3185,7 +3185,7 @@
   {
     "title": "Counterweight Trebuchet",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_siege/trebuchet.png",
+    "imgSrc": "/assets/pictures/unit_siege/trebuchet.webp",
     "civ": [
       "ABB",
       "AYY",
@@ -3225,7 +3225,7 @@
   {
     "title": "Bombard",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_siege/bombard.png",
+    "imgSrc": "/assets/pictures/unit_siege/bombard.webp",
     "civ": [
       "BYZ",
       "CHI",
@@ -3257,7 +3257,7 @@
   {
     "title": "Ribauldequin",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_siege/ribauldequin-4.png",
+    "imgSrc": "/assets/pictures/unit_siege/ribauldequin-4.webp",
     "civ": ["ENG", "FRE", "JAP", "JDA", "OTT"],
     "class": "military",
     "description": "Five-barreled gunpowder weapon effective against massed units. Deals little damage to buildings.\n+ Can hit multiple targets in a single volley\n- Short range\n- Low ranged armor",
@@ -3279,7 +3279,7 @@
   {
     "title": "Culverin",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_siege/culverin-4.png",
+    "imgSrc": "/assets/pictures/unit_siege/culverin-4.webp",
     "civ": ["ABB", "AYY", "DRA", "FRE", "HRE", "JDA", "KTE"],
     "class": "military",
     "description": "Long-range cannon made for destroying siege engines. Fires after quickly setting up.\n+ Bonus damage vs. siege engines\n- Low damage vs. buildings",
@@ -3301,7 +3301,7 @@
   {
     "title": "Dhow",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/dhow.webp",
     "civ": ["ABB", "AYY", "DEL", "OTT"],
     "class": "military",
     "description": "Light war vessel armed with a crew of archers.\n+ Increased maneuverability and speed.\n+ Benefits from ranged damage Blacksmith technology",
@@ -3323,7 +3323,7 @@
   {
     "title": "Galley",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/dhow.webp",
     "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "HOL", "KTE"],
     "class": "military",
     "description": "Oared war vessel armed with a crew of archers.\n+ Increased maneuverability\n+ Benefits from ranged damage Blacksmith technology",
@@ -3345,7 +3345,7 @@
   {
     "title": "Junk",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/dhow.webp",
     "civ": ["CHI", "JAP", "ZXL"],
     "class": "military",
     "description": "Oared war vessel armed with a crew of archers.\n+ Increased maneuverability\n+ Benefits from ranged damage Blacksmith technology",
@@ -3367,7 +3367,7 @@
   {
     "title": "Light Junk",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/dhow.webp",
     "civ": ["MON"],
     "class": "military",
     "description": "Light war vessel armed with a crew of archers.\n+ Increased maneuverability and speed.\n+ Benefits from ranged damage Blacksmith technology",
@@ -3389,7 +3389,7 @@
   {
     "title": "Hunting Canoe",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/dhow.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Light war vessel armed with a crew of archers.\n+ Increased maneuverability and speed.\n+ Benefits from ranged damage Blacksmith technology",
@@ -3411,7 +3411,7 @@
   {
     "title": "Baghlah",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/baghlah.png",
+    "imgSrc": "/assets/pictures/unit_ship/baghlah.webp",
     "civ": ["ABB", "AYY", "DEL"],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -3433,7 +3433,7 @@
   {
     "title": "Hulk",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/baghlah.png",
+    "imgSrc": "/assets/pictures/unit_ship/baghlah.webp",
     "civ": ["DRA", "ENG", "HRE", "OTT", "KTE", "HOL"],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -3455,7 +3455,7 @@
   {
     "title": "War Cog",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_french/war-cog.png",
+    "imgSrc": "/assets/pictures/unit_french/war-cog.webp",
     "civ": ["FRE", "JDA"],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -3477,7 +3477,7 @@
   {
     "title": "War Junk",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ship/baghlah.png",
+    "imgSrc": "/assets/pictures/unit_ship/baghlah.webp",
     "civ": ["CHI", "JAP", "MON", "ZXL"],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -3499,7 +3499,7 @@
   {
     "title": "Atakebune",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_japanese/atakebune-4.png",
+    "imgSrc": "/assets/pictures/unit_japanese/atakebune-4.webp",
     "civ": ["JAP"],
     "class": "military",
     "description": "Large sailed war vessel armed with rockets.\n+ Anti-structure specialist\n- Vulnerable vs. Incendiary Ships\n- Low movement speed",
@@ -3521,7 +3521,7 @@
   {
     "title": "War Canoe",
     "age": 2,
-    "imgSrc": "/assets/pictures/unit_ship/baghlah.png",
+    "imgSrc": "/assets/pictures/unit_ship/baghlah.webp",
     "civ": ["MAL"],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -3543,7 +3543,7 @@
   {
     "title": "Explosive Dhow",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ship/explosive-dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/explosive-dhow.webp",
     "civ": ["ABB", "AYY", "DEL"],
     "class": "military",
     "description": "Small ship packed with explosives. Detonates when killed, damaging any units in the area.\n- Damage is reduced further from the explosion center\n- No weapons other than self-destruction",
@@ -3565,7 +3565,7 @@
   {
     "title": "Demolition Ship",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ship/explosive-dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/explosive-dhow.webp",
     "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "MAL", "OTT", "KTE", "HOL"],
     "class": "military",
     "description": "Small ship packed with explosives. Detonates when killed, damaging any units in the area.\n- Damage is reduced further from the explosion center\n- No weapons other than self-destruction",
@@ -3587,7 +3587,7 @@
   {
     "title": "Explosive Junk",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_ship/explosive-dhow.png",
+    "imgSrc": "/assets/pictures/unit_ship/explosive-dhow.webp",
     "civ": ["CHI", "JAP", "MON", "ZXL"],
     "class": "military",
     "description": "Small ship packed with explosives. Detonates when killed, damaging any units in the area.\n- Damage is reduced further from the explosion center\n- No weapons other than self-destruction",
@@ -3609,7 +3609,7 @@
   {
     "title": "Xebec",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_ship/xebec.png",
+    "imgSrc": "/assets/pictures/unit_ship/xebec.webp",
     "civ": ["ABB", "AYY", "DEL"],
     "class": "military",
     "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
@@ -3631,7 +3631,7 @@
   {
     "title": "Carrack",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_ship/xebec.png",
+    "imgSrc": "/assets/pictures/unit_ship/xebec.webp",
     "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "OTT", "HOL"],
     "class": "military",
     "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
@@ -3653,7 +3653,7 @@
   {
     "title": "Baochuan",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_ship/xebec.png",
+    "imgSrc": "/assets/pictures/unit_ship/xebec.webp",
     "civ": ["CHI", "MON", "ZXL"],
     "class": "military",
     "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
