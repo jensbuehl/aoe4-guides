@@ -4,8 +4,8 @@
       <v-img color="surface-variant" src="/Season11-banner.webp"></v-img>
       <v-card-title> Season 11 Update </v-card-title>
       <v-card-text>
-        <p>🚀 Season 11 of Age of Empires IV starting this week!</p>
-        <p class="mt-4">⚙️ We've rolled out major performance improvements to ensure your experience is smoother and faster than ever.</p>
+        <p>🚀 Season 11 of Age of Empires IV starting in July!</p>
+        <p class="mt-4">⚙️ We've rolled out performance improvements to ensure your experience is smoother and faster than ever.</p>
         <p class="mt-4">📊 Thanks to your support, the last season was the most traffic-heavy to date!</p>
         
         <p class="font-weight-bold ma-4" align="center" justify="center">
