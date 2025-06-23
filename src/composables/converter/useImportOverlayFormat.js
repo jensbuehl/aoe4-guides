@@ -53,7 +53,7 @@ export default function useImportOverlayFormat() {
 
   function convertNotes(overlayNotes) {
     //Filter @imagePath@
-    const regex = /@([^@]*)webp@/g;
+    const regex = /@([^@]*)(?:webp|png)@/g;
     const joinedNotes = overlayNotes.join("<br>");
 
     const convertedNotes = joinedNotes.replace(regex, function replacer(match) {
@@ -68,7 +68,7 @@ export default function useImportOverlayFormat() {
 
     //Convert to aoe4guides path, if not from aoe4guides, then keep path as is. (e.g. from age4builder)
     const imagePath = imageText.includes("https")
-      ? imageText
+      ? imageText.replace(/\.png\b/i, ".webp")
       : "/assets/pictures/" + imageText;
 
     //Get meta data
