@@ -302,13 +302,19 @@ export default {
       //init steps
       if (!props.build.steps[0]?.type) {
         //For backwards compatibility
-        steps.value = JSON.parse(JSON.stringify(props.build.steps))
+        steps.value = JSON.parse(JSON.stringify(props.build.steps));
       } else {
         props.build.steps.forEach((section) => {
           steps.value = steps.value.concat(JSON.parse(JSON.stringify(section.steps)));
+          // Replace .png with .webp in all step descriptions
+          steps.value.forEach((step) => {
+            if (step.description) {
+              step.description = step.description.replace(/\.png\b/gi, ".webp");
+            }
+          });
           if (section.gameplan) {
             //concat gameplan to current age's last step's description
-            steps.value[steps.value.length-1].description += " <br><br> " + section.gameplan;
+            steps.value[steps.value.length - 1].description += " <br><br> " + section.gameplan;
           }
         });
       }
@@ -318,7 +324,7 @@ export default {
 
       //init timings
       stepsTimings.value = getTimings(steps.value);
-      
+
       autoplaySupported.value = stepsTimings.value ? true : false;
       if (autoplaySupported.value) {
         steps.value.forEach((step, index) => {
