@@ -5,6 +5,7 @@ export function getTimings(steps) {
 
   timings = init(timings, steps);
   timings = interpolate(timings);
+  console.log(timings);
 
   const valid = timings.every((element) => element.startTime !== null);
 
@@ -135,12 +136,16 @@ function interpolate(timings, startIndex = 0) {
         const element = timings[index];
         const timediff =
           timings[secondValidStepIndex].startTime - timings[firstValidStepIndex].startTime;
-        const villagersThisStep = element.villagerOffsetNextStep;
+        const villagersThisStep = timings[index - 1].villagerOffsetNextStep;
         const villagersTotal = timings[firstValidStepIndex].villagerOffsetNextValidStep;
         const referenceTimestamp = timings[index - 1].startTime
           ? timings[index - 1].startTime
           : timings[firstValidStepIndex].startTime;
         element.startTime = referenceTimestamp + (timediff * villagersThisStep) / villagersTotal;
+        console.log(referenceTimestamp);
+        console.log(timediff);
+        console.log(villagersThisStep);
+        console.log(villagersTotal);
       }
     }
     interpolate(timings, secondValidStepIndex);
