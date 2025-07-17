@@ -79,6 +79,7 @@ export default function useExportOverlayFormat() {
     description = description.replaceAll("&nbsp;", " ");
     description = description.replaceAll("&gt;", ">");
     description = description.replaceAll("</img>", "");
+    description = description.replaceAll(".webp", ".png");
     const regex = /<img([\w\W]+?)>/g;
     const convertedDescription = description.replace(
       regex,
