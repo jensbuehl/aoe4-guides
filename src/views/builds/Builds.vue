@@ -273,7 +273,6 @@ export default {
     onMounted(async () => {
       await initQueryParameters();
       initData();
-      window.scrollTo(0, 0);
     });
 
     onBeforeUnmount(() => {
