@@ -252,14 +252,14 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >Copy RTS_Overlay / AoE4_Overlay Format to Clipboard</span
+                  >Copy RTS Overlay / AoE4 Overlay Format to Clipboard</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-icon color="accent" class="mr-5" v-bind="props">mdi-content-copy </v-icon>
                   <v-list-item-content
                     :style="'color: ' + $vuetify.theme.current.colors.primary"
                     v-bind="props"
-                    >Overlay Tool</v-list-item-content
+                    >Copy to Clipboard</v-list-item-content
                   >
                 </template>
               </v-tooltip>
@@ -268,7 +268,7 @@
                   :style="{
                     color: $vuetify.theme.current.colors.primary,
                   }"
-                  >Visit AoE4_Overlay Project Page</span
+                  >Visit AoE4 Overlay Project Page</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-icon
@@ -294,7 +294,7 @@
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
-                >Download RTS_Overlay / AoE4_Overlay File</span
+                >Download RTS Overlay / AoE4 Overlay File</span
               >
               <template v-slot:activator="{ props }">
                 <v-list-item
@@ -307,7 +307,25 @@
                 </v-list-item>
               </template>
             </v-tooltip>
-            <v-divider v-show="user?.uid === build.authorUid"></v-divider>
+            <v-divider v-show="user?.uid === build.authorUid"></v-divider>     
+            <v-tooltip>
+              <span
+                :style="{
+                  color: $vuetify.theme.current.colors.primary,
+                }"
+                >Open build order as overlay on RTS Overlay website</span
+              >
+              <template v-slot:activator="{ props }">
+                <v-list-item
+                  :style="'color: ' + $vuetify.theme.current.colors.primary"
+                  v-bind="props"
+                  @click="handleOpenInOverlayTool"
+                >
+                  <v-icon color="accent" class="mr-4">mdi-button-cursor</v-icon>
+                  Open in RTS Overlay
+                </v-list-item>
+              </template>
+            </v-tooltip>
             <v-tooltip>
               <span
                 :style="{
@@ -544,14 +562,14 @@
                       :style="{
                         color: $vuetify.theme.current.colors.primary,
                       }"
-                      >Copy to Clipboard (RTS_Overlay / AoE4_Overlay)</span
+                      >Copy RTS Overlay / AoE4 Overlay Format to Clipboard</span
                     >
                     <template v-slot:activator="{ props }">
                       <v-icon color="accent" class="mr-5" v-bind="props">mdi-content-copy </v-icon>
                       <v-list-item-content
                         :style="'color: ' + $vuetify.theme.current.colors.primary"
                         v-bind="props"
-                        >Overlay Tool</v-list-item-content
+                        >Copy to Clipboard</v-list-item-content
                       >
                     </template>
                   </v-tooltip>
@@ -560,7 +578,7 @@
                       :style="{
                         color: $vuetify.theme.current.colors.primary,
                       }"
-                      >Visit AoE4_Overlay Project Page</span
+                      >Visit AoE4 Overlay Project Page</span
                     >
                     <template v-slot:activator="{ props }">
                       <v-icon
@@ -586,7 +604,7 @@
                     :style="{
                       color: $vuetify.theme.current.colors.primary,
                     }"
-                    >Download RTS_Overlay / AoE4_Overlay File</span
+                    >Download RTS Overlay / AoE4 Overlay File</span
                   >
                   <template v-slot:activator="{ props }">
                     <v-list-item
@@ -600,6 +618,24 @@
                   </template>
                 </v-tooltip>
                 <v-divider v-show="user?.uid === build.authorUid"></v-divider>
+                <v-tooltip>
+                  <span
+                    :style="{
+                      color: $vuetify.theme.current.colors.primary,
+                    }"
+                    >Open build order as overlay on RTS Overlay website</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-list-item
+                      :style="'color: ' + $vuetify.theme.current.colors.primary"
+                      v-bind="props"
+                      @click="handleOpenInOverlayTool"
+                    >
+                      <v-icon color="accent" class="mr-4">mdi-button-cursor</v-icon>
+                      Open in RTS Overlay
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
                 <v-tooltip>
                   <span
                     :style="{
@@ -843,6 +879,15 @@ export default {
       download(overlayBuildString, build.value.title);
     };
 
+    const handleOpenInOverlayTool = (e) => {
+      e.stopPropagation();
+                      const buildOrderId = build.value.id;
+                      const url = `https://rts-overlay.github.io/?gameId=aoe4&buildOrderId=aoe4guides|${buildOrderId}`;
+                      window
+                        .open(url, '_blank')
+                        .focus();
+    };
+
     return {
       build,
       props,
@@ -861,6 +906,7 @@ export default {
       handleDuplicate,
       handleCopyOverlayFormat,
       handleDownloadOverlayFormat,
+      handleOpenInOverlayTool,
       timeSince,
       isNew,
       clipboardIsSupported,
