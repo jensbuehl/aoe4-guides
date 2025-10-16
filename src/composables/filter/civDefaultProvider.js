@@ -1,18 +1,19 @@
 import { ref } from "vue";
 
 export const civs = ref([
-  {
-    title: "Any Civilization",
-    shortName: "ANY",
-    flagLarge: "assets/flags/any-large.webp",
-    flagSmall: "assets/flags/any-small.webp",
-  },
+  // Sorted alphabetically by title
   {
     title: "Abbasid Dynasty",
     shortName: "ABB",
     tagLine: "Technology, Camels, City Planning",
     flagLarge: "assets/flags/abb-large.webp",
     flagSmall: "assets/flags/abb-small.webp",
+  },
+  {
+    title: "Any Civilization",
+    shortName: "ANY",
+    flagLarge: "assets/flags/any-large.webp",
+    flagSmall: "assets/flags/any-small.webp",
   },
   {
     title: "Ayyubids",
@@ -57,6 +58,13 @@ export const civs = ref([
     flagSmall: "assets/flags/fre-small.webp",
   },
   {
+    title: "Golden Horde",
+    shortName: "GOH",
+    tagLine: "Influence, Mass Recruitment, Heroic Leadership",
+    flagLarge: "assets/flags/goh-large.webp",
+    flagSmall: "assets/flags/goh-small.webp",
+  },
+  {
     title: "Holy Roman Empire",
     shortName: "HRE",
     tagLine: "Infrantry, Religion, Defense",
@@ -90,6 +98,13 @@ export const civs = ref([
     tagLine: "Diplomacy, Fortification, Commanderies",
     flagLarge: "assets/flags/kte-large.webp",
     flagSmall: "assets/flags/kte-small.webp",
+  },
+  {
+    title: "Macedonian Dynasty",
+    shortName: "MAC",
+    tagLine: "Silver Economy, Reinforcements, Morality",
+    flagLarge: "assets/flags/mac-large.webp",
+    flagSmall: "assets/flags/mac-small.webp",
   },
   {
     title: "Malian",
@@ -127,6 +142,20 @@ export const civs = ref([
     flagSmall: "assets/flags/rus-small.webp",
   },
   {
+    title: "Sengoku Daimyo",
+    shortName: "SEN",
+    tagLine: "Clans, Economic Scaling, Inspiration",
+    flagLarge: "assets/flags/sen-large.webp",
+    flagSmall: "assets/flags/sen-small.webp",
+  },
+  {
+    title: "Tughlaq Dynasty",
+    shortName: "TUG",
+    tagLine: "Mobile Economy, Elephants, Reginal Control",
+    flagLarge: "assets/flags/tug-large.webp",
+    flagSmall: "assets/flags/tug-small.webp",
+  },
+  {
     title: "Zhu Xi's Legacy",
     shortName: "ZXL",
     tagLine: "Dynasties, Taxes, Technology",
@@ -135,7 +164,7 @@ export const civs = ref([
   },
 ]);
 
-export function getCivById (id) {
+export function getCivById(id) {
   const civ = civs.value.find((civ) => civ.shortName === id);
-  return civ
-};
+  return civ;
+}

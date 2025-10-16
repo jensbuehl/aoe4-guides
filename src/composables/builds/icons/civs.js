@@ -20,4 +20,9 @@ export const civs = [
   //Knights of Cross and Rose
   "HOL",
   "KTE",
+  //Dynasties of the East
+  "GOH",
+  "MAC",
+  "SEN",
+  "TUG",
 ];

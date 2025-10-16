@@ -40,129 +40,73 @@
       </v-col>
 
       <v-col cols="12" md="8">
-        <!-- civilizations xs-->
-        <v-row no-gutters class="hidden-md-and-up"
-          ><v-col class="ml-2 mb-4" cols="auto"
-            ><v-icon icon="mdi-earth" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Civilizations</span>
-          </v-col></v-row
-        >
-        <v-row align="center" no-gutters class="hidden-sm-and-up">
-          <v-col cols="6" v-for="(civ, index) in civs" :key="civ.title">
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all {{ civ.title }} build orders</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  v-bind:class="{
-                    'mb-2 mr-2': index % 2 == 0,
-                    'mb-2 ml-2': index % 2 != 0,
-                  }"
-                  min-height="50"
-                  rounded="lg"
-                  v-bind="props"
-                  :to="{
-                    name: 'Dashboard',
-                    query: { civ: civ.shortName },
-                  }"
-                >
-                  <v-row no-gutters align="center" justify="center">
-                    <v-col cols="4">
-                      <v-img
-                        min-height="50"
-                        :src="civ.flagLarge"
-                        :lazy-src="civ.flagSmall"
-                        :gradient="
-                          'to right, transparent, ' + $vuetify.theme.current.colors.surface
-                        "
-                        alt="{{civ.title}}"
-                        cover
-                      >
-                      </v-img>
-                    </v-col>
-                    <v-col cols="8">
-                      <!--xs title-->
-                      <div
-                        :style="{
-                          color: $vuetify.theme.current.colors.primary,
-                        }"
-                        class="text-subtitle-2 ml-1"
-                        style="font-size: 0.8rem !important"
-                      >
-                        {{ civ.title }}
-                        <v-chip
-                          v-if="
-                            isNew(
-                              recentCivBuilds
-                                .find((element) => element.civ == civ.shortName)
-                                ?.timeCreated.toDate()
-                            )
-                          "
-                          class="pa-1 pr-2"
-                          color="accent"
-                          size="x-small"
-                          ><v-icon class="ml-1" start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
-                        >
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </template>
-            </v-tooltip>
+        <!-- Civ filter box (all screen sizes) -->
+        <v-row no-gutters>
+          <v-col cols="6" class="mb-2" />
+          <v-col cols="6" class="mb-2" />
+        </v-row>
+        <v-row no-gutters>
+          <v-col cols="12" class="mb-2 mt-n2">
+            <v-text-field
+              v-model="civFilter"
+              label="Find your civilization"
+              prepend-inner-icon="mdi-magnify"
+              density="compact"
+              variant="outlined"
+              color="primary"
+              class="mb-2"
+              hide-details
+              style="margin-left: 0; margin-right: 0;"
+            ></v-text-field>
           </v-col>
         </v-row>
-        <!-- civilizations sm and up-->
-        <v-row align="center" no-gutters class="hidden-xs">
-          <v-col cols="6" v-for="(civ, index) in civs" :key="civ.title">
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all {{ civ.title }} build orders</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  v-bind:class="{
-                    'mb-2 mr-2': index % 2 == 0,
-                    'mb-2 ml-2': index % 2 != 0,
+        <v-row align="center" no-gutters class="hidden-sm-and-up">
+          <template v-if="filteredCivs.length">
+            <v-col cols="6" v-for="(civ, index) in filteredCivs" :key="civ.title">
+              <v-tooltip location="top" open-delay="1000">
+                <span
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
                   }"
-                  min-height="50"
-                  rounded="lg"
-                  v-bind="props"
-                  :to="{
-                    name: 'Dashboard',
-                    query: { civ: civ.shortName },
-                  }"
+                  >Explore all {{ civ.title }} build orders</span
                 >
-                  <v-row no-gutters align="center" justify="center">
-                    <v-col cols="4">
-                      <v-img
-                        min-height="70"
-                        :src="civ.flagLarge"
-                        :lazy-src="civ.flagSmall"
-                        :gradient="
-                          'to right, transparent, ' + $vuetify.theme.current.colors.surface
-                        "
-                        alt="{{civ.title}}"
-                        cover
-                      >
-                      </v-img>
-                    </v-col>
-                    <v-col cols="8">
-                      <!--small title-->
-                      <v-row no-gutters class="hidden-lg-and-up">
+                <template v-slot:activator="{ props }">
+                  <v-card
+                    flat
+                    v-bind:class="{
+                      'mb-2 mr-2': index % 2 == 0,
+                      'mb-2 ml-2': index % 2 != 0,
+                    }"
+                    min-height="50"
+                    rounded="lg"
+                    v-bind="props"
+                    :to="{
+                      name: 'Dashboard',
+                      query: { civ: civ.shortName },
+                    }"
+                  >
+                    <v-row no-gutters align="center" justify="center">
+                      <v-col cols="4">
+                        <v-img
+                          min-height="50"
+                          :src="civ.flagLarge"
+                          :lazy-src="civ.flagSmall"
+                          :gradient="
+                            'to right, transparent, ' + $vuetify.theme.current.colors.surface
+                          "
+                          alt="{{civ.title}}"
+                          cover
+                        >
+                        </v-img>
+                      </v-col>
+                      <v-col cols="8">
+                        <!--xs title-->
                         <div
                           :style="{
                             color: $vuetify.theme.current.colors.primary,
                           }"
-                          class="text-subtitle-2 mx-2 mb-n1 hidden-lg-and-up"
+                          class="text-subtitle-2 ml-1"
+                          style="font-size: 0.8rem !important"
                         >
                           {{ civ.title }}
                           <v-chip
@@ -173,43 +117,130 @@
                                   ?.timeCreated.toDate()
                               )
                             "
-                            class="px-1 pr-2"
+                            class="pa-1 pr-2"
                             color="accent"
                             size="x-small"
-                            ><v-icon class="ma-1" start icon="mdi-alert-decagram"></v-icon
-                            >NEW</v-chip
+                            ><v-icon class="ml-1" start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
                           >
-                        </div></v-row
-                      >
-                      <!--large title-->
-                      <v-row no-gutters class="hidden-md-and-down py-0" align="center">
-                        <v-card-title
-                          class="ml-2 pa-0"
-                          :style="{
-                            color: $vuetify.theme.current.colors.primary,
-                          }"
-                        >
-                          {{ civ.title }} </v-card-title
-                        ><v-chip
-                          v-if="
-                            isNew(
-                              recentCivBuilds
-                                .find((element) => element.civ == civ.shortName)
-                                ?.timeCreated.toDate()
-                            )
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </template>
+              </v-tooltip>
+            </v-col>
+          </template>
+          <template v-else>
+            <v-col cols="12" class="text-center my-0">
+              <v-alert type="info" color="primary" border="start" elevation="0" icon="mdi-information">
+                No civilizations found. Try a different search term.
+              </v-alert>
+            </v-col>
+          </template>
+        </v-row>
+        <!-- civilizations sm and up-->
+        <v-row align="center" no-gutters class="hidden-xs">
+          <template v-if="filteredCivs.length">
+            <v-col cols="6" v-for="(civ, index) in filteredCivs" :key="civ.title">
+              <v-tooltip location="top" open-delay="1000">
+                <span
+                  :style="{
+                    color: $vuetify.theme.current.colors.primary,
+                  }"
+                  >Explore all {{ civ.title }} build orders</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-card
+                    flat
+                    v-bind:class="{
+                      'mb-2 mr-2': index % 2 == 0,
+                      'mb-2 ml-2': index % 2 != 0,
+                    }"
+                    min-height="50"
+                    rounded="lg"
+                    v-bind="props"
+                    :to="{
+                      name: 'Dashboard',
+                      query: { civ: civ.shortName },
+                    }"
+                  >
+                    <v-row no-gutters align="center" justify="center">
+                      <v-col cols="4">
+                        <v-img
+                          min-height="70"
+                          :src="civ.flagLarge"
+                          :lazy-src="civ.flagSmall"
+                          :gradient="
+                            'to right, transparent, ' + $vuetify.theme.current.colors.surface
                           "
-                          class="mt-1 ml-2 pl-1"
-                          color="accent"
-                          size="small"
-                          ><v-icon class="ma-1" start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                          alt="{{civ.title}}"
+                          cover
                         >
-                      </v-row>
-                    </v-col>
-                  </v-row>
-                </v-card>
-              </template>
-            </v-tooltip>
-          </v-col>
+                        </v-img>
+                      </v-col>
+                      <v-col cols="8">
+                        <!--small title-->
+                        <v-row no-gutters class="hidden-lg-and-up">
+                          <div
+                            :style="{
+                              color: $vuetify.theme.current.colors.primary,
+                            }"
+                            class="text-subtitle-2 mx-2 mb-n1 hidden-lg-and-up"
+                          >
+                            {{ civ.title }}
+                            <v-chip
+                              v-if="
+                                isNew(
+                                  recentCivBuilds
+                                    .find((element) => element.civ == civ.shortName)
+                                    ?.timeCreated.toDate()
+                                )
+                              "
+                              class="px-1 pr-2"
+                              color="accent"
+                              size="x-small"
+                              ><v-icon class="ma-1" start icon="mdi-alert-decagram"></v-icon
+                              >NEW</v-chip
+                            >
+                          </div></v-row
+                        >
+                        <!--large title-->
+                        <v-row no-gutters class="hidden-md-and-down py-0" align="center">
+                          <v-card-title
+                            class="ml-2 pa-0"
+                            :style="{
+                              color: $vuetify.theme.current.colors.primary,
+                            }"
+                          >
+                            {{ civ.title }} </v-card-title
+                          ><v-chip
+                            v-if="
+                              isNew(
+                                recentCivBuilds
+                                  .find((element) => element.civ == civ.shortName)
+                                  ?.timeCreated.toDate()
+                              )
+                            "
+                            class="mt-1 ml-2 pl-1"
+                            color="accent"
+                            size="small"
+                            ><v-icon class="ma-1" start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
+                          >
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </template>
+              </v-tooltip>
+            </v-col>
+          </template>
+          <template v-else>
+            <v-col cols="12" class="text-center my-0">
+              <v-alert type="info" color="primary" border="start" elevation="0" icon="mdi-information">
+                No civilizations found. Try a different search term.
+              </v-alert>
+            </v-col>
+          </template>
         </v-row>
 
         <v-row no-gutters class="hidden-md-and-up"
@@ -679,7 +710,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useDisplay } from "vuetify";
 
 //Components
@@ -714,12 +745,22 @@ export default {
     EmailVerificationAd,
   },
   setup() {
+    const store = useStore();
     const allTimeClassicsList = computed(() => store.state.cache.allTimeClassicsList);
     const popularBuildsList = computed(() => store.state.cache.popularBuildsList);
     const recentBuildsList = computed(() => store.state.cache.recentBuildsList);
     const topContributorsList = computed(() => store.state.cache.topContributorsList);
     const civs = allCivs.value.filter((element) => element.shortName != "ANY");
-    const store = useStore();
+    const civFilter = ref("");
+    const filteredCivs = computed(() => {
+      if (!civFilter.value) return civs;
+      const filter = civFilter.value.toLowerCase();
+      return civs.filter(
+        (civ) =>
+          civ.title.toLowerCase().includes(filter) ||
+          civ.shortName.toLowerCase().includes(filter)
+      );
+    });
     const { name } = useDisplay();
     const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
@@ -795,6 +836,8 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       civs,
+      civFilter,
+      filteredCivs,
       count,
       recentBuildsList,
       popularBuildsList,

@@ -98,27 +98,32 @@ export default function useImportOverlayFormat() {
   }
 
   const mapCivilizations = {
-    "Any Civilization": "ANY",
-    English: "ENG",
-    French: "FRE",
-    Rus: "RUS",
-    Malians: "MAL",
-    "Delhi Sultanate": "DEL",
-    "Holy Roman Empire": "HRE",
-    "Abbasid Dynasty": "ABB",
-    Ottomans: "OTT",
-    Chinese: "CHI",
-    Mongols: "MON",
-    //Sultans Ascend
-    Byzantines: "BYZ",
-    Japanese: "JAP",
-    Ayyubids: "AYY",
-    "Jeanne d'Arc": "JDA",
-    "Zhu Xi's Legacy": "ZXL",
-    "Order of the Dragon": "DRA",
-    //Knights of Cross and Rose
-    "House of Lancaster": "HOL",
-    "Knights Templar": "KTE",
+  "Any Civilization": "ANY",
+  English: "ENG",
+  French: "FRE",
+  Rus: "RUS",
+  Malians: "MAL",
+  "Delhi Sultanate": "DEL",
+  "Holy Roman Empire": "HRE",
+  "Abbasid Dynasty": "ABB",
+  Ottomans: "OTT",
+  Chinese: "CHI",
+  Mongols: "MON",
+  //Sultans Ascend
+  Byzantines: "BYZ",
+  Japanese: "JAP",
+  Ayyubids: "AYY",
+  "Jeanne d'Arc": "JDA",
+  "Zhu Xi's Legacy": "ZXL",
+  "Order of the Dragon": "DRA",
+  //Knights of Cross and Rose
+  "House of Lancaster": "HOL",
+  "Knights Templar": "KTE",
+  //Dynasties of the East
+  "Golden Horde": "GOH",
+  "Macedonian Dynasty": "MAC",
+  "Sengoku Daimyo": "SEN",
+  "Tughlaq Dynasty": "TUG",
   };
 
   return {
