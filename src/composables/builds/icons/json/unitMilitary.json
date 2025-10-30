@@ -3671,5 +3671,60 @@
       "popcap": 5,
       "time": 38
     }
+  },
+  {
+    "title": "Khan",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_golden_horde/khan.webp",
+    "civ": ["GOH"],
+    "class": "military",
+    "description": "",
+    "id": "khan",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khan"
+  },
+  {
+    "title": "Kharash",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_golden_horde/kharash.webp",
+    "civ": ["GOH"],
+    "class": "military",
+    "description": "",
+    "id": "kharash",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/kharash"
+  },
+  {
+    "title": "Kipchak",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_golden_horde/kipchak_age3.webp",
+    "civ": ["GOH"],
+    "class": "military",
+    "description": "",
+    "id": "kipchak",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/kipchak"
+  },
+  {
+    "title": "Torguud",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_golden_horde/torguud.webp",
+    "civ": ["GOH"],
+    "class": "military",
+    "description": "",
+    "id": "torguud",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/torguud"
+  },
+  {
+    "title": "Tribute",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_golden_horde/rus_tribute_age3.webp",
+    "civ": ["GOH"],
+    "class": "military",
+    "description": "",
+    "id": "rus_tribute_age3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/rus_tribute_age3"
   }
 ]

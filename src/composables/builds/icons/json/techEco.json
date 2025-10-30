@@ -1567,5 +1567,60 @@
     "id": "trade-bags-1",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/trade-bags"
+  },
+  {
+    "title": "Rotation Grazing",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_golden_horde/rotation_grazing.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "rotation_grazing",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/rotation_grazing"
+  },
+  {
+    "title": "Over Grazing",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_golden_horde/over_grazing.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "over_grazing",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/over_grazing"
+  },
+  {
+    "title": "Stone Rate 3",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_golden_horde/stone_rate_3.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "stone_rate_3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/stone_rate_3"
+  },
+  {
+    "title": "Stone Rate 4",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_golden_horde/stone_rate_4.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "stone_rate_4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/stone_rate_4"
+  },
+  {
+    "title": "Ovoo Tithe Barns",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_golden_horde/ovoo_tithe_barns.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "ovoo_tithe_barns",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ovoo_tithe_barns"
   }
 ]

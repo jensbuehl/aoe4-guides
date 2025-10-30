@@ -666,5 +666,19 @@
       "popcap": 0,
       "time": 90
     }
+  },
+  {
+    "title": "Fortified Outpost",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_golden_horde/fortified_outpost.webp",
+    "civ": [
+      "GOH"
+    ],
+    "class": "default",
+    "shorthand": ["stonetower", "qz", "qy"],
+    "description": "",
+    "id": "fortified_outpost",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/fortified_outpost"
   }
 ]

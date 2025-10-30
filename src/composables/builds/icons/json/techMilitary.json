@@ -5071,5 +5071,214 @@
       "popcap": 0,
       "time": 60
     }
+  },
+  {
+    "title": "Bechhead Ram",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_golden_horde/bechhead_ram.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "bechhead_ram",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/bechhead_ram"
+  },
+  {
+    "title": "Defense Improvements",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_golden_horde/defense_improvements.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "defense_improvements",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/defense_improvements"
+  },
+  {
+    "title": "Glorious Charge",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_golden_horde/glorious_charge.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "glorious_charge",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/glorious_charge"
+  },
+  {
+    "title": "Building Carts",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_building_carts_age2.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "golden_tent_building_carts_age2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_building_carts_age2"
+  },
+  {
+    "title": "Horde Rally",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_horde_rally_age3.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "golden_tent_horde_rally_age3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_horde_rally_age3"
+  },
+  {
+    "title": "Khan",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_khan_age2.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "golden_tent_khan_age2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_khan_age2"
+  },
+  {
+    "title": "Lumber Shields",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_lumber_shields_age3.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "golden_tent_lumber_shields_age3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_lumber_shields_age3"
+  },
+  {
+    "title": "Relic Ovoos",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_relic_ovoos_age3.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "golden_tent_relic_ovoos_age3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_relic_ovoos_age3"
+  },
+  {
+    "title": "Stone Armies",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_stone_armies_age4.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "golden_tent_stone_armies_age4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_stone_armies_age4"
+  },
+  {
+    "title": "Yam Network Trade",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_yam_network_trade_age4.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "golden_tent_yam_network_trade_age4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_yam_network_trade_age4"
+  },
+  {
+    "title": "Horseman Rally",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/horseman_rally.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "horseman_rally",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/horseman_rally"
+  },
+  {
+    "title": "Increased Supplies",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/increased_supplies.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "increased_supplies",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/increased_supplies"
+  },
+  {
+    "title": "Kharash Upgrade",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/kharash_upgrade.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "kharash_upgrade",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/kharash_upgrade"
+  },
+  {
+    "title": "Padded Armor",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/padded_armor.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "padded_armor",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/padded_armor"
+  },
+  {
+    "title": "Reinforcements",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/reinforcements.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "reinforcements",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/reinforcements"
+  },
+  {
+    "title": "Reinforcements - Archery Ranges",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/reinforcements_archery_ranges.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "reinforcements_archery_ranges",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/reinforcements_archery_ranges"
+  },
+  {
+    "title": "Reinforcements - Barracks",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/reinforcements_barracks.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "reinforcements_barracks",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/reinforcements_barracks"
+  },
+  {
+    "title": "Reinforcements - Stables",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/reinforcements_stables.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "reinforcements_stables",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/reinforcements_stables"
+  },
+  {
+    "title": "Triple Shot",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/triple_shot.webp",
+    "civ": ["GOH"],
+    "class": "tech",
+    "description": "",
+    "id": "triple_shot",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/triple_shot"
   }
 ]

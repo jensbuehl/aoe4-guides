@@ -2042,5 +2042,95 @@
       "popcap": 0,
       "time": 600
     }
+  },
+  {
+    "title": "Golden Tent",
+    "age": 1,
+    "imgSrc": "/assets/pictures/landmark_golden_horde/golden_tent.webp",
+    "civ": [
+      "GOH"
+    ],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/golden_tent"
+  },
+  {
+    "title": "Building Carts",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_building_carts_age2.webp",
+    "civ": ["GOH"],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent_building_carts_age2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_building_carts_age2"
+  },
+  {
+    "title": "Khan",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_khan_age2.webp",
+    "civ": ["GOH"],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent_khan_age2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_khan_age2"
+  },
+  {
+    "title": "Horde Rally",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_horde_rally_age3.webp",
+    "civ": ["GOH"],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent_horde_rally_age3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_horde_rally_age3"
+  },
+  {
+    "title": "Lumber Shields",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_lumber_shields_age3.webp",
+    "civ": ["GOH"],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent_lumber_shields_age3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_lumber_shields_age3"
+  },
+  {
+    "title": "Relic Ovoos",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_relic_ovoos_age3.webp",
+    "civ": ["GOH"],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent_relic_ovoos_age3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_relic_ovoos_age3"
+  },
+  {
+    "title": "Stone Armies",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_stone_armies_age4.webp",
+    "civ": ["GOH"],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent_stone_armies_age4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_stone_armies_age4"
+  },
+  {
+    "title": "Yam Network Trade",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_golden_horde/golden_tent_yam_network_trade_age4.webp",
+    "civ": ["GOH"],
+    "class": "landmark",
+    "description": "",
+    "id": "golden_tent_yam_network_trade_age4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_yam_network_trade_age4"
   }
 ]

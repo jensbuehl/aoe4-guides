@@ -553,5 +553,18 @@
       "popcap": 0,
       "time": 15
     }
+  },
+  {
+    "title": "Stockyard",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_golden_horde/stockyard.webp",
+    "civ": [
+      "GOH"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "stockyard",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/stockyard"
   }
 ]
