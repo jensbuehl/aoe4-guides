@@ -424,5 +424,15 @@
     "id": "lodya-trade-ship-2",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/lodya-trade-ship"
+  },
+  {
+    "title": "Worker Elephant",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_tughluq/worker_elephant.webp",
+    "civ": ["TUG"],
+    "class": "default",
+    "id": "worker_elephant",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/worker_elephant"
   }
 ]

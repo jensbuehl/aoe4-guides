@@ -204,5 +204,54 @@
     "imgSrc": "/assets/pictures/ability_golden_horde/stockyard_edict.webp",
     "civ": ["GOH"],
     "class": "ability"
+  },
+  {
+    "title": "Ajmer",
+    "age": "1",
+    "imgSrc": "/assets/pictures/ability_tughluq/ajmer.webp",
+    "civ": ["TUG"],
+    "class": "ability"
+  },
+  {
+    "title": "Bhakkar",
+    "age": "1",
+    "imgSrc": "/assets/pictures/ability_tughluq/bhakkar.webp",
+    "civ": ["TUG"],
+    "class": "ability"
+  },
+  {
+    "title": "Multan",
+    "age": "1",
+    "imgSrc": "/assets/pictures/ability_tughluq/multan.webp",
+    "civ": ["TUG"],
+    "class": "ability"
+  },
+  {
+    "title": "Jalor",
+    "age": "1",
+    "imgSrc": "/assets/pictures/ability_tughluq/jalor.webp",
+    "civ": ["TUG"],
+    "class": "ability"
+  },
+  {
+    "title": "Sehwan",
+    "age": "1",
+    "imgSrc": "/assets/pictures/ability_tughluq/sehwan.webp",
+    "civ": ["TUG"],
+    "class": "ability"
+  },
+  {
+    "title": "Uch",
+    "age": "1",
+    "imgSrc": "/assets/pictures/ability_tughluq/uch.webp",
+    "civ": ["TUG"],
+    "class": "ability"
+  },
+  {
+    "title": "Governor",
+    "age": "1",
+    "imgSrc": "/assets/pictures/ability_tughluq/governor.webp",
+    "civ": ["TUG"],
+    "class": "ability"
   }
 ]

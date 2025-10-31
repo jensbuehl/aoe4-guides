@@ -680,5 +680,17 @@
     "id": "fortified_outpost",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/fortified_outpost"
+  },
+  {
+    "title": "Tughluqabad Fort",
+    "imgSrc": "/assets/pictures/building_tughluq/tughluqabad_fort.webp",
+    "civ": [
+      "TUG"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "tughluqabad_fort",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/tughluqabad_fort"
   }
 ]

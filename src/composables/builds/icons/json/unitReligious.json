@@ -197,5 +197,15 @@
       "popcap": 1,
       "time": 30
     }
+  },
+  {
+    "title": "Healer Elephant",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_tughluq/healer_elephant.webp",
+    "civ": ["TUG"],
+    "class": "military",
+    "id": "healer_elephant",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/healer_elephant"
   }
 ]

@@ -5273,12 +5273,201 @@
   {
     "title": "Triple Shot",
     "age": 2,
-    "imgSrc": "/assets/pictures/technology_golden_horde/triple_shot.webp",
+    "imgSrc": "/assets/pictures/technology_tughluq/triple_shot.webp",
     "civ": ["GOH"],
     "class": "tech",
     "description": "",
     "id": "triple_shot",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/triple_shot"
+  },
+  {
+    "title": "Ballista Elephant Upgrade",
+    "imgSrc": "/assets/pictures/technology_tughluq/ballista_elephant_age4.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "ballista_elephant_age4",
+    "type": "technology"
+  },
+  {
+    "title": "Collateral Damage",
+    "imgSrc": "/assets/pictures/technology_tughluq/collateral_damage.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "collateral_damage",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/collateral_damage"
+  },
+  {
+    "title": "Curse of Auliya",
+    "imgSrc": "/assets/pictures/technology_tughluq/curse_of_auliya.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "curse_of_auliya",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/curse_of_auliya"
+  },
+  {
+    "title": "Elephant Caretakers",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_caretakers.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_caretakers",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_caretakers"
+  },
+  {
+    "title": "Elephant Economics 1",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_1.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_economics_1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_economics_1"
+  },
+  {
+    "title": "Elephant Economics 2",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_2.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_economics_2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_economics_2"
+  },
+  {
+    "title": "Elephant Economics 3",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_3.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_economics_3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_economics_3"
+  },
+  {
+    "title": "Elephant Wisdom",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_wisdom.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_wisdom",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_wisdom"
+  },
+  {
+    "title": "Healer Elephant Upgrade",
+    "imgSrc": "/assets/pictures/technology_tughluq/healer_elephant_age_4.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "healer_elephant_age_4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/healer_elephant_age_4"
+  },
+  {
+    "title": "Siege Supplies",
+    "imgSrc": "/assets/pictures/technology_tughluq/siege_supplies_upgrade.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "siege_supplies_upgrade",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/siege_supplies_upgrade"
+  },
+  {
+    "title": "Spearman Upgrade",
+    "imgSrc": "/assets/pictures/technology_tughluq/spearman_cavalry_damage_production_speed.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "spearman_cavalry_damage_production_speed",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/spearman_cavalry_damage_production_speed"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 2",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier2.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier2"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 3",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier3.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier3"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 4 Ajmer",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier4_ajmer.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier4_ajmer",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier4_ajmer"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 4 Multan",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier4_multan.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier4_multan",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier4_multan"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 4 Bhakkar",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier4_bhakkar.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier4_bhakkar",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier4_bhakkar"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 4 Jalor",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier4_jalor.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier4_jalor",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier4_jalor"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 4 Sehwan",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier4_sehwan.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier4_sehwan",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier4_sehwan"
+  },
+  {
+    "title": "Tughluqabad Fort Tier 4 Uch",
+    "imgSrc": "/assets/pictures/technology_tughluq/tughluqabad_fort_tier4_uch.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "tughluqabad_fort_tier4_uch",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier4_uch"
   }
 ]

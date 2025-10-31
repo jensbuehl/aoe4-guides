@@ -3726,5 +3726,38 @@
     "id": "rus_tribute_age3",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/rus_tribute_age3"
+  },
+  {
+    "title": "Elephant Raider",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_tughluq/elephant_raider_age2.webp",
+    "civ": ["TUG"],
+    "class": "military",
+    "description": "",
+    "id": "elephant_raider_age2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/elephant_raider_age2"
+  },
+  {
+    "title": "Ballista Elephant",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_tughluq/ballista_elephant.webp",
+    "civ": ["TUG"],
+    "class": "military",
+    "description": "",
+    "id": "ballista_elephant",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/ballista_elephant"
+  },
+  {
+    "title": "Amir Warrior",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_tughluq/amir_warrior.webp",
+    "civ": ["TUG"],
+    "class": "military",
+    "description": "",
+    "id": "amir_warrior",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/amir_warrior"
   }
 ]
