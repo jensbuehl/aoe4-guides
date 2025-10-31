@@ -1622,5 +1622,16 @@
     "id": "ovoo_tithe_barns",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ovoo_tithe_barns"
+  },
+  {
+    "title": "Yatai Farm Gathering",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_sengoku/yatai_farm_gathering.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "description": "",
+    "id": "yatai_farm_gathering",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/yatai_farm_gathering"
   }
 ]

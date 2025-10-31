@@ -566,5 +566,31 @@
     "id": "stockyard",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/stockyard"
+  },
+  {
+    "title": "Daimyo",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_sengoku/daimyo.webp",
+    "civ": [
+      "SEN"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "daimyo",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/daimyo"
+  },
+  {
+    "title": "Towncenter",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_sengoku/towncenter.webp",
+    "civ": [
+      "SEN"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "towncenter",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/towncenter"
   }
 ]

@@ -434,5 +434,14 @@
     "id": "worker_elephant",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/worker_elephant"
+  },
+  {
+    "title": "Yatai",
+    "imgSrc": "/assets/pictures/unit_sengoku/yatai.webp",
+    "civ": ["SEN"],
+    "class": "default",
+    "id": "yatai",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/yatai"
   }
 ]

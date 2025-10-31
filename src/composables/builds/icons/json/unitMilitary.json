@@ -3759,5 +3759,60 @@
     "id": "amir_warrior",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/amir_warrior"
+  },
+  {
+    "title": "Daimyo",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_sengoku/daimyo.webp",
+    "civ": ["SEN"],
+    "class": "military",
+    "description": "",
+    "id": "daimyo",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/daimyo"
+  },
+  {
+    "title": "Ikko Ikki",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_sengoku/ikko_ikki.webp",
+    "civ": ["SEN"],
+    "class": "military",
+    "description": "",
+    "id": "ikko_ikki",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/ikko_ikki"
+  },
+  {
+    "title": "Kanabo",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_sengoku/kanabo-2.webp",
+    "civ": ["SEN"],
+    "class": "military",
+    "description": "",
+    "id": "kanabo-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/kanabo-2"
+  },
+  {
+    "title": "Tanegashima Ashigaru",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_sengoku/tanegashima_ashigaru-3.webp",
+    "civ": ["SEN"],
+    "class": "military",
+    "description": "",
+    "id": "tanegashima_ashigaru-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/tanegashima_ashigaru-3"
+  },
+  {
+    "title": "Yari",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_sengoku/yari-2.webp",
+    "civ": ["SEN"],
+    "class": "military",
+    "description": "",
+    "id": "yari-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/yari-2"
   }
 ]

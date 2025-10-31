@@ -2132,5 +2132,32 @@
     "id": "golden_tent_yam_network_trade_age4",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/golden_tent_yam_network_trade_age4"
+  },
+  {
+    "title": "Ryokan",
+    "imgSrc": "/assets/pictures/landmark_sengoku/ryokan.webp",
+    "civ": ["SEN"],
+    "class": "landmark",
+    "id": "ryokan",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/ryokan"
+  },
+  {
+    "title": "Sake Brewery",
+    "imgSrc": "/assets/pictures/landmark_sengoku/sake_brewery.webp",
+    "civ": ["SEN"],
+    "class": "landmark",
+    "id": "sake_brewery",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sake_brewery"
+  },
+  {
+    "title": "Sword Hunt Statue",
+    "imgSrc": "/assets/pictures/landmark_sengoku/sword_hunt_statue.webp",
+    "civ": ["SEN"],
+    "class": "landmark",
+    "id": "sword_hunt_statue",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sword_hunt_statue"
   }
 ]

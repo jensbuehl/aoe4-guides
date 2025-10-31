@@ -5469,5 +5469,155 @@
     "id": "tughluqabad_fort_tier4_uch",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tughluqabad_fort_tier4_uch"
+  },
+  {
+    "title": "Hojo Daimyo 1",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/hojo_daimyo_1.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "hojo_daimyo_1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/hojo_daimyo_1"
+  },
+  {
+    "title": "Hojo Daimyo 2",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/hojo_daimyo_2.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "hojo_daimyo_2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/hojo_daimyo_2"
+  },
+  {
+    "title": "Hojo Daimyo 3",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/hojo_daimyo_3.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "hojo_daimyo_3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/hojo_daimyo_3"
+  },
+  {
+    "title": "Oda Daimyo 1",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/oda_daimyo_1.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "oda_daimyo_1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/oda_daimyo_1"
+  },
+  {
+    "title": "Oda Daimyo 2",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/oda_daimyo_2.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "oda_daimyo_2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/oda_daimyo_2"
+  },
+  {
+    "title": "Oda Daimyo 3",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/oda_daimyo_3.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "oda_daimyo_3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/oda_daimyo_3"
+  },
+  {
+    "title": "Takeda Daimyo 1",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/takeda_daimyo_1.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "takeda_daimyo_1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/takeda_daimyo_1"
+  },
+  {
+    "title": "Takeda Daimyo 2",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/takeda_daimyo_2.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "takeda_daimyo_2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/takeda_daimyo_2"
+  },
+  {
+    "title": "Takeda Daimyo 3",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/takeda_daimyo_3.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "takeda_daimyo_3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/takeda_daimyo_3"
+  },
+  {
+    "title": "Higoyumi",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/higoyumi.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "higoyumi",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/higoyumi"
+  },
+  {
+    "title": "Horse Training",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/horse_training.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "horse_training",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/horse_training"
+  },
+  {
+    "title": "Ikko Ikki Healing",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/ikko_ikki_healing.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "ikko_ikki_healing",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ikko_ikki_healing"
+  },
+  {
+    "title": "Ikko Ikki Health and Damage",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/ikko_ikki_health_and_damage.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "ikko_ikki_health_and_damage",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ikko_ikki_health_and_damage"
+  },
+  {
+    "title": "Ikko Ikki Movement Speed",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/ikko_ikki_move_speed.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "ikko_ikki_move_speed",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ikko_ikki_move_speed"
+  },
+  {
+    "title": "Improved Yari",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_sengoku/improved_yari.webp",
+    "civ": ["SEN"],
+    "class": "tech",
+    "id": "improved_yari",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/improved_yari"
   }
 ]
