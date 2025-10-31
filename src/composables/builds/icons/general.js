@@ -271,4 +271,43 @@ export const general = [
     description:
       "The teachings of philosopher Zhu Xi reshape the Chinese civilization. With Zhu Xi’s Legacy, the Chinese boast a sophisticated administration with superior Imperial Officials and advanced technologies. The brimming treasury helps to establish powerful dynasties and research a breadth of unique technologies. Recruit Palace Guards, Zhuge Nus, and Grenadiers early on to protect the Empire.",
   },
+  {
+    title: "Golden Horde",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/goh.webp",
+    civ: civs,
+    class: "none",
+    shorthand: "goh",
+    description:
+      "The Golden Horde is a powerful Mongol state that emerged in the 13th century. With a focus on cavalry warfare and mobility, the Golden Horde can quickly adapt to changing battlefield conditions. Their unique technologies and units allow them to excel in hit-and-run tactics and raiding enemy territories.",
+  },
+  {
+    title: "Macedonian Dynasty",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/mac.webp",
+    civ: civs,
+    class: "none",
+    shorthand: "mac",
+    description: "The Macedonian Dynasty is known for its powerful military and innovative tactics. With a focus on heavy cavalry and phalanx formations, the Macedonians can dominate the battlefield. Their unique technologies and units allow them to excel in both offense and defense.",
+  },
+  {
+    title: "Sengoku Daimyo",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/sen.webp",
+    civ: civs,
+    class: "none",
+    shorthand: "sen",
+    description:
+      "The Sengoku Daimyo were powerful feudal lords in Japan during the Sengoku period. They commanded loyal samurai and sought to expand their territories through warfare and diplomacy. The Sengoku Daimyo excel in both offense and defense, utilizing unique strategies and technologies to outmaneuver their opponents.",
+  },
+  {
+    title: "Tuglhaq Dynasty",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/tug.webp",
+    civ: civs,
+    class: "none",
+    shorthand: "tug",
+    description:
+      "The Tuglhaq Dynasty is known for its powerful military and innovative tactics. With a focus on heavy cavalry and phalanx formations, the Tuglhaq can dominate the battlefield. Their unique technologies and units allow them to excel in both offense and defense.",
+  },
 ];
