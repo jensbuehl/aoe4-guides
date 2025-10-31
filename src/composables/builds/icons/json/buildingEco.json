@@ -592,5 +592,18 @@
     "id": "towncenter",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/towncenter"
+  },
+  {
+    "title": "Silver Deposit",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_macedonian/silver_deposit.webp",
+    "civ": [
+      "MAC"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "silver_deposit",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/silver_deposit"
   }
 ]

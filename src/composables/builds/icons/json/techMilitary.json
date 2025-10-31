@@ -5619,5 +5619,135 @@
     "id": "improved_yari",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/improved_yari"
+  },
+  {
+    "title": "Building Survivability",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/building_survivability_1.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "building_survivability_1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/building_survivability_1"
+  },
+  {
+    "title": "Cavalry Damage",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/cavalry_damage.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "cavalry_damage",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/cavalry_damage"
+  },
+  {
+    "title": "Cavalry Survivability",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/cavalry_survivability.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "cavalry_survivability",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/cavalry_survivability"
+  },
+  {
+    "title": "Melee Infantry Damage",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/melee_infantry_damage.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "melee_infantry_damage",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/melee_infantry_damage"
+  },
+  {
+    "title": "Melee Infantry Survivability",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/melee_infantry_survivability.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "melee_infantry_survivability",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/melee_infantry_survivability"
+  },
+  {
+    "title": "Prolonged Siege",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/prolonged_siege.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "prolonged_siege",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/prolonged_siege"
+  },
+  {
+    "title": "Ranged Infantry Damage",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/ranged_infantry_damage.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "ranged_infantry_damage",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ranged_infantry_damage"
+  },
+  {
+    "title": "Ranged Infantry Survivability",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/ranged_infantry_survivability.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "ranged_infantry_survivability",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ranged_infantry_survivability"
+  },
+  {
+    "title": "Rhomphaia",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/rhomphaia.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "rhomphaia",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/rhomphaia"
+  },
+  {
+    "title": "Roman Fire",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/roman_fire.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "roman_fire",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/roman_fire"
+  },
+  {
+    "title": "Ruinous Blinding",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/ruinous_blinding.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "ruinous_blinding",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ruinous_blinding"
+  },
+  {
+    "title": "Runestones",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/runestones.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "runestones",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/runestones"
+  },
+  {
+    "title": "Siege Survivability",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_macedonian/siege_survivability_1.webp",
+    "civ": ["MAC"],
+    "class": "tech",
+    "id": "siege_survivability_1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/siege_survivability_1"
   }
 ]

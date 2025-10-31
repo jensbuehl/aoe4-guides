@@ -3814,5 +3814,93 @@
     "id": "yari-2",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/yari-2"
+  },
+  {
+    "title": "Atgeir",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/atgeir-1.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "atgeir-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/atgeir-1"
+  },
+  {
+    "title": "Bogmadr",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/bogmadr-2.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "bogmadr-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/bogmadr-2"
+  },
+  {
+    "title": "Riddari",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/riddari-3.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "riddari-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/riddari-3"
+  },
+  {
+    "title": "Early Varangian",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/varangian-2.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "varangian-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/varangian-2"
+  },
+  {
+    "title": "Hippodrome Horseman",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/hippodrome_horseman.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "hippodrome_horseman",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome_horseman"
+  },
+  {
+    "title": "Hippodrome Riddari",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/hippodrome_riddari.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "hippodrome_riddari",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome_riddari"
+  },
+  {
+    "title": "Hippodrome Scout",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/hippodrome_scout.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "hippodrome_scout",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome_scout"
+  },
+  {
+    "title": "Palatine Cataphracts",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_macedonian/palatine_cataphracts.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "",
+    "id": "palatine_cataphracts",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/palatine_cataphracts"
   }
 ]

@@ -692,5 +692,41 @@
     "id": "tughluqabad_fort",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/tughluqabad_fort"
+  },
+  {
+    "title": "Varangian Arsenal",
+    "imgSrc": "/assets/pictures/building_macedonian/varangian_arsenal.webp",
+    "civ": [
+      "MAC"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "varangian_arsenal",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian_arsenal"
+  },
+  {
+    "title": "Varangian Stronghold",
+    "imgSrc": "/assets/pictures/building_macedonian/varangian_stronghold.webp",
+    "civ": [
+      "MAC"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "varangian_stronghold",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian_stronghold"
+  },
+  {
+    "title": "Varangian Warcamp",
+    "imgSrc": "/assets/pictures/building_macedonian/varangian_warcamp.webp",
+    "civ": [
+      "MAC"
+    ],
+    "class": "default",
+    "description": "",
+    "id": "varangian_warcamp",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian_warcamp"
   }
 ]
