@@ -133,6 +133,17 @@
     }
   },
   {
+    "title": "Ikko Ikki Monk",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_sengoku/ikko_ikki.webp",
+    "civ": ["SEN"],
+    "class": "military",
+    "description": "",
+    "id": "ikko-ikki-monk-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/ikko-ikki-monk-3"
+  },
+  {
     "title": "Shinto Priest",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_japanese/shinto-priest-3.webp",

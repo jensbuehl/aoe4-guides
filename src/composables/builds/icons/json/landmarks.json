@@ -1893,7 +1893,7 @@
     "title": "Koka Township",
     "age": 1,
     "imgSrc": "/assets/pictures/landmark_japanese/koka-township-1.webp",
-    "civ": ["JAP"],
+    "civ": ["JAP", "SEN"],
     "class": "landmark",
     "description": "Can produce Shinobi espionage units which specialize in scouting, sabotage, and assassination. Queues production of a free Shinobi upon completion.",
     "id": "koka-township-1",
@@ -1959,7 +1959,7 @@
     "title": "Temple of Equality",
     "age": 2,
     "imgSrc": "/assets/pictures/landmark_japanese/temple-of-equality-2.webp",
-    "civ": ["JAP"],
+    "civ": ["JAP", "SEN"],
     "class": "landmark",
     "description": "Produces Buddhist Monks and contains unique Buddhist technologies. Buddhist Monks provide support in combat by decreasing enemy damage with Sohei's Sutra and by enhancing damage of allies with Buddhist Conversion.\n \nAlso allows construction of 4 additional Buddhist Temples.",
     "id": "temple-of-equality-2",
@@ -2003,7 +2003,7 @@
     "title": "Castle of the Crow",
     "age": 4,
     "imgSrc": "/assets/pictures/landmark_japanese/castle-of-the-crow-4.webp",
-    "civ": ["JAP"],
+    "civ": ["JAP", "SEN"],
     "class": "landmark",
     "description": "Acts as a Castle. Can periodically spawn Treasure Caravans from selected neutral Trading Posts to provide a large amount of Food, Wood, Gold, and some Stone when reaching the Castle of the Crow.",
     "id": "castle-of-the-crow-4",
@@ -2025,7 +2025,7 @@
     "title": "Tokugawa Shrine",
     "age": 4,
     "imgSrc": "/assets/pictures/landmark_japanese/tokugawa-shrine-4.webp",
-    "civ": ["JAP"],
+    "civ": ["JAP", "SEN"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
     "id": "tokugawa-shrine-4",
@@ -2138,26 +2138,26 @@
     "imgSrc": "/assets/pictures/landmark_sengoku/ryokan.webp",
     "civ": ["SEN"],
     "class": "landmark",
-    "id": "ryokan",
+    "id": "ryokan-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/ryokan"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/ryokan-1"
   },
   {
     "title": "Sake Brewery",
     "imgSrc": "/assets/pictures/landmark_sengoku/sake_brewery.webp",
     "civ": ["SEN"],
     "class": "landmark",
-    "id": "sake_brewery",
+    "id": "sake-brewery-2",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sake_brewery"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sake-brewery-2"
   },
   {
     "title": "Sword Hunt Statue",
     "imgSrc": "/assets/pictures/landmark_sengoku/sword_hunt_statue.webp",
     "civ": ["SEN"],
     "class": "landmark",
-    "id": "sword_hunt_statue",
+    "id": "sword-hunt-statue-3",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sword_hunt_statue"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sword-hunt-statue-3"
   }
 ]

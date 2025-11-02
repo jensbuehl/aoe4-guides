@@ -70,7 +70,7 @@
     "title": "Buddhist Temple",
     "age": 3,
     "imgSrc": "/assets/pictures/building_japanese/buddhist-temple-3.webp",
-    "civ": ["JAP"],
+    "civ": ["JAP", "SEN"],
     "class": "default",
     "description": "Produces the Buddhist Monk and houses Unique Buddhist technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "buddhist-temple-3",
