@@ -3,7 +3,7 @@
     "title": "Monk",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_religious/monk-3.webp",
-    "civ": ["BYZ", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "MAL", "MON", "RUS", "ZXL", "KTE", "HOL"],
+    "civ": ["BYZ", "MAC", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "MAL", "MON", "RUS", "ZXL", "KTE", "HOL"],
     "class": "military",
     "shorthand": ["monk"],
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Slow movement speed",

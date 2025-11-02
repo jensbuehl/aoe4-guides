@@ -66,6 +66,42 @@
     }
   },
   {
+    "title": "Varangian Arsenal",
+    "imgSrc": "/assets/pictures/building_macedonian/varangian_arsenal.webp",
+    "civ": [
+      "MAC"
+    ],
+    "class": "military",
+    "description": "",
+    "id": "varangian-arsenal-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-arsenal-2"
+  },
+  {
+    "title": "Varangian Stronghold",
+    "imgSrc": "/assets/pictures/building_macedonian/varangian_stronghold.webp",
+    "civ": [
+      "MAC"
+    ],
+    "class": "military",
+    "description": "",
+    "id": "varangian-stronghold-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-stronghold-1"
+  },
+  {
+    "title": "Varangian Warcamp",
+    "imgSrc": "/assets/pictures/building_macedonian/varangian_warcamp.webp",
+    "civ": [
+      "MAC"
+    ],
+    "class": "military",
+    "description": "",
+    "id": "varangian-warcamp-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-warcamp-1"
+  },
+  {
     "title": "Archery Range",
     "age": 2,
     "imgSrc": "/assets/pictures/building_military/archery-range.webp",
@@ -73,6 +109,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -117,6 +154,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -183,6 +221,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -227,6 +266,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -264,6 +304,16 @@
     }
   },
   {
+    "title": "Runestones",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_macedonian/runestones.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "id": "runestones-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/runestones-1"
+  },
+  {
     "title": "Keep",
     "age": 3,
     "imgSrc": "/assets/pictures/building_defensive/keep.webp",
@@ -271,6 +321,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "DRA",
@@ -354,6 +405,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -418,6 +470,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -460,6 +513,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -568,6 +622,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -611,6 +666,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -654,6 +710,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -726,41 +783,5 @@
     "id": "worker-elephant-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/worker-elephant-1"
-  },
-  {
-    "title": "Varangian Arsenal",
-    "imgSrc": "/assets/pictures/building_macedonian/varangian_arsenal.webp",
-    "civ": [
-      "MAC"
-    ],
-    "class": "default",
-    "description": "",
-    "id": "varangian_arsenal",
-    "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian_arsenal"
-  },
-  {
-    "title": "Varangian Stronghold",
-    "imgSrc": "/assets/pictures/building_macedonian/varangian_stronghold.webp",
-    "civ": [
-      "MAC"
-    ],
-    "class": "default",
-    "description": "",
-    "id": "varangian_stronghold",
-    "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian_stronghold"
-  },
-  {
-    "title": "Varangian Warcamp",
-    "imgSrc": "/assets/pictures/building_macedonian/varangian_warcamp.webp",
-    "civ": [
-      "MAC"
-    ],
-    "class": "default",
-    "description": "",
-    "id": "varangian_warcamp",
-    "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian_warcamp"
   }
 ]

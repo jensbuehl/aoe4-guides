@@ -3,7 +3,7 @@
     "title": "Monastery",
     "age": 3,
     "imgSrc": "/assets/pictures/building_religious/monastery.webp",
-    "civ": ["BYZ", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "ZXL", "KTE", "HOL"],
+    "civ": ["BYZ", "MAC", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "ZXL", "KTE", "HOL"],
     "class": "default",
     "shorthand": ["monastery", "eq"],
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",

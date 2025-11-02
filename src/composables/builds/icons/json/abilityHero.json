@@ -246,12 +246,5 @@
     "imgSrc": "/assets/pictures/ability_tughluq/uch.webp",
     "civ": ["TUG"],
     "class": "ability"
-  },
-  {
-    "title": "Governor",
-    "age": "1",
-    "imgSrc": "/assets/pictures/ability_tughluq/governor.webp",
-    "civ": ["TUG"],
-    "class": "ability"
   }
 ]

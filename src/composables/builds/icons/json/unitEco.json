@@ -3,7 +3,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager.webp",
-    "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "KTE", "HOL"],
+    "civ": ["BYZ", "MAC", "DRA", "ENG", "FRE", "HRE", "JDA", "RUS", "KTE", "HOL"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -235,6 +235,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -276,6 +277,7 @@
     "civ": [
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -375,6 +377,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",

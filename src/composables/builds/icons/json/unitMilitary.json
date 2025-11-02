@@ -7,6 +7,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -816,7 +817,7 @@
     "title": "Crossbowman",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_infantry/crossbowman-3.webp",
-    "civ": ["ABB", "AYY", "BYZ", "CHI", "DEL", "TUG", "ENG", "HRE", "JDA", "MON", "OTT", "RUS", "ZXL", "KTE", "HOL"],
+    "civ": ["ABB", "AYY", "BYZ", "MAC", "CHI", "DEL", "TUG", "ENG", "HRE", "JDA", "MON", "OTT", "RUS", "ZXL", "KTE", "HOL"],
     "class": "military",
     "shorthand": ["xbow"],
     "description": "High damage ranged unit best against armored targets.\n+ Anti-armor specialist\n- Low health\n- Countered by Horsemen",
@@ -862,7 +863,7 @@
     "title": "Handcannoneer",
     "age": 4,
     "imgSrc": "/assets/pictures/unit_infantry/handcannoneer-4.webp",
-    "civ": ["ABB", "AYY", "BYZ", "CHI", "DEL", "TUG", "ENG", "FRE", "HRE", "JDA", "MON", "RUS", "ZXL", "HOL"],
+    "civ": ["ABB", "AYY", "BYZ", "MAC", "CHI", "DEL", "TUG", "ENG", "FRE", "HRE", "JDA", "MON", "RUS", "ZXL", "HOL"],
     "class": "military",
     "description": "Powerful all-purpose ranged infantry.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
     "id": "handcannoneer-4",
@@ -1040,7 +1041,7 @@
     "title": "Varangian Guard",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_byzantines/varangian-guard-3.webp",
-    "civ": ["BYZ"],
+    "civ": ["BYZ", "MAC"],
     "class": "military",
     "description": "Tough infantry with good damage. Can use Berserking to increase damage for reduced armor.\n+ Heavy armor\n+ Increases armor of Transports\n+ Increased armor near allied Wonders\n- Slow move speed\n- Countered by Crossbowmen",
     "id": "varangian-guard-3",
@@ -1066,6 +1067,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "ENG",
       "FRE",
@@ -1187,7 +1189,7 @@
     "title": "Cataphract",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_byzantines/cataphract-3.webp",
-    "civ": ["BYZ"],
+    "civ": ["BYZ", "MAC"],
     "class": "military",
     "description": "Expensive cavalry with high damage and a powerful Trample ability that charges through enemies.\n+ Heavy armor\n+ Trample deals area damage\n- No base charge attack\n- Slower move speed\n- Countered by Spearmen and Crossbowmen",
     "id": "cataphract-3",
@@ -2714,7 +2716,7 @@
     "title": "Dromon",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_byzantines/dromon-2.webp",
-    "civ": ["BYZ"],
+    "civ": ["BYZ", "MAC"],
     "class": "military",
     "description": "Military ship equipped a flamethrower that can be upgraded to use Greek Fire.\n+ Strong against Arrow Ships\n- Low weapon range\n- Countered by Demolition Ships",
     "id": "dromon-2",
@@ -2740,6 +2742,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -2844,7 +2847,7 @@
     "title": "Lodya Attack Ship",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_rus/lodya-attack-ship.webp",
-    "civ": ["RUS"],
+    "civ": ["RUS", "MAC"],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
     "id": "lodya-attack-ship-2",
@@ -2959,6 +2962,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "DRA",
@@ -3039,7 +3043,7 @@
     "title": "Cheirosiphon",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_byzantines/cheirosiphon-3.webp",
-    "civ": ["BYZ"],
+    "civ": ["BYZ", "MAC"],
     "class": "military",
     "description": "Durable infantry transport equipped with Greek Fire, effective against Buildings and Walls.\n+ Greek Fire persists on ground\n+ High ranged armor\n+ High health\n- Only attacks buildings\n- Slow move speed",
     "id": "cheirosiphon-3",
@@ -3087,6 +3091,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "DRA",
@@ -3128,6 +3133,7 @@
     "civ": [
       "ABB",
       "BYZ",
+      "MAC",
       "DEL",
       "TUG",
       "DRA",
@@ -3213,6 +3219,7 @@
       "ABB",
       "AYY",
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -3253,6 +3260,7 @@
     "imgSrc": "/assets/pictures/unit_siege/bombard.webp",
     "civ": [
       "BYZ",
+      "MAC",
       "CHI",
       "DEL",
       "TUG",
@@ -3351,7 +3359,7 @@
     "title": "Galley",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_ship/dhow.webp",
-    "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "HOL", "KTE"],
+    "civ": ["BYZ", "MAC", "DRA", "ENG", "FRE", "HRE", "JDA", "HOL", "KTE"],
     "class": "military",
     "description": "Oared war vessel armed with a crew of archers.\n+ Increased maneuverability\n+ Benefits from ranged damage Blacksmith technology",
     "id": "galley-2",
@@ -3593,7 +3601,7 @@
     "title": "Demolition Ship",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_ship/explosive-dhow.webp",
-    "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "MAL", "OTT", "KTE", "HOL"],
+    "civ": ["BYZ", "MAC","DRA", "ENG", "FRE", "HRE", "JDA", "MAL", "OTT", "KTE", "HOL"],
     "class": "military",
     "description": "Small ship packed with explosives. Detonates when killed, damaging any units in the area.\n- Damage is reduced further from the explosion center\n- No weapons other than self-destruction",
     "id": "demolition-ship-3",
@@ -3659,7 +3667,7 @@
     "title": "Carrack",
     "age": 4,
     "imgSrc": "/assets/pictures/unit_ship/xebec.webp",
-    "civ": ["BYZ", "DRA", "ENG", "FRE", "HRE", "JDA", "OTT", "HOL"],
+    "civ": ["BYZ", "MAC", "DRA", "ENG", "FRE", "HRE", "JDA", "OTT", "HOL"],
     "class": "military",
     "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
     "id": "carrack-4",
@@ -3698,6 +3706,17 @@
       "popcap": 5,
       "time": 38
     }
+  },
+  {
+    "title": "Warship",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_ship/xebec.webp",
+    "civ": ["MAC"],
+    "class": "military",
+    "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
+    "id": "warship-4",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/warship"
   },
   {
     "title": "Khan",
@@ -3843,15 +3862,15 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/yari-cavalry-2"
   },
   {
-    "title": "Atgeir",
+    "title": "Atgeirmadr",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_macedonian/atgeir-1.webp",
     "civ": ["MAC"],
     "class": "military",
     "description": "",
-    "id": "atgeir-1",
+    "id": "atgeirma-r-1",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/atgeir-1"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/atgeirma-r-1"
   },
   {
     "title": "Bogmadr",
@@ -3860,9 +3879,9 @@
     "civ": ["MAC"],
     "class": "military",
     "description": "",
-    "id": "bogmadr-2",
+    "id": "bogma-r-2",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/bogmadr-2"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/bogma-r-2"
   },
   {
     "title": "Riddari",
@@ -3876,15 +3895,15 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/riddari-3"
   },
   {
-    "title": "Early Varangian",
+    "title": "Early Varangian Guard",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_macedonian/varangian-2.webp",
     "civ": ["MAC"],
     "class": "military",
     "description": "",
-    "id": "varangian-2",
+    "id": "varangian-guard-2",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/varangian-2"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/varangian-guard-2"
   },
   {
     "title": "Hippodrome Horseman",
@@ -3893,9 +3912,9 @@
     "civ": ["MAC"],
     "class": "military",
     "description": "",
-    "id": "hippodrome_horseman",
+    "id": "hippodrome-horseman-1",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome_horseman"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome-horseman-1"
   },
   {
     "title": "Hippodrome Riddari",
@@ -3904,9 +3923,9 @@
     "civ": ["MAC"],
     "class": "military",
     "description": "",
-    "id": "hippodrome_riddari",
+    "id": "hippodrome-riddari-1",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome_riddari"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome-riddari-1"
   },
   {
     "title": "Hippodrome Scout",
@@ -3915,9 +3934,9 @@
     "civ": ["MAC"],
     "class": "military",
     "description": "",
-    "id": "hippodrome_scout",
+    "id": "hippodrome-scout-1",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome_scout"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hippodrome-scout-1"
   },
   {
     "title": "Palatine Cataphracts",
@@ -3926,8 +3945,7 @@
     "civ": ["MAC"],
     "class": "military",
     "description": "",
-    "id": "palatine_cataphracts",
-    "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/palatine_cataphracts"
+    "id": "palatine-cataphracts",
+    "type": "unit"
   }
 ]
