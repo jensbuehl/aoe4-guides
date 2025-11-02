@@ -2,18 +2,20 @@
   <v-alert rounded="lg" outlined color="accent" class="pa-1 mt-6 mb-2">
     <v-card flat rounded="lg">
       <v-img color="surface-variant" src="/Season11-banner.webp"></v-img>
-      <v-card-title>Dynasties of the East — Now Live!</v-card-title>
+      <v-card-title>Season 12 Update | BETA</v-card-title>
       <v-card-text>
         <p>
-          🚀 The "Dynasties of the East" DLC update is live now and you can start using the four new
-          civilizations today: Golden Horde, Macedonian Dynasty, Sengoku Daimyo, and Tughlaq
-          Dynasty.
+          🚀 The "Dynasties of the East" DLC update is now live and you can start using the four new
+          civilizations: Golden Horde, Macedonian Dynasty, Sengoku Daimyo, and Tughlaq Dynasty.
         </p>
 
         <p class="mt-4">
-          More exciting information about the DLC and how to get it here:</p>
+          Note: If you run into missing information, please let me know via GitHub or Discord. Thank you!</p>
 
-        <v-row class="mx-2" no-gutters>
+        <p class="mt-4">
+          More exciting news about the DLC and how here:</p>
+
+        <v-row class="mx-2 mt-4" no-gutters>
           <v-col align="center" justify="center">
             <a href="https://www.youtube.com/watch?v=f9lffIAztko" target="_blank">
               <v-btn
@@ -40,7 +42,7 @@
                 <template v-slot:prepend>
                   <v-icon color="primary">mdi-web</v-icon>
                 </template>
-                Website
+                Dev Blog
               </v-btn>
             </a>
           </v-col>
