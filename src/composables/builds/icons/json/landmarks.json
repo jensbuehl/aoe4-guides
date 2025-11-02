@@ -815,7 +815,7 @@
     "title": "Monument of the Great Khan",
     "age": 4,
     "imgSrc": "/assets/pictures/landmark_mongols/monument-of-the-great-khan.webp",
-    "civ": ["MON"],
+    "civ": ["MON", "GOH"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
     "id": "monument-of-the-great-khan-4",
@@ -2052,9 +2052,9 @@
     ],
     "class": "landmark",
     "description": "",
-    "id": "golden_tent",
+    "id": "golden-tent-2",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/golden_tent"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/golden-tent-2"
   },
   {
     "title": "Building Carts",

@@ -164,7 +164,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-mongols.webp",
-    "civ": ["MON"],
+    "civ": ["MON", "GOH"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -248,6 +248,7 @@
       "JDA",
       "MAL",
       "MON",
+      "GOH",
       "OTT",
       "ZXL",
       "HOL",
@@ -290,6 +291,7 @@
       "JDA",
       "MAL",
       "MON",
+      "GOH",
       "OTT",
       "RUS",
       "ZXL"
@@ -390,6 +392,7 @@
       "JDA",
       "MAL",
       "MON",
+      "GOH",
       "OTT",
       "ZXL",
       "HOL",

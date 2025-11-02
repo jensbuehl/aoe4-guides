@@ -48,7 +48,7 @@
     "title": "Prayer Tent",
     "age": 3,
     "imgSrc": "/assets/pictures/building_mongols/prayer-tent.webp",
-    "civ": ["MON"],
+    "civ": ["MON", "GOH"],
     "class": "default",
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "prayer-tent-3",
