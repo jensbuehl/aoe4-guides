@@ -26,7 +26,7 @@
     "title": "Mosque",
     "age": 3,
     "imgSrc": "/assets/pictures/building_religious/mosque.webp",
-    "civ": ["ABB", "AYY", "DEL", "MAL", "OTT"],
+    "civ": ["ABB", "AYY", "DEL", "TUG", "MAL", "OTT"],
     "class": "default",
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "mosque-3",

@@ -204,8 +204,8 @@
     "imgSrc": "/assets/pictures/unit_tughluq/healer_elephant.webp",
     "civ": ["TUG"],
     "class": "military",
-    "id": "healer_elephant",
+    "id": "healer-elephant-2",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/healer_elephant"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/healer-elephant-2"
   }
 ]

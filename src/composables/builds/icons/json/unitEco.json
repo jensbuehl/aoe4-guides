@@ -26,7 +26,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-delhi.webp",
-    "civ": ["DEL"],
+    "civ": ["DEL", "TUG"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -237,6 +237,7 @@
       "BYZ",
       "CHI",
       "DEL",
+      "TUG",
       "DRA",
       "ENG",
       "FRE",
@@ -276,6 +277,7 @@
       "BYZ",
       "CHI",
       "DEL",
+      "TUG",
       "DRA",
       "ENG",
       "FRE",
@@ -373,6 +375,7 @@
       "BYZ",
       "CHI",
       "DEL",
+      "TUG",
       "DRA",
       "ENG",
       "FRE",
@@ -431,9 +434,9 @@
     "imgSrc": "/assets/pictures/unit_tughluq/worker_elephant.webp",
     "civ": ["TUG"],
     "class": "default",
-    "id": "worker_elephant",
+    "id": "worker-elephant",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/worker_elephant"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/worker-elephant"
   },
   {
     "title": "Yatai",

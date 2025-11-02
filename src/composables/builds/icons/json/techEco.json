@@ -286,9 +286,7 @@
     "title": "Cistercian Abbeys",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_hre/cistercian-churches.webp",
-    "civ": [
-      "HRE"
-    ],
+    "civ": ["HRE"],
     "class": "tech",
     "id": "cistercian-abbeys",
     "type": "technology",
@@ -489,6 +487,7 @@
       "BYZ",
       "CHI",
       "DEL",
+      "TUG",
       "DRA",
       "ENG",
       "FRE",
@@ -612,6 +611,7 @@
       "BYZ",
       "CHI",
       "DEL",
+      "TUG",
       "DRA",
       "ENG",
       "FRE",
@@ -647,9 +647,7 @@
     "title": "Sanctuary",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_templar/sanctuary.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Guarantees of sanctuary grant Pilgrimage 1 additional Pilgrim.",
     "id": "sanctuary",
@@ -671,9 +669,7 @@
     "title": "Treasure Towers",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_templar/treasure_tower.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Increases the gold generation of Monasteries, Sacred Sites and Pilgrims by 20% within the aura of a Fortress.",
     "id": "treasure-towers",
@@ -695,9 +691,7 @@
     "title": "Lettre de Change",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_templar/lettre_de_change.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Unlocks the Pilgrim Loan abilities, which loan a large sum of food for a return in gold over time.",
     "id": "lettre-de-change",
@@ -719,9 +713,7 @@
     "title": "Safe Passage",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_templar/safepassage.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Pilgrims spawn every 60 seconds. Start with 1 pilgrim, gain 1 pilgrims for each Fortress (Max 10).",
     "id": "safe-passage",
@@ -749,6 +741,7 @@
       "BYZ",
       "CHI",
       "DEL",
+      "TUG",
       "DRA",
       "ENG",
       "FRE",
@@ -1633,5 +1626,35 @@
     "id": "yatai_farm_gathering",
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/yatai_farm_gathering"
+  },
+  {
+    "title": "Elephant Economics 1",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_1.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_economics_1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_economics_1"
+  },
+  {
+    "title": "Elephant Economics 2",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_2.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_economics_2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_economics_2"
+  },
+  {
+    "title": "Elephant Economics 3",
+    "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_3.webp",
+    "civ": ["TUG"],
+    "class": "tech",
+    "description": "",
+    "id": "elephant_economics_3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/elephant_economics_3"
   }
 ]
