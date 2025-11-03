@@ -28,8 +28,8 @@ export async function initTextToSpeech() {
   EasySpeech.defaults({ voice: voice, pitch: 1, rate: 0.8, volume: 1 });
 }
 
-export async function speak(step) {
-  const text = getText(step);
+export async function speak(step, announceVillagers = true) {
+  const text = getText(step, announceVillagers);
 
   await EasySpeech.init(); // required
   EasySpeech.speak({
@@ -42,7 +42,7 @@ export async function stop() {
   EasySpeech.cancel();
 }
 
-function getText(step){
+function getText(step, announceVillagers = true){
   var text = "";
 
   //convert description
@@ -51,8 +51,8 @@ function getText(step){
   text = convertSpecialCharacters(text);
 
   //convert villagers
-  if (aggregateVillagers(step) > 0) {
-    text += "! - ! - ! Target the following villager distribution: "
+  if (announceVillagers && aggregateVillagers(step) > 0) {
+    text += "! - ! - ! You should have ";
     text += step.builders ? step.builders + " building. " : "";
     text += step.food ? step.food + " on food. " : "";
     text += step.wood ? step.wood + " on wood. " : "";

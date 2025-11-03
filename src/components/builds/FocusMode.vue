@@ -242,6 +242,25 @@
           :style="{
             color: $vuetify.theme.current.colors.primary,
           }"
+          >Toggle villager distribution announcements</span
+        >
+        <template v-slot:activator="{ props }">
+          <v-btn
+            v-if="audio"
+            v-bind="props"
+            color="accent"
+            flat
+            class="ma-2"
+            :icon="announceVillagers ? 'mdi-account-check' : 'mdi-account-off-outline'"
+            @click="handleToggleVillagerAnnouncements"
+          ></v-btn>
+        </template>
+      </v-tooltip>
+      <v-tooltip location="top">
+        <span
+          :style="{
+            color: $vuetify.theme.current.colors.primary,
+          }"
           >Next Build Order Step (ARROW RIGHT)</span
         >
         <template v-slot:activator="{ props }">
@@ -288,6 +307,7 @@ export default {
 
     const timer = ref(null);
     const audio = ref(true);
+    const announceVillagers = ref(false);
     const autoplaySupported = ref(false);
     const autoplay = ref(false);
     const stepsTimings = ref([]);
@@ -345,7 +365,7 @@ export default {
       if (audio.value) {
         stop();
         console.log("autoplay supported", autoplaySupported.value);
-        if (!autoplaySupported.value) speak(currentStep.value);
+        if (!autoplaySupported.value) speak(currentStep.value, announceVillagers.value);
       }
 
       //keep screen awake
@@ -435,7 +455,7 @@ export default {
           initTimer();
           if (audio.value) {
             stop();
-            speak(currentStep.value);
+            speak(currentStep.value, announceVillagers.value);
           }
         }
       }
@@ -446,7 +466,15 @@ export default {
       if (!audio.value) {
         stop();
       } else {
-        if (!autoplaySupported.value) speak(currentStep.value);
+        if (!autoplaySupported.value) speak(currentStep.value, announceVillagers.value);
+      }
+    }
+
+    function handleToggleVillagerAnnouncements() {
+      announceVillagers.value = !announceVillagers.value;
+      if (audio.value) {
+        stop();
+        speak(currentStep.value, announceVillagers.value);
       }
     }
 
@@ -501,7 +529,7 @@ export default {
       }
       if (audio.value) {
         stop();
-        speak(currentStep.value);
+        speak(currentStep.value, announceVillagers.value);
       }
     }
 
@@ -548,8 +576,10 @@ export default {
       handlePreviousStep,
       handleTogglePlayback,
       handleToggleAudio,
+      handleToggleVillagerAnnouncements,
       timer,
       audio,
+      announceVillagers,
       autoplaySupported,
       currentStepIndex,
       handleClose,
