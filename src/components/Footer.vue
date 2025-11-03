@@ -11,7 +11,7 @@
               Donate
             </v-btn></a
           >
-          <a href="https://ko-fi.com/jensbuehl"
+          <a href="https://discord.gg/Nau9BN5E7J"
             ><v-btn class="mx-1" variant="text" color="primary">
               <template v-slot:prepend>
                 <v-icon color="primary">mdi-chat</v-icon>
