@@ -1018,7 +1018,7 @@
     }
   },
   {
-    "title": "Towara",
+    "title": "Tawara",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_japanese/towara-1.webp",
     "civ": ["JAP", "SEN"],
@@ -1026,7 +1026,7 @@
     "description": "Increase the carry capacity of Villagers by +3, their movement speed by +7%, and +25% gather rate from Berry Bushes.",
     "id": "towara-1",
     "type": "technology",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/towara",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/tawara",
     "costs": {
       "food": 0,
       "wood": 25,
