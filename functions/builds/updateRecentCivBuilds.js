@@ -57,6 +57,18 @@ const civs = [
   {
     shortName: "KTE",
   },
+  {
+    shortName: "GOH",
+  },
+  {
+    shortName: "MAC",
+  },
+  {
+    shortName: "SEN",
+  },
+  {
+    shortName: "TUG",
+  },
 ];
 
 exports.updateRecentCivBuilds = onSchedule(
