@@ -17,7 +17,8 @@ export function toDateFromString(timeString) {
     return null;
   }
 
-  timeString = timeString.replace("~", "");
+  // Sanitize the time string to handle malformed values
+  timeString = sanitizeTimeString(timeString);
   var selectExpr = /^(\d?\d:\d\d)$/;
   var match = timeString.match(selectExpr);
 
@@ -88,6 +89,20 @@ function toSeconds(date) {
     return null;
   }
   return date.getMinutes() * 60 + date.getSeconds();
+}
+
+function sanitizeTimeString(timeString) {
+  if (!timeString || typeof timeString !== 'string') {
+    return '';
+  }
+  
+  // Remove common problematic characters and whitespace
+  return timeString
+    .replace(/[\n\r\t]/g, '') // Remove newlines, carriage returns, tabs
+    .replace(/~+/g, '')       // Remove tildes
+    .trim()                   // Remove leading/trailing whitespace
+    .replace(/\s+/g, '')      // Remove any remaining whitespace
+    .replace(/^0*(\d)/, '$1'); // Remove leading zeros except for single digit minutes
 }
 
 function init(timings, steps) {
