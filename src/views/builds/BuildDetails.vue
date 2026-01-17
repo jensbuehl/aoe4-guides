@@ -51,10 +51,18 @@
               size="x-small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="x-small"
-              ><v-icon start icon="mdi-earth"></v-icon
-              >{{ getCivById(build.civ)?.shortName }}</v-chip
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.civ"
+              label
+              color="accent"
+              size="x-small"
+              :to="{ name: 'Builds', query: { civ: build.civ } }"
+              clickable
             >
+              <v-icon start icon="mdi-earth"></v-icon>
+              {{ getCivById(build.civ)?.shortName }}
+            </v-chip>
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="x-small"
               ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
@@ -115,9 +123,17 @@
               size="small"
               ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="small"
-              ><v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}</v-chip
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.civ"
+              label
+              color="accent"
+              size="small"
+              :to="{ name: 'Builds', query: { civ: build.civ } }"
+              clickable
             >
+              <v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}
+            </v-chip>
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
               ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
@@ -420,9 +436,17 @@
               }"
               ><v-icon start icon="mdi-account-edit"></v-icon>{{ build.author }}</v-chip
             >
-            <v-chip class="mr-2 mb-2" v-if="build.civ" label color="accent" size="small"
-              ><v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}</v-chip
+            <v-chip
+              class="mr-2 mb-2"
+              v-if="build.civ"
+              label
+              color="accent"
+              size="small"
+              :to="{ name: 'Builds', query: { civ: build.civ } }"
+              clickable
             >
+              <v-icon start icon="mdi-earth"></v-icon>{{ getCivById(build.civ)?.title }}
+            </v-chip>
             <v-chip color="accent" class="mr-2 mb-2" v-if="build.season" label size="small"
               ><v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}</v-chip
             >
