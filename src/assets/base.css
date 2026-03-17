@@ -15,11 +15,11 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 }
 
-/* semantic color variables for this project */
+/* semantic color variables - use Vuetify's CSS variables as single source of truth */
 :root {
-  --color-background: var(--vt-c-white-mute);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
+  --color-background: rgb(var(--v-theme-background));
+  --color-background-soft: rgb(var(--v-theme-surface));
+  --color-background-mute: rgb(var(--v-theme-background));
 
   --color-border: var(--vt-c-divider-light-2);
   --color-border-hover: var(--vt-c-divider-light-1);
@@ -30,6 +30,37 @@
   --section-gap: 160px;
 }
 
+/* Light theme (Vuetify customLightTheme) */
+.v-theme--customLightTheme {
+  --color-background: rgb(var(--v-theme-background));
+  --color-background-soft: rgb(var(--v-theme-surface));
+  --color-background-mute: rgb(var(--v-theme-background));
+
+  --color-border: var(--vt-c-divider-light-2);
+  --color-border-hover: var(--vt-c-divider-light-1);
+
+  --color-heading: var(--vt-c-text-light-1);
+  --color-text: var(--vt-c-text-light-1);
+}
+
+/* Dark theme (Vuetify customDarkTheme) */
+.v-theme--customDarkTheme {
+  --vt-c-white: #161A25;
+  --vt-c-white-soft: #161A25;
+  --vt-c-white-mute: #161A25;
+  
+  --color-background: rgb(var(--v-theme-background));
+  --color-background-soft: rgb(var(--v-theme-surface));
+  --color-background-mute: rgb(var(--v-theme-background));
+
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
+
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-2);
+}
+
+/* System preference fallback */
 @media (prefers-color-scheme: dark) {
   :root {
     --color-background: var(--vt-c-blue);

@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <Header></Header>
     <v-main class="mt-2 mx-md-2" id="main-content">
-      <Snackbar/>
+      <Snackbar />
       <router-view />
     </v-main>
     <Footer></Footer>
@@ -11,7 +11,7 @@
 
 <script>
 //External
-import { onBeforeMount } from "vue";
+import { onBeforeMount, watch } from "vue";
 
 //Components
 import Header from "@/components/Header.vue";
@@ -19,29 +19,55 @@ import Footer from "@/components/Footer.vue";
 import Snackbar from "@/components/notifications/Snackbar.vue";
 
 //Composables
-import { useVuetify } from "@/composables/useVuetify";
+import { useTheme } from "vuetify";
+import {
+  getSavedTheme,
+  applyVuetifyTheme,
+  THEME_STORAGE_KEY,
+} from "@/composables/useThemePreference";
 
 export default {
   name: "App",
   components: { Header, Footer, Snackbar },
   setup() {
-    onBeforeMount(() => {
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", ({ matches }) => {
-          if (matches) {
-            vuetify.theme.global.name = "customDarkTheme";
-          } else {
-            vuetify.theme.global.name = "customLightTheme";
-          }
-        });
+    const theme = useTheme();
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
 
-      const vuetify = useVuetify();
-
-      if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-        vuetify.theme.global.name = "customLightTheme";
+    const updateRootCSSVariables = (isDark) => {
+      const root = document.documentElement;
+      if (isDark) {
+        root.style.setProperty('--color-background', '#161A25');
+        root.style.setProperty('--color-background-soft', '#161A25');
+        root.style.setProperty('--color-background-mute', '#161A25');
+      } else {
+        root.style.setProperty('--color-background', '#E9EBEE');
+        root.style.setProperty('--color-background-soft', '#F5F5F5');
+        root.style.setProperty('--color-background-mute', '#E9EBEE');
       }
+    };
+
+    onBeforeMount(() => {
+      const applyIfSystem = () => {
+        if (localStorage.getItem(THEME_STORAGE_KEY) != null) return;
+        applyVuetifyTheme(theme, media.matches);
+      };
+      media.addEventListener("change", applyIfSystem);
+
+      const saved = getSavedTheme();
+      if (saved === "light") applyVuetifyTheme(theme, false);
+      else if (saved === "dark") applyVuetifyTheme(theme, true);
+      else applyVuetifyTheme(theme, media.matches);
+
+      // Initial sync
+      updateRootCSSVariables(theme.global.name.value === "customDarkTheme");
+
+      // Watch for theme changes
+      watch(() => theme.global.name.value, (newTheme) => {
+        updateRootCSSVariables(newTheme === "customDarkTheme");
+      });
     });
+
+    return {};
   },
 };
 </script>
