@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <Header></Header>
     <v-main class="mt-2 mx-md-2" id="main-content">
-      <Snackbar/>
+      <Snackbar />
       <router-view />
     </v-main>
     <Footer></Footer>
@@ -19,28 +19,31 @@ import Footer from "@/components/Footer.vue";
 import Snackbar from "@/components/notifications/Snackbar.vue";
 
 //Composables
-import { useVuetify } from "@/composables/useVuetify";
+import { useTheme } from "vuetify";
+import {
+  getSavedTheme,
+  applyVuetifyTheme,
+  THEME_STORAGE_KEY,
+} from "@/composables/useThemePreference";
 
 export default {
   name: "App",
   components: { Header, Footer, Snackbar },
   setup() {
+    const theme = useTheme();
+
     onBeforeMount(() => {
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", ({ matches }) => {
-          if (matches) {
-            vuetify.theme.global.name = "customDarkTheme";
-          } else {
-            vuetify.theme.global.name = "customLightTheme";
-          }
-        });
+      const media = window.matchMedia("(prefers-color-scheme: dark)");
+      const applyIfSystem = () => {
+        if (localStorage.getItem(THEME_STORAGE_KEY) != null) return;
+        applyVuetifyTheme(theme, media.matches);
+      };
+      media.addEventListener("change", applyIfSystem);
 
-      const vuetify = useVuetify();
-
-      if (window.matchMedia("(prefers-color-scheme: light)").matches) {
-        vuetify.theme.global.name = "customLightTheme";
-      }
+      const saved = getSavedTheme();
+      if (saved === "light") applyVuetifyTheme(theme, false);
+      else if (saved === "dark") applyVuetifyTheme(theme, true);
+      else applyVuetifyTheme(theme, media.matches);
     });
   },
 };

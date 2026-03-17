@@ -1,10 +1,10 @@
-//External
-import { getCurrentInstance } from 'vue'
+import { useTheme, useDisplay } from "vuetify";
 
 export function useVuetify() {
-  const instance = getCurrentInstance()
-  if (!instance) {
-    throw new Error(`useVuetify should be called in setup().`)
-  }
-  return instance.proxy.$vuetify
+  const theme = useTheme();
+  const display = useDisplay();
+  return {
+    theme,
+    display,
+  };
 }
