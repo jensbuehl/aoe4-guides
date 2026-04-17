@@ -244,7 +244,7 @@
             </v-btn>
           </template>
           <v-list v-if="!user">
-            <v-list-item>
+            <v-list-item class="d-flex align-center pb-2">
               <span>New Villager?</span>
               <v-btn
                 size="small"
@@ -252,8 +252,9 @@
                 variant="text"
                 style="background-color: transparent"
                 to="/register"
+                class="ml-2 pb-1"
               >
-                Register now!
+                <span class="d-flex align-center">Register now!</span>         
               </v-btn>
             </v-list-item>
             <VDivider></VDivider>
@@ -261,16 +262,13 @@
               <v-icon class="mr-4" color="accent">mdi-login</v-icon>
               Login
             </v-list-item>
-            <VDivider></VDivider>
-            <v-list-item>
-              <v-list-item-title :style="{ color: $vuetify.theme.current.colors.primary }">Theme</v-list-item-title>
-            </v-list-item>
-            <v-list-item>
+            <VDivider color="surface-variant"></VDivider>
+            <v-list-item class="d-flex justify-center px-4 pt-4 pb-2">
               <v-btn-toggle
                 v-model="mode"
                 variant="tonal"
                 density="compact"
-                style="width: 100%;"
+                style="width: 100%; max-width: 280px;"
               >
                 <v-btn value="system" color="primary" title="System">
                   <v-icon>mdi-monitor</v-icon>
@@ -285,12 +283,12 @@
             </v-list-item>
           </v-list>
           <v-list v-if="user">
-            <v-list-item
-              :style="{
-                color: $vuetify.theme.current.colors.primary,
-              }"
-            >
-              Logged in as {{ user.displayName }}
+            <v-list-item class="d-flex align-center pb-3">
+              <v-list-item-content>
+                <span class="text-body-2">
+                  Logged in as {{ user.displayName }}
+                </span>
+              </v-list-item-content>
             </v-list-item>
             <VDivider></VDivider>
             <v-list-item
@@ -308,16 +306,13 @@
               <v-icon class="mr-4" color="accent">mdi-logout</v-icon>
               Logout
             </v-list-item>
-            <VDivider></VDivider>
-            <v-list-item>
-              <v-list-item-title :style="{ color: $vuetify.theme.current.colors.primary }">Theme</v-list-item-title>
-            </v-list-item>
-            <v-list-item>
+            <VDivider color="surface-variant"></VDivider>
+            <v-list-item class="d-flex justify-center px-4 pt-4 pb-2">
               <v-btn-toggle
                 v-model="mode"
                 variant="tonal"
                 density="compact"
-                style="width: 100%;"
+                style="width: 100%; max-width: 280px;"
               >
                 <v-btn value="system" color="primary" title="System">
                   <v-icon>mdi-monitor</v-icon>
