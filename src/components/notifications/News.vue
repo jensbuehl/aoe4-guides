@@ -2,12 +2,11 @@
   <v-alert rounded="lg" outlined color="accent" class="pa-1 mt-6 mb-2">
     <v-card flat rounded="lg">
       <v-img color="surface-variant" src="/Season11-banner.webp"></v-img>
-      <v-card-title>Yue Fei’s Legacy Pre-Order</v-card-title>
+      <v-card-title>Yue Fei’s Legacy</v-card-title>
       <v-card-text>
 
         <div class="mt-4">
-          <strong>Pre-Order Yue Fei’s Legacy</strong><br>
-          Yue Fei’s Legacy is available for pre-order now on Steam, Microsoft Store, and Xbox, and receive a 15% discount!<br>
+          Yue Fei’s Legacy DLC is available for pre-order now!<br>
           Coming May 7th!<br><br>
           <div class="text-center">
             <v-btn
