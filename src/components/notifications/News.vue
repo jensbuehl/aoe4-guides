@@ -2,59 +2,70 @@
   <v-alert rounded="lg" outlined color="accent" class="pa-1 mt-6 mb-2">
     <v-card flat rounded="lg">
       <v-img color="surface-variant" src="/Season11-banner.webp"></v-img>
-      <v-card-title>Season 12 Update | BETA</v-card-title>
+      <v-card-title>Yue Fei’s Legacy Pre-Order</v-card-title>
       <v-card-text>
-        <p>
-          🚀 The "Dynasties of the East" DLC update is now live and you can start using the four new
-          civilizations: Golden Horde, Macedonian Dynasty, Sengoku Daimyo, and Tughlaq Dynasty.
-        </p>
 
-        <p class="mt-4">
-          Note: If you run into missing information, please let me know via GitHub or Discord. Thank you!</p>
+        <div class="mt-4">
+          <strong>Pre-Order Yue Fei’s Legacy</strong><br>
+          Yue Fei’s Legacy is available for pre-order now on Steam, Microsoft Store, and Xbox, and receive a 15% discount!<br>
+          Coming May 7th!<br><br>
+          <div class="text-center">
+            <v-btn
+              href="https://store.steampowered.com/app/3746540/Age_of_Empires_IV_Yue_Feis_Legacy/"
+              target="_blank"
+              class="ma-2"
+              size="small"
+              variant="outlined"
+              color="primary"
+              style="background-color: transparent"
+            >
+              <template v-slot:prepend>
+                <v-icon color="primary">mdi-steam</v-icon>
+              </template>
+              Steam
+            </v-btn>
+            <v-btn
+              href="https://www.xbox.com/de-DE/games/store/age-of-empires-iv-yue-fei-s-legacy/9n56pn5w9900?ocid=storeforweb"
+              target="_blank"
+              class="ma-2"
+              size="small"
+              variant="outlined"
+              color="primary"
+              style="background-color: transparent"
+            >
+              <template v-slot:prepend>
+                <v-icon color="primary">mdi-microsoft</v-icon>
+              </template>
+              Microsoft Store
+            </v-btn>
+            <v-btn
+              href="https://www.xbox.com/en-US/games/store/age-of-empires-iv-yue-feis-legacy/9pcrnw20sw1p"
+              target="_blank"
+              class="ma-2"
+              size="small"
+              variant="outlined"
+              color="primary"
+              style="background-color: transparent"
+            >
+              <template v-slot:prepend>
+                <v-icon color="primary">mdi-microsoft-xbox</v-icon>
+              </template>
+              Xbox
+            </v-btn>
+          </div><br>
+          We are working on supporting the new civilization.
+        </div>
 
-        <p class="mt-4">
-          More exciting news about the DLC and how here:</p>
-
-        <v-row class="mx-2 mt-4" no-gutters>
-          <v-col align="center" justify="center">
-            <a href="https://www.youtube.com/watch?v=f9lffIAztko" target="_blank">
-              <v-btn
-                class="ma-2"
-                size="small"
-                variant="text"
-                color="primary"
-                style="background-color: transparent"
-              >
-                <template v-slot:prepend>
-                  <v-icon color="primary">mdi-play-circle</v-icon>
-                </template>
-                Trailer
-              </v-btn>
-            </a>
-            <a href="https://www.ageofempires.com/games/age-of-empires-iv/dynasties-of-the-east/" target="_blank">
-              <v-btn
-                class="ma-2"
-                size="small"
-                variant="text"
-                color="primary"
-                style="background-color: transparent"
-              >
-                <template v-slot:prepend>
-                  <v-icon color="primary">mdi-web</v-icon>
-                </template>
-                Dev Blog
-              </v-btn>
-            </a>
-          </v-col>
-        </v-row>
+        
         
         <div class="video-container mt-4">
           <iframe
           class="video"
-          :src="'https://www.youtube.com/embed/NFT1552oa1c'"
+          :src="'https://www.youtube.com/embed/7CW5mLD1T9g'"
           allowfullscreen
           ></iframe>
         </div>
+        
         <p class="mt-4">
           📊 Thanks to your support, the last season was the most traffic-heavy to date!
         </p>
