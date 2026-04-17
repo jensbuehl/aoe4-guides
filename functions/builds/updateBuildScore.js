@@ -13,7 +13,7 @@ const logger = require("firebase-functions/logger");
  * @return {Promise} A promise that resolves when all builds have been updated.
  */
 exports.updateBuildScore = onSchedule(
-  { schedule: "0 0 * * 5", timeoutSeconds: 3600 },
+  { schedule: "0 0 * * 5", timeoutSeconds: 1800 },
   async (event) => {
     logger.log("start updateBuildScore");
 

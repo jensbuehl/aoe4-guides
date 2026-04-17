@@ -16,7 +16,7 @@ const API_KEY = process.env.GOOGLE_API_KEY_CLOUD_FUNCTION;
  * @return {Promise} A promise that resolves when all builds have been updated.
  */
 exports.updateRecentYoutubeVideos = onSchedule(
-  { schedule: "0 0 * * *", timeoutSeconds: 3600 },
+  { schedule: "0 0 * * *", timeoutSeconds: 1800 },
   async (event) => {
     logger.log("start updateRecentYoutubeVideos");
     logger.log("API key", API_KEY);

@@ -72,7 +72,7 @@ const civs = [
 ];
 
 exports.updateRecentCivBuilds = onSchedule(
-  { schedule: "0 0 * * *", timeoutSeconds: 3600 },
+  { schedule: "0 12 * * *", timeoutSeconds: 1800 },
   async (event) => {
     logger.log("start updateNewCivBuildTags");
     logger.log("civs", civs);
