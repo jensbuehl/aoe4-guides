@@ -145,8 +145,7 @@
 
 <script>
 //External
-import { ref } from "vue";
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 

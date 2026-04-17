@@ -261,6 +261,28 @@
               <v-icon class="mr-4" color="accent">mdi-login</v-icon>
               Login
             </v-list-item>
+            <VDivider></VDivider>
+            <v-list-item>
+              <v-list-item-title :style="{ color: $vuetify.theme.current.colors.primary }">Theme</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-btn-toggle
+                v-model="mode"
+                variant="tonal"
+                density="compact"
+                style="width: 100%;"
+              >
+                <v-btn value="system" color="primary" title="System">
+                  <v-icon>mdi-monitor</v-icon>
+                </v-btn>
+                <v-btn value="light" color="primary" title="Light">
+                  <v-icon>mdi-white-balance-sunny</v-icon>
+                </v-btn>
+                <v-btn value="dark" color="primary" title="Dark">
+                  <v-icon>mdi-weather-night</v-icon>
+                </v-btn>
+              </v-btn-toggle>
+            </v-list-item>
           </v-list>
           <v-list v-if="user">
             <v-list-item
@@ -285,6 +307,28 @@
             >
               <v-icon class="mr-4" color="accent">mdi-logout</v-icon>
               Logout
+            </v-list-item>
+            <VDivider></VDivider>
+            <v-list-item>
+              <v-list-item-title :style="{ color: $vuetify.theme.current.colors.primary }">Theme</v-list-item-title>
+            </v-list-item>
+            <v-list-item>
+              <v-btn-toggle
+                v-model="mode"
+                variant="tonal"
+                density="compact"
+                style="width: 100%;"
+              >
+                <v-btn value="system" color="primary" title="System">
+                  <v-icon>mdi-monitor</v-icon>
+                </v-btn>
+                <v-btn value="light" color="primary" title="Light">
+                  <v-icon>mdi-white-balance-sunny</v-icon>
+                </v-btn>
+                <v-btn value="dark" color="primary" title="Dark">
+                  <v-icon>mdi-weather-night</v-icon>
+                </v-btn>
+              </v-btn-toggle>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -342,7 +386,11 @@
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { useDisplay } from "vuetify";
+import { useDisplay, useTheme } from "vuetify";
+import {
+  applyVuetifyTheme,
+  THEME_STORAGE_KEY,
+} from "@/composables/useThemePreference";
 
 export default {
   name: "Header",
@@ -352,7 +400,27 @@ export default {
     const store = useStore();
     const user = computed(() => store.state.user);
     const router = useRouter();
+    const theme = useTheme();
     const { mobile, platform } = useDisplay();
+    const savedMode = ref(localStorage.getItem(THEME_STORAGE_KEY) || "system");
+
+    const mode = computed({
+      get: () => savedMode.value,
+      set: (newMode) => {
+        if (newMode === "system") {
+          localStorage.removeItem(THEME_STORAGE_KEY);
+          applyVuetifyTheme(
+            theme,
+            window.matchMedia("(prefers-color-scheme: dark)").matches
+          );
+        } else {
+          localStorage.setItem(THEME_STORAGE_KEY, newMode);
+          applyVuetifyTheme(theme, newMode === "dark");
+        }
+        savedMode.value = newMode;
+      },
+    });
+
     const logout = async () => {
       try {
         await store.dispatch("logout");
@@ -384,6 +452,7 @@ export default {
       logout,
       platform,
       mobile,
+      mode,
     };
   },
 };
