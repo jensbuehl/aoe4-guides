@@ -41,7 +41,7 @@ export default {
         root.style.setProperty('--color-background-mute', '#161A25');
       } else {
         root.style.setProperty('--color-background', '#E9EBEE');
-        root.style.setProperty('--color-background-soft', '#F5F5F5');
+        root.style.setProperty('--color-background-soft', '#E9EBEE');
         root.style.setProperty('--color-background-mute', '#E9EBEE');
       }
     };
@@ -58,8 +58,12 @@ export default {
       else if (saved === "dark") applyVuetifyTheme(theme, true);
       else applyVuetifyTheme(theme, media.matches);
 
-      // Initial sync
+      // Initial sync — remove no-transition after colors are set so the 0.5s
+      // body transition doesn't animate the Vuetify-to-override color change on load
       updateRootCSSVariables(theme.global.name.value === "customDarkTheme");
+      requestAnimationFrame(() => {
+        document.documentElement.classList.remove('no-transition');
+      });
 
       // Watch for theme changes
       watch(() => theme.global.name.value, (newTheme) => {

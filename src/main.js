@@ -41,7 +41,7 @@ const customLightTheme = {
     loading: "D8DCE0",
     anchor: "#CCAA55",
     background: '#D8DCE0',
-    surface: "#FAFAFA",
+    surface: "#FAFAFA", //footer and header
     "surface-variant": "#CCAA55", //tooltips
     primary: "#294790",
     "primary-darken-1": "#3D516B",

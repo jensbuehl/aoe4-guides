@@ -75,6 +75,11 @@
   }
 }
 
+html.no-transition,
+html.no-transition * {
+  transition: none !important;
+}
+
 *,
 *::before,
 *::after {

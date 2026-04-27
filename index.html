@@ -2,6 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <script>
+      (function() {
+        var saved = localStorage.getItem('aoe4-guides-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = saved === 'dark' || (!saved && prefersDark);
+        document.documentElement.classList.add('no-transition');
+        document.documentElement.style.backgroundColor = isDark ? '#161A25' : '#E9EBEE';
+      })();
+    </script>
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
