@@ -86,6 +86,13 @@ export const civs = ref([
     flagSmall: "assets/flags/jap-small.webp",
   },
   {
+    title: "Jin Dynasty",
+    shortName: "JIN",
+    tagLine: "Cavalry, Crossbows, Fortification",
+    flagLarge: "assets/flags/jin-large.webp",
+    flagSmall: "assets/flags/jin-small.webp",
+  },
+  {
     title: "Jeanne d'Arc",
     shortName: "JDA",
     tagLine: "Trade, Cavalry, Hero",

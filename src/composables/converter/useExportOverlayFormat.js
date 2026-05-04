@@ -123,6 +123,8 @@ export default function useExportOverlayFormat() {
   MAC: "Macedonian Dynasty",
   SEN: "Sengoku Daimyo",
   TUG: "Tughlaq Dynasty",
+  //Jin Dynasty
+  JIN: "Jin Dynasty",
   };
 
   return {

@@ -124,6 +124,8 @@ export default function useImportOverlayFormat() {
   "Macedonian Dynasty": "MAC",
   "Sengoku Daimyo": "SEN",
   "Tughlaq Dynasty": "TUG",
+  //Jin Dynasty
+  "Jin Dynasty": "JIN",
   };
 
   return {
