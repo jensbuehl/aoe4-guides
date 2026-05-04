@@ -95,7 +95,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-china.webp",
-    "civ": ["CHI", "ZXL"],
+    "civ": ["CHI", "ZXL", "JIN"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -246,6 +246,7 @@
       "JAP",
       "SEN",
       "JDA",
+      "JIN",
       "MAL",
       "MON",
       "GOH",
@@ -289,6 +290,7 @@
       "JAP",
       "SEN",
       "JDA",
+      "JIN",
       "MAL",
       "MON",
       "GOH",
@@ -312,6 +314,28 @@
     "id": "trader-1",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/trader"
+  },
+  {
+    "title": "Reindeer Trader",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_jin/reindeer-trader.webp",
+    "civ": ["JIN"],
+    "class": "default",
+    "costs": {
+      "food": 70,
+      "wood": 0,
+      "stone": 0,
+      "gold": 30,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 100,
+      "popcap": 1,
+      "time": 30
+    },
+    "description": "Unique trader that costs Food and Gold to produce. Traders generate Gold by travelling between their Home Market and a Trade Post or another player's Market. Greater distances between the Home Market and trade destination will generate higher amounts of Gold.\nThe Home Market or Trade destination may be changed at any time.",
+    "id": "reindeer-trader-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/reindeer-trader"
   },
   {
     "title": "Trade Caravan",
@@ -390,6 +414,7 @@
       "JAP",
       "SEN",
       "JDA",
+      "JIN",
       "MAL",
       "MON",
       "GOH",
@@ -455,5 +480,50 @@
     "id": "yatai",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/yatai"
+  },
+  {
+    "title": "Mounted Villager",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_jin/mounted-villager.webp",
+    "civ": ["JIN"],
+    "class": "default",
+    "shorthand": "mvil",
+    "costs": {
+      "food": 65,
+      "wood": 0,
+      "stone": 0,
+      "gold": 50,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 115,
+      "popcap": 1,
+      "time": 35
+    },
+    "description": "Mounted economic unit that gathers resources faster and constructs buildings faster than regular villagers. Can repair buildings, siege engines, and naval units.\nHas a build limit of 20 which can be increased by +3 by Establishing Tributaries with the Emissary.\n+ Fast movement speed\n+ Gathers quickly\n- Weak in combat\n- Expensive",
+    "id": "mounted-villager-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/mounted-villager"
+  },
+  {
+    "title": "Emissary",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_jin/emissary.webp",
+    "civ": ["JIN"],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 150,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 150,
+      "popcap": 1,
+      "time": 20
+    },
+    "description": "Support unit which can establish Tributaries at Trade Posts and Bribe enemy soldiers to revolt.\n+ Powerful Abilities\n- Expensive\n- Build limit of 2\n- Weak to all attacks",
+    "id": "emissary-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/emissary"
   }
 ]

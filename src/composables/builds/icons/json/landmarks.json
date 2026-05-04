@@ -2159,5 +2159,159 @@
     "id": "sword-hunt-statue-3",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sword-hunt-statue-3"
+  },
+  {
+    "title": "Flower Pagoda",
+    "age": 1,
+    "imgSrc": "/assets/pictures/landmark_jin/flower-pagoda.webp",
+    "civ": ["JIN"],
+    "class": "landmark",
+    "description": "Grants the ability to plant a Flower Garden which improves the gather rate of Villagers and the attack speed of non-siege military units as long as they are in the Flower Garden.\nSpawns 3 Grassland Posts. Only one Grassland may be constructed on these Grassland Posts.",
+    "id": "flower-pagoda-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/flower-pagoda",
+    "costs": {
+      "food": 400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 600,
+      "popcap": 0,
+      "time": 190
+    }
+  },
+  {
+    "title": "Great Pasture",
+    "age": 1,
+    "imgSrc": "/assets/pictures/landmark_jin/great-pasture.webp",
+    "civ": ["JIN"],
+    "class": "landmark",
+    "description": "Acts as a War Stable and Grassland.\nSpawns 3 Grassland Posts. Only one Grassland may be constructed on these Grassland Posts.",
+    "id": "great-pasture-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/great-pasture",
+    "costs": {
+      "food": 400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 600,
+      "popcap": 0,
+      "time": 190
+    }
+  },
+  {
+    "title": "Dragon Pavilion",
+    "age": 2,
+    "imgSrc": "/assets/pictures/landmark_jin/dragon-pavilion.webp",
+    "civ": ["JIN"],
+    "class": "landmark",
+    "description": "Grants a free Meng'an Mouke Emplacement to all Town Centers and comes with a Meng'an Mouke Emplacement.\nTrains Emissaries at a 33% discount and spawns 1 free Emissary upon completion.\nSpawns 3 Grassland Posts. Only one Grassland may be constructed on these Grassland Posts.",
+    "id": "dragon-pavilion-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/dragon-pavilion",
+    "costs": {
+      "food": 1200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 600,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 1800,
+      "popcap": 0,
+      "time": 220
+    }
+  },
+  {
+    "title": "Mountain Hall",
+    "age": 2,
+    "imgSrc": "/assets/pictures/landmark_jin/mountain-hall.webp",
+    "civ": ["JIN"],
+    "class": "landmark",
+    "description": "Acts as a Monastery and Monasteries are 50% cheaper.\nGenerate Karma by gathering resources near Monasteries. Losing units decreases Karma. At max Karma, receive the blessing of the Four Heavenly Kings for 60 seconds.\n- Buildings regenerate 50 health per second.\n- Villagers gather from Farms +75% faster.\n- Relics generate +300% more gold.\n- Defenses attack +50% faster.\nSpawns 3 Grassland Posts. Only one Grassland may be constructed on these Grassland Posts.",
+    "id": "mountain-hall-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/mountain-hall",
+    "costs": {
+      "food": 1200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 600,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 1800,
+      "popcap": 0,
+      "time": 220
+    }
+  },
+  {
+    "title": "Great Wall Bastion",
+    "age": 3,
+    "imgSrc": "/assets/pictures/landmark_jin/great-wall-bastion.webp",
+    "civ": ["JIN"],
+    "class": "landmark",
+    "description": "Acts as a Keep with 4 mounted Bed Crossbow weapons instead of regular emplacements.\nIncreases the damage of all Bed Crossbow projectiles by +3.\nSpawns 3 Grassland Posts. Only one Grassland may be constructed on these Grassland Posts.",
+    "id": "great-wall-bastion-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/great-wall-bastion",
+    "costs": {
+      "food": 2400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1200,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 3600,
+      "popcap": 0,
+      "time": 250
+    }
+  },
+  {
+    "title": "Pagoda Forest",
+    "age": 3,
+    "imgSrc": "/assets/pictures/landmark_jin/pagoda-forest.webp",
+    "civ": ["JIN"],
+    "class": "landmark",
+    "description": "Spawns a Small Pagoda Forest nearby every 30 seconds up to a cap of 15. Each Small Pagoda Forest generates 20 Wood every 30 seconds and slows nearby enemy movement speed by 20%.\nMay garrison up to 3 Monks to cast a large cascading conversion, which grows larger for every Monk garrisoned.\nSpawns 3 Grassland Posts. Only one Grassland may be constructed on these Grassland Posts.",
+    "id": "pagoda-forest-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/pagoda-forest",
+    "costs": {
+      "food": 2400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1200,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 3600,
+      "popcap": 0,
+      "time": 250
+    }
+  },
+  {
+    "title": "Enclave of the Emperor",
+    "age": 4,
+    "imgSrc": "/assets/pictures/landmark_jin/enclave-of-the-emperor.webp",
+    "civ": ["JIN"],
+    "class": "landmark",
+    "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
+    "id": "enclave-of-the-emperor-jin-4",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/enclave-of-the-emperor",
+    "costs": {
+      "food": 5000,
+      "wood": 5000,
+      "stone": 5000,
+      "gold": 5000,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 20000,
+      "popcap": 0,
+      "time": 600
+    }
   }
 ]
