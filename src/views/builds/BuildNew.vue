@@ -320,7 +320,7 @@ export default {
         video: "",
         civ: "",
         map: "",
-        season: "Season 12",
+        season: "Season 13",
         strategy: "",
         views: 0,
         likes: 0,
