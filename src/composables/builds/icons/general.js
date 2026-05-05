@@ -202,6 +202,16 @@ export const general = [
       "A spark of hope for the French people, Jeanne d'Arc takes to the battlefield and inspires courage to her followers. Starting as a humble villager, Jeanne begins the Journey of a Hero in the Dark Age. Experience forges Jeanne into a powerful leader, gaining access to trusted companions and powerful abilities which shape the empire she was destined to create.",
   },
   {
+    title: "Jin Dynasty",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/jin.webp",
+    civ: civs,
+    class: "none",
+    shorthand: "jin",
+    description:
+      "The Jin Dynasty emerges as a formidable military power in northern China.",
+  },
+  {
     title: "Knights Templar",
     age: "1",
     imgSrc: "/assets/pictures/civilization_flag/kte.webp",

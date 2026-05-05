@@ -336,6 +336,7 @@
       "FRE",
       "HRE",
       "JDA",
+      "JIN",
       "MAL",
       "OTT",
       "RUS",
@@ -423,6 +424,7 @@
       "JAP",
       "SEN",
       "JDA",
+      "JIN",
       "MON",
       "OTT",
       "ZXL",
@@ -534,6 +536,7 @@
       "JAP",
       "SEN",
       "JDA",
+      "JIN",
       "MAL",
       "OTT",
       "ZXL",
@@ -733,6 +736,7 @@
       "JAP",
       "SEN",
       "JDA",
+      "JIN",
       "MAL",
       "OTT",
       "RUS",
@@ -795,5 +799,71 @@
     "id": "worker-elephant-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/worker-elephant-1"
+  },
+  {
+    "title": "Grassland",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_jin/grassland.webp",
+    "civ": ["JIN"],
+    "class": "military",
+    "description": "Must be constructed on a Grassland Post.\nSpawns a Horse up to the max of 5 every 90/60/45 seconds in Feudal/Castle/Imperial Ages. Each Horse in a Grassland grants +2 maximum Health to all Melee Cavalry and +1 to all Ranged Cavalry.\nHorses can be used by War Stables in Influence to instantly train Cavalry at a 25 resources discount.",
+    "id": "grassland-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/grassland",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 100,
+      "popcap": 0,
+      "time": 45
+    }
+  },
+  {
+    "title": "Machine Workshop",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_jin/machine-workshop.webp",
+    "civ": ["JIN"],
+    "class": "military",
+    "description": "Produces ranged infantry and siege engines.\nRepairs nearby siege engines.",
+    "id": "machine-workshop-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/machine-workshop",
+    "costs": {
+      "food": 0,
+      "wood": 175,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 175,
+      "popcap": 0,
+      "time": 35
+    }
+  },
+  {
+    "title": "War Stable",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_jin/war-stable.webp",
+    "civ": ["JIN"],
+    "class": "military",
+    "description": "Produces melee and ranged cavalry units.\nTraders can use the War Stable as their Home Market.",
+    "id": "war-stable-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/war-stable",
+    "costs": {
+      "food": 0,
+      "wood": 175,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "oliveoil": 0,
+      "total": 175,
+      "popcap": 0,
+      "time": 35
+    }
   }
 ]

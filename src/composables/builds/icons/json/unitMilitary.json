@@ -3997,9 +3997,9 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/baochuan"
   },
   {
-    "title": "Elite Bed Crossbow",
+    "title": "Bed Crossbow",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_jin/elite-bed-crossbow.webp",
+    "imgSrc": "/assets/pictures/unit_jin/bed-crossbow.webp",
     "civ": ["JIN"],
     "class": "military",
     "costs": {
@@ -4019,9 +4019,9 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/elite-bed-crossbow"
   },
   {
-    "title": "Elite Mohe Tribesman",
+    "title": "Mohe Tribesman",
     "age": 3,
-    "imgSrc": "/assets/pictures/unit_jin/elite-mohe-tribesman.webp",
+    "imgSrc": "/assets/pictures/unit_jin/mohe-tribesman.webp",
     "civ": ["JIN"],
     "class": "military",
     "costs": {
@@ -4036,14 +4036,14 @@
       "time": 20
     },
     "description": "Cheap ranged cavalry excellent versus light melee infantry.\n+ Fast\n+ Cheap and quick to produce\n- Weak in melee",
-    "id": "elite-mohe-tribesman-3",
+    "id": "mohe-tribesman",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/elite-mohe-tribesman"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/mohe-tribesman"
   },
   {
-    "title": "Elite Iron Pagoda",
+    "title": "Iron Pagoda",
     "age": 4,
-    "imgSrc": "/assets/pictures/unit_jin/elite-iron-pagoda.webp",
+    "imgSrc": "/assets/pictures/unit_jin/iron-pagoda.webp",
     "civ": ["JIN"],
     "class": "military",
     "costs": {

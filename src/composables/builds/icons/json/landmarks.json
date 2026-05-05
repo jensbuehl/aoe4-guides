@@ -2295,7 +2295,7 @@
   {
     "title": "Enclave of the Emperor",
     "age": 4,
-    "imgSrc": "/assets/pictures/landmark_jin/enclave-of-the-emperor.webp",
+    "imgSrc": "/assets/pictures/landmark_chinese/enclave-of-the-emperor.webp",
     "civ": ["JIN"],
     "class": "landmark",
     "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it.",
