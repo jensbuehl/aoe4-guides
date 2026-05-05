@@ -2,12 +2,30 @@
   <v-alert rounded="lg" outlined color="accent" class="pa-1 mt-6 mb-2">
     <v-card flat rounded="lg">
       <v-img color="surface-variant" src="/Season11-banner.webp"></v-img>
-      <v-card-title>Yue Fei’s Legacy</v-card-title>
+      <v-card-title>Season 13 and Yue Fei’s Legacy</v-card-title>
       <v-card-text>
-
         <div class="mt-4">
-          Yue Fei’s Legacy DLC is available for pre-order now!<br>
-          Coming May 7th!<br><br>
+          Season 13 is live! The <strong>Yue Fei’s Legacy</strong> DLC is
+          available now, and the new <strong>Jin Dynasty</strong> civilization
+          is fully supported on this site: Start building your guides today!<br />
+
+          <v-alert
+            type="warning"
+            variant="tonal"
+            rounded="lg"
+            class="mt-4"
+            density="compact"
+          >
+            <strong>Beta:</strong> Jin Dynasty support is new and may have
+            missing icons or incorrect data. Please report any issues on our
+            <a
+              href="https://discord.gg/Nau9BN5E7J"
+              target="_blank"
+              style="color: inherit"
+              >Discord</a
+            >. </v-alert
+          ><br />
+
           <div class="text-center">
             <v-btn
               href="https://store.steampowered.com/app/3746540/Age_of_Empires_IV_Yue_Feis_Legacy/"
@@ -51,27 +69,26 @@
               </template>
               Xbox
             </v-btn>
-          </div><br>
-          We are working on supporting the new civilization.
+          </div>
         </div>
 
-        
-        
         <div class="video-container mt-4">
           <iframe
-          class="video"
-          :src="'https://www.youtube.com/embed/7CW5mLD1T9g'"
-          allowfullscreen
+            class="video"
+            :src="'https://www.youtube.com/embed/7CW5mLD1T9g'"
+            allowfullscreen
           ></iframe>
         </div>
-        
+
         <p class="mt-4">
-          📊 Thanks to your support, the last season was the most traffic-heavy to date!
+          📊 Thanks to your support, the last season was the most traffic-heavy
+          to date — let's make Season 13 even bigger!
         </p>
 
         <p class="mt-4">
-          💖 If you'd like to support ongoing development and hosting costs, consider donating on
-          Ko-fi.
+          💖 If you enjoy the site and want to support ongoing development and
+          hosting costs, consider leaving a tip on Ko-fi — every contribution
+          helps keep the site running!
         </p>
       </v-card-text>
 
