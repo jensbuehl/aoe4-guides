@@ -52,6 +52,7 @@
               label="Find your civilization"
               prepend-inner-icon="mdi-magnify"
               density="compact"
+              rounded="lg"
               variant="outlined"
               color="primary"
               class="mb-2"
