@@ -3,6 +3,7 @@
     <Header></Header>
     <v-main class="mt-2 mx-md-2" id="main-content">
       <Snackbar />
+      <AuthDialog />
       <router-view />
     </v-main>
     <Footer></Footer>
@@ -17,6 +18,7 @@ import { onBeforeMount, watch } from "vue";
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Snackbar from "@/components/notifications/Snackbar.vue";
+import AuthDialog from "@/components/account/AuthDialog.vue";
 
 //Composables
 import { useTheme } from "vuetify";
@@ -28,7 +30,7 @@ import {
 
 export default {
   name: "App",
-  components: { Header, Footer, Snackbar },
+  components: { Header, Footer, Snackbar, AuthDialog },
   setup() {
     const theme = useTheme();
     const media = window.matchMedia("(prefers-color-scheme: dark)");

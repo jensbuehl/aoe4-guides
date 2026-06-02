@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { auth, onAuthStateChanged } from "@/firebase";
+import store from "@/store";
 
 //account
 import Login from "@/views/account/Login.vue";
@@ -117,7 +118,8 @@ const routes = [
       props: true,
       meta: {
         title: "Edit Build Order - Age of Empires IV Build Orders",
-        requiresAuth: true
+        requiresAuth: true,
+        requiresVerification: true
       }
     },
     {
@@ -160,7 +162,8 @@ const routes = [
       component: BuildNew,
       meta: {
         title: "Create Build Order - Age of Empires IV Build Orders",
-        requiresAuth: true
+        requiresAuth: true,
+        requiresVerification: true
       }
     },
     {
@@ -180,7 +183,8 @@ const routes = [
       props: true,
       meta: {
         title: "Import Build Order - Age of Empires IV Build Orders",
-        requiresAuth: true
+        requiresAuth: true,
+        requiresVerification: true
       }
     },
     {
@@ -228,6 +232,14 @@ const routes = [
     }
 
     if (to.meta.guestOnly && auth.currentUser) {
+      return { name: "Home" };
+    }
+
+    if (to.meta.requiresVerification && auth.currentUser && !auth.currentUser.emailVerified) {
+      store.dispatch("showSnackbar", {
+        text: "Please verify your email address to use this feature.",
+        type: "warning",
+      });
       return { name: "Home" };
     }
   });

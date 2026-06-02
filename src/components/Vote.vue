@@ -85,6 +85,7 @@ import {
     addDownvote,
     removeDownvote,
 } from "@/composables/data/favoriteService";
+import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
 import {
     incrementDownvotes,
     decrementDownvotes,
@@ -100,6 +101,7 @@ export default {
         const upVote = ref(false);
         const downVote = ref(false);
         const userId = ref(props.modelValue?.uid);
+        const { assertVerified } = useVerificationGuard();
 
         onMounted(async () => {
             const user = props.modelValue;
@@ -113,6 +115,7 @@ export default {
             }
         });
         const handleAddVoteUp = async () => {
+            if (!assertVerified()) return;
             incrementUpvotes(props.buildId);
             addUpvote(userId.value, props.buildId);
             upVote.value = !upVote.value;
@@ -124,6 +127,7 @@ export default {
             removeUpVote();
         };
         const handleAddVoteDown = async () => {
+            if (!assertVerified()) return;
             incrementDownvotes(props.buildId);
             addDownvote(userId.value, props.buildId);
             downVote.value = !downVote.value;

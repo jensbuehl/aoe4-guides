@@ -770,6 +770,7 @@ import useTimeSince from "@/composables/useTimeSince";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
 import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
 import useDownload from "@/composables/converter/useDownload";
+import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
 
 export default {
   name: "BuildDetails",
@@ -786,6 +787,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
+    const { assertVerified } = useVerificationGuard();
     const user = computed(() => store.state.user);
     const civs = allCivs.value;
     const build = ref(null);
@@ -842,6 +844,7 @@ export default {
     };
 
     const handleDuplicate = async () => {
+      if (!assertVerified()) return;
       var template = {
         author: "",
         authorUid: "",

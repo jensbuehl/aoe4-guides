@@ -48,6 +48,7 @@ import { useStore } from "vuex";
 //Composables
 import { addFavorite, removeFavorite, getUserFavorites as getUserFavoritesArray } from "@/composables/data/favoriteService";
 import { incrementLikes, decrementLikes } from "@/composables/data/buildService";
+import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
 
 export default {
   name: "Favorites",
@@ -56,6 +57,7 @@ export default {
   setup(props, context) {
     const userId = ref(props.modelValue?.uid);
     const store = useStore();
+    const { assertVerified } = useVerificationGuard();
 
     const isFavorite = ref(false);
     onMounted(async () => {
@@ -64,6 +66,7 @@ export default {
       isFavorite.value = user.favorites.includes(props.buildId);
     });
     const addToFavorites = async () => {
+      if (!assertVerified()) return;
       const maxFavs = 30;
       var favCount = 0;
 

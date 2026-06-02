@@ -11,6 +11,7 @@ import {
   auth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
@@ -47,6 +48,10 @@ export const store = createStore({
       text: null,
       timeout: 5000,
       multiline: false,
+    },
+    //ui
+    ui: {
+      authDialog: { visible: false, mode: "login", redirect: null },
     },
     //cache
     cache: {
@@ -170,6 +175,10 @@ export const store = createStore({
     setSnackbar(state, payload) {
       state.snackbar = payload;
       console.log("snackbar state changed:", state.snackbar);
+    },
+    //UI module
+    setAuthDialog(state, payload) {
+      state.ui.authDialog = { ...state.ui.authDialog, ...payload };
     },
   },
   actions: {
@@ -341,6 +350,21 @@ export const store = createStore({
     async changePassword(context, { password }) {
       await updatePassword(auth.currentUser, password).catch((error) => {
         throw new Error("Could not change password: " + error.code);
+      });
+    },
+
+    openAuthDialog({ commit }, { mode = "login", redirect = null } = {}) {
+      commit("setAuthDialog", { visible: true, mode, redirect });
+    },
+
+    closeAuthDialog({ commit }) {
+      commit("setAuthDialog", { visible: false, redirect: null });
+    },
+
+    async resetPassword(_, { email }) {
+      const actionCodeSettings = { url: "https://aoe4guides.com/login" };
+      await sendPasswordResetEmail(auth, email, actionCodeSettings).catch((error) => {
+        throw new Error("Could not send reset email: " + error.code);
       });
     },
   },

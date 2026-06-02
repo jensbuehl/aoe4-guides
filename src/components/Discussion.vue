@@ -65,6 +65,7 @@ import Comment from "@/components/Comment.vue";
 //Composables
 import { addComment, getComments } from "@/composables/data/commentService";
 import { incrementComments } from "@/composables/data/buildService";
+import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
 
 export default {
   name: "Discussion",
@@ -73,6 +74,7 @@ export default {
   setup(props) {
     const store = useStore();
     const user = computed(() => store.state.user);
+    const { assertVerified } = useVerificationGuard();
     const comments = ref(null);
     const newComment = ref({
       text: "",
@@ -91,6 +93,7 @@ export default {
     };
 
     const post = async () => {
+      if (!assertVerified()) return;
       await addComment(newComment.value);
       await incrementComments(props.buildId);
       newComment.value.text = null;

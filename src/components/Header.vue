@@ -244,23 +244,15 @@
             </v-btn>
           </template>
           <v-list v-if="!user">
-            <v-list-item class="d-flex align-center pb-2">
-              <span>New Villager?</span>
+            <v-list-item>
               <v-btn
-                size="small"
-                color="primary"
                 variant="text"
-                style="background-color: transparent"
-                to="/register"
-                class="ml-2 pb-1"
+                color="primary"
+                prepend-icon="mdi-login"
+                @click="openAuthDialog"
               >
-                <span class="d-flex align-center">Register now!</span>         
+                Log in
               </v-btn>
-            </v-list-item>
-            <VDivider></VDivider>
-            <v-list-item v-if="!user" to="/login">
-              <v-icon class="mr-4" color="accent">mdi-login</v-icon>
-              Login
             </v-list-item>
             <VDivider color="surface-variant"></VDivider>
             <v-list-item class="d-flex justify-center px-4 pt-4 pb-2">
@@ -438,6 +430,8 @@ export default {
       console.log("platform", platform.value);
     });
 
+    const openAuthDialog = () => store.dispatch("openAuthDialog", { mode: "login" });
+
     return {
       title,
       subtitle,
@@ -448,6 +442,7 @@ export default {
       platform,
       mobile,
       mode,
+      openAuthDialog,
     };
   },
 };
