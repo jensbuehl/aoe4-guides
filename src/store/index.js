@@ -5,6 +5,8 @@ import {
   getUserFavorites,
   deleteUserFavorites,
 } from "@/composables/data/favoriteService";
+import { getUserProfile, updateUserAvatar } from "@/composables/data/userService";
+import { storage, storageRef, uploadBytes, getDownloadURL } from "@/firebase";
 
 // firebase imports
 import {
@@ -53,6 +55,8 @@ export const store = createStore({
     ui: {
       authDialog: { visible: false, mode: "login", redirect: null },
     },
+    //avatar
+    userAvatar: null,
     //cache
     cache: {
       builds: {},
@@ -179,6 +183,10 @@ export const store = createStore({
     //UI module
     setAuthDialog(state, payload) {
       state.ui.authDialog = { ...state.ui.authDialog, ...payload };
+    },
+    //Avatar module
+    setUserAvatar(state, payload) {
+      state.userAvatar = payload ?? null;
     },
   },
   actions: {
@@ -361,6 +369,26 @@ export const store = createStore({
       commit("setAuthDialog", { visible: false, redirect: null });
     },
 
+    async loadUserAvatar({ commit }, uid) {
+      const profile = await getUserProfile(uid);
+      commit("setUserAvatar", profile?.avatar ?? null);
+    },
+
+    async updateAvatar({ commit, state }, { type, ref = null }) {
+      await updateUserAvatar(state.user.uid, { type, ref });
+      commit("setUserAvatar", { type, ref });
+    },
+
+    async uploadAndSetAvatar({ dispatch, state }, blob) {
+      const path = storageRef(storage, `avatars/${state.user.uid}.webp`);
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Upload timed out. Please check your connection and try again.")), 20000)
+      );
+      await Promise.race([uploadBytes(path, blob), timeout]);
+      const url = await getDownloadURL(path);
+      await dispatch("updateAvatar", { type: "upload", ref: url });
+    },
+
     async resetPassword(_, { email }) {
       const actionCodeSettings = { url: "https://aoe4guides.com/login" };
       await sendPasswordResetEmail(auth, email, actionCodeSettings).catch((error) => {
@@ -373,6 +401,11 @@ export const store = createStore({
 const unsub = onAuthStateChanged(auth, (user) => {
   store.commit("setAuthIsReady", true);
   store.commit("setUser", user);
+  if (user) {
+    store.dispatch("loadUserAvatar", user.uid);
+  } else {
+    store.commit("setUserAvatar", null);
+  }
   unsub();
 });
 

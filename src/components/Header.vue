@@ -232,15 +232,10 @@
         <v-menu class="mx-4">
           <template v-slot:activator="{ props }">
             <v-btn class="mr-2" icon>
-              <v-avatar
-                v-if="user && user.displayName"
-                color="accent"
-                v-bind="props"
-                >{{ user.displayName.slice(0, 2).toUpperCase() }}</v-avatar
-              >
-              <v-avatar v-if="!user?.displayName" color="accent" v-bind="props">
-                <v-icon icon="mdi-account"></v-icon
-              ></v-avatar>
+              <v-avatar color="accent" v-bind="props">
+                <v-img v-if="avatarSrc" :src="avatarSrc" cover />
+                <span v-else>{{ avatarInitials }}</span>
+              </v-avatar>
             </v-btn>
           </template>
           <v-list v-if="!user">
@@ -378,6 +373,7 @@ import {
   applyVuetifyTheme,
   THEME_STORAGE_KEY,
 } from "@/composables/useThemePreference";
+import { useAvatar } from "@/composables/auth/useAvatar";
 
 export default {
   name: "Header",
@@ -432,6 +428,9 @@ export default {
 
     const openAuthDialog = () => store.dispatch("openAuthDialog", { mode: "login" });
 
+    const userAvatar = computed(() => store.state.userAvatar);
+    const { src: avatarSrc, initials: avatarInitials } = useAvatar(userAvatar, user);
+
     return {
       title,
       subtitle,
@@ -443,6 +442,8 @@ export default {
       mobile,
       mode,
       openAuthDialog,
+      avatarSrc,
+      avatarInitials,
     };
   },
 };
