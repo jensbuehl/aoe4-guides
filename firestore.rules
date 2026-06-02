@@ -43,6 +43,9 @@ service cloud.firestore {
       allow read;
       allow update: if (request.resource.data.diff(resource.data).affectedKeys()
         .hasOnly(['boCount', 'viewCount']));
+      allow update: if request.auth != null
+                   && request.auth.uid == contributor
+                   && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['icon']);
     }
   }
   match /databases/{database}/documents {

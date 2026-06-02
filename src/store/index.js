@@ -5,7 +5,8 @@ import {
   getUserFavorites,
   deleteUserFavorites,
 } from "@/composables/data/favoriteService";
-import { getUserProfile, updateUserAvatar } from "@/composables/data/userService";
+import { getUserProfile, updateUserAvatar, updateContributorIcon } from "@/composables/data/userService";
+import { civs } from "@/composables/filter/civDefaultProvider";
 import { storage, storageRef, uploadBytes, getDownloadURL } from "@/firebase";
 
 // firebase imports
@@ -375,8 +376,24 @@ export const store = createStore({
     },
 
     async updateAvatar({ commit, state }, { type, ref = null }) {
-      await updateUserAvatar(state.user.uid, { type, ref });
+      const uid = state.user.uid;
+      await updateUserAvatar(uid, { type, ref });
       commit("setUserAvatar", { type, ref });
+
+      // Resolve icon URL for contributors collection so it shows on author
+      // filter pages and Top Contributors without extra reads at render time.
+      let iconUrl = null;
+      if (type === "civ") {
+        const civ = civs.value.find((c) => c.shortName === ref);
+        iconUrl = civ ? civ.flagLarge : null;
+      } else if (type === "upload") {
+        iconUrl = ref;
+      }
+      await updateContributorIcon(uid, iconUrl);
+
+      // Bust cached contributor list so Home.vue refetches with the new icon.
+      // Use the loading sentinel the component checks for, not null.
+      commit("setTopContributorsList", Array(8).fill({ loading: true }));
     },
 
     async uploadAndSetAvatar({ dispatch, state }, blob) {

@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, deleteField } from "firebase/firestore";
 import { db } from "@/firebase";
 
 export async function getUserProfile(uid) {
@@ -10,4 +10,10 @@ export async function updateUserAvatar(uid, avatar) {
   // setDoc with merge creates the document if it doesn't exist (older accounts
   // predate the createUser Cloud Function and may not have a users/{uid} doc)
   await setDoc(doc(db, "users", uid), { avatar }, { merge: true });
+}
+
+export async function updateContributorIcon(uid, iconUrl) {
+  await updateDoc(doc(db, "contributors", uid), {
+    icon: iconUrl ?? deleteField(),
+  });
 }
