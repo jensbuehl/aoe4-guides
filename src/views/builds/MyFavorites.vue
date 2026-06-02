@@ -27,7 +27,6 @@
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
         <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
-        <RegisterAd v-if="!user && authIsReady"></RegisterAd>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -59,7 +58,6 @@
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <FilterConfig @configChanged="configChanged"> </FilterConfig>
-        <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
     </v-row>
   </v-container>
@@ -71,7 +69,6 @@ import { useStore } from "vuex";
 import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 
 //Components
-import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
@@ -88,7 +85,7 @@ import {
 
 export default {
   name: "Builds",
-  components: { FilterConfig, BuildListCard, RegisterAd, NoFilterResults },
+  components: { FilterConfig, BuildListCard, NoFilterResults },
   setup() {
     const builds = ref(null);
     const favorites = ref(null);
@@ -238,7 +235,6 @@ export default {
       user,
       count,
       loading,
-      authIsReady: computed(() => store.state.authIsReady),
       paginationConfig,
       configChanged,
       nextPage,

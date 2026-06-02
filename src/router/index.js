@@ -1,4 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
+import { auth, onAuthStateChanged } from "@/firebase";
 
 //account
 import Login from "@/views/account/Login.vue";
@@ -62,7 +63,8 @@ const routes = [
       name: "Login",
       component: Login,
       meta: {
-        title: "Login"
+        title: "Login",
+        guestOnly: true
       }
     },
     {
@@ -70,7 +72,8 @@ const routes = [
       name: "Register",
       component: Register,
       meta: {
-        title: "Register"
+        title: "Register",
+        guestOnly: true
       }
     },
     {
@@ -95,7 +98,8 @@ const routes = [
       name: "Account",
       component: Account,
       meta: {
-        title: "Account"
+        title: "Account",
+        requiresAuth: true
       }
     },
     {
@@ -112,7 +116,8 @@ const routes = [
       component: BuildEdit,
       props: true,
       meta: {
-        title: "Edit Build Order - Age of Empires IV Build Orders"
+        title: "Edit Build Order - Age of Empires IV Build Orders",
+        requiresAuth: true
       }
     },
     {
@@ -120,7 +125,8 @@ const routes = [
       name: "MyBuilds",
       component: MyBuilds,
       meta: {
-        title: "My Build Orders - Age of Empires IV Build Orders"
+        title: "My Build Orders - Age of Empires IV Build Orders",
+        requiresAuth: true
       }
     },
     {
@@ -128,7 +134,8 @@ const routes = [
       name: "MyFavorites",
       component: MyFavorites,
       meta: {
-        title: "My Favorites - Age of Empires IV Build Orders"
+        title: "My Favorites - Age of Empires IV Build Orders",
+        requiresAuth: true
       }
     },
     {
@@ -152,7 +159,8 @@ const routes = [
       name: "BuildNew",
       component: BuildNew,
       meta: {
-        title: "Create Build Order - Age of Empires IV Build Orders"
+        title: "Create Build Order - Age of Empires IV Build Orders",
+        requiresAuth: true
       }
     },
     {
@@ -171,7 +179,8 @@ const routes = [
       component: BuildImport,
       props: true,
       meta: {
-        title: "Import Build Order - Age of Empires IV Build Orders"
+        title: "Import Build Order - Age of Empires IV Build Orders",
+        requiresAuth: true
       }
     },
     {
@@ -203,6 +212,24 @@ const routes = [
     }
   });
 
+  // Resolves once Firebase has determined the initial auth state (fires exactly once).
+  const waitForAuth = new Promise(resolve => {
+    const unsubscribe = onAuthStateChanged(auth, () => {
+      unsubscribe();
+      resolve();
+    });
+  });
 
-  
+  router.beforeEach(async (to) => {
+    await waitForAuth;
+
+    if (to.meta.requiresAuth && !auth.currentUser) {
+      return { name: "Login", query: { redirect: to.fullPath } };
+    }
+
+    if (to.meta.guestOnly && auth.currentUser) {
+      return { name: "Home" };
+    }
+  });
+
   export default router;

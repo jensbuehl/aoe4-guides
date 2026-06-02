@@ -1,16 +1,5 @@
 <template>
-  <v-container v-if="!user && authIsReady">
-    <v-row>
-      <v-col cols="12" md="8" align="center">
-        <RegisterAdShort v-if="!user && authIsReady"></RegisterAdShort
-      ></v-col>
-      <v-col cols="12" md="4">
-        <RegisterAd v-if="!user && authIsReady"></RegisterAd>
-      </v-col>
-    </v-row>
-  </v-container>
-
-  <v-container v-if="user">
+  <v-container>
     <v-card flat rounded="lg" class="hidden-md-and-up">
       <v-card-title>{{ build.title }}</v-card-title>
       <v-card-actions
@@ -256,8 +245,6 @@ import { useRouter } from "vue-router";
 import sanitizeHtml from "sanitize-html";
 
 //Components
-import RegisterAd from "@/components/notifications/RegisterAd.vue";
-import RegisterAdShort from "@/components/notifications/RegisterAdShort.vue";
 import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 
 //Composables
@@ -277,7 +264,7 @@ import { strategies } from "@/composables/filter/strategyDefaultProvider";
 
 export default {
   name: "BuildNew",
-  components: { BuildOrderEditor, RegisterAd, RegisterAdShort },
+  components: { BuildOrderEditor },
   setup() {
     const error = ref(null);
     const { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon } =
@@ -479,7 +466,6 @@ export default {
       strategies,
       seasons,
       user,
-      authIsReady: computed(() => store.state.authIsReady),
       handleSave,
       handleDraft,
       handleVideoInput,

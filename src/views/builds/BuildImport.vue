@@ -1,28 +1,5 @@
 <template>
-   <v-container v-if="!user && authIsReady">
-      <v-row>
-         <v-col cols="12" md="8" align="center"
-            ><v-card flat class="d-flex justify-center align-center mb-n2" height="96" rounded="lg">
-               <div>
-                  <span>Would you like to import build orders?</span>
-                  <v-btn
-                     class="pb-1"
-                     color="primary"
-                     style="background-color: transparent"
-                     variant="text"
-                     to="/register"
-                  >
-                     Register now!
-                  </v-btn>
-               </div>
-            </v-card></v-col
-         >
-         <v-col cols="12" md="4">
-            <RegisterAd v-if="!user && authIsReady"></RegisterAd>
-         </v-col>
-      </v-row>
-   </v-container>
-   <v-container v-if="user">
+   <v-container>
       <v-card
          v-if="!paste"
          flat
@@ -65,24 +42,19 @@
 
 <script>
 //External
-import { ref, computed, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-
-//Components
-import RegisterAd from "@/components/notifications/RegisterAd.vue";
 
 //Composables
 import useImportOverlayFormat from "@/composables/converter/useImportOverlayFormat";
 
 export default {
    name: "BuildImport",
-   components: { RegisterAd },
    props: ["paste"],
    setup(props) {
       const { convert } = useImportOverlayFormat();
       const store = useStore();
-      const user = computed(() => store.state.user);
       const router = useRouter();
       const isDragging = ref(false);
 
@@ -194,14 +166,12 @@ export default {
 
       return {
          build,
-         user,
          files,
          isDragging,
          onChange,
          dragover,
          dragleave,
          drop,
-         authIsReady: computed(() => store.state.authIsReady),
          newFromTemplate,
       };
    },
