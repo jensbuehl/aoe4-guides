@@ -5,11 +5,13 @@
     class="mb-4"
     :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
-    <v-card-text class="pa-4">
-      <div class="text-caption font-weight-bold mb-1" :style="{ color: $vuetify.theme.current.colors.accent }">
+  <v-card-title class="px-4">
+      <v-icon icon="mdi-trophy" size="small" class="mr-2" color="accent"></v-icon>
+      <span  :style="{ color: $vuetify.theme.current.colors.accent }">
         Season 13 · Live
-      </div>
-      <div class="text-h6 font-weight-bold mb-1">Yue Fei's Legacy</div>
+      </span>
+    </v-card-title>
+    <v-card-text class="px-4">
       <div class="text-body-2 text-medium-emphasis">
         The new Jin Dynasty civilization is fully supported — start sharing your guides.
       </div>
