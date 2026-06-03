@@ -724,16 +724,10 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
 import useTimeSince from "@/composables/useTimeSince";
-import { getRecentCivBuilds } from "@/composables/data/homeService";
+import { getHomeSnapshot } from "@/composables/data/homeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { getTopContributors } from "@/composables/data/contributorService";
-import {
-  getRecentBuilds,
-  getPopularBuilds,
-  getAllTimeClassics,
-  getBuildsCount,
-} from "@/composables/data/buildService";
+import { getBuildsCount } from "@/composables/data/buildService";
 
 export default {
   name: "Home",
@@ -797,40 +791,16 @@ export default {
     });
 
     const initData = async () => {
-      //get home data
-      recentCivBuilds.value = await getRecentCivBuilds();
-      console.log("recentCivBuilds", recentCivBuilds.value);
-
-      //reset results count
-      store.commit("setResultsCount", null);
-
-      //get popular
-      if (!popularBuildsList || popularBuildsList.value[0].loading) {
-        const popularBuildsList = await getPopularBuilds(5);
-        store.commit("setPopularBuildsList", popularBuildsList);
-      }
-
-      //get all time classics
-      if (!allTimeClassicsList || allTimeClassicsList.value[0].loading) {
-        const allTimeClassicsList = await getAllTimeClassics(5);
-        store.commit("setAllTimeClassicsList", allTimeClassicsList);
-      }
-
-      //get most recent
-      if (!recentBuildsList || recentBuildsList.value[0].loading) {
-        const recentBuilds = await getRecentBuilds(5);
-        store.commit("setRecentBuildsList", recentBuilds);
-      }
-
-      //get top contributors
-      if (!topContributorsList || topContributorsList.value[0].loading) {
-        const topContributors = await getTopContributors(8);
-        store.commit("setTopContributorsList", topContributors);
-      }
-
-      //get count
-      const size = await getBuildsCount();
-      store.commit("setResultsCount", size);
+      // Single read replaces 4 separate live queries (~23 reads → 1 read).
+      // Data is pre-generated hourly by the updateHomeSnapshot Cloud Function.
+      // After first load, IndexedDB persistence serves this from local cache.
+      const snapshot = await getHomeSnapshot();
+      recentCivBuilds.value = snapshot?.recentCivBuilds ?? [];
+      store.commit("setPopularBuildsList", snapshot?.popularBuilds ?? []);
+      store.commit("setAllTimeClassicsList", snapshot?.allTimeClassics ?? []);
+      store.commit("setRecentBuildsList", snapshot?.recentBuilds ?? []);
+      store.commit("setTopContributorsList", snapshot?.topContributors ?? []);
+      store.commit("setResultsCount", snapshot?.buildsCount ?? null);
     };
 
     return {
