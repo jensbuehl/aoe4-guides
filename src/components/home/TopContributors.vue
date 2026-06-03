@@ -49,6 +49,10 @@
 </template>
 
 <script>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
+
 export default {
   name: "TopContributors",
   props: {
@@ -56,19 +60,32 @@ export default {
       type: Array,
       required: true,
     },
-    currentUserId: {
-      type: String,
-      default: null,
-    },
-    currentUserIcon: {
-      default: null,
-    },
   },
-  methods: {
-    iconFor(contributor) {
-      if (contributor.authorId === this.currentUserId) return this.currentUserIcon;
+  setup() {
+    const store = useStore();
+
+    const currentUserId = computed(() => store.state.user?.uid ?? null);
+
+    const currentUserIcon = computed(() => {
+      const av = store.state.userAvatar;
+      if (!av) return null;
+      if (av.type === "civ") {
+        const match = allCivs.value.find((c) => c.shortName === av.ref);
+        return match ? match.flagLarge : null;
+      }
+      if (av.type === "upload") return av.ref;
+      return null;
+    });
+
+    function iconFor(contributor) {
+      const uid = currentUserId.value;
+      if (uid && (contributor.authorId === uid || contributor.id === uid)) {
+        return currentUserIcon.value;
+      }
       return contributor.icon;
-    },
+    }
+
+    return { iconFor };
   },
 };
 </script>

@@ -370,7 +370,7 @@
         <!-- mobile sidebar (below builds, hidden on desktop) -->
         <div class="hidden-md-and-up mt-4">
           <News></News>
-          <TopContributors :contributors="topContributorsList" :currentUserId="user?.uid" :currentUserIcon="currentUserIcon"></TopContributors>
+          <TopContributors :contributors="topContributorsList"></TopContributors>
           <YoutubeGuides></YoutubeGuides>
           <RegisterAd v-if="!user && authIsReady"></RegisterAd>
           <EmailVerificationAd v-if="user && authIsReady && !user.emailVerified"></EmailVerificationAd>
@@ -441,16 +441,6 @@ export default {
       );
     });
     const user = computed(() => store.state.user);
-    const currentUserIcon = computed(() => {
-      const av = store.state.userAvatar;
-      if (!av) return null;
-      if (av.type === "civ") {
-        const match = allCivs.value.find((c) => c.shortName === av.ref);
-        return match ? match.flagLarge : null;
-      }
-      if (av.type === "upload") return av.ref;
-      return null;
-    });
     const recentCivBuilds = ref([]);
     const { isNew } = useTimeSince();
 
@@ -488,7 +478,6 @@ export default {
       popularBuildsList,
       allTimeClassicsList,
       topContributorsList,
-      currentUserIcon,
       recentCivBuilds,
       isNew,
     };
