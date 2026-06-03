@@ -24,8 +24,9 @@
           rows="2"
           auto-grow
           clearable
-        >
-        </v-textarea>
+          maxlength="500"
+          counter="500"
+        />
       </v-col>
       <v-col v-if="user" cols="auto">
         <v-tooltip location="top">
@@ -89,11 +90,12 @@ export default {
 
     const init = async () => {
       comments.value = await getComments(props.buildId);
-      console.log("comments", comments.value);
     };
 
     const post = async () => {
       if (!assertVerified()) return;
+      if (!newComment.value.text?.trim()) return;
+      if (newComment.value.text.length > 500) return;
       await addComment(newComment.value);
       await incrementComments(props.buildId);
       newComment.value.text = null;

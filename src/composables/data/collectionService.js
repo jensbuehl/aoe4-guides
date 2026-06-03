@@ -34,10 +34,8 @@ export function collectionService(col) {
       var docRef = null;
       if (id) {
         docRef = doc(collectionRef, id);
-        console.log(collectionRef);
       } else {
         docRef = doc(collectionRef);
-        console.log(collectionRef);
       }
 
       document.id = docRef.id;
@@ -45,10 +43,9 @@ export function collectionService(col) {
       document.timeUpdated = Timestamp.fromDate(new Date());
       await setDoc(docRef, document);
 
-      console.log("Document created with ID: ", docRef.id);
       return docRef.id;
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.add failed:", err.message);
       error.value = "Document could not be created";
     }
   };
@@ -65,10 +62,9 @@ export function collectionService(col) {
     try {
       const docRef = doc(db, col, id);
       const snapshot = await getDoc(docRef);
-      console.log("Document retrieved with ID: ", id);
       return snapshot.data();
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.get failed:", err.message);
       error.value = "Document could not be retrieved";
     }
   }
@@ -85,10 +81,9 @@ export function collectionService(col) {
     try {
       const docRef = doc(db, col, id);
       const snapshot = await getDoc(docRef);
-      console.log("Snapshot retrieved with ID: ", id);
       return snapshot;
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.getSnapshot failed:", err.message);
       error.value = "Snapshot could not be retrieved";
     }
   }
@@ -109,7 +104,7 @@ export function collectionService(col) {
         [propertyName]: increment(1),
       });
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.incrementNumber failed:", err.message);
       error.value = "Count could not be incremented";
     }
   }
@@ -123,8 +118,7 @@ export function collectionService(col) {
    */
   async function decrementNumber(documentId, propertyName, decrementCount = 1) {
     error.value = null;
-    var decrementBy = -decrementCount
-    console.log(decrementBy);
+    const decrementBy = -decrementCount;
 
     try {
       const docRef = doc(db, col, documentId);
@@ -132,7 +126,7 @@ export function collectionService(col) {
         [propertyName]: increment(decrementBy),
       });
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.decrementNumber failed:", err.message);
       error.value = "Count could not be decremented";
     }
   }
@@ -153,7 +147,7 @@ export function collectionService(col) {
         [arrayName]: arrayUnion(...[element]),
       });
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.addElementToArray failed:", err.message);
       error.value = "Element could not be added.";
     }
   }
@@ -175,7 +169,7 @@ export function collectionService(col) {
         [arrayName]: arrayRemove(...[element]),
       });
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.removeElementFromArray failed:", err.message);
       error.value = "Element could not be removed.";
     }
   }
@@ -198,7 +192,7 @@ export function collectionService(col) {
       }
       return snapshot.docs.map((doc) => doc.data());
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.getAll failed:", err.message);
       error.value = "Collection could not be retrieved";
     }
   }
@@ -216,15 +210,13 @@ export function collectionService(col) {
 
     try {
       const docRef = doc(db, col, id);
-      console.log(docRef);
       document.timeUpdated = Timestamp.fromDate(new Date());
       if (updateTimestamp) {
         document.timeCreated = Timestamp.fromDate(new Date());
       }
       await updateDoc(docRef, document);
-      console.log("Document updated with ID: ", id);
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.update failed:", err.message);
       error.value = "Document could not be updated";
     }
   }
@@ -241,9 +233,8 @@ export function collectionService(col) {
     try {
       const docRef = doc(db, col, id);
       await deleteDoc(docRef);
-      console.log("Document deleted with ID: ", id);
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.del failed:", err.message);
       error.value = "Document could not be deleted";
     }
   }
@@ -262,7 +253,7 @@ export function collectionService(col) {
       });
       return buildQuery;
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.getQuery failed:", err.message);
     }
   }
 
@@ -285,7 +276,7 @@ export function collectionService(col) {
       }
       return snapshot.data().count;
     } catch (err) {
-      console.log(err.message);
+      console.error("collectionService.getSize failed:", err.message);
       error.value = "Collection size could not be retrieved";
     }
   }

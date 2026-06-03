@@ -1,10 +1,11 @@
 <template>
-  <v-container v-if="authIsReady && user">
+  <v-container v-if="authIsReady && user" style="max-width: 1100px;">
     <v-row justify="center">
-      <v-col cols="12" sm="10" md="7" lg="6">
+      <!-- Left column: profile -->
+      <v-col cols="12" md="5">
 
         <!-- Profile Hero -->
-        <v-card flat rounded="lg" class="mb-4 text-center pa-6">
+        <v-card flat rounded="lg" class="text-center pa-6">
           <!-- Verification banner (unverified only) -->
           <v-alert
             v-if="!user.emailVerified"
@@ -79,8 +80,13 @@
           </v-list>
         </v-card>
 
+      </v-col>
+
+      <!-- Right column: security + danger -->
+      <v-col cols="12" md="7" class="d-flex flex-column ga-6">
+
         <!-- Security -->
-        <v-card flat rounded="lg" class="mb-4">
+        <v-card flat rounded="lg">
           <v-card-title class="px-6 pt-5 pb-2">Security</v-card-title>
           <v-card-text class="px-6 pb-5">
             <v-form ref="passwordForm" @submit.prevent="changePassword">
@@ -126,7 +132,7 @@
         </v-card>
 
         <!-- Danger zone -->
-        <v-card flat rounded="lg" class="mb-4">
+        <v-card flat rounded="lg">
           <v-card-text class="px-6 py-5">
             <v-alert type="error" variant="tonal" density="comfortable">
               <div class="text-subtitle-2 mb-1">Danger zone</div>

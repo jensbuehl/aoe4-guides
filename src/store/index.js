@@ -74,15 +74,12 @@ export const store = createStore({
     //User module
     setUser(state, payload) {
       state.user = payload;
-      console.log("user state changed:", state.user);
     },
     setDisplayName(state, payload) {
       state.user.displayName = payload;
-      console.log("user display name changed:", state.user.displayName);
     },
     setShowBottomNavigation(state, payload) {
       state.showBottomNavigation = payload;
-      console.log("showBottomNavigation changed:", state.showBottomNavigation);
     },
     setAuthIsReady(state, payload) {
       state.authIsReady = payload;
@@ -90,96 +87,74 @@ export const store = createStore({
     //Config module
     setFilterConfig(state, payload) {
       state.filterConfig = payload;
-      console.log("filter config state changed:", state.filterConfig);
     },
     setCreator(state, payload) {
       state.filterConfig.creator = payload;
-      console.log("creator state changed:", state.filterConfig.creator);
     },
     setAuthor(state, payload) {
       state.filterConfig.author = payload;
-      console.log("author state changed:", state.filterConfig.author);
     },
     setCivs(state, payload) {
       state.filterConfig.civs = payload;
-      console.log("civs state changed:", state.filterConfig.civs);
     },
     setMaps(state, payload) {
       state.filterConfig.maps = payload;
-      console.log("maps state changed:", state.filterConfig.maps);
     },
     setStrategies(state, payload) {
       state.filterConfig.strategies = payload;
-      console.log("strategies state changed:", state.filterConfig.strategies);
     },
     setSeasons(state, payload) {
       state.filterConfig.seasons = payload;
-      console.log("seasons state changed:", state.filterConfig.seasons);
     },
     setOrderBy(state, payload) {
       state.filterConfig.orderBy = payload;
-      console.log("orderBy state changed:", state.filterConfig.orderBy);
     },
     setResultsCount(state, payload) {
       state.resultsCount = payload;
-      console.log("results count state changed:", state.resultsCount);
     },
     setLoading(state, payload) {
       state.loading = payload;
-      console.log("loading state changed:", state.loading);
     },
     //Template module
     setTemplate(state, payload) {
       state.template = payload;
-      console.log("template state changed:", state.template);
     },
     //Cache module
     setBuild(state, payload) {
       state.cache.builds[payload.id] = payload;
-      console.log("cache.builds updated. The following build has been added:", payload);
     },
     removeBuild(state, payload) {
       delete state.cache.builds[payload];
-      console.log("cache.builds updated. The following build has been removed:", payload);
     },
     setBuilds(state, payload) {
       for (const build of payload) {
         state.cache.builds[build.id] = build;
       }
-      console.log("cache.builds updated. The following builds have been added:", payload);
     },
     setTopContributorsList(state, payload) {
       state.cache.topContributorsList = payload;
-      console.log("topContributorsList state changed:", state.cache.topContributorsList);
     },
     setRecentBuildsList(state, payload) {
       state.cache.recentBuildsList = payload;
-      console.log("recentBuildsList state changed:", state.cache.recentBuildsList);
     },
     setAllTimeClassicsList(state, payload) {
       state.cache.allTimeClassicsList = payload;
-      console.log("allTimeClassicsList state changed:", state.cache.allTimeClassicsList);
     },
     setPopularBuildsList(state, payload) {
       state.cache.popularBuildsList = payload;
-      console.log("popularBuildsList state changed:", state.cache.popularBuildsList);
     },
     setMyFavoritesList(state, payload) {
       state.cache.myFavoritesList = payload;
-      console.log("myFavoritesList state changed:", state.cache.myFavoritesList);
     },
     setMyBuildsList(state, payload) {
       state.cache.myBuildsList = payload;
-      console.log("myBuildsList state changed:", state.cache.myBuildsList);
     },
     setAllBuildsList(state, payload) {
       state.cache.allBuildsList = payload;
-      console.log("allBuildsList state changed:", state.cache.allBuildsList);
     },
     //Snackbar module
     setSnackbar(state, payload) {
       state.snackbar = payload;
-      console.log("snackbar state changed:", state.snackbar);
     },
     //UI module
     setAuthDialog(state, payload) {

@@ -17,8 +17,6 @@
     "axios": "^1.8.4",
     "easy-speech": "^2.4.0",
     "firebase": "^10.14.0",
-    "firebase-functions": "^4.9.0",
-    "firebase-tools": "^15.3.1",
     "g": "^2.0.1",
     "sanitize-html": "^2.15.0",
     "scroll-into-view-if-needed": "^3.1.0",
@@ -30,6 +28,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",
+    "firebase-functions": "^4.9.0",
+    "firebase-tools": "^15.3.1",
     "vite": "^6.2.5",
     "vite-plugin-node-polyfills": "^0.23.0"
   }
