@@ -390,15 +390,16 @@ export const store = createStore({
   },
 });
 
-const unsub = onAuthStateChanged(auth, (user) => {
-  store.commit("setAuthIsReady", true);
+onAuthStateChanged(auth, (user) => {
+  if (!store.state.authIsReady) {
+    store.commit("setAuthIsReady", true);
+  }
   store.commit("setUser", user);
   if (user) {
     store.dispatch("loadUserAvatar", user.uid);
   } else {
     store.commit("setUserAvatar", null);
   }
-  unsub();
 });
 
 //export store
