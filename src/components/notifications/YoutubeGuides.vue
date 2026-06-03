@@ -1,6 +1,6 @@
 <template>
   <v-card flat rounded="lg" class="mb-4">
-    <v-card-title class="pb-1">
+    <v-card-title class="px-4 py-2 pb-2">
       <v-icon icon="mdi-youtube" size="small" class="mr-2 mb-1" color="primary"></v-icon>
       Video Guides
     </v-card-title>
