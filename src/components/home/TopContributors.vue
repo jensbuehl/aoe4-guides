@@ -20,15 +20,9 @@
             class="text-caption text-medium-emphasis mr-3"
             style="min-width: 18px; text-align: center; flex-shrink: 0"
           >{{ index + 1 }}</span>
-          <v-avatar
-            size="36"
-            color="accent"
-            :image="contributor.icon || undefined"
-            class="mr-3"
-          >
-            <span v-if="!contributor.icon" class="text-caption font-weight-bold">
-              {{ contributor.displayName?.slice(0, 2).toUpperCase() ?? '' }}
-            </span>
+          <v-avatar v-if="contributor.icon" size="36" color="accent" :image="contributor.icon" class="mr-3"></v-avatar>
+          <v-avatar v-else size="36" color="accent" class="mr-3">
+            <span class="text-caption font-weight-bold">{{ contributor.displayName?.slice(0, 2).toUpperCase() ?? '' }}</span>
           </v-avatar>
         </template>
 
