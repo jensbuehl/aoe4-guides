@@ -46,9 +46,10 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /contributors/{contributor} {
       allow read;
-      // S5 fix: require auth on public stat increments
-      allow update: if request.auth != null
-                    && request.resource.data.diff(resource.data).affectedKeys()
+      // Intentionally public: stat increments (boCount, viewCount) fire from
+      // client-side on build views — same pattern as builds/{build} stat fields.
+      // Field restriction is the security boundary here, not auth.
+      allow update: if request.resource.data.diff(resource.data).affectedKeys()
                          .hasOnly(['boCount', 'viewCount']);
       allow update: if request.auth != null
                     && request.auth.uid == contributor
