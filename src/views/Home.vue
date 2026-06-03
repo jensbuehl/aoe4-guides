@@ -464,7 +464,26 @@ export default {
       store.commit("setPopularBuildsList", snapshot?.popularBuilds ?? []);
       store.commit("setAllTimeClassicsList", snapshot?.allTimeClassics ?? []);
       store.commit("setRecentBuildsList", snapshot?.recentBuilds ?? []);
-      store.commit("setTopContributorsList", snapshot?.topContributors ?? []);
+
+      // The snapshot is updated hourly, so the current user's icon may lag
+      // behind their latest avatar selection. Patch their entry from the live
+      // userAvatar state so the snapshot can never override a recent change.
+      let contributors = snapshot?.topContributors ?? [];
+      const uid = user.value?.uid;
+      const av = store.state.userAvatar;
+      if (uid && av) {
+        let liveIcon = null;
+        if (av.type === "civ") {
+          const match = allCivs.value.find((c) => c.shortName === av.ref);
+          liveIcon = match ? match.flagLarge : null;
+        } else if (av.type === "upload") {
+          liveIcon = av.ref;
+        }
+        contributors = contributors.map((c) =>
+          c.authorId === uid ? { ...c, icon: liveIcon } : c
+        );
+      }
+      store.commit("setTopContributorsList", contributors);
       store.commit("setResultsCount", snapshot?.buildsCount ?? null);
     };
 
