@@ -2,29 +2,34 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /builds/{build} {
-      allow read, write: if request.auth != null && 
-      (request.auth.uid == request.resource.data.authorUid) || (request.auth.uid == resource.data.authorUid);
-    }    
+      // S1 fix: outer parens ensure auth check applies to both uid conditions
+      allow read, write: if request.auth != null &&
+        ((request.auth.uid == request.resource.data.authorUid) ||
+         (request.auth.uid == resource.data.authorUid));
+    }
     match /builds/{build} {
-    	allow read;
+      allow read;
       allow update: if (request.resource.data.diff(resource.data).affectedKeys()
         .hasOnly(['views', 'likes', 'upvotes', 'downvotes', 'comments']));
     }
   }
   match /databases/{database}/documents {
     match /creators/{creator} {
-      allow read, write: if request.auth != null;
+      // S2 fix: restrict writes to the creator's own document
+      allow read, write: if request.auth != null && request.auth.uid == creator;
     }
     match /creators/{creator} {
       allow read;
     }
-  }  
+  }
   match /databases/{database}/documents {
     match /comments/{comment} {
-      allow read, write: if request.auth != null;
-    }
-    match /comments/{comment} {
+      // S3 fix: restrict writes to the comment author
       allow read;
+      allow create: if request.auth != null
+                    && request.resource.data.authorId == request.auth.uid;
+      allow delete: if request.auth != null
+                    && resource.data.authorId == request.auth.uid;
     }
   }
   match /databases/{database}/documents {
@@ -41,11 +46,13 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /contributors/{contributor} {
       allow read;
-      allow update: if (request.resource.data.diff(resource.data).affectedKeys()
-        .hasOnly(['boCount', 'viewCount']));
+      // S5 fix: require auth on public stat increments
       allow update: if request.auth != null
-                   && request.auth.uid == contributor
-                   && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['icon']);
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['boCount', 'viewCount']);
+      allow update: if request.auth != null
+                    && request.auth.uid == contributor
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['icon']);
     }
   }
   match /databases/{database}/documents {
