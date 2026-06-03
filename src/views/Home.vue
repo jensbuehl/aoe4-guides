@@ -395,7 +395,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
@@ -486,6 +486,31 @@ export default {
       store.commit("setTopContributorsList", contributors);
       store.commit("setResultsCount", snapshot?.buildsCount ?? null);
     };
+
+    // userAvatar loads async after auth — may arrive after initData() already
+    // ran with a null avatar. Re-patch whenever it settles so the stale
+    // snapshot icon is always overridden by the user's actual current avatar.
+    watch(
+      () => store.state.userAvatar,
+      (av) => {
+        if (!av || !user.value?.uid) return;
+        const uid = user.value.uid;
+        let liveIcon = null;
+        if (av.type === "civ") {
+          const match = allCivs.value.find((c) => c.shortName === av.ref);
+          liveIcon = match ? match.flagLarge : null;
+        } else if (av.type === "upload") {
+          liveIcon = av.ref;
+        }
+        const list = store.state.cache.topContributorsList;
+        if (list.some((c) => c.authorId === uid && c.icon !== liveIcon)) {
+          store.commit(
+            "setTopContributorsList",
+            list.map((c) => (c.authorId === uid ? { ...c, icon: liveIcon } : c))
+          );
+        }
+      }
+    );
 
     return {
       user,
