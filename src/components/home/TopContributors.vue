@@ -27,7 +27,7 @@
             class="mr-3"
           >
             <span v-if="!contributor.icon" class="text-caption font-weight-bold">
-              {{ contributor.displayName.slice(0, 2).toUpperCase() }}
+              {{ contributor.displayName?.slice(0, 2).toUpperCase() ?? '' }}
             </span>
           </v-avatar>
         </template>
