@@ -1,0 +1,67 @@
+<template>
+  <v-card v-if="contributors && contributors.length" flat rounded="lg" class="mb-4">
+    <v-card-title class="pa-4 pb-2">
+      <v-icon icon="mdi-account-star" size="small" class="mr-2" color="primary"></v-icon>
+      Top Contributors
+    </v-card-title>
+
+    <v-list nav class="pa-2 pt-0" bg-color="transparent">
+      <v-list-item
+        v-for="(contributor, index) in contributors"
+        :key="contributor.authorId"
+        :to="{ name: 'Builds', query: { author: contributor.authorId } }"
+        :ripple="false"
+        rounded="lg"
+        min-height="48"
+        class="px-3"
+      >
+        <template v-slot:prepend>
+          <span
+            class="text-caption text-medium-emphasis mr-3"
+            style="min-width: 18px; text-align: center; flex-shrink: 0"
+          >{{ index + 1 }}</span>
+          <v-avatar
+            size="36"
+            color="accent"
+            :image="contributor.icon || undefined"
+            class="mr-3"
+          >
+            <span v-if="!contributor.icon" class="text-caption font-weight-bold">
+              {{ contributor.displayName.slice(0, 2).toUpperCase() }}
+            </span>
+          </v-avatar>
+        </template>
+
+        <v-list-item-title
+          class="text-body-2 font-weight-medium text-truncate"
+          :style="{ color: $vuetify.theme.current.colors.primary }"
+        >{{ contributor.displayName }}</v-list-item-title>
+
+        <template v-slot:append>
+          <div class="d-flex ga-3 text-caption text-medium-emphasis align-center">
+            <span class="d-flex align-center ga-1">
+              <v-icon size="12" icon="mdi-eye"></v-icon>
+              {{ contributor.viewCount }}
+            </span>
+            <span class="d-flex align-center ga-1">
+              <v-icon size="12" icon="mdi-hammer"></v-icon>
+              {{ contributor.boCount }}
+            </span>
+          </div>
+        </template>
+      </v-list-item>
+    </v-list>
+  </v-card>
+</template>
+
+<script>
+export default {
+  name: "TopContributors",
+  props: {
+    contributors: {
+      type: Array,
+      required: true,
+    },
+  },
+};
+</script>

@@ -25,20 +25,6 @@
   </v-layout-item>
   <v-container>
     <v-row>
-      <!-- main content -->
-      <v-col cols="12" md="4" class="hidden-md-and-up">
-        <v-card flat rounded="lg" class="mb-2">
-          <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
-          <v-card-title v-if="user">Welcome, {{ user.displayName }}!</v-card-title>
-          <v-card-text>
-            <span v-if="!count">Gathering build orders...</span>
-            <span v-if="count">Busy villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span><span>.</span></v-card-text
-          >
-        </v-card>
-        <News></News>
-      </v-col>
-
       <v-col cols="12" md="8">
         <!-- Civ filter box (all screen sizes) -->
         <v-row no-gutters>
@@ -244,195 +230,6 @@
           </template>
         </v-row>
 
-        <v-row no-gutters class="hidden-md-and-up"
-          ><v-col class="ml-2 mt-4 mb-4" cols="auto"
-            ><v-icon icon="mdi-account-star" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Top Contributors</span>
-          </v-col></v-row
-        >
-
-        <!--top contributors sm-->
-        <v-row no-gutters class="hidden-xs hidden-md-and-up">
-          <v-col
-            cols="6"
-            v-for="(contributor, index) in topContributorsList"
-            :key="contributor.userId"
-          >
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all build orders from
-                {{ contributor.displayName }}
-              </span>
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  :height="contributorsCardHeight"
-                  v-bind:class="{
-                    'mb-2 mr-2': index % 2 == 0,
-                    'mb-2 ml-2': index % 2 != 0,
-                  }"
-                  rounded="lg"
-                  v-bind="props"
-                  :to="{
-                    name: 'Builds',
-                    query: { author: contributor.authorId },
-                  }"
-                >
-                  <v-row no-gutters class="fill-height" align="center" justify="center"
-                    ><v-col cols="12"
-                      ><v-skeleton-loader
-                        :color="contributor.loading ? 'loading' : 'surface'"
-                        :loading="contributor.loading"
-                        :height="contributorsCardHeight"
-                      >
-                        <v-row no-gutters align="center">
-                          <v-col cols="auto" align="center">
-                            <v-avatar
-                              v-if="contributor.icon"
-                              class="mx-4"
-                              color="accent"
-                              :image="contributor.icon"
-                            ></v-avatar>
-                            <v-avatar v-else class="mx-4" color="accent">{{
-                              contributor.displayName.slice(0, 2).toUpperCase()
-                            }}</v-avatar>
-                          </v-col>
-                          <v-col cols="auto" align="start" justify="start">
-                            <v-row no-gutters>
-                              <!--sm title-->
-                              <div
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                                class="text-subtitle-2 hidden-xs mt-n1"
-                                style="font-family: 'Segoe UI' !important"
-                              >
-                                {{ contributor.displayName }}
-                              </div></v-row
-                            ><v-row no-gutters>
-                              <v-col cols="auto"
-                                ><v-chip class="mr-2 hidden-xs" label size="x-small"
-                                  ><v-icon start icon="mdi-eye"></v-icon
-                                  >{{ contributor.viewCount }}</v-chip
-                                ></v-col
-                              >
-
-                              <v-col cols="auto"
-                                ><v-chip class="hidden-xs" label size="x-small"
-                                  ><v-icon start icon="mdi-hammer"></v-icon
-                                  >{{ contributor.boCount }}</v-chip
-                                ></v-col
-                              >
-                            </v-row>
-                          </v-col>
-                        </v-row>
-                      </v-skeleton-loader></v-col
-                    ></v-row
-                  >
-                </v-card>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-
-        <!--top contributors xs-->
-        <v-row no-gutters class="hidden-sm-and-up">
-          <v-col
-            cols="6"
-            v-for="(contributor, index) in topContributorsList"
-            :key="contributor.userId"
-          >
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all build orders from
-                {{ contributor.displayName }}
-              </span>
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  :height="contributorsCardHeight"
-                  v-bind:class="{
-                    'mb-2 mr-2': index % 2 == 0,
-                    'mb-2 ml-2': index % 2 != 0,
-                  }"
-                  rounded="lg"
-                  v-bind="props"
-                  :to="{
-                    name: 'Builds',
-                    query: { author: contributor.authorId },
-                  }"
-                >
-                  <v-row no-gutters class="fill-height" align="center" justify="center"
-                    ><v-col cols="12"
-                      ><v-skeleton-loader
-                        :color="contributor.loading ? 'loading' : 'surface'"
-                        :loading="contributor.loading"
-                        :height="contributorsCardHeight"
-                      >
-                        <v-row no-gutters align="center">
-                          <v-col cols="auto" align="center">
-                            <v-avatar
-                              v-show="contributor.icon"
-                              class="mx-4"
-                              color="accent"
-                              :image="contributor.icon"
-                            ></v-avatar>
-                            <v-avatar v-show="!contributor.icon" class="mx-4" color="accent">{{
-                              contributor.displayName.slice(0, 2).toUpperCase()
-                            }}</v-avatar>
-                          </v-col>
-                          <v-col cols="*" align="start" justify="start">
-                            <v-row no-gutters
-                              ><!--xs title-->
-                              <div
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                                class="text-subtitle-2 hidden-sm-and-up"
-                                style="font-size: 0.8rem !important"
-                              >
-                                {{ contributor.displayName }}
-                              </div>
-                              <!--sm title-->
-                              <div
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                                class="text-subtitle-2 hidden-xs"
-                                style="font-family: 'Segoe UI' !important"
-                              >
-                                {{ contributor.displayName }}
-                              </div></v-row
-                            ><v-row no-gutters>
-                              <v-col cols="auto"
-                                ><v-label class="hidden-xs"
-                                  >{{ contributor.viewCount }} views</v-label
-                                ></v-col
-                              >
-
-                              <v-col cols="auto"
-                                ><v-label class="ml-4 hidden-xs"
-                                  >{{ contributor.boCount }} builds</v-label
-                                ></v-col
-                              >
-                            </v-row>
-                          </v-col>
-                        </v-row>
-                      </v-skeleton-loader></v-col
-                    ></v-row
-                  >
-                </v-card>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-
         <!-- popular builds -->
         <v-row no-gutters align="center">
           <v-col class="ml-2 mt-4 mb-2" cols="auto"
@@ -570,137 +367,24 @@
               </router-link>
             </div> </v-col
         ></v-row>
-        <v-container class="mx-0 pa-0 hidden-md-and-up"
-          ><YoutubeGuides></YoutubeGuides
-        ></v-container>
-      </v-col>
-
-      <v-col cols="12" md="4" class="hidden-md-and-up">
-        <RegisterAd v-if="!user && authIsReady"></RegisterAd>
-        <EmailVerificationAd
-          v-if="user && authIsReady && !user.emailVerified"
-        ></EmailVerificationAd>
+        <!-- mobile sidebar (below builds, hidden on desktop) -->
+        <div class="hidden-md-and-up mt-4">
+          <News></News>
+          <TopContributors :contributors="topContributorsList"></TopContributors>
+          <YoutubeGuides></YoutubeGuides>
+          <RegisterAd v-if="!user && authIsReady"></RegisterAd>
+          <EmailVerificationAd v-if="user && authIsReady && !user.emailVerified"></EmailVerificationAd>
+        </div>
       </v-col>
 
       <!-- sidebar -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <v-card flat rounded="lg" class="mb-2">
-          <v-card-title v-if="!user">Welcome, Villager!</v-card-title>
-          <v-card-title v-if="user">Welcome, {{ user.displayName }}!</v-card-title>
-          <v-card-text
-            >Create new Age of Empires 4 build orders and share them with your friends and the
-            community. </v-card-text
-          ><v-card-text>
-            <span v-if="!count">Gathering build orders...</span>
-            <span v-if="count">Busy villagers have gathered {{ count }} build order</span
-            ><span v-if="count > 1">s</span><span>.</span>
-          </v-card-text>
-        </v-card>
         <News></News>
-
-        <!--top contributors md and up-->
-        <v-row no-gutters align="center" class="hidden-xs">
-          <v-col class="ml-2 mt-4 mb-4" cols="auto"
-            ><v-icon icon="mdi-account-star" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Top Contributors</span></v-col
-          ></v-row
-        >
-        <v-row align="center" no-gutters
-          ><v-col cols="12" v-for="contributor in topContributorsList">
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Explore all build orders from
-                {{ contributor.displayName }}
-              </span>
-              <template v-slot:activator="{ props }">
-                <v-card
-                  flat
-                  :height="contributorsCardHeight"
-                  rounded="lg"
-                  class="mb-2"
-                  v-bind="props"
-                  :to="{
-                    name: 'Builds',
-                    query: { author: contributor.authorId },
-                  }"
-                >
-                  <v-row no-gutters class="fill-height" align="center" justify="center"
-                    ><v-col cols="12"
-                      ><v-skeleton-loader
-                        :color="contributor.loading ? 'loading' : 'surface'"
-                        :loading="contributor.loading"
-                        :height="contributorsCardHeight"
-                      >
-                        <v-row no-gutters align="center">
-                          <v-col cols="auto" align="center">
-                            <v-avatar
-                              v-if="contributor.icon"
-                              class="mx-4"
-                              color="accent"
-                              :image="contributor.icon"
-                            ></v-avatar>
-                            <v-avatar v-else class="mx-4" color="accent">{{
-                              contributor.displayName.slice(0, 2).toUpperCase()
-                            }}</v-avatar>
-                          </v-col>
-                          <v-col cols="*" align="start" justify="start">
-                            <v-row no-gutters
-                              ><!--lg title-->
-                              <v-card-title
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                                class="ml-n4 mt-lg-n4 hidden-md-and-down"
-                              >
-                                {{ contributor.displayName }}
-                              </v-card-title>
-                              <!--md title-->
-                              <div
-                                :style="{
-                                  color: $vuetify.theme.current.colors.primary,
-                                }"
-                                class="text-subtitle-2 hidden-sm-and-down hidden-lg-and-up mt-n1"
-                                style="font-family: 'Segoe UI' !important"
-                              >
-                                {{ contributor.displayName }}
-                              </div></v-row
-                            ><v-row no-gutters class="hidden-sm-and-down hidden-lg-and-up mt-2">
-                              <v-chip class="mr-2" label size="x-small"
-                                ><v-icon start icon="mdi-eye"></v-icon
-                                >{{ contributor.viewCount }}</v-chip
-                              >
-                              <v-chip label size="x-small"
-                                ><v-icon start icon="mdi-hammer"></v-icon
-                                >{{ contributor.boCount }}</v-chip
-                              >
-                            </v-row>
-                            <v-row no-gutters class="hidden-md-and-down mt-n1">
-                              <v-chip class="mr-2" label size="small"
-                                ><v-icon start icon="mdi-eye"></v-icon
-                                >{{ contributor.viewCount }}</v-chip
-                              >
-                              <v-chip label size="small"
-                                ><v-icon start icon="mdi-hammer"></v-icon
-                                >{{ contributor.boCount }}</v-chip
-                              >
-                            </v-row>
-                          </v-col>
-                        </v-row>
-                      </v-skeleton-loader></v-col
-                    ></v-row
-                  >
-                </v-card>
-              </template>
-            </v-tooltip>
-          </v-col></v-row
-        >
+        <TopContributors :contributors="topContributorsList"></TopContributors>
         <YoutubeGuides></YoutubeGuides>
-        <RegisterAd class="mt-6" v-if="!user && authIsReady"></RegisterAd>
+        <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
         <EmailVerificationAd
-          class="mt-6"
+          class="mt-4"
           v-if="user && authIsReady && !user.emailVerified"
         ></EmailVerificationAd>
       </v-col>
@@ -711,8 +395,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { computed, onMounted, ref, watch } from "vue";
-import { useDisplay } from "vuetify";
+import { computed, onMounted, ref } from "vue";
 
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
@@ -721,13 +404,13 @@ import YoutubeGuides from "@/components/notifications/YoutubeGuides.vue";
 import EmailVerificationAd from "@/components/notifications/EmailVerificationAd.vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
+import TopContributors from "@/components/home/TopContributors.vue";
 
 //Composables
 import useTimeSince from "@/composables/useTimeSince";
 import { getHomeSnapshot } from "@/composables/data/homeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { getBuildsCount } from "@/composables/data/buildService";
 
 export default {
   name: "Home",
@@ -738,6 +421,7 @@ export default {
     News,
     YoutubeGuides,
     EmailVerificationAd,
+    TopContributors,
   },
   setup() {
     const store = useStore();
@@ -756,28 +440,9 @@ export default {
           civ.shortName.toLowerCase().includes(filter)
       );
     });
-    const { name } = useDisplay();
-    const count = computed(() => store.state.resultsCount);
     const user = computed(() => store.state.user);
     const recentCivBuilds = ref([]);
     const { isNew } = useTimeSince();
-
-    const contributorsCardHeight = computed(() => {
-      switch (name.value) {
-        case "xs":
-          return 50;
-        case "sm":
-          return 70;
-        case "md":
-          return 70;
-        case "lg":
-          return 70;
-        case "xl":
-          return 84;
-        case "xxl":
-          return 84;
-      }
-    });
 
     onMounted(() => {
       store.commit("setFilterConfig", getDefaultConfig());
@@ -809,12 +474,10 @@ export default {
       civs,
       civFilter,
       filteredCivs,
-      count,
       recentBuildsList,
       popularBuildsList,
       allTimeClassicsList,
       topContributorsList,
-      contributorsCardHeight,
       recentCivBuilds,
       isNew,
     };
