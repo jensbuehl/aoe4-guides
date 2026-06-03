@@ -366,9 +366,13 @@ export const store = createStore({
       }
       await updateContributorIcon(uid, iconUrl);
 
-      // Bust cached contributor list so Home.vue refetches with the new icon.
-      // Use the loading sentinel the component checks for, not null.
-      commit("setTopContributorsList", Array(8).fill({ loading: true }));
+      // Optimistically patch the in-memory list so the UI reflects the new
+      // icon immediately. The hourly Cloud Function will persist it to the
+      // home snapshot; a full page reload picks that up.
+      const patched = state.cache.topContributorsList.map((c) =>
+        c.authorId === uid ? { ...c, icon: iconUrl } : c
+      );
+      commit("setTopContributorsList", patched);
     },
 
     async uploadAndSetAvatar({ dispatch, state }, blob) {
