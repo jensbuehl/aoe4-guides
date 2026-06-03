@@ -370,7 +370,7 @@
         <!-- mobile sidebar (below builds, hidden on desktop) -->
         <div class="hidden-md-and-up mt-4">
           <News></News>
-          <TopContributors :contributors="topContributorsList"></TopContributors>
+          <TopContributors :contributors="topContributorsList" :currentUserId="user?.uid" :currentUserIcon="currentUserIcon"></TopContributors>
           <YoutubeGuides></YoutubeGuides>
           <RegisterAd v-if="!user && authIsReady"></RegisterAd>
           <EmailVerificationAd v-if="user && authIsReady && !user.emailVerified"></EmailVerificationAd>
@@ -395,7 +395,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 //Components
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
@@ -441,6 +441,16 @@ export default {
       );
     });
     const user = computed(() => store.state.user);
+    const currentUserIcon = computed(() => {
+      const av = store.state.userAvatar;
+      if (!av) return null;
+      if (av.type === "civ") {
+        const match = allCivs.value.find((c) => c.shortName === av.ref);
+        return match ? match.flagLarge : null;
+      }
+      if (av.type === "upload") return av.ref;
+      return null;
+    });
     const recentCivBuilds = ref([]);
     const { isNew } = useTimeSince();
 
@@ -464,53 +474,9 @@ export default {
       store.commit("setPopularBuildsList", snapshot?.popularBuilds ?? []);
       store.commit("setAllTimeClassicsList", snapshot?.allTimeClassics ?? []);
       store.commit("setRecentBuildsList", snapshot?.recentBuilds ?? []);
-
-      // The snapshot is updated hourly, so the current user's icon may lag
-      // behind their latest avatar selection. Patch their entry from the live
-      // userAvatar state so the snapshot can never override a recent change.
-      let contributors = snapshot?.topContributors ?? [];
-      const uid = user.value?.uid;
-      const av = store.state.userAvatar;
-      if (uid && av) {
-        let liveIcon = null;
-        if (av.type === "civ") {
-          const match = allCivs.value.find((c) => c.shortName === av.ref);
-          liveIcon = match ? match.flagLarge : null;
-        } else if (av.type === "upload") {
-          liveIcon = av.ref;
-        }
-        contributors = contributors.map((c) =>
-          c.authorId === uid ? { ...c, icon: liveIcon } : c
-        );
-      }
-      store.commit("setTopContributorsList", contributors);
+      store.commit("setTopContributorsList", snapshot?.topContributors ?? []);
       store.commit("setResultsCount", snapshot?.buildsCount ?? null);
     };
-
-    // userAvatar loads async after auth — may arrive after initData() already
-    // ran with a null avatar. Re-patch whenever it settles so the stale
-    // snapshot icon is always overridden by the user's actual current avatar.
-    watch(
-      () => store.state.userAvatar,
-      (av) => {
-        if (!av || !user.value?.uid) return;
-        const uid = user.value.uid;
-        let liveIcon = null;
-        if (av.type === "civ") {
-          const match = allCivs.value.find((c) => c.shortName === av.ref);
-          liveIcon = match ? match.flagLarge : null;
-        } else if (av.type === "upload") {
-          liveIcon = av.ref;
-        }
-        const list = store.state.cache.topContributorsList;
-        if (list.some((c) => c.authorId === uid && c.icon !== liveIcon)) {
-          store.commit(
-            "setTopContributorsList",
-            list.map((c) => (c.authorId === uid ? { ...c, icon: liveIcon } : c))
-          );
-        }
-      }
-    );
 
     return {
       user,
@@ -522,6 +488,7 @@ export default {
       popularBuildsList,
       allTimeClassicsList,
       topContributorsList,
+      currentUserIcon,
       recentCivBuilds,
       isNew,
     };
