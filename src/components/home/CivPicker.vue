@@ -141,7 +141,6 @@ export default {
   border-radius: 12px !important;
   overflow: hidden;
   display: block;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
   text-decoration: none;
 }
 
@@ -157,17 +156,6 @@ export default {
 .civ-tile:focus-visible {
   outline: 3px solid rgb(var(--v-theme-primary));
   outline-offset: 2px;
-}
-
-/* hover lift (respects reduced motion) */
-@media (prefers-reduced-motion: no-preference) {
-  .civ-tile {
-    transition: transform 0.12s, box-shadow 0.15s;
-  }
-  .civ-tile:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
-  }
 }
 
 /* name overlay
