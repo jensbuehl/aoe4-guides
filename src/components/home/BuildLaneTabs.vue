@@ -1,5 +1,16 @@
 <template>
   <div class="build-lane-tabs py-2">
+    <HeroBuild
+      v-if="isLoading || heroBuild"
+      :build="isLoading ? null : heroBuild"
+      :flag-url="heroCiv?.flagLarge ?? null"
+      :civ-name="heroCiv?.title ?? null"
+      :eyebrow="heroEyebrow"
+      :icon="heroIcon"
+      :loading="isLoading"
+      class="mb-4"
+    />
+
     <v-tabs
       v-model="activeTab"
       color="primary"
@@ -65,6 +76,8 @@
 <script>
 import { ref, computed } from "vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
+import HeroBuild from "@/components/home/HeroBuild.vue";
+import { civs } from "@/composables/filter/civDefaultProvider";
 
 const lanes = [
   { value: "trending",  label: "Trending",          icon: "mdi-trending-up",        orderBy: "score" },
@@ -72,13 +85,25 @@ const lanes = [
   { value: "new",       label: "New",                icon: "mdi-clock-edit-outline",  orderBy: "timeCreated" },
 ];
 
+const heroEyebrowLabels = {
+  trending: "#1 Trending",
+  classics: "#1 All-Time Classic",
+  new:      "Latest Build",
+};
+
+const heroIcons = {
+  trending: "mdi-trending-up",
+  classics: "mdi-star",
+  new:      "mdi-clock-edit-outline",
+};
+
 // Module-level ref: persists across navigations for the lifetime of the SPA session.
 // Navigating away and back restores the last-selected tab.
 const activeTab = ref("trending");
 
 export default {
   name: "BuildLaneTabs",
-  components: { BuildListCard },
+  components: { BuildListCard, HeroBuild },
   props: {
     popularBuilds:   { type: Array, required: true },
     allTimeClassics: { type: Array, required: true },
@@ -87,18 +112,54 @@ export default {
   setup(props) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const laneList = (value) => {
+    const rawLane = (value) => {
       if (value === "trending") return props.popularBuilds;
       if (value === "classics") return props.allTimeClassics;
       return props.recentBuilds;
     };
+
+    const laneList = (value) => {
+      const items = rawLane(value);
+      const hero = items[0];
+      return hero && !hero.loading ? items.filter((b) => b.id !== hero.id) : items;
+    };
+
+    const heroBuild = computed(() => {
+      const items = rawLane(activeTab.value);
+      return items.length > 0 ? items[0] : null;
+    });
+
+    const heroCiv = computed(() =>
+      civs.value.find((c) => c.shortName === heroBuild.value?.civ) ?? null
+    );
+
+    const heroEyebrow = computed(() => {
+      const label = heroEyebrowLabels[activeTab.value] ?? "";
+      const civ = heroCiv.value?.title ?? "";
+      return civ ? `${label} · ${civ}` : label;
+    });
+
+    const heroIcon = computed(() => heroIcons[activeTab.value] ?? "mdi-trending-up");
+
+    const isLoading = computed(() => heroBuild.value?.loading === true);
 
     const viewAllRoute = computed(() => ({
       name: "Builds",
       query: { orderBy: lanes.find((l) => l.value === activeTab.value)?.orderBy },
     }));
 
-    return { lanes, activeTab, reducedMotion, laneList, viewAllRoute };
+    return {
+      lanes,
+      activeTab,
+      reducedMotion,
+      laneList,
+      heroBuild,
+      heroCiv,
+      heroEyebrow,
+      heroIcon,
+      isLoading,
+      viewAllRoute,
+    };
   },
 };
 </script>

@@ -9,6 +9,7 @@ function pickBuildFields(data, id) {
   return {
     id,
     title: data.title ?? "",
+    description: data.description ? data.description.slice(0, 300) : null,
     author: data.author ?? "",
     authorUid: data.authorUid ?? "",
     civ: data.civ ?? null,

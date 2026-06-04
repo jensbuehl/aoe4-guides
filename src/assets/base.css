@@ -41,6 +41,14 @@
 
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
+
+  --hero-fade: 250,250,250;
+  --hero-title: #294790;
+  --hero-text: #41506b;
+  --hero-meta: #5b6573;
+  --hero-shadow: none;
+  --accent: #b9962f;
+  --shadow: 0 8px 28px rgba(40,50,70,.16);
 }
 
 /* Dark theme (Vuetify customDarkTheme) */
@@ -48,7 +56,7 @@
   --vt-c-white: #161A25;
   --vt-c-white-soft: #161A25;
   --vt-c-white-mute: #161A25;
-  
+
   --color-background: rgb(var(--v-theme-background));
   --color-background-soft: rgb(var(--v-theme-surface));
   --color-background-mute: rgb(var(--v-theme-background));
@@ -58,6 +66,14 @@
 
   --color-heading: var(--vt-c-text-dark-1);
   --color-text: var(--vt-c-text-dark-2);
+
+  --hero-fade: 20,26,37;
+  --hero-title: #e7c05e;
+  --hero-text: rgba(255,255,255,.86);
+  --hero-meta: rgba(255,255,255,.82);
+  --hero-shadow: 0 2px 8px rgba(0,0,0,.5);
+  --accent: #e7c05e;
+  --shadow: 0 8px 28px rgba(0,0,0,.35);
 }
 
 /* System preference fallback */
