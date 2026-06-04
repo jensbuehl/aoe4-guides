@@ -8,8 +8,9 @@
     <v-list nav class="pa-2 pt-0" bg-color="transparent">
       <v-list-item
         v-for="(contributor, index) in contributors"
-        :key="contributor.authorId"
-        :to="{ name: 'Builds', query: { author: contributor.authorId } }"
+        :key="contributor.authorId ?? index"
+        :value="contributor.authorId ?? index"
+        :to="contributor.loading ? undefined : { name: 'Builds', query: { author: contributor.authorId } }"
         :ripple="false"
         rounded="lg"
         min-height="48"
