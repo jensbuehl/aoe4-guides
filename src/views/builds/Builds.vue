@@ -65,7 +65,7 @@
                       </div></v-row
                     ><v-row no-gutters class="hidden-lg-and-up mt-2">
                       <v-chip class="mr-2" label size="x-small"
-                        ><v-icon start icon="mdi-eye"></v-icon>{{ contributor.viewCount }}</v-chip
+                        ><v-icon start icon="mdi-eye"></v-icon>{{ formatCount(contributor.viewCount) }}</v-chip
                       >
                       <v-chip label size="x-small"
                         ><v-icon start icon="mdi-hammer"></v-icon>{{ contributor.boCount }}</v-chip
@@ -158,7 +158,7 @@
                       </div></v-row
                     ><v-row no-gutters class="hidden-sm-and-down hidden-lg-and-up mt-2">
                       <v-chip class="mr-2" label size="x-small"
-                        ><v-icon start icon="mdi-eye"></v-icon>{{ contributor.viewCount }}</v-chip
+                        ><v-icon start icon="mdi-eye"></v-icon>{{ formatCount(contributor.viewCount) }}</v-chip
                       >
                       <v-chip label size="x-small"
                         ><v-icon start icon="mdi-hammer"></v-icon>{{ contributor.boCount }}</v-chip
@@ -166,7 +166,7 @@
                     </v-row>
                     <v-row no-gutters class="hidden-md-and-down mt-n1">
                       <v-chip class="mr-2" label size="small"
-                        ><v-icon start icon="mdi-eye"></v-icon>{{ contributor.viewCount }}</v-chip
+                        ><v-icon start icon="mdi-eye"></v-icon>{{ formatCount(contributor.viewCount) }}</v-chip
                       >
                       <v-chip label size="small"
                         ><v-icon start icon="mdi-hammer"></v-icon>{{ contributor.boCount }}</v-chip
@@ -199,6 +199,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 
 //Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import useTimeSince from "@/composables/useTimeSince";
 import { getContributor } from "@/composables/data/contributorService";
 import {
   getBuilds,
@@ -371,6 +372,8 @@ export default {
       }
     };
 
+    const { formatCount } = useTimeSince();
+
     return {
       builds,
       user,
@@ -384,6 +387,7 @@ export default {
       previousPage,
       contributor,
       contributorsCardHeight,
+      formatCount,
     };
   },
 };

@@ -61,9 +61,9 @@ export const store = createStore({
     //cache
     cache: {
       builds: {},
-      popularBuildsList: Array(5).fill({ loading: true }),
-      recentBuildsList: Array(5).fill({ loading: true }),
-      allTimeClassicsList: Array(5).fill({ loading: true }),
+      popularBuildsList: Array(10).fill({ loading: true }),
+      recentBuildsList: Array(10).fill({ loading: true }),
+      allTimeClassicsList: Array(10).fill({ loading: true }),
       topContributorsList: Array(8).fill({ loading: true }),
       allBuildsList: null,
       myBuildsList: null,

@@ -2,7 +2,7 @@ const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { getFirestore } = require("firebase-admin/firestore");
 const logger = require("firebase-functions/logger");
 
-const BUILDS_LIMIT = 5;
+const BUILDS_LIMIT = 10;
 const CONTRIBUTORS_LIMIT = 8;
 
 function pickBuildFields(data, id) {

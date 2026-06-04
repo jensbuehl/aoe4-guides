@@ -31,143 +31,11 @@
           :recent-civ-builds="recentCivBuilds"
         />
 
-        <!-- popular builds -->
-        <v-row no-gutters align="center">
-          <v-col class="ml-2 mt-4 mb-2" cols="auto"
-            ><v-icon icon="mdi-trending-up" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">Trending Build Orders</span>
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Show All Trending Builds</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  size="small"
-                  class="mx-2 mb-1"
-                  variant="text"
-                  color="primary"
-                  icon="mdi-chevron-right"
-                  :to="{
-                    name: 'Builds',
-                    query: { orderBy: 'score' },
-                  }"
-                ></v-btn>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-        <v-row align="center" no-gutters>
-          <v-col cols="12">
-            <div v-for="item in popularBuildsList">
-              <router-link
-                style="text-decoration: none"
-                :to="{
-                  name: item.loading ? 'Home' : 'BuildDetails',
-                  params: {
-                    id: !item.loading ? item.id : null,
-                  },
-                }"
-              >
-                <BuildListCard :build="item"></BuildListCard>
-              </router-link>
-            </div> </v-col
-        ></v-row>
-
-        <!-- all time classics -->
-        <v-row no-gutters>
-          <v-col class="ml-2 mt-4 mb-2" cols="auto"
-            ><v-icon icon="mdi-star" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">All Time Classics</span>
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Show All Time Classics</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  size="small"
-                  class="mx-2 mb-1"
-                  variant="text"
-                  color="primary"
-                  icon="mdi-chevron-right"
-                  :to="{
-                    name: 'Builds',
-                    query: { orderBy: 'scoreAllTime' },
-                  }"
-                ></v-btn>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-        <v-row align="center" no-gutters>
-          <v-col cols="12">
-            <div v-for="item in allTimeClassicsList">
-              <router-link
-                style="text-decoration: none"
-                :to="{
-                  name: item.loading ? 'Home' : 'BuildDetails',
-                  params: {
-                    id: !item.loading ? item.id : null,
-                  },
-                }"
-              >
-                <BuildListCard :build="item"></BuildListCard>
-              </router-link>
-            </div> </v-col
-        ></v-row>
-
-        <!-- recent builds -->
-        <v-row no-gutters align="center">
-          <v-col class="ml-2 mt-4 mb-2" cols="auto"
-            ><v-icon icon="mdi-clock-edit-outline" size="small" class="mx-2 mb-1"></v-icon
-            ><span class="text-h6">New Build Orders</span>
-            <v-tooltip location="top" open-delay="1000">
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Show All Recent Builds</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  size="small"
-                  class="mx-2 mb-1"
-                  variant="text"
-                  color="primary"
-                  icon="mdi-chevron-right"
-                  :to="{
-                    name: 'Builds',
-                    query: { orderBy: 'timeCreated' },
-                  }"
-                ></v-btn>
-              </template>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-        <v-row align="center" no-gutters>
-          <v-col cols="12">
-            <div v-for="item in recentBuildsList">
-              <router-link
-                style="text-decoration: none"
-                :to="{
-                  name: item.loading ? 'Home' : 'BuildDetails',
-                  params: {
-                    id: !item.loading ? item.id : null,
-                  },
-                }"
-              >
-                <BuildListCard :build="item"></BuildListCard>
-              </router-link>
-            </div> </v-col
-        ></v-row>
+        <BuildLaneTabs
+          :popular-builds="popularBuildsList"
+          :all-time-classics="allTimeClassicsList"
+          :recent-builds="recentBuildsList"
+        />
         <!-- mobile sidebar (below builds, hidden on desktop) -->
         <div class="hidden-md-and-up mt-4">
           <News></News>
@@ -201,9 +69,9 @@ import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import News from "@/components/notifications/News.vue";
 import YoutubeGuides from "@/components/notifications/YoutubeGuides.vue";
 import EmailVerificationAd from "@/components/notifications/EmailVerificationAd.vue";
-import BuildListCard from "@/components/builds/BuildListCard.vue";
 import TopContributors from "@/components/home/TopContributors.vue";
 import CivPicker from "@/components/home/CivPicker.vue";
+import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
 
 import { getHomeSnapshot } from "@/composables/data/homeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
@@ -212,13 +80,13 @@ import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 export default {
   name: "Home",
   components: {
-    BuildListCard,
     RegisterAd,
     News,
     YoutubeGuides,
     EmailVerificationAd,
     TopContributors,
     CivPicker,
+    BuildLaneTabs,
   },
   setup() {
     const store = useStore();

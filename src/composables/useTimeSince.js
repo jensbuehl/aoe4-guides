@@ -47,5 +47,11 @@ export default function useTimeSince() {
       };
 
 
-    return { timeSince, isNew }
+    const formatCount = (n) => {
+      if (!n || n < 1000) return String(n ?? 0);
+      if (n < 10000) return (Math.round(n / 100) / 10).toFixed(1) + 'k';
+      return Math.round(n / 1000) + 'k';
+    };
+
+    return { timeSince, isNew, formatCount }
   }

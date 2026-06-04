@@ -36,7 +36,7 @@
           <div class="d-flex ga-3 text-caption text-medium-emphasis align-center">
             <span class="d-flex align-center ga-1">
               <v-icon size="12" icon="mdi-eye"></v-icon>
-              {{ contributor.viewCount }}
+              {{ formatCount(contributor.viewCount) }}
             </span>
             <span class="d-flex align-center ga-1">
               <v-icon size="12" icon="mdi-hammer"></v-icon>
@@ -53,6 +53,7 @@
 import { computed } from "vue";
 import { useStore } from "vuex";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
+import useTimeSince from "@/composables/useTimeSince";
 
 export default {
   name: "TopContributors",
@@ -64,6 +65,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const { formatCount } = useTimeSince();
 
     const currentUserId = computed(() => store.state.user?.uid ?? null);
 
@@ -86,7 +88,7 @@ export default {
       return contributor.icon;
     }
 
-    return { iconFor };
+    return { iconFor, formatCount };
   },
 };
 </script>

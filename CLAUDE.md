@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/005-home-civ-picker/plan.md`.
+at `.specify/specs/006-home-build-tabs/plan.md`.
 <!-- SPECKIT END -->
