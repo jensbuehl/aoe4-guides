@@ -24,6 +24,7 @@
           <v-chip
             v-if="build.strategy"
             size="small"
+            color="accent"
             class="aoe-badge aoe-badge--strat"
           >
             <v-icon size="13" start>mdi-strategy</v-icon>
@@ -167,10 +168,8 @@ export default {
   gap: 5px;
 }
 
-/* strategy badge — fixed franchise navy */
+/* strategy badge */
 .aoe-badge--strat {
-  background: #294790 !important;
-  color: #fff !important;
   font-size: 11.5px;
   font-weight: 600;
   border-radius: 7px;

@@ -26,29 +26,21 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig class="mb-2" context="default" @configChanged="configChanged"> </FilterConfig>
       </v-col>
 
       <v-col cols="12" md="8">
-        <v-row v-if="drafts?.length" no-gutters
-          ><div class="text-h6 mt-4 ml-4 mb-2">My Drafts</div></v-row
-        >
-        <v-row v-if="drafts?.length" align="center" no-gutters>
-          <v-col cols="12">
-            <div v-if="drafts?.length" v-for="item in drafts">
-              <router-link
-                style="text-decoration: none"
-                :to="{
-                  name: item.loading ? 'MyBuilds' : 'BuildDetails',
-                  params: { id: !item.loading ? item.id : null },
-                }"
-              >
-                <BuildListCard :build="item"></BuildListCard>
-              </router-link></div
-          ></v-col>
-        </v-row>
-
-        <div v-if="drafts?.length" class="text-h6 mt-4 ml-4 mb-2">My Builds</div>
+        <div v-if="drafts?.length && paginationConfig.currentPage === 1" v-for="item in drafts">
+          <router-link
+            style="text-decoration: none"
+            :to="{
+              name: item.loading ? 'MyBuilds' : 'BuildDetails',
+              params: { id: !item.loading ? item.id : null },
+            }"
+          >
+            <BuildListCard :build="item"></BuildListCard>
+          </router-link>
+        </div>
         <div v-if="builds" v-for="item in builds">
           <router-link
             style="text-decoration: none"
@@ -61,7 +53,7 @@
           </router-link>
         </div>
         <div style="text-align: center" v-if="!loading && count === 0">
-          <NoFilterResults></NoFilterResults>
+          <NoFilterResults @cleared="configChanged"></NoFilterResults>
         </div>
 
         <v-pagination
@@ -76,7 +68,7 @@
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <FilterConfig @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig context="default" @configChanged="configChanged"> </FilterConfig>
       </v-col>
     </v-row>
   </v-container>
@@ -126,9 +118,8 @@ export default {
     );
 
     onMounted(() => {
-      if (!filterConfig.value) {
-        store.commit("setFilterConfig", getDefaultConfig());
-      }
+      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setMyBuildsList", null);
       if (user.value) {
         initData();
       }

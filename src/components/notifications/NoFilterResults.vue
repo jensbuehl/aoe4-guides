@@ -1,35 +1,42 @@
 <template>
-  <v-alert
-    rounded="lg"
-    outlined
-    color="accent"
-    class="pa-1"
-  >
-    <v-card flat rounded="lg">
-      <v-card-title>No Build Orders Found</v-card-title>
-      <v-card-text
-        >No build order for the given filter available.<br>
-        Please update the filter or create a new Age of Empires 4 build order.</v-card-text
-      >
-
-      <v-row class="ma-2" no-gutters justify="center">
-        <v-btn
-          color="primary"
-          style="background-color: transparent"
-          variant="text"
-          to="/new"
-        >
-          Create New Build Order
-        </v-btn>
-      </v-row>
-    </v-card></v-alert
-  >
+  <v-card flat rounded="lg" class="pa-6 text-center">
+    <v-icon size="48" class="nfr-icon mb-3">mdi-magnify-close</v-icon>
+    <div class="nfr-text mb-3">No builds match these filters.</div>
+    <v-btn variant="plain" color="primary" @click="clearFilters">Clear filters</v-btn>
+  </v-card>
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+
 export default {
-  name: "BuildNotFound",
-  setup() {
+  name: "NoFilterResults",
+  emits: ["cleared"],
+  setup(_, { emit }) {
+    const store = useStore();
+
+    const clearFilters = () => {
+      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setAllBuildsList", null);
+      store.commit("setMyBuildsList", null);
+      store.commit("setMyFavoritesList", null);
+      emit("cleared");
+    };
+
+    return { clearFilters };
   },
 };
 </script>
+
+<style scoped>
+
+.nfr-icon {
+  color: rgba(var(--v-theme-on-surface), 0.3);
+}
+
+.nfr-text {
+  font-size: 14px;
+  color: rgba(var(--v-theme-on-surface), 0.6);
+}
+</style>

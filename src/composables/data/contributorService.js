@@ -33,9 +33,8 @@ export const error = computed(() => collectionServiceError).value;
  * @return {Promise<any>} The retrieved contributor
  */
 export async function getContributor(contributorId) {
-  const result =  await get(contributorId);
-  
-  return result;
+  if (!contributorId) return null;
+  return await get(contributorId);
 }
 
 /**

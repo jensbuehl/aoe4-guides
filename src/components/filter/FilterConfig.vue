@@ -1,425 +1,340 @@
 <template>
-  <v-card rounded="lg" flat class="hidden-md-and-up">
-    <v-card-text class="mb-md-4">
+  <v-card rounded="lg" flat>
+    <!-- Header: desktop card title with inline Reset -->
+    <div v-if="!smAndDown" class="fl-card-header px-4 pt-3 pb-1 d-flex align-center justify-space-between">
+      <div class="d-flex align-center" style="gap: 6px;">
+        <v-icon color="primary">mdi-filter-variant</v-icon>
+        <span class="fl-header-label">Filters</span>
+      </div>
+      <v-btn
+        v-if="showReset"
+        variant="plain"
+        size="small"
+        @click="handleReset"
+      >
+        <template #prepend><v-icon color="primary" size="14">mdi-close</v-icon></template>
+        Reset
+      </v-btn>
+    </div>
+
+    <!-- Mobile: collapsible expansion panel -->
+    <template v-if="smAndDown">
       <v-expansion-panels>
-        <v-expansion-panel elevation="0">
-          <v-expansion-panel-title expand-icon="mdi-filter-variant">
-            Filter
+        <v-expansion-panel :elevation="0">
+          <v-expansion-panel-title>
+            <div class="d-flex align-center justify-space-between pr-2" style="width: 100%;">
+              <div class="d-flex align-center" style="gap: 6px;">
+                <v-icon size="16" color="primary">mdi-filter-variant</v-icon>
+                <span class="fl-header-label">Filters</span>
+              </div>
+              <v-btn
+                v-if="showReset"
+                variant="plain"
+                size="small"
+                @click.stop="handleReset"
+              >
+                <template #prepend><v-icon color="primary" size="14">mdi-close</v-icon></template>
+                Reset
+              </v-btn>
+            </div>
           </v-expansion-panel-title>
           <v-expansion-panel-text class="mt-2">
-            <v-select
-              v-if="!hideCivs"
-              v-model="selectedCivs"
-              label="Civilization"
-              density="compact"
-              :items="civs"
-              item-value="shortName"
-              item-title="title"
-              clearable
-              prepend-icon="mdi-earth"
-            >
-            </v-select>
-            <v-select
-              v-if="!hideCivs"
-              v-model="selectedOrderBy"
-              prepend-icon="mdi-sort"
-              density="compact"
-              label="Order by"
-              item-value="id"
-              item-title="title"
-              :items="sortOptions"
-            ></v-select>
-            <v-select
-              v-model="selectedVideoCreator"
-              prepend-icon="mdi-youtube"
-              label="Video Creator"
-              density="compact"
-              :items="creators"
-              item-value="creatorId"
-              :item-title="
-                (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
-              "
-              clearable
-            >
-            </v-select>
-            <v-select
-              v-model="selectedSeasons"
-              prepend-icon="mdi-trophy"
-              label="Season"
-              density="compact"
-              :items="seasons"
-              item-value="title"
-              item-title="title"
-              clearable
-              multiple
-            >
-            </v-select>
-            <v-select
-              v-model="selectedMaps"
-              prepend-icon="mdi-map"
-              label="Map"
-              density="compact"
-              :items="maps"
-              item-value="title"
-              item-title="title"
-              clearable
-              multiple
-            >
-            </v-select>
-            <v-select
-              v-model="selectedStrategies"
-              prepend-icon="mdi-strategy"
-              label="Strategy"
-              density="compact"
-              :items="strategies"
-              item-value="title"
-              item-title="title"
-              clearable
-              multiple
-            >
-            </v-select>
+              <FilterChips
+                :draft="draft"
+                :dirtyFields="dirtyFields"
+                :applied="appliedConfig"
+                :context="context"
+                class="mb-2"
+                @remove-chip="onRemoveChip"
+              />
+              <v-select
+                v-if="context !== 'civ-locked'"
+                v-model="draft.civs"
+                label="Civilization"
+                density="compact"
+                :items="civs"
+                item-value="shortName"
+                item-title="title"
+                clearable
+                prepend-inner-icon="mdi-earth"
+              >
+                <template v-if="dirtyFields.civs" #append-inner>
+                  <span class="fl-dot" />
+                </template>
+              </v-select>
+              <v-select
+                v-model="draft.creator"
+                prepend-inner-icon="mdi-youtube"
+                label="Video Creator"
+                density="compact"
+                :items="creators"
+                item-value="creatorId"
+                :item-title="(item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)"
+                clearable
+              >
+                <template v-if="dirtyFields.creator" #append-inner>
+                  <span class="fl-dot" />
+                </template>
+              </v-select>
+              <v-select
+                v-model="draft.seasons"
+                prepend-inner-icon="mdi-trophy"
+                label="Season"
+                density="compact"
+                :items="seasons"
+                item-value="title"
+                item-title="title"
+                clearable
+                multiple
+              >
+                <template v-if="dirtyFields.seasons" #append-inner>
+                  <span class="fl-dot" />
+                </template>
+              </v-select>
+              <v-select
+                v-model="draft.maps"
+                prepend-inner-icon="mdi-map"
+                label="Map"
+                density="compact"
+                :items="maps"
+                item-value="title"
+                item-title="title"
+                clearable
+                multiple
+              >
+                <template v-if="dirtyFields.maps" #append-inner>
+                  <span class="fl-dot" />
+                </template>
+              </v-select>
+              <v-select
+                v-model="draft.strategies"
+                prepend-inner-icon="mdi-strategy"
+                label="Strategy"
+                density="compact"
+                :items="strategies"
+                item-value="title"
+                item-title="title"
+                clearable
+                multiple
+              >
+                <template v-if="dirtyFields.strategies" #append-inner>
+                  <span class="fl-dot" />
+                </template>
+              </v-select>
+              <FilterSortGroup
+                v-if="context !== 'civ-locked'"
+                v-model="draft.orderBy"
+                :dirty="dirtyFields.orderBy"
+                :sortOptions="sortOptions"
+              />
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
-      <v-row no-gutters align="center" justify="center" class="fill-height">
-        <v-col class="d-flex justify-center" cols="6" v-if="configChanged">
-          <v-btn
-            v-if="configChanged"
-            color="primary"
-            prepend-icon="mdi-check"
-            flat
-            @click="handleApply"
-            >Apply</v-btn
-          ></v-col
+    </template>
+
+    <!-- Desktop: direct fields -->
+    <template v-else>
+      <v-card-text class="pb-0">
+        <FilterChips
+          :draft="draft"
+          :dirtyFields="dirtyFields"
+          :applied="appliedConfig"
+          :context="context"
+          class="mb-1"
+          @remove-chip="onRemoveChip"
+        />
+        <v-autocomplete
+          v-if="context !== 'civ-locked'"
+          v-model="draft.civs"
+          label="Civilization"
+          density="compact"
+          :items="civs"
+          item-value="shortName"
+          item-title="title"
+          clearable
+          prepend-inner-icon="mdi-earth"
         >
-        <v-col class="d-flex justify-center" cols="6">
-          <v-btn
-            color="primary"
-            v-if="showReset"
-            prepend-icon="mdi-close"
-            variant="text"
-            flat
-            @click="handleReset"
-            >Reset</v-btn
-          ></v-col
-        ></v-row
-      >
-    </v-card-text>
-  </v-card>
-  <v-card rounded="lg" flat class="hidden-sm-and-down">
-    <v-card-text class="pb-0">
-      <v-autocomplete
-        v-if="!hideCivs"
-        class="hidden-xs"
-        v-model="selectedCivs"
-        label="Civilization"
-        density="compact"
-        :items="civs"
-        item-value="shortName"
-        item-title="title"
-        clearable
-        prepend-icon="mdi-earth"
-      ></v-autocomplete>
-      <v-select
-        v-if="!hideCivs"
-        class="hidden-sm-and-up"
-        v-model="selectedCivs"
-        label="Civilization"
-        density="compact"
-        :items="civs"
-        item-value="shortName"
-        item-title="title"
-        clearable
-        prepend-icon="mdi-earth"
-      >
-      </v-select>
-      <v-autocomplete
-        v-if="!hideCivs"
-        class="hidden-xs"
-        v-model="selectedOrderBy"
-        prepend-icon="mdi-sort"
-        density="compact"
-        label="Order by"
-        item-value="id"
-        item-title="title"
-        :items="sortOptions"
-      ></v-autocomplete>
-      <v-select
-        v-if="!hideCivs"
-        class="hidden-sm-and-up"
-        v-model="selectedOrderBy"
-        prepend-icon="mdi-sort"
-        density="compact"
-        label="Order by"
-        item-value="id"
-        item-title="title"
-        :items="sortOptions"
-      ></v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedVideoCreator"
-        prepend-icon="mdi-youtube"
-        label="Video Creator"
-        density="compact"
-        :items="creators"
-        item-value="creatorId"
-        :item-title="
-          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
-        "
-        clearable
-      ></v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedVideoCreator"
-        prepend-icon="mdi-youtube"
-        label="Video Creator"
-        density="compact"
-        :items="creators"
-        item-value="creatorId"
-        :item-title="
-          (item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)
-        "
-        clearable
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedSeasons"
-        prepend-icon="mdi-trophy"
-        label="Season"
-        density="compact"
-        :items="seasons"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      ></v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedSeasons"
-        prepend-icon="mdi-trophy"
-        label="Season"
-        density="compact"
-        :items="seasons"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedMaps"
-        prepend-icon="mdi-map"
-        label="Map"
-        density="compact"
-        :items="maps"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedMaps"
-        prepend-icon="mdi-map"
-        label="Map"
-        density="compact"
-        :items="maps"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-      <v-autocomplete
-        class="hidden-xs"
-        v-model="selectedStrategies"
-        prepend-icon="mdi-strategy"
-        label="Strategy"
-        density="compact"
-        :items="strategies"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-autocomplete>
-      <v-select
-        class="hidden-sm-and-up"
-        v-model="selectedStrategies"
-        prepend-icon="mdi-strategy"
-        label="Strategy"
-        density="compact"
-        :items="strategies"
-        item-value="title"
-        item-title="title"
-        clearable
-        multiple
-      >
-      </v-select>
-    </v-card-text>
-    <v-row align="center" justify="center" class="fill-height mb-2">
-      <v-col class="d-flex justify-center" cols="6" v-if="configChanged">
-        <v-btn
-          color="primary"
-          v-if="configChanged"
-          prepend-icon="mdi-check"
-          flat
-          @click="handleApply"
-          >Apply</v-btn
-        ></v-col
-      >
-      <v-col class="d-flex justify-center" cols="6">
-        <v-btn
-          color="primary"
-          v-if="showReset"
-          prepend-icon="mdi-close"
-          variant="text"
-          flat
-          @click="handleReset"
-          >Reset</v-btn
-        ></v-col
-      ></v-row
-    >
-    <v-divider></v-divider>
-    <v-container>
-      <v-row align="center" justify="center" class="fill-height">
-        <v-col class="d-flex justify-center">
-          <span v-if="loading && !count">Gathering...</span>
-          <span v-else-if="!count">0 build orders</span>
-          <span v-else-if="count === 1">{{ count }} build order</span
-          ><span v-else-if="count > 1">{{ count }} build orders</span>
-        </v-col>
-      </v-row>
-    </v-container>
+          <template v-if="dirtyFields.civs" #append-inner>
+            <span class="fl-dot" />
+          </template>
+        </v-autocomplete>
+        <v-autocomplete
+          v-model="draft.creator"
+          prepend-inner-icon="mdi-youtube"
+          label="Video Creator"
+          density="compact"
+          :items="creators"
+          item-value="creatorId"
+          :item-title="(item) => (item.creatorDisplayTitle ? item.creatorDisplayTitle : item.creatorTitle)"
+          clearable
+        >
+          <template v-if="dirtyFields.creator" #append-inner>
+            <span class="fl-dot" />
+          </template>
+        </v-autocomplete>
+        <v-autocomplete
+          v-model="draft.seasons"
+          prepend-inner-icon="mdi-trophy"
+          label="Season"
+          density="compact"
+          :items="seasons"
+          item-value="title"
+          item-title="title"
+          clearable
+          multiple
+        >
+          <template v-if="dirtyFields.seasons" #append-inner>
+            <span class="fl-dot" />
+          </template>
+        </v-autocomplete>
+        <v-autocomplete
+          v-model="draft.maps"
+          prepend-inner-icon="mdi-map"
+          label="Map"
+          density="compact"
+          :items="maps"
+          item-value="title"
+          item-title="title"
+          clearable
+          multiple
+        >
+          <template v-if="dirtyFields.maps" #append-inner>
+            <span class="fl-dot" />
+          </template>
+        </v-autocomplete>
+        <v-autocomplete
+          v-model="draft.strategies"
+          prepend-inner-icon="mdi-strategy"
+          label="Strategy"
+          density="compact"
+          :items="strategies"
+          item-value="title"
+          item-title="title"
+          clearable
+          multiple
+        >
+          <template v-if="dirtyFields.strategies" #append-inner>
+            <span class="fl-dot" />
+          </template>
+        </v-autocomplete>
+        <FilterSortGroup
+          v-if="context !== 'civ-locked'"
+          v-model="draft.orderBy"
+          :dirty="dirtyFields.orderBy"
+          :sortOptions="sortOptions"
+        />
+      </v-card-text>
+    </template>
+
+    <FilterApplyBar
+      :isDirty="isDirty"
+      :appliedCount="count"
+      :previewEnabled="previewEnabled"
+      :previewCount="previewCount"
+      :previewLoading="previewLoading"
+      @apply="handleApply"
+    />
   </v-card>
 </template>
 
 <script>
-//External
 import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import { useDisplay } from "vuetify";
 
-//Components
-
-//Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { featuredCreators } from "@/composables/filter/featuredCreatorDefaultProvider";
 import { maps } from "@/composables/filter/mapDefaultProvider";
 import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 import { strategies } from "@/composables/filter/strategyDefaultProvider";
+import { useDraftFilterConfig } from "@/composables/filter/useDraftFilterConfig";
+import { useFilterCountPreview } from "@/composables/filter/useFilterCountPreview";
+
+import FilterChips from "@/components/filter/FilterChips.vue";
+import FilterApplyBar from "@/components/filter/FilterApplyBar.vue";
+import FilterSortGroup from "@/components/filter/FilterSortGroup.vue";
 
 export default {
   name: "FilterConfig",
   inheritAttrs: false,
   emits: ["configChanged"],
-  props: ["defaultCivOverride", "hideCivs", "hideOrderBy"],
+  components: { FilterChips, FilterApplyBar, FilterSortGroup },
+  props: {
+    context: { type: String, default: "default" },
+    civName: { type: String, default: null },
+  },
   setup(props, context) {
     const store = useStore();
-    const civs = allCivs.value.filter((element) => element.shortName != "ANY");
+    const civs = allCivs.value.filter((el) => el.shortName !== "ANY");
     const creators = featuredCreators;
     const route = useRoute();
     const loading = computed(() => store.state.loading);
     const count = computed(() => store.state.resultsCount);
-    const hideCivs = computed(() => props.hideCivs);
-    const hideOrderBy = computed(() => props.hideOrderBy);
-    const defaultCivOverride = computed(() => props.defaultCivOverride);
+    const appliedConfig = computed(() => store.state.filterConfig);
+    const { smAndDown } = useDisplay();
 
-    const selectedCivs = ref(store.state.filterConfig?.civs);
-    const selectedVideoCreator = ref(store.state.filterConfig?.creator);
-    const selectedMaps = ref(store.state.filterConfig?.maps);
-    const selectedStrategies = ref(store.state.filterConfig?.strategies);
-    const selectedSeasons = ref(store.state.filterConfig?.seasons);
-    const selectedOrderBy = ref(store.state.filterConfig?.orderBy);
+    const { draft, dirtyFields, dirtyCount, isDirty, resetField, applyDraft } =
+      useDraftFilterConfig();
+
+    const previewEnabled = ref(true);
+    const { previewCount, previewLoading } = useFilterCountPreview(draft, {
+      enabled: previewEnabled,
+    });
 
     const initQueryParameters = async () => {
-      if (route.query.civ) {
-        selectedCivs.value = route.query.civ;
-      }
-      if (route.query.creator) {
-        selectedVideoCreator.value = route.query.creator;
-      }
+      if (route.query.civ) draft.value.civs = route.query.civ;
+      if (route.query.creator) draft.value.creator = route.query.creator;
     };
 
     onMounted(async () => {
       await initQueryParameters();
-
-      selectedCivs.value = store.state.filterConfig.civs;
-      selectedVideoCreator.value = store.state.filterConfig.creat;
-      selectedMaps.value = store.state.filterConfig.maps;
-      selectedStrategies.value = store.state.filterConfig.strategies;
-      selectedSeasons.value = store.state.filterConfig.seasons;
-      selectedOrderBy.value = store.state.filterConfig.orderBy;      
     });
 
-    //Show apply when config different from state in store
-    const configChanged = computed(() => {
-      return (
-        selectedCivs.value != (store.state.filterConfig?.civs || defaultCivOverride.value) ||
-        selectedVideoCreator.value != store.state.filterConfig?.creator ||
-        JSON.stringify(selectedMaps.value) != JSON.stringify(store.state.filterConfig?.maps) ||
-        JSON.stringify(selectedStrategies.value) !=
-          JSON.stringify(store.state.filterConfig?.strategies) ||
-        JSON.stringify(selectedSeasons.value) !=
-          JSON.stringify(store.state.filterConfig?.seasons) ||
-        selectedOrderBy.value != store.state.filterConfig?.orderBy
-      );
-    });
-    //Show reset when state config different from default
     const showReset = computed(() => {
+      const cfg = store.state.filterConfig;
+      const def = getDefaultConfig();
+      const civCheck = props.context === "civ-locked" ? false : cfg?.civs != def.civs;
       return (
-        store.state.filterConfig?.author ||
-        store.state.filterConfig?.civs != (getDefaultConfig().civs || defaultCivOverride.value) ||
-        store.state.filterConfig?.creator != getDefaultConfig().creator ||
-        JSON.stringify(store.state.filterConfig?.maps) != JSON.stringify(getDefaultConfig().maps) ||
-        JSON.stringify(store.state.filterConfig?.strategies) !=
-          JSON.stringify(getDefaultConfig().strategies) ||
-        JSON.stringify(store.state.filterConfig?.seasons) !=
-          JSON.stringify(getDefaultConfig().seasons) ||
-        store.state.filterConfig?.orderBy != getDefaultConfig().orderBy
+        civCheck ||
+        cfg?.creator != def.creator ||
+        JSON.stringify(cfg?.maps) !== JSON.stringify(def.maps) ||
+        JSON.stringify(cfg?.strategies) !== JSON.stringify(def.strategies) ||
+        JSON.stringify(cfg?.seasons) !== JSON.stringify(def.seasons) ||
+        cfg?.orderBy !== def.orderBy
       );
     });
 
     const sortOptions = ref([
-      {
-        title: "All Time Score",
-        id: "scoreAllTime",
-      },
-      {
-        title: "Views",
-        id: "views",
-      },
-      {
-        title: "Trending",
-        id: "score",
-      },
-      {
-        title: "Time Created",
-        id: "timeCreated",
-      },
-      {
-        title: "Favorites",
-        id: "likes",
-      },
-      {
-        title: "Title",
-        id: "sortTitle",
-      },
+      { title: "All Time Score", id: "scoreAllTime" },
+      { title: "Views", id: "views" },
+      { title: "Trending", id: "score" },
+      { title: "Time Created", id: "timeCreated" },
+      { title: "Favorites", id: "likes" },
+      { title: "Title", id: "sortTitle" },
     ]);
 
-    const handleApply = () => {
-      store.commit("setCivs", selectedCivs.value);
-      store.commit("setCreator", selectedVideoCreator.value);
-      store.commit("setMaps", selectedMaps.value);
-      store.commit("setStrategies", selectedStrategies.value);
-      store.commit("setSeasons", selectedSeasons.value);
-      store.commit("setOrderBy", selectedOrderBy.value);
+    const handleApply = () => applyDraft(context.emit);
 
-      //reset cache
+    const handleReset = () => {
+      const def = getDefaultConfig();
+      if (props.context !== "civ-locked") {
+        draft.value.civs = def.civs;
+        store.commit("setCivs", def.civs);
+      }
+      draft.value.creator = def.creator;
+      draft.value.maps = def.maps;
+      draft.value.strategies = def.strategies;
+      draft.value.seasons = def.seasons;
+      draft.value.orderBy = def.orderBy;
+
+      store.commit("setCreator", def.creator);
+      store.commit("setMaps", def.maps);
+      store.commit("setStrategies", def.strategies);
+      store.commit("setSeasons", def.seasons);
+      store.commit("setOrderBy", def.orderBy);
+
       store.commit("setAllBuildsList", null);
       store.commit("setMyBuildsList", null);
       store.commit("setMyFavoritesList", null);
@@ -427,29 +342,8 @@ export default {
       context.emit("configChanged");
     };
 
-    const handleReset = () => {
-      if (defaultCivOverride.value != selectedCivs.value) {
-        selectedCivs.value = getDefaultConfig().civs;
-        store.commit("setCivs", getDefaultConfig().civs);
-      }
-      selectedVideoCreator.value = getDefaultConfig().creator;
-      selectedMaps.value = getDefaultConfig().maps;
-      selectedStrategies.value = getDefaultConfig().strategies;
-      selectedSeasons.value = getDefaultConfig().seasons;
-      selectedOrderBy.value = getDefaultConfig().orderBy;
-
-      store.commit("setCreator", getDefaultConfig().creator);
-      store.commit("setMaps", getDefaultConfig().maps);
-      store.commit("setStrategies", getDefaultConfig().strategies);
-      store.commit("setSeasons", getDefaultConfig().seasons);
-      store.commit("setOrderBy", getDefaultConfig().orderBy);
-
-      //reset cache
-      store.commit("setAllBuildsList", null);
-      store.commit("setMyBuildsList", null);
-      store.commit("setMyFavoritesList", null);
-
-      context.emit("configChanged");
+    const onRemoveChip = ({ field }) => {
+      draft.value[field] = getDefaultConfig()[field];
     };
 
     return {
@@ -459,21 +353,39 @@ export default {
       seasons,
       creators,
       strategies,
-      selectedCivs,
-      selectedMaps,
-      selectedStrategies,
-      selectedSeasons,
-      selectedOrderBy,
-      selectedVideoCreator,
+      draft,
+      dirtyFields,
+      dirtyCount,
+      isDirty,
+      appliedConfig,
       count,
       loading,
       handleReset,
       handleApply,
-      configChanged,
       showReset,
-      hideCivs,
-      hideOrderBy,
+      onRemoveChip,
+      previewEnabled,
+      previewCount,
+      previewLoading,
+      smAndDown,
     };
   },
 };
 </script>
+
+<style scoped>
+.fl-header-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.fl-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgb(var(--v-theme-primary));
+  flex-shrink: 0;
+  align-self: center;
+}
+</style>

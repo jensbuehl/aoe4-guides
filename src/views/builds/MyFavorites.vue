@@ -26,7 +26,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig class="mb-2" context="default" @configChanged="configChanged"> </FilterConfig>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -42,7 +42,7 @@
           </router-link>
         </div>
         <div style="text-align: center" v-if="!loading && count === 0">
-          <NoFilterResults></NoFilterResults>
+          <NoFilterResults @cleared="configChanged"></NoFilterResults>
         </div>
 
         <v-pagination
@@ -57,7 +57,7 @@
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <FilterConfig @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig context="default" @configChanged="configChanged"> </FilterConfig>
       </v-col>
     </v-row>
   </v-container>
@@ -113,9 +113,8 @@ export default {
     );
 
     onMounted(() => {
-      if (!filterConfig.value) {
-        store.commit("setFilterConfig", getDefaultConfig());
-      }
+      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setMyFavoritesList", null);
       if (user.value) {
         initData();
       }
