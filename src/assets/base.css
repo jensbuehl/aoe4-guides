@@ -44,6 +44,7 @@
 
   --hero-fade: 250,250,250;
   --hero-title: #294790;
+  --hero-eyebrow: #294790;
   --hero-text: #41506b;
   --hero-meta: #5b6573;
   --hero-shadow: none;
@@ -69,6 +70,7 @@
 
   --hero-fade: 20,26,37;
   --hero-title: #e7c05e;
+  --hero-eyebrow: #e7c05e;
   --hero-text: rgba(255,255,255,.86);
   --hero-meta: rgba(255,255,255,.82);
   --hero-shadow: 0 2px 8px rgba(0,0,0,.5);

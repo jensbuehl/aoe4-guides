@@ -125,7 +125,7 @@ export default {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: var(--accent);
+  color: var(--hero-eyebrow);
   font-weight: 700;
   font-size: 12.5px;
   letter-spacing: .4px;
