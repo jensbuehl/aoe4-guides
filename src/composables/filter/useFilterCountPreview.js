@@ -9,7 +9,7 @@ function debounce(fn, delay) {
   };
 }
 
-export function useFilterCountPreview(draftConfig, { enabled } = {}) {
+export function useFilterCountPreview(draftConfig, { enabled, countFn } = {}) {
   const previewCount = ref(null);
   const previewLoading = ref(false);
 
@@ -17,7 +17,8 @@ export function useFilterCountPreview(draftConfig, { enabled } = {}) {
     if (enabled && !enabled.value) return;
     previewLoading.value = true;
     try {
-      previewCount.value = await getBuildsCount(config);
+      const fn = countFn ?? getBuildsCount;
+      previewCount.value = await fn(config);
     } finally {
       previewLoading.value = false;
     }

@@ -26,7 +26,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" context="default" @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig class="mb-2" context="default" :countFn="myBuildsCountFn" @configChanged="configChanged"> </FilterConfig>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -68,7 +68,7 @@
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <FilterConfig context="default" @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig context="default" :countFn="myBuildsCountFn" @configChanged="configChanged"> </FilterConfig>
       </v-col>
     </v-row>
   </v-container>
@@ -132,6 +132,11 @@ export default {
       }
     });
 
+    const myBuildsCountFn = (config) => {
+      if (!user.value?.uid) return Promise.resolve(0);
+      return getUserBuildsCount(user.value.uid, config);
+    };
+
     const configChanged = () => {
       initData();
     };
@@ -184,6 +189,7 @@ export default {
 
       //reset cache
       store.commit("setMyBuildsList", null);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
       builds.value = await getUserBuildsFrom(
         user.value.uid,
@@ -204,6 +210,7 @@ export default {
 
       //reset cache
       store.commit("setMyBuildsList", null);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
       builds.value = await getUserBuildsUntil(
         user.value.uid,
@@ -236,6 +243,7 @@ export default {
       loading,
       paginationConfig,
       configChanged,
+      myBuildsCountFn,
       nextPage,
       previousPage,
     };

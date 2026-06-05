@@ -264,6 +264,7 @@ export default {
   props: {
     context: { type: String, default: "default" },
     civName: { type: String, default: null },
+    countFn: { type: Function, default: null },
   },
   setup(props, context) {
     const store = useStore();
@@ -281,6 +282,7 @@ export default {
     const previewEnabled = ref(true);
     const { previewCount, previewLoading } = useFilterCountPreview(draft, {
       enabled: previewEnabled,
+      countFn: props.countFn,
     });
 
     const initQueryParameters = async () => {

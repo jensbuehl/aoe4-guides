@@ -206,6 +206,7 @@ export default {
 
       //reset cache
       store.commit("setAllBuildsList", null);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
       builds.value = await getBuildsFrom(
         paginationConfig.value.pageEnd,
@@ -225,6 +226,7 @@ export default {
 
       //reset cache
       store.commit("setAllBuildsList", null);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
       builds.value = await getBuildsUntil(
         paginationConfig.value.pageStart,

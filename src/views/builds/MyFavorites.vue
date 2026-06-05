@@ -26,7 +26,7 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" context="default" @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig class="mb-2" context="default" :countFn="myFavoritesCountFn" @configChanged="configChanged"> </FilterConfig>
       </v-col>
 
       <v-col cols="12" md="8">
@@ -57,7 +57,7 @@
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <FilterConfig context="default" @configChanged="configChanged"> </FilterConfig>
+        <FilterConfig context="default" :countFn="myFavoritesCountFn" @configChanged="configChanged"> </FilterConfig>
       </v-col>
     </v-row>
   </v-container>
@@ -127,6 +127,11 @@ export default {
       }
     });
 
+    const myFavoritesCountFn = (config) => {
+      if (!favorites.value?.length) return Promise.resolve(0);
+      return getUserFavoritesCount(favorites.value, config);
+    };
+
     const configChanged = () => {
       initData();
     };
@@ -185,6 +190,7 @@ export default {
 
       //reset cache
       store.commit("setMyFavoritesList", null);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
       builds.value = await getUserFavoritesFrom(
         paginationConfig.value.pageEnd,
@@ -205,6 +211,7 @@ export default {
 
       //reset cache
       store.commit("setMyFavoritesList", null);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
       builds.value = await getUserFavoritesUntil(
         paginationConfig.value.pageStart,
@@ -236,6 +243,7 @@ export default {
       loading,
       paginationConfig,
       configChanged,
+      myFavoritesCountFn,
       nextPage,
       previousPage,
     };
