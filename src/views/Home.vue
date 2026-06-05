@@ -42,7 +42,6 @@
           <TopContributors :contributors="topContributorsList"></TopContributors>
           <YoutubeGuides></YoutubeGuides>
           <RegisterAd v-if="!user && authIsReady"></RegisterAd>
-          <EmailVerificationAd v-if="user && authIsReady && !user.emailVerified"></EmailVerificationAd>
         </div>
       </v-col>
 
@@ -52,10 +51,6 @@
         <TopContributors :contributors="topContributorsList"></TopContributors>
         <YoutubeGuides></YoutubeGuides>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
-        <EmailVerificationAd
-          class="mt-4"
-          v-if="user && authIsReady && !user.emailVerified"
-        ></EmailVerificationAd>
       </v-col>
     </v-row>
   </v-container>
@@ -68,7 +63,6 @@ import { computed, onMounted, ref } from "vue";
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
 import News from "@/components/notifications/News.vue";
 import YoutubeGuides from "@/components/notifications/YoutubeGuides.vue";
-import EmailVerificationAd from "@/components/notifications/EmailVerificationAd.vue";
 import TopContributors from "@/components/home/TopContributors.vue";
 import CivPicker from "@/components/home/CivPicker.vue";
 import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
@@ -83,7 +77,6 @@ export default {
     RegisterAd,
     News,
     YoutubeGuides,
-    EmailVerificationAd,
     TopContributors,
     CivPicker,
     BuildLaneTabs,

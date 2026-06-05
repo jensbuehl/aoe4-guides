@@ -1,53 +1,40 @@
 <template>
-  <v-alert
+  <v-card
+    flat
     rounded="lg"
-    outlined
-    color="accent"
-    class="pa-1"
+    class="mb-4"
+    :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
-    <v-card flat rounded="lg">
-      <v-card-title>Create</v-card-title>
-      <v-card-text
-        >Create new Age of Empires 4 build orders and share them with your
-        friends.</v-card-text
+    <v-card-title class="px-4 py-2 pb-2">
+      <span
+        class="v-card-title pa-0 d-flex align-center"
+        :style="{ color: $vuetify.theme.current.colors.accent }"
       >
-
-      <v-card-title>Like</v-card-title>
-      <v-card-text
-        >Manage your own favorite AoE 4 build orders and find the good ones with
-        ease.</v-card-text
-      >
-
-      <v-card-title>Comment</v-card-title>
-      <v-card-text
-        >Write build order comments and get in touch with the author and the
-        community.</v-card-text
-      >
-
-      <v-card-title>Sign up</v-card-title>
-      <v-card-text
-        >Registered villagers gather and manage build orders up to 20% faster.
-        ;)</v-card-text
-      >
-
-      <v-row class="ma-2" no-gutters justify="center">
-        <v-btn
-          color="primary"
-          style="background-color: transparent"
-          variant="text"
-          to="/register"
-        >
-          Register now!
+        <v-icon
+          icon="mdi-sword-cross"
+          size="small"
+          class="mr-4"
+          color="accent"
+        ></v-icon>
+        Build. Share. Dominate.
+      </span>
+    </v-card-title>
+    <v-card-text class="px-4">
+      <div class="text-body-2 text-medium-emphasis">
+        Join thousands of AoE4 players — craft and share build orders, bookmark
+        your go-to strategies, and discuss tactics with the community.
+      </div>
+      <div class="d-flex justify-center mt-3">
+        <v-btn variant="text" size="small" color="primary" to="/register">
+          Create Free Account
         </v-btn>
-      </v-row>
-    </v-card></v-alert
-  >
+      </div>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
 export default {
   name: "RegisterAd",
-  setup() {
-  },
 };
 </script>
