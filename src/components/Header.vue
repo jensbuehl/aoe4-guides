@@ -417,14 +417,11 @@ export default {
           text: err.message,
           type: "error",
         });
-        console.log(err.message);
+        console.error(err.message);
       }
-    };
+    });
 
     onMounted(() => {
-      console.log("mobile", mobile.value);
-      console.log("platform", platform.value);
-    });
 
     const openAuthDialog = () => store.dispatch("openAuthDialog", { mode: "login" });
 

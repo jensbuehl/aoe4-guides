@@ -56,7 +56,25 @@ const customLightTheme = {
   },
 };
 
-// init app
+// ── welcome banner ──────────────────────────────────────────────────────────
+/* eslint-disable no-console */
+console.log(
+  "\n%c ⚔  AOE4 Guides %c",
+  "font-size:22px;font-weight:900;color:#e7c05e;background:#1D2432;padding:6px 16px;border-radius:6px;border:1px solid #3D516B;",
+  ""
+);
+console.log(
+  "%c  Build Orders & Strategy Hub",
+  "font-size:12px;color:#8A99B0;letter-spacing:1.5px;"
+);
+console.log(
+  "%c  💬  Questions? Chat with us  →  discord.gg/Nau9BN5E7J",
+  "font-size:12px;color:#5865F2;font-weight:600;"
+);
+console.log(" ");
+/* eslint-enable no-console */
+
+// ── init app ─────────────────────────────────────────────────────────────────
 const vuetify = createVuetify({
   components: {},
   theme: {

@@ -1,4 +1,4 @@
-//External
+﻿//External
 import axios from "axios";
 
 const API_KEY = "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY"
@@ -24,7 +24,7 @@ export default function youtubeService() {
       }
     })
     .catch((error) => {
-      console.log("Could not retrive search result: ", error);
+      console.error("Could not retrive search result: ", error);
     });
   };
 
@@ -45,7 +45,7 @@ export default function youtubeService() {
       }
     })
     .catch((error) => {
-      console.log("Could not retrive playlist results: ", error);
+      console.error("Could not retrive playlist results: ", error);
     });
   };
 
@@ -82,7 +82,7 @@ export default function youtubeService() {
         }
       })
       .catch((error) => {
-        console.log("Could not retrive youtube video meta data: ", error);
+        console.error("Could not retrive youtube video meta data: ", error);
       });
   };
 
@@ -107,7 +107,7 @@ export default function youtubeService() {
         }
       })
       .catch((error) => {
-        console.log("Could not retrive youtube video meta data: ", error);
+        console.error("Could not retrive youtube video meta data: ", error);
       });
   };
 
@@ -128,9 +128,10 @@ export default function youtubeService() {
       }
     })
     .catch((error) => {
-      console.log("Could not retrive youtube video meta data: ", error);
+      console.error("Could not retrive youtube video meta data: ", error);
     });
   };
 
   return { extractVideoId, buildEmbedUrl, getVideoCreatorId, getVideoMetaData, getChannelIcon, search, getPlaylistItems };
 }
+

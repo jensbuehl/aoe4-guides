@@ -7,7 +7,6 @@ export default function useCopyToClipboard() {
 
       // Try to write text directly first (simpler approach)
       await navigator.clipboard.writeText(text);
-      console.log("Copied to clipboard successfully!");
       return true;
     } catch (error) {
       console.error("Trying fallback- unable to write to clipboard:", error);
@@ -18,7 +17,6 @@ export default function useCopyToClipboard() {
         const blob = new Blob([text], { type });
         const data = [new ClipboardItem({ [type]: blob })];
         await navigator.clipboard.write(data);
-        console.log("Copied to clipboard successfully using ClipboardItem!");
         return true;
       } catch (fallbackError) {
         console.error("Fallback clipboard write also failed:", fallbackError);

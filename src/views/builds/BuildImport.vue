@@ -1,4 +1,4 @@
-<template>
+﻿<template>
    <v-container>
       <v-card
          v-if="!paste"
@@ -113,14 +113,14 @@ export default {
                   newFromTemplate();
                })
                .catch((err) => {
-                  console.log(err);
+                  console.error(err);
                   store.dispatch("showSnackbar", {
                      text: "Could not import from clipboard. Please make sure that the clipboard contains a valid build order.",
                      type: "error",
                   });
                });
          } catch (err) {
-            console.log(err);
+            console.error(err);
             store.dispatch("showSnackbar", {
                text: "Could not import from clipboard. Please make sure that the clipboard contains a valid build order.",
                type: "error",
@@ -135,7 +135,7 @@ export default {
             build.value = convert(importedFileObject);
             newFromTemplate();
          } catch (err) {
-            console.log(err);
+            console.error(err);
             store.dispatch("showSnackbar", {
                text: "Could not import from file. Please make sure that the file contains a valid build order.",
                type: "error",
@@ -195,3 +195,4 @@ export default {
    height: 1px;
 }
 </style>
+

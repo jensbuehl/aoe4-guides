@@ -1,4 +1,4 @@
-//External
+﻿//External
 import { where, orderBy, limit, endBefore, startAfter, limitToLast } from "@/firebase";
 
 /**
@@ -26,7 +26,7 @@ export function getQueryParametersFromConfig(config, pageLimit, userUid, favorit
     }
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -43,7 +43,7 @@ export function getFilterAuthorQueryParam(userUid) {
     queryParams.push(whereOp);
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -62,7 +62,7 @@ export function getStartAfterQueryParam(snapshot) {
 
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -81,7 +81,7 @@ export function getEndBeforeQueryParam(snapshot) {
 
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -98,7 +98,7 @@ export function getLimitQueryParam(pageLimit) {
     queryParams.push(limitOp);
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -115,7 +115,7 @@ export function getLimitToLastQueryParam(pageLimit) {
     queryParams.push(limitOp);
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -147,7 +147,7 @@ export function getOrderByQueryParam(config, sortPropertyName, dir) {
 
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -207,7 +207,7 @@ export function getFilterQueryParams(config, favorites) {
 
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -226,7 +226,7 @@ export function getWhereEqualQueryParam(field, value) {
 
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
 
@@ -245,6 +245,7 @@ export function getWhereNotEqualQueryParam(field, value) {
 
     return queryParams;
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
   }
 }
+

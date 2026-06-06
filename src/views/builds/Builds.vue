@@ -178,8 +178,6 @@ export default {
     };
 
     const nextPage = async () => {
-      console.log("page changed to:", paginationConfig.value.currentPage);
-
       //reset cache
       store.commit("setAllBuildsList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
@@ -198,8 +196,6 @@ export default {
     };
 
     const previousPage = async () => {
-      console.log("page changed to:", paginationConfig.value.currentPage);
-
       //reset cache
       store.commit("setAllBuildsList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });

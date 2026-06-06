@@ -11,7 +11,6 @@ export async function initTextToSpeech() {
   civIconService = iconService();
 
   await EasySpeech.init({ maxTimeout: 5000, interval: 250 })
-    .then(() => console.debug("load complete"))
     .catch((e) => console.error(e));
 
   var voice = EasySpeech.filterVoices({ voiceURI: "Andrew" })[0]; //Edge on Windows
@@ -22,9 +21,6 @@ export async function initTextToSpeech() {
   voice = voice ? voice : EasySpeech.filterVoices({ language: "en-GB" })[0]; //Fallback for all others, Edge does not support any voices at all!
   //var voices = EasySpeech.filterVoices({ language: "en-GB" }).map((voice) => voice.voiceURI).toString();
 
-  console.log("Voice", voice);
-  
-
   EasySpeech.defaults({ voice: voice, pitch: 1, rate: 0.8, volume: 1 });
 }
 
@@ -34,7 +30,7 @@ export async function speak(step, announceVillagers = true) {
   await EasySpeech.init(); // required
   EasySpeech.speak({
     text: text,
-    boundary: (e) => console.debug("Text to speech boundary reached", e),
+    boundary: () => {},
   });
 }
 

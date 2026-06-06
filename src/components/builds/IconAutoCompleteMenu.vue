@@ -83,7 +83,6 @@ export default {
           selectedItemIndex.value + 1
         );
         var selectedNode = document.getElementById("autocomplete-item-" + selectedItemIndex.value);
-        console.log(selectedNode);
         scrollIntoView(selectedNode, {
           scrollMode: "if-needed",
           block: "end",

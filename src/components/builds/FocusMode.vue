@@ -364,23 +364,17 @@ export default {
       await initTextToSpeech();
       if (audio.value) {
         stop();
-        console.log("autoplay supported", autoplaySupported.value);
         if (!autoplaySupported.value) speak(currentStep.value, announceVillagers.value);
       }
 
       //keep screen awake
-      console.log("wake lock supported", isSupported.value);
       await request();
-      console.log("wake lock active", isActive.value);
     });
 
     onBeforeUnmount(() => {
       clearTimer();
       stop();
-
-      //release screen awake
       release();
-      console.log("wake lock active", isActive.value);
     });
 
     useEventListener(document, "keyup", (e) => handleKeyPressed(e));

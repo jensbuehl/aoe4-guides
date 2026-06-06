@@ -71,7 +71,6 @@ export default {
       var favCount = 0;
 
       favCount = (await (getUserFavoritesArray(userId.value))).favorites.length;
-      console.log("favCount", favCount);
 
       if (favCount >= maxFavs) {
         const errorMessage =

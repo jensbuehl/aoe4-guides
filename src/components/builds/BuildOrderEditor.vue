@@ -116,7 +116,6 @@ export default {
     onMounted(async () => {
       initializeSections();
 
-      console.log(props);
       if (props.focus) {
         activateFocusMode();
       }

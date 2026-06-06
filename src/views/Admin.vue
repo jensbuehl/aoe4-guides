@@ -159,7 +159,6 @@ export default {
 
         if (match) {
           //Sync and enrich data
-          console.log("match", match, element);
 
           element.description = match.description;
           element.age = match.age;
@@ -195,28 +194,24 @@ export default {
         .then((data) => {
           units = data.data;
         });
-      console.log("units", units);
 
       await fetch("https://data.aoe4world.com/buildings/all.json")
         .then((response) => response.json())
         .then((data) => {
           buildings = data.data;
         });
-      console.log("buildings", buildings);
 
       await fetch("https://data.aoe4world.com/technologies/all.json")
         .then((response) => response.json())
         .then((data) => {
           techs = data.data;
         });
-      console.log("techs", techs);
 
       await fetch("https://data.aoe4world.com/abilities/all.json")
         .then((response) => response.json())
         .then((data) => {
           abilities = data.data;
         });
-      console.log("abilities", abilities);
 
       syncData(units, unitEco, "units");
       downloadObjectAsJSONFile(unitEco, "unitEco.json");
@@ -277,8 +272,6 @@ export default {
         boCount: boCount,
         viewCount: viewCount
       };
-
-      console.log(contributor);
 
       //add contributor to db
       await addContributor(contributor, user.id);

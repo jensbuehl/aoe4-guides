@@ -873,7 +873,6 @@ export default {
 
     const handleDelete = async () => {
       await deleteBuild(props.id);
-      console.log("error", error.value);
 
       if (!error.value) {
         store.dispatch("showSnackbar", {

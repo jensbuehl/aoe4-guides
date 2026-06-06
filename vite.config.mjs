@@ -32,6 +32,9 @@ export default {
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      // sanitize-html → postcss → source-map-js tries to use Node-only APIs in
+      // the browser; stub it out so Vite stops warning about externalisation.
+      "source-map-js": fileURLToPath(new URL("./src/stubs/source-map-js.js", import.meta.url)),
     },
   },
   build: { chunkSizeWarningLimit: 1600 },
