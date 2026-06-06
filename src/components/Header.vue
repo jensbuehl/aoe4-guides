@@ -419,9 +419,9 @@ export default {
         });
         console.error(err.message);
       }
-    });
+    };
 
-    onMounted(() => {
+    onMounted(() => {});
 
     const openAuthDialog = () => store.dispatch("openAuthDialog", { mode: "login" });
 
