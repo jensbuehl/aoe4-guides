@@ -1,5 +1,5 @@
 <template>
-  <div class="build-lane-tabs py-2">
+  <div class="build-lane-tabs pb-2">
     <HeroBuild
       v-if="isLoading || heroBuild"
       :build="isLoading ? null : heroBuild"
@@ -108,6 +108,7 @@ export default {
     popularBuilds:   { type: Array, required: true },
     allTimeClassics: { type: Array, required: true },
     recentBuilds:    { type: Array, required: true },
+    extraQuery:      { type: Object, default: () => ({}) },
   },
   setup(props) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -145,7 +146,7 @@ export default {
 
     const viewAllRoute = computed(() => ({
       name: "Builds",
-      query: { orderBy: lanes.find((l) => l.value === activeTab.value)?.orderBy },
+      query: { orderBy: lanes.find((l) => l.value === activeTab.value)?.orderBy, ...props.extraQuery },
     }));
 
     return {

@@ -6,6 +6,17 @@
       <AuthDialog />
       <router-view />
     </v-main>
+    <v-fab
+      v-if="route.meta.showFab"
+      class="hidden-md-and-up"
+      icon="mdi-plus"
+      color="primary"
+      size="large"
+      elevation="8"
+      location="bottom end"
+      app
+      to="/new"
+    />
     <Footer></Footer>
   </v-app>
 </template>
@@ -13,6 +24,7 @@
 <script>
 //External
 import { onBeforeMount, watch } from "vue";
+import { useRoute } from "vue-router";
 
 //Components
 import Header from "@/components/Header.vue";
@@ -32,6 +44,7 @@ export default {
   name: "App",
   components: { Header, Footer, Snackbar, AuthDialog },
   setup() {
+    const route = useRoute();
     const theme = useTheme();
     const media = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -73,7 +86,7 @@ export default {
       });
     });
 
-    return {};
+    return { route };
   },
 };
 </script>

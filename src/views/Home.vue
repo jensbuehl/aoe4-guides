@@ -1,28 +1,4 @@
 <template>
-  <v-layout-item model-value position="bottom" class="text-end" size="88">
-    <div class="ma-4">
-      <v-tooltip>
-        <span
-          :style="{
-            color: $vuetify.theme.current.colors.primary,
-          }"
-          >Create new build order from scratch</span
-        >
-        <template v-slot:activator="{ props }">
-          <v-btn
-            class="hidden-md-and-up"
-            :style="'color: ' + $vuetify.theme.current.colors.primary"
-            to="/new"
-            v-bind="props"
-            icon="mdi-plus"
-            size="large"
-            color="primary"
-            elevation="8"
-          />
-        </template>
-      </v-tooltip>
-    </div>
-  </v-layout-item>
   <v-container>
     <v-row>
       <v-col cols="12" md="8">
@@ -32,6 +8,7 @@
         />
 
         <BuildLaneTabs
+          class="mt-6"
           :popular-builds="popularBuildsList"
           :all-time-classics="allTimeClassicsList"
           :recent-builds="recentBuildsList"

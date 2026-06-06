@@ -1,28 +1,4 @@
-<template>
-  <v-layout-item model-value position="bottom" class="text-end" size="88">
-    <div class="ma-4">
-      <v-tooltip>
-        <span
-          :style="{
-            color: $vuetify.theme.current.colors.primary,
-          }"
-          >Create new build order from scratch</span
-        >
-        <template v-slot:activator="{ props }">
-          <v-btn
-            class="hidden-md-and-up"
-            :style="'color: ' + $vuetify.theme.current.colors.primary"
-            to="/new"
-            v-bind="props"
-            icon="mdi-plus"
-            size="large"
-            color="primary"
-            elevation="8"
-          />
-        </template>
-      </v-tooltip>
-    </div>
-  </v-layout-item>
+﻿<template>
   <v-container>
     <v-row>
       <!-- main content -->
@@ -89,81 +65,14 @@
           ></v-col>
 
           <v-col cols="12">
-            <template v-if="count !== null && count === 0">
-              <div>
-                <NoFilterResults @cleared="handleCleared" />
-              </div>
-            </template>
-            <template v-else>
-              <!-- popular builds -->
-              <v-row no-gutters align="center" class="mb-2">
-                <v-col class="ml-2 d-flex align-center">
-                  <v-icon icon="mdi-trending-up" size="small" class="mx-2"></v-icon>
-                  <span class="text-h6">Trending Build Orders</span>
-                  <v-tooltip location="top" open-delay="1000">
-                    <span :style="{ color: $vuetify.theme.current.colors.primary }">Show All Trending Builds</span>
-                    <template v-slot:activator="{ props }">
-                      <v-btn v-bind="props" size="small" variant="text" color="primary" icon="mdi-chevron-right" :to="{ name: 'Builds', query: { orderBy: 'score', civ: civ } }"></v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-              </v-row>
-              <v-row align="center" no-gutters>
-                <v-col cols="12">
-                  <div v-for="item in popularBuildsList">
-                    <router-link style="text-decoration: none" :to="{ name: item.loading ? 'Home' : 'BuildDetails', params: { id: !item.loading ? item.id : null } }">
-                      <BuildListCard :build="item"></BuildListCard>
-                    </router-link>
-                  </div>
-                </v-col>
-              </v-row>
-
-              <!-- all time classics -->
-              <v-row no-gutters align="center" class="mt-4 mb-2">
-                <v-col class="ml-2 d-flex align-center">
-                  <v-icon icon="mdi-star" size="small" class="mx-2"></v-icon>
-                  <span class="text-h6">All Time Classics</span>
-                  <v-tooltip location="top" open-delay="1000">
-                    <span :style="{ color: $vuetify.theme.current.colors.primary }">Show All Time Classics</span>
-                    <template v-slot:activator="{ props }">
-                      <v-btn v-bind="props" size="small" variant="text" color="primary" icon="mdi-chevron-right" :to="{ name: 'Builds', query: { orderBy: 'scoreAllTime', civ: civ } }"></v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-              </v-row>
-              <v-row align="center" no-gutters>
-                <v-col cols="12">
-                  <div v-for="item in allTimeClassicsList">
-                    <router-link style="text-decoration: none" :to="{ name: item.loading ? 'Home' : 'BuildDetails', params: { id: !item.loading ? item.id : null } }">
-                      <BuildListCard :build="item"></BuildListCard>
-                    </router-link>
-                  </div>
-                </v-col>
-              </v-row>
-
-              <!-- recent builds -->
-              <v-row no-gutters align="center" class="mt-4 mb-2">
-                <v-col class="ml-2 d-flex align-center">
-                  <v-icon icon="mdi-clock-edit-outline" size="small" class="mx-2"></v-icon>
-                  <span class="text-h6">New Build Orders</span>
-                  <v-tooltip location="top" open-delay="1000">
-                    <span :style="{ color: $vuetify.theme.current.colors.primary }">Show All Recent Builds</span>
-                    <template v-slot:activator="{ props }">
-                      <v-btn v-bind="props" size="small" variant="text" color="primary" icon="mdi-chevron-right" :to="{ name: 'Builds', query: { orderBy: 'timeCreated', civ: civ } }"></v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-col>
-              </v-row>
-              <v-row align="center" no-gutters>
-                <v-col cols="12">
-                  <div v-for="item in recentBuildsList">
-                    <router-link style="text-decoration: none" :to="{ name: item.loading ? 'Home' : 'BuildDetails', params: { id: !item.loading ? item.id : null } }">
-                      <BuildListCard :build="item"></BuildListCard>
-                    </router-link>
-                  </div>
-                </v-col>
-              </v-row>
-            </template>
+            <NoFilterResults v-if="count !== null && count === 0" @cleared="handleCleared" />
+            <BuildLaneTabs
+              v-else
+              :popular-builds="popularBuildsList"
+              :all-time-classics="allTimeClassicsList"
+              :recent-builds="recentBuildsList"
+              :extra-query="civ ? { civ } : {}"
+            />
           </v-col>
         </v-row>
       </v-col>
@@ -192,7 +101,7 @@ import { useDisplay } from "vuetify";
 
 //Components
 import FilterConfig from "@/components/filter/FilterConfig.vue";
-import BuildListCard from "@/components/builds/BuildListCard.vue";
+import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
@@ -204,16 +113,14 @@ export default {
   name: "Dashboard",
   components: {
     FilterConfig,
-    BuildListCard,
+    BuildLaneTabs,
     NoFilterResults,
   },
   setup() {
-    const allTimeClassicsList = ref(Array(5).fill({ loading: true }));
-    const popularBuildsList = ref(Array(5).fill({ loading: true }));
-    const recentBuildsList = ref(Array(5).fill({ loading: true }));
+    const allTimeClassicsList = ref(Array(10).fill({ loading: true }));
+    const popularBuildsList = ref(Array(10).fill({ loading: true }));
+    const recentBuildsList = ref(Array(10).fill({ loading: true }));
     const trendingCount = ref(null);
-    const classicsCount = ref(null);
-    const newCount = ref(null);
     const route = useRoute();
     const store = useStore();
     const count = computed(() => store.state.resultsCount);
@@ -268,35 +175,36 @@ export default {
     });
 
     const initData = async () => {
-      allTimeClassicsList.value = Array(5).fill({ loading: true });
-      popularBuildsList.value = Array(5).fill({ loading: true });
-      recentBuildsList.value = Array(5).fill({ loading: true });
+      allTimeClassicsList.value = Array(10).fill({ loading: true });
+      popularBuildsList.value = Array(10).fill({ loading: true });
+      recentBuildsList.value = Array(10).fill({ loading: true });
 
       civ.value = filterConfig.value.civs;
 
       //reset results count
       store.commit("setResultsCount", null);
 
-      //get popular
+      // Count first — if zero we show NoFilterResults immediately without
+      // ever resolving the lists to [], which would cause a flicker through
+      // BuildLaneTabs' own empty-state before the outer guard kicks in.
       var configpopularBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
       configpopularBuildsList.orderBy = "score";
-      popularBuildsList.value = await getBuilds(configpopularBuildsList, 5);
       trendingCount.value = await getBuildsCount(configpopularBuildsList);
+      store.commit("setResultsCount", trendingCount.value);
+      if (trendingCount.value === 0) return;
+
+      //get popular
+      popularBuildsList.value = await getBuilds(configpopularBuildsList, 10);
 
       //get all time classics
       var configAllTimeClassicsList = JSON.parse(JSON.stringify(filterConfig.value));
       configAllTimeClassicsList.orderBy = "scoreAllTime";
-      allTimeClassicsList.value = await getBuilds(configAllTimeClassicsList, 5);
-      classicsCount.value = await getBuildsCount(configAllTimeClassicsList);
+      allTimeClassicsList.value = await getBuilds(configAllTimeClassicsList, 10);
 
       //get most recent
       var configRecentBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
       configRecentBuildsList.orderBy = "timeCreated";
-      recentBuildsList.value = await getBuilds(configRecentBuildsList, 5);
-      newCount.value = await getBuildsCount(configRecentBuildsList);
-
-      //set overall count (trending as reference)
-      store.commit("setResultsCount", trendingCount.value);
+      recentBuildsList.value = await getBuilds(configRecentBuildsList, 10);
     };
 
     return {
@@ -306,9 +214,6 @@ export default {
       recentBuildsList,
       popularBuildsList,
       allTimeClassicsList,
-      trendingCount,
-      classicsCount,
-      newCount,
       height,
       configChanged,
       handleCleared,
@@ -319,3 +224,4 @@ export default {
   },
 };
 </script>
+

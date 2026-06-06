@@ -4,7 +4,7 @@
     :to="{ name: 'BuildDetails', params: { id: build.id } }"
     style="text-decoration: none"
   >
-    <v-card class="aoe-featured my-4" flat>
+    <v-card class="aoe-featured mb-4" flat>
       <v-img
         class="aoe-featured-bg"
         :src="flagUrl ?? ''"

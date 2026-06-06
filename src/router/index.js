@@ -32,7 +32,8 @@ const routes = [
       name: "Home",
       component: Home,
       meta: {
-        title: "Age of Empires IV Build Orders"
+        title: "Age of Empires IV Build Orders",
+        showFab: true
       }
     },
     {
@@ -40,7 +41,8 @@ const routes = [
       name: "Dashboard",
       component: Dashboard,
       meta: {
-        title: "Age of Empires IV Build Orders"
+        title: "Age of Empires IV Build Orders",
+        showFab: true
       }
     },
     {
@@ -56,7 +58,8 @@ const routes = [
       name: "Builds",
       component: Builds,
       meta: {
-        title: "All Build Orders - Age of Empires IV Build Orders"
+        title: "All Build Orders - Age of Empires IV Build Orders",
+        showFab: true
       }
     },
     {
@@ -128,7 +131,8 @@ const routes = [
       component: MyBuilds,
       meta: {
         title: "My Build Orders - Age of Empires IV Build Orders",
-        requiresAuth: true
+        requiresAuth: true,
+        showFab: true
       }
     },
     {
@@ -137,7 +141,8 @@ const routes = [
       component: MyFavorites,
       meta: {
         title: "My Favorites - Age of Empires IV Build Orders",
-        requiresAuth: true
+        requiresAuth: true,
+        showFab: true
       }
     },
     {
