@@ -1,5 +1,5 @@
 <template>
-  <v-card @click="" class="mb-2" rounded="lg" flat>
+  <v-card @click="" class="mb-2" rounded="lg" flat :height="height" style="overflow:hidden">
     <v-skeleton-loader
       v-if="build.loading"
       :loading="build.loading"
