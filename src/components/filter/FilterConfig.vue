@@ -24,7 +24,7 @@
           <v-expansion-panel-title>
             <div class="d-flex align-center justify-space-between pr-2" style="width: 100%;">
               <div class="d-flex align-center" style="gap: 6px;">
-                <v-icon size="16" color="primary">mdi-filter-variant</v-icon>
+                <v-icon color="primary">mdi-filter-variant</v-icon>
                 <span class="fl-header-label">Filters</span>
               </div>
               <v-btn
