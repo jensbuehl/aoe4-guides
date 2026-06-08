@@ -1,7 +1,7 @@
 ﻿//External
 import axios from "axios";
 
-const API_KEY = "AIzaSyCizsvBzR6vDVQQ1fp_H8pEB6XjJ1T5qjY"
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 
 export default function youtubeService() {
   const search = async (searchParam, maxResults) => {
