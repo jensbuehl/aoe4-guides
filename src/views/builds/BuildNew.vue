@@ -355,17 +355,19 @@ export default {
         }
 
         if (build.value.video) {
-          //Add content creator document
+          //Add content creator document (API may be unavailable — skip gracefully)
           const creatorDoc = await getVideoMetaData(extractVideoId(build.value.video));
-          const res = await getCreator(creatorDoc.creatorId);
-          if (!res) {
-            creatorDoc.creatorImage = await getChannelIcon(creatorDoc.creatorId);
-            await addCreator(creatorDoc, creatorDoc.creatorId);
-          } else {
-            //Use display title from DB if it exists
-            build.value.creatorName = res.creatorDisplayTitle
-              ? res.creatorDisplayTitle
-              : res.creatorTitle;
+          if (creatorDoc) {
+            const res = await getCreator(creatorDoc.creatorId);
+            if (!res) {
+              creatorDoc.creatorImage = await getChannelIcon(creatorDoc.creatorId);
+              await addCreator(creatorDoc, creatorDoc.creatorId);
+            } else {
+              //Use display title from DB if it exists
+              build.value.creatorName = res.creatorDisplayTitle
+                ? res.creatorDisplayTitle
+                : res.creatorTitle;
+            }
           }
         }
 
