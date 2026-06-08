@@ -15,7 +15,6 @@ import Dashboard from '@/views/builds/Dashboard.vue'
 import BuildDetails from "@/views/builds/BuildDetails.vue";
 import BuildEdit from "@/views/builds/BuildEdit.vue";
 import BuildNew from "@/views/builds/BuildNew.vue";
-import BuildImport from "@/views/builds/BuildImport.vue";
 import MyBuilds from "@/views/builds/MyBuilds.vue";
 import MyFavorites from "@/views/builds/MyFavorites.vue";
 
@@ -180,17 +179,6 @@ const routes = [
       path: "/apidoc",
       name: "api",
       beforeEnter() {location.href = 'https://aoe4guides.com/api/api-docs/'}
-    },
-    {
-      path: "/import/:paste?",
-      name: "BuildImport",
-      component: BuildImport,
-      props: true,
-      meta: {
-        title: "Import Build Order - Age of Empires IV Build Orders",
-        requiresAuth: true,
-        requiresVerification: true
-      }
     },
     {
       path: "/:catchAll(.*)",

@@ -55,6 +55,7 @@ export const store = createStore({
     //ui
     ui: {
       authDialog: { visible: false, mode: "login", redirect: null },
+      importDialog: { open: false },
     },
     //avatar
     userAvatar: null,
@@ -159,6 +160,9 @@ export const store = createStore({
     //UI module
     setAuthDialog(state, payload) {
       state.ui.authDialog = { ...state.ui.authDialog, ...payload };
+    },
+    setImportDialog(state, open) {
+      state.ui.importDialog.open = open;
     },
     //Avatar module
     setUserAvatar(state, payload) {
@@ -343,6 +347,14 @@ export const store = createStore({
 
     closeAuthDialog({ commit }) {
       commit("setAuthDialog", { visible: false, redirect: null });
+    },
+
+    openImportDialog({ commit }) {
+      commit("setImportDialog", true);
+    },
+
+    closeImportDialog({ commit }) {
+      commit("setImportDialog", false);
     },
 
     async loadUserAvatar({ commit }, uid) {

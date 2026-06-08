@@ -1,124 +1,109 @@
 <template>
-  <v-dialog :model-value="modelValue" max-width="480" @update:model-value="$emit('update:modelValue', $event)">
-    <v-card rounded="lg">
-      <v-card-title class="d-flex align-center justify-space-between pt-5 px-6 pb-1">
-        Choose your avatar
-        <v-btn icon="mdi-close" variant="text" size="small" @click="cancel" />
-      </v-card-title>
+  <PickerDialog
+    :model-value="modelValue"
+    title="Choose your avatar"
+    max-width="480"
+    @update:model-value="$emit('update:modelValue', $event)"
+  >
+    <v-tabs v-model="activeTab" color="primary" class="px-4">
+      <v-tab value="initials">Initials</v-tab>
+      <v-tab value="civ">Civilizations</v-tab>
+      <v-tab value="upload">Upload</v-tab>
+    </v-tabs>
 
-      <v-tabs v-model="activeTab" color="primary" class="px-4">
-        <v-tab value="initials">Initials</v-tab>
-        <v-tab value="civ">Civilizations</v-tab>
-        <v-tab value="upload">Upload</v-tab>
-      </v-tabs>
+    <v-card-text class="px-6 pt-4 pb-2" style="min-height: 260px">
+      <v-window v-model="activeTab">
+        <!-- Initials tab -->
+        <v-window-item value="initials">
+          <div class="d-flex flex-column align-center ga-4 pt-4">
+            <v-avatar size="96" color="accent">
+              <span class="text-h5">{{ initials }}</span>
+            </v-avatar>
+            <p class="text-medium-emphasis text-body-2 text-center">
+              Your avatar will show your initials. No image stored.
+            </p>
+          </div>
+        </v-window-item>
 
-      <v-card-text class="px-6 pt-4 pb-2" style="min-height: 260px">
-        <v-window v-model="activeTab">
-          <!-- Initials tab -->
-          <v-window-item value="initials">
-            <div class="d-flex flex-column align-center ga-4 pt-4">
-              <v-avatar size="96" color="accent">
-                <span class="text-h5">{{ initials }}</span>
-              </v-avatar>
-              <p class="text-medium-emphasis text-body-2 text-center">
-                Your avatar will show your initials. No image stored.
-              </p>
-            </div>
-          </v-window-item>
-
-          <!-- Civilizations tab -->
-          <v-window-item value="civ">
-            <v-row dense>
-              <v-col
-                v-for="civ in availableCivs"
-                :key="civ.shortName"
-                cols="3"
-                sm="2"
-              >
-                <v-card
-                  :variant="pending.ref === civ.shortName ? 'tonal' : 'text'"
-                  :color="pending.ref === civ.shortName ? 'primary' : undefined"
-                  rounded="lg"
-                  class="pa-1 cursor-pointer"
-                  @click="selectCiv(civ)"
-                >
-                  <v-img
-                    :src="civ.flagLarge"
-                    :alt="civ.title"
-                    aspect-ratio="1"
-                    cover
-                    rounded="lg"
-                  >
-                    <template #error>
-                      <v-icon>mdi-shield-outline</v-icon>
-                    </template>
-                  </v-img>
-                  <p class="text-caption text-center mt-1 text-truncate">{{ civ.title }}</p>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-window-item>
-
-          <!-- Upload tab -->
-          <v-window-item value="upload">
-            <input
-              ref="fileInput"
-              type="file"
-              accept="image/*"
-              class="d-none"
-              @change="onFileChange"
-            />
-
-            <!-- Drop zone -->
-            <div
-              class="drop-zone rounded-lg d-flex flex-column align-center justify-center ga-3 pa-6 mt-2"
-              :class="{ 'drop-zone--active': isDragging }"
-              @dragover.prevent="isDragging = true"
-              @dragleave.prevent="isDragging = false"
-              @drop.prevent="onDrop"
-              @click="fileInput.click()"
+        <!-- Civilizations tab -->
+        <v-window-item value="civ">
+          <v-row dense>
+            <v-col
+              v-for="civ in availableCivs"
+              :key="civ.shortName"
+              cols="3"
+              sm="2"
             >
-              <v-avatar v-if="uploadPreview" size="80" rounded="lg">
-                <v-img :src="uploadPreview" cover />
-              </v-avatar>
-              <v-icon v-else size="40" color="medium-emphasis">mdi-image-plus</v-icon>
+              <v-card
+                :variant="pending.ref === civ.shortName ? 'tonal' : 'text'"
+                :color="pending.ref === civ.shortName ? 'primary' : undefined"
+                rounded="lg"
+                class="pa-1 cursor-pointer"
+                @click="selectCiv(civ)"
+              >
+                <v-img
+                  :src="civ.flagLarge"
+                  :alt="civ.title"
+                  aspect-ratio="1"
+                  cover
+                  rounded="lg"
+                >
+                  <template #error>
+                    <v-icon>mdi-shield-outline</v-icon>
+                  </template>
+                </v-img>
+                <p class="text-caption text-center mt-1 text-truncate">{{ civ.title }}</p>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-window-item>
 
-              <p class="text-body-2 text-medium-emphasis text-center">
-                <template v-if="uploadPreview">Image ready — click to change</template>
-                <template v-else>Drop an image here or <u>click to browse</u></template>
-              </p>
-              <p class="text-caption text-medium-emphasis text-center">
-                Resized to 256×256 px before upload (~10–30 KB)
-              </p>
-            </div>
-          </v-window-item>
-        </v-window>
-      </v-card-text>
+        <!-- Upload tab -->
+        <v-window-item value="upload">
+          <FileDropZone
+            accept="image/*"
+            hint="Resized to 256×256 px before upload (~10–30 KB)"
+            class="mt-2"
+            @files="processFiles"
+          >
+            <v-avatar v-if="uploadPreview" size="80" rounded="lg">
+              <v-img :src="uploadPreview" cover />
+            </v-avatar>
+            <v-icon v-else size="40" color="medium-emphasis">mdi-image-plus</v-icon>
+            <p class="text-body-2 text-medium-emphasis text-center">
+              <template v-if="uploadPreview">Image ready — click to change</template>
+              <template v-else>Drop an image here or <u>click to browse</u></template>
+            </p>
+          </FileDropZone>
+        </v-window-item>
+      </v-window>
+    </v-card-text>
 
-      <v-card-actions class="px-6 pb-5">
-        <v-spacer />
-        <v-btn variant="text" @click="cancel">Cancel</v-btn>
-        <v-btn
-          color="primary"
-          variant="flat"
-          :loading="saving"
-          :disabled="saving || !canSave"
-          @click="save"
-        >
-          Save
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+    <template #actions>
+      <v-btn variant="text" @click="$emit('update:modelValue', false)">Cancel</v-btn>
+      <v-btn
+        color="primary"
+        variant="flat"
+        :loading="saving"
+        :disabled="saving || !canSave"
+        @click="save"
+      >
+        Save
+      </v-btn>
+    </template>
+  </PickerDialog>
 </template>
 
 <script>
 import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { civs } from "@/composables/filter/civDefaultProvider";
+import PickerDialog from "@/components/common/PickerDialog.vue";
+import FileDropZone from "@/components/common/FileDropZone.vue";
 
 export default {
   name: "AvatarPicker",
+  components: { PickerDialog, FileDropZone },
   props: {
     modelValue: { type: Boolean, required: true },
   },
@@ -128,10 +113,8 @@ export default {
 
     const activeTab = ref("initials");
     const saving = ref(false);
-    const fileInput = ref(null);
     const uploadPreview = ref(null);
     const uploadBlob = ref(null);
-    const isDragging = ref(false);
 
     const pending = ref({ type: "initials", ref: null });
 
@@ -144,7 +127,6 @@ export default {
       civs.value.filter((c) => c.shortName !== "ANY")
     );
 
-    // Sync active tab → pending type
     watch(activeTab, (tab) => {
       if (tab === "initials") pending.value = { type: "initials", ref: null };
       if (tab === "civ") pending.value = { type: "civ", ref: pending.value.type === "civ" ? pending.value.ref : null };
@@ -152,7 +134,6 @@ export default {
       if (tab !== "upload") { uploadPreview.value = null; uploadBlob.value = null; }
     });
 
-    // Pre-select current avatar when dialog opens
     watch(() => props.modelValue, (open) => {
       if (!open) return;
       const av = store.state.userAvatar;
@@ -189,13 +170,8 @@ export default {
       });
     }
 
-    function onFileChange(e) {
-      processFile(e.target.files?.[0]);
-    }
-
-    function onDrop(e) {
-      isDragging.value = false;
-      processFile(e.dataTransfer.files?.[0]);
+    function processFiles(fileList) {
+      processFile(fileList[0]);
     }
 
     function resizeImage(file, size) {
@@ -232,28 +208,10 @@ export default {
       }
     }
 
-    function cancel() {
-      emit("update:modelValue", false);
-    }
-
     return {
-      activeTab, saving, fileInput, uploadPreview, uploadBlob, pending, initials,
-      availableCivs, canSave, isDragging, selectCiv, onFileChange, onDrop, save, cancel,
+      activeTab, saving, uploadPreview, uploadBlob, pending, initials,
+      availableCivs, canSave, selectCiv, processFiles, save,
     };
   },
 };
 </script>
-
-<style scoped>
-.drop-zone {
-  border: 2px dashed rgba(var(--v-border-color), var(--v-border-opacity));
-  min-height: 160px;
-  cursor: pointer;
-  transition: border-color 0.15s, background-color 0.15s;
-}
-.drop-zone:hover,
-.drop-zone--active {
-  border-color: rgb(var(--v-theme-primary));
-  background-color: rgba(var(--v-theme-primary), 0.06);
-}
-</style>

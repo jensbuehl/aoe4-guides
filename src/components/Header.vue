@@ -193,37 +193,16 @@
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
-                >Import build order from file (e.g. from overlay tool)</span
+                >Import a build order from file or clipboard</span
               >
               <template v-slot:activator="{ props }">
                 <v-list-item
                   :style="'color: ' + $vuetify.theme.current.colors.primary"
-                  to="/import"
                   v-bind="props"
+                  @click="openImportDialog"
                 >
-                  <v-icon class="mr-4" color="accent">mdi-import</v-icon>
-                  Import from File
-                </v-list-item>
-              </template>
-            </v-tooltip>
-            <v-tooltip>
-              <span
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                >Import build order from clipboard (e.g. from age4builder)</span
-              >
-              <template v-slot:activator="{ props }">
-                <v-list-item
-                  :style="'color: ' + $vuetify.theme.current.colors.primary"
-                  :to="{
-                    name: 'BuildImport',
-                    params: { paste: true },
-                  }"
-                  v-bind="props"
-                >
-                  <v-icon class="mr-4" color="accent">mdi-content-paste</v-icon>
-                  Import from Clipboard
+                  <v-icon class="mr-4" color="accent">mdi-tray-arrow-down</v-icon>
+                  Import Build Order
                 </v-list-item>
               </template>
             </v-tooltip>
@@ -424,6 +403,7 @@ export default {
     onMounted(() => {});
 
     const openAuthDialog = () => store.dispatch("openAuthDialog", { mode: "login" });
+    const openImportDialog = () => store.dispatch("openImportDialog");
 
     const userAvatar = computed(() => store.state.userAvatar);
     const { src: avatarSrc, initials: avatarInitials } = useAvatar(userAvatar, user);
@@ -439,6 +419,7 @@ export default {
       mobile,
       mode,
       openAuthDialog,
+      openImportDialog,
       avatarSrc,
       avatarInitials,
     };

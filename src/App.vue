@@ -4,6 +4,7 @@
     <v-main class="mt-2 mx-md-2" id="main-content">
       <Snackbar />
       <AuthDialog />
+      <BuildImportDialog v-model="importOpen" />
       <router-view />
     </v-main>
     <v-fab
@@ -23,14 +24,16 @@
 
 <script>
 //External
-import { onBeforeMount, watch } from "vue";
+import { computed, onBeforeMount, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 //Components
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 import Snackbar from "@/components/notifications/Snackbar.vue";
 import AuthDialog from "@/components/account/AuthDialog.vue";
+import BuildImportDialog from "@/components/builds/BuildImportDialog.vue";
 
 //Composables
 import { useTheme } from "vuetify";
@@ -42,9 +45,10 @@ import {
 
 export default {
   name: "App",
-  components: { Header, Footer, Snackbar, AuthDialog },
+  components: { Header, Footer, Snackbar, AuthDialog, BuildImportDialog },
   setup() {
     const route = useRoute();
+    const store = useStore();
     const theme = useTheme();
     const media = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -86,7 +90,12 @@ export default {
       });
     });
 
-    return { route };
+    const importOpen = computed({
+      get: () => store.state.ui.importDialog.open,
+      set: (v) => store.commit("setImportDialog", v),
+    });
+
+    return { route, importOpen };
   },
 };
 </script>
