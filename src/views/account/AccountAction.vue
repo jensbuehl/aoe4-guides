@@ -132,20 +132,21 @@ export default {
       }
     });
 
-    function handleVerifyEmail(auth, actionCode) {
+    async function handleVerifyEmail(auth, actionCode) {
       error.value = false;
-      applyActionCode(auth, actionCode)
-        .then((resp) => {
-          title.value = "Email Verified";
-          message.value =
-            "Your Email has been verified. Please continue to gather your first build order.";
-        })
-        .catch((error) => {
-          error.value = error;
-          title.value = "Link Expired";
-          message.value =
-            "Your Email verification code has expired or is invalid. Please verify again.";
-        });
+      try {
+        await applyActionCode(auth, actionCode);
+        await auth.currentUser?.reload();
+        store.commit("setUser", { ...auth.currentUser });
+        title.value = "Email Verified";
+        message.value =
+          "Your Email has been verified. Please continue to gather your first build order.";
+      } catch (err) {
+        error.value = err;
+        title.value = "Link Expired";
+        message.value =
+          "Your Email verification code has expired or is invalid. Please verify again.";
+      }
     }
 
     function handleResetPassword(auth, actionCode) {
