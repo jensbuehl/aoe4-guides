@@ -137,7 +137,7 @@ export default {
       try {
         await applyActionCode(auth, actionCode);
         await auth.currentUser?.reload();
-        store.commit("setUser", { ...auth.currentUser });
+        store.commit("setUser", auth.currentUser.toJSON());
         title.value = "Email Verified";
         message.value =
           "Your Email has been verified. Please continue to gather your first build order.";
