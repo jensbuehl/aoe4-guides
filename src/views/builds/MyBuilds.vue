@@ -61,7 +61,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
-import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import { getMostRecentBuildsConfig } from "@/composables/filter/configDefaultProvider";
 import { getUserDrafts, getUserBuilds, getUserBuildsCount, getUserBuildsFrom, getUserBuildsUntil } from "@/composables/data/buildService";
 
 export default {
@@ -87,14 +87,14 @@ export default {
       () => user.value,
       () => {
         if (!filterConfig.value) {
-          store.commit("setFilterConfig", getDefaultConfig());
+          store.commit("setFilterConfig", getMostRecentBuildsConfig());
         }
         initData();
       }
     );
 
     onMounted(() => {
-      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setFilterConfig", getMostRecentBuildsConfig());
       store.commit("setMyBuildsList", null);
       if (user.value) {
         initData();

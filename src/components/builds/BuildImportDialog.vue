@@ -261,8 +261,8 @@ export default {
       const template = convert(raw);
       store.commit("setTemplate", template);
       store.dispatch("showSnackbar", {
-        text: "Build order imported successfully",
-        type: "success",
+        text: "Build loaded into editor — click Publish to save it.",
+        type: "info",
       });
       router.push({ name: "BuildNew" });
       onClose();

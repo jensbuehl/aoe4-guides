@@ -14,8 +14,10 @@
     </v-card>
   </v-dialog>
   <v-card rounded="lg" class="mt-4" flat>
-    <v-row no-gutters>
-      <v-card-title>Build Order</v-card-title><v-spacer/>
+    <div class="build-card-section-header d-flex align-center px-4 ga-2">
+      <v-icon size="16" color="accent">mdi-format-list-numbered</v-icon>
+      <span class="text-caption text-uppercase font-weight-bold">Build Order</span>
+      <v-spacer></v-spacer>
       <v-tooltip>
         <span
           :style="{
@@ -26,16 +28,17 @@
         <template v-slot:activator="{ props }">
           <v-btn
             v-if="readonly"
-            class="ma-2"
             v-bind="props"
             color="accent"
+            variant="text"
+            size="small"
             prepend-icon="mdi-play"
             @click="activateFocusMode"
             >Play</v-btn
           >
         </template>
       </v-tooltip>
-    </v-row>
+    </div>
 
     <v-row no-gutters align="center" justify="center">
       <v-col cols="12"
@@ -343,3 +346,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.build-card-section-header {
+  letter-spacing: 0.05em;
+  height: 36px;
+}
+</style>

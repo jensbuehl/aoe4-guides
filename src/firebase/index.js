@@ -16,6 +16,7 @@ import {
   persistentMultipleTabManager,
   collection,
   getDoc,
+  getDocFromServer,
   updateDoc,
   doc,
   getDocs,
@@ -79,6 +80,7 @@ export {
   //database
   collection,
   getDoc,
+  getDocFromServer,
   updateDoc,
   doc,
   getDocs,

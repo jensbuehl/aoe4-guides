@@ -50,7 +50,7 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
-import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import { getMostRecentBuildsConfig } from "@/composables/filter/configDefaultProvider";
 import { getUserFavorites as getUserFavoritesArray } from "@/composables/data/favoriteService";
 import {
   getUserFavorites,
@@ -82,14 +82,14 @@ export default {
       () => user.value,
       () => {
         if (!filterConfig.value) {
-          store.commit("setFilterConfig", getDefaultConfig());
+          store.commit("setFilterConfig", getMostRecentBuildsConfig());
         }
         initData();
       }
     );
 
     onMounted(() => {
-      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setFilterConfig", getMostRecentBuildsConfig());
       store.commit("setMyFavoritesList", null);
       if (user.value) {
         initData();

@@ -44,7 +44,7 @@
             <v-divider></v-divider>
             <v-list-item
               :style="'color: ' + $vuetify.theme.current.colors.primary"
-              to="/new"
+              to="/builds/new"
             >
               <v-icon class="mr-4" color="accent">mdi-plus</v-icon>
               Create New Build Order
@@ -180,7 +180,7 @@
               <template v-slot:activator="{ props }">
                 <v-list-item
                   :style="'color: ' + $vuetify.theme.current.colors.primary"
-                  to="/new"
+                  to="/builds/new"
                   v-bind="props"
                 >
                   <v-icon class="mr-4" color="accent">mdi-pencil</v-icon>

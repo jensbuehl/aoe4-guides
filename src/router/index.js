@@ -13,8 +13,7 @@ import ResetPassword from "@/views/account/ResetPassword.vue";
 import Builds from '@/views/builds/Builds.vue'
 import Dashboard from '@/views/builds/Dashboard.vue'
 import BuildDetails from "@/views/builds/BuildDetails.vue";
-import BuildEdit from "@/views/builds/BuildEdit.vue";
-import BuildNew from "@/views/builds/BuildNew.vue";
+import BuildEditor from "@/views/builds/BuildEditor.vue";
 import MyBuilds from "@/views/builds/MyBuilds.vue";
 import MyFavorites from "@/views/builds/MyFavorites.vue";
 
@@ -116,8 +115,8 @@ const routes = [
     {
       path: "/edit/:id",
       name: "BuildEdit",
-      component: BuildEdit,
-      props: true,
+      component: BuildEditor,
+      props: (route) => ({ mode: "edit", id: route.params.id }),
       meta: {
         title: "Edit Build Order - Age of Empires IV Build Orders",
         requiresAuth: true,
@@ -161,9 +160,10 @@ const routes = [
       }
     },
     {
-      path: "/new",
+      path: "/builds/new",
       name: "BuildNew",
-      component: BuildNew,
+      component: BuildEditor,
+      props: () => ({ mode: "new" }),
       meta: {
         title: "Create Build Order - Age of Empires IV Build Orders",
         requiresAuth: true,

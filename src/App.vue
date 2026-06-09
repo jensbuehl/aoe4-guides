@@ -5,7 +5,7 @@
       <Snackbar />
       <AuthDialog />
       <BuildImportDialog v-model="importOpen" />
-      <router-view />
+      <router-view :key="$route.path" />
     </v-main>
     <v-fab
       v-if="route.meta.showFab"
@@ -16,7 +16,7 @@
       elevation="8"
       location="bottom end"
       app
-      to="/new"
+      to="/builds/new"
     />
     <Footer></Footer>
   </v-app>

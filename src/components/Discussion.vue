@@ -1,6 +1,9 @@
 <template>
   <v-card rounded="lg" flat>
-    <v-card-title class="mb-4">Comments</v-card-title>
+    <div class="build-card-section-header d-flex align-center px-4 ga-2">
+      <v-icon size="16" color="accent">mdi-comment-outline</v-icon>
+      <span class="text-caption text-uppercase font-weight-bold">Comments</span>
+    </div>
     <v-row no-gutters align="center" class="ma-4">
       <v-col v-if="!user" align="center" class="pa-2 ma-2">
         <div>
@@ -113,3 +116,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.build-card-section-header {
+  letter-spacing: 0.05em;
+  height: 36px;
+}
+</style>

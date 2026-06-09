@@ -21,7 +21,7 @@
           color="primary"
           style="background-color: transparent"
           variant="text"
-          to="/new"
+          to="/builds/new"
         >
           Create New Build Order
         </v-btn>

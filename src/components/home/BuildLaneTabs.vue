@@ -42,9 +42,10 @@
     </v-tabs>
 
     <v-window
+      ref="windowRef"
       v-model="activeTab"
-      :transition="reducedMotion ? false : undefined"
-      :reverse-transition="reducedMotion ? false : undefined"
+      :transition="false"
+      :reverse-transition="false"
     >
       <v-window-item v-for="lane in lanes" :key="lane.value" :value="lane.value">
         <v-alert
@@ -74,7 +75,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 import HeroBuild from "@/components/home/HeroBuild.vue";
 import { civs } from "@/composables/filter/civDefaultProvider";
@@ -149,6 +150,20 @@ export default {
       query: { orderBy: lanes.find((l) => l.value === activeTab.value)?.orderBy, ...props.extraQuery },
     }));
 
+    // Lock the window at the tallest height seen so far.
+    // When switching to a shorter-content tab, the page height would otherwise
+    // shrink — pushing the user's scroll position above the new maximum and
+    // causing the browser to snap the viewport upward.
+    const windowRef = ref(null);
+    let maxWindowHeight = 0;
+    watch(activeTab, (_, oldVal) => {
+      if (!oldVal) return;
+      const el = windowRef.value?.$el;
+      if (!el) return;
+      maxWindowHeight = Math.max(maxWindowHeight, el.offsetHeight);
+      el.style.minHeight = maxWindowHeight + "px";
+    });
+
     return {
       lanes,
       activeTab,
@@ -160,7 +175,30 @@ export default {
       heroIcon,
       isLoading,
       viewAllRoute,
+      windowRef,
     };
   },
 };
 </script>
+
+<style scoped>
+.build-lane-tabs {
+  overflow-x: hidden;
+}
+
+/* Kill horizontal slide on the window panels — prevents narrow-viewport
+   scroll-position jump caused by the entering panel temporarily extending
+   beyond the right edge of the screen (translateX(100%)). */
+.build-lane-tabs :deep(.v-window-x-transition-enter-active),
+.build-lane-tabs :deep(.v-window-x-transition-leave-active),
+.build-lane-tabs :deep(.v-window-x-reverse-transition-enter-active),
+.build-lane-tabs :deep(.v-window-x-reverse-transition-leave-active) {
+  transition: none !important;
+}
+.build-lane-tabs :deep(.v-window-x-transition-enter-from),
+.build-lane-tabs :deep(.v-window-x-transition-leave-to),
+.build-lane-tabs :deep(.v-window-x-reverse-transition-enter-from),
+.build-lane-tabs :deep(.v-window-x-reverse-transition-leave-to) {
+  transform: none !important;
+}
+</style>
