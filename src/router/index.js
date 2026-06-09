@@ -8,6 +8,7 @@ import Register from "@/views/account/Register.vue";
 import Account from "@/views/account/Account.vue";
 import AccountAction from "@/views/account/AccountAction.vue";
 import ResetPassword from "@/views/account/ResetPassword.vue";
+import Unsubscribe from "@/views/account/Unsubscribe.vue";
 
 //builds
 import Builds from '@/views/builds/Builds.vue'
@@ -110,6 +111,14 @@ const routes = [
       component: AccountAction,
       meta: {
         title: "Account"
+      }
+    },
+    {
+      path: "/account/unsubscribe",
+      name: "Unsubscribe",
+      component: Unsubscribe,
+      meta: {
+        title: "Unsubscribe"
       }
     },
     {

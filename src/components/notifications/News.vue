@@ -24,6 +24,10 @@
         The new Jin Dynasty civilization is fully supported — start sharing your
         guides.
       </div>
+      <div class="text-body-2 text-medium-emphasis mt-2">
+        <v-icon icon="mdi-bell-outline" size="x-small" class="mr-1" color="accent"></v-icon>
+        New: comment notifications — get emails when someone replies to your build order.
+      </div>
       <div class="d-flex flex-wrap justify-center ga-2 mt-3">
         <a
           href="https://ko-fi.com/jensbuehl"
