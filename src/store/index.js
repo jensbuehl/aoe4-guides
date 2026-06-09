@@ -363,8 +363,8 @@ export const store = createStore({
       commit("setImportDialog", false);
     },
 
-    async loadUserAvatar({ commit }, uid) {
-      const profile = await getUserProfile(uid);
+    async loadUserAvatar({ commit, dispatch }, uid) {
+      const profile = await dispatch("getCachedUserProfile", uid);
       commit("setUserAvatar", profile?.avatar ?? null);
     },
 
