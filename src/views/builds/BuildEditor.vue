@@ -1,7 +1,7 @@
 <template>
   <!-- Loading skeleton (edit mode before fetch resolves) -->
   <v-container v-if="!isLoaded" class="pb-footer">
-    <v-skeleton-loader type="card" class="mt-2"></v-skeleton-loader>
+    <BuildHeader :loading="true" class="mt-2" />
     <v-row class="mt-2">
       <v-col cols="12" md="8">
         <v-skeleton-loader type="card, sentences"></v-skeleton-loader>

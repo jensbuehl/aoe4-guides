@@ -2,7 +2,10 @@
   <v-dialog v-model="focusDialog" fullscreen transition="dialog-bottom-transition">
     <FocusMode v-on:closeDialog="focusDialog = false" :build="build"></FocusMode>
   </v-dialog>
-  <v-container align="center" v-if="!loading && !build"
+  <v-container v-if="loading">
+    <BuildHeader :loading="true" />
+  </v-container>
+  <v-container align="center" v-else-if="!build"
     ><BuildNotFound></BuildNotFound
   ></v-container>
 
