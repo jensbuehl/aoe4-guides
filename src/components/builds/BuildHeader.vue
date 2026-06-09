@@ -1,17 +1,6 @@
 <template>
   <v-card flat rounded="lg">
-    <!-- Skeleton: identical grid so height is stable across all breakpoints -->
-    <v-row v-if="loading" no-gutters class="fill-height d-flex flex-nowrap" style="min-height: 132px">
-      <v-col cols="3" md="4" lg="3" class="pa-0 ma-0 build-header__flag">
-        <v-skeleton-loader type="image" height="100%" style="border-radius: 0" />
-      </v-col>
-      <v-col class="pa-4" style="min-width: 0">
-        <v-skeleton-loader type="heading" width="55%" class="mb-4" />
-        <v-skeleton-loader type="chip@4" />
-      </v-col>
-    </v-row>
-
-    <v-row v-else no-gutters class="fill-height d-flex flex-nowrap">
+    <v-row no-gutters class="fill-height d-flex flex-nowrap">
       <!-- Flag column — one responsive block, no hidden-* twins -->
       <v-col cols="3" md="4" lg="3" class="pa-0 ma-0 d-flex flex-column build-header__flag">
         <v-img
@@ -108,10 +97,6 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
     readonly: {
       type: Boolean,
       default: false,
@@ -145,11 +130,11 @@ export default {
     });
 
     const flagSrc = computed(() => {
-      return civEntry.value ? "/" + civEntry.value.flagLarge : "/assets/flags/any-large.webp";
+      return civEntry.value ? civEntry.value.flagLarge : "/assets/flags/any-large.webp";
     });
 
     const flagLazySrc = computed(() => {
-      return civEntry.value ? "/" + civEntry.value.flagSmall : "/assets/flags/any-small.webp";
+      return civEntry.value ? civEntry.value.flagSmall : "/assets/flags/any-small.webp";
     });
 
     const civLabel = computed(() => {

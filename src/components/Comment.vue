@@ -15,7 +15,10 @@
   <v-card-text style="white-space: pre-line">
     <v-row class="my-2"no-gutters align="center">
       <v-col cols="auto">
-        <v-avatar class="mr-4" color="accent">{{ author.slice(0, 2).toUpperCase() }}</v-avatar>
+        <v-avatar class="mr-4" color="accent">
+          <v-img v-if="avatarSrc" :src="avatarSrc" cover />
+          <span v-else>{{ avatarInitials }}</span>
+        </v-avatar>
       </v-col>
       <v-col cols="*">{{ comment }}</v-col>
       <v-col cols="auto">
@@ -48,11 +51,12 @@
 
 <script>
 //External
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 //Composables
 import useTimeSince from "@/composables/useTimeSince";
+import { useAvatar } from "@/composables/auth/useAvatar";
 import { deleteComment } from "@/composables/data/commentService";
 import { decrementComments } from "@/composables/data/buildService";
 
@@ -71,6 +75,16 @@ export default {
     const dialog = ref(false);
     const { timeSince, isNew } = useTimeSince();
 
+    const cachedProfile = ref(null);
+    onMounted(async () => {
+      if (authorId) {
+        cachedProfile.value = await store.dispatch("getCachedUserProfile", authorId);
+      }
+    });
+    const authorAvatar = computed(() => cachedProfile.value?.avatar ?? null);
+    const authorUser = computed(() => ({ displayName: author }));
+    const { src: avatarSrc, initials: avatarInitials } = useAvatar(authorAvatar, authorUser);
+
     const handleDelete = async () => {
       dialog.value = false;
       await deleteComment(id);
@@ -88,6 +102,8 @@ export default {
       isNew,
       handleDelete,
       user,
+      avatarSrc,
+      avatarInitials,
     };
   },
 };

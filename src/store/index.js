@@ -24,6 +24,8 @@ import {
 } from "@/firebase";
 import { httpsCallable } from "firebase/functions";
 
+const pendingFetches = new Map();
+
 export const store = createStore({
   state: {
     //general
@@ -69,6 +71,7 @@ export const store = createStore({
       allBuildsList: null,
       myBuildsList: null,
       myFavoritesList: null,
+      userProfiles: {},
     },
   },
   mutations: {
@@ -152,6 +155,9 @@ export const store = createStore({
     },
     setAllBuildsList(state, payload) {
       state.cache.allBuildsList = payload;
+    },
+    setUserProfile(state, { uid, profile }) {
+      state.cache.userProfiles[uid] = profile;
     },
     //Snackbar module
     setSnackbar(state, payload) {
@@ -360,6 +366,22 @@ export const store = createStore({
     async loadUserAvatar({ commit }, uid) {
       const profile = await getUserProfile(uid);
       commit("setUserAvatar", profile?.avatar ?? null);
+    },
+
+    getCachedUserProfile({ commit, state }, uid) {
+      if (state.cache.userProfiles[uid] !== undefined) {
+        return Promise.resolve(state.cache.userProfiles[uid]);
+      }
+      if (pendingFetches.has(uid)) {
+        return pendingFetches.get(uid);
+      }
+      const fetch = getUserProfile(uid).then((profile) => {
+        commit("setUserProfile", { uid, profile: profile ?? null });
+        pendingFetches.delete(uid);
+        return profile ?? null;
+      });
+      pendingFetches.set(uid, fetch);
+      return fetch;
     },
 
     async updateAvatar({ commit, state }, { type, ref = null }) {

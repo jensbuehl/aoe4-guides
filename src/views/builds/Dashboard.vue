@@ -11,13 +11,11 @@
                   <v-img
                     :min-height="height"
                     :src="
-                      '/' +
                       civs.find((item) => {
                         return item.shortName === civ;
                       })?.flagLarge
                     "
                     :lazy-src="
-                      '/' +
                       civs.find((item) => {
                         return item.shortName === civ;
                       })?.flagSmall
