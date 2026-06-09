@@ -24,9 +24,10 @@
 
 <script>
 //External
-import { computed, onBeforeMount, watch } from "vue";
+import { computed, onBeforeMount, onMounted, onBeforeUnmount, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import { auth } from "@/firebase";
 
 //Components
 import Header from "@/components/Header.vue";
@@ -94,6 +95,18 @@ export default {
       get: () => store.state.ui.importDialog.open,
       set: (v) => store.commit("setImportDialog", v),
     });
+
+    // When the user clicks the verification link in their email and switches
+    // back to this tab, reload the Firebase auth token so emailVerified
+    // updates immediately without requiring a full page refresh.
+    const onVisibilityChange = async () => {
+      if (document.visibilityState === "visible" && auth.currentUser && !auth.currentUser.emailVerified) {
+        await auth.currentUser.reload();
+        store.commit("setUser", auth.currentUser);
+      }
+    };
+    onMounted(() => document.addEventListener("visibilitychange", onVisibilityChange));
+    onBeforeUnmount(() => document.removeEventListener("visibilitychange", onVisibilityChange));
 
     return { route, importOpen };
   },
