@@ -100,7 +100,7 @@ export default {
     // back to this tab, reload the Firebase auth token so emailVerified
     // updates immediately without requiring a full page refresh.
     const onVisibilityChange = async () => {
-      if (document.visibilityState === "visible" && auth.currentUser && !auth.currentUser.emailVerified) {
+      if (document.visibilityState === "visible" && auth.currentUser && !store.state.user?.emailVerified) {
         await auth.currentUser.reload();
         store.commit("setUser", { ...auth.currentUser });
       }

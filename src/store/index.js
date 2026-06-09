@@ -410,7 +410,7 @@ onAuthStateChanged(auth, (user) => {
   if (!store.state.authIsReady) {
     store.commit("setAuthIsReady", true);
   }
-  store.commit("setUser", user);
+  store.commit("setUser", user ? { ...user } : null);
   if (user) {
     store.dispatch("loadUserAvatar", user.uid);
   } else {
