@@ -406,11 +406,15 @@ export const store = createStore({
   },
 });
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
+  if (user && !user.emailVerified) {
+    await user.reload();
+    user = auth.currentUser;
+  }
   if (!store.state.authIsReady) {
     store.commit("setAuthIsReady", true);
   }
-  store.commit("setUser", user);
+  store.commit("setUser", user ? { ...user } : null);
   if (user) {
     store.dispatch("loadUserAvatar", user.uid);
   } else {
