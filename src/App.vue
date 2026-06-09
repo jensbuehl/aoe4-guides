@@ -102,7 +102,7 @@ export default {
     const onVisibilityChange = async () => {
       if (document.visibilityState === "visible" && auth.currentUser && !auth.currentUser.emailVerified) {
         await auth.currentUser.reload();
-        store.commit("setUser", auth.currentUser);
+        store.commit("setUser", { ...auth.currentUser });
       }
     };
     onMounted(() => document.addEventListener("visibilitychange", onVisibilityChange));
