@@ -44,8 +44,6 @@
     <v-window
       ref="windowRef"
       v-model="activeTab"
-      :transition="false"
-      :reverse-transition="false"
     >
       <v-window-item v-for="lane in lanes" :key="lane.value" :value="lane.value">
         <v-alert
@@ -184,21 +182,5 @@ export default {
 <style scoped>
 .build-lane-tabs {
   overflow-x: hidden;
-}
-
-/* Kill horizontal slide on the window panels — prevents narrow-viewport
-   scroll-position jump caused by the entering panel temporarily extending
-   beyond the right edge of the screen (translateX(100%)). */
-.build-lane-tabs :deep(.v-window-x-transition-enter-active),
-.build-lane-tabs :deep(.v-window-x-transition-leave-active),
-.build-lane-tabs :deep(.v-window-x-reverse-transition-enter-active),
-.build-lane-tabs :deep(.v-window-x-reverse-transition-leave-active) {
-  transition: none !important;
-}
-.build-lane-tabs :deep(.v-window-x-transition-enter-from),
-.build-lane-tabs :deep(.v-window-x-transition-leave-to),
-.build-lane-tabs :deep(.v-window-x-reverse-transition-enter-from),
-.build-lane-tabs :deep(.v-window-x-reverse-transition-leave-to) {
-  transform: none !important;
 }
 </style>
