@@ -1,7 +1,52 @@
 <template>
-  <v-card flat rounded="lg">
+  <!-- Mobile (xs/sm): lean hero — title + overflow in card top-right + 3 chips -->
+  <!-- The global Header.vue already provides page nav; no extra bar needed here -->
+  <v-card flat rounded="lg" class="d-md-none">
+    <div class="d-flex align-start pt-2 pl-4 pr-1">
+      <!-- Plain div avoids v-card-title's internal 16px padding so text aligns with chips -->
+      <div class="flex-grow-1 py-1 pr-2 text-subtitle-1 font-weight-bold build-header-title">
+        {{ build.title || 'New build' }}
+      </div>
+      <!-- Overflow ⋮: slot renders the v-btn icon directly, no extra wrapper padding -->
+      <slot name="actions"></slot>
+    </div>
+    <div class="px-4 pt-1 pb-4 d-flex flex-wrap ga-2">
+      <v-chip v-if="build.isDraft" label color="error" size="small">
+        <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
+      </v-chip>
+      <v-chip v-if="createdDate && isNew(createdDate)" label color="accent" size="small">
+        <v-icon start icon="mdi-alert-decagram"></v-icon>New
+      </v-chip>
+      <v-chip v-if="build.civ" label color="accent" size="small">
+        <v-icon start icon="mdi-earth"></v-icon>{{ civLabel }}
+      </v-chip>
+      <v-chip v-if="build.season" label color="accent" size="small">
+        <v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}
+      </v-chip>
+    </div>
+
+    <!-- Author · upvotes · views · time — view route only -->
+    <div
+      v-if="readonly && (build.author || build.upvotes || build.views || createdDate)"
+      class="px-4 pb-3 pt-1 d-flex align-center flex-wrap ga-2 text-caption text-medium-emphasis"
+    >
+      <span v-if="build.author" class="font-weight-bold">{{ build.author }}</span>
+      <template v-if="build.upvotes">
+        <span>·</span><v-icon size="12">mdi-thumb-up</v-icon><span>{{ build.upvotes }}</span>
+      </template>
+      <template v-if="build.views">
+        <span>·</span><v-icon size="12">mdi-eye</v-icon><span>{{ build.views }}</span>
+      </template>
+      <template v-if="createdDate">
+        <span>·</span><span>{{ timeSince(createdDate) }}</span>
+      </template>
+    </div>
+  </v-card>
+
+  <!-- Desktop (md+): full flag hero — unchanged -->
+  <v-card flat rounded="lg" class="d-none d-md-block">
     <v-row no-gutters class="fill-height d-flex flex-nowrap">
-      <!-- Flag column — one responsive block, no hidden-* twins -->
+      <!-- Flag column -->
       <v-col cols="3" md="4" lg="3" class="pa-0 ma-0 d-flex flex-column build-header__flag">
         <v-img
           :src="flagSrc"

@@ -4,7 +4,7 @@
     scroll-threshold="150"
     :scroll-behavior= "(platform.android || platform.ios) ? 'hide' : '' "
     app
-    :height="platform.android || platform.ios ? 60 : 100"
+    :height="(platform.android || platform.ios || mobile) ? 60 : 100"
     :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.accent"
   >
     <v-container class="fill-height d-flex align-center my-0 py-0">
@@ -75,7 +75,7 @@
                 >{{ title }}</v-card-title
               >
               <v-card-subtitle
-                v-if="!(platform.android || platform.ios)"
+                v-if="!mobile && !(platform.android || platform.ios)"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"

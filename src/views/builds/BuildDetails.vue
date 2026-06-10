@@ -2,6 +2,17 @@
   <v-dialog v-model="focusDialog" fullscreen transition="dialog-bottom-transition">
     <FocusMode v-on:closeDialog="focusDialog = false" :build="build"></FocusMode>
   </v-dialog>
+
+  <!-- Loading skeleton (mobile-aware structure) -->
+  <v-container v-if="loading">
+    <v-skeleton-loader type="card" class="mt-2"></v-skeleton-loader>
+    <v-skeleton-loader type="card" class="mt-4"></v-skeleton-loader>
+    <v-skeleton-loader type="list-item-three-line" class="mt-4"></v-skeleton-loader>
+    <v-skeleton-loader type="list-item-three-line" class="mt-2"></v-skeleton-loader>
+    <v-skeleton-loader type="list-item-three-line" class="mt-2"></v-skeleton-loader>
+  </v-container>
+
+  <!-- Build not found -->
   <v-container align="center" v-if="!loading && !build"
     ><BuildNotFound></BuildNotFound
   ></v-container>
@@ -26,21 +37,23 @@
       </v-card>
     </v-dialog>
 
-    <!-- Single responsive hero — no hidden-* twins -->
     <BuildHeader :build="build" :readonly="true">
       <template v-slot:actions>
-        <Vote
-          v-if="userData"
-          v-model="userData"
-          :buildId="build.id"
-          @voteUpAdded="() => { build.upvotes++; }"
-          @voteUpRemoved="() => { build.upvotes--; }"
-        ></Vote>
-        <Favorite v-if="userData" v-model="userData" :buildId="build.id"></Favorite>
-        <!-- Single overflow — Edit is first item (folded in from standalone pencil) -->
+        <!-- Vote + Favorite: desktop only -->
+        <div class="d-none d-md-flex align-center">
+          <Vote
+            v-if="userData"
+            v-model="userData"
+            :buildId="build.id"
+            @voteUpAdded="() => { build.upvotes++; }"
+            @voteUpRemoved="() => { build.upvotes--; }"
+          ></Vote>
+          <Favorite v-if="userData" v-model="userData" :buildId="build.id"></Favorite>
+        </div>
+        <!-- Overflow menu: always visible (mobile slim header + desktop) -->
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-dots-vertical" color="accent" variant="text" v-bind="props"></v-btn>
+            <v-btn icon="mdi-dots-vertical" color="accent" variant="text" size="small" v-bind="props"></v-btn>
           </template>
           <v-list>
             <v-list-item
@@ -83,12 +96,30 @@
       </template>
     </BuildHeader>
 
-    <v-card flat v-if="build.description" rounded="lg" class="mt-4">
-      <div class="build-card-section-header d-flex align-center px-4 ga-2">
+    <!-- Description card: collapsible on mobile, static on desktop -->
+    <v-card v-if="build.description" flat rounded="lg" class="mt-4">
+      <!-- Mobile: collapsible header -->
+      <div
+        class="d-md-none build-card-section-header d-flex align-center px-4 ga-2"
+        style="cursor: pointer"
+        @click="descriptionExpanded = !descriptionExpanded"
+      >
+        <v-icon size="16" color="accent">mdi-text-box-outline</v-icon>
+        <span class="text-caption text-uppercase font-weight-bold flex-grow-1">Description</span>
+        <v-icon size="16" :icon="descriptionExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"></v-icon>
+      </div>
+      <v-expand-transition>
+        <v-card-text v-show="descriptionExpanded" class="d-md-none" style="white-space: pre-line">
+          {{ build.description }}
+        </v-card-text>
+      </v-expand-transition>
+
+      <!-- Desktop: always expanded -->
+      <div class="d-none d-md-flex build-card-section-header align-center px-4 ga-2">
         <v-icon size="16" color="accent">mdi-text-box-outline</v-icon>
         <span class="text-caption text-uppercase font-weight-bold">Description</span>
       </div>
-      <v-card-text style="white-space: pre-line">{{ build.description }}</v-card-text>
+      <v-card-text class="d-none d-md-block" style="white-space: pre-line">{{ build.description }}</v-card-text>
     </v-card>
 
     <BuildOrderEditor
@@ -99,6 +130,7 @@
       @activateFocusMode="focusDialog = true"
     ></BuildOrderEditor>
 
+    <!-- Video card: always after build order -->
     <v-card flat v-if="build.video" rounded="lg" class="mt-4">
       <div class="build-card-section-header d-flex align-center px-4 ga-2">
         <v-icon size="16" color="accent">mdi-youtube</v-icon>
@@ -184,6 +216,7 @@ export default {
     const loading = ref(true);
     const focusMode = ref(false);
     const clipboardIsSupported = ref(false);
+    const descriptionExpanded = ref(true);
 
     onMounted(async () => {
       var resBuild = null;
@@ -323,6 +356,7 @@ export default {
       focusMode,
       deleteDialog,
       focusDialog,
+      descriptionExpanded,
       handlePublish,
       handleDelete,
       handleDuplicate,

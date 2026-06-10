@@ -6,3 +6,39 @@
   font-weight: normal;
 }
 
+/* Scrollbars: hidden on touch/mobile, thin + subtle on desktop */
+textarea,
+[contenteditable] {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 128, 128, 0.25) transparent;
+  resize: none !important;
+}
+
+textarea::-webkit-scrollbar,
+[contenteditable]::-webkit-scrollbar {
+  width: 4px;
+}
+
+textarea::-webkit-scrollbar-track,
+[contenteditable]::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+textarea::-webkit-scrollbar-thumb,
+[contenteditable]::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.25);
+  border-radius: 2px;
+}
+
+@media (pointer: coarse) {
+  textarea::-webkit-scrollbar,
+  [contenteditable]::-webkit-scrollbar {
+    display: none;
+  }
+
+  textarea,
+  [contenteditable] {
+    scrollbar-width: none;
+  }
+}
+

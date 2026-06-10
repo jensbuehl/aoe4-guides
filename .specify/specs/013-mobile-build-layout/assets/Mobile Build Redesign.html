@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AOE4 Guides — Mobile Build (View / Edit)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: Inter, -apple-system, sans-serif; }
+
+  :root {
+    --bg:          #1D2432;
+    --surface:     #2c3a4e;
+    --surface-hi:  #324156;
+    --border:      rgba(255,255,255,0.07);
+    --border-hi:   rgba(255,255,255,0.13);
+    --text:        #e8eaf0;
+    --muted:       #8b95a8;
+    --dim:         #56627a;
+    --gold:        #e7c05e;
+    --gold-hi:     #f0d478;
+    --gold-soft:   rgba(231,192,94,0.12);
+    --navy:        #294790;
+    --danger:      #e05c5c;
+    --success:     #4caf8c;
+    --c-builder: 94,83,64;
+    --c-food:    136,64,64;
+    --c-wood:    79,107,58;
+    --c-gold:    138,109,46;
+    --c-stone:   89,102,122;
+  }
+
+  body {
+    background: radial-gradient(1200px 600px at 30% -10%, #20283a 0%, #12161f 60%, #0c0f16 100%);
+    min-height: 100vh; display: flex; align-items: flex-start; justify-content: center;
+    gap: 48px; padding: 40px 24px 80px; color: var(--text);
+  }
+  .stage-head { position: fixed; top: 22px; left: 28px; z-index: 5; font-size: 12px; color: var(--dim); letter-spacing: .4px; }
+  .stage-head b { color: var(--gold); font-weight: 700; }
+
+  /* ── Phone ── */
+  .phone {
+    width: 390px; height: 824px; flex-shrink: 0; background: #05070b; border-radius: 46px; padding: 11px;
+    box-shadow: 0 0 0 2px #20242e, 0 30px 80px rgba(0,0,0,.6); position: sticky; top: 40px;
+  }
+  .screen { width: 100%; height: 100%; background: var(--bg); border-radius: 36px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .statusbar { height: 44px; flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 28px 0 32px; font-size: 13px; font-weight: 600; color: #fff; z-index: 30; }
+  .statusbar .icons { display: flex; align-items: center; gap: 6px; font-size: 15px; }
+
+  /* ── Slim shared header ── */
+  .appbar {
+    flex-shrink: 0; height: 50px; padding: 0 8px 0 6px; display: flex; align-items: center; gap: 4px;
+    background: rgba(29,36,50,0.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--gold); z-index: 20;
+  }
+  .hbtn, .appbar-search { width: 38px; height: 38px; border-radius: 9px; border: none; cursor: pointer; background: transparent; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .hbtn { color: var(--text); font-size: 21px; }
+  .appbar-search { color: var(--muted); font-size: 19px; }
+  .hbtn:active { background: var(--gold-soft); }
+  .brand { flex: 1; display: flex; flex-direction: column; justify-content: center; line-height: 1; padding-left: 2px; }
+  .brand .t { font-size: 15px; font-weight: 800; letter-spacing: .6px; color: var(--gold); }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; cursor: pointer; background: linear-gradient(135deg, var(--gold), #a87b3a); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #1a2030; border: 1.5px solid rgba(255,255,255,.15); }
+
+  /* ── Body ── */
+  .body { flex: 1; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: 12px 12px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .body.has-actionbar { padding-bottom: 78px; }
+  .body::-webkit-scrollbar { width: 0; }
+
+  /* ── Card ── */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+  .card-head { display: flex; align-items: center; gap: 7px; padding: 12px 14px 0; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); }
+  .card-head .mdi { font-size: 13px; color: var(--gold); }
+  .card-head .spacer { flex: 1; }
+  .card-body { padding: 11px 14px 14px; display: flex; flex-direction: column; gap: 11px; }
+
+  /* ── Hero ── */
+  .hero { padding: 14px 14px 13px; position: relative; }
+  .hero-top { display: flex; align-items: flex-start; gap: 10px; }
+  .hero-title { font-size: 19px; font-weight: 800; color: #fff; line-height: 1.22; margin: 0; flex: 1; text-wrap: balance; letter-spacing: -.2px; }
+  .ov-wrap { position: relative; flex-shrink: 0; }
+  .ov-btn { width: 34px; height: 34px; border-radius: 8px; border: none; cursor: pointer; margin: -4px -4px 0 0; background: rgba(255,255,255,.04); color: var(--muted); font-size: 19px; display: flex; align-items: center; justify-content: center; }
+  .ov-btn:active { background: var(--gold-soft); color: var(--gold); }
+  .ov-menu { display: none; position: absolute; top: calc(100% + 6px); right: 0; background: #34435a; border: 1px solid var(--border-hi); border-radius: 10px; min-width: 220px; box-shadow: 0 12px 32px rgba(0,0,0,.5); z-index: 60; overflow: hidden; padding: 4px; }
+  .ov-menu.open { display: block; }
+  .ov-menu button { display: flex; align-items: center; gap: 11px; width: 100%; padding: 10px 12px; border-radius: 7px; background: transparent; border: none; color: var(--text); font-size: 13.5px; font-family: inherit; cursor: pointer; text-align: left; }
+  .ov-menu button .mdi { font-size: 17px; color: var(--muted); width: 18px; text-align: center; }
+  .ov-menu button:active { background: var(--gold-soft); }
+  .ov-sep { height: 1px; background: var(--border); margin: 4px 6px; }
+  .ov-menu button.danger { color: var(--danger); }
+  .ov-menu button.danger .mdi { color: var(--danger); }
+  .ov-menu .ov-count { margin-left: auto; font-size: 12px; color: var(--muted); font-weight: 600; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+  .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 6px; font-size: 11.5px; font-weight: 600; background: var(--surface-hi); border: 1px solid var(--border); color: var(--text); white-space: nowrap; }
+  .chip .mdi { font-size: 13px; color: var(--muted); }
+  .chip.gold { background: var(--gold-soft); border-color: rgba(231,192,94,.28); color: var(--gold); }
+  .chip.gold .mdi { color: var(--gold); }
+  .chip.civ { background: rgba(41,71,144,.32); border-color: rgba(95,130,210,.35); color: #b9caf0; }
+  .chip.civ .mdi { color: #8ba6e0; }
+  .hero-meta { margin-top: 11px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+  .hero-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--dim); }
+  .hero-meta .stat { display: inline-flex; align-items: center; gap: 4px; }
+  .hero-meta .stat .mdi { font-size: 14px; }
+  .hero-meta .author { color: var(--text); font-weight: 600; }
+
+  /* ── Fields ── */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+  .field-label .mdi { font-size: 13px; color: var(--gold); }
+  .ctrl { background: var(--surface-hi); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: var(--text); font-family: inherit; font-size: 14px; line-height: 1.45; width: 100%; }
+  .ctrl:focus { outline: none; border-color: var(--gold); }
+  .ctrl::placeholder { color: var(--dim); }
+  textarea.ctrl { resize: none; min-height: 64px; }
+  select.ctrl { appearance: none; cursor: pointer; padding-right: 32px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%23e7c05e' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 10px; }
+
+  /* ── Description card (collapsible) ── */
+  .bo-desc { font-size: 13.5px; line-height: 1.62; color: var(--text); margin: 0; opacity: .92; }
+  .collapse-ic { font-size: 16px; color: var(--muted); transition: transform .2s; }
+  .card.collapsed .collapse-body { display: none; }
+  .card.collapsed .card-head { padding-bottom: 12px; }
+  .card.collapsed .collapse-ic { transform: rotate(180deg); }
+
+  /* ── Video card ── */
+  .yt-card { display: flex; flex-direction: column; border-radius: 9px; overflow: hidden; border: 1px solid var(--border); background: var(--bg); }
+  .yt-thumb { aspect-ratio: 16 / 9; background: linear-gradient(135deg, #3a4358 0%, #222b3c 55%, #161d2a 100%); display: flex; align-items: center; justify-content: center; position: relative; cursor: pointer; }
+  .yt-play { width: 48px; height: 48px; border-radius: 50%; background: rgba(224,92,92,.94); color: #fff; font-size: 27px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+  .yt-dur { position: absolute; bottom: 7px; right: 7px; background: rgba(0,0,0,.78); color: #fff; font-size: 10px; font-weight: 600; padding: 1px 5px; border-radius: 3px; }
+  .yt-info { padding: 9px 11px; }
+  .yt-t { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.35; }
+  .yt-c { font-size: 11.5px; color: var(--muted); display: flex; align-items: center; gap: 4px; margin-top: 3px; }
+  .yt-c .mdi { color: #e05c5c; font-size: 14px; }
+
+  /* ── Build order ── */
+  /* inline description icons — desktop style: gradient tile by class, rounded, readable */
+  .desc .ic { height: 26px; width: auto; object-fit: contain; vertical-align: middle; border-radius: 4px; margin: 0 2px; padding: 1px; }
+  .ic-default  { background: radial-gradient(circle at top center, #4b6382, #1d2432); }
+  .ic-military { background: radial-gradient(circle at top center, #8b5d44, #683a22); }
+  .ic-landmark { background: radial-gradient(circle at top center, #232e3e, #0c0f17); }
+  .ic-tech     { background: radial-gradient(circle at top center, #469586, #266d5b); }
+  .ic-ability  { background: radial-gradient(circle at top center, #5c457b, #4d366e); }
+  .ic-none     { background: radial-gradient(circle at top center, #646c79, #4f5866); }
+  .res-ic { object-fit: contain; image-rendering: -webkit-optimize-contrast; }
+
+  .steps { display: flex; flex-direction: column; gap: 9px; }
+  .stepc { background: var(--surface-hi); border: 1px solid var(--border); border-radius: 10px; padding: 10px 10px 11px; }
+
+  .stepc-top { display: flex; align-items: center; gap: 8px; margin-bottom: 9px; }
+  .step-time { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 700; color: var(--gold); background: var(--gold-soft); border-radius: 6px; padding: 3px 9px 3px 6px; }
+  .step-time .res-ic { width: 13px; height: 13px; }
+  .time-input { width: 56px; background: var(--bg); border: 1px solid var(--border-hi); border-radius: 6px; color: var(--gold); font-family: inherit; font-weight: 700; font-size: 12.5px; padding: 3px 6px; text-align: center; }
+  .time-input:focus { outline: none; border-color: var(--gold); }
+  .stepc-top .spacer { flex: 1; }
+  .step-pop { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 700; color: var(--text); background: rgba(53,80,114,.34); border: 1px solid rgba(95,130,210,.25); border-radius: 6px; padding: 3px 9px 3px 6px; }
+  .step-pop .res-ic { width: 15px; height: 15px; }
+  .step-pop .calc { font-size: 9px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .3px; margin-left: 2px; }
+  .step-del { color: var(--dim); font-size: 17px; cursor: pointer; background: none; border: none; padding: 2px 4px; }
+  .step-del:active { color: var(--danger); }
+
+  /* fixed 5-slot resource grid */
+  .res-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 9px; }
+  .rcell { border-radius: 8px; padding: 6px 2px 5px; display: flex; flex-direction: column; align-items: center; gap: 3px; border: 1px solid var(--border); background: rgba(255,255,255,.02); }
+  .rcell .res-ic { width: 21px; height: 21px; }
+  .rcell .rv { font-size: 15px; font-weight: 800; color: #fff; line-height: 1; }
+  .rcell.builder { background: rgba(var(--c-builder),.14); }
+  .rcell.food    { background: rgba(var(--c-food),.16); }
+  .rcell.wood    { background: rgba(var(--c-wood),.16); }
+  .rcell.gold    { background: rgba(var(--c-gold),.16); }
+  .rcell.stone   { background: rgba(var(--c-stone),.16); }
+  .rcell.has.builder { background: rgba(var(--c-builder),.42); border-color: rgba(var(--c-builder),.6); }
+  .rcell.has.food    { background: rgba(var(--c-food),.42);    border-color: rgba(var(--c-food),.6); }
+  .rcell.has.wood    { background: rgba(var(--c-wood),.42);    border-color: rgba(var(--c-wood),.6); }
+  .rcell.has.gold    { background: rgba(var(--c-gold),.42);    border-color: rgba(var(--c-gold),.6); }
+  .rcell.has.stone   { background: rgba(var(--c-stone),.42);   border-color: rgba(var(--c-stone),.6); }
+  .rcell.empty .res-ic { opacity: .35; }
+  .rcell.empty .rv { color: var(--dim); font-weight: 600; }
+  /* edit input */
+  .rcell .rv-input { width: 100%; background: transparent; border: none; color: #fff; font-family: inherit; font-size: 15px; font-weight: 800; text-align: center; padding: 0; }
+  .rcell .rv-input:focus { outline: none; }
+  .rcell.edit { cursor: text; }
+  .rcell.edit:focus-within { box-shadow: 0 0 0 2px var(--gold) inset; }
+
+  .desc { font-size: 13.5px; line-height: 1.7; color: var(--text); }
+  .desc-edit { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; color: var(--text); font-family: inherit; font-size: 13.5px; line-height: 1.5; resize: none; min-height: 52px; }
+  .desc-edit:focus { outline: none; border-color: var(--gold); }
+  /* WYSIWYG description editor — icons render inline as real icons while editing */
+  .desc-edit.wys { line-height: 1.7; cursor: text; }
+  .desc-edit.wys .ic { height: 26px; width: auto; object-fit: contain; vertical-align: middle; border-radius: 4px; margin: 0 2px; padding: 1px; user-select: none; }
+  .desc-edit.wys:empty::before { content: attr(data-placeholder); color: var(--dim); pointer-events: none; }
+  .desc-tools { display: none; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+  /* reveal the insert-icon tools only while the description editor is focused */
+  .desc-edit.wys:focus + .desc-tools { display: flex; }
+  .desc-tool-btn { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 7px; border: 1px solid var(--border-hi); background: transparent; color: var(--gold); font-size: 11.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .desc-tool-btn:active { background: var(--gold-soft); }
+  .desc-tool-btn .mdi { font-size: 14px; }
+  .desc-hint { font-size: 10.5px; color: var(--dim); }
+  .desc-hint code { color: var(--muted); background: var(--bg); padding: 1px 4px; border-radius: 3px; font-size: 10px; }
+
+  /* age-up */
+  .ageup { display: flex; align-items: center; gap: 9px; padding: 7px 11px; margin: 2px 0; background: linear-gradient(90deg, rgba(231,192,94,.16), rgba(231,192,94,.04)); border: 1px solid rgba(231,192,94,.28); border-radius: 10px; }
+  .ageup img { width: 26px; height: 26px; }
+  .ageup .lbl { font-size: 13px; font-weight: 700; color: var(--gold); display: flex; align-items: center; gap: 5px; }
+  .ageup .lbl .mdi { font-size: 16px; }
+  .ageup .spacer { flex: 1; }
+  .ageup .step-del { color: var(--gold); opacity: .7; }
+
+  .add-step-row { display: flex; gap: 8px; margin-top: 4px; }
+  .add-step-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 9px; border: 1px dashed var(--border-hi); background: transparent; color: var(--gold); font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .add-step-btn .mdi { font-size: 16px; }
+  .add-step-btn.ghost { color: var(--muted); }
+
+  /* ── Action bar ── */
+  .actionbar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 25; background: rgba(22,28,40,0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border); padding: 10px 12px 14px; display: flex; gap: 8px; align-items: center; }
+  .actionbar .status { font-size: 11px; color: var(--danger); display: flex; align-items: center; gap: 3px; flex: 1; }
+  .actionbar .status .mdi { font-size: 14px; }
+  .btn { border: none; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 13px; height: 40px; padding: 0 16px; border-radius: 9px; white-space: nowrap; }
+  .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+  .btn-primary { background: var(--gold); color: #1a2030; }
+  .btn-primary:active { background: var(--gold-hi); }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border-hi); }
+  .btn-danger { background: var(--danger); color: #fff; }
+  .btn-danger:active { background: #c94d4d; }
+
+  /* ── Confirm dialog ── */
+  .confirm-scrim { position: absolute; inset: 0; background: rgba(0,0,0,.6); z-index: 50; display: none; }
+  .confirm-scrim.open { display: block; }
+  .confirm-dialog { position: absolute; left: 22px; right: 22px; top: 50%; transform: translateY(-50%) scale(.94); z-index: 51; background: #28344a; border: 1px solid var(--border-hi); border-radius: 16px; padding: 22px 20px 18px; box-shadow: 0 20px 50px rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; }
+  .confirm-dialog.open { opacity: 1; transform: translateY(-50%) scale(1); pointer-events: auto; }
+  .confirm-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(224,92,92,.16); display: flex; align-items: center; justify-content: center; margin-bottom: 13px; }
+  .confirm-icon .mdi { font-size: 24px; color: var(--danger); }
+  .confirm-title { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 7px; }
+  .confirm-text { font-size: 13px; line-height: 1.55; color: var(--muted); margin-bottom: 18px; }
+  .confirm-actions { display: flex; gap: 8px; justify-content: flex-end; }
+
+  /* ── Icon picker (bottom sheet) ── */
+  .picker-scrim { position: absolute; inset: 0; background: rgba(0,0,0,.55); z-index: 40; display: none; }
+  .picker-scrim.open { display: block; }
+  .picker { position: absolute; left: 0; right: 0; bottom: 0; z-index: 41; background: #28344a; border-top: 1px solid var(--border-hi); border-radius: 20px 20px 0 0; transform: translateY(110%); transition: transform .26s cubic-bezier(.4,0,.2,1); max-height: 70%; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,.5); }
+  .picker.open { transform: translateY(0); }
+  .picker-grab { width: 38px; height: 4px; border-radius: 2px; background: var(--border-hi); margin: 9px auto 4px; }
+  .picker-head { padding: 4px 14px 8px; display: flex; align-items: center; gap: 8px; }
+  .picker-head .title { font-size: 13px; font-weight: 700; color: var(--text); flex: 1; }
+  .picker-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; }
+  .picker-search { margin: 0 14px 8px; display: flex; align-items: center; gap: 7px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 7px 10px; }
+  .picker-search .mdi { color: var(--muted); font-size: 16px; }
+  .picker-search input { flex: 1; background: transparent; border: none; color: var(--text); font-family: inherit; font-size: 13px; }
+  .picker-search input:focus { outline: none; }
+  .picker-tabs { display: flex; gap: 6px; padding: 0 14px 9px; overflow-x: auto; }
+  .picker-tabs::-webkit-scrollbar { height: 0; }
+  .picker-tab { white-space: nowrap; border: 1px solid var(--border-hi); background: transparent; color: var(--muted); font-family: inherit; font-size: 11px; font-weight: 700; padding: 5px 11px; border-radius: 14px; cursor: pointer; }
+  .picker-tab.on { background: var(--gold); border-color: var(--gold); color: #1a2030; }
+  .picker-grid { overflow-y: auto; padding: 4px 14px 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .picker-item { aspect-ratio: 1; border-radius: 10px; background: var(--surface-hi); border: 1px solid var(--border); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; padding: 4px; }
+  .picker-item:active { border-color: var(--gold); background: var(--gold-soft); }
+  .picker-item img { width: 30px; height: 30px; object-fit: contain; border-radius: 4px; padding: 1px; }
+  .picker-item img.ic-default  { background: radial-gradient(circle at top center, #4b6382, #1d2432); }
+  .picker-item img.ic-military { background: radial-gradient(circle at top center, #8b5d44, #683a22); }
+  .picker-item img.ic-landmark { background: radial-gradient(circle at top center, #232e3e, #0c0f17); }
+  .picker-item img.ic-none     { background: radial-gradient(circle at top center, #646c79, #4f5866); }
+  .picker-item span { font-size: 8px; color: var(--muted); text-align: center; line-height: 1.1; }
+
+  /* ── Tweaks ── */
+  .tweaks { position: fixed; right: 28px; bottom: 28px; z-index: 100; background: #2c3a4e; border: 1px solid var(--border-hi); border-radius: 12px; padding: 15px 16px; width: 236px; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
+  .tweaks h4 { margin: 0 0 13px; font-size: 11px; font-weight: 800; color: var(--gold); text-transform: uppercase; letter-spacing: .7px; }
+  .tw-g { margin-bottom: 13px; }
+  .tw-g:last-child { margin-bottom: 0; }
+  .tw-l { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 6px; }
+  .tw-r { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tw-b { background: transparent; border: 1px solid var(--border-hi); color: var(--muted); padding: 5px 11px; border-radius: 6px; cursor: pointer; font-size: 11.5px; font-family: inherit; font-weight: 600; }
+  .tw-b.on { background: var(--gold); border-color: var(--gold); color: #1a2030; }
+  .tw-note { font-size: 10.5px; color: var(--dim); line-height: 1.5; margin-top: 8px; }
+
+  @media (max-width: 920px) { body { gap: 0; } .tweaks { right: 12px; bottom: 12px; } .stage-head { display: none; } }
+</style>
+</head>
+<body>
+
+<div class="stage-head">AOE4 GUIDES · mobile redesign — <b id="mode-label">View mode</b></div>
+
+<div class="phone">
+  <div class="screen">
+    <div class="statusbar">
+      <span>9:41</span>
+      <span class="icons"><span class="mdi mdi-signal"></span><span class="mdi mdi-wifi"></span><span class="mdi mdi-battery-80"></span></span>
+    </div>
+
+    <div class="appbar">
+      <button class="hbtn"><span class="mdi mdi-menu"></span></button>
+      <div class="brand"><span class="t">AOE4 GUIDES</span></div>
+      <div class="avatar">JB</div>
+    </div>
+
+    <div class="body" id="body"></div>
+
+    <!-- Icon picker bottom sheet -->
+    <div class="picker-scrim" id="picker-scrim" onclick="closePicker()"></div>
+    <div class="picker" id="picker">
+      <div class="picker-grab"></div>
+      <div class="picker-head">
+        <span class="title">Insert icon</span>
+        <button class="picker-close" onclick="closePicker()"><span class="mdi mdi-close"></span></button>
+      </div>
+      <div class="picker-search"><span class="mdi mdi-magnify"></span><input id="picker-q" placeholder="Search icons…" oninput="renderPickerGrid()"></div>
+      <div class="picker-tabs" id="picker-tabs"></div>
+      <div class="picker-grid" id="picker-grid"></div>
+    </div>
+
+    <!-- Confirm dialog (age-down) -->
+    <div class="confirm-scrim" id="confirm-scrim" onclick="closeConfirm()"></div>
+    <div class="confirm-dialog" id="confirm-dialog">
+      <div class="confirm-icon"><span class="mdi mdi-history"></span></div>
+      <div class="confirm-title" id="confirm-title">Age down?</div>
+      <div class="confirm-text" id="confirm-text"></div>
+      <div class="confirm-actions">
+        <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+        <button class="btn btn-danger" id="confirm-ok" onclick="confirmRemoveAge()">Age down</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tweaks">
+  <h4>Tweaks</h4>
+  <div class="tw-g">
+    <div class="tw-l">Screen (shared header)</div>
+    <div class="tw-r" id="tw-screen">
+      <button class="tw-b on" data-v="view">View</button>
+      <button class="tw-b" data-v="edit">Edit</button>
+    </div>
+  </div>
+  <div class="tw-note">Build steps use 5 fixed resource slots — Builder · Food · Wood · Gold · Stone — so each number always sits in the same place. Villager count is calculated. Time is editable. In Edit mode, tap a slot to type, or use <b>Insert icon</b> for the picker.</div>
+</div>
+
+<script>
+const RES = {
+  time:'assets/res/time.webp', villager:'assets/res/villager.webp', builder:'assets/res/builder.webp',
+  food:'assets/res/food.webp', wood:'assets/res/wood.webp', gold:'assets/res/gold.webp', stone:'assets/res/stone.webp',
+  sheep:'assets/res/food.webp',
+  house:'assets/res/house.webp', mill:'assets/res/mill.webp', 'town-center':'assets/res/town-center.webp',
+  'mining-camp':'assets/res/mining-camp.webp', 'lumber-camp':'assets/res/lumber-camp.webp', farm:'assets/res/farm.webp',
+  knight:'assets/res/knight.webp', scout:'assets/res/scout.webp', horseman:'assets/res/horseman.webp',
+  age2:'assets/res/age_2.webp', age3:'assets/res/age_3.webp',
+};
+// fixed resource slots
+const SLOTS = ['builder','food','wood','gold','stone'];
+const SLOT_LABEL = { builder:'Builder', food:'Food', wood:'Wood', gold:'Gold', stone:'Stone' };
+
+// build steps — resources stored per slot; villagers = sum (calculated); time editable
+const BUILD = [
+  { t:'0:00', r:{ food:6 },                       note:'All ::villager:: on ::sheep::. Queue a ::house::.' },
+  { t:'0:35', r:{ food:7 },                        note:'Add a 7th ::villager:: to ::sheep::.' },
+  { t:'1:10', r:{ food:6, gold:2, builder:1 },      note:'Send 2 to ::gold:: (build ::mining-camp::). 1 builds a ::mill::.' },
+  { t:'1:55', r:{ food:7, wood:2, gold:2 },         note:'Take ::wood:: for upcoming buildings.' },
+  { age:2 },
+  { t:'2:40', r:{ food:8, wood:2, gold:4 },         note:'Boom ::gold:: to rush the ::age2:: landmark.' },
+  { t:'3:30', r:{ food:9, wood:3, gold:4, builder:2 }, note:'2 ::villager:: build a 2nd ::town-center::. Keep your ::scout:: scouting.' },
+];
+
+const PICKER = {
+  Resources: ['food','wood','gold','stone','builder','villager'],
+  Buildings: ['house','mill','town-center','mining-camp','lumber-camp','farm'],
+  Units:     ['villager','scout','horseman','knight'],
+  Ages:      ['age2','age3'],
+  Misc:      ['sheep'],
+};
+const PICKER_LABEL = { 'town-center':'Town Center','mining-camp':'Mining Camp','lumber-camp':'Lumber Camp', age2:'Feudal', age3:'Castle', villager:'Villager', builder:'Builder' };
+// desktop icon-class system: each class → gradient tile (see .ic-* CSS)
+const ICON_CLASS = {
+  food:'default', wood:'default', gold:'default', stone:'default', builder:'default',
+  villager:'default', time:'default', sheep:'default',
+  house:'default', mill:'default', 'town-center':'default', 'mining-camp':'default', 'lumber-camp':'default', farm:'default',
+  scout:'military', horseman:'military', knight:'military',
+  age2:'none', age3:'none',
+};
+const iconClass = t => ICON_CLASS[t] || 'default';
+
+const state = { screen:'view', pickerTab:'Resources' };
+
+const icon = (n, w=18) => `<img class="res-ic" style="width:${w}px;height:${w}px" src="${RES[n]}" alt="${n}">`;
+const pop = s => SLOTS.reduce((a,k)=>a+(s.r[k]||0),0);
+const parseDesc = d => d.replace(/::([\w-]+)::/g, (m,t)=> RES[t] ? `<img class="ic ic-${iconClass(t)}" contenteditable="false" src="${RES[t]}" alt="${t}">` : m);
+const prettyLabel = t => PICKER_LABEL[t] || (t[0].toUpperCase()+t.slice(1));
+
+// ── Hero (unchanged) ──
+function heroHTML() {
+  const edit = state.screen === 'edit';
+  const statusChip = edit
+    ? `<span class="chip gold"><span class="mdi mdi-pencil-outline"></span> Draft</span>`
+    : `<span class="chip gold"><span class="mdi mdi-fire"></span> New</span>`;
+  const ovItems = edit ? `
+      <button><span class="mdi mdi-content-copy"></span> Duplicate</button>
+      <button><span class="mdi mdi-export-variant"></span> Copy to overlay tool</button>
+      <button><span class="mdi mdi-download-outline"></span> Download as file</button>
+      <div class="ov-sep"></div>
+      <button><span class="mdi mdi-backup-restore"></span> Discard changes</button>` : `
+      <button><span class="mdi mdi-heart-outline"></span> Favorite</button>
+      <button><span class="mdi mdi-thumb-up-outline"></span> Like <span class="ov-count">24</span></button>
+      <button><span class="mdi mdi-thumb-down-outline"></span> Dislike <span class="ov-count">1</span></button>
+      <div class="ov-sep"></div>
+      <button><span class="mdi mdi-share-variant-outline"></span> Share</button>
+      <button><span class="mdi mdi-export-variant"></span> Copy to overlay tool</button>
+      <button><span class="mdi mdi-download-outline"></span> Download as file</button>
+      <button><span class="mdi mdi-content-copy"></span> Duplicate to my builds</button>
+      <div class="ov-sep"></div>
+      <button class="danger"><span class="mdi mdi-flag-outline"></span> Report</button>`;
+  const metaLine = edit ? '' : `
+    <div class="hero-meta">
+      <span class="author">Twister</span><span class="dot"></span>
+      <span class="stat"><span class="mdi mdi-thumb-up-outline"></span> 24</span>
+      <span class="stat"><span class="mdi mdi-eye-outline"></span> 312</span>
+      <span class="dot"></span><span>2 days ago</span>
+    </div>`;
+  return `
+  <div class="card hero">
+    <div class="hero-top">
+      <h1 class="hero-title" contenteditable="${edit}">Ottoman — Fast Imperial (Pax Otomana rush)</h1>
+      <div class="ov-wrap">
+        <button class="ov-btn" onclick="toggleOv(event)"><span class="mdi mdi-dots-vertical"></span></button>
+        <div class="ov-menu" id="ovmenu">${ovItems}</div>
+      </div>
+    </div>
+    <div class="chips">
+      ${statusChip}
+      <span class="chip civ"><span class="mdi mdi-shield-outline"></span> Ottomans</span>
+      <span class="chip"><span class="mdi mdi-trophy-outline"></span> Season 11</span>
+    </div>
+    ${metaLine}
+  </div>`;
+}
+
+function editMetaHTML() {
+  return `
+  <div class="card">
+    <div class="card-head"><span class="mdi mdi-text-box-outline"></span> Build details</div>
+    <div class="card-body">
+      <div class="field"><label class="field-label">Title</label><input class="ctrl" value="Ottoman — Fast Imperial (Pax Otomana rush)"></div>
+      <div class="field"><label class="field-label">Description</label><textarea class="ctrl">Super greedy build order ideal for team games on closed maps.</textarea></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><span class="mdi mdi-tag-outline"></span> Classification</div>
+    <div class="card-body"><div class="grid2">
+      <div class="field"><label class="field-label"><span class="mdi mdi-shield-outline"></span> Civilization</label><select class="ctrl"><option>Ottomans</option><option>French</option><option>English</option><option>Rus</option></select></div>
+      <div class="field"><label class="field-label"><span class="mdi mdi-trophy-outline"></span> Season</label><select class="ctrl"><option>Season 11</option><option>Season 12</option></select></div>
+      <div class="field"><label class="field-label"><span class="mdi mdi-map-outline"></span> Map</label><select class="ctrl"><option>Closed</option><option>Any</option></select></div>
+      <div class="field"><label class="field-label"><span class="mdi mdi-sword-cross"></span> Strategy</label><select class="ctrl"><option>Fast Imperial</option><option>Rush</option></select></div>
+    </div></div>
+  </div>`;
+}
+
+// ── Description card (view) — collapsible ──
+function descCardHTML() {
+  return `<div class="card" id="desc-card">
+    <div class="card-head" style="cursor:pointer" onclick="toggleCollapse('desc-card')">
+      <span class="mdi mdi-text-box-outline"></span> Description
+      <span class="spacer"></span>
+      <span class="mdi mdi-chevron-up collapse-ic"></span>
+    </div>
+    <div class="card-body collapse-body">
+      <p class="bo-desc">Super greedy build order ideal for team games on closed maps. Wall up early, boom behind it, and hit Imperial before your opponents can punish the greed.</p>
+    </div>
+  </div>`;
+}
+
+// ── Video card (own card, after the build order) ──
+function videoCardHTML(edit) {
+  const thumb = `<div class="yt-card">
+      <div class="yt-thumb"><span class="yt-play mdi mdi-play"></span><span class="yt-dur">12:04</span></div>
+      <div class="yt-info">
+        <div class="yt-t">Ottoman Fast Imperial — full walkthrough</div>
+        <div class="yt-c"><span class="mdi mdi-youtube"></span> AOE4 Strategy</div>
+      </div>
+    </div>`;
+  return `<div class="card">
+    <div class="card-head"><span class="mdi mdi-youtube" style="color:#e05c5c"></span> Video guide</div>
+    <div class="card-body">
+      ${edit ? `<div class="field"><input class="ctrl" value="https://youtube.com/watch?v=oT5_aXObsdQ" placeholder="https://youtube.com/watch?v=…"></div>` : ''}
+      ${thumb}
+    </div>
+  </div>`;
+}
+
+function toggleCollapse(id){ document.getElementById(id).classList.toggle('collapsed'); }
+
+// ── Step / age removal ──
+function removeStep(i){ BUILD.splice(i, 1); render(); }
+let pendingAgeIndex = null;
+function askRemoveAge(i){
+  pendingAgeIndex = i;
+  const age = BUILD[i].age;                 // age-up being removed (2 = Feudal, 3 = Castle)
+  const prevName = age === 2 ? 'Dark Age' : 'Feudal Age';
+  const thisName = age === 2 ? 'Feudal' : 'Castle';
+  const after = BUILD.length - i - 1;        // steps after this age-up
+  document.getElementById('confirm-title').textContent = `Age down to ${prevName}?`;
+  document.getElementById('confirm-text').textContent =
+    `This removes the ${thisName} age-up and ${after} step${after===1?'':'s'} after it — everything from this point on. This can't be undone.`;
+  document.getElementById('confirm-scrim').classList.add('open');
+  document.getElementById('confirm-dialog').classList.add('open');
+}
+function confirmRemoveAge(){
+  if (pendingAgeIndex != null){ BUILD.splice(pendingAgeIndex); render(); pendingAgeIndex = null; }
+  closeConfirm();
+}
+function closeConfirm(){
+  document.getElementById('confirm-scrim').classList.remove('open');
+  document.getElementById('confirm-dialog').classList.remove('open');
+}
+
+// ── Resource grid cell ──
+function rcell(slot, val, edit) {
+  const has = val != null && val !== 0;
+  const cls = `rcell ${slot} ${has?'has':'empty'} ${edit?'edit':''}`;
+  if (edit) {
+    return `<div class="${cls}" onclick="this.querySelector('input').focus()">
+      ${icon(slot,21)}
+      <input class="rv-input" inputmode="numeric" value="${has?val:''}" placeholder="–" data-slot="${slot}" oninput="onResInput(this)">
+    </div>`;
+  }
+  return `<div class="${cls}">${icon(slot,21)}<span class="rv">${has?val:'–'}</span></div>`;
+}
+
+function buildHTML() {
+  const edit = state.screen === 'edit';
+  let h = '<div class="steps">';
+  BUILD.forEach((s, idx) => {
+    if (s.age) {
+      h += `<div class="ageup">
+        <img src="${RES['age'+s.age]}" alt="age">
+        <span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Age up to ${s.age===2?'Feudal':'Castle'}</span>
+        <span class="spacer"></span>
+        ${edit?`<button class="step-del" onclick="askRemoveAge(${idx})"><span class="mdi mdi-close"></span></button>`:''}
+      </div>`;
+      return;
+    }
+    const time = edit
+      ? `<input class="time-input" value="${s.t}" placeholder="m:ss">`
+      : `<span class="step-time">${icon('time',13)} ${s.t}</span>`;
+    const grid = SLOTS.map(k => rcell(k, s.r[k], edit)).join('');
+    h += `<div class="stepc" data-i="${idx}">
+      <div class="stepc-top">
+        ${time}
+        <span class="spacer"></span>
+        <span class="step-pop" data-pop>${icon('villager',15)} <b>${pop(s)}</b></span>
+        ${edit?`<button class="step-del" onclick="removeStep(${idx})"><span class="mdi mdi-close"></span></button>`:''}
+      </div>
+      <div class="res-grid">${grid}</div>
+      ${edit
+        ? `<div class="desc-edit wys" contenteditable="true" data-placeholder="Describe this step — type :: or tap Insert icon for AOE4 icons" oninput="trackWys(this)" onfocus="activeWys=this">${parseDesc(s.note)}</div>
+           <div class="desc-tools">
+             <button class="desc-tool-btn" onmousedown="event.preventDefault()" onclick="openPicker(this)"><span class="mdi mdi-image-plus-outline"></span> Insert icon</button>
+           </div>`
+        : `<div class="desc">${parseDesc(s.note)}</div>`}
+    </div>`;
+  });
+  h += '</div>';
+  if (edit) {
+    h += `<div class="add-step-row">
+      <button class="add-step-btn"><span class="mdi mdi-plus"></span> Add step</button>
+      <button class="add-step-btn ghost"><span class="mdi mdi-arrow-up-bold"></span> Add age-up</button>
+    </div>`;
+  }
+  const play = !edit ? `<span class="spacer"></span><span style="font-size:11px;font-weight:700;color:var(--gold);display:inline-flex;align-items:center;gap:3px;"><span class="mdi mdi-play"></span> PLAY</span>` : '<span class="spacer"></span>';
+  return `<div class="card">
+    <div class="card-head"><span class="mdi mdi-format-list-numbered"></span> Build order ${play}</div>
+    <div class="card-body">${h}</div>
+  </div>`;
+}
+
+// ── Render ──
+function render() {
+  const edit = state.screen === 'edit';
+  const body = document.getElementById('body');
+  let html = heroHTML();
+  if (edit) html += editMetaHTML();
+  else html += descCardHTML();
+  html += buildHTML();
+  html += videoCardHTML(edit);
+  body.innerHTML = html;
+
+  document.querySelectorAll('.actionbar').forEach(e=>e.remove());
+  body.classList.toggle('has-actionbar', edit);
+  if (edit) {
+    const ab = document.createElement('div');
+    ab.className = 'actionbar';
+    ab.innerHTML = `<span class="status"><span class="mdi mdi-circle-medium"></span> Unsaved changes</span>
+      <button class="btn btn-outline">Draft</button><button class="btn btn-primary">Publish</button>`;
+    document.querySelector('.screen').appendChild(ab);
+  }
+  document.getElementById('mode-label').textContent = edit ? 'Edit mode' : 'View mode';
+}
+
+// ── Interactions ──
+function toggleOv(e){ e.stopPropagation(); document.getElementById('ovmenu').classList.toggle('open'); }
+document.addEventListener('click', () => { const m=document.getElementById('ovmenu'); if(m) m.classList.remove('open'); });
+
+// live villager recalculation when editing a slot
+function onResInput(input) {
+  input.value = input.value.replace(/[^0-9]/g,'').slice(0,2);
+  const card = input.closest('.stepc');
+  let sum = 0;
+  card.querySelectorAll('.rv-input').forEach(i => sum += parseInt(i.value,10)||0);
+  card.querySelector('[data-pop] b').textContent = sum;
+  // toggle has/empty styling on the cell
+  const cell = input.closest('.rcell');
+  const v = parseInt(input.value,10)||0;
+  cell.classList.toggle('has', v>0);
+  cell.classList.toggle('empty', v===0);
+}
+
+// ── Icon picker (WYSIWYG insertion) ──
+let activeWys = null, savedRange = null;
+// keep track of the caret position inside the focused WYSIWYG editor
+document.addEventListener('selectionchange', () => {
+  const sel = window.getSelection();
+  if (activeWys && sel.rangeCount && activeWys.contains(sel.anchorNode)) {
+    savedRange = sel.getRangeAt(0).cloneRange();
+  }
+});
+function trackWys(el){ activeWys = el; }
+function openPicker(btn){
+  activeWys = btn.closest('.stepc').querySelector('.desc-edit');
+  renderPickerTabs(); renderPickerGrid();
+  document.getElementById('picker-scrim').classList.add('open');
+  document.getElementById('picker').classList.add('open');
+}
+function closePicker(){
+  document.getElementById('picker-scrim').classList.remove('open');
+  document.getElementById('picker').classList.remove('open');
+}
+function renderPickerTabs(){
+  document.getElementById('picker-tabs').innerHTML = Object.keys(PICKER).map(cat =>
+    `<button class="picker-tab ${cat===state.pickerTab?'on':''}" onclick="state.pickerTab='${cat}';document.getElementById('picker-q').value='';renderPickerTabs();renderPickerGrid()">${cat}</button>`
+  ).join('');
+}
+function renderPickerGrid(){
+  const q = (document.getElementById('picker-q').value||'').toLowerCase().trim();
+  let items;
+  if (q) {
+    const seen = new Set();
+    items = Object.values(PICKER).flat().filter(t => { if(seen.has(t))return false; seen.add(t); return t.includes(q) || prettyLabel(t).toLowerCase().includes(q); });
+  } else {
+    items = PICKER[state.pickerTab];
+  }
+  document.getElementById('picker-grid').innerHTML = items.map(t =>
+    `<div class="picker-item" onclick="insertToken('${t}')"><img class="ic-${iconClass(t)}" src="${RES[t]}" alt="${t}"><span>${prettyLabel(t)}</span></div>`
+  ).join('') || `<div style="grid-column:1/-1;color:var(--dim);font-size:12px;text-align:center;padding:20px">No icons match “${q}”.</div>`;
+}
+function insertToken(tok){
+  if (!activeWys || !RES[tok]) { closePicker(); return; }
+  const img = document.createElement('img');
+  img.className = 'ic ic-' + iconClass(tok);
+  img.contentEditable = 'false';
+  img.src = RES[tok];
+  img.alt = tok;
+  const space = document.createTextNode('\u00A0');
+
+  activeWys.focus();
+  const sel = window.getSelection();
+  let range = (savedRange && activeWys.contains(savedRange.startContainer)) ? savedRange.cloneRange() : null;
+  if (!range) { range = document.createRange(); range.selectNodeContents(activeWys); range.collapse(false); }
+  range.deleteContents();
+  range.insertNode(space);
+  range.insertNode(img);
+  // place caret after the inserted icon + space
+  range.setStartAfter(space); range.collapse(true);
+  sel.removeAllRanges(); sel.addRange(range);
+  savedRange = range.cloneRange();
+  closePicker();
+}
+
+// tweaks
+document.getElementById('tw-screen').addEventListener('click', e => {
+  const b = e.target.closest('.tw-b'); if(!b) return;
+  state.screen = b.dataset.v;
+  document.querySelectorAll('#tw-screen .tw-b').forEach(x=>x.classList.toggle('on', x.dataset.v===state.screen));
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
