@@ -10,7 +10,7 @@
       <!-- Overflow ⋮: slot renders the v-btn icon directly, no extra wrapper padding -->
       <slot name="actions"></slot>
     </div>
-    <div class="px-4 pt-1 pb-4 d-flex flex-wrap ga-2">
+    <div :class="['px-4 pt-1 d-flex flex-wrap ga-2', readonly ? 'pb-1' : 'pb-4']">
       <v-chip v-if="build.isDraft" label color="error" size="small">
         <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
       </v-chip>
