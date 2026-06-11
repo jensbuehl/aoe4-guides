@@ -214,15 +214,40 @@
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Notes</span>
           </div>
-          <div
-            @paste="handlePaste"
-            @focusout="updateSectionGameplan($event)"
-            @mouseover="handleMouseOver($event)"
-            @mouseout="handleMouseOut($event)"
-            :contenteditable="true"
-            class="step-desc-xs step-desc-edit-xs"
-            v-html="gameplan"
-          ></div>
+          <div class="step-desc-col-xs">
+            <div
+              @keyup="saveSelection($event)"
+              @click="saveSelection($event)"
+              @paste="handlePaste"
+              @focusout="updateSectionGameplan($event)"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
+              :contenteditable="true"
+              class="step-desc-xs step-desc-edit-xs"
+              v-html="gameplan"
+            ></div>
+          </div>
+          <div class="step-action-row-xs">
+            <v-menu :close-on-content-click="false" location="bottom">
+              <template v-slot:activator="{ props: menu }">
+                <v-btn
+                  size="x-small"
+                  variant="text"
+                  color="accent"
+                  v-bind="menu"
+                  @mousedown.prevent="saveSelection($event)"
+                  icon="mdi-image-plus"
+                  class="step-icon-btn-xs"
+                ></v-btn>
+              </template>
+              <v-card flat rounded="lg" class="mt-4" width="350px">
+                <IconSelector
+                  @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
+                  :civ="civ"
+                ></IconSelector>
+              </v-card>
+            </v-menu>
+          </div>
         </div>
       </div>
     </template><!-- end edit-mode -->
