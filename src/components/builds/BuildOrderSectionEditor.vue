@@ -42,7 +42,7 @@
     <v-row no-gutters align="center" justify="center">
       <v-col cols="12">
         <v-row
-          v-if="section.age <= 1 && section.type == 'age'"
+          v-if="section.age <= 1 && section.type == 'age' && !readonly"
           no-gutters
           align="center"
           justify="center"
@@ -113,6 +113,7 @@
         >
       </div>
     </v-row>
+    <template v-if="!readonly">
     <v-row
       no-gutters
       justify="center"
@@ -344,7 +345,8 @@
         ></v-card>
       </v-col>
     </v-row>
-    <v-row no-gutters v-if="gameplan">
+    <!-- Edit-mode gameplan -->
+    <v-row no-gutters v-if="gameplan && !readonly">
       <v-col cols="12" class="px-2 my-2 justify-center align-center">
         <v-card flat rounded="0">
           <v-table width="100%" style="border: none">
@@ -380,6 +382,70 @@
         ></v-card>
       </v-col>
     </v-row>
+    </template><!-- end edit-mode -->
+
+    <!-- Readonly viewer: 5-slot step cards -->
+    <template v-if="readonly">
+      <div class="xs-steps-container">
+        <div
+          v-for="(item, index) in steps"
+          :key="'xs-view-' + index"
+          class="step-card-xs"
+        >
+          <!-- Top bar: timestamp + villager total -->
+          <div class="stepc-top-xs">
+            <div class="step-time-xs">
+              <img src="/assets/resources/time.webp" />
+              <span>{{ item.time }}</span>
+            </div>
+            <div style="flex:1"></div>
+            <div class="step-pop-xs">
+              <img src="/assets/resources/villager.webp" />
+              <span>{{ aggregateVillagers(item) }}</span>
+            </div>
+          </div>
+          <!-- 5-slot resource grid: Builder · Food · Wood · Gold · Stone -->
+          <div class="step-grid-xs">
+            <div :class="['slot-xs', 'slot-builder', item.builders ? 'slot-has' : 'slot-empty']">
+              <div class="slot-icon"><img src="/assets/resources/repair.webp" /></div>
+              <span class="slot-val">{{ item.builders || '–' }}</span>
+            </div>
+            <div :class="['slot-xs', 'slot-food', item.food ? 'slot-has' : 'slot-empty']">
+              <div class="slot-icon"><img src="/assets/resources/food.webp" /></div>
+              <span class="slot-val">{{ item.food || '–' }}</span>
+            </div>
+            <div :class="['slot-xs', 'slot-wood', item.wood ? 'slot-has' : 'slot-empty']">
+              <div class="slot-icon"><img src="/assets/resources/wood.webp" /></div>
+              <span class="slot-val">{{ item.wood || '–' }}</span>
+            </div>
+            <div :class="['slot-xs', 'slot-gold', item.gold ? 'slot-has' : 'slot-empty']">
+              <div class="slot-icon"><img src="/assets/resources/gold.webp" /></div>
+              <span class="slot-val">{{ item.gold || '–' }}</span>
+            </div>
+            <div :class="['slot-xs', 'slot-stone', item.stone ? 'slot-has' : 'slot-empty']">
+              <div class="slot-icon"><img src="/assets/resources/stone.webp" /></div>
+              <span class="slot-val">{{ item.stone || '–' }}</span>
+            </div>
+          </div>
+          <!-- Description with inline icons -->
+          <div
+            v-if="item.description"
+            class="step-desc-xs"
+            v-html="item.description"
+            @mouseover="handleMouseOver($event)"
+            @mouseout="handleMouseOut($event)"
+          ></div>
+        </div>
+      </div>
+      <!-- Section gameplan / notes (readonly) -->
+      <div
+        v-if="gameplan"
+        class="px-4 pb-4 step-desc-xs text-caption text-medium-emphasis"
+        v-html="gameplan"
+        @mouseover="handleMouseOver($event)"
+        @mouseout="handleMouseOut($event)"
+      ></div>
+    </template><!-- end readonly viewer -->
   </v-card>
 
   <!--Desktop UI-->
@@ -1269,5 +1335,166 @@ td:empty {
 }
 .contentEditable {
   white-space: pre-wrap;
+}
+
+/* ── Mobile xs viewer (readonly) ── */
+.xs-steps-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0px 16px;
+}
+
+/* Step card — surface-container token: dark=#324156, light=#E8EEF4 */
+.step-card-xs {
+  background: rgb(var(--v-theme-surface-container));
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: none;
+}
+
+/* Top bar */
+.stepc-top-xs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+
+/* Time pill — gold highlight with clock icon */
+.step-time-xs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgb(var(--v-theme-accent));
+  background: rgba(var(--v-theme-accent), 0.12);
+  border-radius: 6px;
+  padding: 3px 9px 3px 6px;
+  line-height: 1;
+}
+.step-time-xs img {
+  display: block;
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Villager total badge */
+.step-pop-xs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: rgb(var(--v-theme-accent));
+  background: rgba(var(--v-theme-accent), 0.12);
+  border-radius: 6px;
+  padding: 3px 9px 3px 6px;
+  line-height: 1;
+}
+.step-pop-xs img {
+  display: block;
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Resource grid */
+.step-grid-xs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+}
+
+/* Base slot */
+.slot-xs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 6px 2px 5px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  min-height: 48px;
+  text-align: center;
+}
+/* Square icon wrapper — isolates the img from flex sizing so object-fit fires correctly */
+.slot-icon {
+  width: 21px;
+  height: 21px;
+  flex-shrink: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slot-icon img {
+  display: block;
+  width: 21px;
+  height: 21px;
+  object-fit: cover;
+}
+
+/* Slot resource tints — empty (dim) */
+.slot-builder { background: rgba(94, 83, 64, 0.14); }
+.slot-food    { background: rgba(136, 64, 64, 0.16); }
+.slot-wood    { background: rgba(79, 107, 58, 0.16); }
+.slot-gold    { background: rgba(138, 109, 46, 0.16); }
+.slot-stone   { background: rgba(89, 102, 122, 0.16); }
+
+/* Slot resource tints — has value (vivid + colored border) */
+.slot-xs.slot-has.slot-builder { background: rgba(94, 83, 64, 0.42);   border-color: rgba(94, 83, 64, 0.6); }
+.slot-xs.slot-has.slot-food    { background: rgba(136, 64, 64, 0.42);  border-color: rgba(136, 64, 64, 0.6); }
+.slot-xs.slot-has.slot-wood    { background: rgba(79, 107, 58, 0.42);  border-color: rgba(79, 107, 58, 0.6); }
+.slot-xs.slot-has.slot-gold    { background: rgba(138, 109, 46, 0.42); border-color: rgba(138, 109, 46, 0.6); }
+.slot-xs.slot-has.slot-stone   { background: rgba(89, 102, 122, 0.42); border-color: rgba(89, 102, 122, 0.6); }
+
+/* Empty slot: whole cell dimmed */
+.slot-xs.slot-empty { opacity: 0.35; }
+
+/* Slot value text */
+.slot-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+/* Step description */
+.step-desc-xs {
+  margin-top: 8px;
+  line-height: 1.5;
+}
+/* Chrome contenteditable appends a trailing <br> as last child of the last block —
+   hide it whether it's the only child or alongside other content */
+.step-desc-xs :deep(div:last-child > br:last-child),
+.step-desc-xs :deep(p:last-child > br:last-child) {
+  display: none;
+}
+/* Reset block-element margins from browser defaults and contenteditable output */
+.step-desc-xs :deep(p),
+.step-desc-xs :deep(div) {
+  margin: 0;
+}
+.step-desc-xs :deep(p + p),
+.step-desc-xs :deep(div + div) {
+  margin-top: 2px;
+}
+.step-desc-xs :deep(.icon),
+.step-desc-xs :deep(.icon-ability),
+.step-desc-xs :deep(.icon-tech),
+.step-desc-xs :deep(.icon-military),
+.step-desc-xs :deep(.icon-none),
+.step-desc-xs :deep(.icon-default),
+.step-desc-xs :deep(.icon-landmark) {
+  width: 28px !important;
+  height: 28px !important;
+  object-fit: cover;
 }
 </style>

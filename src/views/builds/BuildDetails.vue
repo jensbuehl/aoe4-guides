@@ -109,9 +109,10 @@
         <v-icon size="16" :icon="descriptionExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"></v-icon>
       </div>
       <v-expand-transition>
-        <v-card-text v-show="descriptionExpanded" class="d-md-none" style="white-space: pre-line">
-          {{ build.description }}
-        </v-card-text>
+        <!-- wrapper with no padding so height can animate cleanly to 0 -->
+        <div v-show="descriptionExpanded" class="d-md-none">
+          <v-card-text style="white-space: pre-line">{{ build.description }}</v-card-text>
+        </div>
       </v-expand-transition>
 
       <!-- Desktop: always expanded -->

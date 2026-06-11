@@ -25,6 +25,7 @@ const customDarkTheme = {
     "primary-darken-1": "#8D7B4B",
     secondary: "#294790",
     "secondary-darken-1": "#3D516B",
+    "surface-container": "#485d7c", //nested card surfaces (step cards, inset panels)
     "icon-background-highlight": "#646C79",
     "icon-background": "#4F5866",
     //success: '#e7c05e',
@@ -47,6 +48,7 @@ const customLightTheme = {
     "primary-darken-1": "#3D516B",
     secondary: "#CCAA55",
     "secondary-darken-1": "#8D7B4B",
+    "surface-container": "#E8EEF4", //nested card surfaces — light blue-grey, echoes navy palette
     "icon-background-highlight": "#DEDEDF",
     "icon-background": "#C5C5C6",
     //success: '#e7c05e',
