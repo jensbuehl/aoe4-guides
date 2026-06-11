@@ -1258,6 +1258,7 @@ td:empty {
 /* Step card — surface-container token: dark=#324156, light=#E8EEF4 */
 .step-card-xs {
   background: rgb(var(--v-theme-surface-container));
+  border: 1px solid rgb(var(--v-theme-accent), 0.24);
   border-radius: 10px;
   padding: 10px;
   box-shadow: none;
