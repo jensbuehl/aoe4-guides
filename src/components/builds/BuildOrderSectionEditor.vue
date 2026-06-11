@@ -1,6 +1,6 @@
 <template>
   <!--Common delete confirmation dialog-->
-  <v-dialog v-model="removeStepConfirmationDialog" width="auto">
+  <v-dialog v-model="removeStepConfirmationDialog" width="auto" @keydown.enter="removeStep(delteRowIndex)">
     <v-card rounded="lg" class="text-center primary" flat>
       <v-card-title>Delete Step</v-card-title>
       <v-card-text>
@@ -41,34 +41,6 @@
   <v-card rounded="lg" class="mt-4 hidden-sm-and-up" flat>
     <v-row no-gutters align="center" justify="center">
       <v-col cols="12">
-        <v-row
-          v-if="section.age <= 1 && section.type == 'age' && !readonly"
-          no-gutters
-          align="center"
-          justify="center"
-        >
-          <v-col cols="3">
-            <v-img class="titleIconXs ma-2" src="/assets/resources/time.webp"></v-img>
-          </v-col>
-          <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/villager.webp"></v-img>
-          </v-col>
-          <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/repair.webp"></v-img>
-          </v-col>
-          <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/food.webp"></v-img>
-          </v-col>
-          <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/wood.webp"></v-img>
-          </v-col>
-          <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/gold.webp"></v-img>
-          </v-col>
-          <v-col>
-            <v-img class="titleIconXs ma-2" src="/assets/resources/stone.webp"></v-img>
-          </v-col>
-        </v-row>
         <v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
           <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
             ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon>
@@ -114,274 +86,167 @@
       </div>
     </v-row>
     <template v-if="!readonly">
-    <v-row
-      no-gutters
-      justify="center"
-      v-for="(item, index) in steps"
-      :key="index"
-      v-on:keyup.enter.alt="addStep(index)"
-      v-on:keyup.delete.alt="
-        removeStepConfirmationDialog = true;
-        delteRowIndex = index;
-      "
-      @focusin="$emit('selectionChanged')"
-      @mousedown="selectStep(index)"
-      @mouseover="hoverStep(index)"
-      @mouseleave="unhoverStep()"
-    >
-      <v-divider></v-divider>
-      <v-col cols="12">
-        <v-row no-gutters justify="center">
-          <v-col cols="3">
-            <v-card flat rounded="0"
-              ><v-card-text
-                style="white-space: break-spaces"
+      <!-- Step cards (mobile edit) -->
+      <div class="xs-steps-container">
+        <!-- Insert point before the very first card (prepend) -->
+        <div v-if="steps?.length" class="step-insert-xs" @click.stop="addStep(-1)">
+          <div class="step-insert-line-xs"></div>
+          <span class="step-insert-circle-xs">+</span>
+          <div class="step-insert-line-xs"></div>
+        </div>
+        <template v-for="(item, index) in steps" :key="item._id ?? ('xs-edit-' + index)">
+        <div
+          class="step-card-xs"
+          v-on:keyup.enter.alt="addStep(index)"
+          v-on:keyup.delete.alt="removeStepConfirmationDialog = true; delteRowIndex = index;"
+          @focusin="$emit('selectionChanged')"
+          @mousedown="selectStep(index)"
+        >
+          <!-- Top bar: editable timestamp + spacer + villager total + ✕ -->
+          <div class="stepc-top-xs">
+            <div class="step-time-xs">
+              <img src="/assets/resources/time.webp" />
+              <span
                 @paste="handlePaste"
                 @focusout="updateStep($event, index, 'time')"
                 @input="handleResourceInput"
-                :contenteditable="!readonly"
-                class="text-center"
+                :contenteditable="true"
+                class="step-time-input"
                 v-html="item.time"
-              ></v-card-text
-            ></v-card>
-          </v-col>
-          <v-col>
-            <v-card flat align="center" rounded="0"
-              ><v-card-text
-                class="text-center"
-                disabled
-                v-html="aggregateVillagers(item)"
-              ></v-card-text
-            ></v-card>
-          </v-col>
-          <v-col>
-            <v-card flat rounded="0" class="fill-height"
-              ><v-card-text
-                style="white-space: break-spaces"
+              ></span>
+            </div>
+            <div style="flex:1"></div>
+            <div class="step-pop-xs">
+              <img src="/assets/resources/villager.webp" />
+              <span>{{ aggregateVillagers(item) || '–' }}</span>
+            </div>
+            <v-btn
+              icon
+              size="x-small"
+              variant="text"
+              class="step-remove-xs"
+              @click.stop="removeStepConfirmationDialog = true; delteRowIndex = index;"
+            ><v-icon size="14">mdi-close</v-icon></v-btn>
+          </div>
+          <!-- 5-slot grid (editable) -->
+          <div class="step-grid-xs">
+            <div :class="['slot-xs', 'slot-builder', item.builders ? 'slot-has' : 'slot-empty', 'slot-edit']">
+              <div class="slot-icon"><img src="/assets/resources/repair.webp" /></div>
+              <span
                 @paste="handlePaste"
                 @focusout="updateStep($event, index, 'builders')"
                 @input="handleResourceInput"
-                :contenteditable="!readonly"
-                class="text-center"
+                :contenteditable="true"
+                class="slot-val slot-val-edit"
                 v-html="item.builders ? item.builders : ''"
-              ></v-card-text
-            ></v-card>
-          </v-col>
-          <v-col>
-            <v-card
-              variant="flat"
-              rounded="0"
-              class="fill-height"
-              style="background-color: #ff000034"
-              ><v-card-text
-                style="white-space: break-spaces"
+              ></span>
+            </div>
+            <div :class="['slot-xs', 'slot-food', item.food ? 'slot-has' : 'slot-empty', 'slot-edit']">
+              <div class="slot-icon"><img src="/assets/resources/food.webp" /></div>
+              <span
                 @paste="handlePaste"
                 @focusout="updateStep($event, index, 'food')"
                 @input="handleResourceInput"
-                :contenteditable="!readonly"
-                class="text-center"
-                v-html="item.food"
-              ></v-card-text
-            ></v-card>
-          </v-col>
-          <v-col>
-            <v-card
-              variant="flat"
-              rounded="0"
-              class="fill-height"
-              style="background-color: #75400c5b"
-              ><v-card-text
-                style="white-space: break-spaces"
+                :contenteditable="true"
+                class="slot-val slot-val-edit"
+                v-html="item.food ? item.food : ''"
+              ></span>
+            </div>
+            <div :class="['slot-xs', 'slot-wood', item.wood ? 'slot-has' : 'slot-empty', 'slot-edit']">
+              <div class="slot-icon"><img src="/assets/resources/wood.webp" /></div>
+              <span
                 @paste="handlePaste"
                 @focusout="updateStep($event, index, 'wood')"
                 @input="handleResourceInput"
-                :contenteditable="!readonly"
-                class="text-center"
-                v-html="item.wood"
-              ></v-card-text
-            ></v-card>
-          </v-col>
-          <v-col>
-            <v-card
-              variant="flat"
-              rounded="0"
-              class="fill-height"
-              style="background-color: #edbe003e"
-              ><v-card-text
-                style="white-space: break-spaces"
+                :contenteditable="true"
+                class="slot-val slot-val-edit"
+                v-html="item.wood ? item.wood : ''"
+              ></span>
+            </div>
+            <div :class="['slot-xs', 'slot-gold', item.gold ? 'slot-has' : 'slot-empty', 'slot-edit']">
+              <div class="slot-icon"><img src="/assets/resources/gold.webp" /></div>
+              <span
                 @paste="handlePaste"
                 @focusout="updateStep($event, index, 'gold')"
                 @input="handleResourceInput"
-                :contenteditable="!readonly"
-                class="text-center"
-                v-html="item.gold"
-              ></v-card-text
-            ></v-card>
-          </v-col>
-          <v-col>
-            <v-card
-              variant="flat"
-              rounded="0"
-              class="fill-height"
-              style="background-color: #7a7a7b69"
-              ><v-card-text
-                style="white-space: break-spaces"
+                :contenteditable="true"
+                class="slot-val slot-val-edit"
+                v-html="item.gold ? item.gold : ''"
+              ></span>
+            </div>
+            <div :class="['slot-xs', 'slot-stone', item.stone ? 'slot-has' : 'slot-empty', 'slot-edit']">
+              <div class="slot-icon"><img src="/assets/resources/stone.webp" /></div>
+              <span
                 @paste="handlePaste"
                 @focusout="updateStep($event, index, 'stone')"
                 @input="handleResourceInput"
-                :contenteditable="!readonly"
-                class="text-center"
-                v-html="item.stone"
-              ></v-card-text
-            ></v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-divider></v-divider>
-      <v-col cols="12" class="px-2 my-2 justify-center align-center">
-        <v-card flat rounded="0">
-          <v-table width="100%">
-            <tbody>
-              <tr>
-                <td
-                  style="white-space: break-spaces"
-                  @keyup="saveSelection($event)"
-                  @click="saveSelection($event)"
-                  @paste="handlePaste"
-                  @focusout="updateStepDescription($event, index)"
-                  :contenteditable="!readonly"
-                  class="text-center"
-                  v-html="item.description"
-                ></td>
-              </tr>
-            </tbody> </v-table
-        ></v-card>
-      </v-col>
-      <v-col
-        v-if="!readonly && selection && index === selectedRowIndex"
-        cols="auto"
-        class="justify-center align-center"
-      >
-        <v-card flat>
-          <div class="text-right">
-            <v-row no-gutters>
-              <v-col cols="4"
-                ><v-menu
-                  v-if="selection && index === selectedRowIndex"
-                  :close-on-content-click="false"
-                  location="bottom"
-                >
-                  <template v-slot:activator="{ props: menu }">
-                    <v-tooltip location="top">
-                      <span
-                        :style="{
-                          color: $vuetify.theme.current.colors.primary,
-                        }"
-                        >Add icon at current selection or cursor position</span
-                      >
-                      <template v-slot:activator="{ props: tooltip }">
-                        <v-btn
-                          icon="mdi-image-plus"
-                          color="accent"
-                          v-bind="mergeProps(menu, tooltip)"
-                          variant="text"
-                        ></v-btn>
-                      </template>
-                    </v-tooltip>
-                  </template>
-                  <v-card flat rounded="lg" class="mt-4" width="350px">
-                    <IconSelector
-                      @iconSelected="
-                        (iconPath, tooltip, iconClass) =>
-                          handleIconSelectorIconSelected(iconPath, tooltip, iconClass)
-                      "
-                      :civ="civ"
-                    ></IconSelector>
-                  </v-card> </v-menu
-              ></v-col>
-              <v-col cols="4"
-                ><v-tooltip location="top">
-                  <span
-                    :style="{
-                      color: $vuetify.theme.current.colors.primary,
-                    }"
-                    >Remove current step (ALT + DEL)</span
-                  >
-                  <template v-slot:activator="{ props }">
-                    <v-btn
-                      v-bind="props"
-                      v-if="index === hoverRowIndex"
-                      variant="text"
-                      color="accent"
-                      @click="
-                        removeStepConfirmationDialog = true;
-                        delteRowIndex = index;
-                      "
-                      icon="mdi-delete"
-                    >
-                    </v-btn>
-                  </template> </v-tooltip
-              ></v-col>
-              <v-col cols="4"
-                ><v-tooltip location="top">
-                  <span
-                    :style="{
-                      color: $vuetify.theme.current.colors.primary,
-                    }"
-                    >Add new step below (ALT + ENTER)</span
-                  >
-                  <template v-slot:activator="{ props }">
-                    <v-btn
-                      v-bind="props"
-                      v-show="index === hoverRowIndex"
-                      variant="text"
-                      color="accent"
-                      @click="addStep(index)"
-                      icon="mdi-plus"
-                    >
-                    </v-btn>
-                  </template> </v-tooltip></v-col
-            ></v-row></div
-        ></v-card>
-      </v-col>
-    </v-row>
-    <!-- Edit-mode gameplan -->
-    <v-row no-gutters v-if="gameplan && !readonly">
-      <v-col cols="12" class="px-2 my-2 justify-center align-center">
-        <v-card flat rounded="0">
-          <v-table width="100%" style="border: none">
-            <tbody>
-              <tr style="border: none">
-                <td class="text-center gameplanHeader" style="border: none">
-                  <v-tooltip location="top">
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >Gameplan or notes for this build order section</span
-                    >
-                    <template v-slot:activator="{ props }">
-                      <span v-bind="props"
-                        >Notes
-                        <v-icon color="accent" class="mx-auto titleIcon"
-                          >mdi-information-outline</v-icon
-                        ></span
-                      >
-                    </template>
-                  </v-tooltip>
-                </td>
-              </tr>
-              <tr style="border: none">
-                <td
-                  style="white-space: break-spaces; border: none"
-                  class="text-center"
-                  v-html="gameplan"
-                ></td>
-              </tr>
-            </tbody> </v-table
-        ></v-card>
-      </v-col>
-    </v-row>
+                :contenteditable="true"
+                class="slot-val slot-val-edit"
+                v-html="item.stone ? item.stone : ''"
+              ></span>
+            </div>
+          </div>
+          <!-- Description field -->
+          <div class="step-desc-col-xs">
+            <div
+              @keyup="saveSelection($event)"
+              @click="saveSelection($event)"
+              @paste="handlePaste"
+              @focusout="updateStepDescription($event, index)"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
+              :contenteditable="true"
+              class="step-desc-xs step-desc-edit-xs"
+              v-html="item.description"
+            ></div>
+          </div>
+          <!-- Action row: add-icon only (desc focus) — always in DOM, no CLS -->
+          <div class="step-action-row-xs">
+            <v-menu :close-on-content-click="false" location="bottom">
+              <template v-slot:activator="{ props: menu }">
+                <v-btn
+                  size="x-small"
+                  variant="text"
+                  color="accent"
+                  v-bind="menu"
+                  @mousedown.prevent="saveSelection($event)"
+                  icon="mdi-image-plus"
+                  class="step-icon-btn-xs"
+                ></v-btn>
+              </template>
+              <v-card flat rounded="lg" class="mt-4" width="350px">
+                <IconSelector
+                  @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
+                  :civ="civ"
+                ></IconSelector>
+              </v-card>
+            </v-menu>
+          </div>
+        </div>
+        <!-- Insert after each card: addStep(index) = insert immediately after card at this index -->
+        <div class="step-insert-xs" @click.stop="addStep(index)">
+          <div class="step-insert-line-xs"></div>
+          <span class="step-insert-circle-xs">+</span>
+          <div class="step-insert-line-xs"></div>
+        </div>
+        </template><!-- end v-for step -->
+        <!-- Notes card inside container — gets the same 8px gap as step cards -->
+        <div class="gameplan-card-xs">
+          <div class="gameplan-header-xs">
+            <v-icon size="13" color="accent">mdi-information-outline</v-icon>
+            <span>Notes</span>
+          </div>
+          <div
+            @paste="handlePaste"
+            @focusout="updateSectionGameplan($event)"
+            @mouseover="handleMouseOver($event)"
+            @mouseout="handleMouseOut($event)"
+            :contenteditable="true"
+            class="step-desc-xs step-desc-edit-xs"
+            v-html="gameplan"
+          ></div>
+        </div>
+      </div>
     </template><!-- end edit-mode -->
 
     <!-- Readonly viewer: 5-slot step cards -->
@@ -401,7 +266,7 @@
             <div style="flex:1"></div>
             <div class="step-pop-xs">
               <img src="/assets/resources/villager.webp" />
-              <span>{{ aggregateVillagers(item) }}</span>
+              <span>{{ aggregateVillagers(item) || '–' }}</span>
             </div>
           </div>
           <!-- 5-slot resource grid: Builder · Food · Wood · Gold · Stone -->
@@ -436,15 +301,20 @@
             @mouseout="handleMouseOut($event)"
           ></div>
         </div>
+        <!-- Notes card inside container — gets the same 8px gap as step cards -->
+        <div v-if="gameplan" class="gameplan-card-xs">
+          <div class="gameplan-header-xs">
+            <v-icon size="13" color="accent">mdi-information-outline</v-icon>
+            <span>Notes</span>
+          </div>
+          <div
+            class="step-desc-xs"
+            v-html="gameplan"
+            @mouseover="handleMouseOver($event)"
+            @mouseout="handleMouseOut($event)"
+          ></div>
+        </div>
       </div>
-      <!-- Section gameplan / notes (readonly) -->
-      <div
-        v-if="gameplan"
-        class="px-4 pb-4 step-desc-xs text-caption text-medium-emphasis"
-        v-html="gameplan"
-        @mouseover="handleMouseOver($event)"
-        @mouseout="handleMouseOut($event)"
-      ></div>
     </template><!-- end readonly viewer -->
   </v-card>
 
@@ -832,6 +702,8 @@ export default {
     const steps = reactive(JSON.parse(JSON.stringify(props.section.steps)));
     const stepsCopy = reactive(JSON.parse(JSON.stringify(props.section.steps)));
     const readonly = props.readonly;
+    // Monotonic counter for stable v-for keys — never persisted, client-side only.
+    let _nextStepId = Date.now();
     const hoverRowIndex = ref(null);
     const selectedRowIndex = ref(null);
     const delteRowIndex = ref(null);
@@ -903,6 +775,13 @@ export default {
     }
 
     onMounted(async () => {
+      // Assign stable IDs to all existing steps so the v-for key is never index-based.
+      steps.forEach((s, i) => {
+        const id = ++_nextStepId;
+        s._id = id;
+        stepsCopy[i]._id = id;
+      });
+
       //Sanitize since inline icon replacement only works with <br>, NOT with \n, replace PNG by WEBP
       steps.forEach((element) => {
         element.description = element.description
@@ -1047,8 +926,10 @@ export default {
       context.emit("stepsChanged", steps);
     };
 
-    const updateSectionGameplan = () => {
-      gameplanCopy.value = gameplanContentEditable.value.innerHTML;
+    const updateSectionGameplan = (event) => {
+      gameplanCopy.value = event
+        ? event.target.innerHTML
+        : (gameplanContentEditable.value?.innerHTML ?? '');
       context.emit("gameplanChanged", gameplanCopy.value);
     };
 
@@ -1059,14 +940,21 @@ export default {
     const addStep = (index) => {
       var table = stepsTable.value;
       if (table) {
-        //Pull display text into model
+        //Pull display text into model (desktop)
         for (var i = 0, row; (row = table.rows[i]); i++) {
           steps[i].description = row.cells[descriptionColumnIndex].innerHTML;
+        }
+      } else {
+        // Mobile: stepsCopy holds the user-typed descriptions; sync them into steps
+        // so Vue can diff cards correctly after the splice and update DOM positions.
+        for (var i = 0; i < steps.length; i++) {
+          steps[i].description = stepsCopy[i].description;
         }
       }
 
       //Add row
       const addIndex = index + 1;
+      const newId = ++_nextStepId;
       stepsCopy.splice(addIndex, 0, {
         time: "",
         villagers: "",
@@ -1076,6 +964,7 @@ export default {
         gold: "",
         stone: "",
         description: "",
+        _id: newId,
       });
       steps.splice(addIndex, 0, {
         time: "",
@@ -1086,6 +975,7 @@ export default {
         gold: "",
         stone: "",
         description: "",
+        _id: newId,
       });
 
       if (table) {
@@ -1100,9 +990,14 @@ export default {
     const removeStep = (currentIndex) => {
       var table = stepsTable.value;
       if (table) {
-        //Pull display text into model
+        //Pull display text into model (desktop)
         for (var i = 0, row; (row = table.rows[i]); i++) {
           steps[i].description = row.cells[descriptionColumnIndex].innerHTML;
+        }
+      } else {
+        // Mobile: sync descriptions from stepsCopy so Vue can diff after splice
+        for (var i = 0; i < steps.length; i++) {
+          steps[i].description = stepsCopy[i].description;
         }
       }
 
@@ -1496,5 +1391,152 @@ td:empty {
   width: 28px !important;
   height: 28px !important;
   object-fit: cover;
+}
+
+/* ── Mobile xs edit-mode additions ── */
+
+/* Editable timestamp span inside the time pill */
+.step-time-input {
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  min-width: 44px;
+  cursor: text;
+  border-radius: 3px;
+  padding: 1px 2px;
+  transition: background 0.12s;
+}
+.step-time-input:focus {
+  background: rgba(var(--v-theme-accent), 0.15);
+  outline: 1px solid rgba(var(--v-theme-accent), 0.45);
+}
+
+/* Editable slot value — fills the slot cell like the readonly span */
+.slot-val-edit {
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  cursor: text;
+  min-height: 1em;
+  display: block;
+  min-width: 20px;
+  border-radius: 3px;
+  padding: 1px 2px;
+  transition: background 0.12s;
+}
+.slot-val-edit:focus {
+  background: rgba(var(--v-theme-accent), 0.15);
+  outline: 1px solid rgba(var(--v-theme-accent), 0.45);
+}
+
+/* Empty edit-mode slots: less opacity reduction so they remain easy to tap */
+.slot-xs.slot-edit.slot-empty {
+  opacity: 0.6;
+}
+
+/* ✕ remove button */
+.step-remove-xs {
+  margin-left: 2px;
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+/* Description column */
+.step-desc-col-xs {
+  margin-top: 8px;
+}
+
+/* Edit-mode description field */
+.step-desc-edit-xs {
+  background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+  cursor: text;
+  min-height: 24px;
+  border-radius: 6px;
+  padding: 4px 6px;
+  transition: background 0.12s;
+}
+.step-desc-edit-xs:focus {
+  background: rgba(var(--v-theme-accent), 0.06);
+  outline: 1px solid rgba(var(--v-theme-accent), 0.35);
+}
+
+/* Action row: add-icon only, right-aligned, always in DOM (no CLS) */
+.step-action-row-xs {
+  display: flex;
+  justify-content: flex-end;
+  height: 28px;
+  margin-top: 2px;
+}
+
+/* Add-icon button: fades in only when description field has focus */
+.step-icon-btn-xs {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s;
+}
+.step-desc-col-xs:focus-within ~ .step-action-row-xs .step-icon-btn-xs {
+  opacity: 0.75;
+  pointer-events: auto;
+}
+
+/* Between-card insert divider — 44px tall for reliable mobile tap target */
+.step-insert-xs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  cursor: pointer;
+  opacity: 0.35;
+  transition: opacity 0.15s;
+}
+.step-insert-xs:hover,
+.step-insert-xs:active {
+  opacity: 1;
+}
+.step-insert-line-xs {
+  flex: 1;
+  border-top: 1.5px dashed rgba(var(--v-theme-accent), 0.8);
+}
+.step-insert-circle-xs {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(var(--v-theme-accent), 0.18);
+  color: rgb(var(--v-theme-accent));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  flex-shrink: 0;
+  line-height: 1;
+  user-select: none;
+}
+
+
+/* Gameplan/notes card — same surface and padding as step cards */
+.gameplan-card-xs {
+  background: rgb(var(--v-theme-surface-container));
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: none;
+}
+
+/* Notes card label row */
+.gameplan-header-xs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--v-theme-accent));
+  margin-bottom: 6px;
 }
 </style>
