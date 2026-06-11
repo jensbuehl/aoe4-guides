@@ -1515,13 +1515,13 @@ td:empty {
 }
 .step-insert-line-xs {
   flex: 1;
-  border-top: 1px dashed rgba(var(--v-theme-accent), 0.35);
+  border-top: 1px dashed rgba(var(--v-theme-accent), 0.70);
 }
 .step-insert-circle-xs {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: rgba(var(--v-theme-accent), 0.18);
+  background: rgba(var(--v-theme-accent), 0.50);
   color: rgb(var(--v-theme-accent));
   display: flex;
   align-items: center;
