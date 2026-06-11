@@ -136,15 +136,16 @@
         <v-icon size="16" color="accent">mdi-youtube</v-icon>
         <span class="text-caption text-uppercase font-weight-bold">Video</span>
       </div>
-      <div align="center">
-        <iframe
-          width="100%"
-          height="250px"
-          :src="build.video"
-          frameborder="0"
-          class="mb-3"
-          allowfullscreen
-        ></iframe>
+      <div class="px-4 pb-4">
+        <div style="border-radius: 8px; overflow: hidden; aspect-ratio: 16/9">
+          <iframe
+            width="100%"
+            height="100%"
+            :src="build.video"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
       </div>
     </v-card>
 
