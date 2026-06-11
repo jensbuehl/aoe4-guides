@@ -1,15 +1,15 @@
 <template>
   <!--Common delete confirmation dialog-->
-  <v-dialog v-model="removeAgeConfirmationDialog" width="auto">
+  <v-dialog v-model="removeAgeConfirmationDialog" width="auto" @keydown.enter="ageDown()">
     <v-card rounded="lg" class="text-center primary" flat>
-      <v-card-title>Regress to {{ getPreviousAgeName() }}</v-card-title>
+      <v-card-title>Age down to {{ getPreviousAgeName() }}?</v-card-title>
       <v-card-text>
-        Are you sure you want to turn back the clock to {{ getPreviousAgeName() }} and erase all the
-        progress and build order steps?<br />
-        Please confirm your decision carefully. The action cannot be undone.
+        This removes the age-up and all steps that follow.<br />
+        The action cannot be undone.
       </v-card-text>
-      <v-card-actions>
-        <v-btn color="error" block @click="ageDown()">Delete</v-btn>
+      <v-card-actions class="justify-center ga-2">
+        <v-btn variant="text" @click="removeAgeConfirmationDialog = false">Cancel</v-btn>
+        <v-btn color="error" variant="tonal" @click="ageDown()">Age down</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -53,10 +53,12 @@
             "
             @stepsChanged="(steps) => handleStepsChanged(steps, index)"
             @gameplanChanged="(gameplan) => handleGameplanChanged(gameplan, index)"
+            @ageDownRequested="removeAgeConfirmationDialog = true"
             :section="section"
             :readonly="readonly"
             :civ="civ"
             :focus="sectionFocus == index"
+            :isLastAgeUp="section.type === 'ageUp' && index === sections.length - 2"
           ></BuildOrderSectionEditor>
         </div>
         <v-row no-gutters justify="center" class="ma-4">
@@ -78,7 +80,7 @@
             v-if="sections[0]?.steps && !readonly && getCurrentAge() >= 1 && sections[0]?.age > 0"
             variant="text"
             color="accent"
-            class="ma-2"
+            class="ma-2 d-none d-md-flex"
             @click="removeAgeConfirmationDialog = true"
             ><v-img
               class="mr-2"

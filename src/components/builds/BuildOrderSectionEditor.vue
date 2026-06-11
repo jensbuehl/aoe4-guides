@@ -37,61 +37,39 @@
     :pos="autocompletePos"
   ></IconAutoCompleteMenu>
 
-  <!--Mobile UI (XS)-->
-  <v-card rounded="lg" class="mt-4 hidden-sm-and-up" flat>
-    <v-row no-gutters align="center" justify="center">
-      <v-col cols="12">
-        <v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
-          <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon>
-            <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-            Age up to Feudal Age</v-row
-          ></v-card-title
-        ><v-card-title v-if="section.age == 2 && section.type == 'age'">
-          <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon
-            >Feudal Age</v-row
-          ></v-card-title
-        ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
-          <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon>
-            <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-            Age up to Castle Age</v-row
-          ></v-card-title
-        ><v-card-title v-if="section.age == 3 && section.type == 'age'">
-          <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon
-            >Castle Age</v-row
-          ></v-card-title
-        ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
-          <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-            ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon>
-            <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-            Age up to Imperial Age</v-row
-          ></v-card-title
-        ><v-card-title v-if="section.age == 4 && section.type == 'age'">
-          <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-            <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon
-            >Imperial Age</v-row
-          ></v-card-title
-        >
-      </v-col>
-      <div v-if="!steps?.length && !readonly" class="text-center">
-        <v-btn variant="text" color="primary" class="pt-5 pb-10" @click="addStep(0)">
-          <template v-slot:prepend>
-            <v-icon color="accent">mdi-plus</v-icon>
-          </template>
-          Add your first build step</v-btn
-        >
-      </div>
-    </v-row>
+  <!--Mobile UI (XS) — bracketed age lane design -->
+  <div
+    class="hidden-sm-and-up"
+    :class="section.type === 'ageUp' ? 'age-bracket-xs mt-2' : 'pt-1'"
+  >
+    <!-- ageUp section: age-up row (same pill style as arrival plate) -->
+    <div v-if="section.type === 'ageUp'" class="age-ageup-row-xs">
+      <v-icon color="accent" size="16">mdi-arrow-up-bold</v-icon>
+      <span class="age-ageup-lbl-xs">Aging up to {{ targetAgeName }}</span>
+      <div style="flex:1"></div>
+      <v-btn
+        v-if="!readonly && isLastAgeUp"
+        icon
+        size="x-small"
+        variant="text"
+        class="step-remove-xs"
+        @click.stop="$emit('ageDownRequested')"
+      ><v-icon size="14">mdi-close</v-icon></v-btn>
+    </div>
+    <!-- empty section prompt -->
+    <div v-if="!steps?.length && !readonly" class="text-center py-5">
+      <v-btn variant="text" color="primary" @click="addStep(0)">
+        <template v-slot:prepend><v-icon color="accent">mdi-plus</v-icon></template>
+        Add your first build step
+      </v-btn>
+    </div>
     <template v-if="!readonly">
       <!-- Step cards (mobile edit) -->
       <div class="xs-steps-container">
         <!-- Insert point before the very first card (prepend) -->
         <div v-if="steps?.length" class="step-insert-xs" @click.stop="addStep(-1)">
           <div class="step-insert-line-xs"></div>
-          <span class="step-insert-circle-xs">+</span>
+          <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
           <div class="step-insert-line-xs"></div>
         </div>
         <template v-for="(item, index) in steps" :key="item._id ?? ('xs-edit-' + index)">
@@ -226,7 +204,7 @@
         <!-- Insert after each card: addStep(index) = insert immediately after card at this index -->
         <div class="step-insert-xs" @click.stop="addStep(index)">
           <div class="step-insert-line-xs"></div>
-          <span class="step-insert-circle-xs">+</span>
+          <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
           <div class="step-insert-line-xs"></div>
         </div>
         </template><!-- end v-for step -->
@@ -316,7 +294,12 @@
         </div>
       </div>
     </template><!-- end readonly viewer -->
-  </v-card>
+  <!-- arrival plate closes the ageUp bracket -->
+  <div v-if="section.type === 'ageUp'" class="age-arrival-plate-xs">
+    <img :src="targetAgeImg" class="age-arrival-icon-xs" />
+    <span class="age-arrival-text-xs">{{ targetAgeName }} reached</span>
+  </div>
+</div>
 
   <!--Desktop UI-->
   <v-card flat rounded="lg" class="mt-4 hidden-xs">
@@ -674,7 +657,7 @@
 
 <script>
 //External
-import { watch, ref, reactive, mergeProps, onMounted, nextTick } from "vue";
+import { watch, ref, reactive, computed, mergeProps, onMounted, nextTick } from "vue";
 
 //Components
 import IconSelector from "@/components/builds/IconSelector.vue";
@@ -693,10 +676,14 @@ import {
 
 export default {
   name: "BuildOrderSectioncontentEditable",
-  props: ["section", "readonly", "civ", "focus"],
-  emits: ["stepsChanged", "selectionChanged", "textChanged", "gameplanChanged"],
+  props: ["section", "readonly", "civ", "focus", "isLastAgeUp"],
+  emits: ["stepsChanged", "selectionChanged", "textChanged", "gameplanChanged", "ageDownRequested"],
   components: { IconSelector, IconAutoCompleteMenu, IconToolTip },
   setup(props, context) {
+    const AGE_NAMES = { 1: "Feudal Age", 2: "Castle Age", 3: "Imperial Age" };
+    const targetAgeName = computed(() => AGE_NAMES[props.section.age] ?? "");
+    const targetAgeImg = computed(() => `/assets/pictures/age/age_${props.section.age + 1}.webp`);
+
     //Hacky deep copy of object since working on the reference broke the current selection
     //Copy needs to be kept in sync and is used only for the description field :(
     const steps = reactive(JSON.parse(JSON.stringify(props.section.steps)));
@@ -1091,6 +1078,9 @@ export default {
       gameplanSelected,
       updateSectionGameplan,
       gameplanContentEditable,
+      // Age bracket
+      targetAgeName,
+      targetAgeImg,
     };
   },
 };
@@ -1489,7 +1479,7 @@ td:empty {
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 44px;
+  height: 16px;
   cursor: pointer;
   opacity: 0.35;
   transition: opacity 0.15s;
@@ -1500,22 +1490,71 @@ td:empty {
 }
 .step-insert-line-xs {
   flex: 1;
-  border-top: 1.5px dashed rgba(var(--v-theme-accent), 0.8);
+  border-top: 1px dashed rgba(var(--v-theme-accent), 0.35);
 }
 .step-insert-circle-xs {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   background: rgba(var(--v-theme-accent), 0.18);
   color: rgb(var(--v-theme-accent));
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 16px;
-  font-weight: 700;
   flex-shrink: 0;
-  line-height: 1;
   user-select: none;
+}
+
+/* ── Age bracket lane (mobile xs only) ────────────────────────────────────── */
+.age-bracket-xs {
+  position: relative;
+}
+.age-bracket-xs::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: rgba(var(--v-theme-accent), 0.55);
+  border-radius: 2px;
+}
+.age-ageup-row-xs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 16px 8px;
+  padding: 0 10px 0 14px;
+  height: 42px;
+  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.14) 0%, rgba(var(--v-theme-accent), 0.04) 100%);
+  border-radius: 10px;
+}
+.age-ageup-lbl-xs {
+  font-size: 13px;
+  font-weight: 700;
+  color: rgb(var(--v-theme-accent));
+}
+.age-arrival-plate-xs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 16px 4px;
+  padding: 0 14px;
+  height: 42px;
+  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.14) 0%, rgba(var(--v-theme-accent), 0.04) 100%);
+  border-radius: 10px;
+}
+.age-arrival-icon-xs {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.age-arrival-text-xs {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: rgb(var(--v-theme-accent));
 }
 
 
