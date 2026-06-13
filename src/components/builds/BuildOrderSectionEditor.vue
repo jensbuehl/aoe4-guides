@@ -1217,9 +1217,6 @@ export default {
   user-select: none;
 }
 
-.age-lane-md {
-  box-shadow: inset 3px 0 0 rgba(var(--v-theme-accent), 0.65);
-}
 
 /* Age-up marker — desktop (arrow only, gold card) */
 .age-marker-md {
