@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <!--Common delete confirmation dialog-->
   <v-dialog v-model="removeStepConfirmationDialog" width="auto" @keydown.enter="removeStep(delteRowIndex)">
     <v-card rounded="lg" class="text-center primary" flat>
@@ -333,7 +333,7 @@
       <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
       <span class="age-marker-lbl-md">Age up to {{ targetAgeName }}</span>
       <span style="flex:1"></span>
-      <v-btn v-if="!readonly && isLastAgeUp" icon size="small" variant="text" class="row-x" @click.stop="$emit('ageDownRequested')"><v-icon size="16">mdi-close</v-icon></v-btn>
+      <v-btn v-if="!readonly && isLastAgeUp" icon size="x-small" variant="text" class="row-x" @click.stop="$emit('ageDownRequested')"><v-icon size="14">mdi-close</v-icon></v-btn>
     </div>
     <v-table
       v-if="steps?.length"
@@ -483,33 +483,25 @@
             ></td>
             <td v-if="!readonly" class="step-actions" style="width:90px">
               <div class="step-actions-inner">
-                <v-dialog max-width="700">
-                  <template v-slot:activator="{ props: dialog }">
+                <v-menu :close-on-content-click="false" max-width="700" location="bottom end">
+                  <template v-slot:activator="{ props: menu }">
                     <v-btn
-                      v-show="focusedDescIndex === index"
-                      v-bind="dialog"
+                      v-bind="menu"
                       icon="mdi-image-plus"
                       color="accent"
                       variant="text"
                       size="small"
-                      class="step-action-icon"
+                      :class="['step-action-icon', focusedDescIndex !== index && 'step-action-icon--hidden']"
                       @mousedown.prevent="saveSelection($event)"
                     ></v-btn>
                   </template>
-                  <template v-slot:default="{ isActive }">
-                    <v-card flat rounded="lg">
-                      <IconSelector
-                        @iconSelected="
-                          (iconPath, tooltip, iconClass) => {
-                            handleIconSelectorIconSelected(iconPath, tooltip, iconClass);
-                            isActive.value = false;
-                          }
-                        "
-                        :civ="civ"
-                      ></IconSelector>
-                    </v-card>
-                  </template>
-                </v-dialog>
+                  <v-card flat rounded="lg">
+                    <IconSelector
+                      @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
+                      :civ="civ"
+                    ></IconSelector>
+                  </v-card>
+                </v-menu>
                 <v-btn
                   icon
                   size="small"
@@ -548,31 +540,25 @@
               v-html="gameplan"
             ></td>
             <td v-if="!readonly" class="text-right step-actions">
-              <v-dialog max-width="700">
-                <template v-slot:activator="{ props: dialog }">
+              <v-menu :close-on-content-click="false" max-width="700" location="bottom end">
+                <template v-slot:activator="{ props: menu }">
                   <v-btn
-                    v-show="focusedDescIndex === 'gameplan'"
-                    v-bind="dialog"
+                    v-bind="menu"
                     icon="mdi-image-plus"
                     color="accent"
                     variant="text"
                     size="small"
-                    class="step-action-icon"
+                    :class="['step-action-icon', focusedDescIndex !== 'gameplan' && 'step-action-icon--hidden']"
                     @mousedown.prevent="saveSelection($event)"
                   ></v-btn>
                 </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card flat rounded="lg">
-                    <IconSelector
-                      @iconSelected="(iconPath, tooltip, iconClass) => {
-                        handleIconSelectorIconSelected(iconPath, tooltip, iconClass);
-                        isActive.value = false;
-                      }"
-                      :civ="civ"
-                    ></IconSelector>
-                  </v-card>
-                </template>
-              </v-dialog>
+                <v-card flat rounded="lg">
+                  <IconSelector
+                    @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
+                    :civ="civ"
+                  ></IconSelector>
+                </v-card>
+              </v-menu>
             </td>
           </tr>
         </tbody>
@@ -852,14 +838,21 @@ export default {
     };
 
     const handleIconSelectorIconSelected = (iconPath, tooltipText, iconClass) => {
-      restoreSelection();
+      if (!selection.value) return;
       iconClass = iconClass ? "icon-" + iconClass : "icon";
 
-      const img =
-        '<img src="' + iconPath + '" class=' + iconClass + ' title="' + tooltipText + '"><\/img>';
+      const img = document.createElement('img');
+      img.src = iconPath;
+      img.className = iconClass;
+      img.title = tooltipText;
 
-      document.execCommand("insertHTML", false, img);
-      saveSelection();
+      // Insert at the saved cursor position without requiring focus in the contenteditable
+      const range = selection.value.cloneRange();
+      range.deleteContents();
+      range.insertNode(img);
+      range.setStartAfter(img);
+      range.collapse(true);
+      selection.value = range;
     };
 
     const updateStep = (event, index, propertyName) => {
@@ -928,13 +921,6 @@ export default {
         _id: newId,
       });
 
-      if (table) {
-        //Sync display text again with model
-        const stepRows = Array.from(table.querySelectorAll('tr.step-row'));
-        for (var i = 0; i < stepRows.length; i++) {
-          stepRows[i].cells[descriptionColumnIndex].innerHTML = steps[i].description;
-        }
-      }
       context.emit("stepsChanged", steps);
     };
 
@@ -1144,7 +1130,7 @@ export default {
 }
 /* Action column */
 .step-row td.step-actions {
-  padding-top: 12px !important;
+  padding-top: 7px !important;
   padding-bottom: 4px !important;
   padding-left: 4px !important;
   padding-right: 4px !important;
@@ -1234,7 +1220,7 @@ export default {
   align-items: center;
   gap: 8px;
   padding: 4px 12px;
-  min-height: 32px;
+  min-height: 40px;
   box-sizing: border-box;
   border-radius: 8px;
   background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.15), rgba(var(--v-theme-accent), 0.03));
@@ -1257,7 +1243,7 @@ export default {
   align-items: center;
   gap: 10px;
   padding: 4px 12px;
-  min-height: 32px;
+  min-height: 40px;
   box-sizing: border-box;
   border-radius: 8px;
   background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.15), rgba(var(--v-theme-accent), 0.03));
@@ -1297,14 +1283,14 @@ export default {
   height: 2px;
   transform: translateY(-50%);
   background: rgb(var(--v-theme-accent));
-  opacity: 0; transition: opacity 0.12s;
+  opacity: 0; transition: opacity 0.18s;
   pointer-events: none;
 }
 .ins-btn {
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0; transition: opacity 0.12s;
+  opacity: 0; transition: opacity 0.18s;
   background: rgb(var(--v-theme-accent));
   color: rgb(var(--v-theme-surface));
   border: none; cursor: pointer;
@@ -1315,8 +1301,15 @@ export default {
   z-index: 1;
   line-height: 1.5;
 }
-.ins-zone:hover .ins-line { opacity: 1; }
-.ins-zone:hover .ins-btn { opacity: 1; }
+/* fade IN: delay on enter to avoid flicker; fade OUT: no delay (base transition) */
+.ins-zone:hover .ins-line { opacity: 1; transition: opacity 0.2s 0.15s; }
+.ins-zone:hover .ins-btn  { opacity: 1; transition: opacity 0.2s 0.15s; }
+
+/* Add-icon button — always in DOM for correct menu positioning; hidden via opacity when not focused */
+.step-action-icon--hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
 
 /* Row delete button — always in DOM, revealed on row hover */
 .row-x {
@@ -1349,6 +1342,13 @@ export default {
 .bo-noterow td[contenteditable="true"]:empty::before {
   content: 'Add a note for this section...';
   color: rgba(var(--v-theme-on-surface), 0.3);
+  pointer-events: none;
+}
+
+/* Step description placeholder — hints :: shortcut */
+.step-row td.contentEditable[contenteditable="true"]:empty::before {
+  content: 'Describe this step... (type :: to add icons inline)';
+  color: rgba(var(--v-theme-on-surface), 0.25);
   pointer-events: none;
 }
 
