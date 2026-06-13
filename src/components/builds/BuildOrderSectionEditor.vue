@@ -332,6 +332,8 @@
     <div v-if="section.type === 'ageUp'" class="age-marker-md mx-4 mt-0 mb-0">
       <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
       <span class="age-marker-lbl-md">Age up to {{ targetAgeName }}</span>
+      <span style="flex:1"></span>
+      <button v-if="!readonly && isLastAgeUp" class="row-x" @click.stop="$emit('ageDownRequested')"><span class="mdi mdi-close"></span></button>
     </div>
     <v-table
       v-if="steps?.length"
@@ -388,11 +390,11 @@
         </thead>
         <tbody ref="stepsTable">
           <tr v-if="!readonly && !steps.length" class="ins-row">
-            <td :colspan="9" class="ins-row-cell" @click="addStep(-1)"><div class="ins-line"></div></td>
+            <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(-1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
           </tr>
           <template v-for="(item, index) in steps" :key="item._id ?? index">
           <tr v-if="!readonly" class="ins-row">
-            <td :colspan="9" class="ins-row-cell" @click="addStep(index - 1)"><div class="ins-line"></div></td>
+            <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(index - 1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
           </tr>
           <tr
             :class="['step-row', section.type === 'ageUp' && 'age-lane-md']"
@@ -424,50 +426,51 @@
                 <span v-if="item.builders" :class="['rc-pill rc-builders', hasDeltaUp('builders', index) && 'd-up']">{{ item.builders }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.builders" placeholder="–"
+              <input v-else type="text" maxlength="2" :value="item.builders"
                 @input="updateStep($event, index, 'builders')" @paste="handlePaste"
-                :class="item.builders ? ['rc-pill','rc-builders','rc-input', hasDeltaUp('builders',index) && 'd-up'] : 'rc-empty-input'" />
+                :class="item.builders ? ['rc-pill','rc-builders','rc-input', hasDeltaUp('builders',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
                 <span v-if="item.food" :class="['rc-pill rc-food', hasDeltaUp('food', index) && 'd-up']">{{ item.food }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.food" placeholder="–"
+              <input v-else type="text" maxlength="2" :value="item.food"
                 @input="updateStep($event, index, 'food')" @paste="handlePaste"
-                :class="item.food ? ['rc-pill','rc-food','rc-input', hasDeltaUp('food',index) && 'd-up'] : 'rc-empty-input'" />
+                :class="item.food ? ['rc-pill','rc-food','rc-input', hasDeltaUp('food',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
                 <span v-if="item.wood" :class="['rc-pill rc-wood', hasDeltaUp('wood', index) && 'd-up']">{{ item.wood }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.wood" placeholder="–"
+              <input v-else type="text" maxlength="2" :value="item.wood"
                 @input="updateStep($event, index, 'wood')" @paste="handlePaste"
-                :class="item.wood ? ['rc-pill','rc-wood','rc-input', hasDeltaUp('wood',index) && 'd-up'] : 'rc-empty-input'" />
+                :class="item.wood ? ['rc-pill','rc-wood','rc-input', hasDeltaUp('wood',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
                 <span v-if="item.gold" :class="['rc-pill rc-gold', hasDeltaUp('gold', index) && 'd-up']">{{ item.gold }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.gold" placeholder="–"
+              <input v-else type="text" maxlength="2" :value="item.gold"
                 @input="updateStep($event, index, 'gold')" @paste="handlePaste"
-                :class="item.gold ? ['rc-pill','rc-gold','rc-input', hasDeltaUp('gold',index) && 'd-up'] : 'rc-empty-input'" />
+                :class="item.gold ? ['rc-pill','rc-gold','rc-input', hasDeltaUp('gold',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
                 <span v-if="item.stone" :class="['rc-pill rc-stone', hasDeltaUp('stone', index) && 'd-up']">{{ item.stone }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.stone" placeholder="–"
+              <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" maxlength="2" :value="item.stone"
                 @input="updateStep($event, index, 'stone')" @paste="handlePaste"
-                :class="item.stone ? ['rc-pill','rc-stone','rc-input', hasDeltaUp('stone',index) && 'd-up'] : 'rc-empty-input'" />
+                :class="item.stone ? ['rc-pill','rc-stone','rc-input', hasDeltaUp('stone',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td
               @input="showAutoCompleteMenu($event, index)"
               @keyup="handleContentEditableKeyUp($event, index)"
-              @keydown.tab.prevent="timestampRefs[index + 1]?.focus()"
+              @keydown.tab.exact.prevent="timestampRefs[index + 1]?.focus()"
+              @keydown.shift.tab.prevent="stoneInputRefs[index]?.focus()"
               @click="saveSelection"
               @paste="handlePaste"
               @focusin="focusedDescIndex = index"
@@ -515,98 +518,60 @@
           </template>
           <!-- Trailing insert row after last step -->
           <tr v-if="!readonly && steps.length" class="ins-row">
-            <td :colspan="9" class="ins-row-cell" @click="addStep(steps.length - 1)"><div class="ins-line"></div></td>
+            <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(steps.length - 1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
           </tr>
-          <!-- Section note row — view mode; edit mode is handled by the gameplan table below -->
-          <tr v-if="gameplan && readonly" :class="['bo-noterow', section.type === 'ageUp' && 'age-lane-md']">
-            <td class="py-1 pl-0 pr-0 text-center" style="width:36px">
-              <v-icon size="16" class="mb-1" color="accent">mdi-information-outline</v-icon>
+          <!-- Section note row — read: only if has content; edit: always shown -->
+          <tr v-if="(gameplan && readonly) || !readonly" :class="['bo-noterow', section.type === 'ageUp' && 'age-lane-md']">
+            <td class="py-1 text-center">
+              <v-icon size="16" color="accent">mdi-information-outline</v-icon>
             </td>
-            <td :colspan="7" class="py-1 px-2" v-html="gameplan"></td>
-          </tr>
-        </tbody>
-      </v-table>
-      <v-table
-        v-if="!readonly"
-        class="mx-4"
-        :class="readonly ? 'my-4' : ''"
-        style="border-radius: 0"
-        :style="
-          !readonly
-            ? 'border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity)); '
-            : ''
-        "
-      >
-        <tbody>
-          <tr class="mx-4 py-8" @focusin="$emit('selectionChanged')" @mousedown="selectStep()">
-            <td style="width: 150px" class="gameplanHeader">
-              <v-tooltip location="top">
-                <span
-                  :style="{
-                    color: $vuetify.theme.current.colors.primary,
-                  }"
-                  >Gameplan or notes for this build order section</span
-                >
-                <template v-slot:activator="{ props }">
-                  <span v-bind="props">
-                    <v-icon color="accent" class="mx-auto titleIcon"
-                      >mdi-information-outline</v-icon
-                    ></span
-                  >
-                </template>
-              </v-tooltip>
-            </td>
+            <td v-if="readonly" :colspan="7" class="py-1 px-2" v-html="gameplan"></td>
             <td
+              v-else
               ref="gameplanContentEditable"
               @input="showAutoCompleteMenu($event)"
               @keyup="handleContentEditableKeyUp($event)"
               @click="saveSelection($event)"
               @paste="handlePaste"
-              @focusout="updateSectionGameplan()"
+              @focusin="focusedDescIndex = 'gameplan'"
+              @focusout="updateSectionGameplan(); focusedDescIndex = null"
               @mouseover="handleMouseOver($event)"
               @mouseout="handleMouseOut($event)"
-              :contenteditable="!readonly"
-              class="contentEditable text-left py-1"
+              contenteditable="true"
+              colspan="7"
+              class="contentEditable text-left py-1 px-2"
               v-html="gameplan"
             ></td>
-            <td v-if="!readonly" style="width: 180px" class="text-right">
-              <v-menu
-                v-if="selection && gameplanSelected"
-                :close-on-content-click="false"
-                location="bottom"
-              >
-                <template v-slot:activator="{ props: menu }">
-                  <v-tooltip location="top">
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >Add icon at current selection or cursor position</span
-                    >
-                    <template v-slot:activator="{ props: tooltip }">
-                      <v-btn
-                        icon="mdi-image-plus"
-                        color="accent"
-                        v-bind="mergeProps(menu, tooltip)"
-                        variant="text"
-                      ></v-btn>
-                    </template>
-                  </v-tooltip>
+            <td v-if="!readonly" class="text-right step-actions">
+              <v-dialog max-width="700">
+                <template v-slot:activator="{ props: dialog }">
+                  <v-btn
+                    v-show="focusedDescIndex === 'gameplan'"
+                    v-bind="dialog"
+                    icon="mdi-image-plus"
+                    color="accent"
+                    variant="text"
+                    size="small"
+                    class="step-action-icon"
+                    @mousedown.prevent="saveSelection($event)"
+                  ></v-btn>
                 </template>
-                <v-card flat rounded="lg" class="mt-4" width="700px">
-                  <IconSelector
-                    @iconSelected="
-                      (iconPath, tooltip, iconClass) =>
-                        handleIconSelectorIconSelected(iconPath, tooltip, iconClass)
-                    "
-                    :civ="civ"
-                  ></IconSelector>
-                </v-card>
-              </v-menu>
+                <template v-slot:default="{ isActive }">
+                  <v-card flat rounded="lg">
+                    <IconSelector
+                      @iconSelected="(iconPath, tooltip, iconClass) => {
+                        handleIconSelectorIconSelected(iconPath, tooltip, iconClass);
+                        isActive.value = false;
+                      }"
+                      :civ="civ"
+                    ></IconSelector>
+                  </v-card>
+                </template>
+              </v-dialog>
             </td>
           </tr>
         </tbody>
-    </v-table>
+      </v-table>
     <!-- ageUp arrival plate — desktop -->
     <div v-if="section.type === 'ageUp' && targetAgeName" class="age-plate-md mx-4 mt-0 mb-0">
       <img :src="targetAgeImg" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;" alt="" />
@@ -670,6 +635,7 @@ export default {
     const selection = ref(null);
     const stepsTable = ref(null);
     const timestampRefs = ref([]);
+    const stoneInputRefs = ref([]);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
     const focusedDescIndex = ref(null);
@@ -784,6 +750,10 @@ export default {
 
     function registerTimestampRef(el, index) {
       if (el) timestampRefs.value[index] = el;
+    }
+
+    function registerStoneInputRef(el, index) {
+      if (el) stoneInputRefs.value[index] = el;
     }
 
     function hasDeltaUp(field, index) {
@@ -1030,6 +1000,8 @@ export default {
       stepsTable,
       timestampRefs,
       registerTimestampRef,
+      stoneInputRefs,
+      registerStoneInputRef,
       hasDeltaUp,
       hoverRowIndex,
       selectedRowIndex,
@@ -1160,6 +1132,10 @@ export default {
   padding-left: 4px !important;
   padding-right: 4px !important;
   vertical-align: middle !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
 }
 /* Villager count — plain text via v-html, needs its own vertical padding */
 .step-row td.aggregatedVillagers {
@@ -1200,21 +1176,13 @@ export default {
   cursor: text;
   padding: 0;
 }
-/* Edit-mode empty cell — faint dash, fills column */
-.rc-empty-input {
-  display: block;
-  width: 100%;
-  height: 28px;
-  line-height: 28px;
-  margin-top: 12px;
-  background: transparent;
-  border: none;
-  outline: none;
-  text-align: center;
-  font: inherit;
-  color: rgba(var(--v-theme-on-surface), 0.3);
-  padding: 0;
-  box-sizing: border-box;
+/* Edit-mode empty resource cell — ghost pill: same shape as filled pill, no fill */
+.rc-ghost {
+  background: transparent !important;
+  border-color: rgba(var(--v-theme-on-surface), 0.15) !important;
+}
+.rc-ghost:focus {
+  border-color: rgba(var(--v-theme-accent), 0.6) !important;
 }
 
 .rc-pill.d-up {
@@ -1281,29 +1249,47 @@ export default {
   letter-spacing: 0.2px;
 }
 
-/* Insert row — thin clickable strip between steps; gold line reveals on hover */
+/* Insert row — 0-height between steps; .ins-zone is absolutely placed to create hover zone */
 .ins-row-cell {
-  height: 2px;
+  height: 0;
   padding: 0 !important;
   border: none !important;
-  cursor: pointer;
   position: relative;
   overflow: visible;
 }
+.ins-zone {
+  position: absolute;
+  left: 0; right: 0;
+  top: -8px; height: 20px;
+  cursor: pointer;
+  z-index: 2;
+}
 .ins-line {
   position: absolute;
-  left: 8px;
-  right: 8px;
-  top: 0;
-  height: 2px;
-  border-radius: 1px;
-  background: rgb(var(--v-theme-accent));
-  opacity: 0;
-  transition: opacity 0.12s;
-  pointer-events: none;
+  left: 0; right: 0; top: 50%;
+  height: 1px;
   transform: translateY(-50%);
+  background: rgba(var(--v-border-color), var(--v-border-opacity));
+  opacity: 0; transition: opacity 0.12s;
+  pointer-events: none;
 }
-.ins-row-cell:hover .ins-line { opacity: 1; }
+.ins-btn {
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0; transition: opacity 0.12s;
+  background: rgb(var(--v-theme-accent));
+  color: rgb(var(--v-theme-surface));
+  border: none; cursor: pointer;
+  border-radius: 999px;
+  padding: 3px 16px;
+  font-size: 12px; font-weight: 700;
+  white-space: nowrap;
+  z-index: 1;
+  line-height: 1.5;
+}
+.ins-zone:hover .ins-line { opacity: 1; }
+.ins-zone:hover .ins-btn { opacity: 1; }
 
 /* Row delete button — always in DOM, revealed on row hover */
 .row-x {
@@ -1323,10 +1309,24 @@ export default {
   padding: 0;
 }
 .step-row:hover .row-x { opacity: 1; }
+.age-marker-md:hover .row-x { opacity: 1; }
 .row-x:hover { color: rgb(var(--v-theme-error)); background: rgba(var(--v-theme-error), 0.1); }
 
 .bo-noterow td {
   border-top: none;
+}
+.bo-noterow td[contenteditable="true"] {
+  background: rgba(0,0,0,0.18);
+  border-radius: 4px;
+}
+.bo-noterow td[contenteditable="true"]:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgb(var(--v-theme-accent));
+}
+.bo-noterow td[contenteditable="true"]:empty::before {
+  content: 'Add a note for this section...';
+  color: rgba(var(--v-theme-on-surface), 0.3);
+  pointer-events: none;
 }
 
 /* Remove bottom border from the last row (step-row or bo-noterow) to avoid doubling with card edge */

@@ -76,19 +76,6 @@
             >Age up to {{ getNextAgeName() }}
           </v-btn>
 
-          <v-btn
-            v-if="sections[0]?.steps && !readonly && getCurrentAge() >= 1 && sections[0]?.age > 0"
-            variant="text"
-            color="accent"
-            class="ma-2 d-none d-md-flex"
-            @click="removeAgeConfirmationDialog = true"
-            ><v-img
-              class="mr-2"
-              style="vertical-align: middle; height: auto; width: 30px"
-              :src="getPreviousAgeImgSrc()"
-            ></v-img
-            >Age down to {{ getPreviousAgeName() }}
-          </v-btn>
         </v-row>
       </v-col>
     </v-row>
