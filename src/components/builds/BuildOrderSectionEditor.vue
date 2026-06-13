@@ -1080,10 +1080,10 @@ export default {
   display: block;
   width: 100%;
   height: 28px;
-  line-height: 26px;
+  line-height: 28px;
   margin-top: 12px;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.55);
+  background: transparent;
   text-align: center;
   font: inherit;
   font-size: 13.5px;
@@ -1093,6 +1093,11 @@ export default {
   outline: none;
   cursor: text;
   box-sizing: border-box;
+  transition: background 0.12s;
+}
+.ts-pill:focus {
+  background: rgba(var(--v-theme-accent), 0.15);
+  outline: 1px solid rgba(var(--v-theme-accent), 0.45);
 }
 
 /* Step row cells — all cells top-aligned; margin-top on pills creates visual centering in the
@@ -1116,14 +1121,12 @@ export default {
   padding-right: 8px !important;
   line-height: 1.55;
 }
-/* Edit mode: subtle input-style background + focus accent border */
-.step-row td.contentEditable[contenteditable="true"] {
-  background: rgba(0,0,0,0.18);
-  border-radius: 4px;
-}
+/* Edit mode: focus-only gold highlight; background-clip:content-box creates padding effect */
 .step-row td.contentEditable[contenteditable="true"]:focus {
   outline: none;
-  box-shadow: inset 0 0 0 1px rgb(var(--v-theme-accent));
+  background: rgba(var(--v-theme-accent), 0.08);
+  background-clip: content-box;
+  box-shadow: inset 0 0 0 1px rgba(var(--v-theme-accent), 0.4);
 }
 /* Action column */
 .step-row td.step-actions {
@@ -1175,14 +1178,16 @@ export default {
   color: inherit;
   cursor: text;
   padding: 0;
+  transition: background 0.12s, border-color 0.12s;
+}
+.rc-input:focus {
+  background: rgba(var(--v-theme-accent), 0.15) !important;
+  border-color: rgba(var(--v-theme-accent), 0.65) !important;
 }
 /* Edit-mode empty resource cell — ghost pill: same shape as filled pill, no fill */
 .rc-ghost {
   background: transparent !important;
   border-color: rgba(var(--v-theme-on-surface), 0.15) !important;
-}
-.rc-ghost:focus {
-  border-color: rgba(var(--v-theme-accent), 0.6) !important;
 }
 
 .rc-pill.d-up {
@@ -1250,6 +1255,11 @@ export default {
 }
 
 /* Insert row — 0-height between steps; .ins-zone is absolutely placed to create hover zone */
+.ins-row {
+  height: 0;
+  line-height: 0;
+  font-size: 0;
+}
 .ins-row-cell {
   height: 0;
   padding: 0 !important;
@@ -1315,13 +1325,11 @@ export default {
 .bo-noterow td {
   border-top: none;
 }
-.bo-noterow td[contenteditable="true"] {
-  background: rgba(0,0,0,0.18);
-  border-radius: 4px;
-}
 .bo-noterow td[contenteditable="true"]:focus {
   outline: none;
-  box-shadow: inset 0 0 0 1px rgb(var(--v-theme-accent));
+  background: rgba(var(--v-theme-accent), 0.08);
+  background-clip: content-box;
+  box-shadow: inset 0 0 0 1px rgba(var(--v-theme-accent), 0.4);
 }
 .bo-noterow td[contenteditable="true"]:empty::before {
   content: 'Add a note for this section...';
