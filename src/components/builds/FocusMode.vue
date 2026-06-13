@@ -590,71 +590,30 @@ export default {
 };
 </script>
 <style scoped>
-:deep(.icon) {
-  vertical-align: middle;
-  height: auto;
-  width: 60px;
-  margin: 2px;
-  border-radius: 4px;
-}
-
-:deep(.icon-ability) {
-  vertical-align: middle;
-  height: auto;
-  width: 60px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #5c457b, #4d366e);
-}
-
-:deep(.icon-tech) {
-  vertical-align: middle;
-  height: auto;
-  width: 60px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-}
-
-:deep(.icon-military) {
-  vertical-align: middle;
-  height: auto;
-  width: 60px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-}
-
-:deep(.icon-none) {
-  vertical-align: middle;
-  height: auto;
-  width: 60px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(
-    circle at top center,
-    rgb(var(--v-theme-icon-background-highlight)),
-    rgb(var(--v-theme-icon-background))
-  );
-}
-
-:deep(.icon-default) {
-  vertical-align: middle;
-  height: auto;
-  width: 60px;
-  margin: 2px;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1d2432);
-}
-
+/* Inline content icons — shared square box; variants override background only */
+:deep(.icon),
+:deep(.icon-ability),
+:deep(.icon-tech),
+:deep(.icon-military),
+:deep(.icon-none),
+:deep(.icon-default),
 :deep(.icon-landmark) {
-  vertical-align: middle;
-  height: auto;
+  display: inline-block;
   width: 60px;
-  margin: 2px;
+  height: 60px;
+  box-sizing: border-box;
+  padding: 3px;
+  margin: 3px 4px 3px 0;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+  object-fit: contain;
+  vertical-align: middle;
 }
+:deep(.icon-ability)  { background: radial-gradient(circle at top center, #5c457b, #4d366e); }
+:deep(.icon-tech)     { background: radial-gradient(circle at top center, #469586, #266d5b); }
+:deep(.icon-military) { background: radial-gradient(circle at top center, #8b5d44, #683a22); }
+:deep(.icon-none)     { background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background))); }
+:deep(.icon-default)  { background: radial-gradient(circle at top center, #4b6382, #1d2432); }
+:deep(.icon-landmark) { background: radial-gradient(circle at top center, #232e3e, #0c0f17); }
 
 :deep(.titleIcon) {
   vertical-align: middle;

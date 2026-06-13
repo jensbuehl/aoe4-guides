@@ -333,7 +333,7 @@
       <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
       <span class="age-marker-lbl-md">Age up to {{ targetAgeName }}</span>
       <span style="flex:1"></span>
-      <button v-if="!readonly && isLastAgeUp" class="row-x" @click.stop="$emit('ageDownRequested')"><span class="mdi mdi-close"></span></button>
+      <v-btn v-if="!readonly && isLastAgeUp" icon size="small" variant="text" class="row-x" @click.stop="$emit('ageDownRequested')"><v-icon size="16">mdi-close</v-icon></v-btn>
     </div>
     <v-table
       v-if="steps?.length"
@@ -481,38 +481,43 @@
               class="contentEditable text-left py-1"
               v-html="item.description"
             ></td>
-            <td v-if="!readonly" class="text-right step-actions" style="width:90px">
-              <v-dialog max-width="700">
-                <template v-slot:activator="{ props: dialog }">
-                  <v-btn
-                    v-show="focusedDescIndex === index"
-                    v-bind="dialog"
-                    icon="mdi-image-plus"
-                    color="accent"
-                    variant="text"
-                    size="small"
-                    class="step-action-icon"
-                    @mousedown.prevent="saveSelection($event)"
-                  ></v-btn>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card flat rounded="lg">
-                    <IconSelector
-                      @iconSelected="
-                        (iconPath, tooltip, iconClass) => {
-                          handleIconSelectorIconSelected(iconPath, tooltip, iconClass);
-                          isActive.value = false;
-                        }
-                      "
-                      :civ="civ"
-                    ></IconSelector>
-                  </v-card>
-                </template>
-              </v-dialog>
-              <button
-                class="row-x"
-                @click="removeStepConfirmationDialog = true; delteRowIndex = index;"
-              ><span class="mdi mdi-close"></span></button>
+            <td v-if="!readonly" class="step-actions" style="width:90px">
+              <div class="step-actions-inner">
+                <v-dialog max-width="700">
+                  <template v-slot:activator="{ props: dialog }">
+                    <v-btn
+                      v-show="focusedDescIndex === index"
+                      v-bind="dialog"
+                      icon="mdi-image-plus"
+                      color="accent"
+                      variant="text"
+                      size="small"
+                      class="step-action-icon"
+                      @mousedown.prevent="saveSelection($event)"
+                    ></v-btn>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card flat rounded="lg">
+                      <IconSelector
+                        @iconSelected="
+                          (iconPath, tooltip, iconClass) => {
+                            handleIconSelectorIconSelected(iconPath, tooltip, iconClass);
+                            isActive.value = false;
+                          }
+                        "
+                        :civ="civ"
+                      ></IconSelector>
+                    </v-card>
+                  </template>
+                </v-dialog>
+                <v-btn
+                  icon
+                  size="small"
+                  variant="text"
+                  class="row-x"
+                  @click="removeStepConfirmationDialog = true; delteRowIndex = index;"
+                ><v-icon size="16">mdi-close</v-icon></v-btn>
+              </div>
             </td>
           </tr>
           </template>
@@ -1064,6 +1069,15 @@ export default {
   font-weight: 700;
 }
 
+/* Allow ins-zone to overflow both the table wrapper and the section card so it can
+   reach age badges in adjacent cards (e.g. age-plate in the preceding ageUp card) */
+:deep(.v-table__wrapper) {
+  overflow: visible;
+}
+.hidden-xs {
+  overflow: visible !important;
+}
+
 /* Timestamp */
 .ts-text {
   display: block;
@@ -1121,22 +1135,24 @@ export default {
   padding-right: 8px !important;
   line-height: 1.55;
 }
-/* Edit mode: focus-only gold highlight; background-clip:content-box creates padding effect */
+/* Edit mode: focus-only gold highlight fills entire cell */
 .step-row td.contentEditable[contenteditable="true"]:focus {
   outline: none;
   background: rgba(var(--v-theme-accent), 0.08);
-  background-clip: content-box;
   box-shadow: inset 0 0 0 1px rgba(var(--v-theme-accent), 0.4);
+  border-radius: 6px;
 }
 /* Action column */
 .step-row td.step-actions {
-  padding-top: 4px !important;
+  padding-top: 12px !important;
   padding-bottom: 4px !important;
   padding-left: 4px !important;
   padding-right: 4px !important;
-  vertical-align: middle !important;
+  vertical-align: top !important;
+}
+.step-actions-inner {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-end;
   gap: 2px;
 }
@@ -1254,13 +1270,14 @@ export default {
   letter-spacing: 0.2px;
 }
 
-/* Insert row — 0-height between steps; .ins-zone is absolutely placed to create hover zone */
+/* Insert row — visibility:collapse removes the row from layout entirely (0px height,
+   no border contribution). The cell keeps visibility:visible so the absolutely-
+   positioned ins-zone can still overlay the row boundary. */
 .ins-row {
-  height: 0;
-  line-height: 0;
-  font-size: 0;
+  visibility: collapse;
 }
 .ins-row-cell {
+  visibility: visible;
   height: 0;
   padding: 0 !important;
   border: none !important;
@@ -1270,16 +1287,16 @@ export default {
 .ins-zone {
   position: absolute;
   left: 0; right: 0;
-  top: -8px; height: 20px;
+  top: -10px; height: 20px;
   cursor: pointer;
   z-index: 2;
 }
 .ins-line {
   position: absolute;
   left: 0; right: 0; top: 50%;
-  height: 1px;
+  height: 2px;
   transform: translateY(-50%);
-  background: rgba(var(--v-border-color), var(--v-border-opacity));
+  background: rgb(var(--v-theme-accent));
   opacity: 0; transition: opacity 0.12s;
   pointer-events: none;
 }
@@ -1305,31 +1322,29 @@ export default {
 .row-x {
   opacity: 0;
   transition: opacity 0.12s;
-  color: rgba(var(--v-theme-on-surface), 0.4);
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
+  flex-shrink: 0;
 }
 .step-row:hover .row-x { opacity: 1; }
 .age-marker-md:hover .row-x { opacity: 1; }
-.row-x:hover { color: rgb(var(--v-theme-error)); background: rgba(var(--v-theme-error), 0.1); }
+.row-x:hover :deep(.v-icon) { color: rgb(var(--v-theme-error)); }
 
 .bo-noterow td {
   border-top: none;
 }
+/* Match notes editor padding/spacing to step description */
+.bo-noterow td.contentEditable {
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  padding-left: 16px !important;
+  padding-right: 8px !important;
+  line-height: 1.55;
+  vertical-align: middle !important;
+}
 .bo-noterow td[contenteditable="true"]:focus {
   outline: none;
   background: rgba(var(--v-theme-accent), 0.08);
-  background-clip: content-box;
   box-shadow: inset 0 0 0 1px rgba(var(--v-theme-accent), 0.4);
+  border-radius: 6px;
 }
 .bo-noterow td[contenteditable="true"]:empty::before {
   content: 'Add a note for this section...';
@@ -1343,97 +1358,31 @@ tbody tr:last-child td {
 }
 
 
-:deep(.icon) {
-  vertical-align: middle;
-  height: auto;
-  width: 36px;
-  margin: 0 2px 0 0;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-:deep(.icon-ability) {
-  vertical-align: middle;
-  height: auto;
-  width: 36px;
-  margin: 0 2px 0 0;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #5c457b, #4d366e);
-  cursor: pointer;
-}
-
-:deep(.icon-ability + img) {
-  margin: 2px;
-}
-
-:deep(.icon-tech) {
-  vertical-align: middle;
-  height: auto;
-  width: 36px;
-  margin: 0 2px 0 0;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #469586, #266d5b);
-  cursor: pointer;
-}
-:deep(.icon-tech + img) {
-  margin: 2px;
-}
-
-:deep(.icon-military) {
-  vertical-align: middle;
-  height: auto;
-  width: 36px;
-  margin: 0 2px 0 0;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #8b5d44, #683a22);
-  cursor: pointer;
-}
-:deep(.icon-military + img) {
-  margin: 2px;
-}
-
-:deep(.icon-none) {
-  vertical-align: middle;
-  width: auto;
-  height: 36px;
-  margin: 0 2px 0 0;
-  border-radius: 4px;
-  background: radial-gradient(
-    circle at top center,
-    rgb(var(--v-theme-icon-background-highlight)),
-    rgb(var(--v-theme-icon-background))
-  );
-  cursor: pointer;
-}
-:deep(.icon-none + img) {
-  margin: 2px;
-}
-
-:deep(.icon-default) {
-  vertical-align: middle;
-  height: auto;
-  width: 36px;
-  margin: 0 2px 0 0;
-  border-radius: 4px;
-  background: radial-gradient(circle at top center, #4b6382, #1d2432);
-  cursor: pointer;
-}
-:deep(.icon-default + img) {
-  margin: 2px;
-}
-
+/* Inline content icons — shared square box; variants override background only */
+:deep(.icon),
+:deep(.icon-ability),
+:deep(.icon-tech),
+:deep(.icon-military),
+:deep(.icon-none),
+:deep(.icon-default),
 :deep(.icon-landmark) {
-  vertical-align: middle;
-  height: auto;
+  display: inline-block;
   width: 36px;
-  margin: 0 2px 0 0;
+  height: 36px;
+  box-sizing: border-box;
+  padding: 2px;
+  margin: 2px 3px 2px 0;
   border-radius: 4px;
-  background: radial-gradient(circle at top center, #232e3e, #0c0f17);
+  object-fit: contain;
+  vertical-align: middle;
   cursor: pointer;
 }
-:deep(.icon-landmark + img) {
-  margin: 2px;
-}
+:deep(.icon-ability)  { background: radial-gradient(circle at top center, #5c457b, #4d366e); }
+:deep(.icon-tech)     { background: radial-gradient(circle at top center, #469586, #266d5b); }
+:deep(.icon-military) { background: radial-gradient(circle at top center, #8b5d44, #683a22); }
+:deep(.icon-none)     { background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background))); }
+:deep(.icon-default)  { background: radial-gradient(circle at top center, #4b6382, #1d2432); }
+:deep(.icon-landmark) { background: radial-gradient(circle at top center, #232e3e, #0c0f17); }
 
 :deep(.titleIcon) {
   vertical-align: middle;
