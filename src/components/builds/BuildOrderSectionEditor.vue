@@ -327,58 +327,31 @@
 </div>
 
   <!--Desktop UI-->
-  <v-card flat rounded="lg" class="mt-4 hidden-xs">
-    <v-card flat align="center" class="mt-4"
-      ><v-card-title v-if="section.age == 1 && section.type == 'ageUp'">
-        <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon>
-          <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-          Age up to Feudal Age</v-row
-        ></v-card-title
-      ><v-card-title v-if="section.age == 2 && section.type == 'age'">
-        <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_2.webp"></v-img></v-icon>Feudal
-          Age</v-row
-        ></v-card-title
-      ><v-card-title v-if="section.age == 2 && section.type == 'ageUp'">
-        <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon>
-          <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-          Age up to Castle Age</v-row
-        ></v-card-title
-      ><v-card-title v-if="section.age == 3 && section.type == 'age'">
-        <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_3.webp"></v-img></v-icon>Castle
-          Age</v-row
-        ></v-card-title
-      ><v-card-title v-if="section.age == 3 && section.type == 'ageUp'">
-        <v-row style="font-weight: inherit" no-gutters align="center" justify="start"
-          ><v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon>
-          <v-icon color="accent">mdi-arrow-up-bold</v-icon>
-          Age up to Imperial Age</v-row
-        ></v-card-title
-      ><v-card-title v-if="section.age == 4 && section.type == 'age'">
-        <v-row style="font-weight: inherit" no-gutters align="center" justify="start">
-          <v-icon class="mr-2"><v-img src="/assets/pictures/age/age_4.webp"></v-img></v-icon
-          >Imperial Age</v-row
-        ></v-card-title
-      >
-      <v-table
-        v-if="steps?.length"
-        class="mx-4 align-to-widest"
-        :style="
-          section.age <= 1 && section.type == 'age'
-            ? ''
-            : 'border-top: thin solid rgba(var(--v-border-color), var(--v-border-opacity))'
-        "
-        style="
-          border-radius: 0;
-          border-bottom: thin solid rgba(var(--v-border-color), var(--v-border-opacity));
-        "
-      >
-        <thead :style="section.age <= 1 && section.type == 'age' ? '' : 'visibility: collapse'">
+  <v-card flat rounded="lg" :class="['hidden-xs', (section.type === 'ageUp' || (section.type === 'age' && section.age > 1)) ? 'mt-0' : 'mt-4']">
+    <!-- ageUp marker — arrow icon only, gold banner, no age image -->
+    <div v-if="section.type === 'ageUp'" class="age-marker-md mx-4 mt-0 mb-0">
+      <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
+      <span class="age-marker-lbl-md">Age up to {{ targetAgeName }}</span>
+    </div>
+    <v-table
+      v-if="steps?.length"
+      class="mx-4"
+      style="border-radius: 0"
+    >
+        <colgroup>
+          <col style="width:64px">
+          <col style="width:44px">
+          <col style="width:54px">
+          <col style="width:54px">
+          <col style="width:54px">
+          <col style="width:54px">
+          <col style="width:54px">
+          <col>
+          <col v-if="!readonly" style="width:90px">
+        </colgroup>
+        <thead v-if="section.age <= 1 && section.type == 'age'">
           <tr>
-            <th class="text-center ma-0 pa-0" style="width: 50px">
+            <th class="text-center ma-0 pa-0">
               <v-img class="mx-auto titleIcon" src="/assets/resources/time.webp"></v-img>
             </th>
             <v-tooltip location="top">
@@ -389,34 +362,40 @@
                 >Villager Count</span
               >
               <template v-slot:activator="{ props }">
-                <th v-bind="props" class="text-center ma-0 pa-0" style="width: 50px">
+                <th v-bind="props" class="text-center ma-0 pa-0">
                   <v-img class="mx-auto titleIcon" src="/assets/resources/villager.webp"></v-img>
                 </th>
               </template>
             </v-tooltip>
-            <th class="text-center ma-0 pa-0" style="width: 50px">
+            <th class="text-center ma-0 pa-0">
               <v-img class="mx-auto titleIcon" src="/assets/resources/repair.webp"></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px">
+            <th class="text-center ma-0 pa-0">
               <v-img class="mx-auto titleIcon" src="/assets/resources/food.webp"></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px">
+            <th class="text-center ma-0 pa-0">
               <v-img class="mx-auto titleIcon" src="/assets/resources/wood.webp"></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px">
+            <th class="text-center ma-0 pa-0">
               <v-img class="mx-auto titleIcon" src="/assets/resources/gold.webp"></v-img>
             </th>
-            <th class="text-center ma-0 pa-0" style="width: 50px">
+            <th class="text-center ma-0 pa-0">
               <v-img class="mx-auto titleIcon" src="/assets/resources/stone.webp"></v-img>
             </th>
             <th class="text-left">Description</th>
-            <th v-if="!readonly" style="width: 180px" class="text-right"></th>
+            <th v-if="!readonly" class="text-right"></th>
           </tr>
         </thead>
         <tbody ref="stepsTable">
+          <tr v-if="!readonly && !steps.length" class="ins-row">
+            <td :colspan="9" class="ins-row-cell" @click="addStep(-1)"><div class="ins-line"></div></td>
+          </tr>
+          <template v-for="(item, index) in steps" :key="item._id ?? index">
+          <tr v-if="!readonly" class="ins-row">
+            <td :colspan="9" class="ins-row-cell" @click="addStep(index - 1)"><div class="ins-line"></div></td>
+          </tr>
           <tr
-            v-for="(item, index) in steps"
-            :key="index"
+            :class="['step-row', section.type === 'ageUp' && 'age-lane-md']"
             v-on:keyup.enter.alt="addStep(index)"
             v-on:keyup.delete.alt="
               removeStepConfirmationDialog = true;
@@ -427,168 +406,128 @@
             @mouseover="hoverStep(index)"
             @mouseleave="unhoverStep()"
           >
-            <td
-              style="white-space: break-spaces"
-              @focusin="selection = null"
-              @input="handleResourceInput"
-              @paste="handlePaste"
-              @focusout="updateStep($event, index, 'time')"
-              :contenteditable="!readonly"
-              class="text-center py-1"
-              v-html="item.time"
-            ></td>
-            <td
-              class="text-center aggregatedVillagers py-1"
-              disabled
-              v-html="aggregateVillagers(item)"
-            ></td>
-            <td
-              style="white-space: break-spaces"
-              @focusin="selection = null"
-              @input="handleResourceInput"
-              @paste="handlePaste"
-              @focusout="updateStep($event, index, 'builders')"
-              :contenteditable="!readonly"
-              class="text-center py-1"
-              v-html="item.builders ? item.builders : ''"
-            ></td>
-            <td
-              style="white-space: break-spaces"
-              @focusin="selection = null"
-              @input="handleResourceInput"
-              @paste="handlePaste"
-              @focusout="updateStep($event, index, 'food')"
-              :contenteditable="!readonly"
-              class="text-center py-1"
-              v-html="item.food"
-            ></td>
-            <td
-              style="white-space: break-spaces"
-              @focusin="selection = null"
-              @input="handleResourceInput"
-              @paste="handlePaste"
-              @focusout="updateStep($event, index, 'wood')"
-              :contenteditable="!readonly"
-              class="text-center py-1"
-              v-html="item.wood"
-            ></td>
-            <td
-              style="white-space: break-spaces"
-              @focusin="selection = null"
-              @input="handleResourceInput"
-              @paste="handlePaste"
-              @focusout="updateStep($event, index, 'gold')"
-              :contenteditable="!readonly"
-              class="text-center py-1"
-              v-html="item.gold"
-            ></td>
-            <td
-              style="white-space: break-spaces"
-              @focusin="selection = null"
-              @input="handleResourceInput"
-              @paste="handlePaste"
-              @focusout="updateStep($event, index, 'stone')"
-              :contenteditable="!readonly"
-              class="text-center py-1"
-              v-html="item.stone"
-            ></td>
+            <td class="text-center py-1">
+              <span v-if="readonly" class="ts-text">{{ item.time }}</span>
+              <input
+                v-else
+                :ref="el => registerTimestampRef(el, index)"
+                type="text"
+                :value="item.time"
+                @input="updateStep($event, index, 'time')"
+                @paste="handlePaste"
+                class="ts-pill"
+              />
+            </td>
+            <td class="text-center aggregatedVillagers py-1" v-html="aggregateVillagers(item)"></td>
+            <td class="text-center py-1">
+              <template v-if="readonly">
+                <span v-if="item.builders" :class="['rc-pill rc-builders', hasDeltaUp('builders', index) && 'd-up']">{{ item.builders }}</span>
+                <span v-else class="rc-empty">–</span>
+              </template>
+              <input v-else type="text" maxlength="2" :value="item.builders" placeholder="–"
+                @input="updateStep($event, index, 'builders')" @paste="handlePaste"
+                :class="item.builders ? ['rc-pill','rc-builders','rc-input', hasDeltaUp('builders',index) && 'd-up'] : 'rc-empty-input'" />
+            </td>
+            <td class="text-center py-1">
+              <template v-if="readonly">
+                <span v-if="item.food" :class="['rc-pill rc-food', hasDeltaUp('food', index) && 'd-up']">{{ item.food }}</span>
+                <span v-else class="rc-empty">–</span>
+              </template>
+              <input v-else type="text" maxlength="2" :value="item.food" placeholder="–"
+                @input="updateStep($event, index, 'food')" @paste="handlePaste"
+                :class="item.food ? ['rc-pill','rc-food','rc-input', hasDeltaUp('food',index) && 'd-up'] : 'rc-empty-input'" />
+            </td>
+            <td class="text-center py-1">
+              <template v-if="readonly">
+                <span v-if="item.wood" :class="['rc-pill rc-wood', hasDeltaUp('wood', index) && 'd-up']">{{ item.wood }}</span>
+                <span v-else class="rc-empty">–</span>
+              </template>
+              <input v-else type="text" maxlength="2" :value="item.wood" placeholder="–"
+                @input="updateStep($event, index, 'wood')" @paste="handlePaste"
+                :class="item.wood ? ['rc-pill','rc-wood','rc-input', hasDeltaUp('wood',index) && 'd-up'] : 'rc-empty-input'" />
+            </td>
+            <td class="text-center py-1">
+              <template v-if="readonly">
+                <span v-if="item.gold" :class="['rc-pill rc-gold', hasDeltaUp('gold', index) && 'd-up']">{{ item.gold }}</span>
+                <span v-else class="rc-empty">–</span>
+              </template>
+              <input v-else type="text" maxlength="2" :value="item.gold" placeholder="–"
+                @input="updateStep($event, index, 'gold')" @paste="handlePaste"
+                :class="item.gold ? ['rc-pill','rc-gold','rc-input', hasDeltaUp('gold',index) && 'd-up'] : 'rc-empty-input'" />
+            </td>
+            <td class="text-center py-1">
+              <template v-if="readonly">
+                <span v-if="item.stone" :class="['rc-pill rc-stone', hasDeltaUp('stone', index) && 'd-up']">{{ item.stone }}</span>
+                <span v-else class="rc-empty">–</span>
+              </template>
+              <input v-else type="text" maxlength="2" :value="item.stone" placeholder="–"
+                @input="updateStep($event, index, 'stone')" @paste="handlePaste"
+                :class="item.stone ? ['rc-pill','rc-stone','rc-input', hasDeltaUp('stone',index) && 'd-up'] : 'rc-empty-input'" />
+            </td>
             <td
               @input="showAutoCompleteMenu($event, index)"
               @keyup="handleContentEditableKeyUp($event, index)"
+              @keydown.tab.prevent="timestampRefs[index + 1]?.focus()"
               @click="saveSelection"
               @paste="handlePaste"
-              @focusout="updateStepDescription($event, index)"
+              @focusin="focusedDescIndex = index"
+              @focusout="updateStepDescription($event, index); focusedDescIndex = null"
               @mouseover="handleMouseOver($event)"
               @mouseout="handleMouseOut($event)"
               :contenteditable="!readonly"
               class="contentEditable text-left py-1"
               v-html="item.description"
             ></td>
-            <td v-if="!readonly" style="width: 180px" class="text-right">
-              <v-row no-gutters>
-                <v-col cols="4"
-                  ><v-menu
-                    v-if="selection && index === selectedRowIndex"
-                    :close-on-content-click="false"
-                    location="bottom"
-                  >
-                    <template v-slot:activator="{ props: menu }">
-                      <v-tooltip location="top">
-                        <span
-                          :style="{
-                            color: $vuetify.theme.current.colors.primary,
-                          }"
-                          >Add icon at current selection or cursor position</span
-                        >
-                        <template v-slot:activator="{ props: tooltip }">
-                          <v-btn
-                            icon="mdi-image-plus"
-                            color="accent"
-                            v-bind="mergeProps(menu, tooltip)"
-                            variant="text"
-                          ></v-btn>
-                        </template>
-                      </v-tooltip>
-                    </template>
-                    <v-card flat rounded="lg" class="mt-4" width="700px">
-                      <IconSelector
-                        @iconSelected="
-                          (iconPath, tooltip, iconClass) =>
-                            handleIconSelectorIconSelected(iconPath, tooltip, iconClass)
-                        "
-                        :civ="civ"
-                      ></IconSelector>
-                    </v-card> </v-menu
-                ></v-col>
-                <v-col cols="4"
-                  ><v-tooltip location="top">
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >Remove current step (ALT + DEL)</span
-                    >
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        v-bind="props"
-                        v-if="index === hoverRowIndex"
-                        variant="text"
-                        color="accent"
-                        @click="
-                          removeStepConfirmationDialog = true;
-                          delteRowIndex = index;
-                        "
-                        icon="mdi-delete"
-                      >
-                      </v-btn>
-                    </template> </v-tooltip
-                ></v-col>
-                <v-col cols="4"
-                  ><v-tooltip location="top">
-                    <span
-                      :style="{
-                        color: $vuetify.theme.current.colors.primary,
-                      }"
-                      >Add new step below (ALT + ENTER)</span
-                    >
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        v-bind="props"
-                        v-show="index === hoverRowIndex"
-                        variant="text"
-                        color="accent"
-                        @click="addStep(index)"
-                        icon="mdi-plus"
-                      >
-                      </v-btn>
-                    </template> </v-tooltip></v-col
-              ></v-row>
+            <td v-if="!readonly" class="text-right step-actions" style="width:90px">
+              <v-dialog max-width="700">
+                <template v-slot:activator="{ props: dialog }">
+                  <v-btn
+                    v-show="focusedDescIndex === index"
+                    v-bind="dialog"
+                    icon="mdi-image-plus"
+                    color="accent"
+                    variant="text"
+                    size="small"
+                    class="step-action-icon"
+                    @mousedown.prevent="saveSelection($event)"
+                  ></v-btn>
+                </template>
+                <template v-slot:default="{ isActive }">
+                  <v-card flat rounded="lg">
+                    <IconSelector
+                      @iconSelected="
+                        (iconPath, tooltip, iconClass) => {
+                          handleIconSelectorIconSelected(iconPath, tooltip, iconClass);
+                          isActive.value = false;
+                        }
+                      "
+                      :civ="civ"
+                    ></IconSelector>
+                  </v-card>
+                </template>
+              </v-dialog>
+              <button
+                class="row-x"
+                @click="removeStepConfirmationDialog = true; delteRowIndex = index;"
+              ><span class="mdi mdi-close"></span></button>
             </td>
+          </tr>
+          </template>
+          <!-- Trailing insert row after last step -->
+          <tr v-if="!readonly && steps.length" class="ins-row">
+            <td :colspan="9" class="ins-row-cell" @click="addStep(steps.length - 1)"><div class="ins-line"></div></td>
+          </tr>
+          <!-- Section note row — view mode; edit mode is handled by the gameplan table below -->
+          <tr v-if="gameplan && readonly" :class="['bo-noterow', section.type === 'ageUp' && 'age-lane-md']">
+            <td class="py-1 pl-0 pr-0 text-center" style="width:36px">
+              <v-icon size="16" class="mb-1" color="accent">mdi-information-outline</v-icon>
+            </td>
+            <td :colspan="7" class="py-1 px-2" v-html="gameplan"></td>
           </tr>
         </tbody>
       </v-table>
       <v-table
-        v-if="gameplan || !readonly"
+        v-if="!readonly"
         class="mx-4"
         :class="readonly ? 'my-4' : ''"
         style="border-radius: 0"
@@ -667,8 +606,15 @@
             </td>
           </tr>
         </tbody>
-      </v-table>
-    </v-card>
+    </v-table>
+    <!-- ageUp arrival plate — desktop -->
+    <div v-if="section.type === 'ageUp' && targetAgeName" class="age-plate-md mx-4 mt-0 mb-0">
+      <img :src="targetAgeImg" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;" alt="" />
+      <span class="age-plate-lbl-md">{{ targetAgeName }} reached</span>
+    </div>
+    <div v-if="!steps?.length && readonly" class="text-center py-6 text-medium-emphasis text-body-2">
+      No steps yet
+    </div>
     <div v-if="!steps?.length && !readonly" class="text-center">
       <v-btn variant="text" color="accent" class="pt-5 pb-10" @click="addStep(0)"
         >Add your first build step
@@ -702,12 +648,14 @@ import {
 export default {
   name: "BuildOrderSectioncontentEditable",
   props: ["section", "readonly", "civ", "focus", "isLastAgeUp"],
-  emits: ["stepsChanged", "selectionChanged", "textChanged", "gameplanChanged", "ageDownRequested"],
+  emits: ["stepsChanged", "selectionChanged", "gameplanChanged", "ageDownRequested"],
   components: { IconSelector, IconAutoCompleteMenu, IconToolTip },
   setup(props, context) {
     const AGE_NAMES = { 1: "Feudal Age", 2: "Castle Age", 3: "Imperial Age" };
     const targetAgeName = computed(() => AGE_NAMES[props.section.age] ?? "");
     const targetAgeImg = computed(() => `/assets/pictures/age/age_${props.section.age + 1}.webp`);
+    const currentAgeName = computed(() => AGE_NAMES[props.section.age - 1] ?? "");
+    const currentAgeImg = computed(() => `/assets/pictures/age/age_${props.section.age}.webp`);
 
     //Hacky deep copy of object since working on the reference broke the current selection
     //Copy needs to be kept in sync and is used only for the description field :(
@@ -721,8 +669,10 @@ export default {
     const delteRowIndex = ref(null);
     const selection = ref(null);
     const stepsTable = ref(null);
+    const timestampRefs = ref([]);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
+    const focusedDescIndex = ref(null);
     const descriptionColumnIndex = 7;
     var civIconService = iconService(props.civ);
 
@@ -832,6 +782,17 @@ export default {
       }
     );
 
+    function registerTimestampRef(el, index) {
+      if (el) timestampRefs.value[index] = el;
+    }
+
+    function hasDeltaUp(field, index) {
+      if (index === 0) return false;
+      const curr = parseInt(steps[index][field]) || 0;
+      const prev = parseInt(steps[index - 1][field]) || 0;
+      return curr > prev;
+    }
+
     const saveSelection = (event) => {
       //navigate to aoe4world if clicked on an image
       if (event?.target.className.includes("icon-") && toolTipModel.value?.exploreUrl) {
@@ -864,7 +825,7 @@ export default {
     const showAutoCompleteMenu = (event, index) => {
       var contentEditable = null;
       if (index != null) {
-        contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+        contentEditable = stepsTable.value.querySelectorAll('tr.step-row')[index].cells[descriptionColumnIndex];
       } else {
         contentEditable = gameplanContentEditable.value;
       }
@@ -890,7 +851,7 @@ export default {
       var contentEditable = null;
       if (!gameplanSelected.value) {
         contentEditable =
-          stepsTable.value.rows[activeStepIndex.value].cells[descriptionColumnIndex];
+          stepsTable.value.querySelectorAll('tr.step-row')[activeStepIndex.value].cells[descriptionColumnIndex];
       } else {
         contentEditable = gameplanContentEditable.value;
       }
@@ -902,7 +863,7 @@ export default {
     const handleContentEditableKeyUp = (event, index) => {
       var contentEditable = null;
       if (index != null) {
-        contentEditable = stepsTable.value.rows[index].cells[descriptionColumnIndex];
+        contentEditable = stepsTable.value.querySelectorAll('tr.step-row')[index].cells[descriptionColumnIndex];
       } else {
         contentEditable = gameplanContentEditable.value;
       }
@@ -927,8 +888,9 @@ export default {
     };
 
     const updateStep = (event, index, propertyName) => {
-      steps[index][propertyName] = event.target.innerHTML;
-      stepsCopy[index][propertyName] = event.target.innerHTML;
+      const val = event.target.tagName === 'INPUT' ? event.target.value : event.target.innerHTML;
+      steps[index][propertyName] = val;
+      stepsCopy[index][propertyName] = val;
 
       steps[index].description = stepsCopy[index].description;
       gameplan.value = gameplanCopy.value;
@@ -953,8 +915,9 @@ export default {
       var table = stepsTable.value;
       if (table) {
         //Pull display text into model (desktop)
-        for (var i = 0, row; (row = table.rows[i]); i++) {
-          steps[i].description = row.cells[descriptionColumnIndex].innerHTML;
+        const stepRows = Array.from(table.querySelectorAll('tr.step-row'));
+        for (var i = 0; i < stepRows.length; i++) {
+          steps[i].description = stepRows[i].cells[descriptionColumnIndex].innerHTML;
         }
       } else {
         // Mobile: stepsCopy holds the user-typed descriptions; sync them into steps
@@ -992,8 +955,9 @@ export default {
 
       if (table) {
         //Sync display text again with model
-        for (var i = 0, row; (row = table.rows[i]); i++) {
-          row.cells[descriptionColumnIndex].innerHTML = steps[i].description;
+        const stepRows = Array.from(table.querySelectorAll('tr.step-row'));
+        for (var i = 0; i < stepRows.length; i++) {
+          stepRows[i].cells[descriptionColumnIndex].innerHTML = steps[i].description;
         }
       }
       context.emit("stepsChanged", steps);
@@ -1003,8 +967,9 @@ export default {
       var table = stepsTable.value;
       if (table) {
         //Pull display text into model (desktop)
-        for (var i = 0, row; (row = table.rows[i]); i++) {
-          steps[i].description = row.cells[descriptionColumnIndex].innerHTML;
+        const stepRows = Array.from(table.querySelectorAll('tr.step-row'));
+        for (var i = 0; i < stepRows.length; i++) {
+          steps[i].description = stepRows[i].cells[descriptionColumnIndex].innerHTML;
         }
       } else {
         // Mobile: sync descriptions from stepsCopy so Vue can diff after splice
@@ -1047,7 +1012,6 @@ export default {
         placeCaretAtEnd(contentEditable);
       }
 
-      context.emit("textChanged");
     };
 
     const handlePaste = async (e) => {
@@ -1064,6 +1028,9 @@ export default {
       steps,
       readonly,
       stepsTable,
+      timestampRefs,
+      registerTimestampRef,
+      hasDeltaUp,
       hoverRowIndex,
       selectedRowIndex,
       handleResourceInput,
@@ -1086,6 +1053,7 @@ export default {
       restoreSelection,
       handleIconSelectorIconSelected,
       activeStepIndex,
+      focusedDescIndex,
       handleAutoCompleteMenuIconSelected,
       //Autocomplete
       searchText,
@@ -1105,6 +1073,8 @@ export default {
       gameplanContentEditable,
       // Age bracket
       targetAgeName,
+      currentAgeName,
+      currentAgeImg,
       targetAgeImg,
     };
   },
@@ -1119,33 +1089,257 @@ export default {
 
 .aggregatedVillagers {
   color: #828282;
+  font-weight: 700;
 }
 
-table tbody tr td:nth-child(4) {
-  background: #ff000034;
+/* Timestamp */
+.ts-text {
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: rgb(var(--v-theme-accent));
+  font-variant-numeric: tabular-nums;
+}
+.ts-pill {
+  display: block;
+  width: 100%;
+  height: 28px;
+  line-height: 26px;
+  margin-top: 12px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.55);
+  text-align: center;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  color: rgb(var(--v-theme-accent));
+  border: none;
+  outline: none;
+  cursor: text;
+  box-sizing: border-box;
 }
 
-table tbody tr td:nth-child(5) {
-  background: #75400c5b;
+/* Step row cells — all cells top-aligned; margin-top on pills creates visual centering in the
+   stable 52px row height. Pills center at margin-top(12) + height/2(14) = 26 = 52/2. */
+.step-row {
+  height: 52px;
+}
+.step-row td {
+  vertical-align: top !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+/* Description cell — middle-aligned so single-line text centers in the 52px row */
+.step-row td.contentEditable {
+  vertical-align: middle !important;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+  padding-left: 16px !important;
+  padding-right: 8px !important;
+  line-height: 1.55;
+}
+/* Edit mode: subtle input-style background + focus accent border */
+.step-row td.contentEditable[contenteditable="true"] {
+  background: rgba(0,0,0,0.18);
+  border-radius: 4px;
+}
+.step-row td.contentEditable[contenteditable="true"]:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgb(var(--v-theme-accent));
+}
+/* Action column */
+.step-row td.step-actions {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  vertical-align: middle !important;
+}
+/* Villager count — plain text via v-html, needs its own vertical padding */
+.step-row td.aggregatedVillagers {
+  padding-top: 16px !important;
 }
 
-table tbody tr td:nth-child(6) {
-  background: #edbe003e;
+/* Resource pills — fill full cell width, matching CSS-grid design.
+   Vertical margin (not td padding) creates spacing so single-line rows
+   look balanced while multiline rows keep pills pinned to the top. */
+.rc-pill {
+  display: block;
+  width: 100%;
+  height: 30px;
+  line-height: 26px;  /* 28px - 1px border-top - 1px border-bottom */
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  text-align: center;
+  font-weight: 800;
+  font-size: 13.5px;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+}
+.rc-builders { background: rgba(94,  83,  64,  0.45); border-color: rgba(94,  83,  64,  0.65); }
+.rc-food     { background: rgba(136, 64,  64,  0.45); border-color: rgba(136, 64,  64,  0.65); }
+.rc-wood     { background: rgba(79,  107, 58,  0.45); border-color: rgba(79,  107, 58,  0.65); }
+.rc-gold     { background: rgba(138, 109, 46,  0.45); border-color: rgba(138, 109, 46,  0.65); }
+.rc-stone    { background: rgba(89,  102, 122, 0.45); border-color: rgba(89,  102, 122, 0.65); }
+
+/* Edit-mode pill input — appearance reset only; sizing/color come from rc-pill + tint classes */
+.rc-input {
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  cursor: text;
+  padding: 0;
+}
+/* Edit-mode empty cell — faint dash, fills column */
+.rc-empty-input {
+  display: block;
+  width: 100%;
+  height: 28px;
+  line-height: 28px;
+  margin-top: 12px;
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  font: inherit;
+  color: rgba(var(--v-theme-on-surface), 0.3);
+  padding: 0;
+  box-sizing: border-box;
 }
 
-table tbody tr td:nth-child(7) {
-  background: #7a7a7b69;
+.rc-pill.d-up {
+  border-top: 2px solid rgb(var(--v-theme-primary));
 }
 
-td:empty {
-  line-height: 52px;
+/* Empty cell — faint dash, fills column like a filled pill */
+.rc-empty {
+  display: block;
+  width: 100%;
+  height: 28px;
+  line-height: 28px;
+  margin-top: 12px;
+  text-align: center;
+  color: rgba(127, 127, 127, 0.28);
+  font-size: 13.5px;
+  font-weight: 500;
+  user-select: none;
 }
+
+.age-lane-md {
+  box-shadow: inset 3px 0 0 rgba(var(--v-theme-accent), 0.65);
+}
+
+/* Age-up marker — desktop (arrow only, gold card) */
+.age-marker-md {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  min-height: 32px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.15), rgba(var(--v-theme-accent), 0.03));
+  border: 1px solid rgba(var(--v-theme-accent), 0.25);
+}
+.age-marker-icon-md {
+  color: rgb(var(--v-theme-accent));
+  flex-shrink: 0;
+}
+.age-marker-lbl-md {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgb(var(--v-theme-accent));
+  letter-spacing: 0.2px;
+}
+
+/* Age reached plate — desktop (age icon + text, gold card) */
+.age-plate-md {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  min-height: 32px;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.15), rgba(var(--v-theme-accent), 0.03));
+  border: 1px solid rgba(var(--v-theme-accent), 0.25);
+}
+.age-plate-lbl-md {
+  font-size: 13px;
+  font-weight: 800;
+  color: rgb(var(--v-theme-accent));
+  letter-spacing: 0.2px;
+}
+
+/* Insert row — thin clickable strip between steps; gold line reveals on hover */
+.ins-row-cell {
+  height: 2px;
+  padding: 0 !important;
+  border: none !important;
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+}
+.ins-line {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: rgb(var(--v-theme-accent));
+  opacity: 0;
+  transition: opacity 0.12s;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+.ins-row-cell:hover .ins-line { opacity: 1; }
+
+/* Row delete button — always in DOM, revealed on row hover */
+.row-x {
+  opacity: 0;
+  transition: opacity 0.12s;
+  color: rgba(var(--v-theme-on-surface), 0.4);
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.step-row:hover .row-x { opacity: 1; }
+.row-x:hover { color: rgb(var(--v-theme-error)); background: rgba(var(--v-theme-error), 0.1); }
+
+.bo-noterow td {
+  border-top: none;
+}
+
+/* Remove bottom border from the last row (step-row or bo-noterow) to avoid doubling with card edge */
+tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
 
 :deep(.icon) {
   vertical-align: middle;
   height: auto;
-  width: 48px;
-  margin: 2px 2px 2px 0px;
+  width: 36px;
+  margin: 0 2px 0 0;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -1153,8 +1347,8 @@ td:empty {
 :deep(.icon-ability) {
   vertical-align: middle;
   height: auto;
-  width: 48px;
-  margin: 2px 2px 2px 0px;
+  width: 36px;
+  margin: 0 2px 0 0;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #5c457b, #4d366e);
   cursor: pointer;
@@ -1167,8 +1361,8 @@ td:empty {
 :deep(.icon-tech) {
   vertical-align: middle;
   height: auto;
-  width: 48px;
-  margin: 2px 2px 2px 0px;
+  width: 36px;
+  margin: 0 2px 0 0;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #469586, #266d5b);
   cursor: pointer;
@@ -1180,8 +1374,8 @@ td:empty {
 :deep(.icon-military) {
   vertical-align: middle;
   height: auto;
-  width: 48px;
-  margin: 2px 2px 2px 0px;
+  width: 36px;
+  margin: 0 2px 0 0;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #8b5d44, #683a22);
   cursor: pointer;
@@ -1193,8 +1387,8 @@ td:empty {
 :deep(.icon-none) {
   vertical-align: middle;
   width: auto;
-  height: 48px;
-  margin: 2px 2px 2px 0px;
+  height: 36px;
+  margin: 0 2px 0 0;
   border-radius: 4px;
   background: radial-gradient(
     circle at top center,
@@ -1210,8 +1404,8 @@ td:empty {
 :deep(.icon-default) {
   vertical-align: middle;
   height: auto;
-  width: 48px;
-  margin: 2px 2px 2px 0px;
+  width: 36px;
+  margin: 0 2px 0 0;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #4b6382, #1d2432);
   cursor: pointer;
@@ -1223,8 +1417,8 @@ td:empty {
 :deep(.icon-landmark) {
   vertical-align: middle;
   height: auto;
-  width: 48px;
-  margin: 2px 2px 2px 0px;
+  width: 36px;
+  margin: 0 2px 0 0;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #232e3e, #0c0f17);
   cursor: pointer;
@@ -1236,7 +1430,7 @@ td:empty {
 :deep(.titleIcon) {
   vertical-align: middle;
   width: auto;
-  height: 40px;
+  height: 28px;
 }
 :deep(.titleIconXs) {
   vertical-align: middle;

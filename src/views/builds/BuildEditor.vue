@@ -1,29 +1,16 @@
 <template>
-  <!-- Loading skeleton (edit mode before fetch resolves) -->
-  <v-container v-if="!isLoaded" class="pb-footer">
-    <v-row class="mt-2">
-      <v-col cols="12" md="8">
-        <v-skeleton-loader type="card, sentences"></v-skeleton-loader>
-      </v-col>
-      <v-col cols="12" md="4">
-        <v-skeleton-loader type="card"></v-skeleton-loader>
-      </v-col>
-    </v-row>
-  </v-container>
-
   <!-- Editor form -->
-  <v-container v-else-if="user && build">
+  <v-container v-if="user && build">
     <BuildHeader :build="build" :readonly="false">
       <template v-slot:actions>
-        <div class="d-flex flex-column align-end pa-1" style="height: 100%">
-          <div class="d-flex align-center ga-1">
-          <v-btn color="accent" size="small" prepend-icon="mdi-publish" @click="handleSave">
-            <span class="d-none d-sm-inline">Publish</span>
-            <span class="d-sm-none">Publish</span>
-          </v-btn>
+        <div class="d-flex align-center ga-1">
+          <span v-if="isDirty" class="unsaved-indicator text-caption mr-1">
+            <v-icon size="x-small" color="warning">mdi-circle-medium</v-icon>Unsaved
+          </span>
+          <v-btn color="accent" size="small" prepend-icon="mdi-publish" @click="handleSave">Publish</v-btn>
           <v-menu>
             <template v-slot:activator="{ props }">
-              <v-btn class="ml-2" icon="mdi-dots-vertical" size="small" color="accent" variant="text" v-bind="props"></v-btn>
+              <v-btn icon="mdi-dots-vertical" color="accent" variant="text" v-bind="props"></v-btn>
             </template>
             <v-list>
               <v-list-item @click="handleDraft">
@@ -49,11 +36,6 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          </div>
-          <v-spacer></v-spacer>
-          <span v-if="isDirty" class="unsaved-indicator text-caption">
-            <v-icon size="x-small" color="warning">mdi-circle-medium</v-icon>Unsaved
-          </span>
         </div>
       </template>
     </BuildHeader>

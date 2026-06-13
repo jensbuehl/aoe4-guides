@@ -3,15 +3,6 @@
     <FocusMode v-on:closeDialog="focusDialog = false" :build="build"></FocusMode>
   </v-dialog>
 
-  <!-- Loading skeleton (mobile-aware structure) -->
-  <v-container v-if="loading">
-    <v-skeleton-loader type="card" class="mt-2"></v-skeleton-loader>
-    <v-skeleton-loader type="card" class="mt-4"></v-skeleton-loader>
-    <v-skeleton-loader type="list-item-three-line" class="mt-4"></v-skeleton-loader>
-    <v-skeleton-loader type="list-item-three-line" class="mt-2"></v-skeleton-loader>
-    <v-skeleton-loader type="list-item-three-line" class="mt-2"></v-skeleton-loader>
-  </v-container>
-
   <!-- Build not found -->
   <v-container align="center" v-if="!loading && !build"
     ><BuildNotFound></BuildNotFound
@@ -53,7 +44,7 @@
         <!-- Overflow menu: always visible (mobile slim header + desktop) -->
         <v-menu>
           <template v-slot:activator="{ props }">
-            <v-btn icon="mdi-dots-vertical" color="accent" variant="text" size="small" v-bind="props"></v-btn>
+            <v-btn icon="mdi-dots-vertical" color="accent" variant="text" v-bind="props"></v-btn>
           </template>
           <v-list>
             <v-list-item

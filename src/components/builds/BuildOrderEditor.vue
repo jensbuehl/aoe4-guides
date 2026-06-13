@@ -45,7 +45,7 @@
         ><div v-for="(section, index) in sections">
           <BuildOrderSectionEditor
             v-if="section.steps"
-            @textChanged="() => alignTableColumnWidthsAcrossSections()"
+            :ref="el => registerSectionEditor(el, index)"
             @selectionChanged="
               () => {
                 sectionFocus = index;
@@ -97,7 +97,7 @@
 
 <script>
 //External
-import { ref, computed, nextTick, onMounted } from "vue";
+import { ref, computed, onMounted, nextTick } from "vue";
 
 //Components
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
@@ -114,20 +114,18 @@ export default {
     const removeAgeConfirmationDialog = ref(false);
     const readonly = props.readonly;
     const sectionFocus = ref(null);
+    const sectionEditorRefs = ref([]);
+    const registerSectionEditor = (el, index) => { sectionEditorRefs.value[index] = el; };
     const civ = computed(() => {
       return props.civ;
     });
 
-    onMounted(async () => {
+    onMounted(() => {
       initializeSections();
 
       if (props.focus) {
         activateFocusMode();
       }
-
-      //Wait until tables are rendered
-      await nextTick();
-      alignTableColumnWidthsAcrossSections();
     });
 
     /**
@@ -176,16 +174,17 @@ export default {
         steps: [{}],
       });
 
-      //Wait until tables are rendered
-      await nextTick();
-      alignTableColumnWidthsAcrossSections();
       context.emit("stepsChanged", sections.value);
+
+      await nextTick();
+      const newSectionEditor = sectionEditorRefs.value[sections.value.length - 1];
+      newSectionEditor?.timestampRefs?.value[0]?.focus();
     }
 
     /**
      * Age down to the previous age.
      **/
-    async function ageDown() {
+    function ageDown() {
       if (getCurrentAge() == 1 && sections.value[0]?.age > 0) {
         sections.value[0].age = 0;
       } else {
@@ -193,9 +192,6 @@ export default {
         sections.value.pop();
       }
 
-      //Wait until tables are rendered
-      await nextTick();
-      alignTableColumnWidthsAcrossSections();
       context.emit("stepsChanged", sections.value);
       removeAgeConfirmationDialog.value = false;
     }
@@ -281,55 +277,8 @@ export default {
       }
     }
 
-    /**
-     * Aligns the widths of columns across multiple tables with a specified class.
-     *
-     * @return {void} This function does not return anything.
-     */
-    function alignTableColumnWidthsAcrossSections() {
-      const className = "align-to-widest";
-
-      const col_width_defaults = [
-        "50px", //time
-        "50px", //villagers
-        "50px", //builders
-        "50px", //food
-        "50px", //wood
-        "50px", //gold
-        "50px", //stone
-        "auto", //description
-        "180px", //actions
-      ];
-
-      // Reset to allow shrinking to the given default
-      document.querySelectorAll("." + className).forEach(function (element, index) {
-        element.querySelectorAll("tr:first-child th").forEach(function (element2, index2) {
-          element2.style.width = col_width_defaults[index2];
-        });
-      });
-
-      // Find the max width of each column across all tables
-      var col_widths = [];
-      document.querySelectorAll("." + className).forEach(function (element, index) {
-        element.querySelectorAll("tr:first-child th").forEach(function (element2, index2) {
-          col_widths[index2] = Math.max(col_widths[index2] || 0, element2.offsetWidth);
-        });
-      });
-
-      // Keep description column on auto
-      col_widths[7] = col_width_defaults[7];
-
-      // Set each column in each table to the max width of that column across all tables.
-      document.querySelectorAll("." + className).forEach(function (element, index) {
-        element.querySelectorAll("tr:first-child th").forEach(function (element2, index2) {
-          element2.style.width = col_widths[index2] + "px";
-        });
-      });
-    }
-
     return {
       activateFocusMode,
-      alignTableColumnWidthsAcrossSections,
       civ,
       readonly,
       sections,
@@ -344,6 +293,7 @@ export default {
       handleGameplanChanged,
       sectionFocus,
       removeAgeConfirmationDialog,
+      registerSectionEditor,
     };
   },
 };
