@@ -56,8 +56,7 @@
     </div>
     <!-- Title -->
     <div class="px-4 pt-1 pr-2">
-      <div v-if="readonly" class="text-h5 font-weight-bold build-header-title">{{ build.title || 'New build' }}</div>
-      <input v-else type="text" v-model="build.title" placeholder="New build" class="title-input" />
+      <div class="text-h5 font-weight-bold build-header-title">{{ build.title || 'New build' }}</div>
     </div>
     <!-- Chips -->
     <div :class="['px-4 pt-2 d-flex flex-wrap ga-2', readonly ? 'pb-2' : 'pb-4']">
@@ -171,24 +170,4 @@ export default {
   white-space: normal;
 }
 
-.title-input {
-  display: block;
-  width: 100%;
-  padding: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 2rem;
-  height: 2rem;
-  color: inherit;
-  background: transparent;
-  border: none;
-  outline: none;
-  box-shadow: inset 0 -1px 0 transparent;
-  letter-spacing: normal;
-  box-sizing: border-box;
-  transition: box-shadow 0.15s;
-}
-.title-input:focus {
-  box-shadow: inset 0 -1px 0 rgba(var(--v-theme-on-surface), 0.28);
-}
 </style>

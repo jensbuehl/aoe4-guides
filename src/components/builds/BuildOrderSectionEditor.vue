@@ -417,7 +417,7 @@
                 :value="item.time"
                 @input="updateStep($event, index, 'time')"
                 @paste="handlePaste"
-                class="ts-pill"
+                :class="['ts-pill', !item.time && 'ts-ghost']"
               />
             </td>
             <td class="text-center aggregatedVillagers py-1" v-html="aggregateVillagers(item)"></td>
@@ -879,7 +879,7 @@ export default {
       stepsCopy[index].description = event.target.innerHTML;
       context.emit("stepsChanged", stepsCopy);
     };
-    const addStep = (index) => {
+    const addStep = async (index) => {
       var table = stepsTable.value;
       if (table) {
         //Pull display text into model (desktop)
@@ -922,6 +922,9 @@ export default {
       });
 
       context.emit("stepsChanged", steps);
+      await nextTick();
+      await nextTick();
+      timestampRefs.value[addIndex]?.focus();
     };
 
     const removeStep = (currentIndex) => {
@@ -1089,15 +1092,19 @@ export default {
   font-size: 13.5px;
   font-weight: 700;
   color: rgb(var(--v-theme-accent));
-  border: none;
+  border: 1px solid transparent;
   outline: none;
   cursor: text;
   box-sizing: border-box;
-  transition: background 0.12s;
+  transition: background 0.12s, border-color 0.12s;
+}
+.ts-ghost {
+  border-color: rgba(var(--v-theme-on-surface), 0.15) !important;
 }
 .ts-pill:focus {
   background: rgba(var(--v-theme-accent), 0.15);
   outline: 1px solid rgba(var(--v-theme-accent), 0.45);
+  border-color: transparent !important;
 }
 
 /* Step row cells — all cells top-aligned; margin-top on pills creates visual centering in the

@@ -164,8 +164,9 @@ export default {
       context.emit("stepsChanged", sections.value);
 
       await nextTick();
-      const newSectionEditor = sectionEditorRefs.value[sections.value.length - 1];
-      newSectionEditor?.timestampRefs?.value[0]?.focus();
+      await nextTick(); // child components need a second tick to register their refs
+      const ageUpSectionEditor = sectionEditorRefs.value[sections.value.length - 2];
+      ageUpSectionEditor?.timestampRefs?.[0]?.focus();
     }
 
     /**
