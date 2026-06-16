@@ -35,6 +35,7 @@ export const store = createStore({
     //user
     user: null,
     authIsReady: false,
+    isAdmin: false,
     //template
     template: null,
     //filter configuration
@@ -87,6 +88,9 @@ export const store = createStore({
     },
     setAuthIsReady(state, payload) {
       state.authIsReady = payload;
+    },
+    setIsAdmin(state, payload) {
+      state.isAdmin = payload;
     },
     //Config module
     setFilterConfig(state, payload) {
@@ -428,15 +432,18 @@ export const store = createStore({
   },
 });
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (!store.state.authIsReady) {
     store.commit("setAuthIsReady", true);
   }
   store.commit("setUser", user ? user.toJSON() : null);
   if (user) {
+    const tokenResult = await user.getIdTokenResult();
+    store.commit("setIsAdmin", tokenResult.claims.admin === true);
     store.dispatch("loadUserAvatar", user.uid);
   } else {
     store.commit("setUserAvatar", null);
+    store.commit("setIsAdmin", false);
   }
 });
 

@@ -1,4 +1,4 @@
-const { onCall } = require("firebase-functions/v2/https");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { getFirestore } = require("firebase-admin/firestore");
 const logger = require("firebase-functions/logger");
 
@@ -13,7 +13,10 @@ const logger = require("firebase-functions/logger");
  * @param {Object} context - The context of the callable function.
  * @return {Promise<Array<Object>>} An array of user objects with id and displayName.
  */
-exports.getUsers = onCall(() => {
+exports.getUsers = onCall((req) => {
+  if (!req.auth || req.auth.token.admin !== true) {
+    throw new HttpsError("permission-denied", "Admin only");
+  }
   logger.log("getUsersCalled");
   return getFirestore()
     .collection("users")

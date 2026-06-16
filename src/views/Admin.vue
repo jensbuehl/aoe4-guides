@@ -1,13 +1,7 @@
 <template>
   <v-container>
     <div
-      v-if="
-        authIsReady &&
-        user &&
-        (user.uid === 'beJM1k8sm8TVm5fHQZfKUniL8Hp1' ||
-          user.uid === '6mzuhMzRCySxaFcaSrXamwHjVm02' ||
-          user.uid === 'zZqq3rZZJZdKPN5TFWBr6jNzJRS2')
-      "
+      v-if="authIsReady && isAdmin"
       class="d-flex justify-center"
     >
       <v-row align="center" justify="center">
@@ -101,6 +95,7 @@ import buildingEco from "@/composables/builds/icons/json/buildingEco.json" with 
 import buildingReligious from "@/composables/builds/icons/json/buildingReligious.json" with { type: "json" };
 import buildingTech from "@/composables/builds/icons/json/buildingTech.json" with { type: "json" };
 import buildingMilitary from "@/composables/builds/icons/json/buildingMilitary.json" with { type: "json" };
+import abilityHero from "@/composables/builds/icons/json/abilityHero.json" with { type: "json" };
 
 export default {
   name: "Admin",
@@ -293,6 +288,7 @@ export default {
       builds,
       user,
       authIsReady: computed(() => store.state.authIsReady),
+      isAdmin: computed(() => store.state.isAdmin),
       error,
       runMigration,
       updateImageMetaData,
