@@ -1,13 +1,30 @@
 [
   {
     "title": "Monk",
-    "age": 2,
+    "age": 3,
     "imgSrc": "/assets/pictures/unit_religious/monk-3.webp",
-    "civ": ["BYZ", "MAC", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "JIN", "MAL", "RUS", "ZXL", "KTE", "HOL"],
+    "civ": [
+      "BYZ",
+      "CHI",
+      "DRA",
+      "ENG",
+      "FRE",
+      "HOL",
+      "HRE",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAC",
+      "MAL",
+      "RUS",
+      "ZXL"
+    ],
     "class": "military",
-    "shorthand": ["monk"],
+    "shorthand": [
+      "monk"
+    ],
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Slow movement speed",
-    "id": "monk-2",
+    "id": "monk-3",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/monk",
     "costs": {
@@ -15,7 +32,6 @@
       "wood": 0,
       "stone": 0,
       "gold": 150,
-      "vizier": 0,
       "oliveoil": 0,
       "total": 150,
       "popcap": 1,
@@ -26,7 +42,9 @@
     "title": "Shaolin Monk",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_zhuxi/shaolin-monk-3.webp",
-    "civ": ["ZXL"],
+    "civ": [
+      "ZXL"
+    ],
     "class": "military",
     "description": "Monk with strong combat capabilities.\n+ Strong against ranged units \n+ Can heal themselves\n- Cannot heal others",
     "id": "shaolin-monk-3",
@@ -37,8 +55,6 @@
       "wood": 0,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 200,
       "popcap": 1,
       "time": 20
@@ -48,7 +64,10 @@
     "title": "Imam",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_abbasid/imam.webp",
-    "civ": ["ABB", "OTT"],
+    "civ": [
+      "ABB",
+      "OTT"
+    ],
     "class": "military",
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed",
     "id": "imam-3",
@@ -59,8 +78,6 @@
       "wood": 0,
       "stone": 0,
       "gold": 150,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 1,
       "time": 30
@@ -68,22 +85,22 @@
   },
   {
     "title": "Dervish",
-    "age": 3,
+    "age": 2,
     "imgSrc": "/assets/pictures/unit_ayyubids/dervish-3.webp",
-    "civ": ["AYY"],
+    "civ": [
+      "AYY"
+    ],
     "class": "military",
     "description": "Mounted Religious unit. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Uses a powerful Mass Heal ability to heal friendly units in an area.\n+ Gains increased Healing when carrying a relic.\n+ High speed.",
-    "id": "dervish-3",
+    "id": "dervish-2",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/dervish",
     "costs": {
       "food": 60,
       "wood": 0,
       "stone": 0,
-      "gold": 120,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 180,
+      "gold": 140,
+      "total": 200,
       "popcap": 1,
       "time": 40
     }
@@ -92,7 +109,9 @@
     "title": "Scholar",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_delhi/scholar.webp",
-    "civ": ["DEL"],
+    "civ": [
+      "DEL"
+    ],
     "class": "military",
     "description": "Support unit with no combat capability. Can be garrisoned in a Mosque or Madrasa to research technology more quickly. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Low health",
     "id": "scholar-2",
@@ -102,10 +121,8 @@
       "food": 0,
       "wood": 0,
       "stone": 0,
-      "gold": 130,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 130,
+      "gold": 135,
+      "total": 135,
       "popcap": 1,
       "time": 30
     }
@@ -114,7 +131,9 @@
     "title": "Buddhist Monk",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_japanese/buddhist-monk-3.webp",
-    "civ": ["JAP"],
+    "civ": [
+      "JAP"
+    ],
     "class": "military",
     "description": "Support unit with the ability to decrease enemy attack damage. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Reduced cost\n+ Conversion enhances friendly unit damage\n+ Automatically reduces enemy attack damage\n+ Heals units",
     "id": "buddhist-monk-3",
@@ -124,30 +143,41 @@
       "food": 0,
       "wood": 0,
       "stone": 0,
-      "gold": 100,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 100,
+      "gold": 80,
+      "total": 80,
       "popcap": 1,
       "time": 30
     }
   },
   {
     "title": "Ikko Ikki Monk",
-    "age": 1,
+    "age": 3,
     "imgSrc": "/assets/pictures/unit_sengoku/ikko_ikki.webp",
-    "civ": ["SEN"],
+    "civ": [
+      "SEN"
+    ],
     "class": "military",
-    "description": "",
+    "description": "Warrior Monk with strong combat capabilities that heals nearby units when attacking. Does not have a targeted heal ability.\n+ Can heal themselves\n- Slow move speed",
     "id": "ikko-ikki-monk-3",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/ikko-ikki-monk-3"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/ikko-ikki-monk",
+    "costs": {
+      "food": 100,
+      "wood": 0,
+      "stone": 0,
+      "gold": 100,
+      "total": 200,
+      "popcap": 1,
+      "time": 35
+    }
   },
   {
     "title": "Shinto Priest",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_japanese/shinto-priest-3.webp",
-    "civ": ["JAP"],
+    "civ": [
+      "JAP"
+    ],
     "class": "military",
     "description": "Support unit with unique privileges to hold and deposit Yorishiro into buildings. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Yorishiro provide unique bonuses\n+ Heals friendly units\n- Slow move speed",
     "id": "shinto-priest-3",
@@ -158,8 +188,6 @@
       "wood": 0,
       "stone": 0,
       "gold": 150,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 1,
       "time": 30
@@ -169,7 +197,10 @@
     "title": "Prelate",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_hre/prelate.webp",
-    "civ": ["DRA", "HRE"],
+    "civ": [
+      "DRA",
+      "HRE"
+    ],
     "class": "military",
     "description": "Support unit with no combat capability. Automatically inspires Villagers to greatly improve their gather rate. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Low health",
     "id": "prelate-1",
@@ -180,8 +211,6 @@
       "wood": 0,
       "stone": 0,
       "gold": 100,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 100,
       "popcap": 1,
       "time": 20
@@ -191,7 +220,10 @@
     "title": "Shaman",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_mongols/shaman.webp",
-    "civ": ["MON", "GOH"],
+    "civ": [
+      "GOH",
+      "MON"
+    ],
     "class": "military",
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed",
     "id": "shaman-3",
@@ -202,8 +234,6 @@
       "wood": 0,
       "stone": 0,
       "gold": 150,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 1,
       "time": 30
@@ -211,12 +241,24 @@
   },
   {
     "title": "Healer Elephant",
-    "age": 3,
+    "age": 2,
     "imgSrc": "/assets/pictures/unit_tughluq/healer_elephant.webp",
-    "civ": ["TUG"],
+    "civ": [
+      "TUG"
+    ],
     "class": "military",
     "id": "healer-elephant-2",
     "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/healer-elephant-2"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/healer-elephant",
+    "description": "Support elephant with two mounted Imams that individually heal allied units. Gains additional damage from nearby melee infantry and captures Sacred Sites.\n+ High health and armor\n- Slow movement speed\n- Countered by Spearman & Crossbowmen",
+    "costs": {
+      "food": 150,
+      "wood": 0,
+      "stone": 0,
+      "gold": 220,
+      "total": 370,
+      "popcap": 3,
+      "time": 40
+    }
   }
 ]

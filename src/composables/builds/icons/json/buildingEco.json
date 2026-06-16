@@ -6,27 +6,30 @@
     "civ": [
       "ABB",
       "AYY",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["farm", "qa"],
+    "shorthand": [
+      "farm",
+      "qa"
+    ],
     "description": "Harvestable Food source. Use a Villager to gather Food from the Farm.\nOnly one Villager can work each Farm.",
     "id": "farm-1",
     "type": "building",
@@ -36,8 +39,6 @@
       "wood": 75,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 75,
       "popcap": 0,
       "time": 6
@@ -47,7 +48,9 @@
     "title": "Olive Grove",
     "age": 1,
     "imgSrc": "/assets/pictures/building_byzantines/olive-grove-1.webp",
-    "civ": ["BYZ"],
+    "civ": [
+      "BYZ"
+    ],
     "class": "default",
     "description": "Harvestable Food source. Use a Villager to gather Food from the Olive Grove.\nOnly one Villager can work each Olive Grove.\nByzantine Villagers gather Olive Oil equal to 20% of Food gathered.",
     "id": "olive-grove-1",
@@ -55,12 +58,11 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/olive-grove",
     "costs": {
       "food": 0,
-      "wood": 60,
+      "wood": 75,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
       "oliveoil": 0,
-      "total": 60,
+      "total": 75,
       "popcap": 0,
       "time": 6
     }
@@ -75,23 +77,26 @@
       "BYZ",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL",
-      "MAC"
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["house", "qq"],
+    "shorthand": [
+      "house",
+      "qq"
+    ],
     "description": "Increases your maximum Population.",
     "id": "house-1",
     "type": "building",
@@ -101,8 +106,6 @@
       "wood": 50,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 50,
       "popcap": 0,
       "time": 15
@@ -116,26 +119,29 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["lumbercamp", "qe"],
+    "shorthand": [
+      "lumbercamp",
+      "qe"
+    ],
     "description": "Villagers can drop off Wood at this building. Houses technologies to improve Wood gathering.",
     "id": "lumber-camp-1",
     "type": "building",
@@ -145,8 +151,6 @@
       "wood": 50,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 50,
       "popcap": 0,
       "time": 20
@@ -160,26 +164,29 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["miningcamp", "qr"],
+    "shorthand": [
+      "miningcamp",
+      "qr"
+    ],
     "description": "Villagers can drop off Stone and Gold at this building. Houses technologies to improve mining.",
     "id": "mining-camp-1",
     "type": "building",
@@ -189,8 +196,6 @@
       "wood": 50,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 50,
       "popcap": 0,
       "time": 20
@@ -204,25 +209,28 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["mill", "qw"],
+    "shorthand": [
+      "mill",
+      "qw"
+    ],
     "description": "Villagers can drop off Food at this building. Houses technologies to improve Food gathering.\nConstructing the Mill near Berry Bushes increases the amount of Food available by +100.",
     "id": "mill-1",
     "type": "building",
@@ -232,8 +240,6 @@
       "wood": 50,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 50,
       "popcap": 0,
       "time": 20
@@ -243,7 +249,10 @@
     "title": "Farmhouse",
     "age": 1,
     "imgSrc": "/assets/pictures/building_japanese/farmhouse-1.webp",
-    "civ": ["JAP", "SEN"],
+    "civ": [
+      "JAP",
+      "SEN"
+    ],
     "class": "default",
     "description": "Increases your maximum Population and Villagers can drop-off Food at this building. Contains technologies to improve Food gathering.",
     "id": "farmhouse-1",
@@ -254,8 +263,6 @@
       "wood": 50,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 50,
       "popcap": 0,
       "time": 15
@@ -265,9 +272,11 @@
     "title": "Cistern",
     "age": 1,
     "imgSrc": "/assets/pictures/building_byzantines/cistern-1.webp",
-    "civ": ["BYZ"],
+    "civ": [
+      "BYZ"
+    ],
     "class": "default",
-    "description": "Improves the gather rate of nearby villagers by +10/14/18/22/26% depending on network level. Generates influence that boosts production, research or defense. Can activate Arkitoi Defense to briefly arm nearby Villagers. \nConnect Cisterns with Aqueducts to enhance their influence and villager gather rate aura. Cistern costs increase the more Cisterns are built.",
+    "description": "Improves the gather rate of nearby villagers by +10/14/18/22/26% depending on network level. Generates influence that boosts production, research or defense. Can activate Arkitoi Defense to briefly arm nearby Villagers. \nConnect Cisterns with Aqueducts to enhance their influence and villager gather rate aura.",
     "id": "cistern-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/cistern",
@@ -276,9 +285,8 @@
       "wood": 0,
       "stone": 120,
       "gold": 0,
-      "vizier": 0,
       "oliveoil": 0,
-      "total": 50,
+      "total": 120,
       "popcap": 0,
       "time": 15
     }
@@ -287,9 +295,11 @@
     "title": "Pit Mine",
     "age": 1,
     "imgSrc": "/assets/pictures/building_malians/pit-mine-1.webp",
-    "civ": ["MAL"],
+    "civ": [
+      "MAL"
+    ],
     "class": "default",
-    "description": "Must be built on a Gold Vein.\nMines 35 Gold per minute without depleting the deposit. If a deposit has been depleted, the Pit Mine can be re-placed on exhausted Gold Veins.",
+    "description": "Must be built on a Gold Vein.\nMines 36 Gold per minute without depleting the deposit. If a deposit has been depleted, the Pit Mine can be re-placed on exhausted Gold Veins.",
     "id": "pit-mine-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/pit-mine",
@@ -298,8 +308,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 15
@@ -309,21 +317,25 @@
     "title": "Ger",
     "age": 1,
     "imgSrc": "/assets/pictures/building_mongols/ger.webp",
-    "civ": ["MON", "GOH"],
+    "civ": [
+      "GOH",
+      "MON"
+    ],
     "class": "default",
-    "shorthand": ["ger", "qw"],
+    "shorthand": [
+      "ger",
+      "qw"
+    ],
     "description": "Villagers can drop off Food, Wood, and Gold at this building. Houses technologies to improve resource gathering.\nStone is gathered through Ovoos.",
     "id": "ger-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/ger",
     "costs": {
       "food": 0,
-      "wood": 100,
+      "wood": 50,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 100,
+      "total": 50,
       "popcap": 0,
       "time": 20
     }
@@ -332,9 +344,14 @@
     "title": "Pasture",
     "age": 1,
     "imgSrc": "/assets/pictures/building_mongols/pasture.webp",
-    "civ": ["MON"],
+    "civ": [
+      "MON"
+    ],
     "class": "default",
-    "shorthand": ["pasture", "qa"],
+    "shorthand": [
+      "pasture",
+      "qa"
+    ],
     "description": "Automatically produces a gatherable Sheep every 140 seconds. Will eventually stop producing if too many Sheep are produced and not gathered.",
     "id": "pasture-1",
     "type": "building",
@@ -344,8 +361,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 20
@@ -355,10 +370,16 @@
     "title": "Ovoo",
     "age": 1,
     "imgSrc": "/assets/pictures/building_mongols/ovoo.webp",
-    "civ": ["MON", "GOH"],
+    "civ": [
+      "GOH",
+      "MON"
+    ],
     "class": "default",
-    "shorthand": ["ovoo", "qq"],
-    "description": "Must be built on a Stone Outcropping.\nHarvests 70/100/120/150 Stone per minute by Age. Houses unique Mongol technologies.\nConstructing a new Ovoo will destroy the prior one.",
+    "shorthand": [
+      "ovoo",
+      "qq"
+    ],
+    "description": "Must be built on a Stone Outcropping.\nHarvests 60 Stone per minute even from Depleted Stone Deposits. Build limit is increased by +1 after each age up.",
     "id": "ovoo-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/ovoo",
@@ -367,8 +388,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 15
@@ -378,7 +397,9 @@
     "title": "Hunting Cabin",
     "age": 1,
     "imgSrc": "/assets/pictures/building_rus/hunting-cabin.webp",
-    "civ": ["RUS"],
+    "civ": [
+      "RUS"
+    ],
     "class": "default",
     "description": "Villagers can drop off Food at this building. It houses technologies to improve Food gathering and produces Scouts.\nGenerates Gold based on the number of nearby trees. Trees in overlapped areas are only counted once.",
     "id": "hunting-cabin-1",
@@ -386,59 +407,58 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/hunting-cabin",
     "costs": {
       "food": 0,
-      "wood": 100,
+      "wood": 75,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 100,
+      "total": 75,
       "popcap": 0,
-      "time": 25
+      "time": 35
     }
   },
   {
     "title": "Town Center",
-    "age": 2,
+    "age": 1,
     "imgSrc": "/assets/pictures/building_economy/town-center.webp",
     "civ": [
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "MON",
-      "GOH",
       "OTT",
       "RUS",
-      "ZXL",
-      "HOL",
-      "KTE"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["tc", "we"],
+    "shorthand": [
+      "tc",
+      "we"
+    ],
     "description": "All Resources can be dropped off here. Produces Villagers, Scouts, and increases your maximum Population. Adds additional attacks while garrisoned.\nNon-Capital Town Centers can't detect stealth or disguises.",
-    "id": "town-center-2",
+    "id": "town-center-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/town-center",
     "costs": {
       "food": 0,
       "wood": 400,
-      "stone": 350,
+      "stone": 300,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 750,
+      "total": 700,
       "popcap": 0,
       "time": 150
     }
@@ -451,28 +471,31 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "MON",
-      "GOH",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["market", "ww"],
+    "shorthand": [
+      "market",
+      "ww"
+    ],
     "description": "Allows the buying and selling of resources and produces the Trader.",
     "id": "market-2",
     "type": "building",
@@ -482,8 +505,6 @@
       "wood": 100,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 100,
       "popcap": 0,
       "time": 20
@@ -491,16 +512,29 @@
   },
   {
     "title": "Matsuri",
-    "age": 2,
+    "age": 1,
     "imgSrc": "/assets/pictures/building_sengoku/matsuri.webp",
     "civ": [
       "SEN"
     ],
     "class": "default",
-    "shorthand": ["market", "ww"],
+    "shorthand": [
+      "market",
+      "ww"
+    ],
     "id": "matsuri-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/matsuri-1"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/matsuri",
+    "description": "The Matsuri acts as a early Market and universal drop-off location.\n \nProduces the Yatai. The Yatai can gather Food and when full it will send a trader back to the Matsuri, which improves the Matsuri gather rate aura by +5%.",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 0,
+      "total": 100,
+      "popcap": 0,
+      "time": 20
+    }
   },
   {
     "title": "Manor",
@@ -510,40 +544,42 @@
       "HOL"
     ],
     "class": "default",
-    "shorthand": ["manor"],
-    "id": "manor",
+    "shorthand": [
+      "manor"
+    ],
+    "id": "manor-2",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/manor",
     "costs": {
       "food": 0,
-      "wood": 200,
+      "wood": 175,
       "stone": 100,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 300,
+      "total": 275,
       "popcap": 0,
       "time": 45
-    }
+    },
+    "description": "Acts as a drop off building for all resource types. Passively generates 10 wood and 30 food per minute. Generates an additional 4 food and 2 wood for each nearby villager. \nVillagers only affect one Manor at a time.\nIncreases your maximum Population by +10."
   },
   {
     "title": "Village",
     "age": 1,
     "imgSrc": "/assets/pictures/building_chinese/village.webp",
-    "civ": ["CHI", "ZXL"],
+    "civ": [
+      "CHI",
+      "ZXL"
+    ],
     "class": "default",
-    "description": "Increases maximum Population by 40.",
+    "description": "Increases maximum Population by 40.\nA maximum of 3 Villages can be constructed.",
     "id": "village-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/village",
     "costs": {
       "food": 0,
-      "wood": 125,
+      "wood": 100,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 125,
+      "total": 100,
       "popcap": 0,
       "time": 15
     }
@@ -552,9 +588,12 @@
     "title": "Granary",
     "age": 1,
     "imgSrc": "/assets/pictures/building_chinese/granary.webp",
-    "civ": ["CHI", "ZXL"],
+    "civ": [
+      "CHI",
+      "ZXL"
+    ],
     "class": "default",
-    "description": "Villagers can drop off Food at this building. Improves the Farm gather rate of nearby Villagers by +10% (stacks with other Granaries). Generates tax each time a resource is dropped off.",
+    "description": "Villagers can drop off Food at this building. Improves the Farm gather rate of nearby Villagers by +10% (stacks with other Granaries). Generates tax each time a resource is dropped off.\nA maximum of 3 Granaries can be constructed.",
     "id": "granary-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/granary",
@@ -563,8 +602,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 18
@@ -574,7 +611,9 @@
     "title": "Cattle Ranch",
     "age": 2,
     "imgSrc": "/assets/pictures/building_malians/cattle-ranch-2.webp",
-    "civ": ["MAL"],
+    "civ": [
+      "MAL"
+    ],
     "class": "default",
     "description": "Cattle garrisoned in this ranch generate +25 Food per minute. This value is increased by the food upgrades.",
     "id": "cattle-ranch-2",
@@ -582,31 +621,39 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/cattle-ranch",
     "costs": {
       "food": 0,
-      "wood": 100,
+      "wood": 125,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 100,
+      "total": 125,
       "popcap": 0,
       "time": 15
     }
   },
   {
     "title": "Stockyard",
-    "age": 2,
+    "age": 1,
     "imgSrc": "/assets/pictures/building_golden_horde/stockyard.webp",
     "civ": [
       "GOH"
     ],
     "class": "default",
-    "description": "",
-    "id": "stockyard",
+    "description": "Food drop off and harvestable Food source. Use a Villager to gather Food from the sheep carcasses.\nUp to four Villagers can work each Stockyard.",
+    "id": "stockyard-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/stockyard"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/stockyard",
+    "costs": {
+      "food": 0,
+      "wood": 250,
+      "stone": 0,
+      "gold": 0,
+      "total": 250,
+      "popcap": 0,
+      "time": 20
+    }
   },
   {
     "title": "Daimyo",
+    "deprecated": true,
     "age": 2,
     "imgSrc": "/assets/pictures/building_sengoku/daimyo.webp",
     "civ": [
@@ -620,28 +667,24 @@
   },
   {
     "title": "Towncenter",
-    "age": 2,
+    "age": 1,
     "imgSrc": "/assets/pictures/building_sengoku/towncenter.webp",
     "civ": [
       "SEN"
     ],
     "class": "default",
-    "description": "",
-    "id": "towncenter",
+    "description": "All Resources can be dropped off here. Produces Villagers, Scouts, and increases your maximum Population. Adds additional attacks while garrisoned.\nNon-Capital Town Centers can't detect stealth or disguises.",
+    "id": "town-center-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/towncenter"
-  },
-  {
-    "title": "Silver Deposit",
-    "age": 2,
-    "imgSrc": "/assets/pictures/building_macedonian/silver_deposit.webp",
-    "civ": [
-      "MAC"
-    ],
-    "class": "default",
-    "description": "",
-    "id": "silver_deposit",
-    "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/silver_deposit"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/town-center",
+    "costs": {
+      "food": 0,
+      "wood": 400,
+      "stone": 300,
+      "gold": 0,
+      "total": 700,
+      "popcap": 0,
+      "time": 150
+    }
   }
 ]

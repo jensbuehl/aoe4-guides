@@ -9,26 +9,29 @@
       "BYZ",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
       "MAL",
       "MON",
-      "GOH",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "military",
-    "shorthand": ["rax", "qs"],
+    "shorthand": [
+      "rax",
+      "qs"
+    ],
     "description": "Produces melee infantry units.",
     "id": "barracks-1",
     "type": "building",
@@ -38,8 +41,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 30
@@ -49,7 +50,9 @@
     "title": "Military School",
     "age": 1,
     "imgSrc": "/assets/pictures/building_ottomans/military-school-1.webp",
-    "civ": ["OTT"],
+    "civ": [
+      "OTT"
+    ],
     "class": "military",
     "description": "The Military School can be assigned to produce one type of unit continuously at no cost, however they are produced at a slower rate.",
     "id": "military-school-1",
@@ -61,7 +64,6 @@
       "stone": 100,
       "gold": 0,
       "vizier": 0,
-      "oliveoil": 0,
       "total": 250,
       "popcap": 0,
       "time": 30
@@ -74,10 +76,21 @@
       "MAC"
     ],
     "class": "military",
-    "description": "",
+    "description": "Houses advanced technology for the Macedonian Dynasty.",
     "id": "varangian-arsenal-2",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-arsenal-2"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-arsenal",
+    "age": 2,
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 100,
+      "popcap": 0,
+      "time": 30
+    }
   },
   {
     "title": "Varangian Stronghold",
@@ -86,10 +99,21 @@
       "MAC"
     ],
     "class": "military",
-    "description": "",
+    "description": "Structure capable of producing any Varangian unit.",
     "id": "varangian-stronghold-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-stronghold-1"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-stronghold",
+    "age": 1,
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 30
+    }
   },
   {
     "title": "Varangian Warcamp",
@@ -98,10 +122,21 @@
       "MAC"
     ],
     "class": "military",
-    "description": "",
+    "description": "Increases your maximum Population.\n \nAs the Empire suffers casualties in war, the emperor calls forth more Varangians. \nOnce enough troops are lost in battle, the selected Varangian is reinforced to the battlefield at no cost. If placed on shore near water, Attack Ships or Galleys become available as reinforcements.\n \nReinforcements cost 6 times their value in fallen warriors.",
     "id": "varangian-warcamp-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-warcamp-1"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/varangian-warcamp",
+    "age": 1,
+    "costs": {
+      "food": 0,
+      "wood": 50,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 50,
+      "popcap": 0,
+      "time": 20
+    }
   },
   {
     "title": "Archery Range",
@@ -111,28 +146,31 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
+      "KTE",
+      "MAC",
       "MAL",
       "MON",
-      "GOH",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "military",
-    "shorthand": ["archeryrange", "wa"],
+    "shorthand": [
+      "archeryrange",
+      "wa"
+    ],
     "description": "Produces ranged infantry units.",
     "id": "archery-range-2",
     "type": "building",
@@ -142,8 +180,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 30
@@ -157,28 +193,31 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
+      "KTE",
+      "MAC",
       "MAL",
       "MON",
-      "GOH",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "military",
-    "shorthand": ["stable", "ws"],
+    "shorthand": [
+      "stable",
+      "ws"
+    ],
     "description": "Produces cavalry military units.",
     "id": "stable-2",
     "type": "building",
@@ -188,8 +227,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 30
@@ -199,7 +236,9 @@
     "title": "Mercenary House",
     "age": 2,
     "imgSrc": "/assets/pictures/building_byzantines/mercenary-house-2.webp",
-    "civ": ["BYZ"],
+    "civ": [
+      "BYZ"
+    ],
     "class": "military",
     "description": "Produces Mercenary units for Olive Oil after purchasing a Mercenary Contract. One contract can be purchased.\nUnlock another set of Mercenaries with +50% production speed by placing this building near a Trade Post.",
     "id": "mercenary-house-2",
@@ -210,7 +249,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
       "oliveoil": 0,
       "total": 150,
       "popcap": 0,
@@ -225,40 +263,41 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
+      "KTE",
+      "MAC",
       "MAL",
       "MON",
-      "GOH",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "military",
-    "shorthand": ["workshop", "ea"],
+    "shorthand": [
+      "workshop",
+      "ea"
+    ],
     "description": "Produces siege engines and powerful gunpowder units.",
     "id": "siege-workshop-3",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/siege-workshop",
     "costs": {
       "food": 0,
-      "wood": 300,
+      "wood": 250,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 300,
+      "total": 250,
       "popcap": 0,
       "time": 45
     }
@@ -271,29 +310,32 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "MON",
-      "GOH",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "military",
-    "shorthand": ["dock", "qd"],
+    "shorthand": [
+      "dock",
+      "qd"
+    ],
     "description": "Produces naval units.\nAutomatically repairs nearby damaged naval units.\nCapable of holding up to three Fishing Ships.",
     "id": "dock-1",
     "type": "building",
@@ -303,8 +345,6 @@
       "wood": 75,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 75,
       "popcap": 0,
       "time": 30
@@ -314,11 +354,14 @@
     "title": "Runestones",
     "age": 1,
     "imgSrc": "/assets/pictures/building_macedonian/runestones.webp",
-    "civ": ["MAC"],
+    "civ": [
+      "MAC"
+    ],
     "class": "military",
     "id": "runestones-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/runestones-1"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/runestones",
+    "description": "Carve a Runestone after defeating 5 military units to celebrate honorable victories in combat, enhancing Varangian ranged weapons by 1 tile, melee damage by 1, and move speed by 15%. Lasts 150 seconds."
   },
   {
     "title": "Keep",
@@ -328,23 +371,27 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JDA",
       "JIN",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "HOL"
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["keep", "qz", "qy"],
+    "shorthand": [
+      "keep",
+      "qz",
+      "qy"
+    ],
     "description": "Heavy garrison and defensible position. Can be upgraded with weaponry. Adds additional attacks while garrisoned.",
     "id": "keep-3",
     "type": "building",
@@ -354,8 +401,6 @@
       "wood": 0,
       "stone": 900,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 900,
       "popcap": 0,
       "time": 180
@@ -365,7 +410,10 @@
     "title": "Castle",
     "age": 4,
     "imgSrc": "/assets/pictures/building_japanese/castle-4.webp",
-    "civ": ["JAP", "SEN"],
+    "civ": [
+      "JAP",
+      "SEN"
+    ],
     "class": "default",
     "description": "Heavy garrison and defensible position equipped with a powerful Rocket, which deals high damage to a single target. Can be upgraded with weaponry. Adds additional attacks while garrisoned.",
     "id": "castle-4",
@@ -376,8 +424,6 @@
       "wood": 300,
       "stone": 900,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 1200,
       "popcap": 0,
       "time": 180
@@ -387,7 +433,9 @@
     "title": "Aqueduct",
     "age": 1,
     "imgSrc": "/assets/pictures/building_byzantines/aqueduct-1.webp",
-    "civ": ["BYZ"],
+    "civ": [
+      "BYZ"
+    ],
     "class": "default",
     "description": "Stone infrastructure to connect water between Cisterns to improve the Water Level of all connected Cisterns. Can be connected to Stone Walls.",
     "id": "aqueduct-1",
@@ -398,7 +446,6 @@
       "wood": 0,
       "stone": 2,
       "gold": 0,
-      "vizier": 0,
       "oliveoil": 0,
       "total": 2,
       "popcap": 0,
@@ -413,26 +460,30 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MON",
       "OTT",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["outpost", "qy", "qz"],
+    "shorthand": [
+      "outpost",
+      "qy",
+      "qz"
+    ],
     "description": "Offers extensive line of sight and detects units stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned.",
     "id": "outpost-1",
     "type": "building",
@@ -442,8 +493,6 @@
       "wood": 100,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 100,
       "popcap": 0,
       "time": 60
@@ -453,7 +502,9 @@
     "title": "Toll Outpost",
     "age": 1,
     "imgSrc": "/assets/pictures/building_malians/toll-outpost-1.webp",
-    "civ": ["MAL"],
+    "civ": [
+      "MAL"
+    ],
     "class": "default",
     "description": "Offers extensive line of sight and detects units stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned.\nPassing Traders and Trade Ships instantly provide an additional 8% of their carried Gold. Does not generate any bonus tax if a toll outpost is built within range of another one.",
     "id": "toll-outpost-1",
@@ -464,8 +515,6 @@
       "wood": 100,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 100,
       "popcap": 0,
       "time": 60
@@ -479,27 +528,30 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
-      "GOH",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["palgate", "qx"],
+    "shorthand": [
+      "palgate",
+      "qx"
+    ],
     "description": "Light defensive gate. Must be built on a Palisade Wall segment.",
     "id": "palisade-gate-1",
     "type": "building",
@@ -509,8 +561,6 @@
       "wood": 25,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 25,
       "popcap": 0,
       "time": 10
@@ -524,48 +574,51 @@
       "ABB",
       "AYY",
       "BYZ",
-      "GOH",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "GOH",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["palwall", "qc"],
-    "description": "Light defensive wall for quickly fortifying an area.\nInitially costs 21 Wood, with each additional section costing 7 Wood.",
-    "id": "palisade-wall-1",
+    "shorthand": [
+      "palwall",
+      "qc"
+    ],
+    "description": "Light defensive wall for quickly fortifying an area.",
+    "id": "palisade-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/palisade-wall",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/palisade",
     "costs": {
       "food": 0,
       "wood": 7,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 7,
       "popcap": 0,
-      "time": 4
+      "time": 8
     }
   },
   {
     "title": "Wooden Fortress",
     "age": 1,
     "imgSrc": "/assets/pictures/building_rus/wooden-fortress.webp",
-    "civ": ["RUS"],
+    "civ": [
+      "RUS"
+    ],
     "class": "default",
     "description": "Sturdy wooden stronghold with extensive line of sight that detects units stealth or disguises. Can be upgraded with weaponry. Attacks while garrisoned.",
     "id": "wooden-fortress-1",
@@ -576,8 +629,6 @@
       "wood": 175,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 175,
       "popcap": 0,
       "time": 60
@@ -587,7 +638,9 @@
     "title": "Fortified Palisade Gate",
     "age": 1,
     "imgSrc": "/assets/pictures/building_rus/fortified-palisade-gate.webp",
-    "civ": ["RUS"],
+    "civ": [
+      "RUS"
+    ],
     "class": "default",
     "description": "Relatively sturdy defensive gate. Must be built on a Fortified Palisade Wall segment.",
     "id": "fortified-palisade-gate-1",
@@ -598,8 +651,6 @@
       "wood": 25,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 25,
       "popcap": 0,
       "time": 10
@@ -609,9 +660,11 @@
     "title": "Fortified Palisade Wall",
     "age": 1,
     "imgSrc": "/assets/pictures/building_rus/fortified-palisade-wall.webp",
-    "civ": ["RUS"],
+    "civ": [
+      "RUS"
+    ],
     "class": "default",
-    "description": "Well-built defensive wall for quickly fortifying an area.\nInitially costs 21 Wood, with each additional section costing 7 Wood.",
+    "description": "Well-built defensive wall for quickly fortifying an area.",
     "id": "fortified-palisade-wall-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/fortified-palisade-wall",
@@ -620,11 +673,9 @@
       "wood": 7,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 7,
       "popcap": 0,
-      "time": 3
+      "time": 8
     }
   },
   {
@@ -635,39 +686,40 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["stonewall", "qx"],
-    "description": "Sturdy wall that cannot be attacked by torches. \nUnits on walls take 25% less damage from ranged attacks, 50% less damage from siege attacks, and their range is increased by +2.",
+    "shorthand": [
+      "stonewall",
+      "qx"
+    ],
+    "description": "Sturdy wall that cannot be attacked by torches. \nUnits on walls take 25% less damage from ranged attacks, 50% less damage from siege attacks, and their range is increased by +1.",
     "id": "stone-wall-2",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/stone-wall",
     "costs": {
       "food": 0,
       "wood": 0,
-      "stone": 20,
+      "stone": 25,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 20,
+      "total": 25,
       "popcap": 0,
       "time": 16
     }
@@ -680,27 +732,30 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["stonegate", "qc"],
+    "shorthand": [
+      "stonegate",
+      "qc"
+    ],
     "description": "Heavy defensive gate. Must be built on a Stone Wall segment.\nInfantry can use the gate to access the top of the walls.",
     "id": "stone-wall-gate-2",
     "type": "building",
@@ -710,9 +765,73 @@
       "wood": 0,
       "stone": 50,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 50,
+      "popcap": 0,
+      "time": 30
+    }
+  },
+  {
+    "title": "Hojo Clan Daimyo Estate",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_sengoku/hojo_daimyo_1.webp",
+    "civ": [
+      "SEN"
+    ],
+    "class": "default",
+    "id": "hojo-clan-daimyo-estate-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/hojo-clan-daimyo-estate",
+    "description": "Increases Hojo Clan support providing bonuses to Barracks Infantry.  \nProduces the Daimyo unit. Hojo Daimyo Estate health is increased +1000 and cost increased x2 Stone and Wood.",
+    "costs": {
+      "food": 0,
+      "wood": 125,
+      "stone": 125,
+      "gold": 0,
+      "total": 250,
+      "popcap": 0,
+      "time": 30
+    }
+  },
+  {
+    "title": "Oda Clan Daimyo Estate",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_sengoku/oda_daimyo_1.webp",
+    "civ": [
+      "SEN"
+    ],
+    "class": "default",
+    "id": "oda-clan-daimyo-estate-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/oda-clan-daimyo-estate",
+    "description": "Increases Oda Clan support providing bonuses to Archery Range Infantry.\nProduces the Daimyo unit. Oda Daimyo Estate health is increased +1000 and cost increased x2 Stone and Wood.",
+    "costs": {
+      "food": 0,
+      "wood": 125,
+      "stone": 125,
+      "gold": 0,
+      "total": 250,
+      "popcap": 0,
+      "time": 30
+    }
+  },
+  {
+    "title": "Takeda Clan Daimyo Estate",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_sengoku/takeda_daimyo_1.webp",
+    "civ": [
+      "SEN"
+    ],
+    "class": "default",
+    "id": "takeda-clan-daimyo-estate-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/takeda-clan-daimyo-estate",
+    "description": "Increases Takeda Clan support providing bonuses to Stables Cavalry.\nProduces the Daimyo unit. Takeda Daimyo Estate health is increased +1000 and cost increased x2 Stone and Wood.",
+    "costs": {
+      "food": 0,
+      "wood": 125,
+      "stone": 125,
+      "gold": 0,
+      "total": 250,
       "popcap": 0,
       "time": 30
     }
@@ -725,27 +844,31 @@
       "ABB",
       "AYY",
       "BYZ",
-      "MAC",
       "CHI",
       "DEL",
-      "TUG",
       "DRA",
       "ENG",
       "FRE",
+      "HOL",
       "HRE",
       "JAP",
-      "SEN",
       "JDA",
       "JIN",
+      "KTE",
+      "MAC",
       "MAL",
       "OTT",
       "RUS",
-      "ZXL",
-      "KTE",
-      "HOL"
+      "SEN",
+      "TUG",
+      "ZXL"
     ],
     "class": "default",
-    "shorthand": ["stonetower", "qz", "qy"],
+    "shorthand": [
+      "stonetower",
+      "qz",
+      "qy"
+    ],
     "description": "Heavy defensive tower that fires a springald. Must be built on a Stone Wall segment.\nInfantry can use the tower to access the top of the walls.",
     "id": "stone-wall-tower-2",
     "type": "building",
@@ -753,28 +876,39 @@
     "costs": {
       "food": 0,
       "wood": 0,
-      "stone": 300,
+      "stone": 250,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
-      "total": 300,
+      "total": 250,
       "popcap": 0,
       "time": 90
     }
   },
   {
     "title": "Fortified Outpost",
-    "age": 2,
+    "age": 1,
     "imgSrc": "/assets/pictures/building_golden_horde/fortified_outpost.webp",
     "civ": [
       "GOH"
     ],
     "class": "default",
-    "shorthand": ["stonetower", "qz", "qy"],
-    "description": "",
-    "id": "fortified_outpost",
+    "shorthand": [
+      "stonetower",
+      "qz",
+      "qy"
+    ],
+    "description": "Offers extensive line of sight and detects units stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned.",
+    "id": "fortified-outpost-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/fortified_outpost"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/fortified-outpost",
+    "costs": {
+      "food": 0,
+      "wood": 150,
+      "stone": 50,
+      "gold": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 60
+    }
   },
   {
     "title": "Tughluqabad Fort",
@@ -783,10 +917,20 @@
       "TUG"
     ],
     "class": "default",
-    "description": "",
+    "description": "Heavy garrison and defensible position that can select a Governor bonus. Can be upgraded with weaponry. Adds additional attacks while garrisoned.",
     "id": "tughlaqabad-fort-2",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/tughlaqabad-fort-2"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/tughlaqabad-fort",
+    "age": 2,
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 400,
+      "gold": 0,
+      "total": 400,
+      "popcap": 0,
+      "time": 135
+    }
   },
   {
     "title": "Worker Elephant",
@@ -795,19 +939,30 @@
       "TUG"
     ],
     "class": "default",
-    "description": "",
+    "description": "Send a new Worker Elephant from the nearest Town Center or Tughlaqabad Fort to the targeted location. \nVillagers automatically gather resources once they reach the location.",
     "id": "worker-elephant-1",
     "type": "building",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/worker-elephant-1"
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/worker-elephant",
+    "age": 1,
+    "costs": {
+      "food": 25,
+      "wood": 50,
+      "stone": 0,
+      "gold": 0,
+      "total": 75,
+      "popcap": 0
+    }
   },
   {
     "title": "Grassland",
-    "age": 1,
+    "age": 2,
     "imgSrc": "/assets/pictures/building_jin/grassland.webp",
-    "civ": ["JIN"],
+    "civ": [
+      "JIN"
+    ],
     "class": "military",
     "description": "Must be constructed on a Grassland Post.\nSpawns a Horse up to the max of 5 every 90/60/45 seconds in Feudal/Castle/Imperial Ages. Each Horse in a Grassland grants +2 maximum Health to all Melee Cavalry and +1 to all Ranged Cavalry.\nHorses can be used by War Stables in Influence to instantly train Cavalry at a 25 resources discount.",
-    "id": "grassland-1",
+    "id": "grassland-2",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/grassland",
     "costs": {
@@ -815,8 +970,6 @@
       "wood": 100,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 100,
       "popcap": 0,
       "time": 45
@@ -824,12 +977,14 @@
   },
   {
     "title": "Machine Workshop",
-    "age": 1,
+    "age": 2,
     "imgSrc": "/assets/pictures/building_jin/machine-workshop.webp",
-    "civ": ["JIN"],
+    "civ": [
+      "JIN"
+    ],
     "class": "military",
     "description": "Produces ranged infantry and siege engines.\nRepairs nearby siege engines.",
-    "id": "machine-workshop-1",
+    "id": "machine-workshop-2",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/machine-workshop",
     "costs": {
@@ -837,8 +992,6 @@
       "wood": 175,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 175,
       "popcap": 0,
       "time": 35
@@ -846,12 +999,14 @@
   },
   {
     "title": "War Stable",
-    "age": 1,
+    "age": 2,
     "imgSrc": "/assets/pictures/building_jin/war-stable.webp",
-    "civ": ["JIN"],
+    "civ": [
+      "JIN"
+    ],
     "class": "military",
     "description": "Produces melee and ranged cavalry units.\nTraders can use the War Stable as their Home Market.",
-    "id": "war-stable-1",
+    "id": "war-stable-2",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/war-stable",
     "costs": {
@@ -859,8 +1014,6 @@
       "wood": 175,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 175,
       "popcap": 0,
       "time": 35

@@ -6,64 +6,201 @@
     >
       <v-row align="center" justify="center">
         <!-- Main Content -->
-        <v-col cols="12" sm="6" align-self="start">
-          <v-card flat rounded="lg" class="mb-6 pa-2 text-center">
-            <v-card-title>Helper Functions</v-card-title>
-            <v-btn color="primary" variant="text" @click="updateImageMetaData()"
-              >Sync Data with AOE4WORLD</v-btn
-            >
-          </v-card>
+        <v-col cols="12" sm="9" align-self="start">
+          <v-card flat rounded="lg" class="mb-6 pa-2">
+            <div class="d-flex align-center justify-space-between pa-4 pb-2">
+              <span class="text-subtitle-1 font-weight-medium">Sync Data with AOE4WORLD</span>
+              <v-btn
+                v-if="syncPhase === 'idle'"
+                color="primary"
+                variant="tonal"
+                size="small"
+                prepend-icon="mdi-play"
+                @click="startSync()"
+              >Run</v-btn>
+              <div v-if="syncPhase === 'preview'" class="d-flex align-center" style="gap: 8px">
+                <v-btn
+                  v-if="canSaveAny"
+                  color="primary"
+                  variant="tonal"
+                  size="small"
+                  prepend-icon="mdi-download-multiple"
+                  @click="saveAll()"
+                >Save All</v-btn>
+                <v-btn
+                  variant="text"
+                  size="small"
+                  prepend-icon="mdi-refresh"
+                  @click="resetSync()"
+                >New Sync</v-btn>
+              </div>
+            </div>
 
-          <v-card flat rounded="lg" class="mb-6 pa-2 text-center">
-            <v-card-title>Migrations</v-card-title>
-            <v-btn color="primary" variant="text" @click="runMigration()"
-              >Initialize Contributors</v-btn
-            >
+            <!-- fetching: per-source progress chips -->
+            <div v-if="syncPhase === 'fetching'" class="px-4 pb-4">
+              <p class="text-body-2 text-center mb-3">Fetching from AOE4World…</p>
+              <div
+                v-for="source in ['units', 'buildings', 'technologies', 'abilities']"
+                :key="source"
+                class="d-flex align-center justify-space-between mb-2"
+              >
+                <span class="text-body-2 text-capitalize">{{ source }}</span>
+                <v-chip
+                  :color="fetchStatus[source] === 'success' ? 'success' : fetchStatus[source] === 'error' ? 'error' : 'grey'"
+                  size="small"
+                  variant="tonal"
+                >
+                  {{ fetchStatus[source] === 'success' ? '✓' : fetchStatus[source] === 'error' ? '✗' : '···' }}
+                </v-chip>
+              </div>
+            </div>
+
+            <!-- preview: collapsible per-category panels -->
+            <div v-if="syncPhase === 'preview'" class="pb-2">
+              <v-expansion-panels variant="accordion" multiple v-model="openPanels">
+                <v-expansion-panel
+                  v-for="category in categoryResults"
+                  :key="category.key"
+                  :value="category.key"
+                >
+                  <v-expansion-panel-title>
+                    <div class="d-flex align-center" style="gap: 8px; min-width: 0; flex: 1; padding-right: 4px">
+                      <span class="text-body-2 font-weight-medium" style="flex-shrink: 0">{{ category.key }}</span>
+                      <div class="d-flex align-center flex-wrap" style="gap: 4px; flex: 1">
+                        <v-chip v-if="category.errored" color="error" size="x-small" variant="tonal">fetch failed</v-chip>
+                        <template v-else>
+                          <v-chip color="success" size="x-small" variant="tonal">{{ category.matched.length + category.resolved.length }} matched</v-chip>
+                          <v-chip v-if="category.unmatched.length" color="warning" size="x-small" variant="tonal">{{ category.unmatched.length }} unmatched</v-chip>
+                          <v-chip v-if="category.skipped.length || category.previouslySkipped.some(e => e.syncSkip)" size="x-small" variant="tonal">{{ category.skipped.length + category.previouslySkipped.filter(e => e.syncSkip).length }} skipped</v-chip>
+                          <v-chip v-if="category.previouslySkipped.some(e => e.deprecated)" size="x-small" variant="tonal">{{ category.previouslySkipped.filter(e => e.deprecated).length }} deprecated</v-chip>
+                        </template>
+                      </div>
+                      <v-btn
+                        v-if="!category.errored"
+                        size="x-small"
+                        :color="category.downloaded ? 'success' : 'primary'"
+                        variant="tonal"
+                        :prepend-icon="category.downloaded ? 'mdi-check' : 'mdi-download'"
+                        @click.stop="downloadCategory(category)"
+                        style="flex-shrink: 0"
+                      >{{ category.downloaded ? 'Saved' : 'Save' }}</v-btn>
+                    </div>
+                  </v-expansion-panel-title>
+
+                  <v-expansion-panel-text>
+                  <div :data-category="category.key">
+                    <!-- Unmatched entries -->
+                    <div
+                      v-for="entry in category.unmatched"
+                      :key="entry.title"
+                      class="d-flex align-center justify-space-between mt-2"
+                    >
+                      <div class="d-flex align-center" style="gap: 6px; min-width: 0">
+                        <img
+                          v-if="entry.imgSrc"
+                          :src="entry.imgSrc"
+                          width="24"
+                          height="24"
+                          style="object-fit: contain; flex-shrink: 0"
+                        />
+                        <span class="text-caption text-medium-emphasis text-truncate">{{ entry.title }}</span>
+                      </div>
+                      <div class="d-flex align-center" style="flex-shrink: 0; gap: 8px">
+                        <v-autocomplete
+                          :items="getCategorySourceItems(category)"
+                          item-title="name"
+                          item-value="id"
+                          return-object
+                          :custom-filter="filterSourceItems"
+                          @update:search="q => (autocompleteSearch[category.key + ':' + entry.title] = q || '')"
+                          @update:model-value="(val) => val && resolveEntry(category.key, entry, val)"
+                          placeholder="Search…"
+                          density="compact"
+                          variant="outlined"
+                          hide-details
+                          style="width: 280px"
+                        >
+                          <template #no-data>
+                            <v-list-item
+                              :title="(autocompleteSearch[category.key + ':' + entry.title] || '').length >= 2 ? 'No matching items found' : 'Type 2+ characters to search'"
+                              class="text-medium-emphasis"
+                            />
+                          </template>
+                          <template #item="{ item, props }">
+                            <v-list-item v-bind="props" lines="two">
+                              <template #subtitle>
+                                <span style="line-height: 1.6">{{ getItemSubtitle(item.raw) }}</span>
+                              </template>
+                              <template #prepend>
+                                <img
+                                  v-if="findLocalIconByName(item.raw)"
+                                  :src="findLocalIconByName(item.raw)"
+                                  width="24"
+                                  height="24"
+                                  style="object-fit: contain; margin-right: 8px; flex-shrink: 0"
+                                />
+                              </template>
+                            </v-list-item>
+                          </template>
+                        </v-autocomplete>
+                        <v-btn
+                          variant="text"
+                          size="small"
+                          density="compact"
+                          style="width: 56px"
+                          @click="skipEntry(category.key, entry)"
+                        >Skip</v-btn>
+                      </div>
+                    </div>
+
+                    <!-- Resolved summary -->
+                    <v-chip
+                      v-if="category.resolved.length"
+                      size="x-small"
+                      color="info"
+                      variant="tonal"
+                      class="mt-2"
+                    >{{ category.resolved.length }} resolved manually</v-chip>
+
+                    <!-- Skipped group (current session + syncSkip) -->
+                    <template v-if="category.skipped.length || category.previouslySkipped.some(e => e.syncSkip)">
+                      <div class="text-caption text-medium-emphasis mt-3 mb-1">Skipped</div>
+                      <div
+                        v-for="entry in [...category.skipped, ...category.previouslySkipped.filter(e => e.syncSkip)]"
+                        :key="'skip-' + entry.title"
+                        class="d-flex align-center justify-space-between mt-1"
+                      >
+                        <div class="d-flex align-center" style="gap: 6px; min-width: 0">
+                          <img v-if="entry.imgSrc" :src="entry.imgSrc" width="24" height="24" style="object-fit: contain; flex-shrink: 0; opacity: 0.45" />
+                          <span class="text-caption text-medium-emphasis text-truncate" style="text-decoration: line-through">{{ entry.title }}</span>
+                        </div>
+                        <v-btn variant="text" size="small" density="compact" @click="unskipEntry(category.key, entry)">Unskip</v-btn>
+                      </div>
+                    </template>
+
+                    <!-- Deprecated group -->
+                    <template v-if="category.previouslySkipped.some(e => e.deprecated)">
+                      <div class="text-caption text-medium-emphasis mt-3 mb-1">Deprecated</div>
+                      <div
+                        v-for="entry in category.previouslySkipped.filter(e => e.deprecated)"
+                        :key="'dep-' + entry.title"
+                        class="d-flex align-center justify-space-between mt-1"
+                      >
+                        <div class="d-flex align-center" style="gap: 6px; min-width: 0">
+                          <img v-if="entry.imgSrc" :src="entry.imgSrc" width="24" height="24" style="object-fit: contain; flex-shrink: 0; opacity: 0.45" />
+                          <span class="text-caption text-medium-emphasis text-truncate" style="text-decoration: line-through">{{ entry.title }}</span>
+                        </div>
+                        <v-btn variant="text" size="small" density="compact" @click="unskipEntry(category.key, entry)">Restore</v-btn>
+                      </div>
+                    </template>
+                  </div>
+                  </v-expansion-panel-text>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </div>
           </v-card>
         </v-col>
 
-        <!-- Side Bar -->
-        <v-col cols="12" sm="4">
-          <v-card flat rounded="lg" class="d-flex align-center mb-4">
-            <v-row no-gutters class="fill-height" align="center" justify="center">
-              <v-col cols="12">
-                <v-card-title class="mb-4">Admin Console</v-card-title>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  class="text-grey"
-                  name="displayname"
-                  label="Display name"
-                  type="text"
-                  v-model="user.displayName"
-                  placeholder="Your display name"
-                  readonly
-                ></v-text-field>
-                <v-text-field
-                  class="text-grey"
-                  name="email"
-                  label="Email"
-                  type="email"
-                  v-model="user.email"
-                  placeholder="Your email"
-                  readonly
-                ></v-text-field>
-                <v-text-field
-                  class="text-grey"
-                  name="user id"
-                  label="User ID"
-                  type="text"
-                  v-model="user.uid"
-                  placeholder="Your user id"
-                  readonly
-                ></v-text-field>
-                <v-card flat v-if="error" rounded="lg" color="error">
-                  <v-card-text>{{ error }}</v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
       </v-row>
     </div>
   </v-container>
@@ -71,16 +208,9 @@
 
 <script>
 import { useStore } from "vuex";
-import { ref, computed, onMounted } from "vue";
-import { httpsCallable } from "firebase/functions";
-import {
-  functions,
-} from "@/firebase";
+import { ref, computed, onMounted, nextTick } from "vue";
 
-//Composables
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { getBuilds } from "@/composables/data/buildService";
-import { addContributor } from "@/composables/data/contributorService";
 
 import unitEco from "@/composables/builds/icons/json/unitEco.json" with { type: "json" };
 import unitReligious from "@/composables/builds/icons/json/unitReligious.json" with { type: "json" };
@@ -100,40 +230,277 @@ import abilityHero from "@/composables/builds/icons/json/abilityHero.json" with 
 export default {
   name: "Admin",
   setup() {
-    var builds = null;
-    var users = null;
-
-    const error = ref(null);
     const store = useStore();
     const filterConfig = computed(() => store.state.filterConfig);
-    const user = computed(() => store.state.user);
+
+    // T001: Static mapping of 12 local JSON categories to their AOE4World source(s)
+    const CATEGORY_CONFIG = [
+      { key: "unitEco",           filename: "unitEco.json",          sourceKeys: ["units"],                     exploreType: "units",        data: unitEco },
+      { key: "unitReligious",     filename: "unitReligious.json",    sourceKeys: ["units"],                     exploreType: "units",        data: unitReligious },
+      { key: "unitMilitary",      filename: "unitMilitary.json",     sourceKeys: ["units"],                     exploreType: "units",        data: unitMilitary },
+      { key: "unitHero",          filename: "unitHero.json",         sourceKeys: ["units"],                     exploreType: "units",        data: unitHero },
+      { key: "buildingEco",       filename: "buildingEco.json",      sourceKeys: ["buildings"],                 exploreType: "buildings",    data: buildingEco },
+      { key: "buildingMilitary",  filename: "buildingMilitary.json", sourceKeys: ["buildings"],                 exploreType: "buildings",    data: buildingMilitary },
+      { key: "buildingReligious", filename: "buildingReligious.json",sourceKeys: ["buildings"],                 exploreType: "buildings",    data: buildingReligious },
+      { key: "buildingTech",      filename: "buildingTech.json",     sourceKeys: ["buildings"],                 exploreType: "buildings",    data: buildingTech },
+      { key: "landmarks",         filename: "landmarks.json",        sourceKeys: ["buildings", "technologies"], exploreType: "buildings",    data: landmarks },
+      { key: "techEco",           filename: "techEco.json",          sourceKeys: ["technologies"],              exploreType: "technologies", data: techEco },
+      { key: "techMilitary",      filename: "techMilitary.json",     sourceKeys: ["technologies"],              exploreType: "technologies", data: techMilitary },
+      { key: "abilityHero",       filename: "abilityHero.json",      sourceKeys: ["abilities", "technologies"], exploreType: null,           data: abilityHero },
+    ];
+
+    // T002: Sync session state — ephemeral, not persisted
+    const syncPhase = ref("idle"); // 'idle' | 'fetching' | 'preview'
+    const fetchStatus = ref({ units: "idle", buildings: "idle", technologies: "idle", abilities: "idle" });
+    const sourceData = ref({ units: null, buildings: null, technologies: null, abilities: null });
+    const categoryResults = ref([]);
+    const openPanels = ref([]);
+    const autocompleteSearch = ref({});
 
     onMounted(() => {
       if (!filterConfig.value) {
         store.commit("setFilterConfig", getDefaultConfig());
       }
-      initData();
     });
 
-    function sortByNameCompareFunction(a, b) {
-      var nameA = a.toUpperCase();
-      var nameB = b.toUpperCase();
-      if (nameA < nameB) {
-        return -1;
+    // T003: Pure match function — no mutation, returns matched/unmatched/previouslySkipped split
+    function runMatchPass(sourceArray, localEntries) {
+      const matched = [];
+      const unmatched = [];
+      const previouslySkipped = [];
+      localEntries.forEach((entry) => {
+        if (entry.deprecated || entry.syncSkip) {
+          previouslySkipped.push(entry);
+          return;
+        }
+        const match = sourceArray.find((s) => s.id === entry.id || s.name === entry.title);
+        if (match) {
+          matched.push({ local: entry, source: match });
+        } else {
+          unmatched.push(entry);
+        }
+      });
+      return { matched, unmatched, previouslySkipped };
+    }
+
+
+    // T005: Phase 1 — fetch all 4 sources in parallel with per-source status, then build preview
+    async function startSync() {
+      syncPhase.value = "fetching";
+      fetchStatus.value = { units: "idle", buildings: "idle", technologies: "idle", abilities: "idle" };
+      sourceData.value = { units: null, buildings: null, technologies: null, abilities: null };
+
+      const urls = {
+        units: "https://data.aoe4world.com/units/all.json",
+        buildings: "https://data.aoe4world.com/buildings/all.json",
+        technologies: "https://data.aoe4world.com/technologies/all.json",
+        abilities: "https://data.aoe4world.com/abilities/all.json",
+      };
+
+      await Promise.all(
+        Object.keys(urls).map(async (source) => {
+          fetchStatus.value[source] = "loading";
+          try {
+            const response = await fetch(urls[source]);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const data = await response.json();
+            sourceData.value[source] = data.data;
+            fetchStatus.value[source] = "success";
+          } catch {
+            fetchStatus.value[source] = "error";
+          }
+        })
+      );
+
+      categoryResults.value = CATEGORY_CONFIG.map((config) => {
+        const errored = config.sourceKeys.some((k) => fetchStatus.value[k] === "error");
+        const localEntries = JSON.parse(JSON.stringify(config.data));
+
+        if (errored) {
+          return {
+            key: config.key, filename: config.filename, sourceKeys: config.sourceKeys,
+            exploreType: config.exploreType, localEntries,
+            matched: [], unmatched: [], resolved: [], skipped: [], previouslySkipped: [], errored: true, downloaded: false,
+          };
+        }
+
+        const sourceArray = config.sourceKeys.flatMap((k) => sourceData.value[k] || []);
+        const { matched, unmatched, previouslySkipped } = runMatchPass(sourceArray, localEntries);
+        return {
+          key: config.key, filename: config.filename, sourceKeys: config.sourceKeys,
+          exploreType: config.exploreType, localEntries,
+          matched, unmatched, resolved: [], skipped: [], previouslySkipped, errored: false, downloaded: false,
+        };
+      });
+
+      // Auto-open panels that need attention
+      openPanels.value = categoryResults.value
+        .filter((c) => c.unmatched.length > 0 || c.errored)
+        .map((c) => c.key);
+
+      syncPhase.value = "preview";
+    }
+
+    // T008: Move unmatched entries to resolved (manual mapping) or skipped
+    async function resolveEntry(categoryKey, localEntry, sourceEntry) {
+      const cat = categoryResults.value.find((c) => c.key === categoryKey);
+      if (!cat) return;
+      const idx = cat.unmatched.indexOf(localEntry);
+      if (idx === -1) return;
+      cat.unmatched.splice(idx, 1);
+      cat.resolved.push({ local: localEntry, source: sourceEntry });
+
+      await nextTick();
+      // Focus next input in same category first, then fall back to first globally
+      const next =
+        document.querySelector(`[data-category="${categoryKey}"] .v-autocomplete input`) ||
+        document.querySelector("[data-category] .v-autocomplete input");
+      if (next) next.focus();
+    }
+
+    function skipEntry(categoryKey, localEntry) {
+      const cat = categoryResults.value.find((c) => c.key === categoryKey);
+      if (!cat) return;
+      const idx = cat.unmatched.indexOf(localEntry);
+      if (idx === -1) return;
+      cat.unmatched.splice(idx, 1);
+      cat.skipped.push(localEntry);
+    }
+
+    function unskipEntry(categoryKey, entry) {
+      const cat = categoryResults.value.find((c) => c.key === categoryKey);
+      if (!cat) return;
+      const fromSkipped = cat.skipped.indexOf(entry);
+      const fromPreviously = cat.previouslySkipped.indexOf(entry);
+      if (fromSkipped !== -1) {
+        cat.skipped.splice(fromSkipped, 1);
+      } else if (fromPreviously !== -1) {
+        cat.previouslySkipped.splice(fromPreviously, 1);
+      } else return;
+
+      // Try auto-match; if no match, send to unmatched and ensure panel is open
+      const sourceArray = cat.sourceKeys.flatMap((k) => sourceData.value[k] || []);
+      const match = sourceArray.find((s) => s.id === entry.id || s.name === entry.title);
+      if (match) {
+        cat.matched.push({ local: entry, source: match });
+      } else {
+        cat.unmatched.push(entry);
+        if (!openPanels.value.includes(categoryKey)) {
+          openPanels.value.push(categoryKey);
+        }
       }
-      if (nameA > nameB) {
-        return 1;
+    }
+
+    // T009: Autocomplete helpers — combined source items, deduplicated by id, 2-char minimum filter
+    function getCategorySourceItems(category) {
+      const items = category.sourceKeys.flatMap((k) => sourceData.value[k] || []);
+      const seen = new Set();
+      return items.filter((item) => {
+        if (seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      });
+    }
+
+    function filterSourceItems(value, queryText) {
+      if (!queryText || queryText.length < 2) return false;
+      return value.toLowerCase().includes(queryText.toLowerCase());
+    }
+
+    // Cross-reference a source item back to a local entry's icon (API doesn't carry image URLs)
+    function findLocalIconByName(sourceItem) {
+      const nameLC = sourceItem.name?.toLowerCase();
+      for (const config of CATEGORY_CONFIG) {
+        const entry = config.data.find(
+          (e) =>
+            (e.id && (e.id === sourceItem.id || e.id === sourceItem.baseId)) ||
+            (e.title && (e.title === sourceItem.name || e.title.toLowerCase() === nameLC))
+        );
+        if (entry?.imgSrc) return entry.imgSrc;
       }
-      return 0;
+      return null;
+    }
+
+    function getItemSubtitle(item) {
+      const parts = [];
+      if (item.age) parts.push(`Age ${ ['I','II','III','IV'][item.age - 1] ?? item.age }`);
+      if (item.type) parts.push(item.type);
+      return parts.join(' · ') || undefined;
+    }
+
+    // Enrich a single entry with AOE4World source fields (same field set as original syncData)
+    function applyEnrichment(entry, source, exploreType) {
+      delete entry.syncSkip;
+      delete entry.deprecated;
+      entry.description = source.description;
+      entry.age = source.age;
+      entry.id = source.id;
+      entry.type = source.type;
+      if (Array.isArray(entry.civ)) {
+        entry.civ = entry.civ.slice().sort((a, b) => a.toUpperCase().localeCompare(b.toUpperCase()));
+      }
+      if (exploreType) {
+        entry.exploreUrl = `https://aoe4world.com/explorer/civs/all/${exploreType}/${source.baseId}`;
+      }
+      if (source.costs && source.costs.total > 0) {
+        entry.costs = source.costs;
+      }
+      if (source.influence) {
+        entry.influences = source.influences;
+      }
+    }
+
+    // Apply enrichment and download a single category file
+    async function downloadCategory(category) {
+      const enriched = JSON.parse(JSON.stringify(category.localEntries));
+
+      category.matched.forEach(({ local, source }) => {
+        const idx = category.localEntries.indexOf(local);
+        if (idx !== -1) applyEnrichment(enriched[idx], source, category.exploreType);
+      });
+
+      category.resolved.forEach(({ local, source }) => {
+        const idx = category.localEntries.indexOf(local);
+        if (idx !== -1) applyEnrichment(enriched[idx], source, category.exploreType);
+      });
+
+      // skipped (this session) — mark syncSkip so future runs skip them without treating as deprecated
+      category.skipped.forEach((local) => {
+        const idx = category.localEntries.indexOf(local);
+        if (idx !== -1) enriched[idx].syncSkip = true;
+      });
+
+      // previouslySkipped — already carry syncSkip:true, preserved by the deep-clone
+
+      await downloadObjectAsJSONFile(enriched, category.filename);
+      category.downloaded = true;
+    }
+
+    function resetSync() {
+      syncPhase.value = "idle";
+      categoryResults.value = [];
+      sourceData.value = { units: null, buildings: null, technologies: null, abilities: null };
+      fetchStatus.value = { units: "idle", buildings: "idle", technologies: "idle", abilities: "idle" };
+      openPanels.value = [];
+      autocompleteSearch.value = {};
+    }
+
+    const canSaveAny = computed(() =>
+      categoryResults.value.some((c) => !c.errored && !c.downloaded)
+    );
+
+    async function saveAll() {
+      const ready = categoryResults.value.filter((c) => !c.errored && !c.downloaded);
+      for (const cat of ready) await downloadCategory(cat);
     }
 
     async function downloadObjectAsJSONFile(object, filename) {
       if (!filename.endsWith(".json")) {
         filename = `${filename}.json`;
       }
-      const json = JSON.stringify(object);
+      const json = JSON.stringify(object, null, 2);
       const blob = new Blob([json], { type: "application/json" });
-      const href = await URL.createObjectURL(blob);
+      const href = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = href;
       link.download = filename;
@@ -144,155 +511,26 @@ export default {
       document.body.removeChild(link);
     }
 
-    async function syncData(source, target, type) {
-      target.forEach((element) => {
-        var match = source.find((unit) => {
-          if (unit.id === element.id || unit.name === element.title) {
-            return true;
-          }
-        });
-
-        if (match) {
-          //Sync and enrich data
-
-          element.description = match.description;
-          element.age = match.age;
-          element.id = match.id;
-          element.civ = element.civ.sort(sortByNameCompareFunction);
-          element.type = match.type;
-
-          if (type) {
-            element.exploreUrl =
-              "https://aoe4world.com/explorer/civs/all/" + type + "/" + match.baseId;
-          }
-          if (match.costs.total > 0) {
-            element.costs = match.costs;
-          }
-          if (match.influence) {
-            element.influences = match.influences;
-          }
-        } else {
-          if (!element.deprecated) console.warn("match not found for", element);
-        }
-      });
-    }
-
-    async function updateImageMetaData() {
-      var units = null;
-      var buildings = null;
-      var techs = null;
-      var abilities = null;
-
-      //Fetch data from aoe4world
-      await fetch("https://data.aoe4world.com/units/all.json")
-        .then((response) => response.json())
-        .then((data) => {
-          units = data.data;
-        });
-
-      await fetch("https://data.aoe4world.com/buildings/all.json")
-        .then((response) => response.json())
-        .then((data) => {
-          buildings = data.data;
-        });
-
-      await fetch("https://data.aoe4world.com/technologies/all.json")
-        .then((response) => response.json())
-        .then((data) => {
-          techs = data.data;
-        });
-
-      await fetch("https://data.aoe4world.com/abilities/all.json")
-        .then((response) => response.json())
-        .then((data) => {
-          abilities = data.data;
-        });
-
-      syncData(units, unitEco, "units");
-      downloadObjectAsJSONFile(unitEco, "unitEco.json");
-
-      syncData(units, unitReligious, "units");
-      downloadObjectAsJSONFile(unitReligious, "unitReligious.json");
-
-      syncData(units, unitMilitary, "units");
-      downloadObjectAsJSONFile(unitMilitary, "unitMilitary.json");
-
-      syncData(units, unitHero, "units");
-      downloadObjectAsJSONFile(unitHero, "unitHero.json");
-
-      syncData(buildings, buildingEco, "buildings");
-      downloadObjectAsJSONFile(buildingEco, "buildingEco.json");
-
-      syncData(buildings, buildingMilitary, "buildings");
-      downloadObjectAsJSONFile(buildingMilitary, "buildingMilitary.json");
-
-      syncData(buildings, buildingReligious, "buildings");
-      downloadObjectAsJSONFile(buildingReligious, "buildingReligious.json");
-
-      syncData(buildings, buildingTech, "buildings");
-      downloadObjectAsJSONFile(buildingTech, "buildingTech.json");
-
-      syncData(buildings.concat(techs), landmarks, "buildings");
-      downloadObjectAsJSONFile(landmarks, "landmarks.json");
-
-      syncData(techs, techEco, "technologies");
-      downloadObjectAsJSONFile(techEco, "techEco.json");
-
-      syncData(techs, techMilitary, "technologies");
-      downloadObjectAsJSONFile(techMilitary, "techMilitary.json");
-
-      syncData(abilities.concat(techs), abilityHero);
-      downloadObjectAsJSONFile(abilityHero, "abilityHero.json");
-
-      //If you pause for a second between each 10 downloads, all of them will work in Chrome.
-      //Automatic download is limited to 10.
-    }
-
-    function runMigration() {
-      users.forEach((user, index) => {
-        setTimeout(() => {
-          customActionPerUser(user);
-        }, index * 1000);
-      });
-    }
-
-    async function customActionPerUser(user) {
-      var contributorBuilds = builds.filter((build) => build.authorUid === user.id);
-      const boCount = contributorBuilds.length;
-      const viewCount = contributorBuilds.reduce((a, b) => a + b.views, 0);
-
-      var contributor = {
-        authorId: user.id,
-        displayName: user.displayName,
-        boCount: boCount,
-        viewCount: viewCount
-      };
-
-      //add contributor to db
-      await addContributor(contributor, user.id);
-    }
-
-    async function initData() {
-      //init builds, filter based on use case
-      builds = await getBuilds();
-
-      //init users
-      const getUsers = httpsCallable(
-            functions,
-            "getUsers"
-          );
-      users = (await getUsers()).data;
-    }
-
     return {
-      builds,
-      user,
       authIsReady: computed(() => store.state.authIsReady),
       isAdmin: computed(() => store.state.isAdmin),
-      error,
-      runMigration,
-      updateImageMetaData,
-      sortByNameCompareFunction,
+      syncPhase,
+      fetchStatus,
+      categoryResults,
+      openPanels,
+      autocompleteSearch,
+      canSaveAny,
+      startSync,
+      resetSync,
+      saveAll,
+      resolveEntry,
+      skipEntry,
+      unskipEntry,
+      getCategorySourceItems,
+      filterSourceItems,
+      findLocalIconByName,
+      getItemSubtitle,
+      downloadCategory,
     };
   },
 };

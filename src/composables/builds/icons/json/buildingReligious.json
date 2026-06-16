@@ -3,9 +3,26 @@
     "title": "Monastery",
     "age": 3,
     "imgSrc": "/assets/pictures/building_religious/monastery.webp",
-    "civ": ["BYZ", "MAC", "CHI", "DRA", "ENG", "FRE", "HRE", "JDA", "JIN", "RUS", "ZXL", "KTE", "HOL"],
+    "civ": [
+      "BYZ",
+      "CHI",
+      "DRA",
+      "ENG",
+      "FRE",
+      "HOL",
+      "HRE",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAC",
+      "RUS",
+      "ZXL"
+    ],
     "class": "default",
-    "shorthand": ["monastery", "eq"],
+    "shorthand": [
+      "monastery",
+      "eq"
+    ],
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "monastery-3",
     "type": "building",
@@ -15,7 +32,6 @@
       "wood": 200,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
       "oliveoil": 0,
       "total": 200,
       "popcap": 0,
@@ -26,7 +42,14 @@
     "title": "Mosque",
     "age": 3,
     "imgSrc": "/assets/pictures/building_religious/mosque.webp",
-    "civ": ["ABB", "AYY", "DEL", "TUG", "MAL", "OTT"],
+    "civ": [
+      "ABB",
+      "AYY",
+      "DEL",
+      "MAL",
+      "OTT",
+      "TUG"
+    ],
     "class": "default",
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "mosque-3",
@@ -37,8 +60,6 @@
       "wood": 200,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 200,
       "popcap": 0,
       "time": 25
@@ -48,7 +69,10 @@
     "title": "Prayer Tent",
     "age": 3,
     "imgSrc": "/assets/pictures/building_mongols/prayer-tent.webp",
-    "civ": ["MON", "GOH"],
+    "civ": [
+      "GOH",
+      "MON"
+    ],
     "class": "default",
     "description": "Produces religious units and houses religious technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "prayer-tent-3",
@@ -59,8 +83,6 @@
       "wood": 200,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 200,
       "popcap": 0,
       "time": 25
@@ -70,7 +92,10 @@
     "title": "Buddhist Temple",
     "age": 3,
     "imgSrc": "/assets/pictures/building_japanese/buddhist-temple-3.webp",
-    "civ": ["JAP", "SEN"],
+    "civ": [
+      "JAP",
+      "SEN"
+    ],
     "class": "default",
     "description": "Produces the Buddhist Monk and houses Unique Buddhist technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "buddhist-temple-3",
@@ -81,8 +106,6 @@
       "wood": 200,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 200,
       "popcap": 0,
       "time": 25
@@ -92,7 +115,9 @@
     "title": "Shinto Shrine",
     "age": 3,
     "imgSrc": "/assets/pictures/building_japanese/shinto-shrine-3.webp",
-    "civ": ["JAP"],
+    "civ": [
+      "JAP"
+    ],
     "class": "default",
     "description": "Produces the Shinto Priest and houses Unique Shinto technologies. Starting in the Castle Age (III), religious units can pick up Relics and place them in this building to generate Gold.",
     "id": "shinto-shrine-3",
@@ -103,8 +128,6 @@
       "wood": 200,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 200,
       "popcap": 0,
       "time": 25
@@ -114,9 +137,12 @@
     "title": "Pagoda",
     "age": 1,
     "imgSrc": "/assets/pictures/building_chinese/pagoda.webp",
-    "civ": ["CHI", "ZXL"],
+    "civ": [
+      "CHI",
+      "ZXL"
+    ],
     "class": "default",
-    "description": "Religious units can pick up Relics and place them in the Pagoda to generate +50 Gold, +25 Food, Wood, and Stone every 30 seconds.",
+    "description": "Religious units can pick up Relics and place them in the Pagoda to generate +100 Gold, +62 Food, +62 Wood, and +25 Stone every 60 seconds.\nA maximum of 3 Pagodas can be constructed.",
     "id": "pagoda-1",
     "type": "building",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/pagoda",
@@ -125,8 +151,6 @@
       "wood": 150,
       "stone": 0,
       "gold": 0,
-      "vizier": 0,
-      "oliveoil": 0,
       "total": 150,
       "popcap": 0,
       "time": 20
