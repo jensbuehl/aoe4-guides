@@ -18,6 +18,7 @@
     "easy-speech": "^2.4.0",
     "firebase": "^10.14.0",
     "g": "^2.0.1",
+    "jszip": "^3.10.1",
     "sanitize-html": "^2.15.0",
     "scroll-into-view-if-needed": "^3.1.0",
     "vite-plugin-vuetify": "^2.1.1",
