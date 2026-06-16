@@ -313,7 +313,7 @@
                     />
                     <div style="min-width: 0">
                       <div class="text-caption font-weight-medium text-truncate">{{ gap.name }}</div>
-                      <div class="text-caption text-medium-emphasis">{{ gap.civ }} · {{ gap.age ? 'Age ' + (['I','II','III','IV'][gap.age - 1] ?? gap.age) : '' }} · {{ gap.type }}</div>
+                      <div class="text-caption text-medium-emphasis">{{ gap.civCode }}{{ gap.age ? ' · Age ' + (['I','II','III','IV'][gap.age - 1] ?? gap.age) : '' }} · {{ gap.type }}</div>
                     </div>
                   </div>
 
@@ -750,6 +750,18 @@ export default {
       zx:  "ZXL",  // zhuxi legacists
     };
 
+    // API short code → folder suffix used in public/assets/pictures/ (e.g. "hl" → "lancaster")
+    const CIV_FOLDER_SLUG = {
+      ab:  "abbasid",      ay:  "ayyubids",     by:  "byzantines",
+      ch:  "chinese",      de:  "delhi",        en:  "english",
+      fr:  "french",       gol: "golden_horde", hr:  "hre",
+      ja:  "japanese",     je:  "jeanne",       jin: "jin",
+      hl:  "lancaster",    mac: "macedonian",   ma:  "malians",
+      mo:  "mongols",      od:  "dragon",       ot:  "ottomans",
+      ru:  "rus",          kt:  "templar",      sen: "sengoku",
+      tug: "tughluq",      zx:  "zhuxi",
+    };
+
     // API short code → full display name (e.g. "ab" → "Abbasid Dynasty")
     const CIV_DISPLAY_NAME = Object.fromEntries(
       Object.entries(CIV_SLUG_MAP).map(([short, code]) => [short, getCivById(code)?.title ?? short])
@@ -830,9 +842,20 @@ export default {
 
         // Collect ALL matching local entries — same item can have multiple entries
         // with civ-specific icons (e.g. two Longbowman entries: one BYZ, one ENG).
-        const localEntries = localAll.filter(
-          (e) => (e.id && e.id === sourceItem.id) || (e.title && e.title === sourceItem.name)
-        );
+        const nameLC = sourceItem.name?.toLowerCase();
+        const localEntries = localAll.filter((e) => {
+          if (e.id) {
+            if (e.id === sourceItem.id) return true;
+            // local ids carry an age suffix (e.g. "palisade-1"); strip it to compare against baseId
+            const eBaseId = e.id.replace(/-\d+$/, "");
+            if (eBaseId === sourceItem.baseId || eBaseId === sourceItem.id) return true;
+          }
+          if (e.title && nameLC) {
+            if (e.title === sourceItem.name) return true;
+            if (e.title.toLowerCase() === nameLC) return true;
+          }
+          return false;
+        });
 
         for (const civShort of civs) {
           const gapKey = sourceItem.id + ":" + civShort;
@@ -975,7 +998,7 @@ export default {
         autoSuggested: categoryKey !== null,
         confirmed: categoryKey !== null,
         imageFolder,
-        imageFolderInput: imageFolder ?? (gap.type ? gap.type + "_" + gap.civ : ""),
+        imageFolderInput: imageFolder ?? (gap.type ? gap.type + "_" : ""),
         imgSrc,
       };
     }
@@ -1052,7 +1075,7 @@ export default {
       if (!prefix) return null;
 
       if (gap.civCount <= 3) {
-        return prefix + gap.civ;
+        return prefix + (CIV_FOLDER_SLUG[gap.civ] ?? gap.civ);
       }
 
       const name = gap.name?.toLowerCase() ?? "";
@@ -1082,6 +1105,8 @@ export default {
         if (/unit|veteran|elite|upgrade/.test(name)) return "technology_units";
         return "technology_military";
       }
+
+      if (prefix === "ability_") return "abilities";
 
       return null;
     }
