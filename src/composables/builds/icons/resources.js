@@ -99,14 +99,6 @@ export const resources = [
     shorthand: "bounty",
   },
   {
-    title: "Rally",
-    age: "1",
-    imgSrc: "/assets/pictures/resource/rally.webp",
-    civ: civs,
-    class: "none",
-    shorthand: "rally",
-  },
-  {
     title: "Fish",
     age: "1",
     imgSrc: "/assets/pictures/resource/fish.webp",
@@ -122,7 +114,6 @@ export const resources = [
     class: "none",
     shorthand: "tree",
   },
-  ,
   {
     title: "Wolf",
     age: "1",

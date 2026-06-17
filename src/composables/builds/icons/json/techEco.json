@@ -139,11 +139,11 @@
       "ENG",
       "FRE",
       "GOH",
+      "HOL",
       "HRE",
       "JAP",
       "JDA",
       "JIN",
-      "KTE",
       "MAC",
       "MAL",
       "MON",
@@ -180,10 +180,8 @@
       "DRA",
       "ENG",
       "FRE",
-      "GOH",
       "HOL",
       "HRE",
-      "JAP",
       "JDA",
       "JIN",
       "KTE",
@@ -192,7 +190,6 @@
       "MON",
       "OTT",
       "RUS",
-      "SEN",
       "ZXL"
     ],
     "class": "tech",
@@ -223,10 +220,8 @@
       "DRA",
       "ENG",
       "FRE",
-      "GOH",
       "HOL",
       "HRE",
-      "JAP",
       "JDA",
       "JIN",
       "KTE",
@@ -235,7 +230,6 @@
       "MON",
       "OTT",
       "RUS",
-      "SEN",
       "ZXL"
     ],
     "class": "tech",
@@ -266,10 +260,8 @@
       "DRA",
       "ENG",
       "FRE",
-      "GOH",
       "HOL",
       "HRE",
-      "JAP",
       "JDA",
       "JIN",
       "KTE",
@@ -278,7 +270,6 @@
       "MON",
       "OTT",
       "RUS",
-      "SEN",
       "ZXL"
     ],
     "class": "tech",
@@ -300,9 +291,7 @@
     "title": "Cistercian Abbeys",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_hre/cistercian-churches.webp",
-    "civ": [
-      "HRE"
-    ],
+    "civ": ["HRE"],
     "class": "tech",
     "id": "cistercian-abbeys-3",
     "type": "technology",
@@ -686,9 +675,7 @@
     "title": "Sanctuary",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_templar/sanctuary.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Guarantees of sanctuary grant Pilgrimage 1 additional Pilgrim.",
     "id": "sanctuary-1",
@@ -708,9 +695,7 @@
     "title": "Treasure Towers",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_templar/treasure_tower.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Increases the gold generation of Monasteries, Sacred Sites and Pilgrims by 20% within the aura of a Fortress.",
     "id": "treasure-towers-3",
@@ -730,9 +715,7 @@
     "title": "Lettre de Change",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_templar/lettre_de_change.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Unlocks the Pilgrim Loan abilities, which loan a large sum of food for a return in gold over time.",
     "id": "lettre-de-change-3",
@@ -752,9 +735,7 @@
     "title": "Safe Passage",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_templar/safepassage.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "tech",
     "description": "Activates Pilgrims.\nPilgrims spawn every 60 seconds. Start with 1 pilgrim, gain 1 pilgrims for each Fortress (Max 10).",
     "id": "safe-passage-2",
@@ -818,9 +799,7 @@
     "title": "Advancement\n(Bonus Culture Wing)",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_ayyubids/culture-wing-advancement-1.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "tech",
     "description": "Constructs the Culture Wing.\nBuild this wing to advance to the next Age in 20% less time and with 1300 less costs.",
     "id": "bonus-culture-wing-advancement-4",
@@ -840,9 +819,7 @@
     "title": "Imperial Red Seals",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_zhuxi/imperial-red-seals-3.webp",
-    "civ": [
-      "ZXL"
-    ],
+    "civ": ["ZXL"],
     "class": "tech",
     "description": "Imperial Official limit increased by +2. Grants an Imperial Official upon completion.",
     "id": "imperial-red-seals-3",
@@ -862,9 +839,7 @@
     "title": "Advanced Administration",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_zhuxi/advanced-administration-4.webp",
-    "civ": [
-      "ZXL"
-    ],
+    "civ": ["ZXL"],
     "class": "tech",
     "description": "Imperial Officials gain 150 health and their maximum Gold carried is increased by +80. Imperial Official limit increased by +2.",
     "id": "advanced-administration-4",
@@ -884,9 +859,7 @@
     "title": "Logistics\n(Bonus Culture Wing)",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_ayyubids/culture-wing-logistics-1.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "tech",
     "description": "Constructs the Culture Wing.\nUpon completion, grants 4 Dervish, improves the unit's healing by +50%, and turns it on permanently.",
     "id": "bonus-culture-wing-logistics-4",
@@ -906,9 +879,7 @@
     "title": "Growth\n(Bonus Economic Wing)",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_ayyubids/economic-wing-growth-1.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "tech",
     "description": "Constructs the Economic Wing.\nUpon completion, grants 10 Villagers and all Villagers work +10% faster.",
     "id": "bonus-economic-wing-growth-4",
@@ -928,10 +899,7 @@
     "title": "Merchant Guilds",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_french/merchant-guilds-4.webp",
-    "civ": [
-      "FRE",
-      "JDA"
-    ],
+    "civ": ["FRE", "JDA"],
     "class": "tech",
     "description": "Active Traders generate 1 gold every 6 seconds.",
     "id": "merchant-guilds-4",
@@ -951,9 +919,7 @@
     "title": "Industry\n(Bonus Economic Wing)",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_ayyubids/economic-wing-industry-1.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "tech",
     "description": "Constructs the Economic Wing.\nUpon completion, awards 2800 Wood and 900 Stone. Villagers construct buildings +50% faster.",
     "id": "bonus-economic-wing-industry-4",
@@ -973,9 +939,7 @@
     "title": "Advisors\n(Bonus Trade Wing)",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_ayyubids/trade-wing-advisors-1.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "tech",
     "description": "Constructs the Trade Wing.\nUpon completion, gain 7 Atabeg which can be garrisoned in any military production building (except Docks) to increase the health of newly trained units by 20%.",
     "id": "bonus-trade-wing-advisors-4",
@@ -995,9 +959,7 @@
     "title": "Bazaar\n(Bonus Trade Wing)",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_ayyubids/trade-wing-bazaar-1.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "tech",
     "description": "Constructs the Trade Wing.\nEvery three minutes a trade caravan arrives with a random selection of four favorable exchanges of resources and units.\nThe quality of these trades is permanently set depending on the Age at which the Trade Wing is constructed. Using the Trade Wing to enter a later age provides more lucrative trades.",
     "id": "bonus-trade-wing-bazaar-4",
@@ -1017,10 +979,7 @@
     "title": "Tawara",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_japanese/towara-1.webp",
-    "civ": [
-      "JAP",
-      "SEN"
-    ],
+    "civ": ["JAP", "SEN"],
     "class": "tech",
     "description": "Increase the carry capacity of Villagers by +3, their movement speed by +7%, and +25% gather rate from Berry Bushes.",
     "id": "tawara-1",
@@ -1040,10 +999,7 @@
     "title": "Takezaiku",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_japanese/takezaiku-2.webp",
-    "civ": [
-      "JAP",
-      "SEN"
-    ],
+    "civ": ["JAP", "SEN"],
     "class": "tech",
     "description": "Increase the carry capacity of Villagers by +3, their movement speed by +7%, and +25% gather rate from Berry Bushes.",
     "id": "takezaiku-2",
@@ -1063,10 +1019,7 @@
     "title": "Fudasashi",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_japanese/fudasashi-3.webp",
-    "civ": [
-      "JAP",
-      "SEN"
-    ],
+    "civ": ["JAP", "SEN"],
     "class": "tech",
     "description": "Increase the carry capacity of Villagers by +3, their movement speed by +7%, and +25% gather rate from Berry Bushes.",
     "id": "fudasashi-3",
@@ -1086,9 +1039,7 @@
     "title": "Improved Processing",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_abbasid/improved-processing.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Villagers drop off +8% more resources.",
     "id": "improved-processing-4",
@@ -1108,9 +1059,7 @@
     "title": "Agriculture",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_abbasid/agriculture.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Improve Villagers' gathering rate from Farms by +15%.",
     "id": "agriculture-3",
@@ -1130,9 +1079,7 @@
     "title": "Preservation of Knowledge",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_abbasid/preservation-of-knowledge.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Reduce the cost of all technology and Age advancements by -20%.",
     "id": "preservation-of-knowledge-2",
@@ -1152,9 +1099,7 @@
     "title": "Armored Caravans",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_abbasid/armored-caravans.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Grant +3 armor to Traders and Trade Ships.",
     "id": "armored-caravans-2",
@@ -1174,9 +1119,7 @@
     "title": "Grand Bazaar",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_abbasid/grand-bazaar.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Traders and Trade Ships also return with a secondary resource. This resource is 25% the base Gold value and is set at the market.",
     "id": "grand-bazaar-3",
@@ -1196,9 +1139,7 @@
     "title": "Spice Roads",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_abbasid/spice-roads.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Increase the Gold income from Traders and Trade Ships by +30%.",
     "id": "spice-roads-4",
@@ -1218,9 +1159,7 @@
     "title": "Fresh Foodstuffs",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_abbasid/fresh-foodstuffs.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Reduce the cost to produce Villagers by -40%.",
     "id": "fresh-foodstuffs-2",
@@ -1240,9 +1179,7 @@
     "title": "Fertile Crescent",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_abbasid/fertile-crescent-2.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Reduce the cost of Economy buildings and Houses by 30%.",
     "id": "fertile-crescent-2",
@@ -1262,9 +1199,7 @@
     "title": "Public Libraries",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_abbasid/public-library.webp",
-    "civ": [
-      "ABB"
-    ],
+    "civ": ["ABB"],
     "class": "tech",
     "description": "Villagers and Traders gain +2 health per economic upgrade.",
     "id": "public-libraries-4",
@@ -1284,9 +1219,7 @@
     "title": "Extra Materials",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_chinese/extra-materials.webp",
-    "civ": [
-      "CHI"
-    ],
+    "civ": ["CHI"],
     "class": "tech",
     "description": "Towers and Keeps repair nearby walls and gates for +25 health per second.",
     "id": "extra-materials-3",
@@ -1306,9 +1239,7 @@
     "title": "Ancient Techniques",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_chinese/ancient-techniques.webp",
-    "civ": [
-      "CHI"
-    ],
+    "civ": ["CHI"],
     "class": "tech",
     "description": "Increase the gathering rate of Villagers by +5% for each dynasty achieved.",
     "id": "ancient-techniques-4",
@@ -1328,9 +1259,7 @@
     "title": "Imperial Examinations",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_chinese/imperial-examination.webp",
-    "civ": [
-      "CHI"
-    ],
+    "civ": ["CHI"],
     "class": "tech",
     "description": "Increase the maximum amount of Gold carried by Imperial Officials from +40 to +70.",
     "id": "imperial-examinations-2",
@@ -1350,9 +1279,7 @@
     "title": "Village Fortresses",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_delhi/village-fortresses.webp",
-    "civ": [
-      "DEL"
-    ],
+    "civ": ["DEL"],
     "class": "tech",
     "description": "Keeps act like Town Centers, including unit production, population capacity, and technology.",
     "id": "village-fortresses-3",
@@ -1363,9 +1290,7 @@
     "title": "Reinforced Foundations",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_delhi/reinforced-foundations.webp",
-    "civ": [
-      "DEL"
-    ],
+    "civ": ["DEL"],
     "class": "tech",
     "description": "Villagers and Infantry can garrison inside Houses for protection. Houses gain garrison arrows and +50% Health.",
     "id": "reinforced-foundations-3",
@@ -1377,9 +1302,7 @@
     "syncSkip": true,
     "age": 1,
     "imgSrc": "/assets/pictures/technology_ottomans/pax-ottomana.webp",
-    "civ": [
-      "OTT"
-    ],
+    "civ": ["OTT"],
     "class": "tech",
     "description": "Villager production speed increased by +50% for 4 minutes.",
     "id": "pax-ottomana",
@@ -1390,9 +1313,7 @@
     "title": "All-Seeing Eye",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_delhi/all-seeing-eye.webp",
-    "civ": [
-      "DEL"
-    ],
+    "civ": ["DEL"],
     "class": "tech",
     "description": "Increase the sight range of Scholars by +100%.",
     "id": "all-seeing-eye-2",
@@ -1403,9 +1324,7 @@
     "title": "Sanctity",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_delhi/sanctity.webp",
-    "civ": [
-      "DEL"
-    ],
+    "civ": ["DEL"],
     "class": "tech",
     "description": "Allow Scholars to capture Sacred Sites before the Castle Age (III). Sacred Sites generate +25% more Gold.",
     "id": "sanctity-2",
@@ -1416,9 +1335,7 @@
     "title": "Swiftness",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_delhi/swiftness.webp",
-    "civ": [
-      "DEL"
-    ],
+    "civ": ["DEL"],
     "class": "tech",
     "description": "Increases the movement speed of Scholars by +50%.",
     "id": "swiftness-3",
@@ -1429,9 +1346,7 @@
     "title": "Hearty Rations",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_delhi/hearty-rations.webp",
-    "civ": [
-      "DEL"
-    ],
+    "civ": ["DEL"],
     "class": "tech",
     "description": "Increase the carrying capacity of Villagers by +10.",
     "id": "hearty-rations-3",
@@ -1442,9 +1357,7 @@
     "title": "Enclosures",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_english/enclosures.webp",
-    "civ": [
-      "ENG"
-    ],
+    "civ": ["ENG"],
     "class": "tech",
     "description": "Each Farm Enclosure being worked by a Villager generates +1 Gold every 6 seconds.",
     "id": "enclosures-4",
@@ -1464,10 +1377,7 @@
     "title": "Enlistment Incentives",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_french/enlistment-incentives.webp",
-    "civ": [
-      "FRE",
-      "JDA"
-    ],
+    "civ": ["FRE"],
     "class": "tech",
     "description": "Improves the French influence by reducing unit costs by a further -5%.",
     "id": "enlistment-incentives-3",
@@ -1487,10 +1397,7 @@
     "title": "Benediction",
     "age": "3",
     "imgSrc": "/assets/pictures/technology_hre/benediction.webp",
-    "civ": [
-      "HRE",
-      "DRA"
-    ],
+    "civ": ["HRE", "DRA"],
     "class": "tech",
     "deprecated": true
   },
@@ -1498,10 +1405,7 @@
     "title": "Devoutness",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_hre/devoutness.webp",
-    "civ": [
-      "DRA",
-      "HRE"
-    ],
+    "civ": ["HRE"],
     "class": "tech",
     "description": "Inspired Villagers gather resources +5% faster and construct buildings and defenses +25% quicker.",
     "id": "devoutness-3",
@@ -1521,10 +1425,7 @@
     "title": "Piracy",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_mongols/piracy.webp",
-    "civ": [
-      "GOH",
-      "MON"
-    ],
+    "civ": ["GOH", "MON"],
     "class": "tech",
     "description": "Gain +25 Wood and +25 Gold when sinking an enemy ship.",
     "id": "piracy-2",
@@ -1544,9 +1445,7 @@
     "title": "Superior Mobility",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_mongols/superior-mobility.webp",
-    "civ": [
-      "MON"
-    ],
+    "civ": ["MON"],
     "class": "tech",
     "description": "Packed buildings move and pack/unpack 50% faster.",
     "id": "superior-mobility-1",
@@ -1566,9 +1465,7 @@
     "title": "Raid Bounty",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_mongols/raid-bounty.webp",
-    "civ": [
-      "MON"
-    ],
+    "civ": ["MON"],
     "class": "tech",
     "description": "Increase the raid income for igniting a building to +50 Food and Gold.",
     "id": "raid-bounty-2",
@@ -1588,9 +1485,7 @@
     "title": "Stone Bounty",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_mongols/stone-bounty.webp",
-    "civ": [
-      "MON"
-    ],
+    "civ": ["MON"],
     "class": "tech",
     "description": "Add +50 Stone to the raid income for igniting a building.",
     "id": "stone-bounty-4",
@@ -1610,10 +1505,7 @@
     "title": "Stone Commerce",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_mongols/stone-commerce.webp",
-    "civ": [
-      "GOH",
-      "MON"
-    ],
+    "civ": ["GOH", "MON"],
     "class": "tech",
     "description": "Traders supply +10% Stone to their trades.",
     "id": "stone-commerce-4",
@@ -1633,9 +1525,7 @@
     "title": "Anatolian Hills",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_ottomans/anatolian-hills-1.webp",
-    "civ": [
-      "OTT"
-    ],
+    "civ": ["OTT"],
     "class": "tech",
     "description": "Spawn 12 sheep at the Landmark Town Center and increase Villager mining speed by +15%.",
     "id": "anatolian-hills-1",
@@ -1646,9 +1536,7 @@
     "title": "Trade Bags",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_ottomans/trade-bags-1.webp",
-    "civ": [
-      "OTT"
-    ],
+    "civ": ["OTT"],
     "class": "tech",
     "description": "Increase the amount of Gold Traders collect and Income from the Sultanhani Trade Network by +40%.",
     "id": "trade-bags-1",
@@ -1659,9 +1547,7 @@
     "title": "Rotation Grazing",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_golden_horde/rotation_grazing.webp",
-    "civ": [
-      "GOH"
-    ],
+    "civ": ["GOH"],
     "class": "tech",
     "description": "Increase Stockyard gathering rate for Food by 10%. Does not apply to herded Sheep.",
     "id": "rotation-grazing-2",
@@ -1681,9 +1567,7 @@
     "title": "Over Grazing",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_golden_horde/over_grazing.webp",
-    "civ": [
-      "GOH"
-    ],
+    "civ": ["GOH"],
     "class": "tech",
     "description": "Increase Stockyard gathering rate for Food by 10%. Does not apply to herded Sheep.",
     "id": "over-grazing-3",
@@ -1703,9 +1587,7 @@
     "title": "Ovoo Offering",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_golden_horde/ovoo-offering-3.webp",
-    "civ": [
-      "GOH"
-    ],
+    "civ": ["GOH"],
     "class": "tech",
     "description": "Increases Ovoo Stone gather rate by 20%.",
     "id": "ovoo-offering-3",
@@ -1725,9 +1607,7 @@
     "title": "Ovoo Ceremony",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_golden_horde/ovoo-ceremony-4.webp",
-    "civ": [
-      "GOH"
-    ],
+    "civ": ["GOH"],
     "class": "tech",
     "description": "Increases Ovoo Stone gather rate by 20%.",
     "id": "ovoo-ceremony-4",
@@ -1747,9 +1627,7 @@
     "title": "Ovoo Tithe",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_golden_horde/ovoo-tithe-4.webp",
-    "civ": [
-      "GOH"
-    ],
+    "civ": ["GOH"],
     "class": "tech",
     "description": "Ovoos provide an income of +60 Food, +60 Wood, and +10 Gold every minute.",
     "id": "ovoo-tithe-4",
@@ -1769,9 +1647,7 @@
     "title": "Yatai Farm Gathering",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_sengoku/yatai_farm_gathering.webp",
-    "civ": [
-      "SEN"
-    ],
+    "civ": ["SEN"],
     "class": "tech",
     "description": "Yatai can collect Food from nearby Farm Fields, with each Farm Field providing +4 Food / min. Increases the maximum rate to 80 Food / min.",
     "id": "yatai-farm-gather-2",
@@ -1790,9 +1666,7 @@
   {
     "title": "Woven Baskets",
     "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_1.webp",
-    "civ": [
-      "TUG"
-    ],
+    "civ": ["TUG"],
     "class": "tech",
     "description": "",
     "id": "woven-baskets",
@@ -1803,9 +1677,7 @@
   {
     "title": "Carrying Frame",
     "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_2.webp",
-    "civ": [
-      "TUG"
-    ],
+    "civ": ["TUG"],
     "class": "tech",
     "description": "",
     "id": "carrying-frame",
@@ -1816,9 +1688,7 @@
   {
     "title": "Elephant Harness",
     "imgSrc": "/assets/pictures/technology_tughluq/elephant_economics_3.webp",
-    "civ": [
-      "TUG"
-    ],
+    "civ": ["TUG"],
     "class": "tech",
     "description": "",
     "id": "elephant_harness",
@@ -1830,9 +1700,7 @@
     "title": "Mohe Ancestry",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_jin/mohe-ancestry.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "tech",
     "description": "Increase Villagers' hunted meat gather rate by +20%.",
     "id": "mohe-ancestry-1",
@@ -1852,9 +1720,7 @@
     "title": "Collective Hunting",
     "age": 1,
     "imgSrc": "/assets/pictures/technology_jin/collective-hunting.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "tech",
     "description": "Local tribes offer some of their Reindeer as tribute. Spawns 4 Reindeer under your Town Center.",
     "id": "collective-hunting-1",
@@ -1874,9 +1740,7 @@
     "title": "Hunting Tradition",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_jin/hunting-tradition.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "tech",
     "description": "Increase Villagers' hunted meat gather rate by +20%.",
     "id": "hunting-tradition-2",
@@ -1896,9 +1760,7 @@
     "title": "Draft Horses",
     "age": 3,
     "imgSrc": "/assets/pictures/technology_jin/draft-horses.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "tech",
     "description": "Increases Villagers' Wood gather rate by 15% and increases their Wood carry capacity by 10.",
     "id": "draft-horses-3",
@@ -1918,9 +1780,7 @@
     "title": "Alliance Conducted at Sea",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_jin/alliance-conducted-at-sea.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "tech",
     "description": "Each Tributary Subject provides an additional +10% income to traders.",
     "id": "alliance-conducted-at-sea-4",

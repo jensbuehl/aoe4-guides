@@ -140,7 +140,6 @@
     "age": 1,
     "imgSrc": "/assets/pictures/landmark_lancaster/lancaster_castle.webp",
     "civ": [
-      "ENG",
       "HOL"
     ],
     "class": "landmark",
@@ -163,7 +162,6 @@
     "age": 2,
     "imgSrc": "/assets/pictures/landmark_lancaster/kings_college.webp",
     "civ": [
-      "ENG",
       "HOL"
     ],
     "class": "landmark",
@@ -1201,8 +1199,7 @@
     "age": 1,
     "imgSrc": "/assets/pictures/landmark_abbasid/culture-wing.webp",
     "civ": [
-      "ABB",
-      "AYY"
+      "ABB"
     ],
     "class": "landmark",
     "description": "The following cultural technologies become available:\n• Preservation of Knowledge (Age II)\n• Medical Centers (Age III)\n• Public Libraries (Age IV)",
@@ -1224,8 +1221,7 @@
     "age": 1,
     "imgSrc": "/assets/pictures/landmark_abbasid/economic-wing.webp",
     "civ": [
-      "ABB",
-      "AYY"
+      "ABB"
     ],
     "class": "landmark",
     "description": "Constructs the Economic Wing.\nThe following economic technologies become available:\n• Fertile Crescent (Age II)\n• Agriculture (Age III)\n• Improved Processing (Age IV)",
@@ -1247,8 +1243,7 @@
     "age": 1,
     "imgSrc": "/assets/pictures/landmark_abbasid/military-wing.webp",
     "civ": [
-      "ABB",
-      "AYY"
+      "ABB"
     ],
     "class": "landmark",
     "description": "Constructs the Military Wing. Upon completion, grants 2 Spearmen & 2 Archers (Age II), 2 Camel Riders (Age III), or 3 Handcannoneers (Age IV).\nUnlocks:\n•Boot Camp (Age II)\n•Composite Bows (Age III)\n•Camel Support (Age IV)",
@@ -1270,8 +1265,7 @@
     "age": 1,
     "imgSrc": "/assets/pictures/landmark_abbasid/trade-wing.webp",
     "civ": [
-      "ABB",
-      "AYY"
+      "ABB"
     ],
     "class": "landmark",
     "description": "Constructs the Trade Wing. Acts as a home market and grants 4, 5, or 6 Traders upon completion (based on Age).\nUnlocks:\n•Armored Caravans (Age II)\n•Grand Bazaar (Age III)\n•Spice Roads (Age IV)",

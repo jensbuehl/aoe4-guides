@@ -257,14 +257,42 @@
                 </v-alert>
               </div>
 
-              <!-- Summary + civ filter -->
+              <!-- Summary + filters -->
               <div class="px-4 pb-3">
+                <!-- Kind filter (also acts as summary) -->
                 <div class="d-flex align-center flex-wrap mb-2" style="gap: 6px">
-                  <v-chip color="warning" size="small" variant="tonal">{{ new Set(gapItems.filter(g => g.kind === 'new').map(g => g.id)).size }} new items</v-chip>
-                  <v-chip color="info" size="small" variant="tonal">{{ new Set(gapItems.filter(g => g.kind === 'civ-extension').map(g => g.id)).size }} civ extensions</v-chip>
-                  <v-chip v-if="gapItems.some(g => g.kind === 'civ-removal')" color="error" size="small" variant="tonal">{{ new Set(gapItems.filter(g => g.kind === 'civ-removal').map(g => g.id)).size }} wrong civ assignments</v-chip>
+                  <span class="text-caption text-medium-emphasis" style="flex-shrink: 0">Kind:</span>
+                  <v-chip
+                    v-if="gapNewCount > 0"
+                    color="warning" size="small"
+                    :variant="gapKindFilter.includes('new') ? 'flat' : 'tonal'"
+                    style="cursor: pointer"
+                    @click="toggleKindFilter('new')"
+                  >{{ gapNewCount }} NEW</v-chip>
+                  <v-chip
+                    v-if="gapCivPlusCount > 0"
+                    color="info" size="small"
+                    :variant="gapKindFilter.includes('civ-extension') ? 'flat' : 'tonal'"
+                    style="cursor: pointer"
+                    @click="toggleKindFilter('civ-extension')"
+                  >{{ gapCivPlusCount }} CIV+</v-chip>
+                  <v-chip
+                    v-if="gapCivMinusCount > 0"
+                    color="error" size="small"
+                    :variant="gapKindFilter.includes('civ-removal') ? 'flat' : 'tonal'"
+                    style="cursor: pointer"
+                    @click="toggleKindFilter('civ-removal')"
+                  >{{ gapCivMinusCount }} CIV-</v-chip>
+                  <v-chip
+                    v-if="gapKindFilter.length"
+                    size="small" variant="text" color="secondary"
+                    style="cursor: pointer"
+                    @click="gapKindFilter = []"
+                  >clear</v-chip>
                 </div>
+                <!-- Civ filter -->
                 <div class="d-flex align-center flex-wrap" style="gap: 4px">
+                  <span class="text-caption text-medium-emphasis" style="flex-shrink: 0">Civ:</span>
                   <v-chip
                     size="small"
                     :variant="gapCivFilter === null ? 'flat' : 'tonal'"
@@ -299,14 +327,14 @@
                   </p>
                 </template>
                 <p v-else class="text-body-2 text-medium-emphasis">
-                  No gaps found for "{{ gapCivFilter }}".
+                  No gaps match the active filters.
                 </p>
               </div>
 
               <!-- Gap list -->
               <template v-else>
                 <div
-                  v-for="group in filteredGapGroups"
+                  v-for="group in visibleGapGroups"
                   :key="group.id"
                   class="d-flex align-center justify-space-between px-4 py-2"
                   style="gap: 8px; border-bottom: 1px solid rgba(128,128,128,0.12)"
@@ -418,16 +446,44 @@
                       size="x-small" color="error" variant="tonal"
                       :title="gapImageErrors[group.id + ':' + group.allCivs[0].civ]"
                     >error</v-chip>
+
+                    <!-- Per-item icon download (new items with CDN icon only) -->
+                    <v-btn
+                      v-if="group.kind === 'new' && group.icon"
+                      :loading="gapGroupDownloading[group.id + ':' + group.kind]"
+                      icon="mdi-download"
+                      size="x-small"
+                      variant="text"
+                      title="Download icon as WebP"
+                      @click="downloadGroupImage(group)"
+                    />
+
+                    <!-- Per-item copy JSON -->
+                    <v-btn
+                      :icon="gapGroupCopied[group.id + ':' + group.kind] ? 'mdi-check' : 'mdi-content-copy'"
+                      :color="gapGroupCopied[group.id + ':' + group.kind] ? 'success' : undefined"
+                      size="x-small"
+                      variant="text"
+                      title="Copy JSON entry to clipboard"
+                      @click="copyGroupJson(group)"
+                    />
+                    <v-btn
+                      icon="mdi-eye-off-outline"
+                      size="x-small"
+                      variant="text"
+                      title="Ignore this item (add to syncIgnore.json)"
+                      @click="skipGapItem(group)"
+                    />
                   </div>
                 </div>
 
                 <!-- Skipped: no CDN icon found -->
-                <template v-if="filteredSkippedGroups.length">
+                <template v-if="visibleSkippedGroups.length">
                   <div class="px-4 pt-3 pb-1 text-caption text-medium-emphasis" style="border-top: 1px solid rgba(128,128,128,0.12)">
-                    No icon found — skipped ({{ filteredSkippedGroups.length }})
+                    No icon found — skipped ({{ visibleSkippedGroups.length }})
                   </div>
                   <div
-                    v-for="group in filteredSkippedGroups"
+                    v-for="group in visibleSkippedGroups"
                     :key="group.id"
                     class="d-flex align-center justify-space-between px-4 py-2"
                     style="gap: 8px; border-bottom: 1px solid rgba(128,128,128,0.12); opacity: 0.6"
@@ -474,7 +530,63 @@
                           @update:model-value="(val) => val && confirmGroupCategory(group, val)"
                         />
                       </template>
+                      <v-btn
+                        :icon="gapGroupCopied[group.id + ':' + group.kind] ? 'mdi-check' : 'mdi-content-copy'"
+                        :color="gapGroupCopied[group.id + ':' + group.kind] ? 'success' : undefined"
+                        size="x-small"
+                        variant="text"
+                        title="Copy JSON entry to clipboard"
+                        @click="copyGroupJson(group)"
+                      />
+                      <v-btn
+                        icon="mdi-eye-off-outline"
+                        size="x-small"
+                        variant="text"
+                        title="Ignore this item (add to syncIgnore.json)"
+                        @click="skipGapItem(group)"
+                      />
                     </div>
+                  </div>
+                </template>
+
+                <!-- Ignored items -->
+                <template v-if="ignoredGroups.length">
+                  <div class="px-4 pt-3 pb-1 text-caption text-medium-emphasis" style="border-top: 1px solid rgba(128,128,128,0.12)">
+                    Ignored ({{ ignoredGroups.length }})
+                  </div>
+                  <div
+                    v-for="group in ignoredGroups"
+                    :key="'ignored-' + group.id"
+                    class="d-flex align-center justify-space-between px-4 py-2"
+                    style="gap: 8px; border-bottom: 1px solid rgba(128,128,128,0.12); opacity: 0.45"
+                  >
+                    <div class="d-flex align-center" style="gap: 6px; min-width: 0; flex: 1">
+                      <v-chip
+                        :color="group.kind === 'new' ? 'warning' : group.kind === 'civ-removal' ? 'error' : 'info'"
+                        size="x-small"
+                        variant="tonal"
+                        style="flex-shrink: 0"
+                      >{{ group.kind === 'new' ? 'NEW' : group.kind === 'civ-removal' ? 'CIV-' : 'CIV+' }}</v-chip>
+                      <div style="min-width: 0">
+                        <div class="text-caption font-weight-medium text-truncate" style="text-decoration: line-through">{{ group.name }}</div>
+                        <div class="d-flex align-center flex-wrap" style="gap: 3px">
+                          <v-chip
+                            v-for="item in group.allCivs"
+                            :key="item.civ"
+                            size="x-small"
+                            variant="tonal"
+                          >{{ item.civCode }}</v-chip>
+                          <span class="text-caption text-medium-emphasis">{{ group.age ? '· Age ' + (['I','II','III','IV'][group.age - 1] ?? group.age) : '' }} · {{ group.type }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <v-btn
+                      icon="mdi-eye-outline"
+                      size="x-small"
+                      variant="text"
+                      title="Restore to gap list"
+                      @click="unskipGapItem(group.id)"
+                    />
                   </div>
                 </template>
 
@@ -494,12 +606,23 @@
                     v-if="gapZipSaved"
                     size="x-small" color="success" variant="tonal"
                   >zip saved</v-chip>
+                  <v-chip
+                    v-if="gapZipNoFiles"
+                    size="x-small" color="warning" variant="tonal"
+                  >no images to download</v-chip>
                   <v-btn
                     v-if="canDownloadImages"
+                    :loading="gapZipProcessing"
                     color="secondary" variant="tonal" size="small"
                     prepend-icon="mdi-image-multiple"
                     @click="downloadGapImagesZip()"
                   >Download Images Zip</v-btn>
+                  <v-btn
+                    v-if="gapSyncIgnore.length"
+                    color="secondary" variant="tonal" size="small"
+                    prepend-icon="mdi-eye-off-outline"
+                    @click="downloadSyncIgnore()"
+                  >syncIgnore.json</v-btn>
                 </div>
               </template>
 
@@ -534,6 +657,7 @@ import buildingReligious from "@/composables/builds/icons/json/buildingReligious
 import buildingTech from "@/composables/builds/icons/json/buildingTech.json" with { type: "json" };
 import buildingMilitary from "@/composables/builds/icons/json/buildingMilitary.json" with { type: "json" };
 import abilityHero from "@/composables/builds/icons/json/abilityHero.json" with { type: "json" };
+import syncIgnoreData from "@/composables/builds/icons/json/syncIgnore.json" with { type: "json" };
 
 export default {
   name: "Admin",
@@ -853,6 +977,11 @@ export default {
 
     const TYPE_PLURAL = { unit: "units", building: "buildings", technology: "technologies", ability: "abilities" };
 
+    function toggleKindFilter(kind) {
+      const cur = gapKindFilter.value;
+      gapKindFilter.value = cur.includes(kind) ? cur.filter((k) => k !== kind) : [...cur, kind];
+    }
+
     function gapCdnIconUrl(gap) {
       return gap.icon ?? null;
     }
@@ -864,22 +993,34 @@ export default {
     const gapUnmappedCivs  = ref([]);      // civ short codes not in CIV_SLUG_MAP
     const gapFetchErrors   = ref({});      // { [source]: errorMessage }
     const gapCivFilter   = ref(null);
+    const gapKindFilter  = ref([]);   // [] = show all; else only matching kinds
     const gapAssignments = ref({});      // { [gapKey]: { categoryKey, autoSuggested, confirmed, imageFolder, imageFolderInput, imgSrc } }
     const gapImageStatus = ref({});      // { [gapKey]: 'pending'|'processing'|'done'|'exists'|'skipped'|'error' }
     const gapImageErrors = ref({});
     const gapJsonSaved   = ref({});
-    const gapZipSaved    = ref(false);
+    const gapZipSaved        = ref(false);
+    const gapZipProcessing   = ref(false);
+    const gapZipNoFiles      = ref(false);
+    const gapGroupDownloading = ref({});
+    const gapGroupCopied     = ref({});
+    const gapSyncIgnore      = ref([...syncIgnoreData]);
 
     // T004 — Derived computeds
-    const filteredGapItems = computed(() =>
-      gapCivFilter.value
-        ? gapItems.value.filter((g) => g.civ === gapCivFilter.value)
-        : gapItems.value
-    );
+    const filteredGapItems = computed(() => {
+      let items = gapItems.value;
+      if (gapSyncIgnore.value.length) {
+        const ignoredSet = new Set(gapSyncIgnore.value);
+        items = items.filter((g) => !ignoredSet.has(g.id));
+      }
+      if (gapCivFilter.value) items = items.filter((g) => g.civ === gapCivFilter.value);
+      if (gapKindFilter.value.length) items = items.filter((g) => gapKindFilter.value.includes(g.kind));
+      return items;
+    });
 
-    const gapCivOptions = computed(() =>
-      [...new Set(gapItems.value.map((g) => g.civ))].sort()
-    );
+    const gapCivOptions = computed(() => {
+      const ignoredSet = new Set(gapSyncIgnore.value);
+      return [...new Set(gapItems.value.filter((g) => !ignoredSet.has(g.id)).map((g) => g.civ))].sort();
+    });
 
     const canDownloadJsons = computed(() =>
       gapItems.value.some((g) => gapAssignments.value[g.id + ":" + g.civ]?.confirmed)
@@ -923,6 +1064,28 @@ export default {
     const filteredSkippedGroups = computed(() =>
       groupGapItems(filteredGapItems.value.filter((g) => gapNoIconKeys.value[g.id + ":" + g.civ]))
     );
+
+    const visibleGapGroups = filteredGapGroups;
+    const visibleSkippedGroups = filteredSkippedGroups;
+
+    const ignoredGroups = computed(() => {
+      if (!gapSyncIgnore.value.length) return [];
+      const ignoredSet = new Set(gapSyncIgnore.value);
+      return groupGapItems(gapItems.value.filter((g) => ignoredSet.has(g.id)));
+    });
+
+    const gapNewCount = computed(() => {
+      const ignoredSet = new Set(gapSyncIgnore.value);
+      return new Set(gapItems.value.filter((g) => g.kind === "new" && !ignoredSet.has(g.id)).map((g) => g.id)).size;
+    });
+    const gapCivPlusCount = computed(() => {
+      const ignoredSet = new Set(gapSyncIgnore.value);
+      return new Set(gapItems.value.filter((g) => g.kind === "civ-extension" && !ignoredSet.has(g.id)).map((g) => g.id)).size;
+    });
+    const gapCivMinusCount = computed(() => {
+      const ignoredSet = new Set(gapSyncIgnore.value);
+      return new Set(gapItems.value.filter((g) => g.kind === "civ-removal" && !ignoredSet.has(g.id)).map((g) => g.id)).size;
+    });
 
     function confirmGroupCategory(group, categoryKey) {
       for (const item of group.allCivs) {
@@ -1128,12 +1291,18 @@ export default {
       gapUnmappedCivs.value = [];
       gapFetchErrors.value = {};
       gapCivFilter.value = null;
+      gapKindFilter.value = [];
       gapAssignments.value = {};
       gapImageStatus.value = {};
       gapImageErrors.value = {};
       gapJsonSaved.value = {};
       gapZipSaved.value = false;
+      gapZipProcessing.value = false;
+      gapZipNoFiles.value = false;
+      gapGroupDownloading.value = {};
+      gapGroupCopied.value = {};
       gapNoIconKeys.value = {};
+      gapSyncIgnore.value = [...syncIgnoreData];
     }
 
     // T008 — Category auto-suggestion
@@ -1350,46 +1519,160 @@ export default {
     async function downloadGapImagesZip() {
       const zip = new JSZip();
       let hasFiles = false;
+      gapZipProcessing.value = true;
+      gapZipNoFiles.value = false;
 
-      for (const gap of gapItems.value) {
-        if (gap.kind !== "new") continue;
-        const gapKey = gap.id + ":" + gap.civ;
-        const assignment = gapAssignments.value[gapKey];
-        if (!assignment?.confirmed || !assignment.imageFolder) continue;
+      try {
+        for (const gap of gapItems.value) {
+          if (gap.kind !== "new") continue;
+          const gapKey = gap.id + ":" + gap.civ;
+          const assignment = gapAssignments.value[gapKey];
+          if (!assignment?.confirmed || !assignment.imageFolder) continue;
 
-        gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "processing" };
+          gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "processing" };
 
-        const result = await processGapImage(gap, assignment);
+          const result = await processGapImage(gap, assignment);
 
-        if (result.skip) {
-          const reason = result.reason === "civ-extension" ? "skipped" : "exists";
-          gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: reason };
-        } else if (result.error) {
-          gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "error" };
-          gapImageErrors.value = { ...gapImageErrors.value, [gapKey]: result.error };
-        } else {
-          zip.file(result.zipPath, result.blob);
-          hasFiles = true;
-          gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "done" };
-          // Update JSON saved entries if they were already downloaded
-          gapAssignments.value[gapKey] = { ...assignment };
+          if (result.skip) {
+            const reason = result.reason === "civ-extension" ? "skipped" : "exists";
+            gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: reason };
+          } else if (result.error) {
+            gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "error" };
+            gapImageErrors.value = { ...gapImageErrors.value, [gapKey]: result.error };
+          } else {
+            zip.file(result.zipPath, result.blob);
+            hasFiles = true;
+            gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "done" };
+            gapAssignments.value[gapKey] = { ...assignment };
+          }
         }
-      }
 
-      if (hasFiles) {
-        const zipBlob = await zip.generateAsync({ type: "blob" });
-        const href = URL.createObjectURL(zipBlob);
+        if (hasFiles) {
+          const zipBlob = await zip.generateAsync({ type: "blob" });
+          const href = URL.createObjectURL(zipBlob);
+          const link = document.createElement("a");
+          link.href = href;
+          link.download = "icon-gap-sync.zip";
+          link.style.position = "absolute";
+          link.style.left = "200vw";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(href);
+          gapZipSaved.value = true;
+        } else {
+          gapZipNoFiles.value = true;
+        }
+      } finally {
+        gapZipProcessing.value = false;
+      }
+    }
+
+    // Per-group image download (single WebP file)
+    async function downloadGroupImage(group) {
+      const key = group.id + ":" + group.kind;
+      if (!group.icon) return;
+      gapGroupDownloading.value = { ...gapGroupDownloading.value, [key]: true };
+      try {
+        const r = await fetch(group.icon);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const pngBlob = await r.blob();
+        const bitmapUrl = URL.createObjectURL(pngBlob);
+        const img = await new Promise((resolve, reject) => {
+          const el = new Image();
+          el.onload = () => resolve(el);
+          el.onerror = () => reject(new Error("Image load failed"));
+          el.src = bitmapUrl;
+        });
+        URL.revokeObjectURL(bitmapUrl);
+        const canvas = document.createElement("canvas");
+        canvas.width = 48;
+        canvas.height = 48;
+        canvas.getContext("2d").drawImage(img, 0, 0, 48, 48);
+        const webpBlob = await new Promise((resolve) =>
+          canvas.toBlob(resolve, "image/webp", 0.8)
+        );
+        const href = URL.createObjectURL(webpBlob);
         const link = document.createElement("a");
         link.href = href;
-        link.download = "icon-gap-sync.zip";
+        link.download = `${group.id}.webp`;
         link.style.position = "absolute";
         link.style.left = "200vw";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(href);
-        gapZipSaved.value = true;
+      } catch (_) {
+        // silently fail — row already shows error state from image preview
+      } finally {
+        gapGroupDownloading.value = { ...gapGroupDownloading.value, [key]: false };
       }
+    }
+
+    // Per-group JSON copy
+    function buildGroupJsonEntry(group) {
+      const firstCiv = group.allCivs[0];
+      const assignment = gapAssignments.value[firstCiv.id + ":" + firstCiv.civ];
+      if (group.kind === "new") {
+        return {
+          title: group.name,
+          civ: group.allCivs.map((i) => i.civCode),
+          age: group.age,
+          id: group.id,
+          type: group.type,
+          description: group.description || "",
+          costs: group.costs || {},
+          exploreUrl: group.exploreUrl || "",
+          imgSrc: assignment?.imgSrc || "",
+        };
+      }
+      if (group.kind === "civ-extension") {
+        const localEntry = group.localEntry;
+        if (!localEntry) return null;
+        return {
+          ...localEntry,
+          civ: [...(localEntry.civ || []), ...group.allCivs.map((i) => i.civCode)].sort(),
+        };
+      }
+      if (group.kind === "civ-removal") {
+        const localEntry = group.localEntry;
+        if (!localEntry) return null;
+        const civsToRemove = new Set(group.allCivs.map((i) => i.civCode));
+        return {
+          ...localEntry,
+          civ: (localEntry.civ || []).filter((c) => !civsToRemove.has(c)),
+        };
+      }
+      return null;
+    }
+
+    async function copyGroupJson(group) {
+      const key = group.id + ":" + group.kind;
+      const entry = buildGroupJsonEntry(group);
+      if (!entry) return;
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(entry, null, 2));
+        gapGroupCopied.value = { ...gapGroupCopied.value, [key]: true };
+        setTimeout(() => {
+          gapGroupCopied.value = { ...gapGroupCopied.value, [key]: false };
+        }, 2000);
+      } catch (_) {
+        // clipboard API may be unavailable in non-secure contexts
+      }
+    }
+
+    function skipGapItem(group) {
+      if (!gapSyncIgnore.value.includes(group.id)) {
+        gapSyncIgnore.value = [...gapSyncIgnore.value, group.id];
+      }
+    }
+
+    function unskipGapItem(id) {
+      gapSyncIgnore.value = gapSyncIgnore.value.filter((i) => i !== id);
+    }
+
+    async function downloadSyncIgnore() {
+      await downloadObjectAsJSONFile(gapSyncIgnore.value, "syncIgnore.json");
     }
 
     // ===========================================================================
@@ -1404,12 +1687,16 @@ export default {
       getCategorySourceItems, filterSourceItems, findLocalIconByName, getItemSubtitle, downloadCategory,
       // Icon Gap Sync
       CIV_DISPLAY_NAME,
-      gapPhase, gapItems, gapSourceCount, gapUnmappedCivs, gapFetchErrors, gapCivFilter, gapAssignments, gapImageStatus, gapImageErrors, gapJsonSaved, gapZipSaved,
+      gapPhase, gapItems, gapSourceCount, gapUnmappedCivs, gapFetchErrors, gapCivFilter, gapKindFilter, gapAssignments, gapImageStatus, gapImageErrors, gapJsonSaved, gapZipSaved,
+      gapZipProcessing, gapZipNoFiles, gapGroupDownloading, gapGroupCopied,
       filteredGapItems, gapCivOptions, canDownloadJsons, canDownloadImages, gapCategoryKeys,
       gapNoIconKeys, filteredGapGroups, filteredSkippedGroups,
-      startGapScan, resetGapScan, gapCdnIconUrl, markGapNoIcon, confirmGroupCategory,
+      startGapScan, resetGapScan, gapCdnIconUrl, markGapNoIcon, confirmGroupCategory, toggleKindFilter,
       confirmManualCategory, setImageFolder, confirmImageFolder,
-      downloadGapJsons, downloadGapImagesZip,
+      downloadGapJsons, downloadGapImagesZip, downloadGroupImage, copyGroupJson,
+      gapSyncIgnore, ignoredGroups, visibleGapGroups, visibleSkippedGroups,
+      skipGapItem, unskipGapItem, downloadSyncIgnore,
+      gapNewCount, gapCivPlusCount, gapCivMinusCount,
     };
   },
 };

@@ -5,7 +5,6 @@
     "imgSrc": "/assets/pictures/unit_worker/villager.webp",
     "civ": [
       "BYZ",
-      "DRA",
       "ENG",
       "FRE",
       "HOL",
@@ -437,7 +436,6 @@
       "JAP",
       "JDA",
       "JIN",
-      "KTE",
       "MAC",
       "MAL",
       "MON",

@@ -77,21 +77,6 @@ export const general = [
     class: "none",
   },
   {
-    title: "Build",
-    age: "1",
-    imgSrc: "/assets/pictures/abilities/repair.webp",
-    civ: civs,
-    class: "none",
-    shorthand: "build",
-  },
-  {
-    title: "Attack",
-    age: "1",
-    imgSrc: "/assets/pictures/abilities/attack-move.webp",
-    civ: civs,
-    class: "none",
-  },
-  {
     title: "Abbasid Dynasty",
     age: "1",
     imgSrc: "/assets/pictures/civilization_flag/abb.webp",

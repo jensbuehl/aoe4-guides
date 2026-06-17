@@ -883,7 +883,6 @@
       "GOH",
       "HOL",
       "HRE",
-      "JDA",
       "JIN",
       "KTE",
       "MAC",
@@ -954,9 +953,7 @@
       "JDA",
       "MAC",
       "MON",
-      "RUS",
-      "TUG",
-      "ZXL"
+      "TUG"
     ],
     "class": "military",
     "description": "Powerful all-purpose ranged infantry.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
@@ -1189,7 +1186,6 @@
       "KTE",
       "MAC",
       "MON",
-      "OTT",
       "RUS",
       "ZXL"
     ],
@@ -1329,7 +1325,6 @@
     "imgSrc": "/assets/pictures/unit_cavalry/lancer-3.webp",
     "civ": [
       "ABB",
-      "AYY",
       "CHI",
       "DEL",
       "OTT",
@@ -3102,7 +3097,6 @@
     "age": 2,
     "imgSrc": "/assets/pictures/unit_rus/lodya-attack-ship.webp",
     "civ": [
-      "MAC",
       "RUS"
     ],
     "class": "military",
@@ -3220,8 +3214,6 @@
     "age": 2,
     "imgSrc": "/assets/pictures/unit_siege/siege-tower.webp",
     "civ": [
-      "ABB",
-      "AYY",
       "BYZ",
       "CHI",
       "DEL",
@@ -3330,9 +3322,7 @@
     "title": "Tower of the Sultan",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_byzantines/tower-of-the-sultan-3.webp",
-    "civ": [
-      "BYZ"
-    ],
+    "civ": [],
     "class": "military",
     "description": "Massive infantry transport effective against buildings and walls. Move speed increases for each unit garrisoned inside.\n+ Fires arrows\n+ High ranged armor\n+ High health\n- Slow move speed when empty",
     "id": "tower-of-the-sultan-3",
@@ -3585,10 +3575,7 @@
       "ABB",
       "AYY",
       "DRA",
-      "FRE",
       "HRE",
-      "JDA",
-      "KTE",
       "HOL"
     ],
     "class": "military",
@@ -4005,7 +3992,6 @@
       "HOL",
       "HRE",
       "JDA",
-      "MAC",
       "OTT"
     ],
     "class": "military",
@@ -4071,19 +4057,6 @@
       "popcap": 5,
       "time": 45
     }
-  },
-  {
-    "title": "Khan",
-    "age": 1,
-    "imgSrc": "/assets/pictures/unit_golden_horde/khan.webp",
-    "civ": [
-      "GOH"
-    ],
-    "class": "military",
-    "description": "Ranged Cavalry Leader able to use Signal Arrows to enhance nearby military units. Reappears at a Town Center if killed.\n+ Vision and herding of a Scout\n+ Automatically improves with each Age\n- Only one Khan per Mongol player",
-    "id": "khan-1",
-    "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khan"
   },
   {
     "title": "Kharash",
