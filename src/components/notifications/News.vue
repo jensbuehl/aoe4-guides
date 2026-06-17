@@ -32,7 +32,7 @@
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
         <v-icon icon="mdi-trophy" size="x-small" class="mr-1" color="accent"></v-icon>
-        <strong>Season 13</strong> Jin Dynasty fully supported. But are you ready for the Wikings?
+        <strong>Season 13</strong> Jin Dynasty fully supported. But are you ready for the Vikings?
       </div>
       <div class="d-flex flex-wrap justify-center ga-2 mt-3">
         <a
