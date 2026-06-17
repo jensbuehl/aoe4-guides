@@ -4611,6 +4611,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "military",
     "id": "clocktower-battering-ram",
     "type": "unit",
     "description": "Durable infantry transport effective against buildings and walls.\n+ High ranged armor\n+ High health\n- Takes bonus damage from melee attacks\n- Can only attack buildings\n- Slow movement speed",
@@ -4631,6 +4632,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "military",
     "id": "clocktower-bombard",
     "type": "unit",
     "description": "Intimidating siege gun excellent against buildings or any stubborn targets.\n+ High damage\n- Must be set up to fire",
@@ -4651,6 +4653,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "military",
     "id": "clocktower-counterweight-trebuchet",
     "type": "unit",
     "description": "Powerful siege engine effective at destroying buildings and walls over a great distance.\n+ Bonus damage vs buildings\n- Must be set up to fire\n- Inaccurate against units",
@@ -4671,6 +4674,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "military",
     "id": "clocktower-nest-of-bees",
     "type": "unit",
     "description": "Innovative field weapon capable of firing a barrage of rockets to damage defensive positions and clumped enemy troops.\n+ Good area of effect damage against most targets\n- Slowest movement speed\n- Weak if surrounded",
@@ -4691,6 +4695,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "military",
     "id": "clocktower-springald",
     "type": "unit",
     "description": "Anti-unit siege weapon. Fires bolts that pierce multiple units.\n+ Does not require setup to fire\n+ Bonus damage vs. melee infantry\n- Trivial damage vs. buildings",
@@ -4711,6 +4716,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "military",
     "id": "attack-ship",
     "type": "unit",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -4732,6 +4738,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "military",
     "age": 2,
     "id": "mansa-musofadi-warrior",
     "type": "unit",
@@ -4753,6 +4760,7 @@
     "civ": [
       "MON"
     ],
+    "class": "military",
     "id": "khaganate-horse-archer",
     "type": "unit",
     "description": "Highly mobile ranged cavalry effective against slower melee units.\n+ High mobility\n- Weak vs ranged units\n\nRandomly spawns 5 at the time from the Khaganate Palace.",
@@ -4773,6 +4781,7 @@
     "civ": [
       "MON"
     ],
+    "class": "military",
     "id": "khaganate-knight",
     "type": "unit",
     "description": "Expensive cavalry with high damage and melee armor. Effective against melee units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen\n\nRandomly spawns 3 at the time from the Khaganate Palace.",
@@ -4793,6 +4802,7 @@
     "civ": [
       "MON"
     ],
+    "class": "military",
     "id": "khaganate-mangudai",
     "type": "unit",
     "description": "Confounding mobile ranged cavalry that can fire at a slower rate while moving.\n+ High rate of fire\n- Low weapon range\n\nRandomly spawns from the Khaganate Palace.",
@@ -4813,6 +4823,7 @@
     "civ": [
       "MON"
     ],
+    "class": "military",
     "id": "khaganate-nest-of-bees",
     "type": "unit",
     "description": "Innovative field weapon capable of firing a barrage of rockets to damage defensive positions and clumped enemy troops.\n+ Good area of effect damage against most targets\n- Slowest movement speed\n- Weak if surrounded\n\nRandomly spawns from the Khaganate Palace.",
@@ -4833,6 +4844,7 @@
     "civ": [
       "MON"
     ],
+    "class": "military",
     "id": "khaganate-palace-guard",
     "type": "unit",
     "description": "Tough infantry with good damage. Move faster than Men-At-Arms, but with reduced armor.\n+ Heavy armor\n- Countered by Knights, Lancers, and Crossbowmen.\n\nRandomly spawns 5 at the time from the Khaganate Palace.",
@@ -4853,6 +4865,7 @@
     "civ": [
       "OTT"
     ],
+    "class": "military",
     "age": 2,
     "id": "akinji",
     "type": "unit",
@@ -4875,6 +4888,7 @@
     "civ": [
       "RUS"
     ],
+    "class": "military",
     "id": "militia-halberdier",
     "type": "unit",
     "description": "Light melee infantry equipped with a polearm.\n+ Fast moving\n- Countered by Archers\n- Can't garrison\n- Loses life over time",
@@ -4894,6 +4908,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "military",
     "id": "mounted-samurai-levy",
     "type": "unit",
     "description": "Expensive cavalry with high damage and a powerful charge attack.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -4913,6 +4928,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "military",
     "id": "naginata-samurai-levy",
     "type": "unit",
     "description": "Heavy infantry with good damage and defense.\n+ Heavy armor\n- Slow move speed\n- Countered by Knights, Lancers, and Crossbowmen",
@@ -4932,6 +4948,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "military",
     "id": "spearman-levy",
     "type": "unit",
     "description": "Infantry best used against mounted units.\n+ Anti-cavalry specialist\n+ Additional damage against Elephants\n- Weak against heavy infantry\n- Countered by Archers",
@@ -4951,6 +4968,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "military",
     "id": "tanegashima-ashigaru-levy",
     "type": "unit",
     "description": "Powerful ranged infantry that is effective against armored units.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
@@ -4970,6 +4988,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "military",
     "id": "yari-cavalry-levy",
     "type": "unit",
     "description": "Fast cavalry effective at raiding, flanking, and countering ranged units. Bonus damage against cavalry.\n+ High movement speed\n- Weak against melee units\n- Countered by Spearmen",
@@ -4989,6 +5008,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "military",
     "id": "yumi-ashigaru-levy",
     "type": "unit",
     "description": "Quick and cheap ranged infantry with good damage vs. unarmored targets.\n+ Increased move speed\n+ Cheaper than Archers\n- Reduced health\n- Weak against high ranged armor targets\n- Countered by Horsemen",
@@ -5008,6 +5028,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "military",
     "id": "city-guard",
     "type": "unit",
     "description": "Spawns an army of 4 Zhuge Nu and 3 Palace Guards.",
@@ -5028,6 +5049,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "military",
     "id": "imperial-retinue",
     "type": "unit",
     "description": "Spawns an army of 4 Yuan Raiders and 1 Imperial Guard.",
@@ -5048,6 +5070,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "military",
     "id": "provincial-levy",
     "type": "unit",
     "description": "Spawns an army of 4 Spearman and 3 Horsemen.",
@@ -5068,6 +5091,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "military",
     "id": "ranged-specialists",
     "type": "unit",
     "description": "Spawns an army of 4 Crossbowmen and 1 Grenadier.",
