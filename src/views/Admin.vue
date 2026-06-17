@@ -708,7 +708,7 @@
                       <div class="text-caption font-weight-medium text-truncate">{{ item.entry.title }}</div>
                       <div class="d-flex align-center flex-wrap" style="gap: 4px">
                         <v-chip size="x-small" variant="tonal">{{ item.config.key }}</v-chip>
-                        <span class="text-caption text-medium-emphasis text-truncate" style="max-width: 260px">{{ item.entry.imgSrc }}</span>
+                        <span class="text-caption text-medium-emphasis" style="word-break: break-all">{{ item.entry.imgSrc }}</span>
                       </div>
                     </div>
                   </div>

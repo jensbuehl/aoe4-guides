@@ -424,6 +424,7 @@
       "ABB",
       "AYY"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-camel-unease",
     "type": "ability",
@@ -466,6 +467,7 @@
       "TUG",
       "ZXL"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-conversion",
     "type": "ability",
@@ -508,6 +510,7 @@
       "TUG",
       "ZXL"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-detonate",
     "type": "ability",
@@ -550,6 +553,7 @@
       "TUG",
       "ZXL"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-man-the-sails",
     "type": "ability",
@@ -570,6 +574,7 @@
     "civ": [
       "ABB"
     ],
+    "class": "none",
     "id": "ability-proselytize",
     "type": "ability",
     "description": "Attempts to convert a single enemy unit within range of this Imam to your control.",
@@ -590,6 +595,7 @@
       "ABB",
       "AYY"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-quick-strike",
     "type": "ability",
@@ -632,6 +638,7 @@
       "TUG",
       "ZXL"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-ring-the-town-bell",
     "type": "ability",
@@ -652,6 +659,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-atabeg-supervision",
     "type": "ability",
     "description": "Garrison inside of a military production building to grant +20% health to newly trained units. Cannot garrison in Docks.",
@@ -671,6 +679,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-desert-raider-blade",
     "type": "ability",
     "description": "Swap to a melee Sword weapon.",
@@ -690,6 +699,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-desert-raider-bow",
     "type": "ability",
     "description": "Swap to a ranged Bow weapon.",
@@ -709,6 +719,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-mass-heal",
     "type": "ability",
     "description": "Heals all nearby units. Heals +50% times faster when carrying a relic.",
@@ -728,6 +739,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-structural-reinforcements",
     "type": "ability",
     "description": "Siege unit gains +20 melee armor and +5 fire armor for 10 seconds.\nOnly useable on one unit at a time.",
@@ -747,6 +759,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-swap-weapon-incendiary",
     "type": "ability",
     "description": "Switch to incendiary ammunition, which deals damage in an increased area.",
@@ -766,6 +779,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-swap-weapon-kinetic",
     "type": "ability",
     "description": "Switch to solid ammunition, which deals higher damage.",
@@ -785,6 +799,7 @@
     "civ": [
       "AYY"
     ],
+    "class": "none",
     "id": "ability-tactical-charge",
     "type": "ability",
     "description": "Camel Lancers charge faster, more often, and for longer distances than other heavy cavalry. Camel Lancers deals -25% less baseline charge damage. Each second spent charging increases the charge damage (up to +40%).",
@@ -804,6 +819,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-akritoi-defense",
     "type": "ability",
     "description": "Arm nearby Villagers with stronger weapons and increase their armor by +2 for 30 seconds.\n+1 damage in Dark Age\n+1 damage in Feudal Age\n+1 damage in Castle Age\n+2 damage in Imperial Age",
@@ -825,6 +841,7 @@
       "BYZ",
       "FRE"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-artillery-shot",
     "type": "ability",
@@ -846,6 +863,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-automatic-pilgrim-flask",
     "type": "ability",
     "description": "Toggle on to activate automatic drinking when low health, rapidly increasing health regeneration by 25 per second for 6 seconds.",
@@ -866,6 +884,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-berserking",
     "type": "ability",
     "description": "Varangian Guard swap to their two-handed weapon and deal +6 damage for 30 seconds. Armor is reduced by -4.",
@@ -887,6 +906,7 @@
       "BYZ",
       "MAC"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-border-settlement",
     "type": "ability",
@@ -908,6 +928,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-conscriptio",
     "type": "ability",
     "description": "Military unit production rate increased +20%/+40%/+60%/+80%/+100% by Water Level while within the influence of a Cistern.",
@@ -928,6 +949,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-dialecticus",
     "type": "ability",
     "description": "Research rate increased +30%/+60%/+90%/+120%/+150% by Water Level while within the influence of a Cistern.",
@@ -948,6 +970,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-emperors-guard",
     "type": "ability",
     "description": "Armor increased by +3 while near allied Wonders.",
@@ -960,6 +983,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-field-stones",
     "type": "ability",
     "description": "Earn various amounts of Stone from every building constructed.",
@@ -980,6 +1004,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-improved-torch",
     "type": "ability",
     "description": "Torch damage improved by a nearby Scout.",
@@ -992,6 +1017,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-irrigated",
     "type": "ability",
     "description": "Villager gathering rate increased by 5/10/15/20/25% (depening on water level)",
@@ -1004,6 +1030,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-naval-deployment",
     "type": "ability",
     "description": "Increased movement speed after unloading from a Transport Ship.",
@@ -1016,6 +1043,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-oil-commerce",
     "type": "ability",
     "description": "Traders provide +20% Olive Oil on trades.",
@@ -1028,6 +1056,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-olive-harvest",
     "type": "ability",
     "description": "Villagers generate Olive Oil equal to 20% of Food gathered when farming.",
@@ -1040,6 +1069,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-pilgrim-flask",
     "type": "ability",
     "description": "Activate to drink, rapidly increasing health regeneration by 25 per second for 6 seconds.",
@@ -1061,6 +1091,7 @@
       "BYZ",
       "ENG"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-place-palings",
     "type": "ability",
@@ -1082,6 +1113,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-praesidium",
     "type": "ability",
     "description": "Building damage taken decreased by -5%/-10%/-15%/-20%/-25% by Water Level while within the influence of a Cistern.",
@@ -1102,6 +1134,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-shield-wall",
     "type": "ability",
     "description": "Enter a defensive stance, decreasing move speed by -25%, attack speed by -25%, and ranged damage taken by -30%.",
@@ -1122,6 +1155,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-synergistic-crops",
     "type": "ability",
     "description": "Farmers and Foragers generate +60% Olive Oil around the Grand Winery.",
@@ -1134,6 +1168,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-trample",
     "type": "ability",
     "description": "Charge through enemy units in your path, dealing 12 damage to each one.",
@@ -1154,6 +1189,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-triumph",
     "type": "ability",
     "description": "Consume all Supply Points to increase cavalry damage by +4, move speed by +10%, and health regeneration by +2. \nEach Supply Point increases Triumph's duration by 1 seconds. A maximum of 45 Supply Points can be collected.",
@@ -1174,6 +1210,7 @@
     "civ": [
       "BYZ"
     ],
+    "class": "none",
     "id": "ability-varangian-berserking",
     "type": "ability",
     "description": "Damage increased by +6 and armor decreased by -4.",
@@ -1186,6 +1223,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "none",
     "id": "ability-imperial-spies",
     "type": "ability",
     "description": "Reveal location of enemy workers for 15 seconds.",
@@ -1205,6 +1243,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "none",
     "id": "ability-spirit-way",
     "type": "ability",
     "description": "When a dynasty unit is killed, nearby units receive +20% attack speed and +20 health over 10 seconds.",
@@ -1224,6 +1263,7 @@
     "civ": [
       "CHI"
     ],
+    "class": "none",
     "id": "ability-the-long-wall",
     "type": "ability",
     "description": "All units standing on Walls gain +25% ranged damage.",
@@ -1244,6 +1284,7 @@
     "civ": [
       "DEL"
     ],
+    "class": "none",
     "id": "ability-tower-of-victory-aura",
     "type": "ability",
     "description": "Melee and ranged infantry who move near this Landmark permanently gain +20% attack speed.",
@@ -1264,6 +1305,7 @@
       "ENG",
       "HOL"
     ],
+    "class": "none",
     "age": 2,
     "id": "ability-abbey-healing",
     "type": "ability",
@@ -1284,6 +1326,7 @@
     "civ": [
       "ENG"
     ],
+    "class": "none",
     "id": "ability-network-of-castles",
     "type": "ability",
     "description": "When enemies are nearby, this building sounds an alarm, causing nearby units to get a +20% increase to attack speed.",
@@ -1303,6 +1346,7 @@
     "civ": [
       "FRE"
     ],
+    "class": "none",
     "id": "ability-deploy-pavise",
     "type": "ability",
     "description": "Activate to increase weapon range by +1 tile and gain +5 ranged armor.\nRemains active for 30 seconds or until the Arbalétrier moves away.",
@@ -1322,6 +1366,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "none",
     "id": "ability-call-rus-tributes",
     "type": "ability",
     "description": "Dispatch 4 Rus Tributes from the Golden Tent and increase the cost of the Call Rus Tributes by +300 Stone.\nThe cost of Call Rus Tributes will be reduced by 10 Stone every 30 seconds. Each Military Building will reduce the cost by an additional 5 Stone up to a maximum of 70 Stone. Will automatically deploy the Rus Tributes when the cost reaches zero.",
@@ -1341,6 +1386,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-defensive-aura-edict",
     "type": "ability",
@@ -1361,6 +1407,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "none",
     "id": "ability-production-speed-edict",
     "type": "ability",
     "description": "Activate to increase the production speed of the Golden Tent and Military Buildings within the influence of a Fortified Outpost by +15%.\nOnly one edict can be active.",
@@ -1381,6 +1428,7 @@
       "DRA",
       "HRE"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-emergency-repairs",
     "type": "ability",
@@ -1401,6 +1449,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-deflective-armor",
     "type": "ability",
     "description": "Deflective Armor charge can block one melee or ranged attack. Recharges while out of combat for 15 seconds.",
@@ -1420,6 +1469,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-kabura-ya",
     "type": "ability",
     "description": "Onna-Musha fire a whistling arrow when an enemy is seen, increasing move speed for 10 seconds.",
@@ -1439,6 +1489,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-katana-bannerman-aura",
     "type": "ability",
     "description": "Aura that increases melee infantry damage by +15%.\nBanner drops on death and lasts for 30 seconds providing the same aura.",
@@ -1458,6 +1509,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-place-yorishiro",
     "type": "ability",
     "description": "Place a Yorishiro in the following buildings to receive bonuses and increase their line of sight.\nMilitary and Docks: +125% Production speed\nTown Center: +30% Production speed\nFarmhouse: +70 Food per minute\nLumber Camp: +70 Wood per minute\nForge: +50 Gold per minute\nWonder: +4000 Health",
@@ -1477,6 +1529,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-sabotage",
     "type": "ability",
     "description": "Target a visible enemy building to deal 200 damage, disable its production, and set it on fire for 30 seconds.",
@@ -1496,6 +1549,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-shunshin",
     "type": "ability",
     "description": "Drop a smoke bomb and reappear at a selected location.",
@@ -1515,6 +1569,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-soheis-sutra",
     "type": "ability",
     "description": "Reduces enemy damage by 50% for 60 seconds.",
@@ -1534,6 +1589,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-spy",
     "type": "ability",
     "description": "Target a visible enemy unit or structure to disguise the Shinobi as a Villager of that player.",
@@ -1553,6 +1609,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-treasure-caravans",
     "type": "ability",
     "description": "Select a neutral Trade Post to periodically spawn Treasure Caravans from that location. Caravans can convert into a Trade Ship when instructed to reach Trade Posts over water.",
@@ -1572,6 +1629,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-uma-bannerman-aura",
     "type": "ability",
     "description": "Aura that increases cavalry unit damage by +10%.\nBanner drops on death and lasts for 30 seconds providing the same aura.",
@@ -1591,6 +1649,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "none",
     "id": "ability-yumi-bannerman-aura",
     "type": "ability",
     "description": "Aura that increases ranged infantry damage by +15%.\nBanner drops on death and lasts for 30 seconds providing the same aura.",
@@ -1610,6 +1669,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-bring-down-the-walls",
     "type": "ability",
     "description": "Jeanne calls a Cannon to her side. Rallies an additional Cannon if used on a Neutral Settlement.",
@@ -1629,6 +1689,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-construct-the-kingdom",
     "type": "ability",
     "description": "Nearby Villagers construct buildings 33% faster.",
@@ -1648,6 +1709,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-forward-companions",
     "type": "ability",
     "description": "Jeanne calls 3/6 Knights to her side. Rallies 2 additional Knights if used on a Neutral Settlement.",
@@ -1667,6 +1729,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-galvanize-the-righteous",
     "type": "ability",
     "description": "Companions close to Jeanne gain +1/1 armor and +10% damage.",
@@ -1686,6 +1749,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-honorable-heart",
     "type": "ability",
     "description": "Jeanne regenerates 1/1.5/2/2.5 health per second while out of combat based on her current level.\nAt level 3 Jeanne takes 45% less damage from ranged attacks; at level 4 this is increased to 60%.",
@@ -1705,6 +1769,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-jeannes-companions",
     "type": "ability",
     "description": "Achieve level 3 with Jeanne d'Arc to select between Champions and Riders to be trained at the keep.",
@@ -1724,6 +1789,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-journey-of-a-hero",
     "type": "ability",
     "description": "Jeanne generates experience for completing tasks such as gathering resources, constructing buildings, hunting boar, capturing Sacred Sites, and participating in combat. Jeanne also gains a small trickle of experience over time.\nAfter earning sufficient experience Jeanne can level up, becoming more powerful and gaining access to unique abilities.",
@@ -1743,6 +1809,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-nock-your-arrows",
     "type": "ability",
     "description": "Jeanne calls 2/4/6 Archers to her side. Rallies 2 additional Archers if used on a Neutral Settlement.",
@@ -1762,6 +1829,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-return-of-the-saint",
     "type": "ability",
@@ -1782,6 +1850,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-spears-up",
     "type": "ability",
     "description": "Jeanne calls 2 Spearmen to her side. Awards 50 experience if activated on a Neutral Settlement or a friendly Keep or Landmark.",
@@ -1801,6 +1870,7 @@
     "civ": [
       "JDA"
     ],
+    "class": "none",
     "id": "ability-talented-builder",
     "type": "ability",
     "description": "Jeanne constructs buildings 33% faster.\nUpon reaching level 2, Jeanne shares her talents with nearby builders.",
@@ -1820,6 +1890,7 @@
     "civ": [
       "JIN"
     ],
+    "class": "none",
     "id": "ability-flower-garden",
     "type": "ability",
     "description": "Plant a Flower Garden that increases nearby villager gather rate by +25% and non-siege military attack speed by +25%.\nThe Flower Garden will persist until a new Flower Garden is planted.",
@@ -1839,6 +1910,7 @@
     "civ": [
       "JIN"
     ],
+    "class": "none",
     "id": "ability-karma",
     "type": "ability",
     "description": "Villagers gathering resources in radius of this religious structure generate Karma.",
@@ -1858,6 +1930,7 @@
     "civ": [
       "JIN"
     ],
+    "class": "none",
     "id": "ability-siege-repairs",
     "type": "ability",
     "description": "Repairs nearby siege engines for 2 health every second.",
@@ -1877,6 +1950,7 @@
     "civ": [
       "JIN"
     ],
+    "class": "none",
     "age": 1,
     "id": "ability-spiritual-awakening",
     "type": "ability",
@@ -1897,6 +1971,7 @@
     "civ": [
       "KTE"
     ],
+    "class": "none",
     "id": "ability-pilgrim-destination",
     "type": "ability",
     "description": "Select a Sacred Site for your Pilgrims to travel to. Pilgrims cannot travel to a Sacred Site captured by an enemy.",
@@ -1916,6 +1991,7 @@
     "civ": [
       "KTE"
     ],
+    "class": "none",
     "id": "ability-pilgrim-loan-large",
     "type": "ability",
     "description": "Provide a loan to Pilgrims that will be repaid at a rate of 900 gold per minute for 4 minutes",
@@ -1935,6 +2011,7 @@
     "civ": [
       "KTE"
     ],
+    "class": "none",
     "id": "ability-pilgrim-loan-medium",
     "type": "ability",
     "description": "Provide a loan to Pilgrims that will be repaid at a rate of 600 gold per minute for 3 minutes",
@@ -1954,6 +2031,7 @@
     "civ": [
       "KTE"
     ],
+    "class": "none",
     "id": "ability-pilgrim-loan-small",
     "type": "ability",
     "description": "Provide a loan to Pilgrims that will be repaid at a rate of 300 gold per minute for 2 minutes",
@@ -1973,6 +2051,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-atgeirmadr-production",
     "type": "ability",
     "description": "Toggle on to reinforce with Atgeirmaðr",
@@ -1993,6 +2072,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-attack-ship-production",
     "type": "ability",
     "description": "Toggle on to reinforce with Attack Ships",
@@ -2013,6 +2093,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-bogmadr-production",
     "type": "ability",
     "description": "Toggle on to reinforce with Bogmaðr",
@@ -2033,6 +2114,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-cisterns-favor",
     "type": "ability",
     "description": "Ability can be used on military production or technology buildings to increase their work rate by +150%. If used on Mining Camps, Lumber Camps, or Farms, begin generating 160 Gold, Wood, or Food over 60 seconds.\nRecharges every 90 seconds.",
@@ -2053,6 +2135,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-galley-production",
     "type": "ability",
     "description": "Toggle on to reinforce with Galleys",
@@ -2073,6 +2156,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-riddari-production",
     "type": "ability",
     "description": "Toggle on to reinforce with Riddari",
@@ -2093,6 +2177,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-varangian-guard-production",
     "type": "ability",
     "description": "Toggle on to reinforce with Varangian Guards",
@@ -2113,6 +2198,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "none",
     "id": "ability-varangian-reinforcements",
     "type": "ability",
     "description": "Reinforcing with Varangians, Galleys, or Attack Ships after enough units fall in battle.",
@@ -2133,6 +2219,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "none",
     "id": "ability-activate-stealth",
     "type": "ability",
     "description": "Enter Stealth for 30 seconds.\nWhile in Stealth, units are invisible until they are revealed by enemy Scouts, Outposts, Landmark Town Centers, or they engage in combat.",
@@ -2152,6 +2239,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "none",
     "id": "ability-coastal-navigation",
     "type": "ability",
     "description": "Ships near a Docks get +15% speed for 25 seconds.",
@@ -2171,6 +2259,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "none",
     "id": "ability-first-strike",
     "type": "ability",
     "description": "Musofadi Warriors and Musofadi Gunners deal double damage on their first attack when breaking stealth.",
@@ -2191,6 +2280,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "none",
     "id": "ability-food-festival",
     "type": "ability",
     "description": "Increase villager gather rate and move speed by +50%",
@@ -2210,6 +2300,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "none",
     "id": "ability-huntress-stealth",
     "type": "ability",
     "description": "Malian infantry within range enter Stealth. While in Stealth, units are invisible until they are revealed by enemy Scouts, Outposts, or when they engage in combat.",
@@ -2229,6 +2320,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "none",
     "id": "ability-military-festival",
     "type": "ability",
     "description": "Increase all unit production speed by +100% for 90 seconds.",
@@ -2248,6 +2340,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "none",
     "id": "ability-siege-festival",
     "type": "ability",
     "description": "Increase damage of Battering Rams, Bombards, Counterweight Trebuchets, and torches by +50% for 90 seconds.\nApplies to Springald Ships once Mounted Guns has been researched.",
@@ -2267,6 +2360,7 @@
     "civ": [
       "MON"
     ],
+    "class": "none",
     "id": "ability-attack-speed-arrow",
     "type": "ability",
     "description": "Fires a Signal Arrow that increases the attack speed of nearby ranged units (including the Khan) by +50% for 5 seconds.",
@@ -2286,6 +2380,7 @@
     "civ": [
       "MON"
     ],
+    "class": "none",
     "id": "ability-battle-veteran",
     "type": "ability",
     "description": "Heals after every attack performed.",
@@ -2305,6 +2400,7 @@
     "civ": [
       "MON"
     ],
+    "class": "none",
     "id": "ability-defense-arrow",
     "type": "ability",
     "description": "Fires a Signal Arrow that increases the armor of nearby units (including the Khan) by +2 for 5 seconds.",
@@ -2324,6 +2420,7 @@
     "civ": [
       "MON"
     ],
+    "class": "none",
     "id": "ability-kurultai-aura",
     "type": "ability",
     "description": "Nearby units within its aura heal +1 health every 1 second and gain an additional +20% damage.",
@@ -2343,6 +2440,7 @@
     "civ": [
       "MON"
     ],
+    "class": "none",
     "id": "ability-maneuver-arrow",
     "type": "ability",
     "description": "Fire a Signal Arrow that increases the movement speed of nearby units (including the Khan) by +33% for 5 seconds. Does not affect Villagers.",
@@ -2362,6 +2460,7 @@
     "civ": [
       "MON"
     ],
+    "class": "none",
     "id": "ability-yam",
     "type": "ability",
     "description": "Cavalry and Traders near an Outpost get +15% speed for 10 seconds.",
@@ -2381,6 +2480,7 @@
     "civ": [
       "MON"
     ],
+    "class": "none",
     "id": "ability-yam-network-improved",
     "type": "ability",
     "description": "Yam speed aura applies to all units instead of just Traders and cavalry units. Does not apply to siege engines.",
@@ -2401,6 +2501,7 @@
     "civ": [
       "OTT"
     ],
+    "class": "none",
     "id": "ability-attack-drums",
     "type": "ability",
     "description": "Mehter drums that increase the attack speed of nearby units by +15%.",
@@ -2421,6 +2522,7 @@
     "civ": [
       "OTT"
     ],
+    "class": "none",
     "id": "ability-fortitude",
     "type": "ability",
     "description": "Gain +40% attack speed and receive +50% damage from melee weapons for 10 seconds.",
@@ -2441,6 +2543,7 @@
     "civ": [
       "OTT"
     ],
+    "class": "none",
     "id": "ability-mehter-speed-bonus",
     "type": "ability",
     "description": "Units move +15% faster when in formation.",
@@ -2461,6 +2564,7 @@
     "civ": [
       "OTT"
     ],
+    "class": "none",
     "id": "ability-melee-defense-drums",
     "type": "ability",
     "description": "Mehter drums that increase the melee armor of nearby units by +2.",
@@ -2481,6 +2585,7 @@
     "civ": [
       "OTT"
     ],
+    "class": "none",
     "id": "ability-ranged-defense-drums",
     "type": "ability",
     "description": "Mehter drums that increase the ranged armor of nearby units by +1.",
@@ -2501,6 +2606,7 @@
     "civ": [
       "OTT"
     ],
+    "class": "none",
     "id": "ability-trade-protection",
     "type": "ability",
     "description": "Traders and Trade Ships near Keeps receive +30% move speed and +8 armor for 20 seconds.",
@@ -2521,6 +2627,7 @@
     "civ": [
       "RUS"
     ],
+    "class": "none",
     "id": "ability-gallop",
     "type": "ability",
     "description": "Activate to move at maximum speed with +2 tile weapon range for 8 seconds.",
@@ -2540,6 +2647,7 @@
     "civ": [
       "RUS"
     ],
+    "class": "none",
     "id": "ability-high-armory-production-bonus",
     "type": "ability",
     "description": "The cost of siege engines in nearby Siege Workshops is decreased by 20%.",
@@ -2559,6 +2667,7 @@
     "civ": [
       "RUS"
     ],
+    "class": "none",
     "id": "ability-saints-blessing",
     "type": "ability",
     "description": "After striking an enemy, the Warrior Monk increases the armor and damage of nearby allied Rus military units for a duration.",
@@ -2578,6 +2687,7 @@
     "civ": [
       "RUS"
     ],
+    "class": "none",
     "id": "ability-static-deployment",
     "type": "ability",
     "description": "Streltsy gain +30% attack speed after remaining stationary for 10 seconds.",
@@ -2597,6 +2707,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "none",
     "id": "ability-brewery-delivery",
     "type": "ability",
     "description": "When 350 Gold is collected from the Toko-Koji Mats, a Sake delivery is sent to a nearby Matsuri.",
@@ -2616,6 +2727,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "none",
     "id": "ability-castle-of-the-crow-aura",
     "type": "ability",
     "description": "Siege units near the Castle gain +10% damage and +1 tiles range.",
@@ -2635,6 +2747,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "none",
     "id": "ability-matsuri-aura",
     "type": "ability",
     "description": "Currently no bonus gather rate. Each Yatai trader that arrives to this Matsuri will increase the bonus gather rate provided to nearby Villagers by +5%.",
@@ -2654,6 +2767,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "none",
     "id": "ability-redirect-yatai",
     "type": "ability",
     "description": "While active the Home Matsuri of all Yatai is set to this building.",
@@ -2673,6 +2787,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "none",
     "id": "ability-ryokan-healing",
     "type": "ability",
     "description": "Nearby units gain a permanent healing buff. The healing buff will heal the unit when out of combat by 4 health every 5 seconds.",
@@ -2692,6 +2807,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "none",
     "id": "ability-shinobi-ambush",
     "type": "ability",
     "description": "Target near Stealth Forest or one of your buildings to summon a group Shinobi with Torinoko Grenades that increase damage taken by 40% and slow enemies by 25% for 3 seconds.\nThe Shinobi will escape after 45 seconds or if they used their 3 grenades.",
@@ -2711,6 +2827,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "none",
     "id": "ability-shinobi-scout",
     "type": "ability",
     "description": "Reveals a 10 tile radius for 20 seconds.",
@@ -2730,6 +2847,7 @@
     "civ": [
       "TUG"
     ],
+    "class": "none",
     "id": "ability-elephant-economics",
     "type": "ability",
     "description": "Assistance from Worker Elephants increases resources dropped off by 5%.",
@@ -2749,6 +2867,7 @@
     "civ": [
       "TUG"
     ],
+    "class": "none",
     "id": "ability-tughlaqabad-fort-overwatch",
     "type": "ability",
     "description": "Increasing the production speed of nearby Docks by 30%, arrowslits damage by 2, and weapon range by 1 tile.",
@@ -2768,6 +2887,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-ascetic-recovery",
     "type": "ability",
     "description": "The Shaolin Monk regains health when out of combat.",
@@ -2787,6 +2907,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-body-of-iron",
     "type": "ability",
     "description": "The Shaolin Monk hardens his body and reduces incoming ranged damage by 50% for 15 seconds.",
@@ -2806,6 +2927,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-bounty-of-solitude",
     "type": "ability",
     "description": "Increases the resource value of nearby gold veins, stone outcroppings, and berry bushes by +5% every 30 seconds up to a maximum of +60%.\nTrees are increased at a lesser rate of +2.5% up to +30%.\nAfter 330 seconds, generates resources equal to 5% of the current resources in those nearby deposits. Additionally generates 5% of the maximum resources of each deposit when fully gathered.",
@@ -2825,6 +2947,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-city-guard",
     "type": "ability",
     "description": "Spawns an army of 4 Zhuge Nu and 3 Palace Guards.",
@@ -2844,6 +2967,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-divine-charge",
     "type": "ability",
     "description": "Cavalry units deal +20% damage.",
@@ -2863,6 +2987,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-divine-defense",
     "type": "ability",
     "description": "Gunpowder units and defensive structures gain +1 range.",
@@ -2882,6 +3007,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-divine-haste",
     "type": "ability",
     "description": "Infantry units move 15% faster.",
@@ -2901,6 +3027,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-divine-vitality",
     "type": "ability",
     "description": "Units out of combat heal 2 health per second.",
@@ -2920,6 +3047,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-imperial-retinue",
     "type": "ability",
     "description": "Spawns an army of 4 Yuan Raiders and 1 Imperial Guard.",
@@ -2939,6 +3067,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-provincial-levy",
     "type": "ability",
     "description": "Spawns an army of 4 Spearman and 3 Horsemen.",
@@ -2958,6 +3087,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "none",
     "id": "ability-ranged-specialists",
     "type": "ability",
     "description": "Spawns an army of 4 Crossbowmen and 1 Grenadier.",
