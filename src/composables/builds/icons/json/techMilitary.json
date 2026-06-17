@@ -6833,6 +6833,7 @@
       "BYZ",
       "MAC"
     ],
+    "class": "tech",
     "age": 3,
     "id": "mangonel-emplacement",
     "type": "technology",
@@ -6856,6 +6857,7 @@
       "CHI",
       "ZXL"
     ],
+    "class": "tech",
     "age": 4,
     "id": "additional-barrels",
     "type": "technology",
@@ -6877,6 +6879,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "tech",
     "id": "khan-and-torguuds",
     "type": "technology",
     "description": "Reduce the cost of the Khan and Torguuds by -20% and increase their health by +30.",
@@ -6897,6 +6900,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "tech",
     "id": "khan-debuff-arrow",
     "type": "technology",
     "description": "The Khan can fire a signal arrow that reveals a 10 Tile range and makes enemies receive +10% damage in the targeted area for 10 seconds.",
@@ -6917,6 +6921,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "tech",
     "id": "sarai-lancers",
     "type": "technology",
     "description": "Increase Keshik healing by +1 Health per attack and attack speed by +10%. Torguud gain the same healing attack as the Keshik.",
@@ -6937,6 +6942,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "tech",
     "id": "unlock-kharash-edict",
     "type": "technology",
     "description": "When the Kharash Edict is active the Golden Tent and Military Buildings within the influence of a Fortified Outpost produce an additional Kharash whenever any unit is recruited.",
@@ -6957,6 +6963,7 @@
     "civ": [
       "GOH"
     ],
+    "class": "tech",
     "id": "unlock-stockyard-edict",
     "type": "technology",
     "description": "When the Stockyard Edict is active Stockyards within the influence of a Fortified Outpost generate Gold while being worked.",
@@ -6977,6 +6984,7 @@
     "civ": [
       "HOL"
     ],
+    "class": "tech",
     "id": "military-tactics-training",
     "type": "technology",
     "description": "Advanced Military Tactics increase your troops' overall effectiveness in battle, improving their bonus damage by +20%.",
@@ -6997,6 +7005,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "tech",
     "id": "upgrade-shinobi-3",
     "type": "technology",
     "description": "Increases the health and damage of Shinobi when reaching Castle Age.",
@@ -7017,6 +7026,7 @@
     "civ": [
       "JAP"
     ],
+    "class": "tech",
     "id": "upgrade-shinobi-4",
     "type": "technology",
     "description": "Increases the health and damage of of Shinobi when reaching Imperial Age.",
@@ -7037,6 +7047,7 @@
     "civ": [
       "KTE"
     ],
+    "class": "tech",
     "id": "naval-springald-emplacement",
     "type": "technology",
     "description": "Adds a defensive naval springald to this Harbor.",
@@ -7057,6 +7068,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "tech",
     "id": "polutasvarf",
     "type": "technology",
     "description": "Each Varangian unit that is present for the destruction of a Landmark or Town Center will award the player with a boon of Silver.",
@@ -7078,6 +7090,7 @@
     "civ": [
       "MAC"
     ],
+    "class": "tech",
     "id": "stronghold-defensive-arrowslits",
     "type": "technology",
     "description": "Upgrades all Varangian Strongholds with default arrowslit emplacements that deal 10 damage with 6 tiles weapon range.",
@@ -7099,6 +7112,7 @@
     "civ": [
       "MAL"
     ],
+    "class": "tech",
     "id": "javelin-emplacement",
     "type": "technology",
     "description": "Add defensive javelin to this structure and increase garrison arrow range by +1. Javelins deal additional damage to ranged units. Only one weapon emplacement can be added.",
@@ -7120,6 +7134,7 @@
       "MAL",
       "RUS"
     ],
+    "class": "tech",
     "age": 4,
     "id": "mounted-guns",
     "type": "technology",
@@ -7141,6 +7156,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "tech",
     "id": "mountain-top-training",
     "type": "technology",
     "description": "Increase Ikko-ikki Monk movement speed by +33%.",
@@ -7161,6 +7177,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "tech",
     "id": "mounted-samurai-odachi",
     "type": "technology",
     "description": "Equip Mounted Samurai with an Odachi, a long sword that deals +4 bonus damage against infantry.",
@@ -7181,6 +7198,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "tech",
     "id": "ozutsu-unlock",
     "type": "technology",
     "description": "Unlock an Early Ozutsu unit which is available from Age III.",
@@ -7201,6 +7219,7 @@
     "civ": [
       "SEN"
     ],
+    "class": "tech",
     "id": "tanegashima-tate",
     "type": "technology",
     "description": "Tanegashima Ashigaru will automatically deploy a standing shield if not moving that increases weapon range by +2 tiles and ranged armor by +2.",
@@ -7221,6 +7240,7 @@
     "civ": [
       "TUG"
     ],
+    "class": "tech",
     "id": "tughlaqabad-fort-overwatch",
     "type": "technology",
     "description": "Tughlaqabad Forts increase the production speed of nearby Docks by 30%, arrowslits damage by 2, and weapon range by 1 tile.",
@@ -7241,6 +7261,7 @@
     "civ": [
       "TUG"
     ],
+    "class": "tech",
     "id": "upgrade-to-elite",
     "type": "technology",
     "description": "Upgrade Healer Elephants to Elite Healer Elephants",
@@ -7261,6 +7282,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "tech",
     "id": "regional-inspection",
     "type": "technology",
     "description": "Supervision by Imperial Officials improved from 150% to 300%.",
@@ -7281,6 +7303,7 @@
     "civ": [
       "ZXL"
     ],
+    "class": "tech",
     "id": "single-whip-reform",
     "type": "technology",
     "description": "Imperial Officials move 50% faster.",
