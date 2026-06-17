@@ -4018,7 +4018,8 @@
       "CHI",
       "GOH",
       "MON",
-      "ZXL"
+      "ZXL",
+      "JIN"
     ],
     "class": "military",
     "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
@@ -4496,28 +4497,6 @@
       "popcap": 1,
       "time": 40
     }
-  },
-  {
-    "title": "Baochuan",
-    "age": 4,
-    "imgSrc": "/assets/pictures/unit_jin/baochuan.webp",
-    "civ": [
-      "JIN"
-    ],
-    "class": "military",
-    "costs": {
-      "food": 200,
-      "wood": 200,
-      "stone": 0,
-      "gold": 200,
-      "total": 600,
-      "popcap": 5,
-      "time": 38
-    },
-    "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
-    "id": "baochuan-4",
-    "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/baochuan"
   },
   {
     "title": "Bed Crossbow",

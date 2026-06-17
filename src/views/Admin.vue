@@ -629,6 +629,121 @@
             </div>
           </v-card>
 
+          <!-- ── Card 3: Check Images ── -->
+          <v-card flat rounded="lg" class="mb-6 pa-2">
+            <div class="d-flex align-center justify-space-between pa-4 pb-2">
+              <div class="d-flex align-center" style="gap: 6px">
+                <span class="text-subtitle-1 font-weight-medium">Check Images</span>
+                <v-tooltip text="Scans all local icon entries with imgSrc set and tests whether each image resolves. For broken entries, previews the replacement from AOE4World and lets you download individual images or a zip in the correct folder structure." location="bottom" max-width="320">
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props" size="16" color="medium-emphasis">mdi-information-outline</v-icon>
+                  </template>
+                </v-tooltip>
+              </div>
+              <div class="d-flex align-center" style="gap: 8px">
+                <v-btn
+                  v-if="checkImgPhase === 'idle'"
+                  color="primary" variant="tonal" size="small"
+                  prepend-icon="mdi-image-search"
+                  @click="startCheckImages()"
+                >Scan</v-btn>
+                <v-btn
+                  v-if="checkImgPhase === 'results'"
+                  variant="text" size="small"
+                  prepend-icon="mdi-refresh"
+                  @click="resetCheckImages()"
+                >Reset</v-btn>
+              </div>
+            </div>
+
+            <!-- scanning -->
+            <div v-if="checkImgPhase === 'scanning'" class="px-4 pb-4 text-center">
+              <v-progress-circular indeterminate size="24" class="mb-2" />
+              <p class="text-body-2 text-medium-emphasis">Scanning local images…</p>
+            </div>
+
+            <!-- results -->
+            <div v-if="checkImgPhase === 'results'" class="pb-2">
+
+              <!-- Fetch errors -->
+              <div v-if="Object.keys(checkImgFetchErrors).length" class="px-4 pb-2">
+                <v-alert type="error" density="compact" variant="tonal" class="mb-1"
+                  v-for="(msg, src) in checkImgFetchErrors" :key="src"
+                >{{ src }}: {{ msg }}</v-alert>
+              </div>
+
+              <!-- Empty state -->
+              <div v-if="checkImgItems.length === 0" class="px-4 pb-4 text-center">
+                <p class="text-body-2 text-medium-emphasis">All images resolved — no broken icons found.</p>
+              </div>
+
+              <!-- Broken image list -->
+              <template v-else>
+                <div class="px-4 pb-2 text-caption text-medium-emphasis">
+                  {{ checkImgItems.length }} broken icon{{ checkImgItems.length !== 1 ? 's' : '' }} found
+                </div>
+
+                <div
+                  v-for="item in checkImgItems"
+                  :key="item.key"
+                  class="d-flex align-center justify-space-between px-4 py-2"
+                  style="gap: 8px; border-bottom: 1px solid rgba(128,128,128,0.12)"
+                >
+                  <!-- Left: broken placeholder + CDN preview + name + path -->
+                  <div class="d-flex align-center" style="gap: 8px; min-width: 0; flex: 1">
+                    <div
+                      style="width: 20px; height: 20px; border: 1px dashed rgba(200,50,50,0.5); border-radius: 2px; flex-shrink: 0; display: flex; align-items: center; justify-content: center"
+                    >
+                      <v-icon size="12" color="error">mdi-image-broken-variant</v-icon>
+                    </div>
+                    <img
+                      v-if="item.icon"
+                      :src="item.icon"
+                      width="20"
+                      height="20"
+                      style="object-fit: contain; flex-shrink: 0; opacity: 0.85"
+                    />
+                    <div style="min-width: 0">
+                      <div class="text-caption font-weight-medium text-truncate">{{ item.entry.title }}</div>
+                      <div class="d-flex align-center flex-wrap" style="gap: 4px">
+                        <v-chip size="x-small" variant="tonal">{{ item.config.key }}</v-chip>
+                        <span class="text-caption text-medium-emphasis text-truncate" style="max-width: 260px">{{ item.entry.imgSrc }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Right: single download or warning -->
+                  <div class="d-flex align-center" style="gap: 6px; flex-shrink: 0">
+                    <v-btn
+                      v-if="item.icon"
+                      :loading="checkImgDownloading[item.key]"
+                      icon="mdi-download"
+                      size="x-small"
+                      variant="text"
+                      title="Download replacement image as WebP"
+                      @click="downloadCheckImage(item)"
+                    />
+                    <v-chip v-else size="x-small" color="warning" variant="tonal">no CDN icon</v-chip>
+                  </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="d-flex align-center justify-end pa-4" style="gap: 8px; flex-wrap: wrap">
+                  <v-chip v-if="checkImgZipSaved" size="x-small" color="success" variant="tonal">zip saved</v-chip>
+                  <v-chip v-if="checkImgZipNoFiles" size="x-small" color="warning" variant="tonal">no images to download</v-chip>
+                  <v-btn
+                    v-if="checkImgItems.some(i => i.icon)"
+                    :loading="checkImgZipProcessing"
+                    color="secondary" variant="tonal" size="small"
+                    prepend-icon="mdi-image-multiple"
+                    @click="downloadCheckImagesZip()"
+                  >Download Images Zip</v-btn>
+                </div>
+              </template>
+
+            </div>
+          </v-card>
+
         </v-col>
       </v-row>
     </div>
@@ -1168,7 +1283,7 @@ export default {
               icon: sourceItem.icon || null,
               civ: civShort, civCode, civCount,
               description: sourceItem.description || "",
-              costs: sourceItem.costs || null,
+              costs: sourceItem.costs ?? sourceItem.variations?.[0]?.costs ?? null,
               exploreUrl,
               kind: "new", localEntry: null, localCategory: null,
             });
@@ -1182,7 +1297,7 @@ export default {
               icon: sourceItem.icon || null,
               civ: civShort, civCode, civCount,
               description: sourceItem.description || "",
-              costs: sourceItem.costs || null,
+              costs: sourceItem.costs ?? sourceItem.variations?.[0]?.costs ?? null,
               exploreUrl,
               kind: "civ-extension", localEntry, localCategory: localCat,
             });
@@ -1237,7 +1352,7 @@ export default {
             name: localEntry.title || sourceItem.name,
             type: sourceItem.type, age: sourceItem.age, icon: sourceItem.icon || null,
             civ: civShort, civCode: localCivCode, civCount: sourceItem.civs?.length ?? 0,
-            description: sourceItem.description || "", costs: sourceItem.costs || null,
+            description: sourceItem.description || "", costs: sourceItem.costs ?? sourceItem.variations?.[0]?.costs ?? null,
             exploreUrl,
             kind: "civ-removal", localEntry, localCategory: localCat,
           });
@@ -1411,11 +1526,13 @@ export default {
               if (!arr[idx].civ.includes(gap.civCode)) {
                 arr[idx].civ = [...arr[idx].civ, gap.civCode].sort();
               }
+              if (gap.costs) arr[idx].costs = gap.costs;
             }
           } else if (gap.kind === "civ-removal") {
             const idx = arr.findIndex((e) => (e.id && e.id === gap.id) || e.title === gap.name);
             if (idx !== -1 && Array.isArray(arr[idx].civ)) {
               arr[idx].civ = arr[idx].civ.filter((c) => c !== gap.civCode);
+              if (gap.costs) arr[idx].costs = gap.costs;
             }
           }
         }
@@ -1632,6 +1749,7 @@ export default {
         return {
           ...localEntry,
           civ: [...(localEntry.civ || []), ...group.allCivs.map((i) => i.civCode)].sort(),
+          ...(group.costs ? { costs: group.costs } : {}),
         };
       }
       if (group.kind === "civ-removal") {
@@ -1641,6 +1759,7 @@ export default {
         return {
           ...localEntry,
           civ: (localEntry.civ || []).filter((c) => !civsToRemove.has(c)),
+          ...(group.costs ? { costs: group.costs } : {}),
         };
       }
       return null;
@@ -1675,6 +1794,190 @@ export default {
       await downloadObjectAsJSONFile(gapSyncIgnore.value, "syncIgnore.json");
     }
 
+    // === CHECK IMAGES ===========================================================
+
+    const checkImgPhase       = ref("idle");  // 'idle' | 'scanning' | 'results'
+    const checkImgItems       = ref([]);       // { entry, config, icon, folder, filename, key }[]
+    const checkImgDownloading = ref({});       // { [key]: boolean }
+    const checkImgZipProcessing = ref(false);
+    const checkImgZipSaved      = ref(false);
+    const checkImgZipNoFiles    = ref(false);
+    const checkImgFetchErrors   = ref({});
+
+    async function startCheckImages() {
+      checkImgPhase.value = "scanning";
+      checkImgFetchErrors.value = {};
+      checkImgItems.value = [];
+      checkImgZipSaved.value = false;
+      checkImgZipNoFiles.value = false;
+
+      // 1. Collect every local entry that has an imgSrc
+      const allEntries = [];
+      for (const config of CATEGORY_CONFIG) {
+        for (const entry of config.data) {
+          if (entry.imgSrc) allEntries.push({ entry, config });
+        }
+      }
+
+      // 2. Test each imgSrc by trying to load it as an image
+      const broken = [];
+      await Promise.all(
+        allEntries.map(
+          ({ entry, config }) =>
+            new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => resolve();
+              img.onerror = () => { broken.push({ entry, config }); resolve(); };
+              img.src = entry.imgSrc;
+            })
+        )
+      );
+
+      if (broken.length === 0) {
+        checkImgPhase.value = "results";
+        return;
+      }
+
+      // 3. Fetch AOE4World optimized data to resolve CDN icon URLs for broken entries
+      const urls = {
+        units:        "https://data.aoe4world.com/units/all-optimized.json",
+        buildings:    "https://data.aoe4world.com/buildings/all-optimized.json",
+        technologies: "https://data.aoe4world.com/technologies/all-optimized.json",
+        abilities:    "https://data.aoe4world.com/abilities/all-optimized.json",
+      };
+      const fetchedSource = {};
+      await Promise.all(
+        Object.keys(urls).map(async (source) => {
+          try {
+            const r = await fetch(urls[source]);
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            const json = await r.json();
+            fetchedSource[source] = Array.isArray(json) ? json : (json.data ?? []);
+          } catch (err) {
+            checkImgFetchErrors.value[source] = err.message;
+          }
+        })
+      );
+
+      const allSource = [
+        ...(fetchedSource.units        || []),
+        ...(fetchedSource.buildings    || []),
+        ...(fetchedSource.technologies || []),
+        ...(fetchedSource.abilities    || []),
+      ];
+
+      // 4. Match broken local entries to source items for CDN icon URL
+      checkImgItems.value = broken.map(({ entry, config }) => {
+        const nameLC = entry.title?.toLowerCase();
+        const localBaseId = entry.id?.replace(/-\d+$/, "") ?? entry.id;
+        const sourceItem = allSource.find((s) => {
+          const sBase = s.baseId || s.id;
+          return (
+            s.id === entry.id || sBase === entry.id ||
+            s.id === localBaseId || sBase === localBaseId ||
+            s.name === entry.title || s.name?.toLowerCase() === nameLC
+          );
+        });
+        // Derive folder + filename from imgSrc: /assets/pictures/{folder}/{filename}
+        const rel = entry.imgSrc.replace(/^\/assets\/pictures\//, "");
+        const lastSlash = rel.lastIndexOf("/");
+        const folder   = lastSlash !== -1 ? rel.slice(0, lastSlash)  : "";
+        const filename = lastSlash !== -1 ? rel.slice(lastSlash + 1) : rel;
+        return {
+          entry,
+          config,
+          icon: sourceItem?.icon ?? null,
+          folder,
+          filename,
+          key: config.key + ":" + (entry.id || entry.title),
+        };
+      });
+
+      checkImgPhase.value = "results";
+    }
+
+    function resetCheckImages() {
+      checkImgPhase.value = "idle";
+      checkImgItems.value = [];
+      checkImgDownloading.value = {};
+      checkImgZipProcessing.value = false;
+      checkImgZipSaved.value = false;
+      checkImgZipNoFiles.value = false;
+      checkImgFetchErrors.value = {};
+    }
+
+    async function _fetchAndConvertWebP(iconUrl) {
+      const r = await fetch(iconUrl);
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      const pngBlob = await r.blob();
+      const bitmapUrl = URL.createObjectURL(pngBlob);
+      const imgEl = await new Promise((resolve, reject) => {
+        const el = new Image();
+        el.onload = () => resolve(el);
+        el.onerror = () => reject(new Error("Image load failed"));
+        el.src = bitmapUrl;
+      });
+      URL.revokeObjectURL(bitmapUrl);
+      const canvas = document.createElement("canvas");
+      canvas.width = 48; canvas.height = 48;
+      canvas.getContext("2d").drawImage(imgEl, 0, 0, 48, 48);
+      return new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.8));
+    }
+
+    async function downloadCheckImage(item) {
+      if (!item.icon) return;
+      checkImgDownloading.value = { ...checkImgDownloading.value, [item.key]: true };
+      try {
+        const webpBlob = await _fetchAndConvertWebP(item.icon);
+        const outName = item.filename.replace(/\.[^.]+$/, ".webp");
+        const href = URL.createObjectURL(webpBlob);
+        const link = document.createElement("a");
+        link.href = href; link.download = outName;
+        link.style.position = "absolute"; link.style.left = "200vw";
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        URL.revokeObjectURL(href);
+      } catch (_) {
+        // silently fail — user sees "no CDN icon" chip instead
+      } finally {
+        checkImgDownloading.value = { ...checkImgDownloading.value, [item.key]: false };
+      }
+    }
+
+    async function downloadCheckImagesZip() {
+      const zip = new JSZip();
+      let hasFiles = false;
+      checkImgZipProcessing.value = true;
+      checkImgZipNoFiles.value = false;
+      checkImgZipSaved.value = false;
+      try {
+        for (const item of checkImgItems.value) {
+          if (!item.icon) continue;
+          try {
+            const webpBlob = await _fetchAndConvertWebP(item.icon);
+            const outName = item.filename.replace(/\.[^.]+$/, ".webp");
+            zip.file(item.folder ? `${item.folder}/${outName}` : outName, webpBlob);
+            hasFiles = true;
+          } catch (_) {
+            // skip this item on error
+          }
+        }
+        if (hasFiles) {
+          const zipBlob = await zip.generateAsync({ type: "blob" });
+          const href = URL.createObjectURL(zipBlob);
+          const link = document.createElement("a");
+          link.href = href; link.download = "check-images.zip";
+          link.style.position = "absolute"; link.style.left = "200vw";
+          document.body.appendChild(link); link.click(); document.body.removeChild(link);
+          URL.revokeObjectURL(href);
+          checkImgZipSaved.value = true;
+        } else {
+          checkImgZipNoFiles.value = true;
+        }
+      } finally {
+        checkImgZipProcessing.value = false;
+      }
+    }
+
     // ===========================================================================
 
     return {
@@ -1697,6 +2000,10 @@ export default {
       gapSyncIgnore, ignoredGroups, visibleGapGroups, visibleSkippedGroups,
       skipGapItem, unskipGapItem, downloadSyncIgnore,
       gapNewCount, gapCivPlusCount, gapCivMinusCount,
+      // Check Images
+      checkImgPhase, checkImgItems, checkImgDownloading,
+      checkImgZipProcessing, checkImgZipSaved, checkImgZipNoFiles, checkImgFetchErrors,
+      startCheckImages, resetCheckImages, downloadCheckImage, downloadCheckImagesZip,
     };
   },
 };

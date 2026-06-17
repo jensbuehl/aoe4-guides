@@ -6238,26 +6238,6 @@
     }
   },
   {
-    "title": "Platecutter Point",
-    "age": 4,
-    "imgSrc": "/assets/pictures/technology_jin/platecutter-point.webp",
-    "civ": ["JIN"],
-    "class": "tech",
-    "description": "Increase the ranged damage of all arrows and bolts by +1.",
-    "id": "platecutter-point-4",
-    "type": "technology",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/platecutter-point",
-    "costs": {
-      "food": 0,
-      "wood": 150,
-      "stone": 0,
-      "gold": 350,
-      "total": 500,
-      "popcap": 0,
-      "time": 60
-    }
-  },
-  {
     "title": "Flying Fire Battalions",
     "age": 4,
     "imgSrc": "/assets/pictures/technology_jin/flying-fire-battalions.webp",

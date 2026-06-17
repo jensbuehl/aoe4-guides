@@ -135,7 +135,7 @@
   {
     "title": "Riders, Ready!",
     "age": 1,
-    "imgSrc": "/assets/pictures/ability_jeanne/ability-riders-ready-1.webpp",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-riders-ready-1.webp",
     "civ": ["JDA"],
     "class": "ability",
     "description": "Jeanne calls 3 Riders to her side.\nCooldown: 240 Seconds.",
