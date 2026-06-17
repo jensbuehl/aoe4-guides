@@ -11,7 +11,14 @@
           <!-- ── Card 1: Sync Data ── -->
           <v-card flat rounded="lg" class="mb-6 pa-2">
             <div class="d-flex align-center justify-space-between pa-4 pb-2">
-              <span class="text-subtitle-1 font-weight-medium">Sync Data with AOE4WORLD</span>
+              <div class="d-flex align-center" style="gap: 6px">
+                <span class="text-subtitle-1 font-weight-medium">AOE4World Sync</span>
+                <v-tooltip text="Fetches units, buildings, technologies and abilities from the AOE4World API and matches them against local icon JSON files. For each match you can review the diff and save the updated entry." location="bottom" max-width="320">
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props" size="16" color="medium-emphasis">mdi-information-outline</v-icon>
+                  </template>
+                </v-tooltip>
+              </div>
               <v-btn
                 v-if="syncPhase === 'idle'"
                 color="primary"
@@ -205,7 +212,14 @@
           <!-- ── Card 2: Icon Gap Sync ── -->
           <v-card flat rounded="lg" class="mb-6 pa-2">
             <div class="d-flex align-center justify-space-between pa-4 pb-2">
-              <span class="text-subtitle-1 font-weight-medium">Icon Gap Sync</span>
+              <div class="d-flex align-center" style="gap: 6px">
+                <span class="text-subtitle-1 font-weight-medium">Icon Gap Scanner</span>
+                <v-tooltip text="Scans AOE4World for items not yet represented in local icon JSON files. Detects two kinds of gaps: new items (no local entry) and civ extensions (entry exists but a specific civilization is missing). Lets you assign categories, pre-fill image folders, and download updated JSONs and a processed icon zip." location="bottom" max-width="320">
+                  <template #activator="{ props }">
+                    <v-icon v-bind="props" size="16" color="medium-emphasis">mdi-information-outline</v-icon>
+                  </template>
+                </v-tooltip>
+              </div>
               <div class="d-flex align-center" style="gap: 8px">
                 <v-btn
                   v-if="gapPhase === 'idle'"
@@ -246,8 +260,9 @@
               <!-- Summary + civ filter -->
               <div class="px-4 pb-3">
                 <div class="d-flex align-center flex-wrap mb-2" style="gap: 6px">
-                  <v-chip color="warning" size="small" variant="tonal">{{ gapItems.filter(g => g.kind === 'new').length }} new items</v-chip>
-                  <v-chip color="info" size="small" variant="tonal">{{ gapItems.filter(g => g.kind === 'civ-extension').length }} civ extensions</v-chip>
+                  <v-chip color="warning" size="small" variant="tonal">{{ new Set(gapItems.filter(g => g.kind === 'new').map(g => g.id)).size }} new items</v-chip>
+                  <v-chip color="info" size="small" variant="tonal">{{ new Set(gapItems.filter(g => g.kind === 'civ-extension').map(g => g.id)).size }} civ extensions</v-chip>
+                  <v-chip v-if="gapItems.some(g => g.kind === 'civ-removal')" color="error" size="small" variant="tonal">{{ new Set(gapItems.filter(g => g.kind === 'civ-removal').map(g => g.id)).size }} wrong civ assignments</v-chip>
                 </div>
                 <div class="d-flex align-center flex-wrap" style="gap: 4px">
                   <v-chip
@@ -291,108 +306,177 @@
               <!-- Gap list -->
               <template v-else>
                 <div
-                  v-for="gap in filteredGapItems"
-                  :key="gap.id + ':' + gap.civ"
+                  v-for="group in filteredGapGroups"
+                  :key="group.id"
                   class="d-flex align-center justify-space-between px-4 py-2"
                   style="gap: 8px; border-bottom: 1px solid rgba(128,128,128,0.12)"
                 >
-                  <!-- Left: kind badge + icon + name + meta -->
+                  <!-- Left: kind badge + icon + name + civ chips + meta -->
                   <div class="d-flex align-center" style="gap: 6px; min-width: 0; flex: 1">
                     <v-chip
-                      :color="gap.kind === 'new' ? 'warning' : 'info'"
+                      :color="group.kind === 'new' ? 'warning' : group.kind === 'civ-removal' ? 'error' : 'info'"
                       size="x-small"
                       variant="tonal"
                       style="flex-shrink: 0"
-                    >{{ gap.kind === 'new' ? 'NEW' : 'CIV+' }}</v-chip>
+                    >{{ group.kind === 'new' ? 'NEW' : group.kind === 'civ-removal' ? 'CIV-' : 'CIV+' }}</v-chip>
                     <img
-                      v-if="findLocalIconByName(gap)"
-                      :src="findLocalIconByName(gap)"
+                      v-if="findLocalIconByName(group)"
+                      :src="findLocalIconByName(group)"
                       width="20"
                       height="20"
                       style="object-fit: contain; flex-shrink: 0"
                     />
+                    <img
+                      v-else
+                      :src="gapCdnIconUrl(group)"
+                      width="20"
+                      height="20"
+                      style="object-fit: contain; flex-shrink: 0; opacity: 0.7"
+                      @error="(e) => { e.target.style.display = 'none'; markGapNoIcon(group); }"
+                    />
                     <div style="min-width: 0">
-                      <div class="text-caption font-weight-medium text-truncate">{{ gap.name }}</div>
-                      <div class="text-caption text-medium-emphasis">{{ gap.civCode }}{{ gap.age ? ' · Age ' + (['I','II','III','IV'][gap.age - 1] ?? gap.age) : '' }} · {{ gap.type }}</div>
+                      <div class="text-caption font-weight-medium text-truncate">{{ group.name }}</div>
+                      <div class="d-flex align-center flex-wrap" style="gap: 3px">
+                        <v-chip
+                          v-for="item in group.allCivs"
+                          :key="item.civ"
+                          size="x-small"
+                          variant="tonal"
+                        >{{ item.civCode }}</v-chip>
+                        <span class="text-caption text-medium-emphasis">{{ group.age ? '· Age ' + (['I','II','III','IV'][group.age - 1] ?? group.age) : '' }} · {{ group.type }}</span>
+                      </div>
                     </div>
                   </div>
 
-                  <!-- Right: category + folder + status -->
+                  <!-- Right: category + folder + status (keyed on first civ) -->
                   <div class="d-flex align-center" style="gap: 6px; flex-shrink: 0">
 
                     <!-- Civ-extension: show fixed category -->
                     <v-chip
-                      v-if="gap.kind === 'civ-extension'"
+                      v-if="group.kind === 'civ-extension'"
                       size="x-small"
                       variant="tonal"
                       color="success"
-                    >{{ gapAssignments[gap.id + ':' + gap.civ]?.categoryKey }}</v-chip>
+                    >{{ gapAssignments[group.id + ':' + group.allCivs[0].civ]?.categoryKey }}</v-chip>
 
                     <!-- New item: auto-suggested chip OR manual dropdown -->
                     <template v-else>
                       <v-chip
-                        v-if="gapAssignments[gap.id + ':' + gap.civ]?.confirmed"
+                        v-if="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.confirmed"
                         size="x-small"
                         variant="tonal"
                         color="primary"
-                      >{{ gapAssignments[gap.id + ':' + gap.civ]?.categoryKey }}</v-chip>
+                      >{{ gapAssignments[group.id + ':' + group.allCivs[0].civ]?.categoryKey }}</v-chip>
                       <v-select
                         v-else
-                        :model-value="gapAssignments[gap.id + ':' + gap.civ]?.categoryKey || null"
+                        :model-value="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.categoryKey || null"
                         :items="gapCategoryKeys"
                         placeholder="Assign…"
                         density="compact"
                         variant="outlined"
                         hide-details
                         style="width: 160px"
-                        @update:model-value="(val) => val && confirmManualCategory(gap.id + ':' + gap.civ, val)"
+                        @update:model-value="(val) => val && confirmGroupCategory(group, val)"
                       />
                     </template>
 
-                    <!-- Image folder — new items only -->
-                    <template v-if="gap.kind === 'new'">
+                    <!-- Image folder — new items only (first civ representative) -->
+                    <template v-if="group.kind === 'new'">
                       <v-chip
-                        v-if="gapAssignments[gap.id + ':' + gap.civ]?.imageFolder"
+                        v-if="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.imageFolder"
                         size="x-small"
                         variant="tonal"
-                      >{{ gapAssignments[gap.id + ':' + gap.civ]?.imageFolder }}</v-chip>
+                      >{{ gapAssignments[group.id + ':' + group.allCivs[0].civ]?.imageFolder }}</v-chip>
                       <v-text-field
                         v-else
-                        :model-value="gapAssignments[gap.id + ':' + gap.civ]?.imageFolderInput"
+                        :model-value="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.imageFolderInput"
                         placeholder="folder…"
                         density="compact"
                         variant="outlined"
                         hide-details
                         style="width: 150px"
-                        @update:model-value="(val) => setImageFolder(gap.id + ':' + gap.civ, val)"
-                        @blur="(e) => confirmImageFolder(gap.id + ':' + gap.civ, e.target.value)"
+                        @update:model-value="(val) => setImageFolder(group.id + ':' + group.allCivs[0].civ, val)"
+                        @blur="(e) => confirmImageFolder(group.id + ':' + group.allCivs[0].civ, e.target.value)"
                       />
                     </template>
 
-                    <!-- Per-item image status -->
+                    <!-- Per-item image status (first civ representative) -->
                     <v-progress-circular
-                      v-if="gapImageStatus[gap.id + ':' + gap.civ] === 'processing'"
+                      v-if="gapImageStatus[group.id + ':' + group.allCivs[0].civ] === 'processing'"
                       indeterminate size="16" width="2"
                     />
                     <v-chip
-                      v-else-if="gapImageStatus[gap.id + ':' + gap.civ] === 'done'"
+                      v-else-if="gapImageStatus[group.id + ':' + group.allCivs[0].civ] === 'done'"
                       size="x-small" color="success" variant="tonal"
                     >✓ image</v-chip>
                     <v-chip
-                      v-else-if="gapImageStatus[gap.id + ':' + gap.civ] === 'exists'"
+                      v-else-if="gapImageStatus[group.id + ':' + group.allCivs[0].civ] === 'exists'"
                       size="x-small" variant="tonal"
                     >icon exists</v-chip>
                     <v-chip
-                      v-else-if="gapImageStatus[gap.id + ':' + gap.civ] === 'skipped'"
-                      size="x-small" variant="tonal"
-                    >skipped</v-chip>
-                    <v-chip
-                      v-else-if="gapImageStatus[gap.id + ':' + gap.civ] === 'error'"
+                      v-else-if="gapImageStatus[group.id + ':' + group.allCivs[0].civ] === 'error'"
                       size="x-small" color="error" variant="tonal"
-                      :title="gapImageErrors[gap.id + ':' + gap.civ]"
+                      :title="gapImageErrors[group.id + ':' + group.allCivs[0].civ]"
                     >error</v-chip>
                   </div>
                 </div>
+
+                <!-- Skipped: no CDN icon found -->
+                <template v-if="filteredSkippedGroups.length">
+                  <div class="px-4 pt-3 pb-1 text-caption text-medium-emphasis" style="border-top: 1px solid rgba(128,128,128,0.12)">
+                    No icon found — skipped ({{ filteredSkippedGroups.length }})
+                  </div>
+                  <div
+                    v-for="group in filteredSkippedGroups"
+                    :key="group.id"
+                    class="d-flex align-center justify-space-between px-4 py-2"
+                    style="gap: 8px; border-bottom: 1px solid rgba(128,128,128,0.12); opacity: 0.6"
+                  >
+                    <div class="d-flex align-center" style="gap: 6px; min-width: 0; flex: 1">
+                      <v-chip
+                        :color="group.kind === 'new' ? 'warning' : group.kind === 'civ-removal' ? 'error' : 'info'"
+                        size="x-small"
+                        variant="tonal"
+                        style="flex-shrink: 0"
+                      >{{ group.kind === 'new' ? 'NEW' : group.kind === 'civ-removal' ? 'CIV-' : 'CIV+' }}</v-chip>
+                      <div style="min-width: 0">
+                        <div class="text-caption font-weight-medium text-truncate">{{ group.name }}</div>
+                        <div class="d-flex align-center flex-wrap" style="gap: 3px">
+                          <v-chip
+                            v-for="item in group.allCivs"
+                            :key="item.civ"
+                            size="x-small"
+                            variant="tonal"
+                          >{{ item.civCode }}</v-chip>
+                          <span class="text-caption text-medium-emphasis">{{ group.age ? '· Age ' + (['I','II','III','IV'][group.age - 1] ?? group.age) : '' }} · {{ group.type }}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex align-center" style="gap: 6px; flex-shrink: 0">
+                      <v-chip
+                        v-if="group.kind === 'civ-extension'"
+                        size="x-small" variant="tonal" color="success"
+                      >{{ gapAssignments[group.id + ':' + group.allCivs[0].civ]?.categoryKey }}</v-chip>
+                      <template v-else>
+                        <v-chip
+                          v-if="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.confirmed"
+                          size="x-small" variant="tonal" color="primary"
+                        >{{ gapAssignments[group.id + ':' + group.allCivs[0].civ]?.categoryKey }}</v-chip>
+                        <v-select
+                          v-else
+                          :model-value="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.categoryKey || null"
+                          :items="gapCategoryKeys"
+                          placeholder="Assign…"
+                          density="compact"
+                          variant="outlined"
+                          hide-details
+                          style="width: 160px"
+                          @update:model-value="(val) => val && confirmGroupCategory(group, val)"
+                        />
+                      </template>
+                    </div>
+                  </div>
+                </template>
 
                 <!-- Footer actions -->
                 <div class="d-flex align-center justify-end pa-4" style="gap: 8px; flex-wrap: wrap">
@@ -769,6 +853,10 @@ export default {
 
     const TYPE_PLURAL = { unit: "units", building: "buildings", technology: "technologies", ability: "abilities" };
 
+    function gapCdnIconUrl(gap) {
+      return gap.icon ?? null;
+    }
+
     // T003 — Gap sync state
     const gapPhase         = ref("idle");  // 'idle' | 'scanning' | 'results'
     const gapItems         = ref([]);
@@ -805,6 +893,44 @@ export default {
     );
 
     const gapCategoryKeys = CATEGORY_CONFIG.map((c) => c.key);
+
+    // Items whose CDN icon could not be found (all age suffixes tried)
+    const gapNoIconKeys = ref({});
+
+    function markGapNoIcon(group) {
+      const update = {};
+      for (const item of group.allCivs) update[item.id + ":" + item.civ] = true;
+      gapNoIconKeys.value = { ...gapNoIconKeys.value, ...update };
+    }
+
+    function groupGapItems(items) {
+      const groups = new Map();
+      for (const item of items) {
+        const key = item.id + ":" + item.kind;
+        if (!groups.has(key)) {
+          groups.set(key, { ...item, allCivs: [item] });
+        } else {
+          groups.get(key).allCivs.push(item);
+        }
+      }
+      return [...groups.values()];
+    }
+
+    const filteredGapGroups = computed(() =>
+      groupGapItems(filteredGapItems.value.filter((g) => !gapNoIconKeys.value[g.id + ":" + g.civ]))
+    );
+
+    const filteredSkippedGroups = computed(() =>
+      groupGapItems(filteredGapItems.value.filter((g) => gapNoIconKeys.value[g.id + ":" + g.civ]))
+    );
+
+    function confirmGroupCategory(group, categoryKey) {
+      for (const item of group.allCivs) {
+        const key = item.id + ":" + item.civ;
+        if (!gapAssignments.value[key]) initAssignment(item);
+        gapAssignments.value[key] = { ...gapAssignments.value[key], categoryKey, confirmed: true, autoSuggested: false };
+      }
+    }
 
     // T005 — Gap detection
     // Unified endpoint format: each item appears once with civs: [...] listing all its civs.
@@ -876,6 +1002,7 @@ export default {
             gaps.push({
               id: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
               name: sourceItem.name, type: sourceItem.type, age: sourceItem.age,
+              icon: sourceItem.icon || null,
               civ: civShort, civCode, civCount,
               description: sourceItem.description || "",
               costs: sourceItem.costs || null,
@@ -889,6 +1016,7 @@ export default {
             gaps.push({
               id: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
               name: sourceItem.name, type: sourceItem.type, age: sourceItem.age,
+              icon: sourceItem.icon || null,
               civ: civShort, civCode, civCount,
               description: sourceItem.description || "",
               costs: sourceItem.costs || null,
@@ -896,6 +1024,60 @@ export default {
               kind: "civ-extension", localEntry, localCategory: localCat,
             });
           }
+        }
+      }
+
+      // CIV- detection: local civ assignments not supported by AOE4World
+      // Build lookup: source baseId → { sourceItem, Set<civCode> }
+      const sourceByBaseId = new Map();
+      for (const sourceItem of allSourceItems) {
+        const key = sourceItem.baseId || sourceItem.id;
+        if (!sourceByBaseId.has(key)) {
+          sourceByBaseId.set(key, { sourceItem, civCodes: new Set() });
+        }
+        for (const c of (sourceItem.civs ?? [])) {
+          const code = CIV_SLUG_MAP[c];
+          if (code) sourceByBaseId.get(key).civCodes.add(code);
+        }
+      }
+      const sourceByName = new Map(
+        [...sourceByBaseId.values()].map(({ sourceItem }) => [sourceItem.name?.toLowerCase(), sourceItem])
+      );
+
+      for (const localEntry of localAll) {
+        if (!Array.isArray(localEntry.civ) || localEntry.civ.length === 0) continue;
+
+        const localBaseId = localEntry.id?.replace(/-\d+$/, "") ?? localEntry.id;
+        const match = sourceByBaseId.get(localEntry.id)
+          ?? sourceByBaseId.get(localBaseId)
+          ?? (localEntry.title ? (() => {
+               const s = sourceByName.get(localEntry.title.toLowerCase());
+               return s ? sourceByBaseId.get(s.baseId || s.id) : undefined;
+             })() : undefined);
+        if (!match) continue;
+
+        const { sourceItem, civCodes: aoe4CivCodes } = match;
+        const typePlural = TYPE_PLURAL[sourceItem.type] || sourceItem.type + "s";
+        const exploreUrl = `https://aoe4world.com/explorer/civs/all/${typePlural}/${sourceItem.baseId || sourceItem.id}`;
+
+        for (const localCivCode of localEntry.civ) {
+          if (aoe4CivCodes.has(localCivCode)) continue;
+          const civShort = Object.entries(CIV_SLUG_MAP).find(([, v]) => v === localCivCode)?.[0];
+          if (!civShort) continue;
+          const gapKey = "civ-:" + (localEntry.id || sourceItem.id) + ":" + civShort;
+          if (seen.has(gapKey)) continue;
+          seen.add(gapKey);
+          const localCat = CATEGORY_CONFIG.find((c) => c.data.includes(localEntry));
+          gaps.push({
+            id: localEntry.id || sourceItem.id,
+            baseId: sourceItem.baseId || sourceItem.id,
+            name: localEntry.title || sourceItem.name,
+            type: sourceItem.type, age: sourceItem.age, icon: sourceItem.icon || null,
+            civ: civShort, civCode: localCivCode, civCount: sourceItem.civs?.length ?? 0,
+            description: sourceItem.description || "", costs: sourceItem.costs || null,
+            exploreUrl,
+            kind: "civ-removal", localEntry, localCategory: localCat,
+          });
         }
       }
 
@@ -912,10 +1094,10 @@ export default {
       gapPhase.value = "scanning";
 
       const urls = {
-        units:        "https://data.aoe4world.com/units/all-unified.json",
-        buildings:    "https://data.aoe4world.com/buildings/all-unified.json",
-        technologies: "https://data.aoe4world.com/technologies/all-unified.json",
-        abilities:    "https://data.aoe4world.com/abilities/all-unified.json",
+        units:        "https://data.aoe4world.com/units/all-optimized.json",
+        buildings:    "https://data.aoe4world.com/buildings/all-optimized.json",
+        technologies: "https://data.aoe4world.com/technologies/all-optimized.json",
+        abilities:    "https://data.aoe4world.com/abilities/all-optimized.json",
       };
 
       const fetchedData = {};
@@ -951,11 +1133,12 @@ export default {
       gapImageErrors.value = {};
       gapJsonSaved.value = {};
       gapZipSaved.value = false;
+      gapNoIconKeys.value = {};
     }
 
     // T008 — Category auto-suggestion
     function suggestCategory(gap) {
-      if (gap.kind === "civ-extension") {
+      if (gap.kind === "civ-extension" || gap.kind === "civ-removal") {
         return gap.localCategory?.key ?? null;
       }
       const name = gap.name?.toLowerCase() ?? "";
@@ -1053,12 +1236,17 @@ export default {
               exploreUrl: gap.exploreUrl,
               imgSrc: assignment.imgSrc || "",
             });
-          } else {
+          } else if (gap.kind === "civ-extension") {
             const idx = arr.findIndex((e) => (e.id && e.id === gap.id) || e.title === gap.name);
             if (idx !== -1 && Array.isArray(arr[idx].civ)) {
               if (!arr[idx].civ.includes(gap.civCode)) {
                 arr[idx].civ = [...arr[idx].civ, gap.civCode].sort();
               }
+            }
+          } else if (gap.kind === "civ-removal") {
+            const idx = arr.findIndex((e) => (e.id && e.id === gap.id) || e.title === gap.name);
+            if (idx !== -1 && Array.isArray(arr[idx].civ)) {
+              arr[idx].civ = arr[idx].civ.filter((c) => c !== gap.civCode);
             }
           }
         }
@@ -1113,7 +1301,7 @@ export default {
 
     // T014 — Image processing (fetch CDN → canvas 48×48 → WebP 80%)
     async function processGapImage(gap, assignment) {
-      if (gap.kind === "civ-extension") {
+      if (gap.kind === "civ-extension" || gap.kind === "civ-removal") {
         return { skip: true, reason: "civ-extension" };
       }
 
@@ -1123,14 +1311,13 @@ export default {
         return { skip: true, reason: "icon-exists" };
       }
 
-      const typePlural = TYPE_PLURAL[gap.type] || gap.type + "s";
-      const url = `https://data.aoe4world.com/images/${typePlural}/${gap.civ}/${gap.id}.png`;
+      if (!gap.icon) return { skip: false, error: "No icon URL in source data" };
 
       let pngBlob;
       try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        pngBlob = await response.blob();
+        const r = await fetch(gap.icon);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        pngBlob = await r.blob();
       } catch (err) {
         return { skip: false, error: err.message };
       }
@@ -1219,7 +1406,8 @@ export default {
       CIV_DISPLAY_NAME,
       gapPhase, gapItems, gapSourceCount, gapUnmappedCivs, gapFetchErrors, gapCivFilter, gapAssignments, gapImageStatus, gapImageErrors, gapJsonSaved, gapZipSaved,
       filteredGapItems, gapCivOptions, canDownloadJsons, canDownloadImages, gapCategoryKeys,
-      startGapScan, resetGapScan,
+      gapNoIconKeys, filteredGapGroups, filteredSkippedGroups,
+      startGapScan, resetGapScan, gapCdnIconUrl, markGapNoIcon, confirmGroupCategory,
       confirmManualCategory, setImageFolder, confirmImageFolder,
       downloadGapJsons, downloadGapImagesZip,
     };

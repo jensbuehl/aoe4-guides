@@ -19,6 +19,7 @@
       "JDA",
       "JIN",
       "KTE",
+      "MAL",
       "MAC",
       "MON",
       "OTT",
@@ -1534,7 +1535,9 @@
     "civ": [
       "CHI",
       "JIN",
-      "ZXL"
+      "ZXL",
+      "BYZ",
+      "MAC"
     ],
     "class": "military",
     "description": "Innovative field weapon capable of firing a barrage of rockets to damage defensive positions and clumped enemy troops.\n+ Good area of effect damage against most targets\n- Slowest movement speed\n- Weak if surrounded\n\nMercenary that can be purchased for 600 Olive Oil.",
@@ -2311,7 +2314,9 @@
     "imgSrc": "/assets/pictures/unit_french/cannon-4.webp",
     "civ": [
       "FRE",
-      "JDA"
+      "JDA",
+      "BYZ",
+      "MAC"
     ],
     "class": "military",
     "description": "Most powerful siege cannon. Excellent against buildings or any stubborn targets.\n+ Bonus damage to buildings",
@@ -2335,7 +2340,9 @@
     "imgSrc": "/assets/pictures/unit_french/royal-cannon-4.webp",
     "civ": [
       "FRE",
-      "JDA"
+      "JDA",
+      "BYZ",
+      "MAC"
     ],
     "class": "military",
     "description": "Most powerful siege cannon. Excellent against buildings or any stubborn targets.\n+ Bonus damage to buildings\n\nMercenary that can be purchased for 900 Olive Oil.",
@@ -2800,7 +2807,9 @@
     "age": 4,
     "imgSrc": "/assets/pictures/unit_mongols/huihui-pao-1.webp",
     "civ": [
-      "MON"
+      "MON",
+      "BYZ",
+      "MAC"
     ],
     "class": "military",
     "description": "Massive siege engine with incredible range, extra effective at destroying buildings and walls.\n+ Extremely long range\n- Must be set up to fire\n\nMercenary that can be purchased for 1000 Olive Oil.",
@@ -3232,6 +3241,7 @@
       "OTT",
       "RUS",
       "SEN",
+      "TUG",
       "ZXL"
     ],
     "class": "military",
@@ -3578,7 +3588,8 @@
       "FRE",
       "HRE",
       "JDA",
-      "KTE"
+      "KTE",
+      "HOL"
     ],
     "class": "military",
     "description": "Long-range mobile cannon with bonus vs buildings.\n+ Effective against Defenses\n+ Does not require setup to fire",

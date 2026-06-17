@@ -292,7 +292,6 @@
     "age": 2,
     "imgSrc": "/assets/pictures/unit_worker/trader.webp",
     "civ": [
-      "AYY",
       "BYZ",
       "CHI",
       "DEL",
@@ -301,6 +300,7 @@
       "FRE",
       "GOH",
       "HRE",
+      "HOL",
       "JAP",
       "JDA",
       "JIN",
@@ -356,7 +356,7 @@
     "age": 2,
     "imgSrc": "/assets/pictures/unit_abbasid/trade-caravan-1.webp",
     "civ": [
-      "ABB"
+      "ABB", "AYY"
     ],
     "class": "default",
     "id": "trade-caravan-2",

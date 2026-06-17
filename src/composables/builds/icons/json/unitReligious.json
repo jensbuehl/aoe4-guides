@@ -15,7 +15,6 @@
       "JIN",
       "KTE",
       "MAC",
-      "MAL",
       "RUS",
       "ZXL"
     ],
@@ -66,7 +65,9 @@
     "imgSrc": "/assets/pictures/unit_abbasid/imam.webp",
     "civ": [
       "ABB",
-      "OTT"
+      "OTT",
+      "MAL",
+      "TUG"
     ],
     "class": "military",
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed",
