@@ -3,17 +3,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager.webp",
-    "civ": [
-      "BYZ",
-      "ENG",
-      "FRE",
-      "HOL",
-      "HRE",
-      "JDA",
-      "KTE",
-      "MAC",
-      "RUS"
-    ],
+    "civ": ["BYZ", "ENG", "FRE", "HOL", "HRE", "JDA", "KTE", "MAC", "RUS"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -34,10 +24,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-delhi.webp",
-    "civ": [
-      "DEL",
-      "TUG"
-    ],
+    "civ": ["DEL", "TUG"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -58,10 +45,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-japanese.webp",
-    "civ": [
-      "JAP",
-      "SEN"
-    ],
+    "civ": ["JAP", "SEN"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -82,9 +66,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-malians.webp",
-    "civ": [
-      "MAL"
-    ],
+    "civ": ["MAL"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -105,11 +87,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-china.webp",
-    "civ": [
-      "CHI",
-      "JIN",
-      "ZXL"
-    ],
+    "civ": ["CHI", "JIN", "ZXL"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -130,10 +108,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-abbasid.webp",
-    "civ": [
-      "ABB",
-      "AYY"
-    ],
+    "civ": ["ABB", "AYY"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -154,9 +129,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-ottomans.webp",
-    "civ": [
-      "OTT"
-    ],
+    "civ": ["OTT"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -177,10 +150,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager-mongols.webp",
-    "civ": [
-      "GOH",
-      "MON"
-    ],
+    "civ": ["GOH", "MON"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -198,12 +168,51 @@
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/villager"
   },
   {
+    "title": "Gilded Villager",
+    "civ": ["DRA"],
+    "class": "default",
+
+    "id": "gilded-villager",
+    "type": "unit",
+    "description": "Gathers Wood, Food, Stone, and Gold. Builds and repairs buildings and can repair siege engines and naval units. Gathers resources 28% quicker and builds and repairs 20% faster than regular Villagers.\n- Weak in combat",
+    "costs": {
+      "food": 60,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 60,
+      "popcap": 1,
+      "time": 23
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/gilded-villager",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-villager.webp"
+  },
+  {
+    "title": "Mounted Villager",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_jin/mounted-villager.webp",
+    "civ": ["JIN"],
+    "class": "default",
+    "shorthand": "mvil",
+    "costs": {
+      "food": 65,
+      "wood": 0,
+      "stone": 0,
+      "gold": 50,
+      "total": 115,
+      "popcap": 1,
+      "time": 35
+    },
+    "description": "Mounted economic unit that gathers resources faster and constructs buildings faster than regular villagers. Can repair buildings, siege engines, and naval units.\nHas a build limit of 20 which can be increased by +3 by Establishing Tributaries with the Emissary.\n+ Fast movement speed\n+ Gathers quickly\n- Weak in combat\n- Expensive",
+    "id": "mounted-villager-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/mounted-villager"
+  },
+  {
     "title": "Atabeg",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_ayyubids/atabeg-1.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "default",
     "costs": {
       "food": 0,
@@ -225,9 +234,7 @@
     "title": "Lodya Fishing Boat",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_rus/lodya-fishing-boat.webp",
-    "civ": [
-      "RUS"
-    ],
+    "civ": ["RUS"],
     "class": "default",
     "costs": {
       "food": 0,
@@ -332,9 +339,7 @@
     "title": "Reindeer Trader",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_jin/reindeer-trader.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "default",
     "costs": {
       "food": 70,
@@ -354,10 +359,7 @@
     "title": "Trade Caravan",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_abbasid/trade-caravan-1.webp",
-    "civ": [
-      "ABB",
-      "AYY"
-    ],
+    "civ": ["ABB", "AYY"],
     "class": "default",
     "id": "trade-caravan-2",
     "type": "unit",
@@ -377,9 +379,7 @@
     "title": "Venetian Trader",
     "age": 4,
     "imgSrc": "/assets/pictures/unit_worker/trader.webp",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
     "class": "default",
     "costs": {
       "food": 0,
@@ -399,10 +399,7 @@
     "title": "Imperial Official",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_chinese/imperial-official.webp",
-    "civ": [
-      "CHI",
-      "ZXL"
-    ],
+    "civ": ["CHI", "ZXL"],
     "class": "default",
     "costs": {
       "food": 100,
@@ -464,9 +461,7 @@
     "title": "Lodya Trade Ship",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_rus/lodya-trade-ship.webp",
-    "civ": [
-      "RUS"
-    ],
+    "civ": ["RUS"],
     "class": "default",
     "costs": {
       "food": 0,
@@ -486,9 +481,7 @@
     "title": "Worker Elephant",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_tughluq/worker_elephant.webp",
-    "civ": [
-      "TUG"
-    ],
+    "civ": ["TUG"],
     "class": "default",
     "id": "worker-elephant-2",
     "type": "unit",
@@ -506,9 +499,7 @@
   {
     "title": "Yatai",
     "imgSrc": "/assets/pictures/unit_sengoku/yatai.webp",
-    "civ": [
-      "SEN"
-    ],
+    "civ": ["SEN"],
     "class": "default",
     "id": "yatai-1",
     "type": "unit",
@@ -526,35 +517,10 @@
     }
   },
   {
-    "title": "Mounted Villager",
-    "age": 1,
-    "imgSrc": "/assets/pictures/unit_jin/mounted-villager.webp",
-    "civ": [
-      "JIN"
-    ],
-    "class": "default",
-    "shorthand": "mvil",
-    "costs": {
-      "food": 65,
-      "wood": 0,
-      "stone": 0,
-      "gold": 50,
-      "total": 115,
-      "popcap": 1,
-      "time": 35
-    },
-    "description": "Mounted economic unit that gathers resources faster and constructs buildings faster than regular villagers. Can repair buildings, siege engines, and naval units.\nHas a build limit of 20 which can be increased by +3 by Establishing Tributaries with the Emissary.\n+ Fast movement speed\n+ Gathers quickly\n- Weak in combat\n- Expensive",
-    "id": "mounted-villager-1",
-    "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/mounted-villager"
-  },
-  {
     "title": "Emissary",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_jin/emissary.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "default",
     "costs": {
       "food": 0,
@@ -571,25 +537,5 @@
     "id": "emissary-1",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/emissary"
-  },
-  {
-    "title": "Gilded Villager",
-    "civ": [
-      "DRA"
-    ],
-    "id": "gilded-villager",
-    "type": "unit",
-    "description": "Gathers Wood, Food, Stone, and Gold. Builds and repairs buildings and can repair siege engines and naval units. Gathers resources 28% quicker and builds and repairs 20% faster than regular Villagers.\n- Weak in combat",
-    "costs": {
-      "food": 60,
-      "wood": 0,
-      "stone": 0,
-      "gold": 0,
-      "total": 60,
-      "popcap": 1,
-      "time": 23
-    },
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/gilded-villager",
-    "imgSrc": "/assets/pictures/unit_dragon/gilded-villager.webp"
   }
 ]

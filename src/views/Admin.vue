@@ -41,7 +41,7 @@
                   size="small"
                   prepend-icon="mdi-refresh"
                   @click="resetSync()"
-                >New Sync</v-btn>
+                >Reset</v-btn>
               </div>
             </div>
 
@@ -257,8 +257,8 @@
                 </v-alert>
               </div>
 
-              <!-- Summary + filters -->
-              <div class="px-4 pb-3">
+              <!-- Summary + filters — only shown when there are non-ignored gaps -->
+              <div v-if="gapNewCount > 0 || gapCivPlusCount > 0 || gapCivMinusCount > 0" class="px-4 pb-3">
                 <!-- Kind filter (also acts as summary) -->
                 <div class="d-flex align-center flex-wrap mb-2" style="gap: 6px">
                   <span class="text-caption text-medium-emphasis" style="flex-shrink: 0">Kind:</span>

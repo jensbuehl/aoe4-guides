@@ -28,10 +28,7 @@
       "ZXL"
     ],
     "class": "military",
-    "shorthand": [
-      "rax",
-      "qs"
-    ],
+    "shorthand": ["rax", "qs"],
     "description": "Produces melee infantry units.",
     "id": "barracks-1",
     "type": "building",
@@ -50,9 +47,7 @@
     "title": "Military School",
     "age": 1,
     "imgSrc": "/assets/pictures/building_ottomans/military-school-1.webp",
-    "civ": [
-      "OTT"
-    ],
+    "civ": ["OTT"],
     "class": "military",
     "description": "The Military School can be assigned to produce one type of unit continuously at no cost, however they are produced at a slower rate.",
     "id": "military-school-1",
@@ -72,9 +67,7 @@
   {
     "title": "Varangian Arsenal",
     "imgSrc": "/assets/pictures/building_macedonian/varangian_arsenal.webp",
-    "civ": [
-      "MAC"
-    ],
+    "civ": ["MAC"],
     "class": "military",
     "description": "Houses advanced technology for the Macedonian Dynasty.",
     "id": "varangian-arsenal-2",
@@ -95,9 +88,7 @@
   {
     "title": "Varangian Stronghold",
     "imgSrc": "/assets/pictures/building_macedonian/varangian_stronghold.webp",
-    "civ": [
-      "MAC"
-    ],
+    "civ": ["MAC"],
     "class": "military",
     "description": "Structure capable of producing any Varangian unit.",
     "id": "varangian-stronghold-1",
@@ -118,9 +109,7 @@
   {
     "title": "Varangian Warcamp",
     "imgSrc": "/assets/pictures/building_macedonian/varangian_warcamp.webp",
-    "civ": [
-      "MAC"
-    ],
+    "civ": ["MAC"],
     "class": "military",
     "description": "Increases your maximum Population.\n \nAs the Empire suffers casualties in war, the emperor calls forth more Varangians. \nOnce enough troops are lost in battle, the selected Varangian is reinforced to the battlefield at no cost. If placed on shore near water, Attack Ships or Galleys become available as reinforcements.\n \nReinforcements cost 6 times their value in fallen warriors.",
     "id": "varangian-warcamp-1",
@@ -167,10 +156,7 @@
       "ZXL"
     ],
     "class": "military",
-    "shorthand": [
-      "archeryrange",
-      "wa"
-    ],
+    "shorthand": ["archeryrange", "wa"],
     "description": "Produces ranged infantry units.",
     "id": "archery-range-2",
     "type": "building",
@@ -214,10 +200,7 @@
       "ZXL"
     ],
     "class": "military",
-    "shorthand": [
-      "stable",
-      "ws"
-    ],
+    "shorthand": ["stable", "ws"],
     "description": "Produces cavalry military units.",
     "id": "stable-2",
     "type": "building",
@@ -236,9 +219,7 @@
     "title": "Mercenary House",
     "age": 2,
     "imgSrc": "/assets/pictures/building_byzantines/mercenary-house-2.webp",
-    "civ": [
-      "BYZ"
-    ],
+    "civ": ["BYZ"],
     "class": "military",
     "description": "Produces Mercenary units for Olive Oil after purchasing a Mercenary Contract. One contract can be purchased.\nUnlock another set of Mercenaries with +50% production speed by placing this building near a Trade Post.",
     "id": "mercenary-house-2",
@@ -284,10 +265,7 @@
       "ZXL"
     ],
     "class": "military",
-    "shorthand": [
-      "workshop",
-      "ea"
-    ],
+    "shorthand": ["workshop", "ea"],
     "description": "Produces siege engines and powerful gunpowder units.",
     "id": "siege-workshop-3",
     "type": "building",
@@ -331,10 +309,7 @@
       "ZXL"
     ],
     "class": "military",
-    "shorthand": [
-      "dock",
-      "qd"
-    ],
+    "shorthand": ["dock", "qd"],
     "description": "Produces naval units.\nAutomatically repairs nearby damaged naval units.\nCapable of holding up to three Fishing Ships.",
     "id": "dock-1",
     "type": "building",
@@ -353,9 +328,7 @@
     "title": "Runestones",
     "age": 1,
     "imgSrc": "/assets/pictures/building_macedonian/runestones.webp",
-    "civ": [
-      "MAC"
-    ],
+    "civ": ["MAC"],
     "class": "military",
     "id": "runestones-1",
     "type": "building",
@@ -386,11 +359,7 @@
       "ZXL"
     ],
     "class": "default",
-    "shorthand": [
-      "keep",
-      "qz",
-      "qy"
-    ],
+    "shorthand": ["keep", "qz", "qy"],
     "description": "Heavy garrison and defensible position. Can be upgraded with weaponry. Adds additional attacks while garrisoned.",
     "id": "keep-3",
     "type": "building",
@@ -409,10 +378,7 @@
     "title": "Castle",
     "age": 4,
     "imgSrc": "/assets/pictures/building_japanese/castle-4.webp",
-    "civ": [
-      "JAP",
-      "SEN"
-    ],
+    "civ": ["JAP", "SEN"],
     "class": "default",
     "description": "Heavy garrison and defensible position equipped with a powerful Rocket, which deals high damage to a single target. Can be upgraded with weaponry. Adds additional attacks while garrisoned.",
     "id": "castle-4",
@@ -432,9 +398,7 @@
     "title": "Aqueduct",
     "age": 1,
     "imgSrc": "/assets/pictures/building_byzantines/aqueduct-1.webp",
-    "civ": [
-      "BYZ"
-    ],
+    "civ": ["BYZ"],
     "class": "default",
     "description": "Stone infrastructure to connect water between Cisterns to improve the Water Level of all connected Cisterns. Can be connected to Stone Walls.",
     "id": "aqueduct-1",
@@ -478,11 +442,7 @@
       "ZXL"
     ],
     "class": "default",
-    "shorthand": [
-      "outpost",
-      "qy",
-      "qz"
-    ],
+    "shorthand": ["outpost", "qy", "qz"],
     "description": "Offers extensive line of sight and detects units stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned.",
     "id": "outpost-1",
     "type": "building",
@@ -501,9 +461,7 @@
     "title": "Toll Outpost",
     "age": 1,
     "imgSrc": "/assets/pictures/building_malians/toll-outpost-1.webp",
-    "civ": [
-      "MAL"
-    ],
+    "civ": ["MAL"],
     "class": "default",
     "description": "Offers extensive line of sight and detects units stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned.\nPassing Traders and Trade Ships instantly provide an additional 8% of their carried Gold. Does not generate any bonus tax if a toll outpost is built within range of another one.",
     "id": "toll-outpost-1",
@@ -547,10 +505,7 @@
       "ZXL"
     ],
     "class": "default",
-    "shorthand": [
-      "palgate",
-      "qx"
-    ],
+    "shorthand": ["palgate", "qx"],
     "description": "Light defensive gate. Must be built on a Palisade Wall segment.",
     "id": "palisade-gate-1",
     "type": "building",
@@ -593,10 +548,7 @@
       "ZXL"
     ],
     "class": "default",
-    "shorthand": [
-      "palwall",
-      "qc"
-    ],
+    "shorthand": ["palwall", "qc"],
     "description": "Light defensive wall for quickly fortifying an area.",
     "id": "palisade-1",
     "type": "building",
@@ -615,9 +567,7 @@
     "title": "Wooden Fortress",
     "age": 1,
     "imgSrc": "/assets/pictures/building_rus/wooden-fortress.webp",
-    "civ": [
-      "RUS"
-    ],
+    "civ": ["RUS"],
     "class": "default",
     "description": "Sturdy wooden stronghold with extensive line of sight that detects units stealth or disguises. Can be upgraded with weaponry. Attacks while garrisoned.",
     "id": "wooden-fortress-1",
@@ -637,9 +587,7 @@
     "title": "Fortified Palisade Gate",
     "age": 1,
     "imgSrc": "/assets/pictures/building_rus/fortified-palisade-gate.webp",
-    "civ": [
-      "RUS"
-    ],
+    "civ": ["RUS"],
     "class": "default",
     "description": "Relatively sturdy defensive gate. Must be built on a Fortified Palisade Wall segment.",
     "id": "fortified-palisade-gate-1",
@@ -659,9 +607,7 @@
     "title": "Fortified Palisade Wall",
     "age": 1,
     "imgSrc": "/assets/pictures/building_rus/fortified-palisade-wall.webp",
-    "civ": [
-      "RUS"
-    ],
+    "civ": ["RUS"],
     "class": "default",
     "description": "Well-built defensive wall for quickly fortifying an area.",
     "id": "fortified-palisade-wall-1",
@@ -705,10 +651,7 @@
       "ZXL"
     ],
     "class": "default",
-    "shorthand": [
-      "stonewall",
-      "qx"
-    ],
+    "shorthand": ["stonewall", "qx"],
     "description": "Sturdy wall that cannot be attacked by torches. \nUnits on walls take 25% less damage from ranged attacks, 50% less damage from siege attacks, and their range is increased by +1.",
     "id": "stone-wall-2",
     "type": "building",
@@ -751,10 +694,7 @@
       "ZXL"
     ],
     "class": "default",
-    "shorthand": [
-      "stonegate",
-      "qc"
-    ],
+    "shorthand": ["stonegate", "qc"],
     "description": "Heavy defensive gate. Must be built on a Stone Wall segment.\nInfantry can use the gate to access the top of the walls.",
     "id": "stone-wall-gate-2",
     "type": "building",
@@ -773,9 +713,7 @@
     "title": "Hojo Clan Daimyo Estate",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_sengoku/hojo_daimyo_1.webp",
-    "civ": [
-      "SEN"
-    ],
+    "civ": ["SEN"],
     "class": "default",
     "id": "hojo-clan-daimyo-estate-2",
     "type": "building",
@@ -795,9 +733,7 @@
     "title": "Oda Clan Daimyo Estate",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_sengoku/oda_daimyo_1.webp",
-    "civ": [
-      "SEN"
-    ],
+    "civ": ["SEN"],
     "class": "default",
     "id": "oda-clan-daimyo-estate-2",
     "type": "building",
@@ -817,9 +753,7 @@
     "title": "Takeda Clan Daimyo Estate",
     "age": 2,
     "imgSrc": "/assets/pictures/technology_sengoku/takeda_daimyo_1.webp",
-    "civ": [
-      "SEN"
-    ],
+    "civ": ["SEN"],
     "class": "default",
     "id": "takeda-clan-daimyo-estate-2",
     "type": "building",
@@ -863,11 +797,7 @@
       "ZXL"
     ],
     "class": "default",
-    "shorthand": [
-      "stonetower",
-      "qz",
-      "qy"
-    ],
+    "shorthand": ["stonetower", "qz", "qy"],
     "description": "Heavy defensive tower that fires a springald. Must be built on a Stone Wall segment.\nInfantry can use the tower to access the top of the walls.",
     "id": "stone-wall-tower-2",
     "type": "building",
@@ -886,15 +816,9 @@
     "title": "Fortified Outpost",
     "age": 1,
     "imgSrc": "/assets/pictures/building_golden_horde/fortified_outpost.webp",
-    "civ": [
-      "GOH"
-    ],
+    "civ": ["GOH"],
     "class": "default",
-    "shorthand": [
-      "stonetower",
-      "qz",
-      "qy"
-    ],
+    "shorthand": ["stonetower", "qz", "qy"],
     "description": "Offers extensive line of sight and detects units stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned.",
     "id": "fortified-outpost-1",
     "type": "building",
@@ -912,9 +836,7 @@
   {
     "title": "Tughluqabad Fort",
     "imgSrc": "/assets/pictures/building_tughluq/tughluqabad_fort.webp",
-    "civ": [
-      "TUG"
-    ],
+    "civ": ["TUG"],
     "class": "default",
     "description": "Heavy garrison and defensible position that can select a Governor bonus. Can be upgraded with weaponry. Adds additional attacks while garrisoned.",
     "id": "tughlaqabad-fort-2",
@@ -934,9 +856,7 @@
   {
     "title": "Worker Elephant",
     "imgSrc": "/assets/pictures/unit_tughluq/worker_elephant.webp",
-    "civ": [
-      "TUG"
-    ],
+    "civ": ["TUG"],
     "class": "default",
     "description": "Send a new Worker Elephant from the nearest Town Center or Tughlaqabad Fort to the targeted location. \nVillagers automatically gather resources once they reach the location.",
     "id": "worker-elephant-1",
@@ -956,9 +876,7 @@
     "title": "Grassland",
     "age": 2,
     "imgSrc": "/assets/pictures/building_jin/grassland.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "military",
     "description": "Must be constructed on a Grassland Post.\nSpawns a Horse up to the max of 5 every 90/60/45 seconds in Feudal/Castle/Imperial Ages. Each Horse in a Grassland grants +2 maximum Health to all Melee Cavalry and +1 to all Ranged Cavalry.\nHorses can be used by War Stables in Influence to instantly train Cavalry at a 25 resources discount.",
     "id": "grassland-2",
@@ -978,9 +896,7 @@
     "title": "Machine Workshop",
     "age": 2,
     "imgSrc": "/assets/pictures/building_jin/machine-workshop.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "military",
     "description": "Produces ranged infantry and siege engines.\nRepairs nearby siege engines.",
     "id": "machine-workshop-2",
@@ -1000,9 +916,7 @@
     "title": "War Stable",
     "age": 2,
     "imgSrc": "/assets/pictures/building_jin/war-stable.webp",
-    "civ": [
-      "JIN"
-    ],
+    "civ": ["JIN"],
     "class": "military",
     "description": "Produces melee and ranged cavalry units.\nTraders can use the War Stable as their Home Market.",
     "id": "war-stable-2",
@@ -1020,9 +934,9 @@
   },
   {
     "title": "Harbor",
-    "civ": [
-      "KTE"
-    ],
+    "civ": ["KTE"],
+    "class": "military",
+
     "id": "harbor",
     "type": "building",
     "description": "Strong Dock that produces naval units and increases the health of nearby ships.\nAutomatically repairs nearby damaged naval units.\nCapable of holding up to 4 Fishing Ships.",

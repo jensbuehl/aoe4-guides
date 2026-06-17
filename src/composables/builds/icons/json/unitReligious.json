@@ -16,9 +16,7 @@
       "ZXL"
     ],
     "class": "military",
-    "shorthand": [
-      "monk"
-    ],
+    "shorthand": ["monk"],
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Slow movement speed",
     "id": "monk-3",
     "type": "unit",
@@ -38,9 +36,7 @@
     "title": "Shaolin Monk",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_zhuxi/shaolin-monk-3.webp",
-    "civ": [
-      "ZXL"
-    ],
+    "civ": ["ZXL"],
     "class": "military",
     "description": "Monk with strong combat capabilities.\n+ Strong against ranged units \n+ Can heal themselves\n- Cannot heal others",
     "id": "shaolin-monk-3",
@@ -60,12 +56,7 @@
     "title": "Imam",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_abbasid/imam.webp",
-    "civ": [
-      "ABB",
-      "OTT",
-      "MAL",
-      "TUG"
-    ],
+    "civ": ["ABB", "OTT", "MAL", "TUG"],
     "class": "military",
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed",
     "id": "imam-3",
@@ -85,9 +76,7 @@
     "title": "Dervish",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_ayyubids/dervish-3.webp",
-    "civ": [
-      "AYY"
-    ],
+    "civ": ["AYY"],
     "class": "military",
     "description": "Mounted Religious unit. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Uses a powerful Mass Heal ability to heal friendly units in an area.\n+ Gains increased Healing when carrying a relic.\n+ High speed.",
     "id": "dervish-2",
@@ -107,9 +96,7 @@
     "title": "Scholar",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_delhi/scholar.webp",
-    "civ": [
-      "DEL"
-    ],
+    "civ": ["DEL"],
     "class": "military",
     "description": "Support unit with no combat capability. Can be garrisoned in a Mosque or Madrasa to research technology more quickly. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Low health",
     "id": "scholar-2",
@@ -129,9 +116,7 @@
     "title": "Buddhist Monk",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_japanese/buddhist-monk-3.webp",
-    "civ": [
-      "JAP"
-    ],
+    "civ": ["JAP"],
     "class": "military",
     "description": "Support unit with the ability to decrease enemy attack damage. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Reduced cost\n+ Conversion enhances friendly unit damage\n+ Automatically reduces enemy attack damage\n+ Heals units",
     "id": "buddhist-monk-3",
@@ -151,9 +136,7 @@
     "title": "Ikko Ikki Monk",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_sengoku/ikko_ikki.webp",
-    "civ": [
-      "SEN"
-    ],
+    "civ": ["SEN"],
     "class": "military",
     "description": "Warrior Monk with strong combat capabilities that heals nearby units when attacking. Does not have a targeted heal ability.\n+ Can heal themselves\n- Slow move speed",
     "id": "ikko-ikki-monk-3",
@@ -173,9 +156,7 @@
     "title": "Shinto Priest",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_japanese/shinto-priest-3.webp",
-    "civ": [
-      "JAP"
-    ],
+    "civ": ["JAP"],
     "class": "military",
     "description": "Support unit with unique privileges to hold and deposit Yorishiro into buildings. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Yorishiro provide unique bonuses\n+ Heals friendly units\n- Slow move speed",
     "id": "shinto-priest-3",
@@ -195,10 +176,7 @@
     "title": "Prelate",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_hre/prelate.webp",
-    "civ": [
-      "DRA",
-      "HRE"
-    ],
+    "civ": ["DRA", "HRE"],
     "class": "military",
     "description": "Support unit with no combat capability. Automatically inspires Villagers to greatly improve their gather rate. Can pick up Relics, convert enemy units, and capture Sacred Sites starting in the Castle Age (III).\n+ Heals friendly units\n- Low health",
     "id": "prelate-1",
@@ -218,10 +196,7 @@
     "title": "Shaman",
     "age": 3,
     "imgSrc": "/assets/pictures/unit_mongols/shaman.webp",
-    "civ": [
-      "GOH",
-      "MON"
-    ],
+    "civ": ["GOH", "MON"],
     "class": "military",
     "description": "Support unit with no combat capability. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed",
     "id": "shaman-3",
@@ -241,9 +216,7 @@
     "title": "Healer Elephant",
     "age": 2,
     "imgSrc": "/assets/pictures/unit_tughluq/healer_elephant.webp",
-    "civ": [
-      "TUG"
-    ],
+    "civ": ["TUG"],
     "class": "military",
     "id": "healer-elephant-2",
     "type": "unit",
@@ -261,9 +234,9 @@
   },
   {
     "title": "Khaganate Warrior Monk",
-    "civ": [
-      "MON"
-    ],
+    "civ": ["MON"],
+    "class": "military",
+
     "id": "khaganate-warrior-monk",
     "type": "unit",
     "description": "Military-minded support unit that improves combat capabilities of nearby units after it attacks. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n+ High utility in large armies\n- Low damage\n\nRandomly spawns 2 at the time from the Khaganate Palace.",
