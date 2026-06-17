@@ -549,8 +549,10 @@
                   </div>
                 </template>
 
-                <!-- Ignored items -->
-                <template v-if="ignoredGroups.length">
+              </template><!-- /v-else gap list -->
+
+              <!-- Ignored items — always visible when items are ignored -->
+              <template v-if="ignoredGroups.length">
                   <div class="px-4 pt-3 pb-1 text-caption text-medium-emphasis" style="border-top: 1px solid rgba(128,128,128,0.12)">
                     Ignored ({{ ignoredGroups.length }})
                   </div>
@@ -624,7 +626,6 @@
                     @click="downloadSyncIgnore()"
                   >syncIgnore.json</v-btn>
                 </div>
-              </template>
 
             </div>
           </v-card>
