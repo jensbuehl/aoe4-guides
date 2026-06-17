@@ -1493,8 +1493,11 @@ export default {
 
     // T011 — JSON download
     async function downloadGapJsons() {
+      const ignoredSet = new Set(gapSyncIgnore.value);
       const byCategory = {};
+
       for (const gap of gapItems.value) {
+        if (ignoredSet.has(gap.id)) continue;
         const gapKey = gap.id + ":" + gap.civ;
         const assignment = gapAssignments.value[gapKey];
         if (!assignment?.confirmed) continue;
@@ -1507,20 +1510,29 @@ export default {
         if (!config) continue;
         const arr = JSON.parse(JSON.stringify(config.data));
 
+        // Merge all civs for the same new item into one entry
+        const newById = new Map();
         for (const { gap, assignment } of entries) {
-          if (gap.kind === "new") {
-            arr.push({
-              title: gap.name,
-              civ: [gap.civCode],
-              age: gap.age,
-              id: gap.id,
-              type: gap.type,
-              description: gap.description,
-              costs: gap.costs,
-              exploreUrl: gap.exploreUrl,
-              imgSrc: assignment.imgSrc || "",
-            });
-          } else if (gap.kind === "civ-extension") {
+          if (gap.kind !== "new") continue;
+          if (!newById.has(gap.id)) newById.set(gap.id, { gap, assignment, civCodes: new Set() });
+          newById.get(gap.id).civCodes.add(gap.civCode);
+        }
+        for (const { gap, assignment, civCodes } of newById.values()) {
+          arr.push({
+            title: gap.name,
+            civ: [...civCodes].sort(),
+            age: gap.age,
+            id: gap.id,
+            type: gap.type,
+            description: gap.description,
+            costs: gap.costs,
+            exploreUrl: gap.exploreUrl,
+            imgSrc: assignment.imgSrc || (assignment.imageFolder ? `/assets/pictures/${assignment.imageFolder}/${gap.id}.webp` : ""),
+          });
+        }
+
+        for (const { gap, assignment } of entries) {
+          if (gap.kind === "civ-extension") {
             const idx = arr.findIndex((e) => (e.id && e.id === gap.id) || e.title === gap.name);
             if (idx !== -1 && Array.isArray(arr[idx].civ)) {
               if (!arr[idx].civ.includes(gap.civCode)) {
@@ -1638,10 +1650,14 @@ export default {
       let hasFiles = false;
       gapZipProcessing.value = true;
       gapZipNoFiles.value = false;
+      const ignoredSet = new Set(gapSyncIgnore.value);
+      const processedIds = new Set();
 
       try {
         for (const gap of gapItems.value) {
           if (gap.kind !== "new") continue;
+          if (ignoredSet.has(gap.id)) continue;
+          if (processedIds.has(gap.id)) continue;  // each image only once regardless of civ count
           const gapKey = gap.id + ":" + gap.civ;
           const assignment = gapAssignments.value[gapKey];
           if (!assignment?.confirmed || !assignment.imageFolder) continue;
@@ -1659,6 +1675,7 @@ export default {
           } else {
             zip.file(result.zipPath, result.blob);
             hasFiles = true;
+            processedIds.add(gap.id);
             gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "done" };
             gapAssignments.value[gapKey] = { ...assignment };
           }
@@ -1740,7 +1757,7 @@ export default {
           description: group.description || "",
           costs: group.costs || {},
           exploreUrl: group.exploreUrl || "",
-          imgSrc: assignment?.imgSrc || "",
+          imgSrc: assignment?.imgSrc || (assignment?.imageFolder ? `/assets/pictures/${assignment.imageFolder}/${group.id}.webp` : ""),
         };
       }
       if (group.kind === "civ-extension") {
