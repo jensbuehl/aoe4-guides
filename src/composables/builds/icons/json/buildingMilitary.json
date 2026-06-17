@@ -577,7 +577,7 @@
       "DEL",
       "DRA",
       "ENG",
-      "FRE",  
+      "FRE",
       "GOH",
       "HOL",
       "HRE",
@@ -1017,5 +1017,25 @@
       "popcap": 0,
       "time": 35
     }
+  },
+  {
+    "title": "Harbor",
+    "civ": [
+      "KTE"
+    ],
+    "id": "harbor",
+    "type": "building",
+    "description": "Strong Dock that produces naval units and increases the health of nearby ships.\nAutomatically repairs nearby damaged naval units.\nCapable of holding up to 4 Fishing Ships.",
+    "costs": {
+      "food": 0,
+      "wood": 250,
+      "stone": 0,
+      "gold": 0,
+      "total": 250,
+      "popcap": 0,
+      "time": 35
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/harbor",
+    "imgSrc": "/assets/pictures/building_templar/harbor.webp"
   }
 ]

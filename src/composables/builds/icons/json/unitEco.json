@@ -355,7 +355,8 @@
     "age": 2,
     "imgSrc": "/assets/pictures/unit_abbasid/trade-caravan-1.webp",
     "civ": [
-      "ABB", "AYY"
+      "ABB",
+      "AYY"
     ],
     "class": "default",
     "id": "trade-caravan-2",
@@ -570,5 +571,25 @@
     "id": "emissary-1",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/emissary"
+  },
+  {
+    "title": "Gilded Villager",
+    "civ": [
+      "DRA"
+    ],
+    "id": "gilded-villager",
+    "type": "unit",
+    "description": "Gathers Wood, Food, Stone, and Gold. Builds and repairs buildings and can repair siege engines and naval units. Gathers resources 28% quicker and builds and repairs 20% faster than regular Villagers.\n- Weak in combat",
+    "costs": {
+      "food": 60,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 60,
+      "popcap": 1,
+      "time": 23
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/gilded-villager",
+    "imgSrc": "/assets/pictures/unit_dragon/gilded-villager.webp"
   }
 ]

@@ -3,7 +3,31 @@
     "title": "Rally",
     "age": "1",
     "imgSrc": "/assets/pictures/resource/rally.webp",
-    "civ": ["ABB", "AYY", "BYZ", "CHI", "DEL", "DRA", "ENG", "FRE", "GOH", "HOL", "HRE", "JAP", "JDA", "JIN", "KTE", "MAL", "MON", "MAC", "OTT", "RUS", "SEN", "TUG", "ZXL"],
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "GOH",
+      "HOL",
+      "HRE",
+      "JAP",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAL",
+      "MON",
+      "MAC",
+      "OTT",
+      "RUS",
+      "SEN",
+      "TUG",
+      "ZXL"
+    ],
     "class": "none",
     "shorthand": "rally"
   },
@@ -11,7 +35,31 @@
     "title": "Build",
     "age": "1",
     "imgSrc": "/assets/pictures/abilities/repair.webp",
-    "civ": ["ABB", "AYY", "BYZ", "CHI", "DEL", "DRA", "ENG", "FRE", "GOH", "HOL", "HRE", "JAP", "JDA", "JIN", "KTE", "MAL", "MON", "MAC", "OTT", "RUS", "SEN", "TUG", "ZXL"],
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "GOH",
+      "HOL",
+      "HRE",
+      "JAP",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAL",
+      "MON",
+      "MAC",
+      "OTT",
+      "RUS",
+      "SEN",
+      "TUG",
+      "ZXL"
+    ],
     "class": "none",
     "shorthand": "build"
   },
@@ -19,14 +67,40 @@
     "title": "Attack",
     "age": "1",
     "imgSrc": "/assets/pictures/abilities/attack-move.webp",
-    "civ": ["ABB", "AYY", "BYZ", "CHI", "DEL", "DRA", "ENG", "FRE", "GOH", "HOL", "HRE", "JAP", "JDA", "JIN", "KTE", "MAL", "MON", "MAC", "OTT", "RUS", "SEN", "TUG", "ZXL"],
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "GOH",
+      "HOL",
+      "HRE",
+      "JAP",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAL",
+      "MON",
+      "MAC",
+      "OTT",
+      "RUS",
+      "SEN",
+      "TUG",
+      "ZXL"
+    ],
     "class": "none"
   },
   {
     "title": "Path of the Archer",
     "age": 0,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-path-of-the-archer-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "tech",
     "description": "Level 2 option\n\nJeanne chooses the path of the Archer, equipping a bow to engage foes from afar.\nGains the Divine Arrow ability, which deals high damage to a single target.\n\nRequires 500XP",
     "id": "level-2-path-of-the-archer-0",
@@ -36,7 +110,9 @@
     "title": "Path of the Warrior",
     "age": 0,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-path-of-the-warrior-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "tech",
     "description": "Level 2 option\n\nJeanne chooses the path of the Warrior, equipping a two handed sword to engage foes in close combat.\nGains the Holy Wrath ability, which deals area of effect damage around Jeanne.\n\nRequires 500XP",
     "id": "level-2-path-of-the-warrior-0",
@@ -46,7 +122,9 @@
     "title": "Champion Companions",
     "age": 0,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-champion-companions-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "tech",
     "description": "Level 3 option\n\nJeanne's Champions become available to train at Barracks.\nGains \"To Arms, Men!\", which rallies 3 Champions to her side.\n\nRequires 500XP",
     "id": "level-3-champion-companions-0",
@@ -56,7 +134,9 @@
     "title": "Rider Companions",
     "age": 0,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-rider-companions-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "tech",
     "description": "Level 3 option\n\nJeanne's Riders become available to train at Stables.\nGains \"Riders, Ready!\", which rallies 3 Riders to her side.\n\nRequires 500XP",
     "id": "level-3-rider-companions-0",
@@ -66,7 +146,9 @@
     "title": "Field Commander",
     "age": 0,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-field-commander-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "tech",
     "description": "Level 4 option\n\nJeanne's Rally Call ability will now call 7 of her chosen companions onto the Battlefield.\nGains the Strength of Heaven ultimate ability, which greatly empowers a single unit.\n\nRequires 500XP",
     "id": "level-4-field-commander-0",
@@ -76,7 +158,9 @@
     "title": "Gunpowder Monarch",
     "age": 0,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-gunpowder-monarch-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "tech",
     "description": "Level 4 option\n\nJeanne's Rally Call ability will now call 3 of her chosen companions and a powerful Cannon onto the Battlefield.\nGains the Valorous Inspiration ultimate ability, which greatly increases the attack speed of nearby allies.\n\nRequires 500XP",
     "id": "level-4-gunpowder-monarch-0",
@@ -86,7 +170,9 @@
     "title": "Divine Restoration",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-divine-restoration-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Jeanne and nearby allies are blessed, instantly healing for 30% of their missing health.\nCooldown: 120 Seconds.",
     "id": "ability-divine-restoration-1",
@@ -96,7 +182,9 @@
     "title": "Divine Arrow",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-divine-arrow-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Jeanne targets an enemy and fires a divine projectile that deals 40 damage at level 2, 100 damage at level 3, and 150 damage at level 4.\nCooldown: 8 Seconds.\nRecharge Time: 60 Seconds.\nMax Charges: 4",
     "id": "ability-divine-arrow-1",
@@ -106,7 +194,9 @@
     "title": "Consecrate",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-consecrate-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Jeanne consecrates a production building, reducing the Food cost of units by -25%.\nNo Cooldown\nRecharge Time: 120 Seconds.\nMax Charges: 4.",
     "id": "ability-consecrate-1",
@@ -116,7 +206,9 @@
     "title": "Holy Wrath",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-holy-wrath-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Jeanne unleashes a powerful area of effect attack, striking all enemies within 1.25 tiles for 20 damage at level 2, 30 at level 3, and 50 at level 4.\nCooldown: 8 Seconds.\nRecharge Time: 60 Seconds.\nMax Charges: 4.",
     "id": "ability-holy-wrath-1",
@@ -126,7 +218,9 @@
     "title": "To Arms, Men!",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-to-arms-men-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Jeanne calls 3 Champions to her side.\nCooldown: 240 Seconds.",
     "id": "ability-to-arms-men-1",
@@ -136,7 +230,9 @@
     "title": "Riders, Ready!",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-riders-ready-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Jeanne calls 3 Riders to her side.\nCooldown: 240 Seconds.",
     "id": "ability-riders-ready-1",
@@ -146,7 +242,9 @@
     "title": "Strength of Heaven",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-strength-of-heaven-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Jeanne chooses a unit to bless, bestowing them with incredible strength and durability. The chosen warrior gains 300 health, 4 Melee and Ranged Armor, and +300% damage.\nJeanne may only bless one unit at a time.\nCooldown: 30 Seconds.",
     "id": "ability-strength-of-heaven-1",
@@ -156,7 +254,9 @@
     "title": "Valorous Inspiration",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_jeanne/ability-valorous-inspiration-1.webp",
-    "civ": ["JDA"],
+    "civ": [
+      "JDA"
+    ],
     "class": "ability",
     "description": "Increases the attack speed of all units within 4 tiles by 35% for 20 seconds.\nCooldown: 60 Seconds.",
     "id": "ability-valorous-inspiration-1",
@@ -166,7 +266,9 @@
     "title": "Supervise",
     "age": 1,
     "imgSrc": "/assets/pictures/ability_chinese/supervise.webp",
-    "civ": ["ZXL"],
+    "civ": [
+      "ZXL"
+    ],
     "class": "ability",
     "description": "Supervise a research, production, or drop-off building with an Imperial Official to make it work 150% faster. Resource drop-off buildings receive 20% more resources. Cannot be used on Landmarks, Town Centers, or Docks.",
     "id": "ability-supervise-1",
@@ -176,7 +278,9 @@
     "title": "Collect Tax",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_chinese/collect_tax.webp",
-    "civ": ["CHI"],
+    "civ": [
+      "CHI"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -184,7 +288,9 @@
     "title": "Defensive Edict",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_golden_horde/defensive_edict.webp",
-    "civ": ["GOH"],
+    "civ": [
+      "GOH"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -192,7 +298,9 @@
     "title": "Khan Guard",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_golden_horde/khan_guard.webp",
-    "civ": ["GOH"],
+    "civ": [
+      "GOH"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -200,7 +308,9 @@
     "title": "Khan Warcry",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_golden_horde/khan_warcry.webp",
-    "civ": ["GOH"],
+    "civ": [
+      "GOH"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -208,7 +318,9 @@
     "title": "Kharash Edict",
     "age": 4,
     "imgSrc": "/assets/pictures/ability_golden_horde/kharash_edict.webp",
-    "civ": ["GOH"],
+    "civ": [
+      "GOH"
+    ],
     "class": "ability",
     "description": "Activate to allow the Golden Tent and Military Buildings within the influence of a Fortified Outpost to produce an additional Kharash whenever any unit is recruited.\nOnly one edict can be active.",
     "id": "ability-kharash-edict-4",
@@ -218,7 +330,9 @@
     "title": "Kipchak Bleed",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_golden_horde/kipchak_bleed.webp",
-    "civ": ["GOH"],
+    "civ": [
+      "GOH"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -226,7 +340,9 @@
     "title": "Production Edict",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_golden_horde/production_edict.webp",
-    "civ": ["GOH"],
+    "civ": [
+      "GOH"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -234,7 +350,9 @@
     "title": "Stockyard Edict",
     "age": 5,
     "imgSrc": "/assets/pictures/ability_golden_horde/stockyard_edict.webp",
-    "civ": ["GOH"],
+    "civ": [
+      "GOH"
+    ],
     "class": "ability",
     "description": "Activate to allow Stockyards within the influence of a Fortified Outpost to generate Gold while being worked.\nOnly one edict can be active.",
     "id": "ability-stockyard-edict-5",
@@ -244,7 +362,9 @@
     "title": "Ajmer",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_tughluq/ajmer.webp",
-    "civ": ["TUG"],
+    "civ": [
+      "TUG"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -252,7 +372,9 @@
     "title": "Bhakkar",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_tughluq/bhakkar.webp",
-    "civ": ["TUG"],
+    "civ": [
+      "TUG"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -260,7 +382,9 @@
     "title": "Multan",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_tughluq/multan.webp",
-    "civ": ["TUG"],
+    "civ": [
+      "TUG"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -268,7 +392,9 @@
     "title": "Jalor",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_tughluq/jalor.webp",
-    "civ": ["TUG"],
+    "civ": [
+      "TUG"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -276,7 +402,9 @@
     "title": "Sehwan",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_tughluq/sehwan.webp",
-    "civ": ["TUG"],
+    "civ": [
+      "TUG"
+    ],
     "class": "ability",
     "syncSkip": true
   },
@@ -284,8 +412,2564 @@
     "title": "Uch",
     "age": "1",
     "imgSrc": "/assets/pictures/ability_tughluq/uch.webp",
-    "civ": ["TUG"],
+    "civ": [
+      "TUG"
+    ],
     "class": "ability",
     "syncSkip": true
+  },
+  {
+    "title": "Camel Unease",
+    "civ": [
+      "ABB",
+      "AYY"
+    ],
+    "age": 1,
+    "id": "ability-camel-unease",
+    "type": "ability",
+    "description": "Camels cause enemy horse cavalry units to deal 20% less damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-camel-unease",
+    "imgSrc": "/assets/pictures/ability_abbasid/ability-camel-unease.webp"
+  },
+  {
+    "title": "Conversion",
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "GOH",
+      "HOL",
+      "HRE",
+      "JAP",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAC",
+      "MAL",
+      "MON",
+      "OTT",
+      "RUS",
+      "SEN",
+      "TUG",
+      "ZXL"
+    ],
+    "age": 1,
+    "id": "ability-conversion",
+    "type": "ability",
+    "description": "Attempts to convert enemy units within range of this Monk to your control.\nCooldown: 120 Seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-conversion",
+    "imgSrc": "/assets/pictures/abilities/ability-conversion.webp"
+  },
+  {
+    "title": "Detonate",
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "GOH",
+      "HOL",
+      "HRE",
+      "JAP",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAC",
+      "MAL",
+      "MON",
+      "OTT",
+      "RUS",
+      "SEN",
+      "TUG",
+      "ZXL"
+    ],
+    "age": 1,
+    "id": "ability-detonate",
+    "type": "ability",
+    "description": "Detonate the ship.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-detonate",
+    "imgSrc": "/assets/pictures/abilities/ability-detonate.webp"
+  },
+  {
+    "title": "Man The Sails",
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "GOH",
+      "HOL",
+      "HRE",
+      "JAP",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAC",
+      "MAL",
+      "MON",
+      "OTT",
+      "RUS",
+      "SEN",
+      "TUG",
+      "ZXL"
+    ],
+    "age": 1,
+    "id": "ability-man-the-sails",
+    "type": "ability",
+    "description": "Activate to move 40% faster for 10 seconds, deactivates early when dealing damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-man-the-sails",
+    "imgSrc": "/assets/pictures/abilities/ability-man-the-sails.webp"
+  },
+  {
+    "title": "Proselytize",
+    "civ": [
+      "ABB"
+    ],
+    "id": "ability-proselytize",
+    "type": "ability",
+    "description": "Attempts to convert a single enemy unit within range of this Imam to your control.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-proselytize",
+    "imgSrc": "/assets/pictures/ability_abbasid/ability-proselytize.webp"
+  },
+  {
+    "title": "Quick Strike",
+    "civ": [
+      "ABB",
+      "AYY"
+    ],
+    "age": 1,
+    "id": "ability-quick-strike",
+    "type": "ability",
+    "description": "Quickly deals a second hit after finishing an attack.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-quick-strike",
+    "imgSrc": "/assets/pictures/ability_abbasid/ability-quick-strike.webp"
+  },
+  {
+    "title": "Ring the Town Bell",
+    "civ": [
+      "ABB",
+      "AYY",
+      "BYZ",
+      "CHI",
+      "DEL",
+      "DRA",
+      "ENG",
+      "FRE",
+      "GOH",
+      "HOL",
+      "HRE",
+      "JAP",
+      "JDA",
+      "JIN",
+      "KTE",
+      "MAC",
+      "MAL",
+      "MON",
+      "OTT",
+      "RUS",
+      "SEN",
+      "TUG",
+      "ZXL"
+    ],
+    "age": 1,
+    "id": "ability-ring-the-town-bell",
+    "type": "ability",
+    "description": "Alerts and orders all nearby Villagers to automatically seek shelter in the nearest garrisonable building.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-ring-the-town-bell",
+    "imgSrc": "/assets/pictures/abilities/ability-ring-the-town-bell.webp"
+  },
+  {
+    "title": "Atabeg Supervision",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-atabeg-supervision",
+    "type": "ability",
+    "description": "Garrison inside of a military production building to grant +20% health to newly trained units. Cannot garrison in Docks.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-atabeg-supervision",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-atabeg-supervision.webp"
+  },
+  {
+    "title": "Desert Raider Blade",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-desert-raider-blade",
+    "type": "ability",
+    "description": "Swap to a melee Sword weapon.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-desert-raider-blade",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-desert-raider-blade.webp"
+  },
+  {
+    "title": "Desert Raider Bow",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-desert-raider-bow",
+    "type": "ability",
+    "description": "Swap to a ranged Bow weapon.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-desert-raider-bow",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-desert-raider-bow.webp"
+  },
+  {
+    "title": "Mass Heal",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-mass-heal",
+    "type": "ability",
+    "description": "Heals all nearby units. Heals +50% times faster when carrying a relic.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-mass-heal",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-mass-heal.webp"
+  },
+  {
+    "title": "Structural Reinforcements",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-structural-reinforcements",
+    "type": "ability",
+    "description": "Siege unit gains +20 melee armor and +5 fire armor for 10 seconds.\nOnly useable on one unit at a time.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-structural-reinforcements",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-structural-reinforcements.webp"
+  },
+  {
+    "title": "Swap Weapon (Incendiary)",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-swap-weapon-incendiary",
+    "type": "ability",
+    "description": "Switch to incendiary ammunition, which deals damage in an increased area.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-swap-weapon-incendiary",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-swap-weapon-incendiary.webp"
+  },
+  {
+    "title": "Swap Weapon (Kinetic)",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-swap-weapon-kinetic",
+    "type": "ability",
+    "description": "Switch to solid ammunition, which deals higher damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-swap-weapon-kinetic",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-swap-weapon-kinetic.webp"
+  },
+  {
+    "title": "Tactical Charge",
+    "civ": [
+      "AYY"
+    ],
+    "id": "ability-tactical-charge",
+    "type": "ability",
+    "description": "Camel Lancers charge faster, more often, and for longer distances than other heavy cavalry. Camel Lancers deals -25% less baseline charge damage. Each second spent charging increases the charge damage (up to +40%).",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-tactical-charge",
+    "imgSrc": "/assets/pictures/ability_ayyubids/ability-tactical-charge.webp"
+  },
+  {
+    "title": "Akritoi Defense",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-akritoi-defense",
+    "type": "ability",
+    "description": "Arm nearby Villagers with stronger weapons and increase their armor by +2 for 30 seconds.\n+1 damage in Dark Age\n+1 damage in Feudal Age\n+1 damage in Castle Age\n+2 damage in Imperial Age",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-akritoi-defense",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-akritoi-defense.webp"
+  },
+  {
+    "title": "Artillery Shot",
+    "civ": [
+      "BYZ",
+      "FRE"
+    ],
+    "age": 1,
+    "id": "ability-artillery-shot",
+    "type": "ability",
+    "description": "Loads this Cannon with an Artillery Shot that has an increased range of 5 tiles and 30% more damage.\nCan only target buildings.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-artillery-shot",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-artillery-shot.webp"
+  },
+  {
+    "title": "Automatic Pilgrim Flask",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-automatic-pilgrim-flask",
+    "type": "ability",
+    "description": "Toggle on to activate automatic drinking when low health, rapidly increasing health regeneration by 25 per second for 6 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-automatic-pilgrim-flask",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-automatic-pilgrim-flask.webp"
+  },
+  {
+    "title": "Berserking",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-berserking",
+    "type": "ability",
+    "description": "Varangian Guard swap to their two-handed weapon and deal +6 damage for 30 seconds. Armor is reduced by -4.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-berserking",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-berserking.webp"
+  },
+  {
+    "title": "Border Settlement",
+    "civ": [
+      "BYZ",
+      "MAC"
+    ],
+    "age": 1,
+    "id": "ability-border-settlement",
+    "type": "ability",
+    "description": "Line of sight increased by 7 tiles.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-border-settlement",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-border-settlement.webp"
+  },
+  {
+    "title": "Conscriptio",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-conscriptio",
+    "type": "ability",
+    "description": "Military unit production rate increased +20%/+40%/+60%/+80%/+100% by Water Level while within the influence of a Cistern.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-conscriptio",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-conscriptio.webp"
+  },
+  {
+    "title": "Dialecticus",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-dialecticus",
+    "type": "ability",
+    "description": "Research rate increased +30%/+60%/+90%/+120%/+150% by Water Level while within the influence of a Cistern.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-dialecticus",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-dialecticus.webp"
+  },
+  {
+    "title": "Emperor's Guard",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-emperors-guard",
+    "type": "ability",
+    "description": "Armor increased by +3 while near allied Wonders.",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-emperors-guard",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-emperors-guard.webp"
+  },
+  {
+    "title": "Field Stones",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-field-stones",
+    "type": "ability",
+    "description": "Earn various amounts of Stone from every building constructed.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-field-stones",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-field-stones.webp"
+  },
+  {
+    "title": "Improved Torch",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-improved-torch",
+    "type": "ability",
+    "description": "Torch damage improved by a nearby Scout.",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-improved-torch",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-improved-torch.webp"
+  },
+  {
+    "title": "Irrigated",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-irrigated",
+    "type": "ability",
+    "description": "Villager gathering rate increased by 5/10/15/20/25% (depening on water level)",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-irrigated",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-irrigated.webp"
+  },
+  {
+    "title": "Naval Deployment",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-naval-deployment",
+    "type": "ability",
+    "description": "Increased movement speed after unloading from a Transport Ship.",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-naval-deployment",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-naval-deployment.webp"
+  },
+  {
+    "title": "Oil Commerce",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-oil-commerce",
+    "type": "ability",
+    "description": "Traders provide +20% Olive Oil on trades.",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-oil-commerce",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-oil-commerce.webp"
+  },
+  {
+    "title": "Olive Harvest",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-olive-harvest",
+    "type": "ability",
+    "description": "Villagers generate Olive Oil equal to 20% of Food gathered when farming.",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-olive-harvest",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-olive-harvest.webp"
+  },
+  {
+    "title": "Pilgrim Flask",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-pilgrim-flask",
+    "type": "ability",
+    "description": "Activate to drink, rapidly increasing health regeneration by 25 per second for 6 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-pilgrim-flask",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-pilgrim-flask.webp"
+  },
+  {
+    "title": "Place Palings",
+    "civ": [
+      "BYZ",
+      "ENG"
+    ],
+    "age": 1,
+    "id": "ability-place-palings",
+    "type": "ability",
+    "description": "Enemy cavalry are stunned for 2.5 seconds and take 19 damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-place-palings",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-place-palings.webp"
+  },
+  {
+    "title": "Praesidium",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-praesidium",
+    "type": "ability",
+    "description": "Building damage taken decreased by -5%/-10%/-15%/-20%/-25% by Water Level while within the influence of a Cistern.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-praesidium",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-praesidium.webp"
+  },
+  {
+    "title": "Shield Wall",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-shield-wall",
+    "type": "ability",
+    "description": "Enter a defensive stance, decreasing move speed by -25%, attack speed by -25%, and ranged damage taken by -30%.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-shield-wall",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-shield-wall.webp"
+  },
+  {
+    "title": "Synergistic Crops",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-synergistic-crops",
+    "type": "ability",
+    "description": "Farmers and Foragers generate +60% Olive Oil around the Grand Winery.",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-synergistic-crops",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-synergistic-crops.webp"
+  },
+  {
+    "title": "Trample",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-trample",
+    "type": "ability",
+    "description": "Charge through enemy units in your path, dealing 12 damage to each one.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-trample",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-trample.webp"
+  },
+  {
+    "title": "Triumph",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-triumph",
+    "type": "ability",
+    "description": "Consume all Supply Points to increase cavalry damage by +4, move speed by +10%, and health regeneration by +2. \nEach Supply Point increases Triumph's duration by 1 seconds. A maximum of 45 Supply Points can be collected.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "oliveoil": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-triumph",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-triumph.webp"
+  },
+  {
+    "title": "Varangian Berserking",
+    "civ": [
+      "BYZ"
+    ],
+    "id": "ability-varangian-berserking",
+    "type": "ability",
+    "description": "Damage increased by +6 and armor decreased by -4.",
+    "costs": {},
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-varangian-berserking",
+    "imgSrc": "/assets/pictures/ability_byzantines/ability-varangian-berserking.webp"
+  },
+  {
+    "title": "Imperial Spies",
+    "civ": [
+      "CHI"
+    ],
+    "id": "ability-imperial-spies",
+    "type": "ability",
+    "description": "Reveal location of enemy workers for 15 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-imperial-spies",
+    "imgSrc": "/assets/pictures/ability_chinese/ability-imperial-spies.webp"
+  },
+  {
+    "title": "Spirit Way Ancestors",
+    "civ": [
+      "CHI"
+    ],
+    "id": "ability-spirit-way",
+    "type": "ability",
+    "description": "When a dynasty unit is killed, nearby units receive +20% attack speed and +20 health over 10 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-spirit-way",
+    "imgSrc": "/assets/pictures/ability_chinese/ability-spirit-way.webp"
+  },
+  {
+    "title": "The Long Wall",
+    "civ": [
+      "CHI"
+    ],
+    "id": "ability-the-long-wall",
+    "type": "ability",
+    "description": "All units standing on Walls gain +25% ranged damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-the-long-wall",
+    "imgSrc": "/assets/pictures/ability_chinese/ability-the-long-wall.webp"
+  },
+  {
+    "title": "Tower of Victory Aura",
+    "civ": [
+      "DEL"
+    ],
+    "id": "ability-tower-of-victory-aura",
+    "type": "ability",
+    "description": "Melee and ranged infantry who move near this Landmark permanently gain +20% attack speed.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-tower-of-victory-aura",
+    "imgSrc": "/assets/pictures/ability_delhi/ability-tower-of-victory-aura.webp"
+  },
+  {
+    "title": "Abbey Healing",
+    "civ": [
+      "ENG",
+      "HOL"
+    ],
+    "age": 2,
+    "id": "ability-abbey-healing",
+    "type": "ability",
+    "description": "Heals nearby out of combat units by 6 every 1 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-abbey-healing",
+    "imgSrc": "/assets/pictures/ability_english/ability-abbey-healing.webp"
+  },
+  {
+    "title": "Network of Castles",
+    "civ": [
+      "ENG"
+    ],
+    "id": "ability-network-of-castles",
+    "type": "ability",
+    "description": "When enemies are nearby, this building sounds an alarm, causing nearby units to get a +20% increase to attack speed.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-network-of-castles",
+    "imgSrc": "/assets/pictures/ability_english/ability-network-of-castles.webp"
+  },
+  {
+    "title": "Deploy Pavise",
+    "civ": [
+      "FRE"
+    ],
+    "id": "ability-deploy-pavise",
+    "type": "ability",
+    "description": "Activate to increase weapon range by +1 tile and gain +5 ranged armor.\nRemains active for 30 seconds or until the Arbalétrier moves away.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-deploy-pavise",
+    "imgSrc": "/assets/pictures/ability_french/ability-deploy-pavise.webp"
+  },
+  {
+    "title": "Call Rus Tributes",
+    "civ": [
+      "GOH"
+    ],
+    "id": "ability-call-rus-tributes",
+    "type": "ability",
+    "description": "Dispatch 4 Rus Tributes from the Golden Tent and increase the cost of the Call Rus Tributes by +300 Stone.\nThe cost of Call Rus Tributes will be reduced by 10 Stone every 30 seconds. Each Military Building will reduce the cost by an additional 5 Stone up to a maximum of 70 Stone. Will automatically deploy the Rus Tributes when the cost reaches zero.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 350,
+      "gold": 0,
+      "total": 350,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-call-rus-tributes",
+    "imgSrc": "/assets/pictures/ability_golden_horde/ability-call-rus-tributes.webp"
+  },
+  {
+    "title": "Defensive Aura Edict",
+    "civ": [
+      "GOH"
+    ],
+    "age": 1,
+    "id": "ability-defensive-aura-edict",
+    "type": "ability",
+    "description": "Units near an Outpost gain +10% health.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-defensive-aura-edict",
+    "imgSrc": "/assets/pictures/ability_golden_horde/ability-defensive-aura-edict.webp"
+  },
+  {
+    "title": "Production Speed Edict",
+    "civ": [
+      "GOH"
+    ],
+    "id": "ability-production-speed-edict",
+    "type": "ability",
+    "description": "Activate to increase the production speed of the Golden Tent and Military Buildings within the influence of a Fortified Outpost by +15%.\nOnly one edict can be active.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-production-speed-edict",
+    "imgSrc": "/assets/pictures/ability_golden_horde/ability-production-speed-edict.webp"
+  },
+  {
+    "title": "Emergency Repairs",
+    "civ": [
+      "DRA",
+      "HRE"
+    ],
+    "age": 1,
+    "id": "ability-emergency-repairs",
+    "type": "ability",
+    "description": "Building repairs itself by 150 health every 1 second for 20 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-emergency-repairs",
+    "imgSrc": "/assets/pictures/ability_hre/ability-emergency-repairs.webp"
+  },
+  {
+    "title": "Deflective Armor",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-deflective-armor",
+    "type": "ability",
+    "description": "Deflective Armor charge can block one melee or ranged attack. Recharges while out of combat for 15 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-deflective-armor",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-deflective-armor.webp"
+  },
+  {
+    "title": "Kabura-ya",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-kabura-ya",
+    "type": "ability",
+    "description": "Onna-Musha fire a whistling arrow when an enemy is seen, increasing move speed for 10 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-kabura-ya",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-kabura-ya.webp"
+  },
+  {
+    "title": "Katana Bannerman Aura",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-katana-bannerman-aura",
+    "type": "ability",
+    "description": "Aura that increases melee infantry damage by +15%.\nBanner drops on death and lasts for 30 seconds providing the same aura.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-katana-bannerman-aura",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-katana-bannerman-aura.webp"
+  },
+  {
+    "title": "Place Yorishiro",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-place-yorishiro",
+    "type": "ability",
+    "description": "Place a Yorishiro in the following buildings to receive bonuses and increase their line of sight.\nMilitary and Docks: +125% Production speed\nTown Center: +30% Production speed\nFarmhouse: +70 Food per minute\nLumber Camp: +70 Wood per minute\nForge: +50 Gold per minute\nWonder: +4000 Health",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-place-yorishiro",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-place-yorishiro.webp"
+  },
+  {
+    "title": "Sabotage",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-sabotage",
+    "type": "ability",
+    "description": "Target a visible enemy building to deal 200 damage, disable its production, and set it on fire for 30 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-sabotage",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-sabotage.webp"
+  },
+  {
+    "title": "Shunshin",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-shunshin",
+    "type": "ability",
+    "description": "Drop a smoke bomb and reappear at a selected location.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-shunshin",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-shunshin.webp"
+  },
+  {
+    "title": "Sohei's Sutra",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-soheis-sutra",
+    "type": "ability",
+    "description": "Reduces enemy damage by 50% for 60 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-soheis-sutra",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-soheis-sutra.webp"
+  },
+  {
+    "title": "Spy",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-spy",
+    "type": "ability",
+    "description": "Target a visible enemy unit or structure to disguise the Shinobi as a Villager of that player.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-spy",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-spy.webp"
+  },
+  {
+    "title": "Treasure Caravans",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-treasure-caravans",
+    "type": "ability",
+    "description": "Select a neutral Trade Post to periodically spawn Treasure Caravans from that location. Caravans can convert into a Trade Ship when instructed to reach Trade Posts over water.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-treasure-caravans",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-treasure-caravans.webp"
+  },
+  {
+    "title": "Uma Bannerman Aura",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-uma-bannerman-aura",
+    "type": "ability",
+    "description": "Aura that increases cavalry unit damage by +10%.\nBanner drops on death and lasts for 30 seconds providing the same aura.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-uma-bannerman-aura",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-uma-bannerman-aura.webp"
+  },
+  {
+    "title": "Yumi Bannerman Aura",
+    "civ": [
+      "JAP"
+    ],
+    "id": "ability-yumi-bannerman-aura",
+    "type": "ability",
+    "description": "Aura that increases ranged infantry damage by +15%.\nBanner drops on death and lasts for 30 seconds providing the same aura.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-yumi-bannerman-aura",
+    "imgSrc": "/assets/pictures/ability_japanese/ability-yumi-bannerman-aura.webp"
+  },
+  {
+    "title": "Bring down the walls!",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-bring-down-the-walls",
+    "type": "ability",
+    "description": "Jeanne calls a Cannon to her side. Rallies an additional Cannon if used on a Neutral Settlement.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-bring-down-the-walls",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-bring-down-the-walls.webp"
+  },
+  {
+    "title": "Construct the Kingdom",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-construct-the-kingdom",
+    "type": "ability",
+    "description": "Nearby Villagers construct buildings 33% faster.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-construct-the-kingdom",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-construct-the-kingdom.webp"
+  },
+  {
+    "title": "Forward, companions!",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-forward-companions",
+    "type": "ability",
+    "description": "Jeanne calls 3/6 Knights to her side. Rallies 2 additional Knights if used on a Neutral Settlement.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-forward-companions",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-forward-companions.webp"
+  },
+  {
+    "title": "Galvanize the Righteous",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-galvanize-the-righteous",
+    "type": "ability",
+    "description": "Companions close to Jeanne gain +1/1 armor and +10% damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-galvanize-the-righteous",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-galvanize-the-righteous.webp"
+  },
+  {
+    "title": "Honorable Heart",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-honorable-heart",
+    "type": "ability",
+    "description": "Jeanne regenerates 1/1.5/2/2.5 health per second while out of combat based on her current level.\nAt level 3 Jeanne takes 45% less damage from ranged attacks; at level 4 this is increased to 60%.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-honorable-heart",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-honorable-heart.webp"
+  },
+  {
+    "title": "Jeanne's Companions",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-jeannes-companions",
+    "type": "ability",
+    "description": "Achieve level 3 with Jeanne d'Arc to select between Champions and Riders to be trained at the keep.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-jeannes-companions",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-jeannes-companions.webp"
+  },
+  {
+    "title": "Journey of a Hero",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-journey-of-a-hero",
+    "type": "ability",
+    "description": "Jeanne generates experience for completing tasks such as gathering resources, constructing buildings, hunting boar, capturing Sacred Sites, and participating in combat. Jeanne also gains a small trickle of experience over time.\nAfter earning sufficient experience Jeanne can level up, becoming more powerful and gaining access to unique abilities.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-journey-of-a-hero",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-journey-of-a-hero.webp"
+  },
+  {
+    "title": "Nock your arrows!",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-nock-your-arrows",
+    "type": "ability",
+    "description": "Jeanne calls 2/4/6 Archers to her side. Rallies 2 additional Archers if used on a Neutral Settlement.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-nock-your-arrows",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-nock-your-arrows.webp"
+  },
+  {
+    "title": "Return of the Saint",
+    "civ": [
+      "JDA"
+    ],
+    "age": 1,
+    "id": "ability-return-of-the-saint",
+    "type": "ability",
+    "description": "Pay tribute and instantly return Jeanne to the battlefield.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 100,
+      "total": 100,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-return-of-the-saint",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-return-of-the-saint.webp"
+  },
+  {
+    "title": "Spears up!",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-spears-up",
+    "type": "ability",
+    "description": "Jeanne calls 2 Spearmen to her side. Awards 50 experience if activated on a Neutral Settlement or a friendly Keep or Landmark.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-spears-up",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-spears-up.webp"
+  },
+  {
+    "title": "Talented Builder",
+    "civ": [
+      "JDA"
+    ],
+    "id": "ability-talented-builder",
+    "type": "ability",
+    "description": "Jeanne constructs buildings 33% faster.\nUpon reaching level 2, Jeanne shares her talents with nearby builders.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-talented-builder",
+    "imgSrc": "/assets/pictures/ability_jeanne/ability-talented-builder.webp"
+  },
+  {
+    "title": "Flower Garden",
+    "civ": [
+      "JIN"
+    ],
+    "id": "ability-flower-garden",
+    "type": "ability",
+    "description": "Plant a Flower Garden that increases nearby villager gather rate by +25% and non-siege military attack speed by +25%.\nThe Flower Garden will persist until a new Flower Garden is planted.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-flower-garden",
+    "imgSrc": "/assets/pictures/ability_jin/ability-flower-garden.webp"
+  },
+  {
+    "title": "Karma",
+    "civ": [
+      "JIN"
+    ],
+    "id": "ability-karma",
+    "type": "ability",
+    "description": "Villagers gathering resources in radius of this religious structure generate Karma.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-karma",
+    "imgSrc": "/assets/pictures/ability_jin/ability-karma.webp"
+  },
+  {
+    "title": "Siege Repairs",
+    "civ": [
+      "JIN"
+    ],
+    "id": "ability-siege-repairs",
+    "type": "ability",
+    "description": "Repairs nearby siege engines for 2 health every second.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-siege-repairs",
+    "imgSrc": "/assets/pictures/ability_jin/ability-siege-repairs.webp"
+  },
+  {
+    "title": "Spiritual Awakening",
+    "civ": [
+      "JIN"
+    ],
+    "age": 1,
+    "id": "ability-spiritual-awakening",
+    "type": "ability",
+    "description": "Attempts to convert enemy units to your control in cascading rings around this landmark. Garrisoning monks will add additional rings, up to 3.\nCooldown: 7 minutes.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-spiritual-awakening",
+    "imgSrc": "/assets/pictures/ability_jin/ability-spiritual-awakening.webp"
+  },
+  {
+    "title": "Pilgrim Destination",
+    "civ": [
+      "KTE"
+    ],
+    "id": "ability-pilgrim-destination",
+    "type": "ability",
+    "description": "Select a Sacred Site for your Pilgrims to travel to. Pilgrims cannot travel to a Sacred Site captured by an enemy.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-pilgrim-destination",
+    "imgSrc": "/assets/pictures/ability_templar/ability-pilgrim-destination.webp"
+  },
+  {
+    "title": "Pilgrim Loan (Large)",
+    "civ": [
+      "KTE"
+    ],
+    "id": "ability-pilgrim-loan-large",
+    "type": "ability",
+    "description": "Provide a loan to Pilgrims that will be repaid at a rate of 900 gold per minute for 4 minutes",
+    "costs": {
+      "food": 4000,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 4000,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-pilgrim-loan-large",
+    "imgSrc": "/assets/pictures/ability_templar/ability-pilgrim-loan-large.webp"
+  },
+  {
+    "title": "Pilgrim Loan (Medium)",
+    "civ": [
+      "KTE"
+    ],
+    "id": "ability-pilgrim-loan-medium",
+    "type": "ability",
+    "description": "Provide a loan to Pilgrims that will be repaid at a rate of 600 gold per minute for 3 minutes",
+    "costs": {
+      "food": 2500,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 2500,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-pilgrim-loan-medium",
+    "imgSrc": "/assets/pictures/ability_templar/ability-pilgrim-loan-medium.webp"
+  },
+  {
+    "title": "Pilgrim Loan (Small)",
+    "civ": [
+      "KTE"
+    ],
+    "id": "ability-pilgrim-loan-small",
+    "type": "ability",
+    "description": "Provide a loan to Pilgrims that will be repaid at a rate of 300 gold per minute for 2 minutes",
+    "costs": {
+      "food": 1000,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 1000,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-pilgrim-loan-small",
+    "imgSrc": "/assets/pictures/ability_templar/ability-pilgrim-loan-small.webp"
+  },
+  {
+    "title": "Atgeirmaðr Production",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-atgeirmadr-production",
+    "type": "ability",
+    "description": "Toggle on to reinforce with Atgeirmaðr",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-atgeirmadr-production",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-atgeirmadr-production.webp"
+  },
+  {
+    "title": "Attack Ship Production",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-attack-ship-production",
+    "type": "ability",
+    "description": "Toggle on to reinforce with Attack Ships",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-attack-ship-production",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-attack-ship-production.webp"
+  },
+  {
+    "title": "Bogmaðr Production",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-bogmadr-production",
+    "type": "ability",
+    "description": "Toggle on to reinforce with Bogmaðr",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-bogmadr-production",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-bogmadr-production.webp"
+  },
+  {
+    "title": "Cistern's Favor",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-cisterns-favor",
+    "type": "ability",
+    "description": "Ability can be used on military production or technology buildings to increase their work rate by +150%. If used on Mining Camps, Lumber Camps, or Farms, begin generating 160 Gold, Wood, or Food over 60 seconds.\nRecharges every 90 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-cisterns-favor",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-cisterns-favor.webp"
+  },
+  {
+    "title": "Galley Production",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-galley-production",
+    "type": "ability",
+    "description": "Toggle on to reinforce with Galleys",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-galley-production",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-galley-production.webp"
+  },
+  {
+    "title": "Riddari Production",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-riddari-production",
+    "type": "ability",
+    "description": "Toggle on to reinforce with Riddari",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-riddari-production",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-riddari-production.webp"
+  },
+  {
+    "title": "Varangian Guard Production",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-varangian-guard-production",
+    "type": "ability",
+    "description": "Toggle on to reinforce with Varangian Guards",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-varangian-guard-production",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-varangian-guard-production.webp"
+  },
+  {
+    "title": "Varangian Reinforcements",
+    "civ": [
+      "MAC"
+    ],
+    "id": "ability-varangian-reinforcements",
+    "type": "ability",
+    "description": "Reinforcing with Varangians, Galleys, or Attack Ships after enough units fall in battle.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "silver": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-varangian-reinforcements",
+    "imgSrc": "/assets/pictures/ability_macedonian/ability-varangian-reinforcements.webp"
+  },
+  {
+    "title": "Activate Stealth",
+    "civ": [
+      "MAL"
+    ],
+    "id": "ability-activate-stealth",
+    "type": "ability",
+    "description": "Enter Stealth for 30 seconds.\nWhile in Stealth, units are invisible until they are revealed by enemy Scouts, Outposts, Landmark Town Centers, or they engage in combat.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-activate-stealth",
+    "imgSrc": "/assets/pictures/ability_malians/ability-activate-stealth.webp"
+  },
+  {
+    "title": "Coastal Navigation",
+    "civ": [
+      "MAL"
+    ],
+    "id": "ability-coastal-navigation",
+    "type": "ability",
+    "description": "Ships near a Docks get +15% speed for 25 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-coastal-navigation",
+    "imgSrc": "/assets/pictures/ability_malians/ability-coastal-navigation.webp"
+  },
+  {
+    "title": "First Strike",
+    "civ": [
+      "MAL"
+    ],
+    "id": "ability-first-strike",
+    "type": "ability",
+    "description": "Musofadi Warriors and Musofadi Gunners deal double damage on their first attack when breaking stealth.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-first-strike",
+    "imgSrc": "/assets/pictures/ability_malians/ability-first-strike.webp"
+  },
+  {
+    "title": "Food Festival",
+    "civ": [
+      "MAL"
+    ],
+    "id": "ability-food-festival",
+    "type": "ability",
+    "description": "Increase villager gather rate and move speed by +50%",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 300,
+      "total": 300,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-food-festival",
+    "imgSrc": "/assets/pictures/ability_malians/ability-food-festival.webp"
+  },
+  {
+    "title": "Huntress' Stealth",
+    "civ": [
+      "MAL"
+    ],
+    "id": "ability-huntress-stealth",
+    "type": "ability",
+    "description": "Malian infantry within range enter Stealth. While in Stealth, units are invisible until they are revealed by enemy Scouts, Outposts, or when they engage in combat.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-huntress-stealth",
+    "imgSrc": "/assets/pictures/ability_malians/ability-huntress-stealth.webp"
+  },
+  {
+    "title": "Military Festival",
+    "civ": [
+      "MAL"
+    ],
+    "id": "ability-military-festival",
+    "type": "ability",
+    "description": "Increase all unit production speed by +100% for 90 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 300,
+      "total": 300,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-military-festival",
+    "imgSrc": "/assets/pictures/ability_malians/ability-military-festival.webp"
+  },
+  {
+    "title": "Siege Festival",
+    "civ": [
+      "MAL"
+    ],
+    "id": "ability-siege-festival",
+    "type": "ability",
+    "description": "Increase damage of Battering Rams, Bombards, Counterweight Trebuchets, and torches by +50% for 90 seconds.\nApplies to Springald Ships once Mounted Guns has been researched.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 300,
+      "total": 300,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-siege-festival",
+    "imgSrc": "/assets/pictures/ability_malians/ability-siege-festival.webp"
+  },
+  {
+    "title": "Attack Speed Arrow",
+    "civ": [
+      "MON"
+    ],
+    "id": "ability-attack-speed-arrow",
+    "type": "ability",
+    "description": "Fires a Signal Arrow that increases the attack speed of nearby ranged units (including the Khan) by +50% for 5 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-attack-speed-arrow",
+    "imgSrc": "/assets/pictures/ability_mongols/ability-attack-speed-arrow.webp"
+  },
+  {
+    "title": "Keshik Healing",
+    "civ": [
+      "MON"
+    ],
+    "id": "ability-battle-veteran",
+    "type": "ability",
+    "description": "Heals after every attack performed.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-battle-veteran",
+    "imgSrc": "/assets/pictures/ability_mongols/ability-battle-veteran.webp"
+  },
+  {
+    "title": "Defense Arrow",
+    "civ": [
+      "MON"
+    ],
+    "id": "ability-defense-arrow",
+    "type": "ability",
+    "description": "Fires a Signal Arrow that increases the armor of nearby units (including the Khan) by +2 for 5 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-defense-arrow",
+    "imgSrc": "/assets/pictures/ability_mongols/ability-defense-arrow.webp"
+  },
+  {
+    "title": "Kurultai Aura",
+    "civ": [
+      "MON"
+    ],
+    "id": "ability-kurultai-aura",
+    "type": "ability",
+    "description": "Nearby units within its aura heal +1 health every 1 second and gain an additional +20% damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-kurultai-aura",
+    "imgSrc": "/assets/pictures/ability_mongols/ability-kurultai-aura.webp"
+  },
+  {
+    "title": "Maneuver Arrow",
+    "civ": [
+      "MON"
+    ],
+    "id": "ability-maneuver-arrow",
+    "type": "ability",
+    "description": "Fire a Signal Arrow that increases the movement speed of nearby units (including the Khan) by +33% for 5 seconds. Does not affect Villagers.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-maneuver-arrow",
+    "imgSrc": "/assets/pictures/ability_mongols/ability-maneuver-arrow.webp"
+  },
+  {
+    "title": "Yam",
+    "civ": [
+      "MON"
+    ],
+    "id": "ability-yam",
+    "type": "ability",
+    "description": "Cavalry and Traders near an Outpost get +15% speed for 10 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-yam",
+    "imgSrc": "/assets/pictures/ability_mongols/ability-yam.webp"
+  },
+  {
+    "title": "Yam Network (Improved)",
+    "civ": [
+      "MON"
+    ],
+    "id": "ability-yam-network-improved",
+    "type": "ability",
+    "description": "Yam speed aura applies to all units instead of just Traders and cavalry units. Does not apply to siege engines.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-yam-network-improved",
+    "imgSrc": "/assets/pictures/ability_mongols/ability-yam-network-improved.webp"
+  },
+  {
+    "title": "Attack Drums",
+    "civ": [
+      "OTT"
+    ],
+    "id": "ability-attack-drums",
+    "type": "ability",
+    "description": "Mehter drums that increase the attack speed of nearby units by +15%.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-attack-drums",
+    "imgSrc": "/assets/pictures/ability_ottomans/ability-attack-drums.webp"
+  },
+  {
+    "title": "Fortitude",
+    "civ": [
+      "OTT"
+    ],
+    "id": "ability-fortitude",
+    "type": "ability",
+    "description": "Gain +40% attack speed and receive +50% damage from melee weapons for 10 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-fortitude",
+    "imgSrc": "/assets/pictures/ability_ottomans/ability-fortitude.webp"
+  },
+  {
+    "title": "Mehter Speed Bonus",
+    "civ": [
+      "OTT"
+    ],
+    "id": "ability-mehter-speed-bonus",
+    "type": "ability",
+    "description": "Units move +15% faster when in formation.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-mehter-speed-bonus",
+    "imgSrc": "/assets/pictures/ability_ottomans/ability-mehter-speed-bonus.webp"
+  },
+  {
+    "title": "Melee Defense Drums",
+    "civ": [
+      "OTT"
+    ],
+    "id": "ability-melee-defense-drums",
+    "type": "ability",
+    "description": "Mehter drums that increase the melee armor of nearby units by +2.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-melee-defense-drums",
+    "imgSrc": "/assets/pictures/ability_ottomans/ability-melee-defense-drums.webp"
+  },
+  {
+    "title": "Ranged Defense Drums",
+    "civ": [
+      "OTT"
+    ],
+    "id": "ability-ranged-defense-drums",
+    "type": "ability",
+    "description": "Mehter drums that increase the ranged armor of nearby units by +1.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-ranged-defense-drums",
+    "imgSrc": "/assets/pictures/ability_ottomans/ability-ranged-defense-drums.webp"
+  },
+  {
+    "title": "Trade Protection",
+    "civ": [
+      "OTT"
+    ],
+    "id": "ability-trade-protection",
+    "type": "ability",
+    "description": "Traders and Trade Ships near Keeps receive +30% move speed and +8 armor for 20 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-trade-protection",
+    "imgSrc": "/assets/pictures/ability_ottomans/ability-trade-protection.webp"
+  },
+  {
+    "title": "Gallop",
+    "civ": [
+      "RUS"
+    ],
+    "id": "ability-gallop",
+    "type": "ability",
+    "description": "Activate to move at maximum speed with +2 tile weapon range for 8 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-gallop",
+    "imgSrc": "/assets/pictures/ability_rus/ability-gallop.webp"
+  },
+  {
+    "title": "High Armory Production Bonus",
+    "civ": [
+      "RUS"
+    ],
+    "id": "ability-high-armory-production-bonus",
+    "type": "ability",
+    "description": "The cost of siege engines in nearby Siege Workshops is decreased by 20%.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-high-armory-production-bonus",
+    "imgSrc": "/assets/pictures/ability_rus/ability-high-armory-production-bonus.webp"
+  },
+  {
+    "title": "Saint's Blessing",
+    "civ": [
+      "RUS"
+    ],
+    "id": "ability-saints-blessing",
+    "type": "ability",
+    "description": "After striking an enemy, the Warrior Monk increases the armor and damage of nearby allied Rus military units for a duration.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-saints-blessing",
+    "imgSrc": "/assets/pictures/ability_rus/ability-saints-blessing.webp"
+  },
+  {
+    "title": "Static Deployment",
+    "civ": [
+      "RUS"
+    ],
+    "id": "ability-static-deployment",
+    "type": "ability",
+    "description": "Streltsy gain +30% attack speed after remaining stationary for 10 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-static-deployment",
+    "imgSrc": "/assets/pictures/ability_rus/ability-static-deployment.webp"
+  },
+  {
+    "title": "Brewery Delivery",
+    "civ": [
+      "SEN"
+    ],
+    "id": "ability-brewery-delivery",
+    "type": "ability",
+    "description": "When 350 Gold is collected from the Toko-Koji Mats, a Sake delivery is sent to a nearby Matsuri.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-brewery-delivery",
+    "imgSrc": "/assets/pictures/ability_sengoku/ability-brewery-delivery.webp"
+  },
+  {
+    "title": "Castle of the Crow Aura",
+    "civ": [
+      "SEN"
+    ],
+    "id": "ability-castle-of-the-crow-aura",
+    "type": "ability",
+    "description": "Siege units near the Castle gain +10% damage and +1 tiles range.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-castle-of-the-crow-aura",
+    "imgSrc": "/assets/pictures/ability_sengoku/ability-castle-of-the-crow-aura.webp"
+  },
+  {
+    "title": "Matsuri Aura",
+    "civ": [
+      "SEN"
+    ],
+    "id": "ability-matsuri-aura",
+    "type": "ability",
+    "description": "Currently no bonus gather rate. Each Yatai trader that arrives to this Matsuri will increase the bonus gather rate provided to nearby Villagers by +5%.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-matsuri-aura",
+    "imgSrc": "/assets/pictures/ability_sengoku/ability-matsuri-aura.webp"
+  },
+  {
+    "title": "Redirect Yatai",
+    "civ": [
+      "SEN"
+    ],
+    "id": "ability-redirect-yatai",
+    "type": "ability",
+    "description": "While active the Home Matsuri of all Yatai is set to this building.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-redirect-yatai",
+    "imgSrc": "/assets/pictures/ability_sengoku/ability-redirect-yatai.webp"
+  },
+  {
+    "title": "Ryokan Healing",
+    "civ": [
+      "SEN"
+    ],
+    "id": "ability-ryokan-healing",
+    "type": "ability",
+    "description": "Nearby units gain a permanent healing buff. The healing buff will heal the unit when out of combat by 4 health every 5 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-ryokan-healing",
+    "imgSrc": "/assets/pictures/ability_sengoku/ability-ryokan-healing.webp"
+  },
+  {
+    "title": "Shinobi Ambush",
+    "civ": [
+      "SEN"
+    ],
+    "id": "ability-shinobi-ambush",
+    "type": "ability",
+    "description": "Target near Stealth Forest or one of your buildings to summon a group Shinobi with Torinoko Grenades that increase damage taken by 40% and slow enemies by 25% for 3 seconds.\nThe Shinobi will escape after 45 seconds or if they used their 3 grenades.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-shinobi-ambush",
+    "imgSrc": "/assets/pictures/ability_sengoku/ability-shinobi-ambush.webp"
+  },
+  {
+    "title": "Shinobi Scout",
+    "civ": [
+      "SEN"
+    ],
+    "id": "ability-shinobi-scout",
+    "type": "ability",
+    "description": "Reveals a 10 tile radius for 20 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-shinobi-scout",
+    "imgSrc": "/assets/pictures/ability_sengoku/ability-shinobi-scout.webp"
+  },
+  {
+    "title": "Elephant Economics",
+    "civ": [
+      "TUG"
+    ],
+    "id": "ability-elephant-economics",
+    "type": "ability",
+    "description": "Assistance from Worker Elephants increases resources dropped off by 5%.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-elephant-economics",
+    "imgSrc": "/assets/pictures/ability_tughluq/ability-elephant-economics.webp"
+  },
+  {
+    "title": "Tughlaqabad Fort Overwatch",
+    "civ": [
+      "TUG"
+    ],
+    "id": "ability-tughlaqabad-fort-overwatch",
+    "type": "ability",
+    "description": "Increasing the production speed of nearby Docks by 30%, arrowslits damage by 2, and weapon range by 1 tile.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-tughlaqabad-fort-overwatch",
+    "imgSrc": "/assets/pictures/ability_tughluq/ability-tughlaqabad-fort-overwatch.webp"
+  },
+  {
+    "title": "Ascetic Recovery",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-ascetic-recovery",
+    "type": "ability",
+    "description": "The Shaolin Monk regains health when out of combat.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-ascetic-recovery",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-ascetic-recovery.webp"
+  },
+  {
+    "title": "Body of Iron",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-body-of-iron",
+    "type": "ability",
+    "description": "The Shaolin Monk hardens his body and reduces incoming ranged damage by 50% for 15 seconds.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-body-of-iron",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-body-of-iron.webp"
+  },
+  {
+    "title": "Bounty of Solitude",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-bounty-of-solitude",
+    "type": "ability",
+    "description": "Increases the resource value of nearby gold veins, stone outcroppings, and berry bushes by +5% every 30 seconds up to a maximum of +60%.\nTrees are increased at a lesser rate of +2.5% up to +30%.\nAfter 330 seconds, generates resources equal to 5% of the current resources in those nearby deposits. Additionally generates 5% of the maximum resources of each deposit when fully gathered.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-bounty-of-solitude",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-bounty-of-solitude.webp"
+  },
+  {
+    "title": "City Guard",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-city-guard",
+    "type": "ability",
+    "description": "Spawns an army of 4 Zhuge Nu and 3 Palace Guards.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-city-guard",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-city-guard.webp"
+  },
+  {
+    "title": "Divine Charge",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-divine-charge",
+    "type": "ability",
+    "description": "Cavalry units deal +20% damage.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-divine-charge",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-divine-charge.webp"
+  },
+  {
+    "title": "Divine Defense",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-divine-defense",
+    "type": "ability",
+    "description": "Gunpowder units and defensive structures gain +1 range.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-divine-defense",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-divine-defense.webp"
+  },
+  {
+    "title": "Divine Haste",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-divine-haste",
+    "type": "ability",
+    "description": "Infantry units move 15% faster.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-divine-haste",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-divine-haste.webp"
+  },
+  {
+    "title": "Divine Vitality",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-divine-vitality",
+    "type": "ability",
+    "description": "Units out of combat heal 2 health per second.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-divine-vitality",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-divine-vitality.webp"
+  },
+  {
+    "title": "Imperial Retinue",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-imperial-retinue",
+    "type": "ability",
+    "description": "Spawns an army of 4 Yuan Raiders and 1 Imperial Guard.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-imperial-retinue",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-imperial-retinue.webp"
+  },
+  {
+    "title": "Provincial Levy",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-provincial-levy",
+    "type": "ability",
+    "description": "Spawns an army of 4 Spearman and 3 Horsemen.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-provincial-levy",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-provincial-levy.webp"
+  },
+  {
+    "title": "Ranged Specialists",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ability-ranged-specialists",
+    "type": "ability",
+    "description": "Spawns an army of 4 Crossbowmen and 1 Grenadier.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-ranged-specialists",
+    "imgSrc": "/assets/pictures/ability_zhuxi/ability-ranged-specialists.webp"
   }
 ]

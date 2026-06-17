@@ -4605,5 +4605,482 @@
     "id": "eruptor-4",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/eruptor"
+  },
+  {
+    "title": "Clocktower Battering Ram",
+    "civ": [
+      "CHI"
+    ],
+    "id": "clocktower-battering-ram",
+    "type": "unit",
+    "description": "Durable infantry transport effective against buildings and walls.\n+ High ranged armor\n+ High health\n- Takes bonus damage from melee attacks\n- Can only attack buildings\n- Slow movement speed",
+    "costs": {
+      "food": 0,
+      "wood": 200,
+      "stone": 0,
+      "gold": 0,
+      "total": 200,
+      "popcap": 1,
+      "time": 35
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/clocktower-battering-ram",
+    "imgSrc": "/assets/pictures/unit_chinese/clocktower-battering-ram.webp"
+  },
+  {
+    "title": "Clocktower Bombard",
+    "civ": [
+      "CHI"
+    ],
+    "id": "clocktower-bombard",
+    "type": "unit",
+    "description": "Intimidating siege gun excellent against buildings or any stubborn targets.\n+ High damage\n- Must be set up to fire",
+    "costs": {
+      "food": 0,
+      "wood": 350,
+      "stone": 0,
+      "gold": 500,
+      "total": 850,
+      "popcap": 3,
+      "time": 45
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/clocktower-bombard",
+    "imgSrc": "/assets/pictures/unit_chinese/clocktower-bombard.webp"
+  },
+  {
+    "title": "Clocktower Counterweight Trebuchet",
+    "civ": [
+      "CHI"
+    ],
+    "id": "clocktower-counterweight-trebuchet",
+    "type": "unit",
+    "description": "Powerful siege engine effective at destroying buildings and walls over a great distance.\n+ Bonus damage vs buildings\n- Must be set up to fire\n- Inaccurate against units",
+    "costs": {
+      "food": 0,
+      "wood": 400,
+      "stone": 0,
+      "gold": 150,
+      "total": 550,
+      "popcap": 2,
+      "time": 30
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/clocktower-counterweight-trebuchet",
+    "imgSrc": "/assets/pictures/unit_chinese/clocktower-counterweight-trebuchet.webp"
+  },
+  {
+    "title": "Clocktower Nest of Bees",
+    "civ": [
+      "CHI"
+    ],
+    "id": "clocktower-nest-of-bees",
+    "type": "unit",
+    "description": "Innovative field weapon capable of firing a barrage of rockets to damage defensive positions and clumped enemy troops.\n+ Good area of effect damage against most targets\n- Slowest movement speed\n- Weak if surrounded",
+    "costs": {
+      "food": 0,
+      "wood": 300,
+      "stone": 0,
+      "gold": 300,
+      "total": 600,
+      "popcap": 3,
+      "time": 40
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/clocktower-nest-of-bees",
+    "imgSrc": "/assets/pictures/unit_chinese/clocktower-nest-of-bees.webp"
+  },
+  {
+    "title": "Clocktower Springald",
+    "civ": [
+      "CHI"
+    ],
+    "id": "clocktower-springald",
+    "type": "unit",
+    "description": "Anti-unit siege weapon. Fires bolts that pierce multiple units.\n+ Does not require setup to fire\n+ Bonus damage vs. melee infantry\n- Trivial damage vs. buildings",
+    "costs": {
+      "food": 0,
+      "wood": 150,
+      "stone": 0,
+      "gold": 100,
+      "total": 250,
+      "popcap": 2,
+      "time": 20
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/clocktower-springald",
+    "imgSrc": "/assets/pictures/unit_chinese/clocktower-springald.webp"
+  },
+  {
+    "title": "Attack Ship",
+    "civ": [
+      "MAC"
+    ],
+    "id": "attack-ship",
+    "type": "unit",
+    "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
+    "costs": {
+      "food": 110,
+      "wood": 200,
+      "stone": 0,
+      "gold": 30,
+      "silver": 0,
+      "total": 340,
+      "popcap": 3,
+      "time": 30
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/attack-ship",
+    "imgSrc": "/assets/pictures/unit_macedonian/attack-ship.webp"
+  },
+  {
+    "title": "Mansa Musofadi Warrior",
+    "civ": [
+      "MAL"
+    ],
+    "age": 2,
+    "id": "mansa-musofadi-warrior",
+    "type": "unit",
+    "description": "Infantry effective at ambush attacks and countering heavy targets. Has additional melee armor and health.\n+ Can enter stealth\n+ Anti-heavy specialist\n- Low health\n- Countered by Archers\n- Capital Town Centers, Outposts, and Scouts can spot stealth",
+    "costs": {
+      "food": 45,
+      "wood": 0,
+      "stone": 0,
+      "gold": 30,
+      "total": 75,
+      "popcap": 1,
+      "time": 15
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/mansa-musofadi-warrior",
+    "imgSrc": "/assets/pictures/unit_malians/mansa-musofadi-warrior.webp"
+  },
+  {
+    "title": "Khaganate Elite Horse Archer",
+    "civ": [
+      "MON"
+    ],
+    "id": "khaganate-horse-archer",
+    "type": "unit",
+    "description": "Highly mobile ranged cavalry effective against slower melee units.\n+ High mobility\n- Weak vs ranged units\n\nRandomly spawns 5 at the time from the Khaganate Palace.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 5,
+      "time": 55
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khaganate-horse-archer",
+    "imgSrc": "/assets/pictures/unit_mongols/khaganate-horse-archer.webp"
+  },
+  {
+    "title": "Khaganate Elite Knight",
+    "civ": [
+      "MON"
+    ],
+    "id": "khaganate-knight",
+    "type": "unit",
+    "description": "Expensive cavalry with high damage and melee armor. Effective against melee units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen\n\nRandomly spawns 3 at the time from the Khaganate Palace.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 3,
+      "time": 66
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khaganate-knight",
+    "imgSrc": "/assets/pictures/unit_mongols/khaganate-knight.webp"
+  },
+  {
+    "title": "Khaganate Elite Mangudai",
+    "civ": [
+      "MON"
+    ],
+    "id": "khaganate-mangudai",
+    "type": "unit",
+    "description": "Confounding mobile ranged cavalry that can fire at a slower rate while moving.\n+ High rate of fire\n- Low weapon range\n\nRandomly spawns from the Khaganate Palace.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1,
+      "time": 55
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khaganate-mangudai",
+    "imgSrc": "/assets/pictures/unit_mongols/khaganate-mangudai.webp"
+  },
+  {
+    "title": "Khaganate Nest of Bees",
+    "civ": [
+      "MON"
+    ],
+    "id": "khaganate-nest-of-bees",
+    "type": "unit",
+    "description": "Innovative field weapon capable of firing a barrage of rockets to damage defensive positions and clumped enemy troops.\n+ Good area of effect damage against most targets\n- Slowest movement speed\n- Weak if surrounded\n\nRandomly spawns from the Khaganate Palace.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 3,
+      "time": 55
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khaganate-nest-of-bees",
+    "imgSrc": "/assets/pictures/unit_mongols/khaganate-nest-of-bees.webp"
+  },
+  {
+    "title": "Khaganate Elite Palace Guard",
+    "civ": [
+      "MON"
+    ],
+    "id": "khaganate-palace-guard",
+    "type": "unit",
+    "description": "Tough infantry with good damage. Move faster than Men-At-Arms, but with reduced armor.\n+ Heavy armor\n- Countered by Knights, Lancers, and Crossbowmen.\n\nRandomly spawns 5 at the time from the Khaganate Palace.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 5,
+      "time": 55
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khaganate-palace-guard",
+    "imgSrc": "/assets/pictures/unit_mongols/khaganate-palace-guard.webp"
+  },
+  {
+    "title": "Akinji",
+    "civ": [
+      "OTT"
+    ],
+    "age": 2,
+    "id": "akinji",
+    "type": "unit",
+    "description": "Highly mobile long ranged cavalry which fires two arrows in quick succession. \n+ High mobility\n- Weak vs ranged units",
+    "costs": {
+      "food": 80,
+      "wood": 80,
+      "stone": 0,
+      "gold": 0,
+      "vizier": 0,
+      "total": 160,
+      "popcap": 1,
+      "time": 24
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/akinji",
+    "imgSrc": "/assets/pictures/unit_ottomans/akinji.webp"
+  },
+  {
+    "title": "Militia Halberdier",
+    "civ": [
+      "RUS"
+    ],
+    "id": "militia-halberdier",
+    "type": "unit",
+    "description": "Light melee infantry equipped with a polearm.\n+ Fast moving\n- Countered by Archers\n- Can't garrison\n- Loses life over time",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/militia-halberdier",
+    "imgSrc": "/assets/pictures/unit_rus/militia-halberdier.webp"
+  },
+  {
+    "title": "Mounted Samurai Levy",
+    "civ": [
+      "SEN"
+    ],
+    "id": "mounted-samurai-levy",
+    "type": "unit",
+    "description": "Expensive cavalry with high damage and a powerful charge attack.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/mounted-samurai-levy",
+    "imgSrc": "/assets/pictures/unit_sengoku/mounted-samurai-levy.webp"
+  },
+  {
+    "title": "Naginata Samurai Levy",
+    "civ": [
+      "SEN"
+    ],
+    "id": "naginata-samurai-levy",
+    "type": "unit",
+    "description": "Heavy infantry with good damage and defense.\n+ Heavy armor\n- Slow move speed\n- Countered by Knights, Lancers, and Crossbowmen",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/naginata-samurai-levy",
+    "imgSrc": "/assets/pictures/unit_sengoku/naginata-samurai-levy.webp"
+  },
+  {
+    "title": "Spearman Levy",
+    "civ": [
+      "SEN"
+    ],
+    "id": "spearman-levy",
+    "type": "unit",
+    "description": "Infantry best used against mounted units.\n+ Anti-cavalry specialist\n+ Additional damage against Elephants\n- Weak against heavy infantry\n- Countered by Archers",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/spearman-levy",
+    "imgSrc": "/assets/pictures/unit_sengoku/spearman-levy.webp"
+  },
+  {
+    "title": "Tanegashima Ashigaru Levy",
+    "civ": [
+      "SEN"
+    ],
+    "id": "tanegashima-ashigaru-levy",
+    "type": "unit",
+    "description": "Powerful ranged infantry that is effective against armored units.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/tanegashima-ashigaru-levy",
+    "imgSrc": "/assets/pictures/unit_sengoku/tanegashima-ashigaru-levy.webp"
+  },
+  {
+    "title": "Yari Cavalry Levy",
+    "civ": [
+      "SEN"
+    ],
+    "id": "yari-cavalry-levy",
+    "type": "unit",
+    "description": "Fast cavalry effective at raiding, flanking, and countering ranged units. Bonus damage against cavalry.\n+ High movement speed\n- Weak against melee units\n- Countered by Spearmen",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/yari-cavalry-levy",
+    "imgSrc": "/assets/pictures/unit_sengoku/yari-cavalry-levy.webp"
+  },
+  {
+    "title": "Yumi Ashigaru Levy",
+    "civ": [
+      "SEN"
+    ],
+    "id": "yumi-ashigaru-levy",
+    "type": "unit",
+    "description": "Quick and cheap ranged infantry with good damage vs. unarmored targets.\n+ Increased move speed\n+ Cheaper than Archers\n- Reduced health\n- Weak against high ranged armor targets\n- Countered by Horsemen",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 1
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/yumi-ashigaru-levy",
+    "imgSrc": "/assets/pictures/unit_sengoku/yumi-ashigaru-levy.webp"
+  },
+  {
+    "title": "City Guard",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "city-guard",
+    "type": "unit",
+    "description": "Spawns an army of 4 Zhuge Nu and 3 Palace Guards.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 7,
+      "time": 0.5
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/city-guard",
+    "imgSrc": "/assets/pictures/unit_zhuxi/city-guard.webp"
+  },
+  {
+    "title": "Imperial Retinue",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "imperial-retinue",
+    "type": "unit",
+    "description": "Spawns an army of 4 Yuan Raiders and 1 Imperial Guard.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 5,
+      "time": 0.5
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/imperial-retinue",
+    "imgSrc": "/assets/pictures/unit_zhuxi/imperial-retinue.webp"
+  },
+  {
+    "title": "Provincial Levy",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "provincial-levy",
+    "type": "unit",
+    "description": "Spawns an army of 4 Spearman and 3 Horsemen.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 7,
+      "time": 0.5
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/provincial-levy",
+    "imgSrc": "/assets/pictures/unit_zhuxi/provincial-levy.webp"
+  },
+  {
+    "title": "Ranged Specialists",
+    "civ": [
+      "ZXL"
+    ],
+    "id": "ranged-specialists",
+    "type": "unit",
+    "description": "Spawns an army of 4 Crossbowmen and 1 Grenadier.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 5,
+      "time": 0.5
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/ranged-specialists",
+    "imgSrc": "/assets/pictures/unit_zhuxi/ranged-specialists.webp"
   }
 ]

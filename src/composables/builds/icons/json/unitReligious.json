@@ -258,5 +258,25 @@
       "popcap": 3,
       "time": 40
     }
+  },
+  {
+    "title": "Khaganate Warrior Monk",
+    "civ": [
+      "MON"
+    ],
+    "id": "khaganate-warrior-monk",
+    "type": "unit",
+    "description": "Military-minded support unit that improves combat capabilities of nearby units after it attacks. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n+ High utility in large armies\n- Low damage\n\nRandomly spawns 2 at the time from the Khaganate Palace.",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 2,
+      "time": 44
+    },
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khaganate-warrior-monk",
+    "imgSrc": "/assets/pictures/unit_mongols/khaganate-warrior-monk.webp"
   }
 ]
