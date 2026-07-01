@@ -856,7 +856,13 @@ export default {
     };
 
     const updateStep = (event, index, propertyName) => {
-      const val = event.target.tagName === 'INPUT' ? event.target.value : event.target.innerHTML;
+      let val = event.target.tagName === 'INPUT' ? event.target.value : event.target.innerHTML;
+      // These are plain-text/numeric fields (time, builders, food, wood, gold,
+      // stone). When edited via a contenteditable div, Chrome leaves a stray
+      // "<br>" (and sometimes a wrapping block) once the cell is cleared, which
+      // would otherwise be saved verbatim (e.g. stone: "<br>"). Strip any markup
+      // so an emptied cell saves "" instead.
+      val = val.replace(/<[^>]*>/g, "").trim();
       steps[index][propertyName] = val;
       stepsCopy[index][propertyName] = val;
 
