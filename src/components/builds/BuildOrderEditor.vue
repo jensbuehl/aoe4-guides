@@ -245,6 +245,24 @@ export default {
       return ageImageUrlMap[currentAge] || "";
     }
 
+    // Resource/timing cells are plain-text fields, but they are edited via
+    // contenteditable divs where Chrome leaves a stray "<br>" (and sometimes a
+    // wrapping block) when a cell is cleared. Those builds were persisted with
+    // e.g. stone: "<br>", which then renders as literal text. Strip any markup
+    // from these fields on load so existing builds display correctly.
+    const PLAIN_TEXT_STEP_FIELDS = ["time", "builders", "food", "wood", "gold", "stone"];
+    function sanitizeStepFields(sects) {
+      for (const section of sects) {
+        for (const step of section.steps ?? []) {
+          for (const field of PLAIN_TEXT_STEP_FIELDS) {
+            if (typeof step[field] === "string") {
+              step[field] = step[field].replace(/<[^>]*>/g, "").trim();
+            }
+          }
+        }
+      }
+    }
+
     /**
      * Initialize sections based on props.steps data.
      * If props.steps[0].type is not defined, migrates to a new format.
@@ -263,6 +281,7 @@ export default {
       } else {
         sections.value = JSON.parse(JSON.stringify(props.steps));
       }
+      sanitizeStepFields(sections.value);
     }
 
     return {
