@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - run: npm ci
+
+      # Fails if any mdi-* icon used in src/ is missing from the tree-shaken
+      # list in src/plugins/mdiIcons.js (would silently not render in prod).
+      - run: npm run check:icons
+
+      - run: npm run build

@@ -216,10 +216,39 @@ const routes = [
     },
   });
 
+  // With route-level code splitting, each view is a separate hashed chunk that
+  // is fetched on demand. When a new version is deployed, the old chunk files
+  // are removed — so a tab that was opened *before* the deploy will 404 the
+  // moment it navigates to a not-yet-loaded route, and the navigation silently
+  // dies. The onError handler below detects that specific failure and
+  // hard-reloads; this key guards against a reload loop.
+  const CHUNK_RELOAD_KEY = "chunk-reload";
+
   router.afterEach(to => {
+    // A navigation succeeded, so any earlier chunk-load failure is resolved.
+    // Clear the one-shot guard so a later deploy in this same session is
+    // still handled by the reload logic below.
+    sessionStorage.removeItem(CHUNK_RELOAD_KEY);
+
     if (to.meta.title) {
       document.title = `${to.meta.title}` + " | AOE4 GUIDES"
     }
+  });
+
+  router.onError((error, to) => {
+    const isChunkLoadError = /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/i.test(
+      error?.message || ""
+    );
+    if (!isChunkLoadError) return;
+
+    // Guard against a reload loop: if a reload didn't fix it (e.g. the route
+    // genuinely no longer exists, or the user is offline), don't keep looping.
+    if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return;
+    sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+
+    // Full page load to the intended destination so the browser re-requests
+    // index.html and the current chunk graph.
+    window.location.assign(to?.fullPath || window.location.href);
   });
 
   // Resolves once Firebase has determined the initial auth state (fires exactly once).
