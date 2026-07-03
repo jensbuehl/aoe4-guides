@@ -37,5 +37,21 @@ export default {
       "source-map-js": fileURLToPath(new URL("./src/stubs/source-map-js.js", import.meta.url)),
     },
   },
-  build: { chunkSizeWarningLimit: 1600 },
+  build: {
+    chunkSizeWarningLimit: 1600,
+    rollupOptions: {
+      output: {
+        // Split the big, always-loaded vendors into their own long-lived
+        // chunks so they cache independently of app code. Everything else
+        // (route-specific deps like jszip/easy-speech) keeps Rollup's default
+        // per-route splitting, so it stays in the lazy chunk that uses it.
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (id.includes("/firebase/") || id.includes("/@firebase/")) return "firebase";
+            if (id.includes("/vuetify/")) return "vuetify";
+          }
+        },
+      },
+    },
+  },
 };

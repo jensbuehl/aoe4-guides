@@ -2,28 +2,32 @@ import { createWebHistory, createRouter } from "vue-router";
 import { auth, onAuthStateChanged } from "@/firebase";
 import store from "@/store";
 
+// Views are lazy-loaded so each route ships as its own chunk — the initial
+// bundle only contains what the landing route needs, not every view (heavy
+// editor, admin, account flows) up front.
+
 //account
-import Login from "@/views/account/Login.vue";
-import Register from "@/views/account/Register.vue";
-import Account from "@/views/account/Account.vue";
-import AccountAction from "@/views/account/AccountAction.vue";
-import ResetPassword from "@/views/account/ResetPassword.vue";
-import Unsubscribe from "@/views/account/Unsubscribe.vue";
+const Login = () => import("@/views/account/Login.vue");
+const Register = () => import("@/views/account/Register.vue");
+const Account = () => import("@/views/account/Account.vue");
+const AccountAction = () => import("@/views/account/AccountAction.vue");
+const ResetPassword = () => import("@/views/account/ResetPassword.vue");
+const Unsubscribe = () => import("@/views/account/Unsubscribe.vue");
 
 //builds
-import Builds from '@/views/builds/Builds.vue'
-import Dashboard from '@/views/builds/Dashboard.vue'
-import BuildDetails from "@/views/builds/BuildDetails.vue";
-import BuildEditor from "@/views/builds/BuildEditor.vue";
-import MyBuilds from "@/views/builds/MyBuilds.vue";
-import MyFavorites from "@/views/builds/MyFavorites.vue";
+const Builds = () => import("@/views/builds/Builds.vue");
+const Dashboard = () => import("@/views/builds/Dashboard.vue");
+const BuildDetails = () => import("@/views/builds/BuildDetails.vue");
+const BuildEditor = () => import("@/views/builds/BuildEditor.vue");
+const MyBuilds = () => import("@/views/builds/MyBuilds.vue");
+const MyFavorites = () => import("@/views/builds/MyFavorites.vue");
 
-import Home from "@/views/Home.vue";
-import NotFound from "@/views/NotFound.vue";
-import Privacy from "@/views/Privacy.vue";
-import About from "@/views/About.vue";
+const Home = () => import("@/views/Home.vue");
+const NotFound = () => import("@/views/NotFound.vue");
+const Privacy = () => import("@/views/Privacy.vue");
+const About = () => import("@/views/About.vue");
 
-import Admin from "@/views/Admin.vue";
+const Admin = () => import("@/views/Admin.vue");
 
 const routes = [
     {

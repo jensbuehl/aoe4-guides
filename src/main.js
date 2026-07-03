@@ -5,11 +5,13 @@ import router from "@/router/";
 
 // global styles and icons
 import "@/assets/main.css";
-import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/dist/vuetify.min.css";
 
 // import store
 import store from "@/store";
+
+// Tree-shaken SVG icons (replaces the full @mdi/font webfont)
+import { iconOptions } from "@/plugins/vuetifyIcons";
 
 // theme definition
 const customDarkTheme = {
@@ -79,6 +81,7 @@ console.log(" ");
 // ── init app ─────────────────────────────────────────────────────────────────
 const vuetify = createVuetify({
   components: {},
+  icons: iconOptions,
   theme: {
     options: {
       customProperties: true,
