@@ -182,27 +182,33 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
-      // Count first — if zero we show NoFilterResults immediately without
-      // ever resolving the lists to [], which would cause a flicker through
-      // BuildLaneTabs' own empty-state before the outer guard kicks in.
+      // The count and the three lane queries are independent, so run them in
+      // parallel instead of stacking four sequential round-trips.
       var configpopularBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
       configpopularBuildsList.orderBy = "score";
-      trendingCount.value = await getBuildsCount(configpopularBuildsList);
-      store.commit("setResultsCount", trendingCount.value);
-      if (trendingCount.value === 0) return;
-
-      //get popular
-      popularBuildsList.value = await getBuilds(configpopularBuildsList, 10);
-
-      //get all time classics
       var configAllTimeClassicsList = JSON.parse(JSON.stringify(filterConfig.value));
       configAllTimeClassicsList.orderBy = "scoreAllTime";
-      allTimeClassicsList.value = await getBuilds(configAllTimeClassicsList, 10);
-
-      //get most recent
       var configRecentBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
       configRecentBuildsList.orderBy = "timeCreated";
-      recentBuildsList.value = await getBuilds(configRecentBuildsList, 10);
+
+      const [count, popular, classics, recent] = await Promise.all([
+        getBuildsCount(configpopularBuildsList),
+        getBuilds(configpopularBuildsList, 10),
+        getBuilds(configAllTimeClassicsList, 10),
+        getBuilds(configRecentBuildsList, 10),
+      ]);
+
+      trendingCount.value = count;
+      store.commit("setResultsCount", count);
+
+      // Count === 0 → leave the lists as loading skeletons; the template shows
+      // NoFilterResults (gated on count), so there is no flicker through
+      // BuildLaneTabs' own empty-state.
+      if (count === 0) return;
+
+      popularBuildsList.value = popular;
+      allTimeClassicsList.value = classics;
+      recentBuildsList.value = recent;
     };
 
     return {

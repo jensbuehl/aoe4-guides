@@ -212,18 +212,18 @@ export default {
     const descriptionExpanded = ref(true);
 
     onMounted(async () => {
-      var resBuild = null;
-      if (props.id in store.state.cache.builds) {
-        //Build found in store
-        resBuild = store.state.cache.builds[props.id];
-      } else {
-        //"Build not found in store, fetching from firestore"
-        resBuild = await getBuild(props.id);
-      }
+      const cachedBuild = props.id in store.state.cache.builds ? store.state.cache.builds[props.id] : null;
+
+      // The build and the user's favorites are independent (favorites only needs
+      // the uid, not the build), so fetch them in parallel instead of in series.
+      const [resBuild, favorites] = await Promise.all([
+        cachedBuild ? Promise.resolve(cachedBuild) : getBuild(props.id),
+        user.value ? getUserFavorites(user.value.uid) : Promise.resolve(null),
+      ]);
+
       if (resBuild) {
-        //Get user data (favorites and likes)
         if (user.value) {
-          userData.value = await getUserFavorites(user.value.uid);
+          userData.value = favorites;
         }
 
         build.value = resBuild;

@@ -125,32 +125,23 @@ export default {
 
       //reset author filter
       store.commit("setAuthor", null);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
-      //get drafts
-      drafts.value = await getUserDrafts(user.value.uid);
+      const cachedList = store.state.cache.myBuildsList;
 
-      //init count
-      const size = await getUserBuildsCount(user.value.uid, filterConfig.value);
+      // Drafts, count and list are independent — run them in parallel.
+      const [userDrafts, size, listRes] = await Promise.all([
+        getUserDrafts(user.value.uid),
+        getUserBuildsCount(user.value.uid, filterConfig.value),
+        cachedList
+          ? Promise.resolve(cachedList)
+          : getUserBuilds(user.value.uid, filterConfig.value, paginationConfig.value.limit),
+      ]);
+
+      drafts.value = userDrafts;
       store.commit("setResultsCount", size);
-
-      //get page size
-      const currentPageSize = Math.min(size, paginationConfig.value.limit);
-      builds.value = Array(currentPageSize).fill({
-        loading: true,
-      });
-
-      //get my builds
-      if (store.state.cache.myBuildsList) {
-        builds.value = store.state.cache.myBuildsList;
-      } else {
-        const res = await getUserBuilds(
-          user.value.uid,
-          filterConfig.value,
-          paginationConfig.value.limit
-        );
-        builds.value = res;
-        store.commit("setMyBuildsList", res);
-      }
+      if (!cachedList) store.commit("setMyBuildsList", listRes);
+      builds.value = listRes;
 
       //init pagination config
       paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
