@@ -217,7 +217,10 @@ export default {
           .catch(() => {}); // rejections surface via the await below
       }
 
-      const [count, popular, classics, recent] = await Promise.all([
+      // Still await the lanes so a mid-flight supersede is detected and any
+      // rejection surfaces; the progressive handlers above already assigned
+      // their results, so only the count value is needed here.
+      const [count] = await Promise.all([
         countPromise,
         ...lanes.map((lane) => lane.promise),
       ]);
@@ -225,17 +228,11 @@ export default {
       // A newer initData run (filter change mid-flight) supersedes this one.
       if (runId !== initDataRun) return;
 
+      // Commit the count: >0 keeps the progressively-assigned lanes on screen;
+      // ===0 leaves the lanes as skeletons and flips the template to
+      // NoFilterResults (gated on count), so there is no empty-state flicker.
       trendingCount.value = count;
       store.commit("setResultsCount", count);
-
-      // Count === 0 → leave the lists as loading skeletons; the template shows
-      // NoFilterResults (gated on count), so there is no flicker through
-      // BuildLaneTabs' own empty-state.
-      if (count === 0) return;
-
-      popularBuildsList.value = popular;
-      allTimeClassicsList.value = classics;
-      recentBuildsList.value = recent;
     };
 
     return {

@@ -9,7 +9,7 @@
       @click="$emit('apply')"
     >
       <template v-if="previewLoading">Counting…</template>
-      <template v-else-if="previewEnabled && previewCount !== null">
+      <template v-else-if="previewCount !== null">
         Show {{ previewCount }} {{ previewCount === 1 ? "result" : "results" }}
       </template>
       <template v-else-if="appliedCount !== null">
@@ -32,7 +32,6 @@ export default {
   props: {
     isDirty:        { type: Boolean, default: false },
     appliedCount:   { type: Number,  default: null },
-    previewEnabled: { type: Boolean, default: true },
     previewCount:   { type: Number,  default: null },
     previewLoading: { type: Boolean, default: false },
   },
