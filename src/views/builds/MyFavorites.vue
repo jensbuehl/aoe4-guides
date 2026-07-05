@@ -121,37 +121,32 @@ export default {
       //reset author filter
       store.commit("setAuthor", null);
 
-      //get favorites array
+      // Favorites array is needed by both the count and list queries, so it
+      // must be fetched first.
       favorites.value = await getUserFavoritesArray(user.value.uid).then((user) => {
         return user.favorites;
       });
-      if (!favorites.value.length > 0) {
+      if (!(favorites.value.length > 0)) {
         builds.value = null;
+        store.commit("setLoading", false);
         return;
       }
 
-      //init count
-      const size = await getUserFavoritesCount(favorites.value, filterConfig.value);
+      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
+
+      const cachedList = store.state.cache.myFavoritesList;
+
+      // Given the favorites array, count and list are independent — parallelize.
+      const [size, listRes] = await Promise.all([
+        getUserFavoritesCount(favorites.value, filterConfig.value),
+        cachedList
+          ? Promise.resolve(cachedList)
+          : getUserFavorites(favorites.value, filterConfig.value, paginationConfig.value.limit),
+      ]);
+
       store.commit("setResultsCount", size);
-
-      //get page size
-      const currentPageSize = Math.min(size, paginationConfig.value.limit);
-      builds.value = Array(currentPageSize).fill({
-        loading: true,
-      });
-
-      //get favorites
-      if (store.state.cache.myFavoritesList) {
-        builds.value = store.state.cache.myFavoritesList;
-      } else {
-        const res = await getUserFavorites(
-          favorites.value,
-          filterConfig.value,
-          paginationConfig.value.limit
-        );
-        builds.value = res;
-        store.commit("setMyFavoritesList", res);
-      }
+      if (!cachedList) store.commit("setMyFavoritesList", listRes);
+      builds.value = listRes;
 
       //init pagination config
       paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
