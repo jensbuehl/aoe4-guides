@@ -299,9 +299,19 @@ export default {
         store.commit("setRecentBuildsList", null);
         store.commit("removeBuild", props.id);
 
-        //workaround, since router.go(-1) does not work
-        const previousRoute = window.history.state.back;
-        router.push(previousRoute ? previousRoute : "/");
+        // Land on a sensible page instead of the now-deleted build. Prefer the
+        // list the user came from (all builds / my builds / my favorites /
+        // dashboard); fall back to home. window.history.state.back holds the
+        // previous entry's fullPath, or null on a deep link / fresh load.
+        // Using replace() (a) drops the deleted build from history so Back
+        // can't return to a 404, and (b) always targets a different route than
+        // the current one, avoiding the no-op navigation that previously left
+        // the deleted build on screen until a manual reload.
+        const listRoutes = ["/builds", "/mybuilds", "/favorites", "/dashboard"];
+        const back = window.history.state?.back;
+        const cameFromList =
+          typeof back === "string" && listRoutes.includes(back.split("?")[0]);
+        router.replace(cameFromList ? back : "/");
       }
       deleteDialog.value = false;
     };
