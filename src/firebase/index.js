@@ -35,7 +35,7 @@ import {
   arrayRemove,
   getCountFromServer,
 } from "firebase/firestore";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { initializeAppCheck, ReCaptchaV3Provider, getToken } from "firebase/app-check";
 import { getFunctions } from "firebase/functions";
 import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
@@ -68,6 +68,7 @@ export {
   auth,
   db,
   appCheck,
+  getToken,
   //Auth
   createUserWithEmailAndPassword,
   sendEmailVerification,

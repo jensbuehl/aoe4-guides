@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import {
   db,
+  appCheck,
+  getToken,
   collection,
   setDoc,
   getDoc,
@@ -23,6 +25,67 @@ import {
  * @param {string} col - the name of the collection in the database
  * @return {object} an object containing methods for adding, getting, updating, and deleting documents in the collection
  */
+/**
+ * Maps a Firestore/App Check error to a user-actionable message. Falls back to
+ * `fallback` for unknown codes. Keeps the raw code/message for the console.
+ *
+ * @param {any} err - The caught error (Firestore errors carry a `.code`).
+ * @param {string} fallback - Generic message to use when the code is unknown.
+ * @return {string} A message the user can act on where possible.
+ */
+function toUserMessage(err, fallback) {
+  switch (err?.code) {
+    case "permission-denied":
+      // Rules rejection or, very commonly here, an App Check / reCAPTCHA token
+      // that could not be obtained (privacy browsers, ad/tracker blockers).
+      return "Save was blocked. Please sign out and back in, and disable any ad blocker, tracker blocker, or privacy shield for this site — they can block our bot-protection check.";
+    case "unauthenticated":
+      return "Your session has expired. Please sign in again and retry.";
+    case "unavailable":
+      return "Could not reach the server. Check your internet connection and try again.";
+    case "resource-exhausted":
+      return "The service is temporarily over capacity. Please try again in a little while.";
+    case "invalid-argument":
+    case "failed-precondition":
+      return "This build contains a value we couldn't save. Please remove any unusual formatting and try again, or report it if it persists.";
+    default:
+      return fallback;
+  }
+}
+
+/**
+ * Runs a Firestore write. If it's rejected because App Check / auth could not
+ * attest the request (permission-denied / unauthenticated), forces a fresh
+ * App Check token and retries exactly once.
+ *
+ * This recovers transient failures (an expired token, a momentary reCAPTCHA
+ * blip). If the client genuinely cannot produce a token — e.g. reCAPTCHA is
+ * blocked by a privacy browser or an ad/tracker blocker — the refresh throws
+ * too, and we re-throw the original write error so the caller surfaces a clear
+ * message. Either way we fail fast instead of letting the offline cache
+ * silently requeue a write that can never sync.
+ *
+ * @param {() => Promise<any>} op - The write operation to run (and possibly retry).
+ * @return {Promise<any>} The result of the successful write.
+ */
+async function writeWithTokenRetry(op) {
+  try {
+    return await op();
+  } catch (err) {
+    if (err?.code !== "permission-denied" && err?.code !== "unauthenticated") {
+      throw err;
+    }
+    try {
+      await getToken(appCheck, /* forceRefresh */ true);
+    } catch {
+      // Couldn't mint a fresh token — surface the original write error so the
+      // user gets the "unblock App Check" guidance rather than a token error.
+      throw err;
+    }
+    return await op();
+  }
+}
+
 export function collectionService(col) {
   const error = ref(null);
 
@@ -41,12 +104,12 @@ export function collectionService(col) {
       document.id = docRef.id;
       document.timeCreated = Timestamp.fromDate(new Date());
       document.timeUpdated = Timestamp.fromDate(new Date());
-      await setDoc(docRef, document);
+      await writeWithTokenRetry(() => setDoc(docRef, document));
 
       return docRef.id;
     } catch (err) {
-      console.error("collectionService.add failed:", err.message);
-      error.value = "Document could not be created";
+      console.error("collectionService.add failed:", err?.code, err?.message);
+      error.value = toUserMessage(err, "Document could not be created");
     }
   };
 
@@ -214,10 +277,10 @@ export function collectionService(col) {
       if (updateTimestamp) {
         document.timeCreated = Timestamp.fromDate(new Date());
       }
-      await updateDoc(docRef, document);
+      await writeWithTokenRetry(() => updateDoc(docRef, document));
     } catch (err) {
-      console.error("collectionService.update failed:", err.message);
-      error.value = "Document could not be updated";
+      console.error("collectionService.update failed:", err?.code, err?.message);
+      error.value = toUserMessage(err, "Document could not be updated");
     }
   }
 
