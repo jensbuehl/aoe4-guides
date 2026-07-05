@@ -229,7 +229,6 @@
     <FilterApplyBar
       :isDirty="isDirty"
       :appliedCount="count"
-      :previewEnabled="previewEnabled"
       :previewCount="previewCount"
       :previewLoading="previewLoading"
       @apply="handleApply"
@@ -279,9 +278,12 @@ export default {
     const { draft, dirtyFields, dirtyCount, isDirty, resetField, applyDraft } =
       useDraftFilterConfig();
 
-    const previewEnabled = ref(true);
+    // Only fetch the preview count while the draft differs from the applied
+    // config — the apply bar (its only consumer) is hidden otherwise. This
+    // also keeps store-driven draft re-syncs (mount, route navigation) from
+    // firing a redundant count aggregation per FilterConfig instance.
     const { previewCount, previewLoading } = useFilterCountPreview(draft, {
-      enabled: previewEnabled,
+      enabled: isDirty,
       countFn: props.countFn,
     });
 
@@ -366,7 +368,6 @@ export default {
       handleApply,
       showReset,
       onRemoveChip,
-      previewEnabled,
       previewCount,
       previewLoading,
       smAndDown,

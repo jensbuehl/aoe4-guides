@@ -59,8 +59,8 @@
         </v-alert>
         <template v-else>
           <router-link
-            v-for="item in laneList(lane.value)"
-            :key="item.id ?? item.loading"
+            v-for="(item, i) in laneList(lane.value)"
+            :key="item.id ?? i"
             style="text-decoration: none"
             :to="item.loading ? { name: 'Home' } : { name: 'BuildDetails', params: { id: item.id } }"
           >

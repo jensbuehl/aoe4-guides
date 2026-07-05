@@ -172,7 +172,12 @@ export default {
       }
     });
 
+    // Monotonic token identifying the latest initData run, so responses from
+    // a superseded run never overwrite the current one.
+    let initDataRun = 0;
+
     const initData = async () => {
+      const runId = ++initDataRun;
       allTimeClassicsList.value = Array(10).fill({ loading: true });
       popularBuildsList.value = Array(10).fill({ loading: true });
       recentBuildsList.value = Array(10).fill({ loading: true });
@@ -191,12 +196,34 @@ export default {
       var configRecentBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
       configRecentBuildsList.orderBy = "timeCreated";
 
+      const countPromise = getBuildsCount(configpopularBuildsList);
+      const lanes = [
+        { promise: getBuilds(configpopularBuildsList, 10), target: popularBuildsList },
+        { promise: getBuilds(configAllTimeClassicsList, 10), target: allTimeClassicsList },
+        { promise: getBuilds(configRecentBuildsList, 10), target: recentBuildsList },
+      ];
+
+      // The count aggregation is consistently the slowest of the four queries,
+      // so each lane renders as soon as its own query resolves instead of
+      // waiting for the whole batch. An empty lane result stays a skeleton:
+      // only the count decides between "no results for this filter"
+      // (NoFilterResults) and data, avoiding a flash of BuildLaneTabs' own
+      // empty state.
+      for (const { promise, target } of lanes) {
+        promise
+          .then((builds) => {
+            if (runId === initDataRun && builds.length > 0) target.value = builds;
+          })
+          .catch(() => {}); // rejections surface via the await below
+      }
+
       const [count, popular, classics, recent] = await Promise.all([
-        getBuildsCount(configpopularBuildsList),
-        getBuilds(configpopularBuildsList, 10),
-        getBuilds(configAllTimeClassicsList, 10),
-        getBuilds(configRecentBuildsList, 10),
+        countPromise,
+        ...lanes.map((lane) => lane.promise),
       ]);
+
+      // A newer initData run (filter change mid-flight) supersedes this one.
+      if (runId !== initDataRun) return;
 
       trendingCount.value = count;
       store.commit("setResultsCount", count);
