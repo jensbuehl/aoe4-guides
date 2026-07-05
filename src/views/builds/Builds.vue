@@ -146,9 +146,12 @@ export default {
 
       //reset results count
       store.commit("setResultsCount", null);
-      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
+      // On a cache hit we already have the list synchronously, so show it
+      // immediately instead of a skeleton (the count query below still runs in
+      // parallel, but the list no longer waits on it).
       const cachedList = store.state.cache.allBuildsList;
+      builds.value = cachedList ?? Array(paginationConfig.value.limit).fill({ loading: true });
 
       // Contributor, count and list are independent — run them in parallel
       // instead of awaiting each in turn.

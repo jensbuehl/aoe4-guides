@@ -125,9 +125,11 @@ export default {
 
       //reset author filter
       store.commit("setAuthor", null);
-      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
+      // On a cache hit we already have the list synchronously, so show it
+      // immediately instead of a skeleton (count still runs in parallel below).
       const cachedList = store.state.cache.myBuildsList;
+      builds.value = cachedList ?? Array(paginationConfig.value.limit).fill({ loading: true });
 
       // Drafts, count and list are independent — run them in parallel.
       const [userDrafts, size, listRes] = await Promise.all([

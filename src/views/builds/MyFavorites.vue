@@ -132,9 +132,10 @@ export default {
         return;
       }
 
-      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
-
+      // On a cache hit we already have the list synchronously, so show it
+      // immediately instead of a skeleton (count still runs in parallel below).
       const cachedList = store.state.cache.myFavoritesList;
+      builds.value = cachedList ?? Array(paginationConfig.value.limit).fill({ loading: true });
 
       // Given the favorites array, count and list are independent — parallelize.
       const [size, listRes] = await Promise.all([
