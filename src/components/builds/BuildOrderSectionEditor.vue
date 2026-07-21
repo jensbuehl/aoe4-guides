@@ -108,7 +108,7 @@
           </div>
           <!-- 5-slot grid (editable) -->
           <div class="step-grid-xs">
-            <div :class="['slot-xs', 'slot-builder', item.builders ? 'slot-has' : 'slot-empty', 'slot-edit']">
+            <div :class="['slot-xs', 'slot-builder', hasResourceValue(item.builders) ? 'slot-has' : 'slot-empty', 'slot-edit']">
               <div class="slot-icon"><img src="/assets/resources/repair.webp" /></div>
               <span
                 @paste="handlePaste"
@@ -119,7 +119,7 @@
                 v-html="item.builders ? item.builders : ''"
               ></span>
             </div>
-            <div :class="['slot-xs', 'slot-food', item.food ? 'slot-has' : 'slot-empty', 'slot-edit']">
+            <div :class="['slot-xs', 'slot-food', hasResourceValue(item.food) ? 'slot-has' : 'slot-empty', 'slot-edit']">
               <div class="slot-icon"><img src="/assets/resources/food.webp" /></div>
               <span
                 @paste="handlePaste"
@@ -130,7 +130,7 @@
                 v-html="item.food ? item.food : ''"
               ></span>
             </div>
-            <div :class="['slot-xs', 'slot-wood', item.wood ? 'slot-has' : 'slot-empty', 'slot-edit']">
+            <div :class="['slot-xs', 'slot-wood', hasResourceValue(item.wood) ? 'slot-has' : 'slot-empty', 'slot-edit']">
               <div class="slot-icon"><img src="/assets/resources/wood.webp" /></div>
               <span
                 @paste="handlePaste"
@@ -141,7 +141,7 @@
                 v-html="item.wood ? item.wood : ''"
               ></span>
             </div>
-            <div :class="['slot-xs', 'slot-gold', item.gold ? 'slot-has' : 'slot-empty', 'slot-edit']">
+            <div :class="['slot-xs', 'slot-gold', hasResourceValue(item.gold) ? 'slot-has' : 'slot-empty', 'slot-edit']">
               <div class="slot-icon"><img src="/assets/resources/gold.webp" /></div>
               <span
                 @paste="handlePaste"
@@ -152,7 +152,7 @@
                 v-html="item.gold ? item.gold : ''"
               ></span>
             </div>
-            <div :class="['slot-xs', 'slot-stone', item.stone ? 'slot-has' : 'slot-empty', 'slot-edit']">
+            <div :class="['slot-xs', 'slot-stone', hasResourceValue(item.stone) ? 'slot-has' : 'slot-empty', 'slot-edit']">
               <div class="slot-icon"><img src="/assets/resources/stone.webp" /></div>
               <span
                 @paste="handlePaste"
@@ -274,25 +274,25 @@
           </div>
           <!-- 5-slot resource grid: Builder · Food · Wood · Gold · Stone -->
           <div class="step-grid-xs">
-            <div :class="['slot-xs', 'slot-builder', item.builders ? 'slot-has' : 'slot-empty']">
+            <div :class="['slot-xs', 'slot-builder', hasResourceValue(item.builders) ? 'slot-has' : 'slot-empty']">
               <div class="slot-icon"><img src="/assets/resources/repair.webp" /></div>
-              <span class="slot-val">{{ item.builders || '–' }}</span>
+              <span class="slot-val">{{ hasResourceValue(item.builders) ? item.builders : '–' }}</span>
             </div>
-            <div :class="['slot-xs', 'slot-food', item.food ? 'slot-has' : 'slot-empty']">
+            <div :class="['slot-xs', 'slot-food', hasResourceValue(item.food) ? 'slot-has' : 'slot-empty']">
               <div class="slot-icon"><img src="/assets/resources/food.webp" /></div>
-              <span class="slot-val">{{ item.food || '–' }}</span>
+              <span class="slot-val">{{ hasResourceValue(item.food) ? item.food : '–' }}</span>
             </div>
-            <div :class="['slot-xs', 'slot-wood', item.wood ? 'slot-has' : 'slot-empty']">
+            <div :class="['slot-xs', 'slot-wood', hasResourceValue(item.wood) ? 'slot-has' : 'slot-empty']">
               <div class="slot-icon"><img src="/assets/resources/wood.webp" /></div>
-              <span class="slot-val">{{ item.wood || '–' }}</span>
+              <span class="slot-val">{{ hasResourceValue(item.wood) ? item.wood : '–' }}</span>
             </div>
-            <div :class="['slot-xs', 'slot-gold', item.gold ? 'slot-has' : 'slot-empty']">
+            <div :class="['slot-xs', 'slot-gold', hasResourceValue(item.gold) ? 'slot-has' : 'slot-empty']">
               <div class="slot-icon"><img src="/assets/resources/gold.webp" /></div>
-              <span class="slot-val">{{ item.gold || '–' }}</span>
+              <span class="slot-val">{{ hasResourceValue(item.gold) ? item.gold : '–' }}</span>
             </div>
-            <div :class="['slot-xs', 'slot-stone', item.stone ? 'slot-has' : 'slot-empty']">
+            <div :class="['slot-xs', 'slot-stone', hasResourceValue(item.stone) ? 'slot-has' : 'slot-empty']">
               <div class="slot-icon"><img src="/assets/resources/stone.webp" /></div>
-              <span class="slot-val">{{ item.stone || '–' }}</span>
+              <span class="slot-val">{{ hasResourceValue(item.stone) ? item.stone : '–' }}</span>
             </div>
           </div>
           <!-- Description with inline icons -->
@@ -423,48 +423,48 @@
             <td class="text-center aggregatedVillagers py-1" v-html="aggregateVillagers(item)"></td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="item.builders" :class="['rc-pill rc-builders', hasDeltaUp('builders', index) && 'd-up']">{{ item.builders }}</span>
+                <span v-if="hasResourceValue(item.builders)" :class="['rc-pill rc-builders', hasDeltaUp('builders', index) && 'd-up']">{{ item.builders }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="2" :value="item.builders"
                 @input="updateStep($event, index, 'builders')" @paste="handlePaste"
-                :class="item.builders ? ['rc-pill','rc-builders','rc-input', hasDeltaUp('builders',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.builders) ? ['rc-pill','rc-builders','rc-input', hasDeltaUp('builders',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="item.food" :class="['rc-pill rc-food', hasDeltaUp('food', index) && 'd-up']">{{ item.food }}</span>
+                <span v-if="hasResourceValue(item.food)" :class="['rc-pill rc-food', hasDeltaUp('food', index) && 'd-up']">{{ item.food }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="2" :value="item.food"
                 @input="updateStep($event, index, 'food')" @paste="handlePaste"
-                :class="item.food ? ['rc-pill','rc-food','rc-input', hasDeltaUp('food',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.food) ? ['rc-pill','rc-food','rc-input', hasDeltaUp('food',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="item.wood" :class="['rc-pill rc-wood', hasDeltaUp('wood', index) && 'd-up']">{{ item.wood }}</span>
+                <span v-if="hasResourceValue(item.wood)" :class="['rc-pill rc-wood', hasDeltaUp('wood', index) && 'd-up']">{{ item.wood }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="2" :value="item.wood"
                 @input="updateStep($event, index, 'wood')" @paste="handlePaste"
-                :class="item.wood ? ['rc-pill','rc-wood','rc-input', hasDeltaUp('wood',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.wood) ? ['rc-pill','rc-wood','rc-input', hasDeltaUp('wood',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="item.gold" :class="['rc-pill rc-gold', hasDeltaUp('gold', index) && 'd-up']">{{ item.gold }}</span>
+                <span v-if="hasResourceValue(item.gold)" :class="['rc-pill rc-gold', hasDeltaUp('gold', index) && 'd-up']">{{ item.gold }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="2" :value="item.gold"
                 @input="updateStep($event, index, 'gold')" @paste="handlePaste"
-                :class="item.gold ? ['rc-pill','rc-gold','rc-input', hasDeltaUp('gold',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.gold) ? ['rc-pill','rc-gold','rc-input', hasDeltaUp('gold',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="item.stone" :class="['rc-pill rc-stone', hasDeltaUp('stone', index) && 'd-up']">{{ item.stone }}</span>
+                <span v-if="hasResourceValue(item.stone)" :class="['rc-pill rc-stone', hasDeltaUp('stone', index) && 'd-up']">{{ item.stone }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" maxlength="2" :value="item.stone"
                 @input="updateStep($event, index, 'stone')" @paste="handlePaste"
-                :class="item.stone ? ['rc-pill','rc-stone','rc-input', hasDeltaUp('stone',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.stone) ? ['rc-pill','rc-stone','rc-input', hasDeltaUp('stone',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td
               @input="showAutoCompleteMenu($event, index)"
@@ -594,7 +594,7 @@ import IconToolTip from "@/components/builds/IconToolTip.vue";
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
 import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
-import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
 import {
   addAutocompleteIcon,
   updateSearchText,
@@ -1014,6 +1014,7 @@ export default {
       handleContentEditableKeyUp,
       showAutoCompleteMenu,
       aggregateVillagers,
+      hasResourceValue,
       updateStep,
       updateStepDescription,
       removeStep,

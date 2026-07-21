@@ -286,7 +286,7 @@ import { useEventListener, useWakeLock } from "@vueuse/core";
 //Components
 
 //Composables
-import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
 
 import { initTextToSpeech, speak, stop } from "@/composables/builds/textToSpeechHelper.js";
 import {
@@ -477,36 +477,43 @@ export default {
     }
 
     function getFood() {
-      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.food;
+      if (currentStep.value?.gameplan)
+        return resourceOrEmpty(steps.value[currentStepIndex.value - 1]?.food);
 
-      return currentStep.value?.food;
+      return resourceOrEmpty(currentStep.value?.food);
     }
 
     function getWood() {
-      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.wood;
+      if (currentStep.value?.gameplan)
+        return resourceOrEmpty(steps.value[currentStepIndex.value - 1]?.wood);
 
-      return currentStep.value?.wood;
+      return resourceOrEmpty(currentStep.value?.wood);
     }
 
     function getGold() {
-      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.gold;
+      if (currentStep.value?.gameplan)
+        return resourceOrEmpty(steps.value[currentStepIndex.value - 1]?.gold);
 
-      return currentStep.value?.gold;
+      return resourceOrEmpty(currentStep.value?.gold);
     }
 
     function getStone() {
-      if (currentStep.value?.gameplan) return steps.value[currentStepIndex.value - 1]?.stone;
+      if (currentStep.value?.gameplan)
+        return resourceOrEmpty(steps.value[currentStepIndex.value - 1]?.stone);
 
-      return currentStep.value?.stone;
+      return resourceOrEmpty(currentStep.value?.stone);
     }
 
     function getBuilders() {
       if (currentStep.value?.gameplan)
-        return steps.value[currentStepIndex.value - 1]?.builders
-          ? steps.value[currentStepIndex.value - 1].builders
-          : "";
+        return resourceOrEmpty(steps.value[currentStepIndex.value - 1]?.builders);
 
-      return currentStep.value?.builders ? currentStep.value.builders : "";
+      return resourceOrEmpty(currentStep.value?.builders);
+    }
+
+    // "0" carries no more information than an empty cell — render both as blank.
+    function resourceOrEmpty(value) {
+      return hasResourceValue(value) ? value : "";
     }
 
     function handleNextStep(event) {

@@ -2,7 +2,7 @@
 import EasySpeech from "easy-speech";
 
 //Composables
-import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
 import iconService from "@/composables/builds/icons/iconService.js";
 
 var civIconService = null;
@@ -49,11 +49,11 @@ function getText(step, announceVillagers = true){
   //convert villagers
   if (announceVillagers && aggregateVillagers(step) > 0) {
     text += "! - ! - ! You should have ";
-    text += step.builders ? step.builders + " building. " : "";
-    text += step.food ? step.food + " on food. " : "";
-    text += step.wood ? step.wood + " on wood. " : "";
-    text += step.gold ? step.gold + " on gold. " : "";
-    text += step.stone ? step.stone + " on stone. " : "";
+    text += hasResourceValue(step.builders) ? step.builders + " building. " : "";
+    text += hasResourceValue(step.food) ? step.food + " on food. " : "";
+    text += hasResourceValue(step.wood) ? step.wood + " on wood. " : "";
+    text += hasResourceValue(step.gold) ? step.gold + " on gold. " : "";
+    text += hasResourceValue(step.stone) ? step.stone + " on stone. " : "";
   }
 
   return text;
