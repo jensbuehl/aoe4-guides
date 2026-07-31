@@ -11,28 +11,36 @@
         :style="{ color: $vuetify.theme.current.colors.accent }"
       >
         <v-icon
-          icon="mdi-sync"
+          icon="mdi-share-variant"
           size="small"
           class="mr-4"
           color="accent"
         ></v-icon>
-        Icon Library Update
+        Share &amp; Remix
       </span>
     </v-card-title>
     <v-card-text class="px-4">
       <div class="text-body-2 text-medium-emphasis">
-        The full icon library has been synced with
-        AOE4World's latest data. All icons now carry accurate descriptions, resource costs, and
-        a direct link back to the explorer.
+        Every build now has a <strong>Share</strong> option in the ⋮ menu. Scan the QR code with
+        your phone and the build opens in focus mode — a second screen next to your monitor, no
+        URL to type.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
-        <v-icon icon="mdi-star-outline" size="x-small" class="mr-1" color="accent"></v-icon>
-        <strong>Abilities are here.</strong>
-        A large set of unit and hero abilities is now available as build-order icons.
+        <v-icon icon="mdi-shuffle-variant" size="x-small" class="mr-1" color="accent"></v-icon>
+        <strong>Remix, don't duplicate.</strong>
+        Building on someone else's opening now credits them — your copy links straight back to the
+        original in the header.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
-        <v-icon icon="mdi-trophy" size="x-small" class="mr-1" color="accent"></v-icon>
-        <strong>Season 13.</strong> Jin Dynasty fully supported. But are you ready for the Vikings?
+        <v-icon icon="mdi-monitor" size="x-small" class="mr-1" color="accent"></v-icon>
+        <strong>Focus mode stays awake.</strong> Your screen no longer dims mid-build, and the home
+        page loads noticeably faster.
+      </div>
+      <v-divider class="mt-3"></v-divider>
+      <div class="text-body-2 text-medium-emphasis mt-3">
+        <v-icon icon="mdi-heart" size="x-small" class="mr-1" color="accent"></v-icon>
+        <strong>Thanks to our open-source contributors.</strong> The code lives on GitHub, and
+        every issue and pull request makes this site better.
       </div>
       <div class="d-flex flex-wrap justify-center ga-2 mt-3">
         <a
