@@ -63,7 +63,7 @@
     <!-- Top bar: civ lockup (left) + actions slot (right) -->
     <div class="d-flex align-center pt-3 pl-4 pr-2 pb-1">
       <template v-if="civEntry">
-        <img :src="civEntry.flagSmall" alt="" style="width:46px;height:34px;border-radius:4px;object-fit:cover;flex-shrink:0;" />
+        <img :src="civEntry.flagLarge" alt="" style="width:46px;height:34px;border-radius:4px;object-fit:cover;flex-shrink:0;" />
         <span class="text-subtitle-1 font-weight-bold ml-2 mr-4">{{ civLabel }}</span>
       </template>
       <v-spacer></v-spacer>
