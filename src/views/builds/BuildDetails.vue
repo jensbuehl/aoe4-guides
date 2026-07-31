@@ -28,6 +28,8 @@
       </v-card>
     </v-dialog>
 
+    <BuildShareDialog v-model="shareDialog" :build="build"></BuildShareDialog>
+
     <BuildHeader :build="build" :readonly="true">
       <template v-slot:actions>
         <!-- Vote + Favorite: desktop only -->
@@ -61,6 +63,10 @@
             <v-list-item v-show="user" @click="handleDuplicate">
               <v-icon color="accent" class="mr-4">mdi-content-duplicate</v-icon>
               Duplicate build
+            </v-list-item>
+            <v-list-item @click="shareDialog = true">
+              <v-icon color="accent" class="mr-4">mdi-share-variant</v-icon>
+              Share
             </v-list-item>
             <v-list-item v-if="clipboardIsSupported" @click="handleCopyOverlayFormat">
               <v-icon color="accent" class="mr-4">mdi-content-copy</v-icon>
@@ -161,6 +167,7 @@ import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
+import BuildShareDialog from "@/components/builds/BuildShareDialog.vue";
 
 //composables
 import { getUserFavorites } from "@/composables/data/favoriteService";
@@ -191,6 +198,7 @@ export default {
     FocusMode,
     BuildNotFound,
     BuildHeader,
+    BuildShareDialog,
   },
   props: ["id"],
   setup(props) {
@@ -202,6 +210,7 @@ export default {
     const build = ref(null);
     const deleteDialog = ref(false);
     const focusDialog = ref(false);
+    const shareDialog = ref(false);
     const { convert } = useExportOverlayFormat();
     const { copyToClipboard, copyToClipboardSupported } = useCopyToClipboard();
     const { download } = useDownload();
@@ -330,10 +339,19 @@ export default {
       }
     };
 
-    const handleCopyOverlayFormat = () => {
+    const handleCopyOverlayFormat = async () => {
       const overlayBuild = convert(build.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
-      copyToClipboard(overlayBuildString);
+      // copyToClipboard resolves false instead of throwing when both the write
+      // and its fallback fail, so a discarded result leaves the player with no
+      // idea whether anything landed on the clipboard.
+      const copied = await copyToClipboard(overlayBuildString);
+      store.dispatch("showSnackbar", {
+        text: copied
+          ? `Build order copied to clipboard!`
+          : `Could not copy to clipboard. Try the download option instead.`,
+        type: copied ? "success" : "error",
+      });
     };
 
     const handleDownloadOverlayFormat = () => {
@@ -359,6 +377,7 @@ export default {
       focusMode,
       deleteDialog,
       focusDialog,
+      shareDialog,
       descriptionExpanded,
       handlePublish,
       handleDelete,

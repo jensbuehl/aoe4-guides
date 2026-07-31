@@ -517,9 +517,17 @@ export default {
       router.push({ name: "BuildNew" });
     };
 
-    const handleCopyOverlayFormat = () => {
+    const handleCopyOverlayFormat = async () => {
       const overlayBuild = convert(build.value);
-      copyToClipboard(JSON.stringify(overlayBuild, null, 3));
+      // See BuildDetails: a failed clipboard write resolves false rather than
+      // throwing, so it has to be reported explicitly.
+      const copied = await copyToClipboard(JSON.stringify(overlayBuild, null, 3));
+      store.dispatch("showSnackbar", {
+        text: copied
+          ? `Build order copied to clipboard!`
+          : `Could not copy to clipboard. Try the download option instead.`,
+        type: copied ? "success" : "error",
+      });
     };
 
     const handleDownloadOverlayFormat = () => {
