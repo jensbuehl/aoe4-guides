@@ -22,9 +22,9 @@
                 Discard changes
               </v-list-item>
               <v-divider v-if="mode === 'edit'" class="my-1"></v-divider>
-              <v-list-item v-if="mode === 'edit'" @click="handleDuplicate">
-                <v-icon color="accent" class="mr-4">mdi-content-duplicate</v-icon>
-                Duplicate build
+              <v-list-item v-if="mode === 'edit'" @click="handleRemix">
+                <v-icon color="accent" class="mr-4">mdi-shuffle-variant</v-icon>
+                Remix Build
               </v-list-item>
               <v-list-item v-if="mode === 'edit' && clipboardIsSupported" @click="handleCopyOverlayFormat">
                 <v-icon color="accent" class="mr-4">mdi-content-copy</v-icon>
@@ -232,6 +232,7 @@ export default {
         build.value = {
           author: "",
           authorUid: "",
+          remixOf: null,
           description: "",
           title: "",
           sortTitle: "",
@@ -491,12 +492,23 @@ export default {
       build.value.steps = sections;
     };
 
-    const handleDuplicate = async () => {
+    const handleRemix = async () => {
       const template = {
         author: "",
         authorUid: "",
+        // Same rule as BuildDetails: no attribution when you remix yourself.
+        // This menu item only exists in edit mode, so that is the usual case.
+        remixOf:
+          user.value?.uid === build.value.authorUid
+            ? null
+            : {
+                id: build.value.id,
+                title: build.value.title,
+                author: build.value.author ?? "",
+                authorUid: build.value.authorUid ?? "",
+              },
         description: build.value.description,
-        title: build.value.title + " - copy",
+        title: build.value.title + " (remix)",
         sortTitle: "",
         steps: build.value.steps,
         video: build.value.video,
@@ -554,7 +566,7 @@ export default {
       handleDiscard,
       handleVideoInput,
       handleStepsChanged,
-      handleDuplicate,
+      handleRemix,
       handleCopyOverlayFormat,
       handleDownloadOverlayFormat,
     };

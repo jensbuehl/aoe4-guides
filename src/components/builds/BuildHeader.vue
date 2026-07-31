@@ -25,9 +25,9 @@
       </v-chip>
     </div>
 
-    <!-- Author · upvotes · views · time — view route only -->
+    <!-- Author · upvotes · views · time · remix — view route only -->
     <div
-      v-if="readonly && (build.author || build.upvotes || build.views || createdDate)"
+      v-if="readonly && (build.author || build.upvotes || build.views || createdDate || build.remixOf?.id)"
       class="px-4 pb-3 pt-1 d-flex align-center flex-wrap ga-2 text-caption text-medium-emphasis"
     >
       <span v-if="build.author" class="font-weight-bold">{{ build.author }}</span>
@@ -39,6 +39,21 @@
       </template>
       <template v-if="createdDate">
         <span>·</span><span>{{ timeSince(createdDate) }}</span>
+      </template>
+      <!-- Remix lineage — one flex child, so the phrase keeps normal word spacing.
+           Unlike the separators above, this one's · sits inside the span: this is
+           the only item long enough to get pushed onto its own line, and a lone ·
+           left behind on the previous line reads like a typo. -->
+      <template v-if="build.remixOf?.id">
+        <span class="build-header-remix">
+          <span class="mr-2">·</span>Remix of
+          <router-link
+            :to="{ name: 'BuildDetails', params: { id: build.remixOf.id } }"
+            :title="build.remixOf.title"
+            class="text-accent text-decoration-none"
+            >{{ build.remixOf.title }}</router-link
+          ><template v-if="build.remixOf.author"> by {{ build.remixOf.author }}</template>
+        </span>
       </template>
     </div>
   </v-card>
@@ -76,9 +91,9 @@
         <v-icon start icon="mdi-map"></v-icon>{{ build.map }}
       </v-chip>
     </div>
-    <!-- Author · upvotes · views · time — view only -->
+    <!-- Author · upvotes · views · time · remix — view only -->
     <div
-      v-if="readonly && (build.author || build.upvotes || build.views || createdDate)"
+      v-if="readonly && (build.author || build.upvotes || build.views || createdDate || build.remixOf?.id)"
       class="px-4 pb-3 pt-0 d-flex align-center flex-wrap ga-2 text-caption text-medium-emphasis"
     >
       <span v-if="build.author" class="font-weight-bold">
@@ -95,6 +110,21 @@
       </template>
       <template v-if="createdDate">
         <span>·</span><span>{{ timeSince(createdDate) }}</span>
+      </template>
+      <!-- Remix lineage — one flex child, so the phrase keeps normal word spacing.
+           Unlike the separators above, this one's · sits inside the span: this is
+           the only item long enough to get pushed onto its own line, and a lone ·
+           left behind on the previous line reads like a typo. -->
+      <template v-if="build.remixOf?.id">
+        <span class="build-header-remix">
+          <span class="mr-2">·</span>Remix of
+          <router-link
+            :to="{ name: 'BuildDetails', params: { id: build.remixOf.id } }"
+            :title="build.remixOf.title"
+            class="text-accent text-decoration-none"
+            >{{ build.remixOf.title }}</router-link
+          ><template v-if="build.remixOf.author"> by {{ build.remixOf.author }}</template>
+        </span>
       </template>
     </div>
   </v-card>
@@ -168,6 +198,17 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
   white-space: normal;
+}
+
+/* The meta row stays one line tall: a long original title ellipsizes instead of
+   wrapping the caption into a paragraph. min-width:0 is what lets this flex item
+   shrink below its content width at all; the full title stays on the link's
+   tooltip. Truncation eats "by <author>" first, which is the right priority. */
+.build-header-remix {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 </style>

@@ -60,9 +60,9 @@
               <v-icon color="accent" class="mr-4">mdi-publish</v-icon>
               Publish
             </v-list-item>
-            <v-list-item v-show="user" @click="handleDuplicate">
-              <v-icon color="accent" class="mr-4">mdi-content-duplicate</v-icon>
-              Duplicate build
+            <v-list-item v-show="user" @click="handleRemix">
+              <v-icon color="accent" class="mr-4">mdi-shuffle-variant</v-icon>
+              Remix Build
             </v-list-item>
             <v-list-item @click="shareDialog = true">
               <v-icon color="accent" class="mr-4">mdi-share-variant</v-icon>
@@ -261,13 +261,24 @@ export default {
       }
     };
 
-    const handleDuplicate = async () => {
+    const handleRemix = async () => {
       if (!assertVerified()) return;
       var template = {
         author: "",
         authorUid: "",
+        // Credit only points at someone else's work: remixing your own build is
+        // just a starting point and gets no attribution line.
+        remixOf:
+          user.value?.uid === build.value.authorUid
+            ? null
+            : {
+                id: build.value.id,
+                title: build.value.title,
+                author: build.value.author ?? "",
+                authorUid: build.value.authorUid ?? "",
+              },
         description: build.value.description,
-        title: build.value.title + " - copy",
+        title: build.value.title + " (remix)",
         sortTitle: "", //firestore does not support case-insensitive sorting
         steps: build.value.steps,
         video: build.value.video,
@@ -381,7 +392,7 @@ export default {
       descriptionExpanded,
       handlePublish,
       handleDelete,
-      handleDuplicate,
+      handleRemix,
       handleCopyOverlayFormat,
       handleDownloadOverlayFormat,
       handleOpenInOverlayTool,
