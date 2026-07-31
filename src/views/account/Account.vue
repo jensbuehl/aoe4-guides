@@ -121,6 +121,7 @@
               <v-btn
                 block
                 color="primary"
+                variant="flat"
                 type="submit"
                 :loading="changingPw"
                 :disabled="changingPw"
