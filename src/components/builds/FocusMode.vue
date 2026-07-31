@@ -316,7 +316,7 @@ export default {
     const currentStepElapsedTime = ref(null);
     const currentStepDuration = ref(null);
     const currentStepProgress = ref(0);
-    const { isSupported, isActive, request, release } = useWakeLock();
+    const { request, release } = useWakeLock();
 
     onMounted(async () => {
       //init steps
@@ -360,21 +360,28 @@ export default {
       totalElapsedTimeFormattedString.value = getFormattedTime(totalElapsedTime.value);
       setElapsedTimeToCurrentStepStartTime();
 
+      //keep screen awake — deliberately before voice-over init so a speech
+      //failure cannot leave the screen free to dim mid-build
+      try {
+        await request("screen");
+      } catch {
+        //Refused (battery saver, page not fully active). Degrade silently.
+      }
+
       //init speak
       await initTextToSpeech();
       if (audio.value) {
         stop();
         if (!autoplaySupported.value) speak(currentStep.value, announceVillagers.value);
       }
-
-      //keep screen awake
-      await request();
     });
 
     onBeforeUnmount(() => {
       clearTimer();
       stop();
-      release();
+      //Required: useWakeLock registers no scope-dispose cleanup, so the lock
+      //outlives the component without this. Sync hook, so catch rather than await.
+      release().catch(() => {});
     });
 
     useEventListener(document, "keyup", (e) => handleKeyPressed(e));
@@ -591,7 +598,6 @@ export default {
       getGold,
       getStone,
       getBuilders,
-      isSupported,
     };
   },
 };
