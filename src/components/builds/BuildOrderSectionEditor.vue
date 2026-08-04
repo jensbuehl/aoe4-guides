@@ -86,7 +86,7 @@
               <img src="/assets/resources/time.webp" />
               <span
                 @paste="handlePaste"
-                @focusout="updateStep($event, index, 'time')"
+                @focusout="handleTimeBlur($event, index)"
                 @input="handleResourceInput"
                 :contenteditable="true"
                 class="step-time-input"
@@ -416,6 +416,7 @@
                 type="text"
                 :value="item.time"
                 @input="updateStep($event, index, 'time')"
+                @blur="handleTimeBlur($event, index)"
                 @paste="handlePaste"
                 :class="['ts-pill', !item.time && 'ts-ghost']"
               />
@@ -426,7 +427,7 @@
                 <span v-if="hasResourceValue(item.builders)" :class="['rc-pill rc-builders', hasDeltaUp('builders', index) && 'd-up']">{{ item.builders }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.builders"
+              <input v-else type="text" maxlength="7" :value="item.builders"
                 @input="updateStep($event, index, 'builders')" @paste="handlePaste"
                 :class="hasResourceValue(item.builders) ? ['rc-pill','rc-builders','rc-input', hasDeltaUp('builders',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
@@ -435,7 +436,7 @@
                 <span v-if="hasResourceValue(item.food)" :class="['rc-pill rc-food', hasDeltaUp('food', index) && 'd-up']">{{ item.food }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.food"
+              <input v-else type="text" maxlength="7" :value="item.food"
                 @input="updateStep($event, index, 'food')" @paste="handlePaste"
                 :class="hasResourceValue(item.food) ? ['rc-pill','rc-food','rc-input', hasDeltaUp('food',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
@@ -444,7 +445,7 @@
                 <span v-if="hasResourceValue(item.wood)" :class="['rc-pill rc-wood', hasDeltaUp('wood', index) && 'd-up']">{{ item.wood }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.wood"
+              <input v-else type="text" maxlength="7" :value="item.wood"
                 @input="updateStep($event, index, 'wood')" @paste="handlePaste"
                 :class="hasResourceValue(item.wood) ? ['rc-pill','rc-wood','rc-input', hasDeltaUp('wood',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
@@ -453,7 +454,7 @@
                 <span v-if="hasResourceValue(item.gold)" :class="['rc-pill rc-gold', hasDeltaUp('gold', index) && 'd-up']">{{ item.gold }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="2" :value="item.gold"
+              <input v-else type="text" maxlength="7" :value="item.gold"
                 @input="updateStep($event, index, 'gold')" @paste="handlePaste"
                 :class="hasResourceValue(item.gold) ? ['rc-pill','rc-gold','rc-input', hasDeltaUp('gold',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
@@ -462,7 +463,7 @@
                 <span v-if="hasResourceValue(item.stone)" :class="['rc-pill rc-stone', hasDeltaUp('stone', index) && 'd-up']">{{ item.stone }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" maxlength="2" :value="item.stone"
+              <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" maxlength="7" :value="item.stone"
                 @input="updateStep($event, index, 'stone')" @paste="handlePaste"
                 :class="hasResourceValue(item.stone) ? ['rc-pill','rc-stone','rc-input', hasDeltaUp('stone',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
@@ -603,7 +604,10 @@ import {
 
 export default {
   name: "BuildOrderSectioncontentEditable",
-  props: ["section", "readonly", "civ", "focus", "isLastAgeUp"],
+  // previousStep is the last step of the section before this one, so the delta
+  // marker on a section's first row compares against the real preceding step
+  // rather than having nothing to compare against.
+  props: ["section", "readonly", "civ", "focus", "isLastAgeUp", "previousStep"],
   emits: ["stepsChanged", "selectionChanged", "gameplanChanged", "ageDownRequested"],
   components: { IconSelector, IconAutoCompleteMenu, IconToolTip },
   setup(props, context) {
@@ -748,9 +752,14 @@ export default {
     }
 
     function hasDeltaUp(field, index) {
-      if (index === 0) return false;
+      //The step before this one, crossing the section boundary when needed —
+      //the first row of an age section still follows on from the age-up before
+      //it, so an increase there deserves the same marker as any other.
+      const previous = index === 0 ? props.previousStep : steps[index - 1];
+      if (!previous) return false;
+
       const curr = parseInt(steps[index][field]) || 0;
-      const prev = parseInt(steps[index - 1][field]) || 0;
+      const prev = parseInt(previous[field]) || 0;
       return curr > prev;
     }
 
@@ -853,6 +862,39 @@ export default {
       range.setStartAfter(img);
       range.collapse(true);
       selection.value = range;
+    };
+
+    /**
+     * A bare number is a minute count: "13" means 13:00 and "0" means 0:00.
+     * Anything else is left exactly as typed — "1:5" is not normalised, because
+     * it could as easily mean 1:05 as 1:50 and guessing would silently rewrite
+     * the author's timing.
+     *
+     * @param {string} value - The raw field contents.
+     * @return {string} The normalised timestamp.
+     */
+    const normalizeTimeString = (value) => {
+      const text = (value ?? "").replace(/<[^>]*>/g, "").trim();
+      return /^\d{1,2}$/.test(text) ? `${parseInt(text, 10)}:00` : text;
+    };
+
+    /**
+     * Normalises on blur rather than on input: rewriting mid-keystroke would
+     * turn "1" into "1:00" before the author had finished typing "13".
+     */
+    const handleTimeBlur = (event, index) => {
+      const isInput = event.target.tagName === "INPUT";
+      const normalized = normalizeTimeString(
+        isInput ? event.target.value : event.target.innerHTML
+      );
+
+      if (isInput) {
+        event.target.value = normalized;
+      } else {
+        event.target.innerHTML = normalized;
+      }
+
+      updateStep(event, index, "time");
     };
 
     const updateStep = (event, index, propertyName) => {
@@ -1016,6 +1058,7 @@ export default {
       aggregateVillagers,
       hasResourceValue,
       updateStep,
+      handleTimeBlur,
       updateStepDescription,
       removeStep,
       addStep,

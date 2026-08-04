@@ -59,6 +59,7 @@
             :civ="civ"
             :focus="sectionFocus == index"
             :isLastAgeUp="section.type === 'ageUp' && index === sections.length - 2"
+            :previousStep="previousSectionLastStep(index)"
           ></BuildOrderSectionEditor>
         </div>
         <v-row no-gutters justify="center" class="ma-4">
@@ -138,6 +139,21 @@ export default {
     function handleGameplanChanged(gameplan, index) {
       sections.value[index].gameplan = gameplan;
       context.emit("stepsChanged", sections.value);
+    }
+
+    /**
+     * The last step preceding a section, so its first row can show a resource
+     * delta. Skips empty sections rather than reporting nothing for them.
+     *
+     * @param {number} index - Index of the section asking.
+     * @return {Object|null} The preceding step, or null at the start of a build.
+     */
+    function previousSectionLastStep(index) {
+      for (let cursor = index - 1; cursor >= 0; cursor--) {
+        const steps = sections.value[cursor]?.steps ?? [];
+        if (steps.length) return steps[steps.length - 1];
+      }
+      return null;
     }
 
     /**
@@ -290,6 +306,7 @@ export default {
       readonly,
       sections,
       ageUp,
+      previousSectionLastStep,
       ageDown,
       getCurrentAge,
       getNextAgeName,
