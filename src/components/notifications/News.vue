@@ -24,8 +24,7 @@
         Every build now shows when it reaches <strong>Feudal</strong>, <strong>Castle</strong> and
         <strong>Imperial</strong> — right on the card, so you can compare tempo by scanning down
         the list instead of opening each one. Open a build and the timeline adds villager counts,
-        click-up times and how long each age-up took. Times the author didn't write down are
-        marked as estimates.
+        click-up times and how long each age-up took.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
         <v-icon icon="mdi-share-variant" size="x-small" class="mr-1" color="accent"></v-icon>
