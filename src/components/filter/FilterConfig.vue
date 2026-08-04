@@ -387,7 +387,9 @@ export default {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: rgb(var(--v-theme-primary));
+  /* accent, not primary: primary is navy in the light theme, which reads as an
+     unrelated colour against the gold used everywhere else for attention */
+  background: rgb(var(--v-theme-accent));
   flex-shrink: 0;
   align-self: center;
 }
