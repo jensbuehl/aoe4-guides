@@ -131,6 +131,15 @@ function interpolate(timings, startIndex = 0) {
       index == startIndex && isStep(element) && hasTimestamp(element) && hasVillagers(element)
   );
 
+  //No usable anchor at this position — the step at startIndex has no timestamp
+  //or no villagers, which is ordinary (a first step like "0:00 build a house"
+  //assigns nobody yet). Without an anchor there is nothing to interpolate from,
+  //so stop here instead of walking backwards off the start of the array: the
+  //loop below would otherwise read timings[-1] and throw.
+  if (firstValidStepIndex === -1) {
+    return timings;
+  }
+
   //Find second valid step
   const secondValidStepIndex = timings.findIndex(
     (element, index) =>
