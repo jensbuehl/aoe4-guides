@@ -22,20 +22,20 @@
     <v-card-text class="px-4">
       <div class="text-body-2 text-medium-emphasis">
         Every build now shows when it reaches <strong>Feudal</strong>, <strong>Castle</strong> and
-        <strong>Imperial</strong> — right on the card, so you can compare tempo by scanning down
-        the list instead of opening each one. Open a build and the timeline adds villager counts,
-        click-up times and how long each age-up took.
+        <strong>Imperial</strong>, right on the card. Compare tempo by scanning down the list
+        instead of opening each one. Open a build and the timeline adds villager counts, when you
+        clicked up, and how long it took to reach each age.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
         <v-icon icon="mdi-share-variant" size="x-small" class="mr-1" color="accent"></v-icon>
         <strong>Share to your phone.</strong> Every build has a Share option in the ⋮ menu. Scan
-        the QR code and it opens in focus mode — a second screen next to your monitor, no URL to
-        type.
+        the QR code and it opens in focus mode, a second screen next to your monitor with no URL
+        to type.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
         <v-icon icon="mdi-shuffle-variant" size="x-small" class="mr-1" color="accent"></v-icon>
         <strong>Remix, don't duplicate.</strong>
-        Building on someone else's opening credits them — your copy links straight back to the
+        Building on someone else's opening credits them. Your copy links straight back to the
         original in the header.
       </div>
       <v-divider class="mt-3"></v-divider>
