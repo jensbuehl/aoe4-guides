@@ -16,6 +16,10 @@ dist-ssr
 coverage
 *.local
 
+# One-off script scratch space and bundled script output
+scripts/.scratch/
+scripts/.build/
+
 /cypress/videos/
 /cypress/screenshots/
 

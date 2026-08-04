@@ -91,6 +91,19 @@
           </v-list>
         </v-menu>
       </template>
+      <!-- Vote + Favorite have no other route in on mobile: they are not in the
+           overflow menu, and the inline block above is desktop-only. -->
+      <template v-slot:mobile-actions>
+        <div v-if="userData" class="d-flex d-md-none align-center">
+          <Vote
+            v-model="userData"
+            :buildId="build.id"
+            @voteUpAdded="() => { build.upvotes++; }"
+            @voteUpRemoved="() => { build.upvotes--; }"
+          ></Vote>
+          <Favorite v-model="userData" :buildId="build.id"></Favorite>
+        </div>
+      </template>
     </BuildHeader>
 
     <!-- Description card: collapsible on mobile, static on desktop -->
@@ -119,6 +132,10 @@
       </div>
       <v-card-text class="d-none d-md-block" style="white-space: pre-line">{{ build.description }}</v-card-text>
     </v-card>
+
+    <!-- Summary of the steps, so it sits immediately before them: the reader gets
+         the shape, then the detail. View route only. -->
+    <AgeTimeline :steps="build.steps" />
 
     <BuildOrderEditor
       :steps="build.steps"
@@ -164,6 +181,7 @@ import Favorite from "@/components/Favorite.vue";
 import FocusMode from "@/components/builds/FocusMode.vue";
 import Vote from "@/components/Vote.vue";
 import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
+import AgeTimeline from "@/components/builds/AgeTimeline.vue";
 import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
@@ -195,6 +213,7 @@ export default {
     Vote,
     Discussion,
     BuildOrderEditor,
+    AgeTimeline,
     FocusMode,
     BuildNotFound,
     BuildHeader,

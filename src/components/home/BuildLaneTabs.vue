@@ -64,7 +64,7 @@
             style="text-decoration: none"
             :to="item.loading ? { name: 'Home' } : { name: 'BuildDetails', params: { id: item.id } }"
           >
-            <BuildListCard :build="item" />
+            <BuildListCard :build="item" :context="context" />
           </router-link>
         </template>
       </v-window-item>
@@ -108,6 +108,9 @@ export default {
     allTimeClassics: { type: Array, required: true },
     recentBuilds:    { type: Array, required: true },
     extraQuery:      { type: Object, default: () => ({}) },
+    // Forwarded to the cards. Lanes are not filter-driven, so no filterConfig
+    // is passed on — the cards show every field they have.
+    context:         { type: String, default: "default" },
   },
   setup(props) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

@@ -70,6 +70,7 @@
               :all-time-classics="allTimeClassicsList"
               :recent-builds="recentBuildsList"
               :extra-query="civ ? { civ } : {}"
+              :context="civ ? 'civ-locked' : 'default'"
             />
           </v-col>
         </v-row>

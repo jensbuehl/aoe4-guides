@@ -14,7 +14,10 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <BuildListCard :build="item"></BuildListCard>
+            <BuildListCard
+              :build="item"
+              :filter-config="filterConfig"
+            ></BuildListCard>
           </router-link>
         </div>
         <div style="text-align: center" v-if="!loading && count === 0">
@@ -210,6 +213,7 @@ export default {
       count,
       loading,
       paginationConfig,
+      filterConfig,
       configChanged,
       myFavoritesCountFn,
       nextPage,

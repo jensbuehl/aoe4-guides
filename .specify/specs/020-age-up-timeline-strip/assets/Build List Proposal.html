@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="design_doc_mode" content="canvas" />
+<title>AOE4 Guides — Build List Proposal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+img{display:block}
+a{color:#e7c05e}a:hover{color:#fff}
+.frame{position:absolute;background:#1D2432;color:#E3E7EE;padding:26px 28px 30px;border-radius:14px;box-shadow:0 18px 50px rgba(0,0,0,.35)}
+.frame.light{background:#D8DCE0;color:#26303F}
+.frame.paper{background:#fff;color:#1D2432;box-shadow:0 18px 50px rgba(0,0,0,.18)}
+.flabel{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8D9AAE;margin-bottom:4px}
+.frame.paper .flabel{color:#7A8698}
+.ftitle{font-size:19px;font-weight:700;color:#e7c05e;margin-bottom:2px}
+.frame.light .ftitle,.frame.paper .ftitle{color:#294790}
+.fnote{font-size:12.5px;line-height:1.55;color:#9BA7B8;max-width:62ch;margin-bottom:18px}
+.frame.paper .fnote{color:#5A6675}
+.list{display:flex;flex-direction:column;gap:8px}
+
+/* ---------- shared card shell ---------- */
+.card{display:flex;width:100%;background:#324156;border-radius:10px;overflow:hidden;min-height:112px}
+.light .card{background:#FAFAFA;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.flag{position:relative;width:26%;flex-shrink:0}
+.flag img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.flag .grad{position:absolute;inset:0;background:linear-gradient(to right,transparent 25%,#324156)}
+.light .flag .grad{background:linear-gradient(to right,transparent 25%,#FAFAFA)}
+.body{flex:1;min-width:0;padding:14px 18px;display:flex;flex-direction:column;justify-content:center;gap:7px}
+.title{color:#e7c05e;font-size:16px;font-weight:700;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.light .title{color:#294790}
+
+/* ---------- today: chip soup ---------- */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:4px;background:#3D516B;color:#DDE3EC;font-size:11.5px;font-weight:500;white-space:nowrap}
+.chip .mdi{font-size:14px}
+.chip--accent{background:#e7c05e;color:#22293A;font-weight:600}
+.chip--plain{background:none;color:#7C8798;padding:0}
+.chip--plain .mdi{color:#8D7B4B}
+.light .chip{background:#E3E6EA;color:#3B4757}
+.light .chip--accent{background:#CCAA55;color:#241E10}
+.light .chip--plain{background:none;color:#8B93A0}
+
+/* ---------- quiet meta line ---------- */
+.meta{display:flex;align-items:center;gap:10px;font-size:11.5px;color:#8593A6;font-weight:500;white-space:nowrap;overflow:hidden}
+.meta--who{font-size:12px}
+.meta i{font-size:13px;margin-right:4px;opacity:.8}
+.meta .sep{opacity:.4}
+.meta .link{color:#C9B47C}
+.light .meta{color:#6B7787}.light .meta .link{color:#294790}
+
+/* ---------- age treatments ---------- */
+/* A: chips */
+.agerow.none b{color:#5C6879;font-weight:500}
+.agechip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 9px;border-radius:4px;font-size:11.5px;font-weight:600;background:#2A3547;color:#D8DEE8;border:1px solid #3D516B}
+.agechip b{font-variant-numeric:tabular-nums;font-weight:700}
+.agechip--derived{background:none;color:#9BA7B8;border-style:dashed}
+.light .agechip{background:#EDEFF2;color:#37424F;border-color:#C6CBD3}
+.light .agechip--derived{background:none;color:#6B7787}
+
+/* B: shared-scale bar */
+.bar{position:relative;height:7px;border-radius:4px;background:#2A3547;overflow:hidden;display:flex}
+.light .bar{background:#E1E4E9}
+.bar span{height:100%}
+.s1{background:#3D516B}.s2{background:#6D7FA6}.s3{background:#B99A4E}.s4{background:#e7c05e}
+.light .s1{background:#A9B2C2}.light .s2{background:#6D7FA6}.light .s3{background:#294790}.light .s4{background:#CCAA55}
+.barlabels{display:flex;font-size:11px;font-weight:600;color:#9BA7B8;font-variant-numeric:tabular-nums;gap:14px}
+.barlabels em{font-style:normal;color:#6E7B8C;font-weight:500;margin-right:4px}
+.barwrap{display:flex;flex-direction:column;gap:5px}
+.light .barlabels{color:#5C6877}.light .barlabels em{color:#8B93A0}
+
+/* C: aligned column */
+.card--cols .body{padding-right:0}
+.ages{width:132px;flex-shrink:0;border-left:1px solid rgba(255,255,255,.07);padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:5px}
+.light .ages{border-left-color:rgba(0,0,0,.09)}
+.agerow{display:grid;grid-template-columns:17px 1fr;align-items:center;gap:8px;font-size:12px;font-variant-numeric:tabular-nums;line-height:1;min-height:18px}
+.agerow b{text-align:right}
+.agerow em{font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7E8B9D}
+.aicon{width:17px;height:17px;flex-shrink:0;opacity:.95;display:block}
+.agechip .aicon{width:15px;height:15px}
+.barlabels .aicon{width:14px;height:14px;display:inline-block;vertical-align:-3px;margin-right:3px}
+.agerow b{font-weight:700;color:#E6EAF1}
+.agerow.derived b{color:#9BA7B8;font-weight:500}
+.light .agerow em{color:#7A8698}.light .agerow b{color:#26303F}.light .agerow.derived b{color:#5C6877}
+
+.legend{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;font-size:11.5px;color:#8593A6}
+.legend div{display:flex;align-items:center;gap:7px}
+.sw{width:22px;height:7px;border-radius:4px}
+.callout{margin-top:18px;border-top:1px solid rgba(255,255,255,.08);padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px 26px;font-size:12px;line-height:1.5;color:#9BA7B8}
+.callout b{color:#e7c05e;font-weight:700}
+.paper .callout{border-top-color:rgba(0,0,0,.1);color:#5A6675}.paper .callout b{color:#294790}
+.vlabel{font-size:12px;font-weight:700;color:#E6EAF1;margin:0 0 7px}
+.vsub{font-size:11.5px;color:#8593A6;margin:6px 0 20px;line-height:1.5;max-width:60ch}
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 7px;border-radius:3px;background:#e7c05e;color:#22293A;margin-left:8px;vertical-align:2px}
+.tag--alt{background:#3D516B;color:#C3CCDA}
+
+/* details page strip */
+.dstrip{background:#324156;border-radius:12px;padding:22px 26px 18px}
+.dtitle{font-size:13px;font-weight:700;color:#E6EAF1;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.dtitle .mdi{color:#e7c05e}
+.track{position:relative;height:12px;border-radius:6px;background:#2A3547;display:flex;overflow:hidden}
+.track span{height:100%}
+.ticks{position:relative;height:80px;margin-top:8px}
+.tick{position:absolute;top:0;transform:translateX(-50%);text-align:center;width:96px}
+.tick .t{font-size:14px;font-weight:700;color:#E6EAF1;font-variant-numeric:tabular-nums}
+.tick .n{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#8D9AAE;margin-top:2px}
+.tick .v{font-size:10.5px;color:#7E8B9D;margin-top:2px}
+.tick.derived .t{color:#9BA7B8;font-weight:500}
+.axis{display:flex;justify-content:space-between;font-size:10.5px;color:#6E7B8C;margin-top:2px;font-variant-numeric:tabular-nums}
+
+/* mobile */
+.phone{width:392px;background:#1D2432;border-radius:22px;padding:14px 12px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.07)}
+.card--xs{min-height:96px}
+.card--xs .title{font-size:13.5px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.card--xs .body{padding:10px 12px;gap:6px}
+.card--xs .flag{width:30%}
+</style>
+</head>
+<body>
+
+<div class="frame" id="intro" style="left:40px;top:40px;width:820px">
+  <div class="flabel">Assessment</div>
+  <div class="ftitle">The card is fine. The chip row is doing the wrong job.</div>
+  <div class="fnote" style="margin-bottom:14px">A flag-left horizontal row is the right pattern for this list: strong civ identity, one build per line, scannable, and it survives long titles. Three things hold it back today.</div>
+  <div id="introBody"></div>
+</div>
+
+<div class="frame" id="today" style="left:40px;top:470px;width:820px">
+  <div class="flabel">Today — recreated from Builds.vue</div>
+  <div class="ftitle">Chip soup</div>
+  <div class="fnote">Nine chips per card, all the same weight, none of them answering “is this the build I want?”. Views only appear when you sort by views, so the row's content shifts under you.</div>
+  <div class="list" id="todayList"></div>
+</div>
+
+<div class="frame" id="rec" style="left:920px;top:40px;width:900px">
+  <div class="flabel">Proposal</div>
+  <div class="ftitle">Timings in, chips out<span class="tag">Recommended</span></div>
+  <div class="fnote">Age-up times get their own right-hand column, aligned across every row so you can compare builds by scanning straight down. Passive metadata drops to a single quiet line — chips are reserved for things that are actionable (author, creator) or a state (Draft, New). Same card height as today.</div>
+  <div class="list" id="recList"></div>
+  <div class="callout" id="recNotes"></div>
+</div>
+
+<div class="frame" id="variants" style="left:920px;top:1270px;width:900px">
+  <div class="flabel">Age-up treatments</div>
+  <div class="ftitle">Three ways to show the timeline</div>
+  <div class="fnote">All three read from <code>getTimings(steps)</code> + section age boundaries. They differ in how well they compare <em>across</em> rows.</div>
+  <div id="variantBody"></div>
+</div>
+
+<div class="frame paper" id="stated" style="left:40px;top:1190px;width:820px">
+  <div class="flabel">Honesty</div>
+  <div class="ftitle">Stated vs. derived</div>
+  <div class="fnote">Interpolated timings are estimates and must not look like facts. One rule, applied everywhere: a plain time is one the author stamped; a <code>~</code> prefix in lighter type means we derived it from villager deltas. Tooltip on hover: “Estimated from villager count”. No timings at all → the column stays empty, never <code>??:??</code>.</div>
+  <div id="statedBody"></div>
+</div>
+
+<div class="frame light" id="light" style="left:40px;top:1680px;width:820px">
+  <div class="flabel">Light theme</div>
+  <div class="ftitle">Same structure, navy primary</div>
+  <div class="fnote">Age fills use navy for Castle and muted gold for Imperial so the accent still lands on the late ages.</div>
+  <div class="list" id="lightList"></div>
+</div>
+
+<div class="frame" id="details" style="left:1880px;top:40px;width:880px">
+  <div class="flabel">Build details page</div>
+  <div class="ftitle">Full-width timeline strip</div>
+  <div class="fnote">On the details page there is room for the real thing: a shared 0–16:00 track with age markers, villager count at each age-up, and the same stated/derived distinction. Sits directly under the title, above the steps.</div>
+  <div id="detailsBody"></div>
+</div>
+
+<div class="frame" id="mobile" style="left:1880px;top:560px;width:880px">
+  <div class="flabel">xs / sm</div>
+  <div class="ftitle">Ages replace season and map</div>
+  <div class="fnote">On phones the age chips take the slot season/map occupy today — strictly more useful for choosing a build. Author and time stay; everything else waits for the details page.</div>
+  <div id="mobileBody"></div>
+</div>
+
+<script>
+const F = c => 'assets/flags/' + c + '.webp';
+const T = s => s == null ? null : Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+const N = n => n >= 1000 ? (n/1000).toFixed(1).replace(/\.0$/,'') + 'k' : '' + n;
+const SCALE = 960; // 16:00 shared scale
+
+const B = [
+ {civ:'eng',title:'3:58 Feudal Rush English | 40 units at minute 10',author:'Valdemar1902',ago:'Sep 2023',views:55525,comments:1,season:'Season 5',map:'Any',creator:'Valdemar',f:238,c:null,i:null,dc:false},
+ {civ:'kte',title:'Fast 2 TC Knights Templar!',author:'CrackedyHere',ago:'Apr 2025',views:49879,comments:4,season:'Season 10',map:'Any',creator:'CrackedyHere',f:310,c:545,i:null,dc:true},
+ {civ:'fre',title:'French 3:38 Feudal All-in/Castle Timing',author:'Valdemar1902',ago:'Feb 2024',views:39173,comments:1,season:'Season 6',map:'Any',creator:'Valdemar',f:218,c:460,i:null,dc:false},
+ {civ:'jap',title:'Feudal Rush (Onna Bugeisha)',author:'Valdemar1902',ago:'Nov 2023',views:37004,comments:0,season:'Season 6',map:'Any',creator:'Valdemar',f:230,c:null,i:null,dc:false},
+ {civ:'ott',title:"Full 'Standard Ottoman' Guide with Matchups and Guidance",author:'Valdemar1902',ago:'Oct 2023',views:33263,comments:2,season:'Season 5',map:'Any',creator:'Valdemar',f:260,c:535,i:850,dc:false,di:true},
+ {civ:'jap',title:'Japanese Fast Castle (Vortix)',author:'dinotreehouse',ago:'Mar 2024',views:30504,comments:3,season:'Season 6',map:'Dry Arabia',creator:'Aussie Drongo',f:245,c:435,i:820,dc:false,di:true},
+ {civ:'rus',title:'Rus Stable into 2TC (all MATCHUPS)',author:'Valdemar1902',ago:'May 2024',views:26772,comments:1,season:'Season 7',map:'Any',creator:'Valdemar',f:255,c:570,i:null,dc:true}
+];
+
+/* ---- today's chip card ---- */
+function todayCard(b){
+  return `<div class="card"><div class="flag"><img src="${F(b.civ)}" alt=""><span class="grad"></span></div>
+  <div class="body"><div class="title">${b.title}</div><div class="chips">
+  <span class="chip chip--accent"><i class="mdi mdi-account-edit"></i>${b.author}</span>
+  <span class="chip"><i class="mdi mdi-clock-edit-outline"></i>${b.ago}</span>
+  <span class="chip"><i class="mdi mdi-eye"></i>${b.views}</span>
+  ${b.comments?`<span class="chip"><i class="mdi mdi-message"></i>${b.comments}</span>`:''}
+  <span class="chip"><i class="mdi mdi-trophy"></i>${b.season}</span>
+  <span class="chip chip--plain"><i class="mdi mdi-youtube"></i>${b.creator}</span>
+  </div></div></div>`;
+}
+
+/* ---- quiet meta line ---- */
+function metaLine(b){
+  return `<div class="meta meta--who"><span class="link"><i class="mdi mdi-account-edit"></i>${b.author}</span>
+  ${b.creator?`<span class="sep">·</span><span class="link"><i class="mdi mdi-youtube"></i>${b.creator}</span>`:''}</div>
+  <div class="meta"><span>${b.ago}</span>
+  <span class="sep">·</span><span><i class="mdi mdi-eye"></i>${N(b.views)}</span>
+  ${b.comments?`<span class="sep">·</span><span><i class="mdi mdi-message-outline"></i>${b.comments}</span>`:''}
+  <span class="sep">·</span><span>${b.season}</span></div>`;
+}
+
+/* ---- C: aligned age column (recommended) ---- */
+function ageCol(b){
+  const row = (a,v,d) => `<div class="agerow ${v==null?'none':(d?'derived':'')}"><img class="aicon" src="assets/res/age_${a}.webp" alt="Age ${a}"><b>${v==null?'—':(d?'~':'')+T(v)}</b></div>`;
+  return `<div class="ages">${row(2,b.f,false)}${row(3,b.c,b.dc)}${row(4,b.i,b.di)}</div>`;
+}
+function recCard(b){
+  return `<div class="card card--cols"><div class="flag"><img src="${F(b.civ)}" alt=""><span class="grad"></span></div>
+  <div class="body"><div class="title">${b.title}</div>${metaLine(b)}</div>${ageCol(b)}</div>`;
+}
+
+/* ---- A: chips ---- */
+function ageChips(b){
+  const c = (a,v,d) => v==null?'':`<span class="agechip ${d?'agechip--derived':''}"><img class="aicon" src="assets/res/age_${a}.webp" alt="Age ${a}"><b>${(d?'~':'')+T(v)}</b></span>`;
+  return `<div class="chips">${c(2,b.f,false)}${c(3,b.c,b.dc)}${c(4,b.i,b.di)}</div>`;
+}
+/* ---- B: shared-scale bar ---- */
+function ageBar(b){
+  const pts = [b.f, b.c, b.i].filter(v=>v!=null);
+  const end = pts.length?pts[pts.length-1]:0;
+  const w = v => (v/SCALE*100).toFixed(1)+'%';
+  let segs = `<span class="s1" style="width:${w(b.f)}"></span>`;
+  if(b.c) segs += `<span class="s2" style="width:${w(b.c-b.f)}"></span>`;
+  if(b.i) segs += `<span class="s3" style="width:${w(b.i-b.c)}"></span>`;
+  if(b.i) segs += `<span class="s4" style="width:${w(80)}"></span>`;
+  const lab = (a,v,d)=>v==null?'':`<span style="${d?'color:#7E8B9D':''}"><img class="aicon" src="assets/res/age_${a}.webp" alt="Age ${a}">${(d?'~':'')+T(v)}</span>`;
+  return `<div class="barwrap"><div class="barlabels">${lab(2,b.f,false)}${lab(3,b.c,b.dc)}${lab(4,b.i,b.di)}${!b.c?'<span style="opacity:.5">no castle timing</span>':''}</div>
+  <div class="bar">${segs}</div></div>`;
+}
+function barCard(b){
+  return `<div class="card"><div class="flag"><img src="${F(b.civ)}" alt=""><span class="grad"></span></div>
+  <div class="body"><div class="title">${b.title}</div>${ageBar(b)}${metaLine(b)}</div></div>`;
+}
+function chipCard(b){
+  return `<div class="card"><div class="flag"><img src="${F(b.civ)}" alt=""><span class="grad"></span></div>
+  <div class="body"><div class="title">${b.title}</div>${ageChips(b)}${metaLine(b)}</div></div>`;
+}
+
+document.getElementById('introBody').innerHTML = `<div class="callout" style="grid-template-columns:1fr;border-top:none;padding-top:0;gap:14px">
+<div><b>1. Every chip weighs the same.</b> Author, date, views, comments, season, map and creator are seven equally-loud pills. Nothing is emphasised, so nothing is scannable — the eye has no entry point after the title.</div>
+<div><b>2. The decisive information is missing.</b> Civ, author and views don't tell you what the build does. A Castle-at-9:00 boom and a Feudal-at-3:20 all-in look identical in the list, so you open every card to find out.</div>
+<div><b>3. Nothing lines up.</b> Chips are inline-flowed, so equivalent facts sit at a different x on every row. Comparing two builds means reading both rows word by word.</div>
+<div style="color:#C6CFDC"><b style="color:#e7c05e">Direction:</b> keep the row, split it into three zones — identity (flag) · what it is (title + timings) · who and when (quiet meta) — and give the age-up times a fixed, aligned position so a vertical scan works.</div></div>`;
+
+document.getElementById('todayList').innerHTML = B.slice(0,4).map(todayCard).join('');
+document.getElementById('recList').innerHTML = B.map(recCard).join('');
+document.getElementById('lightList').innerHTML = B.slice(0,3).map(recCard).join('');
+
+document.getElementById('recNotes').innerHTML = `
+<div><b>Zone 3 is a column, not chips.</b> Fixed 132px rail, the game's own age crests instead of the words Feudal/Castle/Imperial, right-aligned times, tabular numerals. Each age sits at the same pixel on every row, so “which of these is the fastest Castle” is one downward scan.</div>
+<div><b>Chips only where they act.</b> Author and video creator stay links; Draft and New stay coloured chips. Season, map, date, views and comments become one quiet 11.5px line — present, searchable, not shouting.</div>
+<div><b>Three fixed lines, not a wrapping run.</b> Title / people (author · creator) / stats (date · views · comments · season). Every card is exactly three lines, so nothing reflows between rows and vertical centring is safe again — and each line has one job, which is easier to skip than a six-item run.</div>
+<div><b>Views always show.</b> No more content shifting with <code>orderBy</code>. If the sort key is score, show score in the same slot instead of hiding views.</div>
+<div><b>Em-dash for missing ages.</b> A feudal all-in that never states Castle shows “—”, which is itself a signal about the build.</div>`;
+
+document.getElementById('variantBody').innerHTML = `
+<div class="vlabel">A · Chips in the existing item group<span class="tag tag--alt">cheapest</span></div>
+<div class="list">${chipCard(B[5])}</div>
+<div class="vsub">Drop-in: three more <code>v-chip</code>s in the row you already have. But it inherits the problem — inline flow means the times land at a different x on every card, and they compete visually with author and season.</div>
+<div class="vlabel">B · Shared-scale timeline bar<span class="tag tag--alt">most expressive</span></div>
+<div class="list">${barCard(B[5])}${barCard(B[0])}</div>
+<div class="vsub">Every bar spans the same 0–16:00, so the shape alone tells you the plan: a short dark segment = fast feudal, a long pale segment = a boom. Reads pre-attentively, no numbers required. Costs one text line of height, and needs a fallback when only Feudal is known (second card).</div>
+<div class="vlabel">C · Aligned right-hand column<span class="tag">recommended for the list</span></div>
+<div class="list">${recCard(B[5])}${recCard(B[1])}</div>
+<div class="vsub">Best comparison per pixel and no extra height. Doubles as the visual anchor for a future “sort by Castle time”. Use B on the details page where there's width to spend.</div>`;
+
+document.getElementById('statedBody').innerHTML = `
+<div style="display:flex;gap:26px;align-items:flex-start;flex-wrap:wrap">
+<div style="background:#324156;border-radius:10px;padding:16px 20px;width:210px">
+  <div class="agerow"><img class="aicon" src="assets/res/age_2.webp" alt="Age 2"><b>4:05</b></div>
+  <div class="agerow derived" style="margin-top:6px"><img class="aicon" src="assets/res/age_3.webp" alt="Age 3"><b>~7:15</b></div>
+  <div class="agerow none" style="margin-top:6px"><img class="aicon" src="assets/res/age_4.webp" alt="Age 4"><b>—</b></div>
+</div>
+<div style="flex:1;min-width:300px;font-size:12.5px;line-height:1.6;color:#5A6675">
+  <div style="display:flex;gap:10px;margin-bottom:9px"><b style="color:#294790;min-width:74px">4:05</b><span>author stamped this step — bold, full contrast, no prefix</span></div>
+  <div style="display:flex;gap:10px;margin-bottom:9px"><b style="color:#5A6675;min-width:74px;font-weight:500">~7:15</b><span>interpolated from villager deltas — tilde prefix, lighter weight and colour</span></div>
+  <div style="display:flex;gap:10px"><b style="color:#8B93A0;min-width:74px;font-weight:500">—</b><span>build never reaches this age, or <code>getTimings</code> returned null</span></div>
+</div></div>`;
+
+/* details strip */
+(function(){
+  const b = B[4], scale = SCALE, w = v => (v/scale*100);
+  const seg = (a,b2,cls) => `<span class="${cls}" style="width:${(w(b2)-w(a)).toFixed(1)}%"></span>`;
+  const tick = (v,a,n,vill,d) => `<div class="tick ${d?'derived':''}" style="left:${w(v).toFixed(1)}%"><img class="aicon" src="assets/res/age_${a}.webp" alt="" style="width:22px;height:22px;margin:0 auto 3px"><div class="t">${d?'~':''}${T(v)}</div><div class="n">${n}</div><div class="v">${vill} vils</div></div>`;
+  document.getElementById('detailsBody').innerHTML = `<div class="dstrip">
+    <div class="dtitle"><i class="mdi mdi-timer-sand"></i>Age timeline · ${b.title}</div>
+    <div class="track">${seg(0,b.f,'s1')}${seg(b.f,b.c,'s2')}${seg(b.c,b.i,'s3')}${seg(b.i,b.i+90,'s4')}</div>
+    <div class="ticks">${tick(b.f,2,'Feudal',21,false)}${tick(b.c,3,'Castle',34,false)}${tick(b.i,4,'Imperial',48,true)}</div>
+    <div class="axis"><span>0:00</span><span>4:00</span><span>8:00</span><span>12:00</span><span>16:00</span></div>
+  </div>`;
+})();
+
+/* mobile */
+(function(){
+  const xs = b => `<div class="card card--xs"><div class="flag"><img src="${F(b.civ)}" alt=""><span class="grad"></span></div>
+  <div class="body"><div class="title">${b.title}</div>${ageChips(b)}
+  <div class="meta" style="flex-wrap:wrap;white-space:normal"><span class="link"><i class="mdi mdi-account-edit"></i>${b.author}</span><span class="sep">·</span><span>${b.ago}</span><span class="sep">·</span><span><i class="mdi mdi-eye"></i>${N(b.views)}</span></div>
+  </div></div>`;
+  document.getElementById('mobileBody').innerHTML = `<div style="display:flex;gap:26px;align-items:flex-start">
+  <div class="phone"><div class="list">${xs(B[5])}${xs(B[1])}${xs(B[0])}</div></div>
+  <div class="callout" style="border-top:none;padding-top:0;grid-template-columns:1fr;flex:1">
+  <div><b>Column becomes chips.</b> There is no width for a rail at xs, so the ages ride in the chip row — but only Feudal/Castle/Imp, replacing season and map.</div>
+  <div><b>Two-line title allowed.</b> The card is height-constrained per breakpoint today; with the meta line reduced to three items the 96px xs card still fits a two-line title.</div>
+  <div><b>Derived stays marked.</b> Outlined chip with a <code>~</code> vs. filled chip carries the same meaning as the desktop lighter type.</div></div></div>`;
+})();
+</script>
+</body>
+</html>

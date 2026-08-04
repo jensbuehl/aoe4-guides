@@ -23,6 +23,12 @@ function pickBuildFields(data, id) {
     comments: data.comments ?? 0,
     timeCreated: data.timeCreated ?? null,
     isDraft: data.isDraft ?? false,
+    // Copied through, never computed here: the derivation lives in the client's
+    // ES-module composables, which this CommonJS package cannot import. Deriving
+    // it here would mean a second implementation free to disagree with the first.
+    // Null on builds written before the field existed; the card renders no
+    // timings for those rather than a placeholder.
+    ageTimings: data.ageTimings ?? null,
   };
 }
 

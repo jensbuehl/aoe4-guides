@@ -2,59 +2,54 @@
   <!-- Mobile (xs/sm): lean hero — title + overflow in card top-right + 3 chips -->
   <!-- The global Header.vue already provides page nav; no extra bar needed here -->
   <v-card flat rounded="lg" class="d-md-none">
-    <div class="d-flex align-start pt-2 pl-4 pr-1">
-      <!-- Plain div avoids v-card-title's internal 16px padding so text aligns with chips -->
-      <div class="flex-grow-1 py-1 pr-2 text-subtitle-1 font-weight-bold build-header-title">
-        {{ build.title || 'New build' }}
-      </div>
-      <!-- Overflow ⋮: slot renders the v-btn icon directly, no extra wrapper padding -->
+    <!-- Civ lockup + overflow ⋮, mirroring the desktop top bar: civ is identity,
+         so it reads as a flag and a name rather than as one more chip. -->
+    <div class="d-flex align-center pt-2 pl-4 pr-1">
+      <template v-if="civEntry">
+        <img
+          :src="civEntry.flagLarge"
+          alt=""
+          style="width:32px;height:24px;border-radius:3px;object-fit:cover;flex-shrink:0;"
+        />
+        <span class="text-body-2 font-weight-bold ml-2 mr-2">{{ civLabel }}</span>
+      </template>
+      <v-spacer></v-spacer>
+      <!-- Slot renders the v-btn icon directly, no extra wrapper padding -->
       <slot name="actions"></slot>
     </div>
-    <div :class="['px-4 pt-1 d-flex flex-wrap ga-2', readonly ? 'pb-1' : 'pb-4']">
+    <!-- Plain div avoids v-card-title's internal 16px padding so text aligns below -->
+    <div class="px-4 pt-1 text-subtitle-1 font-weight-bold build-header-title">
+      {{ build.title || 'New build' }}
+    </div>
+    <!-- State only, so this row is absent entirely on most builds -->
+    <div
+      v-if="build.isDraft || (createdDate && isNew(createdDate))"
+      :class="['px-4 pt-2 d-flex flex-wrap ga-2', readonly ? 'pb-0' : 'pb-2']"
+    >
       <v-chip v-if="build.isDraft" label color="error" size="small">
         <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
       </v-chip>
       <v-chip v-if="createdDate && isNew(createdDate)" label color="accent" size="small">
         <v-icon start icon="mdi-alert-decagram"></v-icon>New
       </v-chip>
-      <v-chip v-if="build.civ" label color="accent" size="small">
-        <v-icon start icon="mdi-earth"></v-icon>{{ civLabel }}
-      </v-chip>
-      <v-chip v-if="build.season" label color="accent" size="small">
-        <v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}
-      </v-chip>
     </div>
+    <div v-if="!readonly" class="pb-2"></div>
 
-    <!-- Author · upvotes · views · time · remix — view route only -->
-    <div
-      v-if="readonly && (build.author || build.upvotes || build.views || createdDate || build.remixOf?.id)"
-      class="px-4 pb-3 pt-1 d-flex align-center flex-wrap ga-2 text-caption text-medium-emphasis"
-    >
-      <span v-if="build.author" class="font-weight-bold">{{ build.author }}</span>
-      <template v-if="build.upvotes">
-        <span>·</span><v-icon size="12">mdi-thumb-up</v-icon><span>{{ build.upvotes }}</span>
-      </template>
-      <template v-if="build.views">
-        <span>·</span><v-icon size="12">mdi-eye</v-icon><span>{{ build.views }}</span>
-      </template>
-      <template v-if="createdDate">
-        <span>·</span><span>{{ timeSince(createdDate) }}</span>
-      </template>
-      <!-- Remix lineage — one flex child, so the phrase keeps normal word spacing.
-           Unlike the separators above, this one's · sits inside the span: this is
-           the only item long enough to get pushed onto its own line, and a lone ·
-           left behind on the previous line reads like a typo. -->
-      <template v-if="build.remixOf?.id">
-        <span class="build-header-remix">
-          <span class="mr-2">·</span>Remix of
-          <router-link
-            :to="{ name: 'BuildDetails', params: { id: build.remixOf.id } }"
-            :title="build.remixOf.title"
-            class="text-accent text-decoration-none"
-            >{{ build.remixOf.title }}</router-link
-          ><template v-if="build.remixOf.author"> by {{ build.remixOf.author }}</template>
-        </span>
-      </template>
+    <!-- Season moved onto the stats line, matching BuildListCard: chips are
+         reserved for state, everything passive reads as quiet text. Map and
+         strategy are dropped here — the single column is narrow, and the room
+         goes to the vote and favourite actions below, which have no other
+         route in on mobile. -->
+    <BuildMetaLines
+      v-if="readonly"
+      :build="build"
+      :created-date="createdDate"
+      :link-author="shouldLinkChips"
+      :show-secondary="false"
+      wrapper-class="px-4 pt-1 pb-2 d-flex flex-column ga-1"
+    />
+    <div v-if="readonly && $slots['mobile-actions']" class="px-2 pb-1">
+      <slot name="mobile-actions"></slot>
     </div>
   </v-card>
 
@@ -81,52 +76,15 @@
       <v-chip v-if="createdDate && isNew(createdDate)" label color="accent" size="small">
         <v-icon start icon="mdi-alert-decagram"></v-icon>New
       </v-chip>
-      <v-chip v-if="build.season" label color="accent" size="small">
-        <v-icon start icon="mdi-trophy"></v-icon>{{ build.season }}
-      </v-chip>
-      <v-chip v-if="build.strategy" label color="accent" size="small">
-        <v-icon start icon="mdi-strategy"></v-icon>{{ build.strategy }}
-      </v-chip>
-      <v-chip v-if="build.map" label color="accent" size="small">
-        <v-icon start icon="mdi-map"></v-icon>{{ build.map }}
-      </v-chip>
     </div>
-    <!-- Author · upvotes · views · time · remix — view only -->
-    <div
-      v-if="readonly && (build.author || build.upvotes || build.views || createdDate || build.remixOf?.id)"
-      class="px-4 pb-3 pt-0 d-flex align-center flex-wrap ga-2 text-caption text-medium-emphasis"
-    >
-      <span v-if="build.author" class="font-weight-bold">
-        <a v-if="shouldLinkChips && build.authorUid"
-          :href="`/builds?author=${build.authorUid}`"
-          class="text-medium-emphasis text-decoration-none">{{ build.author }}</a>
-        <template v-else>{{ build.author }}</template>
-      </span>
-      <template v-if="build.upvotes">
-        <span>·</span><v-icon size="12">mdi-thumb-up</v-icon><span>{{ build.upvotes }}</span>
-      </template>
-      <template v-if="build.views">
-        <span>·</span><v-icon size="12">mdi-eye</v-icon><span>{{ build.views }}</span>
-      </template>
-      <template v-if="createdDate">
-        <span>·</span><span>{{ timeSince(createdDate) }}</span>
-      </template>
-      <!-- Remix lineage — one flex child, so the phrase keeps normal word spacing.
-           Unlike the separators above, this one's · sits inside the span: this is
-           the only item long enough to get pushed onto its own line, and a lone ·
-           left behind on the previous line reads like a typo. -->
-      <template v-if="build.remixOf?.id">
-        <span class="build-header-remix">
-          <span class="mr-2">·</span>Remix of
-          <router-link
-            :to="{ name: 'BuildDetails', params: { id: build.remixOf.id } }"
-            :title="build.remixOf.title"
-            class="text-accent text-decoration-none"
-            >{{ build.remixOf.title }}</router-link
-          ><template v-if="build.remixOf.author"> by {{ build.remixOf.author }}</template>
-        </span>
-      </template>
-    </div>
+    <!-- Same two quiet lines as the list card — view route only -->
+    <BuildMetaLines
+      v-if="readonly"
+      :build="build"
+      :created-date="createdDate"
+      :link-author="shouldLinkChips"
+      wrapper-class="px-4 pb-3 pt-0 d-flex flex-column ga-1"
+    />
   </v-card>
 </template>
 
@@ -134,9 +92,11 @@
 import { computed } from "vue";
 import { civs as allCivs, getCivById } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
+import BuildMetaLines from "@/components/builds/BuildMetaLines.vue";
 
 export default {
   name: "BuildHeader",
+  components: { BuildMetaLines },
   props: {
     build: {
       type: Object,
@@ -152,7 +112,7 @@ export default {
     },
   },
   setup(props) {
-    const { timeSince, isNew } = useTimeSince();
+    const { isNew } = useTimeSince();
 
     const tsToDate = (ts) => {
       if (!ts) return null;
@@ -179,7 +139,6 @@ export default {
     });
 
     return {
-      timeSince,
       isNew,
       shouldLinkChips,
       civEntry,
@@ -198,17 +157,6 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
   white-space: normal;
-}
-
-/* The meta row stays one line tall: a long original title ellipsizes instead of
-   wrapping the caption into a paragraph. min-width:0 is what lets this flex item
-   shrink below its content width at all; the full title stays on the link's
-   tooltip. Truncation eats "by <author>" first, which is the right priority. */
-.build-header-remix {
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 </style>

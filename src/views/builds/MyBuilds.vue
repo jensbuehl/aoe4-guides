@@ -14,7 +14,11 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <BuildListCard :build="item"></BuildListCard>
+            <BuildListCard
+              :build="item"
+              context="author-locked"
+              :filter-config="filterConfig"
+            ></BuildListCard>
           </router-link>
         </div>
         <div v-if="builds" v-for="item in builds">
@@ -25,7 +29,11 @@
               params: { id: !item.loading ? item.id : null },
             }"
           >
-            <BuildListCard :build="item"></BuildListCard>
+            <BuildListCard
+              :build="item"
+              context="author-locked"
+              :filter-config="filterConfig"
+            ></BuildListCard>
           </router-link>
         </div>
         <div style="text-align: center" v-if="!loading && count === 0">
@@ -207,6 +215,7 @@ export default {
       count,
       loading,
       paginationConfig,
+      filterConfig,
       configChanged,
       myBuildsCountFn,
       nextPage,

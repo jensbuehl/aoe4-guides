@@ -10,6 +10,7 @@ import {
   getEndBeforeQueryParam,
   getLimitToLastQueryParam,
 } from "@/composables/data/queryParameterBuilder";
+import { getAgeTimings, toStoredAgeTimings } from "@/composables/builds/useAgeTimings.js";
 import {
   getMostRecentBuildsConfig,
   getPopularBuildsConfig,
@@ -395,6 +396,22 @@ export async function getBuild(buildId) {
 }
 
 /**
+ * Stamps a build with its derived age timings.
+ *
+ * Done here rather than in the views because all three write paths — create,
+ * edit and publish-draft — funnel through addBuild/updateBuild, so no caller can
+ * forget. The whole field is replaced on every write, which is what removes ages
+ * an edit has taken away.
+ *
+ * @param {Object} build - The build about to be written.
+ * @return {Object} The same build, with ageTimings set.
+ */
+function withAgeTimings(build) {
+  build.ageTimings = toStoredAgeTimings(getAgeTimings(build?.steps));
+  return build;
+}
+
+/**
  * Adds a build to the database and store, optionally uses a custom ID.
  *
  * @param {Object} build - The build object to be added.
@@ -402,6 +419,7 @@ export async function getBuild(buildId) {
  * @return {Promise<void>} - A promise that resolves when the build is added and operations are completed.
  */
 export async function addBuild(build, customId = null) {
+  withAgeTimings(build);
   store.commit("setBuild", build);
   return add(build, customId);
 }
@@ -425,7 +443,7 @@ export async function deleteBuild(buildId) {
  * @return {Promise} A promise that resolves with the updated build data.
  */
 export async function updateBuild(buildId, build, updateCreatedTimestamp = false) {
-  return update(buildId, build, updateCreatedTimestamp);
+  return update(buildId, withAgeTimings(build), updateCreatedTimestamp);
 }
 
 /**
