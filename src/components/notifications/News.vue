@@ -11,30 +11,33 @@
         :style="{ color: $vuetify.theme.current.colors.accent }"
       >
         <v-icon
-          icon="mdi-share-variant"
+          icon="mdi-timer-sand"
           size="small"
           class="mr-4"
           color="accent"
         ></v-icon>
-        Share &amp; Remix
+        Age Timings
       </span>
     </v-card-title>
     <v-card-text class="px-4">
       <div class="text-body-2 text-medium-emphasis">
-        Every build now has a <strong>Share</strong> option in the ⋮ menu. Scan the QR code with
-        your phone and the build opens in focus mode — a second screen next to your monitor, no
-        URL to type.
+        Every build now shows when it reaches <strong>Feudal</strong>, <strong>Castle</strong> and
+        <strong>Imperial</strong> — right on the card, so you can compare tempo by scanning down
+        the list instead of opening each one. Open a build and the timeline adds villager counts,
+        click-up times and how long each age-up took. Times the author didn't write down are
+        marked as estimates.
+      </div>
+      <div class="text-body-2 text-medium-emphasis mt-2">
+        <v-icon icon="mdi-share-variant" size="x-small" class="mr-1" color="accent"></v-icon>
+        <strong>Share to your phone.</strong> Every build has a Share option in the ⋮ menu. Scan
+        the QR code and it opens in focus mode — a second screen next to your monitor, no URL to
+        type.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
         <v-icon icon="mdi-shuffle-variant" size="x-small" class="mr-1" color="accent"></v-icon>
         <strong>Remix, don't duplicate.</strong>
-        Building on someone else's opening now credits them — your copy links straight back to the
+        Building on someone else's opening credits them — your copy links straight back to the
         original in the header.
-      </div>
-      <div class="text-body-2 text-medium-emphasis mt-2">
-        <v-icon icon="mdi-monitor" size="x-small" class="mr-1" color="accent"></v-icon>
-        <strong>Focus mode stays awake.</strong> Your screen no longer dims mid-build, and the home
-        page loads noticeably faster.
       </div>
       <v-divider class="mt-3"></v-divider>
       <div class="text-body-2 text-medium-emphasis mt-3">
