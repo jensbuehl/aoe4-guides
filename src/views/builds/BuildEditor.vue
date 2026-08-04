@@ -5,7 +5,7 @@
       <template v-slot:actions>
         <div class="d-flex align-center ga-1">
           <span v-if="isDirty" class="unsaved-indicator text-caption mr-1">
-            <v-icon size="x-small" color="warning">mdi-circle-medium</v-icon>Unsaved
+            <v-icon size="x-small" color="accent">mdi-circle-medium</v-icon>Modified
           </span>
           <v-btn color="accent" size="small" prepend-icon="mdi-publish" @click="handleSave">Publish</v-btn>
           <v-menu>
@@ -24,7 +24,7 @@
               <v-divider v-if="mode === 'edit'" class="my-1"></v-divider>
               <v-list-item v-if="mode === 'edit'" @click="handleRemix">
                 <v-icon color="accent" class="mr-4">mdi-shuffle-variant</v-icon>
-                Remix Build
+                Remix
               </v-list-item>
               <v-list-item v-if="mode === 'edit' && clipboardIsSupported" @click="handleCopyOverlayFormat">
                 <v-icon color="accent" class="mr-4">mdi-content-copy</v-icon>
