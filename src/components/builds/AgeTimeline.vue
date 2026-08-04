@@ -24,7 +24,7 @@
           v-for="segment in segments"
           :key="segment.key"
           :class="['age-seg', segment.key]"
-          :style="{ width: segment.width }"
+          :style="{ width: segment.width + '%' }"
         ></span>
       </div>
       <div class="age-ticks">
@@ -83,6 +83,7 @@ import {
   AGE_DISPLAY,
   formatAgeTime,
   ageTimingLabel,
+  getAgeSegments,
 } from "@/composables/builds/useAgeTimings.js";
 
 /**
@@ -123,32 +124,7 @@ export default {
 
     const percent = (seconds) => `${clamp((seconds / scaleSeconds.value) * 100)}%`;
 
-    /**
-     * One filled segment per age reached, plus a final run to the end of the
-     * track once Imperial lands — from then on the build is simply in its last
-     * age for the remainder.
-     */
-    const segments = computed(() => {
-      const result = [];
-      let previous = 0;
-
-      ages.value.forEach((age, index) => {
-        result.push({
-          key: `age-seg-${index + 1}`,
-          width: `${clamp(((age.seconds - previous) / scaleSeconds.value) * 100)}%`,
-        });
-        previous = age.seconds;
-      });
-
-      if (ages.value.some((age) => age.age === 4)) {
-        result.push({
-          key: "age-seg-4",
-          width: `${clamp(((scaleSeconds.value - previous) / scaleSeconds.value) * 100)}%`,
-        });
-      }
-
-      return result;
-    });
+    const segments = computed(() => getAgeSegments(ages.value, scaleSeconds.value));
 
     const axis = computed(() => {
       const ticks = [];

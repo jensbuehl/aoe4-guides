@@ -210,6 +210,42 @@ export function getAgeTimings(steps) {
 }
 
 /**
+ * Splits the timeline track into one filled run per age.
+ *
+ * Each run is coloured for the age the build is *in* during it: the first covers
+ * the starting age up to the first age-up, and the last runs from the most
+ * recent age reached to the end of the track, because from then on the build
+ * simply stays in that age. That final run is not special to Imperial — a build
+ * that stops at Feudal is in Feudal for the rest of its timeline just the same.
+ *
+ * @param {Array} ages - Result of getAgeTimings(), ascending by age.
+ * @param {number} scaleSeconds - Full width of the track in seconds.
+ * @return {Array<{key: string, width: number}>} Segments, widths as percentages.
+ */
+export function getAgeSegments(ages, scaleSeconds) {
+  if (!ages?.length || !scaleSeconds) return [];
+
+  const clamp = (value) => Math.min(100, Math.max(0, value));
+  const segments = [];
+  let previous = 0;
+
+  ages.forEach((age, index) => {
+    segments.push({
+      key: `age-seg-${index + 1}`,
+      width: clamp(((age.seconds - previous) / scaleSeconds) * 100),
+    });
+    previous = age.seconds;
+  });
+
+  segments.push({
+    key: `age-seg-${ages.length + 1}`,
+    width: clamp(((scaleSeconds - previous) / scaleSeconds) * 100),
+  });
+
+  return segments;
+}
+
+/**
  * Converts derived age timings into the map stored on the build document.
  *
  * Ages the build never reaches are omitted entirely rather than written as a
