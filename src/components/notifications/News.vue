@@ -11,32 +11,34 @@
         :style="{ color: $vuetify.theme.current.colors.accent }"
       >
         <v-icon
-          icon="mdi-timer-sand"
+          icon="mdi-chart-line"
           size="small"
           class="mr-4"
           color="accent"
         ></v-icon>
-        Age Timings
+        Economy Shape
       </span>
     </v-card-title>
     <v-card-text class="px-4">
       <div class="text-body-2 text-medium-emphasis">
-        Every build now shows when it reaches <strong>Feudal</strong>, <strong>Castle</strong> and
-        <strong>Imperial</strong>, right on the card. Compare tempo by scanning down the list
-        instead of opening each one. Open a build and the timeline adds villager counts, when you
-        clicked up, and how long it took to reach each age.
+        Expand <strong>Economy</strong> on a build's timeline to see its villagers spread across
+        food, wood, gold and stone. When it commits to gold, when food flattens, whether it ever
+        touches stone, all at a glance instead of thirty rows.
+      </div>
+      <div class="text-body-2 text-medium-emphasis mt-2">
+        <v-icon icon="mdi-timer-sand" size="x-small" class="mr-1" color="accent"></v-icon>
+        <strong>Age timings on every card.</strong> Compare tempo by scanning the list instead of
+        opening each build.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
         <v-icon icon="mdi-share-variant" size="x-small" class="mr-1" color="accent"></v-icon>
-        <strong>Share to your phone.</strong> Every build has a Share option in the ⋮ menu. Scan
-        the QR code and it opens in focus mode, a second screen next to your monitor with no URL
-        to type.
+        <strong>Share to your phone.</strong> Scan the QR code in a build's ⋮ menu and it opens in
+        focus mode, a second screen next to your monitor with no URL to type.
       </div>
       <div class="text-body-2 text-medium-emphasis mt-2">
         <v-icon icon="mdi-shuffle-variant" size="x-small" class="mr-1" color="accent"></v-icon>
-        <strong>Remix, don't duplicate.</strong>
-        Building on someone else's opening credits them. Your copy links straight back to the
-        original in the header.
+        <strong>Remix, don't duplicate.</strong> Building on someone else's opening credits them,
+        with your copy linking back to the original.
       </div>
       <v-divider class="mt-3"></v-divider>
       <div class="text-body-2 text-medium-emphasis mt-3">
