@@ -1602,13 +1602,17 @@ tbody tr:last-child td {
 }
 
 /* Villager total badge */
+/* Villager badge — same treatment as the time pill it sits beside: accent as
+   the tint, primary for the number. Gold type on the light surface is around
+   1.85:1, and these two badges share a row, so a difference between them would
+   read as meaning something it does not. */
 .step-pop-xs {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 12.5px;
   font-weight: 700;
-  color: rgb(var(--v-theme-accent));
+  color: rgb(var(--v-theme-primary));
   background: rgba(var(--v-theme-accent), 0.12);
   border-radius: 6px;
   padding: 3px 9px 3px 6px;
