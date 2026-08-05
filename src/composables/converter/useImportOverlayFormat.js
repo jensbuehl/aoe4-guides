@@ -3,15 +3,7 @@ import iconService from "@/composables/builds/icons/iconService.js";
 
 export default function useImportOverlayFormat() {
   const convert = (build) => {
-    //Do not convert ages since "age up" is not supported and the roundtrip would break
-    const buildSteps = [
-      {
-        type: "age",
-        age: 0,
-        gameplan: "",
-        steps: build.build_order?.map((step) => convertStep(step)),
-      },
-    ];
+    const buildSteps = convertBuildOrder(build.build_order);
 
     return {
       description: build.description || "",
@@ -40,6 +32,103 @@ export default function useImportOverlayFormat() {
     };
   };
 
+  /**
+   * Turn the flat overlay step list into the internal section format.
+   *
+   * The overlay format tags each step with the age it belongs to, but it has no
+   * notion of the steps performed *while* aging up. So the ages are recreated as
+   * "age" sections and the "ageUp" sections between them are left empty for the
+   * author to fill in. Exports without any age information keep the legacy shape
+   * (one ageless section), so their roundtrip stays unchanged.
+   *
+   * Nothing is invented to fill an empty section: ages the export left blank stay
+   * blank, and blank ages at the end are dropped rather than imported as a
+   * trailing age with nothing in it.
+   *
+   * @param {Array} buildOrder - Steps in overlay format.
+   * @return {Array} Sections in internal format.
+   */
+  function convertBuildOrder(buildOrder) {
+    const overlaySteps = buildOrder ?? [];
+    const legacySection = () => [
+      {
+        type: "age",
+        age: 0,
+        gameplan: "",
+        steps: overlaySteps.map((step) => convertStep(step)),
+      },
+    ];
+
+    if (!overlaySteps.some((step) => normalizeAge(step?.age))) return legacySection();
+
+    //A step without an age of its own stays with the age it follows, and leading
+    //ones fall back to the first age.
+    const stepsByAge = new Map();
+    let currentAge = 1;
+    for (const step of overlaySteps) {
+      currentAge = normalizeAge(step?.age) || currentAge;
+      if (!stepsByAge.has(currentAge)) stepsByAge.set(currentAge, []);
+      stepsByAge.get(currentAge).push(convertStep(step));
+    }
+
+    //Exports commonly end on an age the author never filled in — a bare "age 4"
+    //entry with no notes. The build ends at the last age that actually says
+    //something.
+    const lastAge = Math.max(
+      0,
+      ...[...stepsByAge.entries()]
+        .filter(([, steps]) => steps.some((step) => !isBlankStep(step)))
+        .map(([age]) => age)
+    );
+    if (!lastAge) return legacySection();
+
+    //The editor derives the current age from the number of "age" sections, so
+    //the ages have to run 1..n without gaps even if the export skipped one. A
+    //skipped age becomes an empty section rather than one holding a blank step.
+    const sections = [];
+    for (let age = 1; age <= lastAge; age++) {
+      if (age > 1) {
+        sections.push({ type: "ageUp", age: age - 1, gameplan: "", steps: [] });
+      }
+      sections.push({
+        type: "age",
+        age: age,
+        gameplan: "",
+        steps: stepsByAge.get(age) ?? [],
+      });
+    }
+    return sections;
+  }
+
+  /**
+   * A step the export carries but that holds nothing — no time, no resources, no
+   * note. The overlay format writes one of these for an age the author only
+   * opened.
+   *
+   * @param {Object} step - Step in internal format.
+   * @return {boolean} True when the step says nothing at all.
+   */
+  function isBlankStep(step) {
+    if (["time", "food", "wood", "gold", "stone", "builders"].some((field) => step[field])) {
+      return false;
+    }
+    //Only line breaks are stripped — a note that is nothing but an icon is content
+    return !(step.description ?? "")
+      .replace(/<br\s*\/?>/gi, "")
+      .replace(/&nbsp;/gi, " ")
+      .trim();
+  }
+
+  /**
+   * @param {*} age - Age as found on an overlay step.
+   * @return {number} 1-4, or 0 when the step carries no usable age (the overlay
+   * format writes -1 for "unknown").
+   */
+  function normalizeAge(age) {
+    const parsed = Number(age);
+    return Number.isInteger(parsed) && parsed >= 1 && parsed <= 4 ? parsed : 0;
+  }
+
   const convertResourceFromOverlayFormat = (resource) => {
     if (resource) {
       if (resource < 0) {
@@ -54,13 +143,15 @@ export default function useImportOverlayFormat() {
 
   const convertStep = (step) => {
     const convertedNotes = convertNotes(step.notes);
+    const resources = step.resources ?? {};
     return {
       ...(step.time && { time: step.time }),
-      food: convertResourceFromOverlayFormat(step.resources.food),
-      wood: convertResourceFromOverlayFormat(step.resources.wood),
-      gold: convertResourceFromOverlayFormat(step.resources.gold),
-      stone: convertResourceFromOverlayFormat(step.resources.stone),
-      builders: convertResourceFromOverlayFormat(step.builder),
+      food: convertResourceFromOverlayFormat(resources.food),
+      wood: convertResourceFromOverlayFormat(resources.wood),
+      gold: convertResourceFromOverlayFormat(resources.gold),
+      stone: convertResourceFromOverlayFormat(resources.stone),
+      //Builders live inside "resources" in the overlay format, next to the rest
+      builders: convertResourceFromOverlayFormat(resources.builder),
       description: convertedNotes,
     };
   };
@@ -68,7 +159,7 @@ export default function useImportOverlayFormat() {
   function convertNotes(overlayNotes) {
     //Filter @imagePath@
     const regex = /@([^@]*)(?:webp|png)@/g;
-    const joinedNotes = overlayNotes.join("<br>");
+    const joinedNotes = (overlayNotes ?? []).join("<br>");
 
     const convertedNotes = joinedNotes.replace(regex, function replacer(match) {
       return convertTextToImg(match);

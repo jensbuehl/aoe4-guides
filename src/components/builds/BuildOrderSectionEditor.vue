@@ -38,12 +38,14 @@
   ></IconAutoCompleteMenu>
 
   <!--Mobile UI (XS) — bracketed age lane design -->
+  <!--A bare age-up is only the arrival plate, and the plate carries its own
+      margins: the section spacing on top of those would sit it off-centre-->
   <div
     class="hidden-sm-and-up"
-    :class="section.type === 'ageUp' ? 'age-bracket-xs mt-2' : 'pt-1'"
+    :class="section.type === 'ageUp' ? (isBareAgeUp ? '' : 'age-bracket-xs mt-2') : 'pt-1'"
   >
     <!-- ageUp section: age-up row (same pill style as arrival plate) -->
-    <div v-if="section.type === 'ageUp'" class="age-ageup-row-xs">
+    <div v-if="section.type === 'ageUp' && !isBareAgeUp" class="age-ageup-row-xs">
       <v-icon color="accent" size="16">mdi-arrow-up-bold</v-icon>
       <span class="age-ageup-lbl-xs">Aging up to {{ targetAgeName }}</span>
       <div style="flex:1"></div>
@@ -57,10 +59,10 @@
       ><v-icon size="14">mdi-close</v-icon></v-btn>
     </div>
     <!-- empty section prompt -->
-    <div v-if="!steps?.length && !readonly" class="text-center py-5">
+    <div v-if="!steps?.length && !readonly" class="text-center py-4">
       <v-btn variant="text" color="primary" @click="addStep(0)">
         <template v-slot:prepend><v-icon color="accent">mdi-plus</v-icon></template>
-        Add your first build step
+        Add build step
       </v-btn>
     </div>
     <template v-if="!readonly">
@@ -329,7 +331,7 @@
   <!--Desktop UI-->
   <v-card flat rounded="lg" :class="['hidden-xs', (section.type === 'ageUp' || (section.type === 'age' && section.age > 1)) ? 'mt-0' : 'mt-4']">
     <!-- ageUp marker — arrow icon only, gold banner, no age image -->
-    <div v-if="section.type === 'ageUp'" class="age-marker-md mx-4 mt-0 mb-0">
+    <div v-if="section.type === 'ageUp' && !isBareAgeUp" class="age-marker-md mx-4 mt-0 mb-0">
       <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
       <span class="age-marker-lbl-md">Age up to {{ targetAgeName }}</span>
       <span style="flex:1"></span>
@@ -564,21 +566,25 @@
           </tr>
         </tbody>
       </v-table>
-    <!-- ageUp arrival plate — desktop -->
-    <div v-if="section.type === 'ageUp' && targetAgeName" class="age-plate-md mx-4 mt-0 mb-0">
-      <img :src="targetAgeImg" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;" alt="" />
-      <span class="age-plate-lbl-md">{{ targetAgeName }} reached</span>
-    </div>
-    <div v-if="!steps?.length && readonly" class="text-center py-6 text-medium-emphasis text-body-2">
+    <!-- Empty section — sits inside the ageUp bracket, above the arrival plate -->
+    <div
+      v-if="!steps?.length && readonly && section.type !== 'ageUp'"
+      class="text-center py-6 text-medium-emphasis text-body-2"
+    >
       No steps yet
     </div>
-    <div v-if="!steps?.length && !readonly" class="text-center">
-      <v-btn variant="text" color="accent" class="pt-5 pb-10" @click="addStep(0)"
-        >Add your first build step
+    <div v-if="!steps?.length && !readonly" class="text-center py-4">
+      <v-btn variant="text" color="accent" @click="addStep(0)"
+        >Add build step
         <template v-slot:prepend>
           <v-icon color="accent">mdi-plus</v-icon>
         </template></v-btn
       >
+    </div>
+    <!-- ageUp arrival plate — desktop -->
+    <div v-if="section.type === 'ageUp' && targetAgeName" class="age-plate-md mx-4 mt-0 mb-0">
+      <img :src="targetAgeImg" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;" alt="" />
+      <span class="age-plate-lbl-md">{{ targetAgeName }} reached</span>
     </div>
   </v-card>
 </template>
@@ -646,6 +652,19 @@ export default {
     const gameplanCopy = ref(`${props.section.gameplan ? props.section.gameplan : ""}`);
     const gameplanSelected = ref(false);
     const gameplanContentEditable = ref(null);
+
+    //An "ageUp" section that holds nothing tells the reader nothing the arrival
+    //plate below it does not already say — imported builds have these, since the
+    //overlay format does not record the steps taken while aging up. In the viewer
+    //only the plate is drawn for them; the editor keeps the banner so the section
+    //can still be filled in.
+    const isBareAgeUp = computed(
+      () =>
+        props.readonly &&
+        props.section.type === "ageUp" &&
+        !steps.length &&
+        !gameplan.value
+    );
 
     //Custom Tooltips
     const showToolTip = ref(false);
@@ -1092,6 +1111,7 @@ export default {
       currentAgeName,
       currentAgeImg,
       targetAgeImg,
+      isBareAgeUp,
     };
   },
 };
