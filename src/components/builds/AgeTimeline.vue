@@ -268,11 +268,14 @@ export default {
      * @return {string} The footnote text.
      */
     const footnoteFor = (age) => {
-      const projected = [age.provenance, age.clickUp?.provenance].includes("extrapolated");
+      const tiers = [age.provenance, age.clickUp?.provenance];
 
-      return projected
-        ? "~ projected past the last stated time"
-        : "~ estimated from villager count";
+      //Weakest claim wins, so the note never credits the build with more
+      //evidence than it has
+      if (tiers.includes("extrapolated")) return "~ projected past the last stated time";
+      if (tiers.includes("interpolated")) return "~ estimated from villager count";
+
+      return "~ approximate, as the author wrote it";
     };
 
     return {

@@ -368,8 +368,12 @@ export default {
         const blocking = resolved
           .map((entry, index) => ({ index, ...entry }))
           .filter((entry) => entry.provenance === "unresolved" && !steps.value[entry.index]?.gameplan);
+        //Approximate counts: the author still measured it, so it anchors
         const lastAnchor = resolved.reduce(
-          (max, entry) => (entry.provenance === "stated" ? Math.max(max, entry.seconds) : max),
+          (max, entry) =>
+            entry.provenance === "stated" || entry.provenance === "approximate"
+              ? Math.max(max, entry.seconds)
+              : max,
           0
         );
 

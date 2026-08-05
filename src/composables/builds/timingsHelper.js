@@ -59,6 +59,10 @@ const HORIZON_SPAN_SHARE = 0.25;
  * two measured anchors; extrapolation past the last anchor at the build's own
  * observed rate; and, failing all three, nothing at all.
  *
+ * A stated time the author hedged with a tilde — "~6:15" — is reported as
+ * `approximate`. It anchors exactly as a precise one does, because it is still
+ * a moment somebody measured; it simply is not offered to a reader as exact.
+ *
  * The load-bearing idea is the anchor span. Between two stamped steps the
  * elapsed time is *measured*, so distributing it needs no villager production
  * rate — which is why this survives contact with sixteen civilizations, multiple
@@ -68,7 +72,9 @@ const HORIZON_SPAN_SHARE = 0.25;
  * @param {Array} steps - A flat, ordered step list. Callers flatten sections
  *   first; this function knows nothing about sections.
  * @return {Array<{seconds: number|null, provenance: string}>} One entry per
- *   input step, index-aligned. Never null, never short, never throws.
+ *   input step, index-aligned, provenance being one of "stated", "approximate",
+ *   "interpolated", "extrapolated" or "unresolved". Never null, never short,
+ *   never throws.
  */
 export function resolveStepTimes(steps) {
   try {
@@ -86,7 +92,10 @@ export function resolveStepTimes(steps) {
     const resolved = entries.map(() => unresolved());
 
     for (const anchor of anchors) {
-      resolved[anchor.index] = { seconds: anchor.seconds, provenance: "stated" };
+      resolved[anchor.index] = {
+        seconds: anchor.seconds,
+        provenance: entries[anchor.index].approximate ? "approximate" : "stated",
+      };
     }
 
     //An implicit 0:00 sits before the first anchor so that steps opening the
@@ -141,7 +150,17 @@ function readEntries(steps) {
     const counted = aggregateVillagers(step);
     if (counted) running = counted;
 
-    entries.push({ note: false, stated, villagers: running });
+    //Authors write "~6:15" to mean "about". The sanitizer strips the tilde so
+    //the time still parses, which is right — it is a real measurement and must
+    //still anchor the spans around it — but reporting it as stated would turn
+    //their hedge into a fact and suppress the very marker they were reaching
+    //for. Caught before the strip, and carried as its own tier.
+    entries.push({
+      note: false,
+      stated,
+      approximate: stated !== null && /~/.test(String(step?.time ?? "")),
+      villagers: running,
+    });
   }
 
   return entries;
@@ -163,7 +182,12 @@ function readEntries(steps) {
  */
 function forceStartAtZero(entries) {
   const first = entries.findIndex((entry) => !entry.note);
-  if (first !== -1) entries[first].stated = 0;
+  if (first === -1) return;
+
+  entries[first].stated = 0;
+  //Whatever the author hedged about the opening, the game still starts when it
+  //starts. This one is a fact by rule, so it is not approximate either.
+  entries[first].approximate = false;
 }
 
 /**
