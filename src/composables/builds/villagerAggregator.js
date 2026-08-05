@@ -28,7 +28,19 @@ export function hasResourceValue(value) {
   return parseVillagerCountString(value != null ? String(value) : "") > 0;
 }
 
-function parseVillagerCountString(villagerCountString) {
+/**
+ * Reads a resource cell into a villager count.
+ *
+ * Shared with the economy plot so the lines and the "N vils" markers can never
+ * contradict each other — which means its two known defects are shared too: it
+ * reads only the first two "+" operands ("4+1+2" drops the 2), and a fishing
+ * boat counts as a villager. Both are deliberate here. Fixing them is its own
+ * feature, because it moves every villager number on the site at once.
+ *
+ * @param {string|null|undefined} villagerCountString - The raw cell value.
+ * @return {number} The count, 0 when the cell says nothing.
+ */
+export function parseVillagerCountString(villagerCountString) {
   if (!villagerCountString) return 0;
 
   //Accumulate values separated by "+"

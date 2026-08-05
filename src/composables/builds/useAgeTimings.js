@@ -58,6 +58,29 @@ export function ageTimingLabel(display, timing) {
 const AGE_KEYS = { 2: "feudal", 3: "castle", 4: "imperial" };
 
 /**
+ * Flattens a build's sections into the ordered step list the timing helpers read.
+ *
+ * Section steps only, in order, and never the section gameplan — exactly as
+ * FocusMode does, because the indices must line up with getTimings().
+ *
+ * Shared rather than repeated: every chart drawn from a build's steps has to
+ * agree on which step is which, and two copies of this loop is how they would
+ * quietly stop agreeing.
+ *
+ * @param {Array} steps - A build's sections array.
+ * @return {Array} The flattened steps. Empty when there is nothing to flatten.
+ */
+export function flattenSections(steps) {
+  const flat = [];
+
+  for (const section of steps ?? []) {
+    for (const step of section?.steps ?? []) flat.push(step);
+  }
+
+  return flat;
+}
+
+/**
  * Derives the times at which a build reaches each age beyond the first.
  *
  * Builds on getTimings() unchanged, including its contract of returning null
@@ -81,18 +104,23 @@ export function getAgeTimings(steps) {
     //Legacy flat builds have no sections, so no age boundaries exist to read
     if (!steps[0]?.type) return [];
 
-    const flat = [];
+    const flat = flattenSections(steps);
     const boundaries = [];
     //The "ageUp" section holds the steps performed while aging up, so its first
     //step is the moment the player clicked up. Held until the age section that
     //follows claims it.
     let pendingClickUpIndex = null;
+    //Position in the flattened list at the start of the section being read. The
+    //flatten used to happen in this same loop, which is where the boundaries
+    //took their index from; this carries that running position now that it is
+    //extracted for the other charts to share.
+    let cursor = 0;
 
     for (const section of steps) {
       const sectionSteps = section?.steps ?? [];
 
       if (section?.type === "ageUp" && sectionSteps.length) {
-        pendingClickUpIndex = flat.length;
+        pendingClickUpIndex = cursor;
       }
 
       //Age n is reached at the first step of the first "age" section with that
@@ -107,15 +135,13 @@ export function getAgeTimings(steps) {
       ) {
         boundaries.push({
           age: section.age,
-          index: flat.length,
+          index: cursor,
           clickUpIndex: pendingClickUpIndex,
         });
         pendingClickUpIndex = null;
       }
 
-      //Flatten exactly as FocusMode does: section steps only, in order, and
-      //never the section gameplan — the indices must line up with getTimings().
-      for (const step of sectionSteps) flat.push(step);
+      cursor += sectionSteps.length;
     }
 
     if (!boundaries.length || !flat.length) return [];
