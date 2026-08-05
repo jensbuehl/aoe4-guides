@@ -92,12 +92,16 @@ export default {
   flex-shrink: 0;
 }
 
-/* Full-strength on-surface, not the accent: the tint behind it already says the
-   time was measured, and gold type on this surface is around 1.85:1 where AA
-   asks for 4.5:1. Overrides the colour Vuetify sets from the chip's own accent
-   colour prop. */
+/* Primary rather than accent, and rather than plain on-surface.
+
+   Accent is gold in both themes, so on the light surface it lands near 1.85:1
+   against a 4.5:1 AA floor. On-surface passes easily but reads as hard black on
+   a card, competing with the build title. Primary is the only one of the three
+   that changes with the theme — navy on light (~8:1), gold on dark (~5.8:1) —
+   so it is both readable and quiet in each. Overrides the colour Vuetify sets
+   from the chip's accent colour prop. */
 .agechip-time {
-  color: rgb(var(--v-theme-on-surface));
+  color: rgb(var(--v-theme-primary));
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }

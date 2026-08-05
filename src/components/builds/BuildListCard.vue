@@ -508,9 +508,12 @@ export default {
   font-variant-numeric: tabular-nums;
 }
 
+/* Same primary the age chips use at sm-and-down, where this row is replaced by
+   them: one build's age times should not change colour with the breakpoint. */
 .blc-agerow b {
   text-align: right;
   font-weight: 700;
+  color: rgb(var(--v-theme-primary));
 }
 
 /* An estimate is set lighter than a time the author actually stated */

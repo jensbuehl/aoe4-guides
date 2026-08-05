@@ -1562,14 +1562,16 @@ tbody tr:last-child td {
 /* Time pill — gold tint with clock icon. The accent is the background, never
    the text: at #CCAA55 on this surface gold type lands near 1.85:1 against a
    4.5:1 AA floor, and the tint says "the author measured this" just as well
-   while the number stays legible. Matches the measured age chip above. */
+   while the number stays legible. Primary carries the number, because it is the
+   one theme colour that flips with the theme instead of staying gold in both.
+   Matches the measured age chip above. */
 .step-time-xs {
   display: inline-flex;
   align-items: center;
   gap: 4px;
   font-size: 12.5px;
   font-weight: 700;
-  color: rgb(var(--v-theme-on-surface));
+  color: rgb(var(--v-theme-primary));
   background: rgba(var(--v-theme-accent), 0.12);
   border-radius: 6px;
   padding: 3px 9px 3px 6px;
