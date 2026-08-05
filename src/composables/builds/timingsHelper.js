@@ -230,10 +230,16 @@ function findAnchors(entries) {
  * Places every unstated step between two anchors.
  *
  * The span's duration is measured, so this only has to decide how to divide it.
- * Proportional to villager gain when the span says something about villagers,
- * evenly by position when it does not — and "does not" covers all three
- * degenerate cases at once: no counts stated, no change across the span, and a
- * count that goes down.
+ * Each move through it is worth the villagers it added plus one for having
+ * happened at all, which spreads the time toward where the work was without
+ * ever charging a step nothing.
+ *
+ * That plus-one is doing real work. Weighting purely by villagers reads a step
+ * that assigns nobody as instantaneous, so it lands on the exact second of the
+ * step before it — two rows sharing a moment, which no build ever does. It also
+ * covers the degenerate spans in the same arithmetic rather than as special
+ * cases: no counts stated, no change across the span, or a count that goes down
+ * all give every move a weight of one, which is even spacing.
  *
  * Every result is clamped into the span and forced non-decreasing, so no
  * arithmetic accident can put a step outside the two moments that bound it.
@@ -250,15 +256,13 @@ function interpolateSpan(entries, resolved, from, to) {
   }
   if (!interior.length) return;
 
-  const duration = to.seconds - from.seconds;
-  const totalDelta =
-    from.villagers != null && to.villagers != null ? to.villagers - from.villagers : 0;
-
   //A span running backwards means the author typed two times out of order. Their
   //times are kept as written (they are describing a game they played), so there
-  //is no honest interior to draw — every step collapses onto the left moment
+  //is nothing honest to spread — the interior collapses onto the left moment
   //rather than inventing a descending sequence.
-  const usable = duration > 0 && totalDelta > 0;
+  const duration = Math.max(0, to.seconds - from.seconds);
+  const totalDelta =
+    from.villagers != null && to.villagers != null ? to.villagers - from.villagers : 0;
 
   //Spreading the span proportionally assumes the villagers were produced steadily
   //across it. When the span implies a rate no town centre produces at, that
@@ -267,28 +271,51 @@ function interpolateSpan(entries, resolved, from, to) {
   //production. Place the villagers at the pace villagers are actually made,
   //starting from the measured left edge, and let the unexplained time sit where
   //it belongs — before the next thing the author chose to write down.
-  const steady = usable && duration / totalDelta <= PLAUSIBLE_MAX_SECONDS_PER_VILLAGER;
+  const implausible =
+    duration > 0 && totalDelta > 0 && duration / totalDelta > PLAUSIBLE_MAX_SECONDS_PER_VILLAGER;
 
   let previous = from.seconds;
+  const place = (index, seconds) => {
+    const bounded = clamp(seconds, previous, Math.max(to.seconds, from.seconds));
+    previous = bounded;
+    resolved[index] = { seconds: Math.round(bounded), provenance: "interpolated" };
+  };
 
+  //How much of the span the villagers actually account for. Normally all of it.
+  //When the implied rate is impossible, only what the villagers justify at the
+  //pace villagers are really made — the rest is the author's ellipsis and is
+  //left as the gap before the next thing they wrote down.
+  const explained = implausible
+    ? Math.min(duration, totalDelta * NOMINAL_SECONDS_PER_VILLAGER)
+    : duration;
+
+  //Each move through the span is worth the villagers it added, plus one for
+  //having happened at all.
+  //
+  //Weighting purely by villagers reads a step that assigns nobody as taking no
+  //time, so it lands exactly on the step before it — two rows sharing a second,
+  //which is not something a build ever does. The plus-one is what a step costs
+  //by existing: reassigning, walking, building. It also folds the old
+  //even-spacing fallback into the same arithmetic, since a span whose villagers
+  //never move gives every move a weight of one, which is even spacing.
+  const counts = [];
+  let running = from.villagers ?? 0;
+  counts.push(running);
+  for (const index of interior) {
+    running = entries[index].villagers ?? running;
+    counts.push(running);
+  }
+  counts.push(to.villagers ?? running);
+
+  const weights = counts
+    .slice(1)
+    .map((count, position) => Math.max(0, count - counts[position]) + 1);
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
+
+  let elapsed = 0;
   interior.forEach((index, position) => {
-    const gained = usable
-      ? clamp((entries[index].villagers ?? from.villagers) - from.villagers, 0, totalDelta)
-      : 0;
-    let seconds;
-
-    if (steady) {
-      seconds = from.seconds + (duration * gained) / totalDelta;
-    } else if (usable) {
-      seconds = from.seconds + gained * NOMINAL_SECONDS_PER_VILLAGER;
-    } else {
-      seconds = from.seconds + (Math.max(duration, 0) * (position + 1)) / (interior.length + 1);
-    }
-
-    seconds = clamp(seconds, previous, Math.max(to.seconds, from.seconds));
-    previous = seconds;
-
-    resolved[index] = { seconds: Math.round(seconds), provenance: "interpolated" };
+    elapsed += weights[position];
+    place(index, from.seconds + (explained * elapsed) / total);
   });
 }
 
