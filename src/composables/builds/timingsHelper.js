@@ -90,17 +90,29 @@ function toSeconds(date) {
   return date.getMinutes() * 60 + date.getSeconds();
 }
 
+// The time cell is authored in the same rich-text editor as the description, so
+// markup leaks into it — a trailing "<br>" is the common one, and it is invisible
+// in the build order because that cell is rendered as HTML. Only the parser ever
+// sees it, which is why a build can read "4:00" on screen and still resolve to no
+// time at all. Stripped before the match rather than matched around, so every
+// caller (timeline, economy plot, Focus mode autoplay) recovers the same step.
 function sanitizeTimeString(timeString) {
   if (!timeString || typeof timeString !== 'string') {
     return '';
   }
-  
+
   // Remove common problematic characters and whitespace
   return timeString
+    .replace(/<[^>]*>/g, '')  // Remove HTML tags left by the rich-text editor
+    .replace(/&nbsp;/gi, '')  // ...and the space entity it writes alongside them
     .replace(/[\n\r\t]/g, '') // Remove newlines, carriage returns, tabs
     .replace(/~+/g, '')       // Remove tildes
     .trim()                   // Remove leading/trailing whitespace
     .replace(/\s+/g, '')      // Remove any remaining whitespace
+    // Authors type the separator as a dot or comma often enough to matter, and a
+    // string that already parses cannot contain either, so this only ever turns a
+    // rejected value into an accepted one
+    .replace(/[.,]/g, ':')
     .replace(/^0*(\d)/, '$1'); // Remove leading zeros except for single digit minutes
 }
 
