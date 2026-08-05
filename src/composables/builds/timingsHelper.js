@@ -44,6 +44,14 @@ const PLAUSIBLE_MAX_SECONDS_PER_VILLAGER = 30;
  *
  * The floor keeps short builds from getting a horizon of almost nothing.
  */
+/**
+ * Every dash a keyboard or a rich-text editor puts between the ends of a range:
+ * ASCII hyphen, the Unicode hyphen block through the em dash, and the minus
+ * sign. A build in the wild carries a non-breaking hyphen, so matching only the
+ * ASCII one would leave the common case unparsed.
+ */
+const RANGE_SEPARATOR = /[-‐-―−]/;
+
 const HORIZON_STEPS = 8;
 const HORIZON_SECONDS_FLOOR = 120;
 const HORIZON_SPAN_SHARE = 0.25;
@@ -150,15 +158,17 @@ function readEntries(steps) {
     const counted = aggregateVillagers(step);
     if (counted) running = counted;
 
-    //Authors write "~6:15" to mean "about". The sanitizer strips the tilde so
-    //the time still parses, which is right — it is a real measurement and must
-    //still anchor the spans around it — but reporting it as stated would turn
-    //their hedge into a fact and suppress the very marker they were reaching
-    //for. Caught before the strip, and carried as its own tier.
+    //Authors hedge two ways: "~6:15" for "about", and "9-12:00" for "somewhere
+    //in here". Both parse — they are real measurements and must still anchor the
+    //spans around them — but reporting either as stated would turn a hedge into
+    //a fact and suppress the very uncertainty the author was expressing. Read
+    //from the raw cell, before the sanitizer removes the evidence.
+    const raw = String(step?.time ?? "");
+
     entries.push({
       note: false,
       stated,
-      approximate: stated !== null && /~/.test(String(step?.time ?? "")),
+      approximate: stated !== null && (/~/.test(raw) || RANGE_SEPARATOR.test(raw)),
       villagers: running,
     });
   }
@@ -514,5 +524,16 @@ function sanitizeTimeString(timeString) {
     // string that already parses cannot contain either, so this only ever turns a
     // rejected value into an accepted one
     .replace(/[.,]/g, ':')
+    // Authors write ranges — "2:15-2:20", "9-12:00" — to mean "somewhere in
+    // here". The left edge is when the step happens at the earliest, which is
+    // the only end of a range a timeline can place. A time cannot otherwise
+    // contain a dash, so nothing that already parsed is affected. Every dash the
+    // editors and keyboards produce, not just the ASCII one: a build in the wild
+    // carries a non-breaking hyphen.
+    .split(RANGE_SEPARATOR)[0]
+    // A bare number is minutes. "9" out of "9-12:00" means 9:00, never 9 seconds
+    // — build orders are written in minutes and the other end of that range says
+    // so out loud.
+    .replace(/^(\d?\d)$/, '$1:00')
     .replace(/^0*(\d)/, '$1'); // Remove leading zeros except for single digit minutes
 }

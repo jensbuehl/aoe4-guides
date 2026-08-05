@@ -54,6 +54,12 @@ export function parseVillagerCountString(villagerCountString) {
   const text = String(villagerCountString)
     .replace(/<[^>]*>/g, "")
     .replace(/&nbsp;/gi, "")
+    //"~5" is five villagers the author is rounding, not none. Stripped rather
+    //than parsed around, because parseInt gives up on a leading tilde and
+    //returns nothing — the hedge was costing the whole number. The time cell has
+    //read tildes this way for as long as it has existed; the cells beside it now
+    //agree.
+    .replace(/[~≈]/g, "")
     .trim();
 
   //Accumulate values separated by "+"
