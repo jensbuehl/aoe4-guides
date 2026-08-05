@@ -3,7 +3,7 @@ import { computed, unref } from "vue";
 
 //Composables
 import { flattenSections } from "@/composables/builds/useAgeTimings.js";
-import { getTimings, toDateFromString } from "@/composables/builds/timingsHelper.js";
+import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 import { parseVillagerCountString } from "@/composables/builds/villagerAggregator.js";
 
 /**
@@ -32,26 +32,6 @@ const MIN_COVERAGE = 0.5;
 const MIN_STATED_POINTS = 4;
 
 /**
- * Places one step on the time axis.
- *
- * A stated timestamp always wins, which is the same rule the age markers follow,
- * so the two charts on this card cannot disagree about when a step happened.
- * Interpolation only fills in for steps that state nothing themselves.
- *
- * @param {Object} step - The step to place.
- * @param {Array|null} timings - getTimings() output, or null when it gave up.
- * @param {number} index - Position in the flattened step list.
- * @return {number|null} Seconds, or null when the step cannot be placed at all.
- */
-function resolveSeconds(step, timings, index) {
-  const stated = toDateFromString(step?.time);
-  if (stated) return stated.getMinutes() * 60 + stated.getSeconds();
-
-  const interpolated = timings?.[index]?.startTime;
-  return interpolated == null ? null : interpolated;
-}
-
-/**
  * Derives villagers per resource over time, for the economy plot.
  *
  * A step that assigns anybody states the whole distribution: its blank cells
@@ -65,16 +45,16 @@ function resolveSeconds(step, timings, index) {
  * a lone timestamp. It says nothing about the economy, so it contributes no
  * point rather than dragging every line to zero.
  *
- * getTimings() is a bonus rather than a precondition. It discards a whole build
- * when any single step is unresolvable — including every build whose author
- * stops stamping before the end, which is common — and refusing those a chart
- * would hide this feature on the builds it was written for. Each step is placed
- * on its own instead. Its all-or-nothing contract is left alone, because Focus
- * mode's autoplay depends on it and playback really is all-or-nothing.
+ * Times come from resolveStepTimes(), which the age markers on the same card
+ * also read, so the two cannot place a step at two different seconds. A step it
+ * cannot place contributes no point — the line simply stops — but that is now
+ * rare: a build whose author stopped stamping partway is extrapolated past the
+ * last measurement rather than abandoned there.
  *
  * @param {Array} steps - A build's steps: the sections array.
  * @return {{points: Array, coverage: number, lastStatedSeconds: number|null}|null}
- *   Points carry one count per column in RESOURCES.
+ *   Points carry one count per column in RESOURCES, plus `stated` — whether the
+ *   author recorded that moment or the site worked it out.
  *   Null whenever there is no chart worth drawing — never a sparse one.
  */
 export function getEcoSeries(steps) {
@@ -88,12 +68,9 @@ export function getEcoSeries(steps) {
     const flat = flattenSections(steps);
     if (!flat.length) return null;
 
-    let timings = null;
-    try {
-      timings = getTimings(flat);
-    } catch (err) {
-      timings = null;
-    }
+    //One read, shared with the age markers on the same card, so the two cannot
+    //place the same step at two different seconds
+    const times = resolveStepTimes(flat);
 
     const points = [];
     let statedSteps = 0;
@@ -116,10 +93,13 @@ export function getEcoSeries(steps) {
 
       //An unplaceable step still counts toward coverage — the author did fill it
       //in, they just gave it no time to hang it on
-      const seconds = resolveSeconds(step, timings, index);
-      if (seconds == null) return;
+      const time = times[index];
+      if (!time || time.seconds == null) return;
 
-      points.push({ seconds, ...values });
+      //Carried per point rather than as one split position: the plot draws a
+      //segment solid only when both its ends were measured, so it needs to know
+      //about every moment, not just where the last stamp was.
+      points.push({ seconds: time.seconds, stated: time.provenance === "stated", ...values });
     });
 
     const coverage = statedSteps / flat.length;

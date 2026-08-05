@@ -3,8 +3,7 @@ import { computed, unref } from "vue";
 
 //Composables
 import {
-  getTimings,
-  toDateFromString,
+  resolveStepTimes,
   toDateFromSeconds,
   getFormattedTime,
 } from "@/composables/builds/timingsHelper.js";
@@ -146,26 +145,12 @@ export function getAgeTimings(steps) {
 
     if (!boundaries.length || !flat.length) return [];
 
-    //getTimings() is treated as a bonus, not a precondition. It gives up on the
-    //whole build if any single step is unresolvable — common, since a build
-    //stamped only at its age-ups has no villager trail to interpolate from — and
-    //it throws outright on some shapes, notably when the first step carries a
-    //timestamp but no villager assignment. Neither may cost us the boundaries
-    //that state their own times, so it is isolated here.
-    let timings = null;
-    try {
-      timings = getTimings(flat);
-    } catch (err) {
-      timings = null;
-    }
+    //One read, and it never gives up on a whole build for one unresolvable step.
+    //This used to call getTimings() inside a try/catch and work around its
+    //all-or-nothing contract; the leniency now lives in the resolver, where both
+    //charts get it for free and cannot drift apart.
+    const times = resolveStepTimes(flat);
 
-    /**
-     * Reads one moment in the flattened list, preferring the step's own stated
-     * time and falling back to interpolation.
-     *
-     * @param {number|null} index - Position in the flattened step list.
-     * @return {Object|null} The moment, or null when it cannot be resolved.
-     */
     /**
      * The villager count in force at a step. Counts are running totals, so a step
      * that does not restate them inherits the last one that did — the step that
@@ -183,25 +168,30 @@ export function getAgeTimings(steps) {
       return null;
     };
 
+    /**
+     * Reads one moment in the flattened list.
+     *
+     * `derived` is kept alongside the finer `provenance` rather than replaced by
+     * it: five places across the age chips, the list card and the timeline read
+     * that boolean to decide whether to print "~", and all of them are right to
+     * treat both derived tiers the same way. Only the timeline's footnote cares
+     * which tier it is.
+     *
+     * @param {number|null} index - Position in the flattened step list.
+     * @return {Object|null} The moment, or null when it cannot be resolved.
+     */
     const resolveAt = (index) => {
       if (index == null) return null;
 
-      const step = flat[index];
-      const stated = toDateFromString(step?.time);
-      const villagers = villagersAt(index);
+      const time = times[index];
+      if (!time || time.seconds == null) return null;
 
-      if (stated) {
-        return {
-          seconds: stated.getMinutes() * 60 + stated.getSeconds(),
-          derived: false,
-          villagers,
-        };
-      }
-
-      const interpolated = timings?.[index]?.startTime;
-      if (interpolated == null) return null;
-
-      return { seconds: Math.round(interpolated), derived: true, villagers };
+      return {
+        seconds: time.seconds,
+        derived: time.provenance !== "stated",
+        provenance: time.provenance,
+        villagers: villagersAt(index),
+      };
     };
 
     return boundaries
@@ -307,7 +297,17 @@ export function fromStoredAgeTimings(stored) {
   for (const age of Object.keys(AGE_KEYS)) {
     const entry = stored[AGE_KEYS[age]];
     if (entry && typeof entry.t === "number") {
-      ageTimings.push({ age: Number(age), seconds: entry.t, derived: !!entry.e });
+      //One stored bit cannot tell the two derived tiers apart, and widening it
+      //would mean a schema change on 4k documents plus the home snapshot's copy
+      //— to separate two tiers that render identically everywhere but one
+      //footnote. A stored estimate therefore reports as interpolated, which errs
+      //toward the humbler claim.
+      ageTimings.push({
+        age: Number(age),
+        seconds: entry.t,
+        derived: !!entry.e,
+        provenance: entry.e ? "interpolated" : "stated",
+      });
     }
   }
 
