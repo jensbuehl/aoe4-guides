@@ -5,9 +5,13 @@
     where they stand in for the track. Only ages the build actually reaches get a
     chip — unlike the desktop rail, there is no room here for placeholder rows.
 
-    Every chip wears the same quiet neutral fill; only the text says whether the
-    time was measured or worked out — accent against muted, the pair the build
-    order already uses for its timestamps.
+    A measured time carries the accent tint and reads in full-strength text; a
+    worked-out one drops to a quiet neutral fill and muted text. Same pair the
+    build order's timestamp pills use directly below these on a phone.
+
+    The accent is the background, never the text. At #CCAA55 on this surface
+    gold type lands near 1.85:1, well under the 4.5:1 AA floor — as a tint
+    behind full-strength text it says the same thing and stays readable.
 
     This used to be outline-versus-fill, which did two unhelpful things at once:
     it read as "different" rather than as "less certain", and it set a stark
@@ -17,10 +21,12 @@
   <v-chip
     v-for="row in rows"
     :key="row.age"
-    class="mr-1 mt-1 agechip"
+    class="mr-1 mt-1"
+    :class="{ 'agechip--derived': row.timing.derived }"
     label
     variant="tonal"
     :size="size"
+    :color="row.timing.derived ? undefined : 'accent'"
   >
     <img
       :src="row.crest"
@@ -70,12 +76,14 @@ export default {
 </script>
 
 <style scoped>
-/* Vuetify's tonal fill is --v-activated-opacity (0.12), which is loud for three
-   chips sitting under a build title. Dialled to the app's quiet fill by
-   overriding that variable on the chip rather than by reaching into
-   .v-chip__underlay — the knob is Vuetify's own, so nothing here depends on an
-   internal class name surviving an upgrade. */
-.agechip {
+/* A worked-out time gets the app's quiet neutral fill instead of Vuetify's
+   tonal default. Dialled by overriding the variable the underlay already reads
+   rather than by reaching into .v-chip__underlay, so nothing here depends on an
+   internal class name surviving an upgrade.
+
+   A measured time keeps the full 0.12, matching the accent-tinted timestamp
+   pill in the build order below. */
+.agechip--derived {
   --v-activated-opacity: var(--derived-fill-opacity);
 }
 
@@ -84,12 +92,12 @@ export default {
   flex-shrink: 0;
 }
 
-/* Accent against muted, matching .ts-text / .ts-text--derived in the build
-   order. Carried on the text rather than on the chip's fill: three chips sit
-   under a build title on the list card, and a filled one there competes with
-   the title for the eye. */
+/* Full-strength on-surface, not the accent: the tint behind it already says the
+   time was measured, and gold type on this surface is around 1.85:1 where AA
+   asks for 4.5:1. Overrides the colour Vuetify sets from the chip's own accent
+   colour prop. */
 .agechip-time {
-  color: rgb(var(--v-theme-accent));
+  color: rgb(var(--v-theme-on-surface));
   font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
