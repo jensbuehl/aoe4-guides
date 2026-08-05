@@ -197,11 +197,15 @@ disclosure row is absent — not present-but-empty.
   gathering, so a build holding four on construction has a different economy from one holding none,
   and omitting them made that invisible.
 - **FR-009**: The x-axis MUST be the `scaleSeconds` passed down from `AgeTimeline.vue`.
-- **FR-010**: The y-axis MUST be a floor of 16 villagers, extended in steps of 4 when a build
-  exceeds it, with gridlines and labels every 4 — so two builds compared in two tabs are comparable.
-  The floor is sized to what a *single resource* reaches. An earlier draft used 24, which was sized
-  for the total-villager line the design later dropped (§Rejected), and left most builds drawing in
-  the bottom third of an empty box.
+- **FR-010**: The y-axis MUST be a floor of 16 villagers, extended in whole steps when a build
+  exceeds it, with gridlines and labels on every step — so two builds compared in two tabs are
+  comparable. The floor is sized to what a *single resource* reaches. An earlier draft used 24, which
+  was sized for the total-villager line the design later dropped (§Rejected), and left most builds
+  drawing in the bottom third of an empty box.
+- **FR-010a**: The step MUST widen from 4 to 8 to 16 as needed to keep the grid at **6 lines or
+  fewer**. A late-game build peaking near 48 villagers on one resource ruled twelve gridlines behind
+  five polylines, and the grid began reading as the chart. Widening the step — rather than labelling
+  every other line — keeps the top gridline on a round number and on the axis top.
 - **FR-011**: Age-up seconds MUST be drawn as dashed vertical guides at the same x as the crests.
 - **FR-012**: There are no points past `lastStatedSeconds` to fade — under FR-003 every point is a
   moment the build actually described, so a line simply ends where the author stopped assigning

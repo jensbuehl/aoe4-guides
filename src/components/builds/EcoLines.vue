@@ -89,17 +89,23 @@ const RESOURCES = [
 ];
 
 /**
- * The y-axis starts at 16 villagers and grows in fours rather than fitting each
- * build, so two builds compared in two tabs are read against the same scale. A
- * plot that always fills its box makes every economy look identical.
+ * The y-axis starts at 16 villagers and grows in whole steps rather than fitting
+ * each build, so two builds compared in two tabs are read against the same
+ * scale. A plot that always fills its box makes every economy look identical.
  *
  * The floor is sized to what one resource actually reaches — a peak much past
  * 16 on a single line is rare. An earlier draft used 24, which was sized for the
  * total-villager line the design later dropped, and left most builds drawing in
  * the bottom third of an empty box.
+ *
+ * The step widens once fours would draw more than MAX_GRIDLINES rows: a late-game
+ * build peaking near 48 was ruling twelve lines behind five polylines, and the
+ * grid started reading as the chart. Widening the step rather than dropping every
+ * other label keeps the top gridline on a round number and on the axis top.
  */
 const Y_FLOOR = 16;
-const Y_STEP = 4;
+const Y_STEPS = [4, 8, 16];
+const MAX_GRIDLINES = 6;
 
 export default {
   name: "EcoLines",
@@ -114,17 +120,30 @@ export default {
   setup(props) {
     const clamp = (value, max) => Math.min(max, Math.max(0, value));
 
-    const yMax = computed(() => {
-      const highest = props.series.points.reduce(
+    const highest = computed(() =>
+      props.series.points.reduce(
         (max, point) => RESOURCES.reduce((rowMax, r) => Math.max(rowMax, point[r.key]), max),
         0
+      )
+    );
+
+    /** The narrowest step that keeps the grid inside its row budget */
+    const yStep = computed(() => {
+      const ceiling = Math.max(Y_FLOOR, highest.value);
+      return (
+        Y_STEPS.find((step) => Math.ceil(ceiling / step) <= MAX_GRIDLINES) ||
+        Y_STEPS[Y_STEPS.length - 1]
       );
-      return Math.max(Y_FLOOR, Math.ceil(highest / Y_STEP) * Y_STEP);
     });
+
+    //Rounded to the step in use, so the axis top is always a labelled gridline
+    const yMax = computed(() =>
+      Math.max(Y_FLOOR, Math.ceil(highest.value / yStep.value) * yStep.value)
+    );
 
     const gridlines = computed(() => {
       const lines = [];
-      for (let value = Y_STEP; value <= yMax.value; value += Y_STEP) {
+      for (let value = yStep.value; value <= yMax.value; value += yStep.value) {
         lines.push({ value, offset: `${(value / yMax.value) * 100}%` });
       }
       return lines;

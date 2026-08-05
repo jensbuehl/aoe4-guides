@@ -22,7 +22,7 @@ No emits. No slots. No `v-model`.
 |---|---|---|
 | P-1 | Exactly **five** polylines — builders, food, wood, gold, stone — of absolute villager counts, in the build order table's column order. No stacking, no total line | FR-008 |
 | P-2 | x = `seconds / scaleSeconds`, clamped to `[0, 1]` of the plot width | FR-009 |
-| P-3 | y max = `max(16, ceil(maxValue / 4) * 4)`; gridlines and left-edge labels every 4; bare numbers, no "vils" suffix | FR-010 |
+| P-3 | Step is the narrowest of `4, 8, 16` that keeps `ceil(max(16, maxValue) / step)` at **6 gridlines or fewer**; y max = `max(16, ceil(maxValue / step) * step)`; gridlines and left-edge labels every step; bare numbers, no "vils" suffix | FR-010 |
 | P-4 | One dashed vertical guide per entry in `ages`, at `age.seconds` — **not** at any time this component derives | FR-011, R-3 |
 | P-5 | Lines simply end at the last point — there is nothing carried, so nothing to fade. When the build's **ages continue past** `lastStatedSeconds`, the legend area carries **"No villagers assigned after m:ss"** | FR-012 |
 | P-6 | Legend names all five columns with their line colours, and lists nothing the plot does not draw | FR-013 |
@@ -39,7 +39,7 @@ Resolved in [design-input.md](../design-input.md) §1–§2. Load-bearing values
 | Thing | Value |
 |---|---|
 | plot height | 140 px |
-| y floor / step | 16 villagers, extended in 4s |
+| y floor / step | 16 villagers in 4s; step widens to 8 then 16 past 6 gridlines |
 | line stroke | 2.25 px, round join/cap |
 | end cap | 2.6 px filled circle at the last point |
 | age guides | 1 px dashed `3 3`, on-surface at `.22` |
