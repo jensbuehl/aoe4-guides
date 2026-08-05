@@ -37,17 +37,40 @@ export function hasResourceValue(value) {
  * boat counts as a villager. Both are deliberate here. Fixing them is its own
  * feature, because it moves every villager number on the site at once.
  *
- * @param {string|null|undefined} villagerCountString - The raw cell value.
- * @return {number} The count, 0 when the cell says nothing.
+ * @param {string|number|null|undefined} villagerCountString - The raw cell value.
+ * @return {number} The count, 0 when the cell says nothing — never NaN.
  */
 export function parseVillagerCountString(villagerCountString) {
   if (!villagerCountString) return 0;
 
-  //Accumulate values separated by "+"
-  var splitValues = villagerCountString.split("+");
-  var villagerCount = 0;
-  villagerCount += splitValues[0] ? parseInt(splitValues[0]) : 0;
-  villagerCount += splitValues[1] ? parseInt(splitValues[1]) : 0;
+  //Resource cells are plain-text fields edited through a contenteditable div, so
+  //markup leaks into them exactly as it does into the time cell: builds are
+  //persisted with stone: "<br>". The editor strips this when it loads a build,
+  //but nothing on the read path did, so the value reached parseInt() intact and
+  //came back NaN — and NaN spreads. One bad cell blanked the whole economy plot,
+  //because Math.max() carries NaN into the axis maximum and every plotted point
+  //then resolves to NaN. Stripped here rather than at each caller, since every
+  //caller reads cells through this function.
+  const text = String(villagerCountString)
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/gi, "")
+    .trim();
 
-  return villagerCount;
+  //Accumulate values separated by "+"
+  const splitValues = text.split("+");
+
+  return toCount(splitValues[0]) + toCount(splitValues[1]);
+}
+
+/**
+ * One "+" operand as a number. A cell holding text rather than digits states no
+ * villagers, which is 0 — the same as blank, and the same as the "–" the build
+ * order already draws for it.
+ *
+ * @param {string|undefined} operand - One side of the "+", or nothing.
+ * @return {number} The count it states.
+ */
+function toCount(operand) {
+  const parsed = parseInt(operand, 10);
+  return Number.isNaN(parsed) ? 0 : parsed;
 }
