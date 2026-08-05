@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="design_doc_mode" content="canvas" />
+<title>AOE4 Guides — Focus Mode: Picture-in-Picture</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+img{display:block}
+a{color:#e7c05e}a:hover{color:#fff}
+.frame{position:absolute;border-radius:14px;padding:26px 28px 30px}
+.dk{background:#1D2432;--bg:#1D2432;--card:#324156;--chip:#3D516B;--pri:#e7c05e;--txt:#E6EAF1;--mut:#8593A6;--dim:#5C6879;--div:rgba(255,255,255,.07)}
+.lt{background:#D8DCE0;--bg:#D8DCE0;--card:#FAFAFA;--chip:#E3E6EA;--pri:#294790;--txt:#26303F;--mut:#6B7787;--dim:#8B93A0;--div:rgba(0,0,0,.09)}
+.flabel{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--pri);margin-bottom:7px}
+.ftitle{font-size:20px;font-weight:800;color:var(--txt);margin-bottom:8px;letter-spacing:-.01em}
+.fnote{font-size:12.5px;line-height:1.65;color:var(--mut);max-width:78ch;margin-bottom:20px;text-wrap:pretty}
+.fnote b{color:var(--txt);font-weight:600}
+code{font-family:ui-monospace,SFMono-Regular,monospace;font-size:11.5px;background:var(--chip);padding:1px 5px;border-radius:4px;color:var(--txt)}
+.card{background:var(--card);border-radius:10px;overflow:hidden}
+.sechead{display:flex;align-items:center;gap:8px;height:36px;padding:0 16px;border-bottom:1px solid var(--div)}
+.sechead i{color:var(--pri);font-size:16px}
+.sechead .t{font-size:11px;letter-spacing:.05em;text-transform:uppercase;font-weight:700;color:var(--txt)}
+.sechead .sp{flex:1}
+.steps{padding:6px 16px 14px}
+.srow{display:grid;grid-template-columns:52px 40px 56px 1fr;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--div);font-size:13px;color:var(--txt)}
+.srow:last-child{border-bottom:0}
+.srow .tm{color:var(--pri);font-weight:700;font-variant-numeric:tabular-nums}
+.srow .vl{color:var(--dim);font-variant-numeric:tabular-nums}
+.slot{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:26px;border-radius:5px;font-size:12.5px;font-weight:700;color:#fff}
+.slot.f{background:#8B3A2C}.slot.w{background:#5C7742}
+.ic{width:30px;height:30px;border-radius:4px;padding:2px;background:radial-gradient(circle at top center,#4b6382,#1d2432)}
+.desc{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--txt)}
+.desc .ar{color:var(--mut)}
+/* ── play cta ─────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:6px;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+.btn-play{background:var(--pri);color:#1D2432;height:28px;padding:0 14px;font-size:12.5px;letter-spacing:.02em}
+.lt .btn-play{color:#fff}
+.btn-play i{font-size:20px;margin-left:-4px}
+.btn-split{background:var(--pri);color:#1D2432;height:28px;width:26px;justify-content:center;border-left:1px solid rgba(0,0,0,.18);border-radius:0 6px 6px 0}
+.sechead .btn-split i,.sechead .btn-play i{color:inherit}
+.lt .btn-split{color:#fff}
+.btn-play.grouped{border-radius:6px 0 0 6px;padding-right:13px}
+.split{display:flex}
+.btn-ghost{background:transparent;color:var(--pri);height:40px;padding:0 14px;font-size:13px;border:1px solid var(--div)}
+.old-play{display:flex;align-items:center;gap:6px;color:var(--pri);font-size:12px;font-weight:700;letter-spacing:.05em}
+.menu{position:absolute;right:0;top:46px;width:268px;background:var(--card);border:1px solid var(--div);border-radius:8px;box-shadow:0 14px 34px rgba(0,0,0,.45);overflow:hidden;z-index:5}
+.lt .menu{box-shadow:0 14px 34px rgba(0,0,0,.16)}
+.mi{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:11px 14px;align-items:start}
+.mi+.mi{border-top:1px solid var(--div)}
+.mi i{color:var(--pri);font-size:19px;line-height:1.1}
+.mi b{display:block;font-size:13px;color:var(--txt);font-weight:600}
+.mi s{display:block;text-decoration:none;font-size:11.5px;color:var(--mut);line-height:1.45;margin-top:2px}
+.mi.dis{opacity:.45}
+.badge{display:inline-block;font-size:9px;letter-spacing:.1em;font-weight:800;text-transform:uppercase;color:#1D2432;background:var(--pri);border-radius:3px;padding:1px 5px;margin-left:6px;vertical-align:1px}
+.lt .badge{color:#fff}
+.cap{font-size:11px;color:var(--dim);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+/* ── focus mode component ─────────────────── */
+.fm{background:#1D2432;color:#E6EAF1;display:grid;grid-template-rows:auto auto 1fr auto;overflow:hidden;position:relative;font-size:15px}
+.fm-top{display:flex;align-items:center;gap:10px;padding:10px 12px 9px;background:#1D2432}
+.fm-top .ttl{flex:1;font-size:13.5px;font-weight:700;color:#E6EAF1;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.fm-top .cnt{font-size:11.5px;font-weight:700;color:#8593A6;font-variant-numeric:tabular-nums;letter-spacing:.03em}
+.iconbtn{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(231,192,94,.12);color:#e7c05e;border:0;cursor:pointer;flex:none}
+.iconbtn i{font-size:17px}
+.fm-bars{display:flex;flex-direction:column;gap:2px;padding:0}
+.bar{height:3px;background:rgba(255,255,255,.08);position:relative}
+.bar span{position:absolute;inset:0 auto 0 0;background:#e7c05e}
+.bar.dim span{background:rgba(231,192,94,.4)}
+.fm-body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;text-align:center;background:#212A3A}
+.fm-clock{font-size:15px;font-weight:800;color:#e7c05e;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+.fm-content{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;font-size:19px;font-weight:600;line-height:1.35}
+.fm-content img{width:48px;height:48px;border-radius:5px;padding:3px;background:radial-gradient(circle at top center,#4b6382,#1d2432)}
+.fm-content .ar{color:#8593A6;font-weight:400}
+.fm-next{font-size:11.5px;color:#7A8799;font-weight:500;display:flex;align-items:center;gap:6px;justify-content:center}
+.fm-next b{color:#A7B3C4;font-weight:700;font-variant-numeric:tabular-nums}
+.fm-dock{background:#1D2432;padding:10px 12px 12px;display:flex;flex-direction:column;gap:10px}
+.res{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.res div{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:#E6EAF1;font-variant-numeric:tabular-nums}
+.res img{width:20px;height:20px}
+.res .t{color:#e7c05e}
+.ctrl{display:flex;align-items:center;justify-content:center;gap:10px}
+.cbtn{width:40px;height:40px;border-radius:50%;background:rgba(231,192,94,.12);color:#e7c05e;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cbtn i{font-size:21px}
+.cbtn.main{width:56px;height:56px;background:#e7c05e;color:#1D2432;box-shadow:0 4px 14px rgba(231,192,94,.28)}
+.cbtn.main i{font-size:30px}
+.cbtn.off{color:#6B7787;background:rgba(255,255,255,.05)}
+/* compact tier (PiP ~400×230) */
+.fm.compact{font-size:13px}
+.fm.compact .fm-top{padding:7px 9px 6px}
+.fm.compact .fm-top .ttl{font-size:11.5px;-webkit-line-clamp:1}
+.fm.compact .fm-body{gap:8px;padding:10px}
+.fm.compact .fm-content{font-size:16px;gap:7px}
+.fm.compact .fm-content img{width:38px;height:38px}
+.fm.compact .fm-clock{font-size:13px}
+.fm.compact .fm-dock{padding:7px 9px 9px;gap:7px}
+.fm.compact .res{gap:10px}
+.fm.compact .res div{font-size:12px}
+.fm.compact .res img{width:16px;height:16px}
+.fm.compact .cbtn{width:30px;height:30px}
+.fm.compact .cbtn i{font-size:17px}
+.fm.compact .cbtn.main{width:40px;height:40px}
+.fm.compact .cbtn.main i{font-size:23px}
+/* micro tier (PiP ≤340×190) */
+.fm.micro{grid-template-rows:auto 1fr auto}
+.fm.micro .fm-top{display:none}
+.fm.micro .fm-body{padding:8px 8px 4px;gap:5px}
+.fm.micro .fm-content{font-size:14px;gap:6px}
+.fm.micro .fm-content img{width:34px;height:34px}
+.fm.micro .fm-clock{font-size:12px}
+.fm.micro .fm-next{display:none}
+.fm.micro .fm-dock{flex-direction:row;align-items:center;justify-content:space-between;padding:6px 8px 8px;gap:8px}
+.fm.micro .res{gap:8px}
+.fm.micro .res div{font-size:11px;gap:3px}
+.fm.micro .res img{width:14px;height:14px}
+.fm.micro .ctrl{gap:5px}
+.fm.micro .cbtn{width:26px;height:26px}
+.fm.micro .cbtn i{font-size:15px}
+.fm.micro .cbtn.main{width:32px;height:32px}
+.fm.micro .cbtn.main i{font-size:19px}
+/* chrome mocks */
+.pipwin{border-radius:9px;overflow:hidden;box-shadow:0 20px 44px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.1)}
+.pipbar{height:26px;background:#2B3341;display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.pipbar em{font-style:normal;font-size:10.5px;color:#98A4B5;font-weight:600;letter-spacing:.02em}
+.pipbar .dots{display:flex;gap:9px;color:#98A4B5;font-size:13px}
+.phone{width:390px;border-radius:30px;overflow:hidden;border:8px solid #0E1219;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.sizecap{font-size:11px;color:var(--dim);font-weight:700;letter-spacing:.05em;margin-bottom:8px;font-variant-numeric:tabular-nums}
+.row{display:flex;gap:26px;align-items:flex-start}
+ol.steps-txt{margin:0 0 18px 18px;font-size:12.5px;line-height:1.75;color:var(--mut)}
+ol.steps-txt li{margin-bottom:7px;padding-left:2px}
+ol.steps-txt b{color:var(--txt);font-weight:600}
+pre{background:#161C27;border:1px solid var(--div);border-radius:8px;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,monospace;font-size:11.5px;line-height:1.7;color:#C7D0DC;overflow:auto;white-space:pre}
+pre .c{color:#6B7787}pre .k{color:#e7c05e}
+.callout{border-left:2px solid var(--pri);padding:2px 0 2px 14px;font-size:12.5px;line-height:1.65;color:var(--mut);margin-bottom:18px}
+.callout b{color:var(--txt);font-weight:600}
+.demo-status{font-size:12px;color:var(--mut);margin-top:12px;min-height:18px}
+</style>
+</head>
+<body>
+
+<!-- ── 1. concept + integration ───────────────────────────── -->
+<div class="frame dk" style="left:60px;top:60px;width:660px;height:1180px">
+<div class="flabel">Concept</div>
+<div class="ftitle">Focus mode in a floating window</div>
+<p class="fnote">The Document Picture-in-Picture API opens a real always-on-top OS window containing live DOM. Render the current focus-mode step into it and a single-monitor player gets a build-order overlay above their windowed-fullscreen game, with no external tool and no install. It replaces what the overlay export does through a third-party app. Chrome and Edge support it; everything else keeps today's behaviour.</p>
+<div class="callout"><b>One component, three density tiers.</b> The same <code>FocusMode.vue</code> renders full-screen on desktop, on a phone, and inside a 400×230 floating window. Tiers are driven by a container query on the focus-mode root, not by <code>$vuetify.display</code> — the PiP window is its own document, so viewport breakpoints report the wrong thing there.</div>
+<div class="cap">Integration steps</div>
+<ol class="steps-txt">
+<li><b>Feature-detect once</b> — <code>'documentPictureInPicture' in window</code>. Expose it as a computed on the build page; when false the floating-window option is simply not rendered.</li>
+<li><b>Move, don't duplicate.</b> Request the window, then <code>append</code> the existing focus-mode element into <code>pipWindow.document.body</code>. Vue keeps the same component instance, so the timer, step index, autoplay state and voice-over continue uninterrupted. On <code>pagehide</code>, move the node back into the dialog.</li>
+<li><b>Carry the styles across.</b> Clone every <code>&lt;style&gt;</code> and stylesheet <code>&lt;link&gt;</code> into the PiP document — Vuetify's generated theme CSS included — then set <code>colorScheme</code> and the theme class on its <code>&lt;html&gt;</code>.</li>
+<li><b>Rebind keys.</b> The existing <code>keyup</code> listener is bound to the parent <code>document</code>. Bind the same handler to <code>pipWindow.document</code> for the window's lifetime so ←/→/space still work while the game has focus and the user clicks the overlay.</li>
+<li><b>Drop the wake lock while floating.</b> <code>useWakeLock</code> stays for the phone case; a PiP window on desktop doesn't need it, and requesting it from a background tab fails anyway.</li>
+<li><b>Voice-over keeps working.</b> Speech synthesis lives on the parent window, unaffected by the move — one of the reasons to move the node rather than re-mount it.</li>
+<li><b>Entry point:</b> a split play button on the build page (right), plus a "Pop out" control inside focus mode so a session already running can be sent to the floating window.</li>
+</ol>
+<div class="cap">Sketch</div>
+<pre><span class="c">// composables/builds/useStepPiP.js</span>
+<span class="k">export</span> function useStepPiP(rootEl) {
+  const supported = 'documentPictureInPicture' in window;
+  const active = ref(false);
+
+  async function open() {
+    const pip = await documentPictureInPicture.requestWindow(
+      { width: 400, height: 230, disallowReturnToOpener: false });
+
+    <span class="c">// carry Vuetify + component CSS across</span>
+    [...document.styleSheets].forEach((s) =&gt; {
+      const el = s.ownerNode.cloneNode(true);
+      pip.document.head.appendChild(el);
+    });
+    pip.document.documentElement.className =
+      document.documentElement.className;
+
+    const home = rootEl.value.parentElement;
+    pip.document.body.appendChild(rootEl.value);
+    active.value = true;
+
+    pip.addEventListener('pagehide', () =&gt; {
+      home.appendChild(rootEl.value);   <span class="c">// state survives</span>
+      active.value = false;
+    });
+  }
+  return { supported, active, open };
+}</pre>
+<div class="callout" style="margin-top:18px"><b>Fallback, unchanged.</b> Firefox and Safari get the current full-screen dialog, the phone QR handoff and the overlay export. Nothing is removed; PiP is an extra door.</div>
+</div>
+
+<!-- ── 2. play prominence ─────────────────────────────────── -->
+<div class="frame dk" style="left:770px;top:60px;width:940px;height:620px">
+<div class="flabel">Entry point</div>
+<div class="ftitle">Make play the primary action</div>
+<p class="fnote">Today play is an 12px text link in the section header, the same weight as the header label itself — the one thing a player does right before a match is the least visible control on the page. Promote it to a filled gold button with a split menu carrying the two output targets.</p>
+
+<div class="row">
+  <div style="width:420px">
+    <div class="cap">Now</div>
+    <div class="card">
+      <div class="sechead"><i class="mdi mdi-format-list-numbered"></i><span class="t">Build Order</span><span class="sp"></span><span class="old-play"><i class="mdi mdi-play" style="font-size:14px"></i>PLAY</span></div>
+      <div class="steps">
+        <div class="srow"><span class="tm">0:00</span><span class="vl">6</span><span class="slot f">6</span><span class="desc">6<img class="ic" src="assets/res/villager.webp" alt="" /><span class="ar">-&gt;</span><img class="ic" src="assets/res/food.webp" alt="" /></span></div>
+        <div class="srow"><span class="tm">0:25</span><span class="vl">7</span><span class="slot f">6+</span><span class="desc"><img class="ic" src="assets/res/scout.webp" alt="" /><span class="ar">-&gt;</span><img class="ic" src="assets/res/food.webp" alt="" /></span></div>
+      </div>
+    </div>
+  </div>
+  <div style="width:420px">
+    <div class="cap">Proposed</div>
+    <div class="card" style="position:relative;overflow:visible">
+      <div class="sechead" style="padding:0 8px 0 16px"><i class="mdi mdi-format-list-numbered"></i><span class="t">Build Order</span><span class="sp"></span>
+        <div class="split"><button class="btn btn-play grouped"><i class="mdi mdi-play"></i>Play</button><button class="btn btn-split"><i class="mdi mdi-menu-down" style="font-size:20px"></i></button></div>
+      </div>
+      <div class="steps">
+        <div class="srow"><span class="tm">0:00</span><span class="vl">6</span><span class="slot f">6</span><span class="desc">6<img class="ic" src="assets/res/villager.webp" alt="" /><span class="ar">-&gt;</span><img class="ic" src="assets/res/food.webp" alt="" /></span></div>
+        <div class="srow"><span class="tm">0:25</span><span class="vl">7</span><span class="slot f">6+</span><span class="desc"><img class="ic" src="assets/res/scout.webp" alt="" /><span class="ar">-&gt;</span><img class="ic" src="assets/res/food.webp" alt="" /></span></div>
+      </div>
+      <div class="menu">
+        <div class="mi"><i class="mdi mdi-play-circle-outline"></i><div><b>Play here</b><s>Full-screen focus mode in this tab.</s></div></div>
+        <div class="mi"><i class="mdi mdi-picture-in-picture-bottom-right"></i><div><b>Floating window<span class="badge">New</span></b><s>Stays above the game on one monitor.</s></div></div>
+        <div class="mi"><i class="mdi mdi-cellphone-link"></i><div><b>Send to phone</b><s>QR code, opens focus mode there.</s></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="fnote" style="margin-top:26px;margin-bottom:0">Overlay export stays where it is, in the build's overflow menu — it hands off to another app rather than starting a session here. The default click plays; the caret is only for choosing a different target, and it remembers the last choice per user. The header keeps its 36px height — the button is 28px, so the Build Order card still lines up with the Description and Timeline sections above it. On <code>xs</code> the pair becomes a full-width button above the step table, so the action is reachable without scrolling the build list.</p>
+</div>
+
+<!-- ── 3. light variant of the header ─────────────────────── -->
+<div class="frame lt" style="left:770px;top:730px;width:460px;height:290px">
+<div class="flabel">Light theme</div>
+<div class="ftitle" style="font-size:16px">Same control, navy primary</div>
+<div class="card" style="margin-top:14px">
+  <div class="sechead" style="padding:0 8px 0 16px"><i class="mdi mdi-format-list-numbered"></i><span class="t">Build Order</span><span class="sp"></span>
+    <div class="split"><button class="btn btn-play grouped"><i class="mdi mdi-play"></i>Play</button><button class="btn btn-split"><i class="mdi mdi-menu-down" style="font-size:20px"></i></button></div>
+  </div>
+  <div class="steps">
+    <div class="srow"><span class="tm">0:00</span><span class="vl">6</span><span class="slot f">6</span><span class="desc">6<img class="ic" src="assets/res/villager.webp" alt="" /><span class="ar">-&gt;</span><img class="ic" src="assets/res/food.webp" alt="" /></span></div>
+  </div>
+</div>
+</div>
+
+<!-- ── 4. mobile focus mode ───────────────────────────────── -->
+<div class="frame dk" style="left:1760px;top:60px;width:520px;height:1180px">
+<div class="flabel">Focus mode · mobile</div>
+<div class="ftitle">Fill the screen with the step</div>
+<p class="fnote">Today the step floats in the middle of a tall empty card while the resource strip sits at the bottom with blank columns. Three fixed rows instead: header, step, dock. The step area takes all remaining height and scales its own type, resources render only where the build sets a value, and the next timing is always visible so you know how long you have.</p>
+<p class="fnote" style="margin-top:-8px">The preview line carries the timing plus <b>one</b> token, and only when there is one: the resource change the next step asks for (<code>+1 gold</code>), or an age-up (<code>⬆ Feudal</code>), which always wins. Repeating the next step's full villager spread would just duplicate the dock a second later, and a second line of small grey text is the first thing that gets ignored mid-game.</p>
+<div class="phone">
+  <div class="fm" style="height:760px">
+    <div class="fm-top">
+      <button class="iconbtn" style="background:rgba(255,255,255,.06);color:#8593A6"><i class="mdi mdi-picture-in-picture-bottom-right"></i></button>
+      <div class="ttl">Ottoman | Fast Imperial (Pax Otomana rush)</div>
+      <div class="cnt">3/42</div>
+      <button class="iconbtn"><i class="mdi mdi-close"></i></button>
+    </div>
+    <div class="fm-bars"><div class="bar"><span style="width:34%"></span></div><div class="bar dim"><span style="width:7%"></span></div></div>
+    <div class="fm-body">
+      <div class="fm-content">6<img src="assets/res/villager.webp" alt="" /><span class="ar">→</span><img src="assets/res/food.webp" alt="" /><span style="font-size:15px;color:#8593A6">(1 more; total of 7)</span></div>
+      <div class="fm-next">next <b>0:45</b> · <b>+1</b> gold</div>
+    </div>
+    <div class="fm-dock">
+      <div class="res">
+        <div class="t"><img src="assets/res/time.webp" alt="" />0:25</div>
+        <div><img src="assets/res/villager.webp" alt="" />7</div>
+        <div><img src="assets/res/food.webp" alt="" />6</div>
+        <div><img src="assets/res/wood.webp" alt="" />1</div>
+      </div>
+      <div class="ctrl">
+        <button class="cbtn"><i class="mdi mdi-chevron-left"></i></button>
+        <button class="cbtn"><i class="mdi mdi-volume-medium"></i></button>
+        <button class="cbtn main"><i class="mdi mdi-play"></i></button>
+        <button class="cbtn off"><i class="mdi mdi-account-off-outline"></i></button>
+        <button class="cbtn"><i class="mdi mdi-chevron-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ── 5. pip tiers ───────────────────────────────────────── -->
+<div class="frame dk" style="left:770px;top:1070px;width:940px;height:700px">
+<div class="flabel">Focus mode · floating window</div>
+<div class="ftitle">Two tiers below phone size</div>
+<p class="fnote">The user can resize a PiP window freely, so the layout has to survive down to a strip. At the default 400×230 the dock stacks under the step; below roughly 340×190 the title bar drops (the OS window already shows the build name), the dock turns into one row, and only time plus villager count survive from the resource strip. Everything stays above 26px hit targets — this is clicked mid-game.</p>
+<div class="row" style="align-items:flex-end;gap:34px">
+  <div>
+    <div class="sizecap">400 × 230 — default</div>
+    <div class="pipwin" style="width:400px">
+      <div class="pipbar"><em>Ottoman | Fast Imperial — AOE4 Guides</em><div class="dots"><i class="mdi mdi-arrow-collapse"></i><i class="mdi mdi-close"></i></div></div>
+      <div class="fm compact" style="height:204px">
+        <div class="fm-top"><div class="ttl">Ottoman | Fast Imperial (Pax Otomana rush)</div><div class="cnt">3/42</div></div>
+        <div class="fm-bars"><div class="bar"><span style="width:34%"></span></div><div class="bar dim"><span style="width:7%"></span></div></div>
+        <div class="fm-body">
+          <div class="fm-content">6<img src="assets/res/villager.webp" alt="" /><span class="ar">→</span><img src="assets/res/food.webp" alt="" /></div>
+          <div class="fm-next">next <b>0:45</b> · 8 vils</div>
+        </div>
+        <div class="fm-dock">
+          <div class="res"><div class="t"><img src="assets/res/time.webp" alt="" />0:25</div><div><img src="assets/res/villager.webp" alt="" />7</div><div><img src="assets/res/food.webp" alt="" />6</div><div><img src="assets/res/wood.webp" alt="" />1</div></div>
+          <div class="ctrl">
+            <button class="cbtn"><i class="mdi mdi-chevron-left"></i></button>
+            <button class="cbtn main"><i class="mdi mdi-pause"></i></button>
+            <button class="cbtn"><i class="mdi mdi-volume-medium"></i></button>
+            <button class="cbtn"><i class="mdi mdi-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="sizecap">320 × 150 — minimum</div>
+    <div class="pipwin" style="width:320px">
+      <div class="pipbar"><em>Ottoman | Fast Imperial</em><div class="dots"><i class="mdi mdi-close"></i></div></div>
+      <div class="fm micro" style="height:124px">
+        <div class="fm-bars"><div class="bar"><span style="width:34%"></span></div><div class="bar dim"><span style="width:7%"></span></div></div>
+        <div class="fm-body">
+          <div class="fm-content">6<img src="assets/res/villager.webp" alt="" /><span class="ar">→</span><img src="assets/res/food.webp" alt="" /></div>
+        </div>
+        <div class="fm-dock">
+          <div class="res"><div class="t"><img src="assets/res/time.webp" alt="" />0:25</div><div><img src="assets/res/villager.webp" alt="" />7</div></div>
+          <div class="ctrl">
+            <button class="cbtn"><i class="mdi mdi-chevron-left"></i></button>
+            <button class="cbtn main"><i class="mdi mdi-pause"></i></button>
+            <button class="cbtn"><i class="mdi mdi-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="fnote" style="margin-top:28px;margin-bottom:0">Tiers come from <code>@container focus (max-width: …)</code> on the focus-mode root, so the same rules apply in the dialog, on a phone in landscape, and in the PiP window without a second component.</p>
+</div>
+
+<!-- ── 6. live test ───────────────────────────────────────── -->
+<div class="frame dk" style="left:2330px;top:60px;width:620px;height:560px">
+<div class="flabel">Live check</div>
+<div class="ftitle">Try the real API</div>
+<p class="fnote">This opens an actual Document Picture-in-Picture window with the compact tier inside — same technique as the sketch, node moved rather than copied. Chrome or Edge only; if your browser refuses, the status line says why. Open this file in a browser tab rather than the preview pane if the request is blocked.</p>
+<button class="btn btn-play" id="pipbtn" style="height:44px;padding:0 22px"><i class="mdi mdi-picture-in-picture-bottom-right"></i>Open floating window</button>
+<div class="demo-status" id="pipstatus"></div>
+<div id="piphome" style="margin-top:22px">
+  <div class="pipwin" style="width:400px">
+    <div class="fm compact" id="pipnode" style="height:204px">
+      <div class="fm-top"><div class="ttl">Ottoman | Fast Imperial (Pax Otomana rush)</div><div class="cnt">3/42</div></div>
+      <div class="fm-bars"><div class="bar"><span style="width:34%"></span></div><div class="bar dim"><span style="width:7%"></span></div></div>
+      <div class="fm-body">
+        <div class="fm-content">6<img src="assets/res/villager.webp" alt="" /><span class="ar">→</span><img src="assets/res/food.webp" alt="" /></div>
+        <div class="fm-next">next <b>0:45</b> · 8 vils</div>
+      </div>
+      <div class="fm-dock">
+        <div class="res"><div class="t"><img src="assets/res/time.webp" alt="" />0:25</div><div><img src="assets/res/villager.webp" alt="" />7</div><div><img src="assets/res/food.webp" alt="" />6</div><div><img src="assets/res/wood.webp" alt="" />1</div></div>
+        <div class="ctrl">
+          <button class="cbtn"><i class="mdi mdi-chevron-left"></i></button>
+          <button class="cbtn main"><i class="mdi mdi-pause"></i></button>
+          <button class="cbtn"><i class="mdi mdi-volume-medium"></i></button>
+          <button class="cbtn"><i class="mdi mdi-chevron-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+const btn=document.getElementById('pipbtn'),status=document.getElementById('pipstatus'),home=document.getElementById('piphome').firstElementChild;
+if(!('documentPictureInPicture' in window)){status.textContent='This browser has no Document Picture-in-Picture support — the option would be hidden here.';btn.style.opacity=.45}
+btn.addEventListener('click',async()=>{
+  if(!('documentPictureInPicture' in window))return;
+  try{
+    const node=document.getElementById('pipnode');
+    const pip=await documentPictureInPicture.requestWindow({width:400,height:230});
+    [...document.querySelectorAll('style,link[rel="stylesheet"]')].forEach(s=>pip.document.head.appendChild(s.cloneNode(true)));
+    pip.document.body.style.cssText='margin:0;background:#1D2432';
+    node.style.height='100vh';
+    pip.document.body.appendChild(node);
+    status.textContent='Floating window open — it stays above other windows.';
+    pip.addEventListener('pagehide',()=>{node.style.height='204px';home.appendChild(node);status.textContent='Window closed, step returned to the page.'});
+  }catch(e){status.textContent='Blocked: '+e.message}
+});
+</script>
+</body>
+</html>
