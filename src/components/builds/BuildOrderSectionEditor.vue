@@ -257,9 +257,12 @@
     <!-- Readonly viewer: 5-slot step cards -->
     <template v-if="readonly">
       <div class="xs-steps-container">
+        <!--A step that restates the previous distribution and says nothing else
+            is not a step that happened; a reader counting rows would count it.
+            Hidden here and never in the editor, where the author still owns it.-->
+        <template v-for="(item, index) in steps" :key="'xs-view-' + index">
         <div
-          v-for="(item, index) in steps"
-          :key="'xs-view-' + index"
+          v-if="!saysNothing(index)"
           class="step-card-xs"
         >
           <!-- Top bar: timestamp + villager total -->
@@ -313,6 +316,7 @@
             @mouseout="handleMouseOut($event)"
           ></div>
         </div>
+        </template>
         <!-- Notes card inside container — gets the same 8px gap as step cards -->
         <div v-if="gameplan" class="gameplan-card-xs">
           <div class="gameplan-header-xs">
@@ -405,7 +409,10 @@
           <tr v-if="!readonly" class="ins-row">
             <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(index - 1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
           </tr>
+          <!--Hidden only for readers. The editor keeps every row: an author has
+              to be able to see and reach a step to fix or remove it.-->
           <tr
+            v-if="!readonly || !saysNothing(index)"
             :class="['step-row', section.type === 'ageUp' && 'age-lane-md']"
             v-on:keyup.enter.alt="addStep(index)"
             v-on:keyup.delete.alt="
@@ -618,6 +625,7 @@ import iconService from "@/composables/builds/icons/iconService.js";
 import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
 import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
 import { formatAgeTime } from "@/composables/builds/useAgeTimings.js";
+import { saysNothing as isRedundantStep } from "@/composables/builds/stepVisibility.js";
 import {
   addAutocompleteIcon,
   updateSearchText,
@@ -819,6 +827,20 @@ export default {
 
     function registerStoneInputRef(el, index) {
       if (el) stoneInputRefs.value[index] = el;
+    }
+
+    /**
+     * Whether this step restates the one before it and says nothing else.
+     *
+     * Crosses the section boundary the same way hasDeltaUp does: the first row
+     * of an age section still follows on from the age-up before it, so it is
+     * redundant against that rather than against nothing.
+     *
+     * @param {number} index - Position within this section.
+     * @return {boolean} True when the row can be hidden from a reader.
+     */
+    function saysNothing(index) {
+      return isRedundantStep(steps[index], index === 0 ? props.previousStep : steps[index - 1]);
     }
 
     function hasDeltaUp(field, index) {
@@ -1129,6 +1151,7 @@ export default {
       hasResourceValue,
       resolvedTime,
       isEstimate,
+      saysNothing,
       updateStep,
       handleTimeBlur,
       updateStepDescription,

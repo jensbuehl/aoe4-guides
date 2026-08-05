@@ -293,6 +293,7 @@ import { useEventListener, useWakeLock } from "@vueuse/core";
 import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
 
 import { initTextToSpeech, speak, stop } from "@/composables/builds/textToSpeechHelper.js";
+import { redundantMask } from "@/composables/builds/stepVisibility.js";
 import {
   getTimings,
   resolveStepTimes,
@@ -348,9 +349,6 @@ export default {
         });
       }
 
-      //init current step
-      currentStep.value = steps.value[currentStepIndex.value];
-
       //init timings
       stepsTimings.value = getTimings(steps.value);
 
@@ -391,6 +389,23 @@ export default {
           step.time = getFormattedTime(toDateFromSeconds(stepsTimings.value[index].startTime));
         });
       }
+
+      //Drop the steps that restate their predecessor and say nothing else. There
+      //is nothing to announce and nothing to look at, so playing one is a pause
+      //the build never asked for.
+      //
+      //After the timings, never before: the resolver and the gate above are keyed
+      //by position in the full list, and filtering first would shift every anchor
+      //and change the times of the steps that remain.
+      const redundant = redundantMask(steps.value);
+      steps.value = steps.value.filter((step, index) => !redundant[index]);
+      stepDerived.value = stepDerived.value.filter((flag, index) => !redundant[index]);
+      if (stepsTimings.value) {
+        stepsTimings.value = stepsTimings.value.filter((timing, index) => !redundant[index]);
+      }
+
+      //init current step, from the list a player will actually move through
+      currentStep.value = steps.value[currentStepIndex.value];
 
       //init timer
       totalElapsedTime.value = new Date();

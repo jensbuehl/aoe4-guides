@@ -4,6 +4,7 @@ import { computed, unref } from "vue";
 //Composables
 import { flattenSections } from "@/composables/builds/useAgeTimings.js";
 import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
+import { redundantMask } from "@/composables/builds/stepVisibility.js";
 import { parseVillagerCountString } from "@/composables/builds/villagerAggregator.js";
 
 /**
@@ -72,10 +73,22 @@ export function getEcoSeries(steps) {
     //place the same step at two different seconds
     const times = resolveStepTimes(flat);
 
+    //A step that restates the one before it and says nothing else is not a
+    //moment in the economy. It draws a vertex on a flat run and, worse, pads the
+    //coverage gate — a build with three real distributions and ten copies of
+    //them would clear a floor written to reject exactly that shape. Dropped from
+    //the points and from the counts alike, so the gate judges what the author
+    //actually described.
+    const redundant = redundantMask(flat);
+
     const points = [];
     let statedSteps = 0;
+    let describedSteps = 0;
 
     flat.forEach((step, index) => {
+      if (redundant[index]) return;
+      describedSteps++;
+
       const values = { builders: 0, food: 0, wood: 0, gold: 0, stone: 0 };
       let stated = false;
 
@@ -102,7 +115,7 @@ export function getEcoSeries(steps) {
       points.push({ seconds: time.seconds, stated: time.provenance === "stated", ...values });
     });
 
-    const coverage = statedSteps / flat.length;
+    const coverage = describedSteps ? statedSteps / describedSteps : 0;
     if (coverage < MIN_COVERAGE) return null;
 
     //Every point is a stated one now, so this is simply "is there a shape here"
