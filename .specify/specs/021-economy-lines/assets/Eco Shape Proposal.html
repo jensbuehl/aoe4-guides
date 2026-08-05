@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="design_doc_mode" content="canvas" />
+<title>AOE4 Guides — Villager Distribution Shape</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+img{display:block}
+a{color:#e7c05e}a:hover{color:#fff}
+.frame{position:absolute;border-radius:14px;padding:26px 28px 30px}
+.dk{background:#1D2432;--card:#324156;--chip:#3D516B;--pri:#e7c05e;--txt:#E6EAF1;--mut:#8593A6;--dim:#5C6879;--div:rgba(255,255,255,.07);--food:#C05C4A;--wood:#6E8F55;--gld:#D8B45C;--stn:#8894A6;--bld:#55688A;--track:#2A3547}
+.lt{background:#D8DCE0;--card:#FAFAFA;--chip:#E3E6EA;--pri:#294790;--txt:#26303F;--mut:#6B7787;--dim:#8B93A0;--div:rgba(0,0,0,.09);--food:#A8452F;--wood:#4E6F3B;--gld:#B8913A;--stn:#6B7787;--bld:#3E5378;--track:#E1E4E9}
+.flabel{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--pri);margin-bottom:7px}
+.ftitle{font-size:20px;font-weight:800;color:var(--txt);margin-bottom:8px;letter-spacing:-.01em}
+.fnote{font-size:12.5px;line-height:1.65;color:var(--mut);max-width:76ch;margin-bottom:20px;text-wrap:pretty}
+.fnote b{color:var(--txt);font-weight:600}
+.fnote code{font-family:ui-monospace,monospace;font-size:11.5px;background:var(--chip);padding:1px 5px;border-radius:4px;color:var(--txt)}
+.card{background:var(--card);border-radius:10px;overflow:hidden}
+.sechead{display:flex;align-items:center;gap:8px;height:36px;padding:0 16px;letter-spacing:.05em;border-bottom:1px solid var(--div)}
+.sechead i{color:var(--pri);font-size:16px}
+.sechead span{font-size:11px;text-transform:uppercase;font-weight:700;color:var(--txt)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:14px;font-size:11px;color:var(--mut);font-weight:500}
+.legend div{display:flex;align-items:center;gap:6px}
+.legend i{width:9px;height:9px;border-radius:2px;display:block}
+.plotwrap{padding:16px 16px 14px}
+.crestrow{position:relative;height:62px;margin-top:8px}
+.crest{position:absolute;transform:translateX(-50%);width:96px;text-align:center;top:0}
+.crest img{width:20px;height:20px;margin:0 auto 3px}
+.crest b{font-size:12.5px;font-weight:700;color:var(--txt);font-variant-numeric:tabular-nums;display:block;line-height:1.2}
+.crest .der{font-weight:500;color:var(--mut)}
+.crest s{display:block;text-decoration:none;font-size:10px;color:var(--dim);line-height:1.3}
+.axis{display:flex;justify-content:space-between;font-size:10.5px;color:var(--dim);font-variant-numeric:tabular-nums;padding:0 0 2px}
+.stack{display:flex;flex-direction:column;gap:22px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.cmp{font-size:11px;color:var(--mut);font-weight:600;margin-bottom:8px;letter-spacing:.04em;text-transform:uppercase}
+.mixbar{display:flex;height:7px;border-radius:4px;overflow:hidden;background:var(--track)}
+.mixbar span{height:100%}
+.agemix{display:grid;grid-template-columns:66px 1fr;gap:12px;align-items:center;margin-bottom:11px}
+.agemix .lab{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--mut);font-weight:600}
+.agemix .lab img{width:15px;height:15px}
+.pill{display:inline-flex;align-items:center;gap:6px;background:var(--chip);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--txt);font-weight:600}
+.lcard{background:var(--card);border-radius:10px;min-height:112px;display:flex;overflow:hidden}
+.lflag{width:23%;position:relative;background:linear-gradient(115deg,#2b3b52,#324156)}
+.lflag:after{content:"";position:absolute;inset:0;background:linear-gradient(to right,transparent,var(--card))}
+.lflag em{position:absolute;left:14px;top:12px;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);font-style:normal;font-weight:700}
+.lbody{flex:1;padding:14px 18px;display:flex;flex-direction:column;justify-content:center;gap:7px;min-width:0}
+.ltitle{font-size:16px;font-weight:700;color:var(--pri);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lmeta{display:flex;align-items:center;gap:10px;font-size:11.5px;color:var(--mut);white-space:nowrap;overflow:hidden;font-weight:500}
+.lmeta .sep{opacity:.4}
+.lages{width:132px;flex-shrink:0;border-left:1px solid var(--div);padding:14px 16px;display:flex;flex-direction:column;justify-content:center;gap:5px}
+.agerow{display:grid;grid-template-columns:17px 1fr;align-items:center;gap:8px;min-height:18px;font-size:12px;line-height:1;font-variant-numeric:tabular-nums;color:var(--txt)}
+.agerow img{width:17px;height:17px}
+.agerow b{text-align:right;font-weight:700}
+.agerow.der b{font-weight:500;color:var(--mut)}
+.agerow.non b{font-weight:500;color:var(--dim)}
+.ecotoggle{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mut);background:none;border:0;cursor:pointer;font-family:inherit;padding:9px 16px;width:100%;border-top:1px solid var(--div)}
+.ecotoggle:hover{color:var(--txt)}
+.ecotoggle i{font-size:16px;transition:transform .2s}
+.ecotoggle .cnt{margin-left:auto;font-weight:500;letter-spacing:0;text-transform:none;color:var(--dim);font-size:11px}
+.open .ecotoggle i.chev{transform:rotate(180deg)}
+.ecobody{display:none;padding:4px 16px 14px}
+.open .ecobody{display:block}
+.rec{display:inline-flex;align-items:center;gap:6px;background:var(--pri);color:#1D2432;font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:4px;margin-bottom:10px}
+.warn{border-left:2px solid var(--pri);padding-left:12px;font-size:12px;line-height:1.6;color:var(--mut);margin-top:14px}
+.warn b{color:var(--txt)}
+</style>
+</head>
+<body>
+
+<div class="frame dk" style="left:0;top:0;width:900px" id="f-merged"></div>
+<div class="frame dk" style="left:960px;top:0;width:900px" id="f-split"></div>
+<div class="frame dk" style="left:0;top:700px;width:900px" id="f-columns"></div>
+<div class="frame dk" style="left:960px;top:700px;width:900px" id="f-agemix"></div>
+<div class="frame dk" style="left:0;top:1320px;width:900px" id="f-compare"></div>
+<div class="frame dk" style="left:960px;top:1320px;width:900px" id="f-card"></div>
+<div class="frame dk" style="left:0;top:2540px;width:900px" id="f-honest"></div>
+<div class="frame lt" style="left:960px;top:2540px;width:900px" id="f-light"></div>
+<div class="frame dk" style="left:0;top:3300px;width:1860px" id="f-lines"></div>
+<div class="frame dk" style="left:0;top:4400px;width:900px" id="f-collapse"></div>
+
+<script>
+const SCALE=960, ORDER=[["food","food"],["wood","wood"],["gold","gld"],["stone","stn"],["builders","bld"]];
+const NAME={food:"Food",wood:"Wood",gold:"Gold",stone:"Stone",builders:"Builders"};
+const T=s=>`${Math.floor(s/60)}:${String(Math.round(s%60)).padStart(2,"0")}`;
+
+/* Fixture builds. Resource cells are deliberately sparse — authors only note
+   what changed — so every series is carry-forward per column. */
+const BUILDS=[{
+  title:"English 2TC Fast Castle Boom", ages:[{a:2,t:245},{a:3,t:530},{a:4,t:845,der:true}],
+  cov:1, steps:[[0,{food:3,wood:3}],[45,{food:5}],[95,{food:6,wood:4}],[140,{food:8,builders:2}],
+  [190,{food:9,wood:5}],[245,{gold:2,builders:0}],[300,{food:11,gold:4}],[365,{food:13,wood:6,gold:5}],
+  [430,{food:14,builders:3}],[530,{food:16,wood:7,gold:7,builders:0}],[620,{food:18,gold:9}],
+  [720,{food:20,wood:8,gold:11}],[845,{food:21,wood:9,gold:13}],[930,{food:22,gold:15}]]
+},{
+  title:"Mongol Feudal Horseman All-in", ages:[{a:2,t:200}],
+  cov:1, steps:[[0,{food:3,wood:3}],[40,{food:5}],[85,{food:6,wood:4}],[135,{food:7,wood:5}],
+  [200,{gold:3}],[250,{food:9,gold:5,builders:2}],[310,{wood:6,gold:7,builders:0}],
+  [380,{food:10,gold:9}],[450,{food:11,wood:7,gold:10}],[540,{food:12,gold:12}],[640,{food:13,gold:13}]]
+},{
+  title:"Delhi Sacred Sites into Stone", ages:[{a:2,t:280},{a:3,t:600,der:true}],
+  cov:1, steps:[[0,{food:3,wood:3}],[50,{food:5}],[100,{food:6,wood:4}],[160,{food:8,wood:4,builders:2}],
+  [225,{food:9,wood:5,builders:3}],[280,{gold:3,builders:0}],[345,{food:10,gold:5,stone:4}],
+  [420,{wood:6,stone:8,builders:4}],[500,{food:12,gold:6,stone:10,builders:0}],
+  [600,{food:14,wood:7,gold:8,stone:8}],[720,{food:16,gold:10,stone:6}],[860,{food:18,wood:8,gold:12,stone:4}]]
+}];
+
+/* Carry-forward per column: an unset cell means "unchanged", not zero. */
+function series(b){
+  let cur={food:0,wood:0,gold:0,stone:0,builders:0};
+  return b.steps.map(([t,cells],i)=>{
+    cur={...cur,...cells};
+    return {t, i, v:{...cur}, real:b.cov>=1||i<Math.round(b.steps.length*b.cov)};
+  });
+}
+const total=v=>ORDER.reduce((s,[k])=>s+v[k],0);
+const maxPop=pts=>Math.ceil(Math.max(...pts.map(p=>total(p.v)))/10)*10;
+
+function area(b,W,H,opt={}){
+  const pts=series(b), M=opt.max||maxPop(pts), scale=opt.scale||SCALE;
+  const x=t=>t/scale*W, y=v=>H-v/M*H;
+  const cut=pts.filter(p=>p.real).length;
+  let out="", base=pts.map(()=>0);
+  ORDER.forEach(([k,c])=>{
+    const top=pts.map((p,i)=>base[i]+p.v[k]);
+    const seg=(from,to)=>{
+      if(to-from<2)return"";
+      const up=pts.slice(from,to).map((p,i)=>`${x(p.t).toFixed(1)},${y(top[from+i]).toFixed(1)}`).join(" L");
+      const dn=pts.slice(from,to).reverse().map((p,i)=>`${x(p.t).toFixed(1)},${y(base[to-1-i]).toFixed(1)}`).join(" L");
+      return `M${up} L${dn} Z`;
+    };
+    out+=`<path d="${seg(0,cut)}" fill="var(--${c})" opacity=".9"/>`;
+    if(cut<pts.length) out+=`<path d="${seg(cut-1,pts.length)}" fill="var(--${c})" opacity=".28"/>`;
+    base=top;
+  });
+  // villager envelope
+  const env=pts.map(p=>`${x(p.t).toFixed(1)},${y(total(p.v)).toFixed(1)}`).join(" L");
+  out+=`<path d="M${env}" fill="none" stroke="var(--txt)" stroke-width="1.5" opacity=".55" ${cut<pts.length?`stroke-dasharray="0 0"`:""}/>`;
+  // age guides
+  (b.ages||[]).forEach(a=>out+=`<line x1="${x(a.t).toFixed(1)}" y1="0" x2="${x(a.t).toFixed(1)}" y2="${H}" stroke="var(--card)" stroke-width="1.5" opacity=".85"/>`);
+  const gl=[10,20,30].filter(g=>g<M).map(g=>`<line x1="0" y1="${y(g).toFixed(1)}" x2="${W}" y2="${y(g).toFixed(1)}" stroke="var(--txt)" stroke-width=".5" opacity=".13"/><text x="4" y="${(y(g)-4).toFixed(1)}" font-size="9" fill="var(--dim)">${g}</text>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" style="display:block;border-radius:4px;overflow:visible">${gl}${out}</svg>`;
+}
+
+function ageTrack(b,scale=SCALE){
+  const stops=[0,...(b.ages||[]).map(a=>a.t),scale].filter((v,i,arr)=>i===0||v>arr[i-1]);
+  const cls=["age-seg-1","age-seg-2","age-seg-3","age-seg-4"];
+  const cols=["#3d516b","#6d7fa6","#b99a4e","var(--pri)"];
+  let out="";
+  for(let i=0;i<stops.length-1;i++) out+=`<span style="width:${((stops[i+1]-stops[i])/scale*100).toFixed(2)}%;background:${cols[Math.min(i,3)]}"></span>`;
+  return `<div style="display:flex;height:8px;border-radius:4px;overflow:hidden;background:var(--track);margin-top:4px">${out}</div>`;
+}
+function crests(b,withVils=true,scale=SCALE){
+  const pts=series(b);
+  const vil=t=>{const p=[...pts].reverse().find(p=>p.t<=t);return p?total(p.v):null;};
+  return `<div class="crestrow">${(b.ages||[]).map(a=>`<div class="crest" style="left:${(a.t/scale*100).toFixed(1)}%"><img src="assets/res/age_${a.a}.webp" alt=""><b class="${a.der?'der':''}">${a.der?"~":""}${T(a.t)}</b>${withVils?`<s>${vil(a.t)} vils</s>`:""}</div>`).join("")}</div>`;
+}
+const axis=(scale=SCALE)=>`<div class="axis">${Array.from({length:scale/240+1},(_,i)=>`<span>${T(i*240)}</span>`).join("")}</div>`;
+const legend=(keys=ORDER,total=false)=>`<div class="legend">${keys.map(([k,c])=>`<div><i style="background:var(--${c})"></i>${NAME[k]}</div>`).join("")}${total?`<div style="margin-left:4px"><i style="background:var(--txt);opacity:.55;height:2px;width:14px;border-radius:1px"></i>Total villagers</div>`:""}</div>`;
+
+/* ---------- A · merged (recommended) ---------- */
+document.getElementById("f-merged").innerHTML=`
+<div class="flabel">Option A · details page</div>
+<div class="rec"><i class="mdi mdi-check-bold"></i>Recommended</div>
+<div class="ftitle">One graphic: the eco plot lives inside the existing Timeline card</div>
+<div class="fnote"><b>AgeTimeline.vue</b> already owns a 0–16:00 track, the crests, the times and the <code>N vils</code> labels. The area chart shares that exact scale and sits directly above it, so the age-up lines cut straight through the eco shape — you can see the gold ramp <em>before</em> Castle rather than inferring it two elements away. No second axis, no second card, no re-alignment by eye. The top edge is the villager curve, so pop growth and the split are one reading, and the envelope still matches the vils numbers on the markers.</div>
+<div class="card">
+  <div class="sechead"><i class="mdi mdi-timer-sand"></i><span>Timeline</span></div>
+  <div class="plotwrap">
+    ${area(BUILDS[0],820,150)}
+    ${ageTrack(BUILDS[0])}
+    ${crests(BUILDS[0])}
+    ${axis()}
+    ${legend(ORDER,true)}
+  </div>
+</div>
+<div class="warn"><b>Builders are the fifth band, not a rounding error.</b> <code>aggregateVillagers</code> sums <code>builders</code> too — drop the band and the envelope stops matching the <code>21 vils</code> already printed on the marker, in the same card.</div>`;
+
+/* ---------- B · your original: two separate blocks ---------- */
+document.getElementById("f-split").innerHTML=`
+<div class="flabel">Option B · details page</div>
+<div class="ftitle">Separate sparkline card, as originally proposed</div>
+<div class="fnote">The version from your note: its own ~120 px card under the header, independent of the timeline. Honest comparison — it is not <em>bad</em>, and it decouples from a component you'd otherwise reopen. But the two graphics repeat the same x-axis a card apart, and the reader has to hold one to read the other. Look at how much work it takes to answer "was the gold spike before or after Castle?"</div>
+<div class="stack">
+  <div class="card"><div class="sechead"><i class="mdi mdi-timer-sand"></i><span>Timeline</span></div>
+    <div class="plotwrap">${ageTrack(BUILDS[0])}${crests(BUILDS[0])}${axis()}</div></div>
+  <div class="card"><div class="sechead"><i class="mdi mdi-chart-areaspline"></i><span>Villager distribution</span></div>
+    <div class="plotwrap">${area(BUILDS[0],820,120)}${axis()}${legend(ORDER,true)}</div></div>
+</div>
+<div class="warn"><b>Verdict:</b> ship A. Keep B only if reopening <code>AgeTimeline.vue</code> is off the table — then the two cards must at least share <code>scaleSeconds</code> from <code>useAgeTimings.js</code>, or the bars silently disagree.</div>`;
+
+/* ---------- C · discrete columns ---------- */
+function columns(b,W,H,bucket=60){
+  const pts=series(b), M=maxPop(pts), n=Math.ceil(SCALE/bucket), bw=W/n;
+  let out="";
+  for(let i=0;i<n;i++){
+    const t=i*bucket, p=[...pts].reverse().find(p=>p.t<=t+bucket/2);
+    if(!p||p.t>SCALE)continue;
+    let y=H;
+    ORDER.forEach(([k,c])=>{const h=p.v[k]/M*H; if(h<=0)return; y-=h;
+      out+=`<rect x="${(i*bw+1).toFixed(1)}" y="${y.toFixed(1)}" width="${(bw-2).toFixed(1)}" height="${h.toFixed(1)}" fill="var(--${c})" opacity=".92"/>`;});
+  }
+  (b.ages||[]).forEach(a=>out+=`<line x1="${(a.t/SCALE*W).toFixed(1)}" y1="0" x2="${(a.t/SCALE*W).toFixed(1)}" y2="${H}" stroke="var(--card)" stroke-width="2"/>`);
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" style="display:block">${out}</svg>`;
+}
+document.getElementById("f-columns").innerHTML=`
+<div class="flabel">Option C · alternative</div>
+<div class="ftitle">Discrete 1-minute columns instead of a smooth area</div>
+<div class="fnote">A build order is not a continuous signal — it is 12–30 discrete snapshots, most of them with unset cells. A smooth area draws slopes the author never wrote. Columns say "this is what the split looked like at each minute" and nothing more. Cheaper to draw, immune to the interpolation argument, and it degrades gracefully when a build has six steps instead of thirty.</div>
+<div class="card">
+  <div class="sechead"><i class="mdi mdi-timer-sand"></i><span>Timeline</span></div>
+  <div class="plotwrap">${columns(BUILDS[0],820,140)}${ageTrack(BUILDS[0])}${crests(BUILDS[0])}${axis()}${legend()}</div>
+</div>
+<div class="warn"><b>Trade-off:</b> the villager envelope is harder to read as a curve, so the "boom vs. all-in" silhouette is weaker — which is the thing you wanted the chart for. Pick C if you'd rather be strictly literal about the data than legible about the shape.</div>`;
+
+/* ---------- D · per-age split ---------- */
+function mix(v,w=1){
+  const t=total(v)||1;
+  return `<div class="mixbar" style="opacity:${w}">${ORDER.map(([k,c])=>v[k]?`<span style="width:${(v[k]/t*100).toFixed(1)}%;background:var(--${c})"></span>`:"").join("")}</div>`;
+}
+function avgAt(b,from,to){
+  const pts=series(b).filter(p=>p.t>=from&&p.t<(to??1e9));
+  if(!pts.length)return null;
+  const acc={food:0,wood:0,gold:0,stone:0,builders:0};
+  pts.forEach(p=>ORDER.forEach(([k])=>acc[k]+=p.v[k]));
+  ORDER.forEach(([k])=>acc[k]/=pts.length);
+  return acc;
+}
+function ageMixBlock(b){
+  const stops=[{a:1,t:0},...(b.ages||[])];
+  return stops.map((s,i)=>{
+    const m=avgAt(b,s.t,stops[i+1]?.t); if(!m)return"";
+    return `<div class="agemix"><div class="lab">${s.a>1?`<img src="assets/res/age_${s.a}.webp" alt="">`:`<span style="width:15px;text-align:center;color:var(--dim)">I</span>`}${["","Dark","Feudal","Castle","Imperial"][s.a]}</div>${mix(m)}</div>`;
+  }).join("");
+}
+document.getElementById("f-agemix").innerHTML=`
+<div class="flabel">Option D · alternative</div>
+<div class="ftitle">Split per age — no time axis at all</div>
+<div class="fnote">Drop time entirely and answer the question players actually ask: <em>what was the eco doing in each age?</em> One proportional bar per age reached, showing the average split while the build was in that age. It reads in under a second, survives sparse data (an age with two steps still averages fine), needs no <code>getTimings</code>, and therefore works on the <b>~30% of builds with no usable timestamps</b> that the area chart has to fall back for.</div>
+<div class="card"><div class="sechead"><i class="mdi mdi-chart-box-outline"></i><span>Economy by age</span></div>
+<div class="plotwrap">${ageMixBlock(BUILDS[0])}${legend(ORDER)}</div></div>
+<div class="warn"><b>Where this wins:</b> it is the only option that fits a list card (see the card frame), and it is a strict superset of "civ + age times" for telling two builds apart. Where it loses: no spike is visible — a 30-second stone bump averages away.</div>`;
+
+/* ---------- E · three builds compared ---------- */
+document.getElementById("f-compare").innerHTML=`
+<div class="flabel">Does it actually read?</div>
+<div class="ftitle">Three build archetypes, same scale</div>
+<div class="fnote">The whole premise is that a build's shape is its identity. Here it is tested: the same chart across a boom, a feudal all-in and a stone build. If these three don't look obviously different, the feature isn't worth a day.</div>
+<div class="stack">${BUILDS.map(b=>`<div class="card"><div class="sechead"><i class="mdi mdi-chart-areaspline"></i><span>${b.title}</span></div>
+<div class="plotwrap">${area(b,820,104,{max:40})}${ageTrack(b)}${crests(b,false)}${axis()}</div></div>`).join("")}</div>
+<div class="fnote" style="margin-top:18px;margin-bottom:0">Fixed 40-villager y-scale across all three, so heights are comparable — a per-build y-max would make the all-in look like a boom. Same argument as the shared 16:00 x-scale already in <code>AgeTimeline.vue</code>.</div>
+${legend(ORDER,true)}`;
+
+/* ---------- F · list card ---------- */
+const card=(b,strip)=>`<div class="lcard"><div class="lflag"><em>${b.title.split(" ")[0]}</em></div>
+<div class="lbody"><div class="ltitle">${b.title}</div>
+<div class="lmeta">grubbybaby <span class="sep">·</span> Beasty <span class="sep">·</span> Season 10</div>
+${strip}</div>
+<div class="lages">${[2,3,4].map(a=>{const t=(b.ages||[]).find(x=>x.a===a);
+return `<div class="agerow ${t?(t.der?'der':''):'non'}"><img src="assets/res/age_${a}.webp" alt=""><b>${t?(t.der?"~":"")+T(t.t):"—"}</b></div>`}).join("")}</div></div>`;
+document.getElementById("f-card").innerHTML=`
+<div class="flabel">List card</div>
+<div class="ftitle">Not a sparkline — a mix bar</div>
+<div class="fnote">At 112 px tall beside a 132 px age rail, a time series is decoration. What compresses is the split itself: one 64×6 px proportional bar in the slot the stats line already occupies. No axis, no time, no legend, readable at a glance, and it does not fight the rail for attention. Compare against the plain card and against the sparkline you'd get instead.</div>
+<div class="stack">
+  <div><div class="cmp">Today (013 shipped)</div>${card(BUILDS[0],`<div class="lmeta">2 Aug <span class="sep">·</span> 4.2k views <span class="sep">·</span> 12 comments</div>`)}</div>
+  <div><div class="cmp">+ mix bar · recommended if anything at all</div>${card(BUILDS[0],`<div class="lmeta" style="gap:12px">2 Aug <span class="sep">·</span> 4.2k views <span style="width:72px;display:block">${mix(avgAt(BUILDS[0],0))}</span></div>`)}</div>
+  <div><div class="cmp">+ sparkline · too small to read, competes with the rail</div>${card(BUILDS[0],`<div style="width:150px">${area(BUILDS[0],150,26)}</div>`)}</div>
+</div>
+<div class="warn"><b>Sequencing:</b> the rail just shipped. Let it settle, watch whether people still open builds to check eco, and only then add the mix bar — replacing nothing, but only after you've seen a card with the rail in the wild for a while.</div>`;
+
+/* ---------- G · data honesty ---------- */
+const sparse={title:"Sparse build",ages:[{a:2,t:250},{a:3,t:560,der:true}],cov:9/14,
+  steps:BUILDS[0].steps};
+document.getElementById("f-honest").innerHTML=`
+<div class="flabel">Data honesty</div>
+<div class="ftitle">Coverage, carry-forward, and the boat problem</div>
+<div class="fnote">Three things in <code>villagerAggregator.js</code> that decide whether this chart is trustworthy. All of them are visible in the graphic, so they have to be designed, not just handled.</div>
+<div class="card"><div class="sechead"><i class="mdi mdi-alert-outline"></i><span>Author stops filling cells after 7:10</span></div>
+<div class="plotwrap">${area(sparse,820,120)}${ageTrack(sparse)}${axis()}
+<div style="display:flex;gap:18px;margin-top:12px;font-size:11.5px;color:var(--mut);align-items:center">
+<span class="pill"><i class="mdi mdi-check" style="color:var(--pri)"></i>stated cells</span>
+<span class="pill" style="opacity:.6"><i class="mdi mdi-help"></i>carried forward, no new data</span></div></div></div>
+<div class="warn" style="margin-top:20px"><b>1 · Carry forward per column, and fade the tail.</b> Dropping to zero flickers; carrying forward silently invents ten minutes of flat eco. Fade everything after the last step that stated any cell, so the flat part reads as "no data", not "no change".</div>
+<div class="warn"><b>2 · Gate on coverage, not on sparsity.</b> If fewer than roughly half the steps carry any resource cell, render nothing. A chart of four data points spread over 16 minutes looks like a bug report.</div>
+<div class="warn"><b>3 · <code>parseVillagerCountString</code> lies twice.</b> It reads only the first two <code>+</code> operands, so <code>"4+1+2"</code> silently drops the 2; and per your own spec 020 note the second operand is sometimes a <b>fishing boat</b>, so water builds overstate food. Absolute stacking makes that visible where today's single <code>N vils</code> number hides it. Either split boats out of the parser or keep the chart's caption honest.</div>
+<div class="warn"><b>4 · No timestamps → don't inline it.</b> A step-index x-axis can't share the timeline's time scale; positioning it there would be a lie. Render the same shape as its own compact strip labelled "by step" — or lean on Option D, which never needed time.</div>`;
+
+/* ---------- I · lines instead of stacks ---------- */
+function lines(b,W,H,opt={}){
+  const pts=series(b), share=opt.mode==="share";
+  const M=share?60:(opt.max||40), scale=SCALE;
+  const x=t=>t/scale*W, y=v=>H-Math.min(v,M)/M*H;
+  const cut=pts.filter(p=>p.real).length;
+  let out="";
+  (b.ages||[]).forEach(a=>out+=`<line x1="${x(a.t).toFixed(1)}" y1="0" x2="${x(a.t).toFixed(1)}" y2="${H}" stroke="var(--txt)" stroke-width="1" opacity=".22" stroke-dasharray="3 3"/>`);
+  (share?[20,40]:Array.from({length:Math.ceil(M/8)},(_,i)=>(i+1)*8)).filter(g=>g<M).forEach(g=>out+=`<line x1="0" y1="${y(g).toFixed(1)}" x2="${W}" y2="${y(g).toFixed(1)}" stroke="var(--txt)" stroke-width=".5" opacity=".13"/><text x="2" y="${(y(g)-3).toFixed(1)}" font-size="9" fill="var(--dim)">${g}${share?"%":""}</text>`);
+  const keys=opt.keys||ORDER;
+  keys.forEach(([k,c])=>{
+    const val=p=>share?(total(p.v)?p.v[k]/total(p.v)*100:0):p.v[k];
+    const d=pts.slice(0,cut).map(p=>`${x(p.t).toFixed(1)},${y(val(p)).toFixed(1)}`).join(" L");
+    out+=`<path d="M${d}" fill="none" stroke="var(--${c})" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>`;
+    const last=pts[cut-1];
+    out+=`<circle cx="${x(last.t).toFixed(1)}" cy="${y(val(last)).toFixed(1)}" r="2.6" fill="var(--${c})"/>`;
+  });
+  if(!share&&opt.envelope){
+    const env=pts.slice(0,cut).map(p=>`${x(p.t).toFixed(1)},${y(total(p.v)).toFixed(1)}`).join(" L");
+    out+=`<path d="M${env}" fill="none" stroke="var(--txt)" stroke-width="1.25" opacity=".4" stroke-dasharray="5 4"/>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" style="display:block;overflow:visible">${out}</svg>`;
+}
+const RES4=[["food","food"],["wood","wood"],["gold","gld"],["stone","stn"]];
+const tri=(fn)=>`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">${BUILDS.map(b=>`<div class="card"><div class="sechead"><span style="font-size:10px">${b.title}</span></div><div class="plotwrap" style="padding:14px 14px 10px">${fn(b)}${ageTrack(b)}${crests(b,false)}${axis()}</div></div>`).join("")}</div>`;
+document.getElementById("f-lines").innerHTML=`
+<div class="flabel">Option E · alternative, answering your question</div>
+<div class="ftitle">Lines instead of stacks</div>
+<div class="fnote">Stacking hides slope: every band above food inherits food's climb, so nothing except the top edge has a readable gradient. Unstacked lines give each resource its own baseline, so steepness is real — and crossings become events ("gold overtakes wood at 5:00"). Cost is the usual one: five lines in a 130 px box, and they tangle in the first two minutes when every value is 3–6. <b>No total-villager line in either row</b> — it sat above everything, pushed the four lines that matter into the bottom half, and the number is already printed on each age marker.</div>
+<div class="cmp" style="margin-top:6px">1 · Absolute villagers per resource</div>
+${tri(b=>lines(b,560,132,{max:24}))}
+<div class="cmp" style="margin-top:24px">2 · Share of pop (%) — the version that separates the three archetypes</div>
+${tri(b=>lines(b,560,132,{mode:"share"}))}
+${legend()}
+<div class="warn"><b>Take:</b> dropping the total line and rescaling to 24 makes row 1 genuinely competitive — the all-in's flat food line against the boom's climb is now unmistakable, and the y-axis is no longer half empty. Row 2 still separates the archetypes more sharply: the boom holds food near 50% throughout with gold ~20 points below it, the all-in's gold line climbs until it converges with food at parity, and the stone build has a wedge no other build has. Row 1 answers "how hard is this build booming", row 2 "what kind of build is this". Both beat the stacks.</div>
+<div class="warn"><b>If you go this way:</b> plot share on the y-axis, keep the 0–16:00 x shared with <code>AgeTimeline.vue</code>, and drop builders from the lines (transient, spiky, and it makes every other line dip when a landmark goes up). Four lines, one shared scale.</div>`;
+
+/* ---------- J · collapsible ---------- */
+function timelineCard(b,open){
+  return `<div class="card ${open?"open":""}">
+  <div class="sechead"><i class="mdi mdi-timer-sand"></i><span>Timeline</span></div>
+  <div class="plotwrap" style="padding-bottom:10px">${ageTrack(b)}${crests(b)}${axis()}</div>
+  <button class="ecotoggle"><i class="mdi mdi-chart-line"></i>Economy<span class="cnt">${open?"villagers per resource":"food · wood · gold · stone over time"}</span><i class="mdi mdi-chevron-down chev"></i></button>
+  <div class="ecobody">${lines(b,820,140,{max:24,keys:RES4})}${axis()}${legend(RES4)}</div></div>`;
+}
+document.getElementById("f-collapse").innerHTML=`
+<div class="flabel">Option F · how to ship it</div>
+<div class="rec"><i class="mdi mdi-check-bold"></i>Spec'd in specs/021-economy-lines</div>
+<div class="ftitle">Collapsed by default, absolute lines inside the Timeline card</div>
+<div class="fnote">Yes — and it resolves the whole go/no-go. The age times are what <em>every</em> reader needs; the eco curve is what <em>some</em> readers want. A disclosure row keeps the card at its current height for everyone, costs one line of chrome, and means the chart no longer has to justify permanent vertical space against a build order that is already below the fold on laptops. It also handles the messy cases for free: builds with poor cell coverage simply don't get the toggle, no empty state to design.</div>
+<div class="stack">
+  <div><div class="cmp">Collapsed — default for everyone</div>${timelineCard(BUILDS[0],false)}</div>
+  <div><div class="cmp">Expanded — one click, remembered</div>${timelineCard(BUILDS[0],true)}</div>
+</div>
+<div class="warn"><b>Vuetify parts, no custom primitives:</b> <code>v-expand-transition</code> around the plot, the row as a flat <code>v-btn</code> (or <code>v-list-item</code>) with <code>mdi-chevron-down</code> rotating on state. Persist the open state the same way the description card's mobile collapse does, so a reader who cares about eco sees it expanded on every build.</div>
+<div class="warn"><b>One thing not to do:</b> don't animate height on first paint. The card is above the build order — an expand on mount would shift the steps under the reader's cursor.</div>`;
+
+/* ---------- H · light theme ---------- */
+document.getElementById("f-light").innerHTML=`
+<div class="flabel">Light theme</div>
+<div class="ftitle">Same graphic, navy primary, muted gold</div>
+<div class="fnote">Five saturated resource colours will overpower the light surface long before they do the navy one. These are the dark hues pulled down toward the <code>age-seg</code> ramp's weight — declared per theme like <code>AgeTimeline.vue</code> already does, never hardcoded once.</div>
+<div class="card">
+  <div class="sechead"><i class="mdi mdi-timer-sand"></i><span>Timeline</span></div>
+  <div class="plotwrap">${area(BUILDS[2],820,140)}${ageTrack(BUILDS[2])}${crests(BUILDS[2])}${axis()}${legend(ORDER,true)}</div>
+</div>
+<div class="warn"><b>Stone is the test case.</b> It is the only resource with no franchise colour of its own, and at low saturation it collides with the neutral builders band. Shown here on the Sacred Sites build, where both are large at once.</div>`;
+</script>
+</body>
+</html>
