@@ -15,7 +15,11 @@
         <v-btn icon="mdi-close" variant="text" size="small" @click="$emit('update:modelValue', false)" />
       </v-card-title>
       <slot />
-      <v-card-actions class="px-6 pb-5">
+      <!-- Guarded: v-card-actions carries a 52px min-height, so an unfilled
+           slot reads as dead space under the content rather than as nothing.
+           Dismiss-only dialogs rely on the close icon above and pass no
+           actions; they need their own bottom padding on the content. -->
+      <v-card-actions v-if="$slots.actions" class="px-6 pb-5">
         <v-spacer />
         <slot name="actions" />
       </v-card-actions>

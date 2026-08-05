@@ -6,7 +6,10 @@
     max-width="380"
     @update:model-value="$emit('update:modelValue', $event)"
   >
-    <v-card-text class="px-6 pt-2 pb-0">
+    <!-- pb-5 stands in for the actions row this dialog deliberately omits:
+         nothing here is pending, so a Close button would only repeat the
+         title-bar X, Esc and the scrim. -->
+    <v-card-text class="px-6 pt-2 pb-5">
       <!-- Always white, in both themes: cameras expect dark-on-light and an
            inverted code is a silent failure — it looks fine and never scans. -->
       <div class="qr-surface mx-auto d-flex align-center justify-center">
@@ -43,10 +46,6 @@
         Share link
       </v-btn>
     </v-card-text>
-
-    <template v-slot:actions>
-      <v-btn variant="text" @click="$emit('update:modelValue', false)">Close</v-btn>
-    </template>
   </PickerDialog>
 </template>
 
