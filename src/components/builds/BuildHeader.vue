@@ -17,21 +17,29 @@
       <!-- Slot renders the v-btn icon directly, no extra wrapper padding -->
       <slot name="actions"></slot>
     </div>
-    <!-- Plain div avoids v-card-title's internal 16px padding so text aligns below -->
-    <div class="px-4 pt-1 text-subtitle-1 font-weight-bold build-header-title">
-      {{ build.title || 'New build' }}
-    </div>
-    <!-- State only, so this row is absent entirely on most builds -->
-    <div
-      v-if="build.isDraft || (createdDate && isNew(createdDate))"
-      :class="['px-4 pt-2 d-flex flex-wrap ga-2', readonly ? 'pb-0' : 'pb-2']"
-    >
-      <v-chip v-if="build.isDraft" label color="error" size="small">
+    <!-- Plain div avoids v-card-title's internal 16px padding so text aligns below.
+         State chips lead the title inline, so they cost no vertical room and the
+         title simply wraps around them. -->
+    <div class="px-4 pt-1 pb-1 text-subtitle-1 font-weight-bold build-header-title">
+      <v-chip
+        v-if="build.isDraft"
+        label
+        color="error"
+        size="x-small"
+        class="build-header-badge mr-1"
+      >
         <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
       </v-chip>
-      <v-chip v-if="createdDate && isNew(createdDate)" label color="accent" size="small">
+      <v-chip
+        v-if="createdDate && isNew(createdDate)"
+        label
+        color="accent"
+        size="x-small"
+        class="build-header-badge mr-1"
+      >
         <v-icon start icon="mdi-alert-decagram"></v-icon>New
       </v-chip>
+      {{ build.title || 'New build' }}
     </div>
     <div v-if="!readonly" class="pb-2"></div>
 
@@ -64,18 +72,29 @@
       <v-spacer></v-spacer>
       <slot name="actions"></slot>
     </div>
-    <!-- Title -->
-    <div class="px-4 pt-1 pr-2">
-      <div class="text-h5 font-weight-bold build-header-title">{{ build.title || 'New build' }}</div>
-    </div>
-    <!-- Chips -->
-    <div :class="['px-4 pt-2 d-flex flex-wrap ga-2', readonly ? 'pb-2' : 'pb-4']">
-      <v-chip v-if="build.isDraft" label color="error" size="small">
-        <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
-      </v-chip>
-      <v-chip v-if="createdDate && isNew(createdDate)" label color="accent" size="small">
-        <v-icon start icon="mdi-alert-decagram"></v-icon>New
-      </v-chip>
+    <!-- Title, with the state chips leading it inline (see mobile) -->
+    <div :class="['px-4 pt-1 pr-2', readonly ? 'pb-2' : 'pb-4']">
+      <div class="text-h5 font-weight-bold build-header-title">
+        <v-chip
+          v-if="build.isDraft"
+          label
+          color="error"
+          size="small"
+          class="build-header-badge mr-2"
+        >
+          <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
+        </v-chip>
+        <v-chip
+          v-if="createdDate && isNew(createdDate)"
+          label
+          color="accent"
+          size="small"
+          class="build-header-badge mr-2"
+        >
+          <v-icon start icon="mdi-alert-decagram"></v-icon>New
+        </v-chip>
+        {{ build.title || 'New build' }}
+      </div>
     </div>
     <!-- Same two quiet lines as the list card — view route only -->
     <BuildMetaLines
@@ -159,4 +178,12 @@ export default {
   white-space: normal;
 }
 
+/* The badges sit in the title's text flow, so they must not inherit the
+   heading's weight, tracking or line-height — only its baseline. */
+.build-header-badge {
+  vertical-align: text-bottom;
+  font-weight: 500;
+  letter-spacing: normal;
+  line-height: 1;
+}
 </style>
