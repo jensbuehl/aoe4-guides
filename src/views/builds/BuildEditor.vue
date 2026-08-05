@@ -12,29 +12,83 @@
             <template v-slot:activator="{ props }">
               <v-btn icon="mdi-dots-vertical" color="accent" variant="text" v-bind="props"></v-btn>
             </template>
-            <v-list>
-              <v-list-item @click="handleDraft">
-                <v-icon color="accent" class="mr-4">mdi-content-save-outline</v-icon>
-                Save as draft
-              </v-list-item>
-              <v-list-item :disabled="!isDirty" @click="handleDiscard">
-                <v-icon color="accent" class="mr-4">mdi-undo</v-icon>
-                Discard changes
-              </v-list-item>
-              <v-divider v-if="mode === 'edit'" class="my-1"></v-divider>
-              <v-list-item v-if="mode === 'edit'" @click="handleRemix">
-                <v-icon color="accent" class="mr-4">mdi-shuffle-variant</v-icon>
-                Remix
-              </v-list-item>
-              <v-list-item v-if="mode === 'edit' && clipboardIsSupported" @click="handleCopyOverlayFormat">
-                <v-icon color="accent" class="mr-4">mdi-content-copy</v-icon>
-                Copy to overlay tool
-              </v-list-item>
-              <v-list-item v-if="mode === 'edit'" @click="handleDownloadOverlayFormat">
-                <v-icon color="accent" class="mr-4">mdi-download</v-icon>
-                Download as file
-              </v-list-item>
-            </v-list>
+            <template v-slot:default="{ isActive }">
+              <v-list>
+                <v-tooltip>
+                  <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                    >Save your progress without publishing it</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-list-item v-bind="props" @click="handleDraft">
+                      <v-icon color="accent" class="mr-4">mdi-content-save-outline</v-icon>
+                      Save as draft
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
+                <v-tooltip>
+                  <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                    >Undo every edit made since this build order was last saved</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-list-item :disabled="!isDirty" v-bind="props" @click="handleDiscard">
+                      <v-icon color="accent" class="mr-4">mdi-undo</v-icon>
+                      Discard changes
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
+                <v-divider v-if="mode === 'edit'" class="my-1"></v-divider>
+                <v-tooltip>
+                  <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                    >Start a new build order from a copy of this one</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <v-list-item v-if="mode === 'edit'" v-bind="props" @click="handleRemix">
+                      <v-icon color="accent" class="mr-4">mdi-shuffle-variant</v-icon>
+                      Remix
+                    </v-list-item>
+                  </template>
+                </v-tooltip>
+                <!-- Same two exports as BuildDetails, folded into one row. There is
+                     no "Open in RTS Overlay" here to act as the primary, so the row
+                     itself downloads and the trailing button copies. The button needs
+                     .stop so the row's download doesn't also fire, which suppresses
+                     the menu's close-on-content-click — hence the explicit isActive.
+                     The row's tooltip hangs off the label rather than the whole item,
+                     so hovering the button doesn't open both at once. -->
+                <v-list-item v-if="mode === 'edit'" @click="handleDownloadOverlayFormat">
+                  <v-tooltip>
+                    <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                      >Download this build order as a file to import into the overlay tool</span
+                    >
+                    <template v-slot:activator="{ props }">
+                      <span class="d-flex align-center" v-bind="props">
+                        <v-icon color="accent" class="mr-4">mdi-download</v-icon>
+                        Download for overlay tool
+                      </span>
+                    </template>
+                  </v-tooltip>
+                  <template v-slot:append>
+                    <v-tooltip v-if="clipboardIsSupported">
+                      <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                        >Copy to the clipboard instead of downloading a file</span
+                      >
+                      <template v-slot:activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          icon="mdi-content-copy"
+                          variant="text"
+                          size="small"
+                          color="accent"
+                          class="ml-4"
+                          aria-label="Copy build order to clipboard instead"
+                          @click.stop="isActive.value = false; handleCopyOverlayFormat()"
+                        ></v-btn>
+                      </template>
+                    </v-tooltip>
+                  </template>
+                </v-list-item>
+              </v-list>
+            </template>
           </v-menu>
         </div>
       </template>

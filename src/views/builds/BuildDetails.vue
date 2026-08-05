@@ -44,51 +44,140 @@
           <Favorite v-if="userData" v-model="userData" :buildId="build.id"></Favorite>
         </div>
         <!-- Overflow menu: always visible (mobile slim header + desktop) -->
+        <!-- No v-model here: BuildHeader renders this slot twice (mobile card and
+             desktop card, one hidden by CSS), so a shared open-state ref would
+             open both menus at once — the hidden one at 0,0 for lack of a
+             positioned activator. Vuetify's per-instance state is what we want;
+             the trailing buttons below close their own menu via isActive. -->
         <v-menu>
           <template v-slot:activator="{ props }">
             <v-btn icon="mdi-dots-vertical" color="accent" variant="text" v-bind="props"></v-btn>
           </template>
-          <v-list>
-            <v-list-item
-              v-show="user?.uid === build.authorUid"
-              :to="{ name: 'BuildEdit', params: { id: id } }"
-            >
-              <v-icon color="accent" class="mr-4">mdi-pencil</v-icon>
-              Edit
-            </v-list-item>
-            <v-list-item v-show="user && build.isDraft" @click="handlePublish">
-              <v-icon color="accent" class="mr-4">mdi-publish</v-icon>
-              Publish
-            </v-list-item>
-            <v-list-item v-show="user" @click="handleRemix">
-              <v-icon color="accent" class="mr-4">mdi-shuffle-variant</v-icon>
-              Remix Build
-            </v-list-item>
-            <v-list-item @click="shareDialog = true">
-              <v-icon color="accent" class="mr-4">mdi-share-variant</v-icon>
-              Share
-            </v-list-item>
-            <v-list-item v-if="clipboardIsSupported" @click="handleCopyOverlayFormat">
-              <v-icon color="accent" class="mr-4">mdi-content-copy</v-icon>
-              Copy to overlay tool
-            </v-list-item>
-            <v-list-item @click="handleDownloadOverlayFormat">
-              <v-icon color="accent" class="mr-4">mdi-download</v-icon>
-              Download
-            </v-list-item>
-            <v-list-item @click="handleOpenInOverlayTool">
-              <v-icon color="accent" class="mr-4">mdi-button-cursor</v-icon>
-              Open in RTS Overlay
-            </v-list-item>
-            <v-divider v-show="user?.uid === build.authorUid"></v-divider>
-            <v-list-item
-              v-show="user?.uid === build.authorUid"
-              @click="deleteDialog = true"
-            >
-              <v-icon color="error" class="mr-4">mdi-delete</v-icon>
-              <span style="color: rgb(var(--v-theme-error))">Delete</span>
-            </v-list-item>
-          </v-list>
+          <template v-slot:default="{ isActive }">
+            <v-list>
+              <v-tooltip>
+                <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                  >Change the steps, timings or details of this build order</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-list-item
+                    v-show="user?.uid === build.authorUid"
+                    :to="{ name: 'BuildEdit', params: { id: id } }"
+                    v-bind="props"
+                  >
+                    <v-icon color="accent" class="mr-4">mdi-pencil</v-icon>
+                    Edit
+                  </v-list-item>
+                </template>
+              </v-tooltip>
+              <v-tooltip>
+                <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                  >Make this draft public so other players can find it</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-list-item v-show="user && build.isDraft" v-bind="props" @click="handlePublish">
+                    <v-icon color="accent" class="mr-4">mdi-publish</v-icon>
+                    Publish
+                  </v-list-item>
+                </template>
+              </v-tooltip>
+              <v-tooltip>
+                <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                  >Start your own build order from a copy of this one</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-list-item v-show="user" v-bind="props" @click="handleRemix">
+                    <v-icon color="accent" class="mr-4">mdi-shuffle-variant</v-icon>
+                    Remix
+                  </v-list-item>
+                </template>
+              </v-tooltip>
+              <v-tooltip>
+                <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                  >Get a link or QR code to this build order</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-list-item v-bind="props" @click="shareDialog = true">
+                    <v-icon color="accent" class="mr-4">mdi-share-variant</v-icon>
+                    Share
+                  </v-list-item>
+                </template>
+              </v-tooltip>
+              <!-- One row for the whole "get this into RTS Overlay" errand. The row
+                   is the easy path (no file handling); the trailing buttons are the
+                   manual import for the desktop overlay app. They need .stop so the
+                   row's own handler doesn't also fire, which also suppresses the
+                   menu's close-on-content-click — hence the explicit isActive.
+                   This row carries three tooltips, so the row's own one hangs off
+                   the label rather than the whole item: hovering a trailing button
+                   would otherwise open the row tooltip on top of the button's. -->
+              <v-list-item @click="handleOpenInOverlayTool">
+                <v-tooltip>
+                  <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                    >Open this build order in the RTS Overlay web app, in a new tab</span
+                  >
+                  <template v-slot:activator="{ props }">
+                    <span class="d-flex align-center" v-bind="props">
+                      <v-icon color="accent" class="mr-4">mdi-button-cursor</v-icon>
+                      Open in RTS Overlay
+                    </span>
+                  </template>
+                </v-tooltip>
+                <template v-slot:append>
+                  <div class="d-flex align-center ga-1 ml-4">
+                    <v-tooltip v-if="clipboardIsSupported">
+                      <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                        >Copy this build order to clipboard for the overlay tool</span
+                      >
+                      <template v-slot:activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          icon="mdi-content-copy"
+                          variant="text"
+                          size="small"
+                          color="accent"
+                          aria-label="Copy build order for the overlay tool"
+                          @click.stop="isActive.value = false; handleCopyOverlayFormat()"
+                        ></v-btn>
+                      </template>
+                    </v-tooltip>
+                    <v-tooltip>
+                      <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                        >Download this build order as a file for the overlay tool</span
+                      >
+                      <template v-slot:activator="{ props }">
+                        <v-btn
+                          v-bind="props"
+                          icon="mdi-download"
+                          variant="text"
+                          size="small"
+                          color="accent"
+                          aria-label="Download build order for the overlay tool"
+                          @click.stop="isActive.value = false; handleDownloadOverlayFormat()"
+                        ></v-btn>
+                      </template>
+                    </v-tooltip>
+                  </div>
+                </template>
+              </v-list-item>
+              <v-divider v-show="user?.uid === build.authorUid"></v-divider>
+              <v-tooltip>
+                <span :style="{ color: $vuetify.theme.current.colors.primary }"
+                  >Remove this build order - This cannot be undone</span
+                >
+                <template v-slot:activator="{ props }">
+                  <v-list-item
+                    v-show="user?.uid === build.authorUid"
+                    v-bind="props"
+                    @click="deleteDialog = true"
+                  >
+                    <v-icon color="error" class="mr-4">mdi-delete</v-icon>
+                    <span style="color: rgb(var(--v-theme-error))">Delete</span>
+                  </v-list-item>
+                </template>
+              </v-tooltip>
+            </v-list>
+          </template>
         </v-menu>
       </template>
       <!-- Vote + Favorite have no other route in on mobile: they are not in the
