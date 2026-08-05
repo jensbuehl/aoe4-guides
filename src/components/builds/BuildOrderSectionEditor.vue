@@ -1576,13 +1576,13 @@ tbody tr:last-child td {
    accent tint entirely — on a phone the pill is the loudest thing in the row,
    and a worked-out time should not carry the same weight as a measured one.
 
-   The fill is Vuetify's own activated-opacity rather than a number picked by
-   eye, because the age chips directly above are tonal v-chips using that same
-   token. Two hand-tuned greys for one meaning is how they drift apart. */
+   The fill comes from --derived-fill-opacity in base.css, shared with the age
+   chips directly above. It is lighter than Vuetify's tonal default on purpose;
+   see the token's own note. */
 .step-time-xs--derived {
   font-weight: 500;
   color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
-  background: rgba(var(--v-theme-on-surface), var(--v-activated-opacity));
+  background: rgba(var(--v-theme-on-surface), var(--derived-fill-opacity));
 }
 .step-time-xs--derived img {
   opacity: 0.55;

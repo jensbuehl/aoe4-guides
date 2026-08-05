@@ -27,6 +27,15 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
+  /* Tint behind a value the site worked out rather than one an author recorded:
+     the age chips and the build order's phone timestamp pill. Deliberately
+     lighter than Vuetify's --v-activated-opacity (0.12), which read as loud
+     where three chips sit under a build title on a list card.
+
+     Defined here rather than in each component because it was two hand-tuned
+     numbers in two files first, and they had already drifted apart once. */
+  --derived-fill-opacity: 0.06;
+
   --section-gap: 160px;
 }
 

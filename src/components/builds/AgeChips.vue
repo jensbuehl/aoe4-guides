@@ -17,7 +17,7 @@
   <v-chip
     v-for="row in rows"
     :key="row.age"
-    class="mr-1 mt-1"
+    class="mr-1 mt-1 agechip"
     label
     variant="tonal"
     :size="size"
@@ -70,6 +70,15 @@ export default {
 </script>
 
 <style scoped>
+/* Vuetify's tonal fill is --v-activated-opacity (0.12), which is loud for three
+   chips sitting under a build title. Dialled to the app's quiet fill by
+   overriding that variable on the chip rather than by reaching into
+   .v-chip__underlay — the knob is Vuetify's own, so nothing here depends on an
+   internal class name surviving an upgrade. */
+.agechip {
+  --v-activated-opacity: var(--derived-fill-opacity);
+}
+
 .agechip-crest {
   object-fit: contain;
   flex-shrink: 0;
