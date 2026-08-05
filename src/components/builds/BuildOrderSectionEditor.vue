@@ -411,7 +411,15 @@
             @mouseleave="unhoverStep()"
           >
             <td class="text-center py-1">
-              <span v-if="readonly" class="ts-text">{{ item.time }}</span>
+              <!--A blank cell used to mean the reader got nothing, even though
+                  the site had worked the moment out for the timeline above. The
+                  estimate is shown in the same column, muted and marked, so a
+                  worked-out time can never be mistaken for one the author typed.-->
+              <span
+                v-if="readonly"
+                :class="['ts-text', !item.time && isEstimate(index) && 'ts-text--derived']"
+                >{{ item.time || resolvedTime(index) }}</span
+              >
               <input
                 v-else
                 :ref="el => registerTimestampRef(el, index)"
@@ -602,6 +610,7 @@ import IconToolTip from "@/components/builds/IconToolTip.vue";
 import iconService from "@/composables/builds/icons/iconService.js";
 import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
 import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
+import { formatAgeTime } from "@/composables/builds/useAgeTimings.js";
 import {
   addAutocompleteIcon,
   updateSearchText,
@@ -613,10 +622,45 @@ export default {
   // previousStep is the last step of the section before this one, so the delta
   // marker on a section's first row compares against the real preceding step
   // rather than having nothing to compare against.
-  props: ["section", "readonly", "civ", "focus", "isLastAgeUp", "previousStep"],
+  props: [
+    "section",
+    "readonly",
+    "civ",
+    "focus",
+    "isLastAgeUp",
+    "previousStep",
+    //resolveStepTimes() output for this section's steps, same order. Read-only
+    //views only — the editor must never offer an author a time they did not type.
+    "resolvedTimes",
+  ],
   emits: ["stepsChanged", "selectionChanged", "gameplanChanged", "ageDownRequested"],
   components: { IconSelector, IconAutoCompleteMenu, IconToolTip },
   setup(props, context) {
+    /**
+     * The worked-out time for a step whose author left the cell blank.
+     *
+     * Marked with "~" when it is an estimate, which means the same thing here as
+     * on the age timeline and in Focus mode: nobody wrote this down. The opening
+     * step is the exception — a build order starts when the game does, so its
+     * 0:00 is a fact and is shown plainly, even though no author typed it.
+     *
+     * Returns "" when the step could not be placed, so the cell stays empty
+     * rather than showing a marker with no time behind it.
+     *
+     * @param {number} index - Position of the step within this section.
+     * @return {string} "m:ss", "~m:ss", or "" when the step could not be placed.
+     */
+    const resolvedTime = (index) => {
+      const resolved = props.resolvedTimes?.[index];
+      if (!resolved || resolved.seconds == null) return "";
+
+      const formatted = formatAgeTime(resolved.seconds);
+      return resolved.provenance === "stated" ? formatted : `~${formatted}`;
+    };
+
+    /** Whether a filled-in cell should read as an estimate rather than a fact */
+    const isEstimate = (index) => props.resolvedTimes?.[index]?.provenance !== "stated";
+
     const AGE_NAMES = { 1: "Feudal Age", 2: "Castle Age", 3: "Imperial Age" };
     const targetAgeName = computed(() => AGE_NAMES[props.section.age] ?? "");
     const targetAgeImg = computed(() => `/assets/pictures/age/age_${props.section.age + 1}.webp`);
@@ -1076,6 +1120,8 @@ export default {
       showAutoCompleteMenu,
       aggregateVillagers,
       hasResourceValue,
+      resolvedTime,
+      isEstimate,
       updateStep,
       handleTimeBlur,
       updateStepDescription,
@@ -1149,6 +1195,15 @@ export default {
   color: rgb(var(--v-theme-accent));
   font-variant-numeric: tabular-nums;
 }
+
+/* A time the site worked out rather than one the author wrote. Muted and
+   un-bolded so it reads as secondary to the real stamps in the same column,
+   without introducing a colour that would compete with the accent. */
+.ts-text--derived {
+  font-weight: 500;
+  color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
+}
+
 .ts-pill {
   display: block;
   width: 100%;

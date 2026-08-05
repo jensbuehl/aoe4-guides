@@ -43,7 +43,7 @@
               <b>{{ formatAgeTime(age.clickUp.duration) }}</b>
             </template>
             <div v-if="age.derived || age.clickUp?.derived" class="agett-note text-caption">
-              ~ estimated from villager count
+              {{ footnoteFor(age) }}
             </div>
           </div>
           <template v-slot:activator="{ props }">
@@ -221,6 +221,30 @@ export default {
     const nameFor = (age) => displayFor(age)?.name;
     const popFor = (timing) => timing.clickUpVillagers ?? timing.villagers;
 
+    /**
+     * Explains the "~" beside a derived time, and which kind of derivation it was.
+     *
+     * The marker itself is the same for both tiers on purpose — "~" already means
+     * "not stated by the author" everywhere on the site, and a reader's decision
+     * is identical either way: do not quote this as fact. What differs is how far
+     * the estimate reaches, and that is a sentence rather than a symbol, so it
+     * lives here.
+     *
+     * When a row mixes the two — a projected arrival after an interpolated click
+     * up, or the reverse — the weaker claim wins, so the note never credits the
+     * build with more evidence than it has.
+     *
+     * @param {Object} age - One getAgeTimings() entry.
+     * @return {string} The footnote text.
+     */
+    const footnoteFor = (age) => {
+      const projected = [age.provenance, age.clickUp?.provenance].includes("extrapolated");
+
+      return projected
+        ? "~ projected past the last stated time"
+        : "~ estimated from villager count";
+    };
+
     return {
       ages,
       segments,
@@ -232,6 +256,7 @@ export default {
       labelFor,
       nameFor,
       popFor,
+      footnoteFor,
       eco,
       ecoOpen,
       toggleEco,

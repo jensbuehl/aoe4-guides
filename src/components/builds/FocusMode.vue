@@ -86,8 +86,10 @@
           </v-col>
         </v-row>
         <v-row class="mt-2" no-gutters align="center" justify="center">
-          <v-col class="text-center">
-            {{ totalElapsedTimeFormattedString }}
+          <!--"~" and the muted weight mean here what they mean on the timeline:
+              this moment was not written by the author-->
+          <v-col class="text-center" :class="{ 'fm-time--derived': currentStepDerived }">
+            {{ currentStepDerived ? "~" : "" }}{{ totalElapsedTimeFormattedString }}
           </v-col>
           <v-col class="text-center">
             <span v-if="currentStep">{{ aggregateVillagers(currentStep) }}</span>
@@ -142,7 +144,9 @@
           </thead>
           <tbody style="user-select: none">
             <tr>
-              <td class="text-center py-1">{{ totalElapsedTimeFormattedString }}</td>
+              <td class="text-center py-1" :class="{ 'fm-time--derived': currentStepDerived }">
+                {{ currentStepDerived ? "~" : "" }}{{ totalElapsedTimeFormattedString }}
+              </td>
               <td v-if="currentStep" class="text-center py-1">
                 {{ aggregateVillagers(currentStep) }}
               </td>
@@ -280,7 +284,7 @@
 
 <script>
 //External
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useEventListener, useWakeLock } from "@vueuse/core";
 
 //Components
@@ -291,6 +295,7 @@ import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villa
 import { initTextToSpeech, speak, stop } from "@/composables/builds/textToSpeechHelper.js";
 import {
   getTimings,
+  resolveStepTimes,
   toDateFromString,
   toDateFromSeconds,
   getFormattedTime,
@@ -311,6 +316,10 @@ export default {
     const autoplaySupported = ref(false);
     const autoplay = ref(false);
     const stepsTimings = ref([]);
+    //Per-step: was this moment written by the author, or worked out for them?
+    //The clock reads the same either way, so without this the player cannot tell
+    //a time the author measured from one the site projected.
+    const stepDerived = ref([]);
     const totalElapsedTime = ref(null);
     const totalElapsedTimeFormattedString = ref(null);
     const currentStepElapsedTime = ref(null);
@@ -345,8 +354,39 @@ export default {
       //init timings
       stepsTimings.value = getTimings(steps.value);
 
+      //Read a second time for provenance. The gate above is deliberately binary
+      //— a build either plays through or it does not — so it carries no per-step
+      //detail, and the marking below needs exactly that. Two passes over thirty
+      //entries is cheaper than making "strict" mean less.
+      const resolved = resolveStepTimes(steps.value);
+      stepDerived.value = resolved.map((entry) => entry.provenance !== "stated");
+
       autoplaySupported.value = stepsTimings.value ? true : false;
+
+      //Dev-only: autoplay is a single boolean by design, which makes "why not?"
+      //impossible to answer from the UI. One unresolved step fails the whole
+      //build, so print which ones and how far past the last measurement they sit.
+      if (import.meta.env.DEV && !autoplaySupported.value) {
+        const blocking = resolved
+          .map((entry, index) => ({ index, ...entry }))
+          .filter((entry) => entry.provenance === "unresolved" && !steps.value[entry.index]?.gameplan);
+        const lastAnchor = resolved.reduce(
+          (max, entry) => (entry.provenance === "stated" ? Math.max(max, entry.seconds) : max),
+          0
+        );
+
+        console.debug(
+          `[autoplay] off — ${blocking.length} of ${steps.value.length} steps unresolved.`,
+          `Last stated time ${getFormattedTime(toDateFromSeconds(lastAnchor))}.`,
+          `Blocking step indices:`,
+          blocking.map((entry) => entry.index)
+        );
+      }
+
       if (autoplaySupported.value) {
+        //step.time stays a clean "m:ss": it is re-parsed for the elapsed-time and
+        //progress maths below, and it is never rendered. The marker is a display
+        //concern and lives in the template, driven by stepDerived.
         steps.value.forEach((step, index) => {
           step.time = getFormattedTime(toDateFromSeconds(stepsTimings.value[index].startTime));
         });
@@ -479,6 +519,15 @@ export default {
       }
     }
 
+    /**
+     * Whether the clock is currently showing a moment nobody wrote down.
+     *
+     * Autoplay now accepts builds whose tail is projected, so the clock can be
+     * counting through times the site invented. It reads identically either way,
+     * which is exactly why it has to say which it is.
+     */
+    const currentStepDerived = computed(() => !!stepDerived.value[currentStepIndex.value]);
+
     function getProgress() {
       return ((currentStepIndex.value + 1) / steps.value.length) * 100;
     }
@@ -577,6 +626,7 @@ export default {
       steps,
       getProgress,
       totalElapsedTimeFormattedString,
+      currentStepDerived,
       currentStep,
       currentStepProgress,
       getFormattedTime,
@@ -603,6 +653,13 @@ export default {
 };
 </script>
 <style scoped>
+/* The clock while it is counting through a moment nobody wrote down. Same
+   treatment as .age-time--derived on the timeline, so "estimated" looks the
+   same wherever the reader meets it. */
+.fm-time--derived {
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+
 /* Inline content icons — shared square box; variants override background only */
 :deep(.icon),
 :deep(.icon-ability),

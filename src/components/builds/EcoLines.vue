@@ -42,7 +42,7 @@
         <polyline
           v-for="line in lines"
           :key="line.key"
-          :class="['eco-line', 'eco-line--' + line.resource]"
+          :class="['eco-line', 'eco-line--' + line.resource, { 'eco-line--projected': line.projected }]"
           :points="line.points"
           vector-effect="non-scaling-stroke"
         />
@@ -159,16 +159,57 @@ export default {
       points.map((point) => `${toX(point.seconds)},${toY(point[resource])}`).join(" ");
 
     /**
-     * One polyline per resource. Every point is a moment the build actually
-     * described, so there is nothing carried and nothing to draw faded — the
-     * line simply stops where the author stopped assigning villagers.
+     * Where the drawn line is solid, and where it is dashed.
+     *
+     * One rule, no exceptions: **a segment is solid only when both of its ends
+     * are moments the author actually recorded.** Anything else is dashed —
+     * whether the uncertainty comes from a gap between two stamps or from
+     * running past the last one.
+     *
+     * Drawn this way rather than splitting at the final stamp because roughly
+     * half of all builds are stamped sparsely, and a position-based rule drew
+     * those as one confident solid line built from two measurements. The line
+     * now shows how much of itself the author actually established, which is
+     * also a quiet argument for stamping more.
+     *
+     * Runs of like segments merge into one polyline, and consecutive runs share
+     * their boundary point rather than abutting it — otherwise the line would
+     * break exactly where it most needs to read as continuous.
+     *
+     * @param {Array} points - The series points, ascending by seconds.
+     * @return {Array<{from: number, to: number, projected: boolean}>} Index runs.
      */
+    const runs = computed(() => {
+      const points = props.series.points;
+      if (points.length < 2) return [];
+
+      const result = [];
+      let start = 0;
+      let projected = !(points[0].stated && points[1].stated);
+
+      for (let i = 1; i < points.length - 1; i++) {
+        const next = !(points[i].stated && points[i + 1].stated);
+        if (next === projected) continue;
+
+        result.push({ from: start, to: i, projected });
+        start = i;
+        projected = next;
+      }
+
+      result.push({ from: start, to: points.length - 1, projected });
+      return result;
+    });
+
+    /** One polyline per run per resource; a fully-measured build draws five. */
     const lines = computed(() =>
-      RESOURCES.map((resource) => ({
-        key: resource.key,
-        resource: resource.key,
-        points: plot(props.series.points, resource.key),
-      }))
+      RESOURCES.flatMap((resource) =>
+        runs.value.map((run, index) => ({
+          key: `${resource.key}-${index}`,
+          resource: resource.key,
+          points: plot(props.series.points.slice(run.from, run.to + 1), resource.key),
+          projected: run.projected,
+        }))
+      )
     );
 
     /** A dot at each resource's final value, so the last reading is unambiguous */
@@ -249,6 +290,15 @@ export default {
   stroke-width: 2.25;
   stroke-linejoin: round;
   stroke-linecap: round;
+}
+
+/* A segment with an end the author did not record. Roughly half of builds are
+   stamped sparsely, so this is the common case rather than the exception — the
+   dash is long and open-spaced so a mostly-dashed chart still reads as five
+   lines rather than as shimmer. No opacity change: five half-faded lines
+   crossing each other read as a rendering fault. */
+.eco-line--projected {
+  stroke-dasharray: 7 4;
 }
 
 .eco-cap {

@@ -55,6 +55,7 @@
             @gameplanChanged="(gameplan) => handleGameplanChanged(gameplan, index)"
             @ageDownRequested="removeAgeConfirmationDialog = true"
             :section="section"
+            :resolvedTimes="resolvedTimes[index]"
             :readonly="readonly"
             :civ="civ"
             :focus="sectionFocus == index"
@@ -91,6 +92,8 @@ import { ref, computed, onMounted, nextTick } from "vue";
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
 
 //Composables
+import { flattenSections } from "@/composables/builds/useAgeTimings.js";
+import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 
 export default {
   name: "BuildOrderEditor",
@@ -106,6 +109,39 @@ export default {
     const registerSectionEditor = (el, index) => { sectionEditorRefs.value[index] = el; };
     const civ = computed(() => {
       return props.civ;
+    });
+
+    /**
+     * Resolved times for every step, sliced per section.
+     *
+     * Read-only only, and deliberately so: in the editor the time cell is an
+     * input bound to the step's own value, so showing an estimate there would let
+     * an author save a time they never wrote — poisoning the anchors every future
+     * read of the build depends on. A reader sees estimates; an author sees only
+     * their own work.
+     *
+     * The resolver works on the flattened list while sections render in slices,
+     * so each section needs its offset. This is the second caller to want that
+     * mapping — the economy plot was the first — which is what makes it worth
+     * having rather than speculative.
+     */
+    const resolvedTimes = computed(() => {
+      if (!readonly) return [];
+
+      const flat = flattenSections(sections.value);
+      if (!flat.length) return [];
+
+      const times = resolveStepTimes(flat);
+      const perSection = [];
+      let cursor = 0;
+
+      for (const section of sections.value) {
+        const length = section?.steps?.length ?? 0;
+        perSection.push(times.slice(cursor, cursor + length));
+        cursor += length;
+      }
+
+      return perSection;
     });
 
     onMounted(() => {
@@ -305,6 +341,7 @@ export default {
       civ,
       readonly,
       sections,
+      resolvedTimes,
       ageUp,
       previousSectionLastStep,
       ageDown,
