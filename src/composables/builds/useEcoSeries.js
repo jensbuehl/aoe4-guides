@@ -33,6 +33,28 @@ const MIN_COVERAGE = 0.5;
 const MIN_STATED_POINTS = 4;
 
 /**
+ * How far a build's clock has to jump backwards before it is a second path
+ * rather than a typo.
+ *
+ * Two minutes. A restart into a variation goes back whole minutes — one real
+ * build returns from 6:15 to 4:00 — while a mistyped digit costs seconds, and a
+ * span the resolver derived can never go backwards at all.
+ */
+const REWIND_SECONDS = 120;
+
+/**
+ * Whether the build's own order runs backwards far enough to be two builds.
+ *
+ * @param {Array} points - Points in step order, before sorting.
+ * @return {boolean} True when the chart would draw two paths as one.
+ */
+function rewinds(points) {
+  return points.some(
+    (point, index) => index > 0 && points[index - 1].seconds - point.seconds >= REWIND_SECONDS
+  );
+}
+
+/**
  * Derives villagers per resource over time, for the economy plot.
  *
  * A step that assigns anybody states the whole distribution: its blank cells
@@ -102,6 +124,15 @@ export function getEcoSeries(steps) {
 
       //Says nothing about villagers, so it is not a moment in the economy
       if (!stated) return;
+
+      //Filled in, but with nothing in it. A cell can hold a "0", a dash, or
+      //markup the editor left behind — all of which read as nobody, which is why
+      //aggregateVillagers returns null here and the "N vils" marker beside the
+      //row shows nothing. Plotting it anyway would drop all five lines to zero
+      //and back, drawing a collapse the build never had. If the marker says
+      //nothing, the plot says nothing.
+      if (!RESOURCES.some((resource) => values[resource] > 0)) return;
+
       statedSteps++;
 
       //An unplaceable step still counts toward coverage — the author did fill it
@@ -120,6 +151,17 @@ export function getEcoSeries(steps) {
 
     //Every point is a stated one now, so this is simply "is there a shape here"
     if (points.length < MIN_STATED_POINTS) return null;
+
+    //A build that rewinds is not one economy. Authors describe variations by
+    //writing them out one after another in the same list — play to 6:15, then
+    //start again at 4:00 down a different path — and sorting the result by time
+    //interleaves two games into a single line that reads as one. That is worse
+    //than no chart: it looks like data.
+    //
+    //Checked before the sort, because the sort is what hides it. Only a rewind
+    //large enough to be a restart counts; a mistyped digit is worth a few
+    //seconds and should not cost an honest build its chart.
+    if (rewinds(points)) return null;
 
     //Sorted by time rather than by step order, so a build with timestamps typed
     //out of sequence draws left to right instead of doubling back on itself.
