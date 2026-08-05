@@ -126,18 +126,25 @@ import {
   formatAgeTime,
   ageTimingLabel,
   getAgeSegments,
+  flattenSections,
 } from "@/composables/builds/useAgeTimings.js";
+import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 import { getEcoSeries } from "@/composables/builds/useEcoSeries.js";
 
 /**
- * The track spans sixteen minutes by default, so the bars of two builds compared
- * in two tabs mean the same thing. It is a floor rather than a fixed size: a
- * build that runs past it extends the scale instead of having its last ages
- * clamped to the right edge, where a 20:00 Imperial and a 25:00 one would look
- * identical. Nearly every build sits at the default, so comparability holds
- * where it matters.
+ * The narrowest the track is ever drawn: eight minutes, two ticks.
+ *
+ * This was sixteen, chosen so that two builds compared in two tabs shared a
+ * scale. The comparison is real but it was being paid for by every short build
+ * on the site — a Feudal all-in ending at 5:00 spent two thirds of the track on
+ * empty space and drew its whole economy squeezed into the left third.
+ *
+ * The floor now only stops the track collapsing to something with no room to
+ * read. Above it the scale fits the build in four-minute brackets, so most land
+ * on 8:00, 12:00 or 16:00 and like-for-like comparison largely survives — and
+ * where it does not, the axis is labelled.
  */
-const SCALE_MIN_SECONDS = 960;
+const SCALE_MIN_SECONDS = 480;
 
 /** Axis ticks every four minutes, so an extended scale keeps round labels */
 const TICK_SECONDS = 240;
@@ -182,15 +189,38 @@ export default {
     const ages = computed(() => getAgeTimings(props.steps));
 
     /**
-     * Extends past the default only when the build needs it, rounded up to a
-     * whole tick so the axis labels stay round. Reads the largest time rather
-     * than the last entry, so odd data that runs backwards cannot shrink the
-     * scale below a marker.
+     * When the build actually stops, not when it last aged up.
+     *
+     * Reading only the ages was survivable while the scale had a 16:00 floor,
+     * because the floor hid the difference on nearly every build. It does not
+     * survive a fitted scale: a Feudal all-in whose last age-up is at 4:00 but
+     * whose steps run to 5:00 would size the track to 4:00 and clamp the last
+     * minute of the economy onto the right edge in a heap.
+     *
+     * The largest value rather than the last one, so timestamps typed out of
+     * order cannot shrink the track below something drawn on it.
      */
-    const scaleSeconds = computed(() => {
-      const longest = ages.value.reduce((max, age) => Math.max(max, age.seconds), 0);
-      return Math.max(SCALE_MIN_SECONDS, Math.ceil(longest / TICK_SECONDS) * TICK_SECONDS);
+    const lastMoment = computed(() => {
+      const times = resolveStepTimes(flattenSections(props.steps));
+      const lastStep = times.reduce((max, time) => Math.max(max, time.seconds ?? 0), 0);
+      const lastAge = ages.value.reduce((max, age) => Math.max(max, age.seconds), 0);
+
+      return Math.max(lastStep, lastAge);
     });
+
+    /**
+     * Rounded up to a whole tick so the axis labels stay round.
+     *
+     * Fitted in four-minute brackets rather than pinned to one width. A fixed
+     * 16:00 made every build directly comparable, which is worth something —
+     * but it spent two thirds of the track on emptiness for a build that ends
+     * at 5:00, squashing the part anyone came to read. Most builds land on
+     * 8:00, 12:00 or 16:00, so like-for-like comparison mostly survives, and
+     * the axis is labelled for when it does not.
+     */
+    const scaleSeconds = computed(() =>
+      Math.max(SCALE_MIN_SECONDS, Math.ceil(lastMoment.value / TICK_SECONDS) * TICK_SECONDS)
+    );
 
     const clamp = (value) => Math.min(100, Math.max(0, value));
 
