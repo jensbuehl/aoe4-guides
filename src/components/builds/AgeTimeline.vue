@@ -17,8 +17,10 @@
     </div>
 
     <div class="px-4 pb-4 d-none d-md-block">
-      <!--Scale is 0–16:00 unless the build runs longer, so bars stay comparable
-          across builds without clamping a late Imperial to the right edge-->
+      <!--Scale fits the build in four-minute brackets above an 8:00 floor, and
+          reaches only as far as something is drawn: the later of the last age
+          and the last step that assigns anybody. Trailing steps that assign
+          nobody used to stretch the axis past anything it had to show.-->
       <div class="age-track">
         <span
           v-for="segment in segments"
@@ -129,6 +131,7 @@ import {
   flattenSections,
 } from "@/composables/builds/useAgeTimings.js";
 import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
+import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
 import { getEcoSeries } from "@/composables/builds/useEcoSeries.js";
 
 /**
@@ -189,23 +192,36 @@ export default {
     const ages = computed(() => getAgeTimings(props.steps));
 
     /**
-     * When the build actually stops, not when it last aged up.
+     * The last moment the track has to reach: something drawn on it, not merely
+     * something in the build.
      *
-     * Reading only the ages was survivable while the scale had a 16:00 floor,
-     * because the floor hid the difference on nearly every build. It does not
-     * survive a fitted scale: a Feudal all-in whose last age-up is at 4:00 but
-     * whose steps run to 5:00 would size the track to 4:00 and clamp the last
-     * minute of the economy onto the right edge in a heap.
+     * Two things are drawn — the age crests and the economy lines — so the track
+     * has to cover the later of them. Everything else is padding. A build often
+     * trails off in steps that assign nobody: a closing comment, a reminder, a
+     * step left behind by an edit. Measuring to those stretched the axis past
+     * anything it had to show and drew the whole build squeezed into the left of
+     * an empty box.
+     *
+     * "Assigns somebody" is asked through aggregateVillagers, which reads a
+     * blank, a typed "0" and a stray dash all as nobody — the same reading that
+     * decides whether the economy series plots a step at all, so the lines can
+     * never run past the end of the track or stop short of it.
      *
      * The largest value rather than the last one, so timestamps typed out of
      * order cannot shrink the track below something drawn on it.
      */
     const lastMoment = computed(() => {
-      const times = resolveStepTimes(flattenSections(props.steps));
-      const lastStep = times.reduce((max, time) => Math.max(max, time.seconds ?? 0), 0);
+      const flat = flattenSections(props.steps);
+      const times = resolveStepTimes(flat);
+
+      const lastAssigned = flat.reduce(
+        (max, step, index) =>
+          aggregateVillagers(step) ? Math.max(max, times[index]?.seconds ?? 0) : max,
+        0
+      );
       const lastAge = ages.value.reduce((max, age) => Math.max(max, age.seconds), 0);
 
-      return Math.max(lastStep, lastAge);
+      return Math.max(lastAssigned, lastAge);
     });
 
     /**
