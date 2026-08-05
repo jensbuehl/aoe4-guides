@@ -264,9 +264,16 @@
         >
           <!-- Top bar: timestamp + villager total -->
           <div class="stepc-top-xs">
-            <div class="step-time-xs">
+            <!--Same fallback as the desktop table's time column: a cell the
+                author left blank shows the worked-out time, marked as one. The
+                modifier sits on the pill rather than the text, so a derived
+                moment does not keep an accent-tinted badge around it.-->
+            <div
+              class="step-time-xs"
+              :class="{ 'step-time-xs--derived': !item.time && isEstimate(index) }"
+            >
               <img src="/assets/resources/time.webp" />
-              <span>{{ item.time }}</span>
+              <span>{{ item.time || resolvedTime(index) }}</span>
             </div>
             <div style="flex:1"></div>
             <div class="step-pop-xs">
@@ -1565,6 +1572,18 @@ tbody tr:last-child td {
   padding: 3px 9px 3px 6px;
   line-height: 1;
 }
+/* A moment the site worked out rather than one the author wrote. Drops the
+   accent tint entirely — on a phone the pill is the loudest thing in the row,
+   and a worked-out time should not carry the same weight as a measured one. */
+.step-time-xs--derived {
+  font-weight: 500;
+  color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
+  background: rgba(var(--v-theme-on-surface), 0.06);
+}
+.step-time-xs--derived img {
+  opacity: 0.5;
+}
+
 .step-time-xs img {
   display: block;
   width: 15px;
