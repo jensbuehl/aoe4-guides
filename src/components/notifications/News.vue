@@ -48,15 +48,6 @@
       </div>
       <div class="d-flex flex-wrap justify-center ga-2 mt-3">
         <a
-          href="https://aoe4world.com"
-          target="_blank"
-          style="text-decoration: none"
-        >
-          <v-btn variant="text" size="small" color="primary" prepend-icon="mdi-earth">
-            AOE4World
-          </v-btn>
-        </a>
-        <a
           href="https://ko-fi.com/jensbuehl"
           target="_blank"
           style="text-decoration: none"
