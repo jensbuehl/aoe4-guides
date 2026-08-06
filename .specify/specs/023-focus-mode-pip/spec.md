@@ -170,7 +170,11 @@ clipped control, no text below 11 px, every hit target ≥26 px.
    columns are **absent**, not blank — the dock only shows stated resources plus time and villagers.
 3. **Given** a container narrower than 340 px or shorter than 190 px, **When** focus mode renders,
    **Then** the title row is dropped (the OS window title already carries the build name), the dock
-   becomes a single row, and only time and villager count remain of the resource strip.
+   becomes a single row, and only the age crest, time and villager count remain of the resource strip.
+3a. **Given** a build laid out in numbered age sections, **When** any step renders, **Then** the
+   resource strip opens with the crest of the age the build is in at that step — no label, no extra
+   row. **Given** a build whose sections carry no age (legacy flat builds, or a single section left
+   at "no particular age"), **Then** the crest is absent rather than guessed.
 4. **Given** the full and compact tiers, **When** the step row renders, **Then** it shows the step
    content, and a preview line reading `next m:ss` plus **at most one** token — the resource change
    the next step asks for, or an age-up, which takes priority. Never the next step's full spread.
@@ -264,6 +268,16 @@ does today.
   always preceded by elapsed time and villager count. This replaces the duplicated xs / non-xs
   markup at [`FocusMode.vue:59`](../../../src/components/builds/FocusMode.vue#L59) and
   [`:107`](../../../src/components/builds/FocusMode.vue#L107) with one data-driven strip.
+- **FR-010a**: The strip MUST open with the crest of the age the build is in at the current step,
+  as an icon at the same size as the resource icons — no label, and never a row of its own. Age is
+  the only state on the dock a player cannot read off the rest of the screen, so it MUST survive the
+  micro tier alongside time and villagers, and it MUST NOT live in the header (dropped in micro) or
+  in the step content (which is the instruction).
+  The age is read from the build's section structure, not from the clock: an `age` section sets the
+  age from its first step onwards and an `ageUp` section keeps the age already in force, since a
+  player who has clicked up is still in the old age until they arrive — the same reading the
+  timeline's coloured segments use. Where a build states no age the crest MUST be absent, never a
+  placeholder: a crest that lags the game is worse than none.
 - **FR-011**: The step row MUST render a next-step preview: `next m:ss` plus at most one token
   (resource delta, or age-up which wins). It MUST be omitted on the last step and in micro.
 - **FR-012**: The transport MUST keep today's actions — previous, play/pause, audio, villager
@@ -309,6 +323,28 @@ does today.
 - **FR-025**: Swapping the clock source MUST NOT restart, skip or double-fire the session. Step
   index, elapsed time and the pending speech queue MUST be continuous across the swap in both
   directions, exactly as they are across the DOM move (FR-002, FR-004).
+
+### Deviations accepted during implementation
+
+Three requirements were built differently from how they are written above. Recorded here rather than
+silently, because each was a decision made against something the spec could not have known.
+
+- **FR-012 — no overflow menu.** Villager announcements stay a single-click toggle at *every* tier
+  instead of collapsing into a `v-menu` below full. The requirement's own justification does not
+  hold: the button that opens an overflow is the same width as the button it hides, so it freed no
+  room on the transport row and cost a click. It also flickered in a narrow window, because an
+  attached overlay is re-measured against a container with nowhere to put it.
+- **FR-013 — no return-to-page control while floating.** The pop-out control still appears on the
+  page; its return counterpart does not appear in the floating window. The window's own chrome
+  already carries two controls that do exactly that — close, and "back to tab" — so ours was a third
+  way to say the same thing, competing for a 400 px row. The requirement predates that being clear.
+  The **close** control is kept in the window, because it is the only one that can say "end the
+  session": close and back-to-tab reach the page as the same `pagehide`, indistinguishable, so that
+  event has to mean the non-destructive one.
+- **FR-014 over design-input §2 on hit targets.** design-input sizes the non-primary transport
+  controls at 40 px at the full tier; FR-014 requires ≥44 px. The control box is 44 px with a 20 px
+  icon, so the touch target meets the requirement while reading at about the intended weight. Where
+  the mock and an accessibility floor disagree, the floor wins.
 
 ### Key Entities
 

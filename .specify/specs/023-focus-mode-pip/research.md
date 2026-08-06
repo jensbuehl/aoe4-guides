@@ -7,7 +7,30 @@ assumption behind FR-024.
 
 ## R-1: Does a visible PiP window escape the opener's background throttling?
 
-**Status: UNRESOLVED BY DOCUMENTATION. Must be prototyped (T005).**
+**Status: RESOLVED BY MEASUREMENT, 2026-08-06. Layer 3 is not needed and will not be built.**
+
+### What the measurement showed
+
+Chrome on Windows, autoplay running in the floating window, opener tab hidden behind a game for
+more than eleven minutes — well past the five minutes after which Chrome may check a hidden page's
+timers only once a minute. Result: **no drift against the build's stated times, and the step that
+fell after the eleven-minute mark was spoken on time.**
+
+Two conclusions, and they are worth keeping apart because only the first is certain:
+
+1. **Certain: the three-layer clock works, so the Web Worker fallback is unnecessary.** Whatever the
+   tick source did, elapsed time stayed correct. This is what SC-001 measures and it passes.
+2. **Strongly indicated, not proven: the PiP-scheduled interval is not throttled.** Layer 1 alone
+   guarantees the right *time*, but not a timely *utterance* — a tick clamped to once a minute would
+   have announced a step up to a minute after it was due, and that is the kind of lateness a person
+   watching for it would notice. Speech landing on time therefore points at the interval running at
+   normal rate. It does not distinguish "not throttled at all" from "throttled slightly".
+
+The distinction does not change what gets built, which is the point of the design: correctness never
+depended on the answer. It matters only if the tail latency ever needs tightening.
+
+**Consequence**: R-3's layer 3 is cancelled. Tomodoro's Web Worker was the right instinct for a
+design whose correctness rests on the tick; ours does not, so it buys nothing here.
 
 **Decision**: Do not depend on the answer. Restructure the clock so that correctness is
 *independent* of tick frequency, and treat the tick source as a latency optimisation only.
@@ -207,5 +230,6 @@ Storage key: `aoe4-guides-play-target`. Values: `here` | `floating` | `phone`.
 
 | Item | Where | Blocking? |
 |---|---|---|
-| T005 prototype: is a PiP-scheduled interval throttled when the opener is hidden >5 min? | Phase 3 | Decides whether layer 3 is needed; **not** whether the feature ships |
+| ~~Is a PiP-scheduled interval throttled when the opener is hidden >5 min?~~ | — | **Closed 2026-08-06** — measured over 11 minutes hidden: no drift, speech on time. See R-1. Layer 3 cancelled |
+| Confirm the same on Edge and on macOS | verification | No — one Chromium platform is measured; the others are expected to match and are not load-bearing |
 | Exclusive-fullscreen players cannot see any always-on-top window | quickstart | No — documentation only |
