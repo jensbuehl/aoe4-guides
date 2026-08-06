@@ -7,7 +7,23 @@
           <span v-if="isDirty" class="unsaved-indicator text-caption mr-1">
             <v-icon size="x-small" color="accent">mdi-circle-medium</v-icon>Modified
           </span>
-          <v-btn color="accent" size="small" prepend-icon="mdi-publish" @click="handleSave">Publish</v-btn>
+          <!--Filled primary, like Play on the read view: this is the one action
+              the editor exists to reach. Accent is the site's *text* colour and
+              only reads as a fill in dark mode, where accent and primary happen
+              to be the same gold — in light mode it filled the button with that
+              gold and left the label fighting it for contrast.-->
+          <!--Nothing to publish while the build still matches what was saved.
+              Only in edit mode: a new build (or a remix template) has never been
+              saved, so it is legitimately publishable without an edit first.-->
+          <v-btn
+            color="primary"
+            variant="flat"
+            size="small"
+            prepend-icon="mdi-publish"
+            :disabled="mode === 'edit' && !isDirty"
+            @click="handleSave"
+            >Publish</v-btn
+          >
           <v-menu>
             <template v-slot:activator="{ props }">
               <v-btn icon="mdi-dots-vertical" color="accent" variant="text" v-bind="props"></v-btn>
