@@ -416,7 +416,12 @@
               to be able to see and reach a step to fix or remove it.-->
           <tr
             v-if="!readonly || !saysNothing(index)"
-            :class="['step-row', section.type === 'ageUp' && 'age-lane-md']"
+            :data-step-index="index"
+            :class="[
+              'step-row',
+              section.type === 'ageUp' && 'age-lane-md',
+              { 'step-row--linked': linkedRow === index || flashedRow === index },
+            ]"
             v-on:keyup.enter.alt="addStep(index)"
             v-on:keyup.delete.alt="
               removeStepConfirmationDialog = true;
@@ -425,6 +430,7 @@
             @focusin="$emit('selectionChanged')"
             @mousedown="selectStep(index)"
             @mouseover="hoverStep(index)"
+            @pointermove="reportStep($event, index)"
             @mouseleave="unhoverStep()"
           >
             <td class="text-center py-1">
@@ -616,7 +622,18 @@
 
 <script>
 //External
-import { watch, ref, reactive, computed, mergeProps, onMounted, nextTick } from "vue";
+import {
+  watch,
+  ref,
+  reactive,
+  computed,
+  inject,
+  mergeProps,
+  onBeforeUnmount,
+  onMounted,
+  nextTick,
+} from "vue";
+import scrollIntoView from "scroll-into-view-if-needed";
 
 //Components
 import IconSelector from "@/components/builds/IconSelector.vue";
@@ -629,11 +646,20 @@ import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidato
 import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
 import { formatAgeTime } from "@/composables/builds/useAgeTimings.js";
 import { saysNothing as isRedundantStep } from "@/composables/builds/stepVisibility.js";
+import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 import {
   addAutocompleteIcon,
   updateSearchText,
   placeCaretAtEnd,
 } from "@/composables/builds/contentEditableHelper.js";
+
+/**
+ * How long a row stays marked after the chart sends the reader to it.
+ *
+ * Long enough to survive a smooth scroll and still be there when the eye
+ * arrives, short enough that it reads as an answer rather than as selection.
+ */
+const FLASH_MS = 2000;
 
 export default {
   name: "BuildOrderSectioncontentEditable",
@@ -650,10 +676,25 @@ export default {
     //resolveStepTimes() output for this section's steps, same order. Read-only
     //views only — the editor must never offer an author a time they did not type.
     "resolvedTimes",
+    //Flat index of this section's first step. Sections render in slices while
+    //everything drawn from a build works on the flattened list, so this is what
+    //lets a row say which step it is in the only index space both halves share.
+    "stepOffset",
   ],
-  emits: ["stepsChanged", "selectionChanged", "gameplanChanged", "ageDownRequested"],
+  emits: [
+    "stepsChanged",
+    "selectionChanged",
+    "gameplanChanged",
+    "ageDownRequested",
+    "stepHovered",
+  ],
   components: { IconSelector, IconAutoCompleteMenu, IconToolTip },
   setup(props, context) {
+    //Absent on the editor route, where there is no timeline card to link to.
+    //Every use is optional-chained rather than guarded once, so the table
+    //behaves exactly as before wherever nothing provides it.
+    const highlight = inject(STEP_HIGHLIGHT, null);
+
     /**
      * The worked-out time for a step whose author left the cell blank.
      *
@@ -1107,7 +1148,101 @@ export default {
     };
     const unhoverStep = () => {
       hoverRowIndex.value = null;
+      context.emit("stepHovered", { step: null });
     };
+
+    /**
+     * Tell the timeline card which moment the reader is looking at.
+     *
+     * Driven by pointer movement rather than by mouseover, which is not a
+     * refinement but the whole mechanism. A row sliding under a resting pointer
+     * during a scroll fires mouseover — so a mouseover-driven link lights up
+     * every row on the way past, and needed a delay and a scroll latch to
+     * suppress what it should never have reported. Pointer movement is the
+     * question being asked: no movement, no event, nothing to suppress.
+     *
+     * Reported in flat terms, the only index space this table and that card can
+     * both speak, and with the pointer's position so the parent can recognise
+     * the phantom move some browsers fire after a scroll.
+     */
+    const reportStep = (event, index) => {
+      context.emit("stepHovered", {
+        step: flatIndexOf(index),
+        x: event.clientX,
+        y: event.clientY,
+      });
+    };
+
+    /**
+     * This section's local row index in the flattened build.
+     *
+     * Null rather than a guess when no offset was passed — the editor route
+     * renders these sections with no timeline to talk to, and a wrong index is
+     * worse than none.
+     *
+     * @param {number} index - Row index within this section.
+     * @return {number|null} The flat index.
+     */
+    const flatIndexOf = (index) =>
+      props.stepOffset == null ? null : props.stepOffset + index;
+
+    /**
+     * The row the timeline is currently pointing at, in local terms.
+     *
+     * Null unless the highlighted step falls inside this section, so the four
+     * sections of a build cannot each light up their own row number.
+     */
+    const linkedRow = computed(() => {
+      const flat = highlight?.stepIndex.value;
+      if (flat == null || props.stepOffset == null) return null;
+
+      const local = flat - props.stepOffset;
+      return local >= 0 && local < (props.section?.steps?.length ?? 0) ? local : null;
+    });
+
+    /**
+     * A row keeps its mark for a moment after being scrolled to.
+     *
+     * Without this the mark belongs to the pointer: the reader clicks the
+     * chart, the page scrolls, the pointer is no longer over the plot, and the
+     * row they were sent to looks like every other row by the time they get
+     * there.
+     */
+    const flashedRow = ref(null);
+    let flashTimer = null;
+
+    /**
+     * Brings one of this section's rows into view.
+     *
+     * Addressed by data attribute rather than by position among the rendered
+     * rows, because a read-only view drops the rows that say nothing — so the
+     * nth `tr.step-row` is not the nth step.
+     *
+     * @param {number} index - Row index within this section.
+     * @return {void}
+     */
+    const scrollToStep = (index) => {
+      const row = stepsTable.value?.querySelector(`tr.step-row[data-step-index="${index}"]`);
+      if (!row) return;
+
+      scrollIntoView(row, {
+        //Already comfortably in view means the reader asked about a row they can
+        //see; jumping the page under them would be an odd way to answer
+        scrollMode: "if-needed",
+        //Mid-viewport clears any sticky chrome without measuring it
+        block: "center",
+        inline: "nearest",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+
+      clearTimeout(flashTimer);
+      flashedRow.value = index;
+      flashTimer = setTimeout(() => (flashedRow.value = null), FLASH_MS);
+    };
+
+    onBeforeUnmount(() => clearTimeout(flashTimer));
 
     const handleResourceInput = async (e) => {
       if (e.data == "-") {
@@ -1163,6 +1298,12 @@ export default {
       selectStep,
       hoverStep,
       unhoverStep,
+      reportStep,
+      linkedRow,
+      flashedRow,
+      //Called by the parent through its section refs, so a flat step index can
+      //reach the one section that owns that row
+      scrollToStep,
       saveSelection,
       restoreSelection,
       handleIconSelectorIconSelected,
@@ -1269,6 +1410,27 @@ export default {
    stable 52px row height. Pills center at margin-top(12) + height/2(14) = 26 = 52/2. */
 .step-row {
   height: 52px;
+}
+
+/* The row the timeline card is pointing at, and the row it just sent the reader
+   to — one treatment for both, because to a reader they are the same statement:
+   "this row is the one".
+
+   A left edge rather than a wash: the row is 52px of mostly-empty cells, and a
+   background tint across it reads as selection, which this is not. Deliberately
+   not tied to the table's own :hover — pointing at a row with the mouse is not
+   a claim about it, and lighting every row a pointer crosses would make the
+   answer from the chart indistinguishable from noise. */
+.step-row--linked td {
+  background: rgba(var(--v-theme-accent), 0.07);
+}
+
+.step-row--linked td:first-child {
+  box-shadow: inset 3px 0 0 0 rgb(var(--v-theme-accent));
+}
+
+.step-row td {
+  transition: background-color 140ms ease;
 }
 .step-row td {
   vertical-align: top !important;

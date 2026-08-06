@@ -110,8 +110,10 @@
             @stepsChanged="(steps) => handleStepsChanged(steps, index)"
             @gameplanChanged="(gameplan) => handleGameplanChanged(gameplan, index)"
             @ageDownRequested="removeAgeConfirmationDialog = true"
+            @stepHovered="handleStepHovered"
             :section="section"
             :resolvedTimes="resolvedTimes[index]"
+            :stepOffset="offsets[index]"
             :readonly="readonly"
             :civ="civ"
             :focus="sectionFocus == index"
@@ -142,15 +144,16 @@
 
 <script>
 //External
-import { ref, computed, onMounted, nextTick } from "vue";
+import { ref, computed, inject, onBeforeUnmount, onMounted, nextTick } from "vue";
 
 //Components
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
 
 //Composables
-import { flattenSections } from "@/composables/builds/useAgeTimings.js";
+import { flattenSections, sectionOffsets } from "@/composables/builds/useAgeTimings.js";
 import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 import { isDocumentPiPSupported } from "@/composables/builds/useStepPiP.js";
+import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 import {
   getSavedPlayTarget,
   resolvePlayTarget,
@@ -163,6 +166,15 @@ import {
  * application rather than starting a session here, so it stays in the build's
  * overflow menu where the other export-shaped actions are.
  */
+/**
+ * How long the timeline keeps showing a moment after the pointer leaves a row.
+ *
+ * There is no matching delay on the way in — pointing at a row answers at once.
+ * This exists only to bridge the gap between two rows, which arrive as a leave
+ * and an enter in the same movement.
+ */
+const CLEAR_DELAY_MS = 120;
+
 const PLAY_TARGET_ITEMS = [
   {
     value: "here",
@@ -187,7 +199,16 @@ const PLAY_TARGET_ITEMS = [
 
 export default {
   name: "BuildOrderEditor",
-  props: ["steps", "readonly", "civ", "focus"],
+  props: [
+    "steps",
+    "readonly",
+    "civ",
+    "focus",
+    //Whether the timeline card is on screen to receive a row hover. Owned by
+    //the page, because only the page can see both this table and that card —
+    //and highlighting a moment nobody can look at is work spent on nothing.
+    "linkEnabled",
+  ],
   emits: ["stepsChanged", "activateFocusMode"],
   components: { BuildOrderSectionEditor },
   setup(props, context) {
@@ -211,28 +232,110 @@ export default {
      * their own work.
      *
      * The resolver works on the flattened list while sections render in slices,
-     * so each section needs its offset. This is the second caller to want that
-     * mapping — the economy plot was the first — which is what makes it worth
-     * having rather than speculative.
+     * so each section needs its offset. That mapping is sectionOffsets() now,
+     * shared with the economy plot and the timeline highlight rather than
+     * written out here — three callers is two too many for a private loop, and
+     * the failure it prevents is silent: a section-local index used as a flat
+     * one picks the wrong step on every build with more than one section.
      */
-    const resolvedTimes = computed(() => {
+    const offsets = computed(() => sectionOffsets(sections.value));
+
+    /** One resolve for the whole build; the slices below are views onto it */
+    const flatTimes = computed(() => {
       if (!readonly) return [];
 
       const flat = flattenSections(sections.value);
-      if (!flat.length) return [];
+      return flat.length ? resolveStepTimes(flat) : [];
+    });
 
-      const times = resolveStepTimes(flat);
-      const perSection = [];
-      let cursor = 0;
+    const resolvedTimes = computed(() =>
+      flatTimes.value.length
+        ? offsets.value.map((offset, index) =>
+            flatTimes.value.slice(offset, offset + (sections.value[index]?.steps?.length ?? 0))
+          )
+        : []
+    );
 
-      for (const section of sections.value) {
-        const length = section?.steps?.length ?? 0;
-        perSection.push(times.slice(cursor, cursor + length));
-        cursor += length;
+    /**
+     * The link between this table and the timeline card above it.
+     *
+     * Absent on the editor route — nothing provides it there, because there is
+     * no timeline card to link to — so every use is optional.
+     */
+    const highlight = inject(STEP_HIGHLIGHT, null);
+
+    /**
+     * Send the reader to a step the chart pointed at.
+     *
+     * The rows belong to the sections, so this only works out which section owns
+     * the flat index and hands it on. Searched from the end: offsets ascend, and
+     * the last one at or below the index is the section containing it.
+     */
+    highlight?.onScrollRequest((flat) => {
+      for (let index = offsets.value.length - 1; index >= 0; index--) {
+        if (offsets.value[index] > flat) continue;
+
+        sectionEditorRefs.value[index]?.scrollToStep?.(flat - offsets.value[index]);
+        return;
+      }
+    });
+
+    /**
+     * Follow the reader down the build order, immediately.
+     *
+     * No settling delay, deliberately. The plot's legend has one because five
+     * entries sit thirty pixels apart and reaching the far one means crossing
+     * three others — a pointer there is usually travelling, not choosing. A
+     * table row is none of those things: it is a full-width band the reader
+     * moves *to*, and the answer appears on a chart elsewhere, so a moment held
+     * briefly in passing costs nothing to look at. Waiting only made pointing at
+     * a row feel like the page was thinking about it.
+     *
+     * What the delay was really covering for was the wrong event. Rows now
+     * report on pointer movement, so a scroll under a resting pointer produces
+     * nothing to suppress, and the scroll latch this used to need is gone.
+     */
+    let clearTimer = null;
+    let hoverTarget = null;
+    const pointerAt = { x: null, y: null };
+
+    const handleStepHovered = ({ step, x, y }) => {
+      if (step != null) {
+        //A pointer event that did not move the pointer is the browser reporting
+        //a scroll, not a reader. Some browsers synthesise exactly that after
+        //scrolling, and it is indistinguishable from a real hover by any means
+        //except its coordinates.
+        if (x === pointerAt.x && y === pointerAt.y) return;
+
+        pointerAt.x = x;
+        pointerAt.y = y;
+
+        //Nothing above is on screen to receive the answer, so nothing is asked —
+        //and nothing is recorded either, so the moment the card scrolls back
+        //into view the next movement is heard
+        if (!props.linkEnabled) return;
       }
 
-      return perSection;
-    });
+      //pointermove fires continuously; only a change of row is news
+      if (step === hoverTarget) return;
+      hoverTarget = step;
+      clearTimeout(clearTimer);
+
+      if (step == null) {
+        //Delayed where the hover is not: rows sit flush against each other, so
+        //leaving one and entering the next arrive together, and clearing at once
+        //would blank the chart for a frame between every pair of rows
+        clearTimer = setTimeout(() => highlight?.clear("table"), CLEAR_DELAY_MS);
+        return;
+      }
+
+      const time = flatTimes.value[step];
+      if (!time || time.seconds == null) return;
+
+      highlight?.setFromTable(time.seconds, time.provenance === "stated", step);
+    };
+
+    onBeforeUnmount(() => clearTimeout(clearTimer));
 
     onMounted(() => {
       initializeSections();
@@ -488,6 +591,8 @@ export default {
       sectionFocus,
       removeAgeConfirmationDialog,
       registerSectionEditor,
+      offsets,
+      handleStepHovered,
     };
   },
 };

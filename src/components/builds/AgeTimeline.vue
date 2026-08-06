@@ -21,7 +21,12 @@
           reaches only as far as something is drawn: the later of the last age
           and the last step that assigns anybody. Trailing steps that assign
           nobody used to stretch the axis past anything it had to show.-->
-      <div class="age-track">
+      <!--Track and crests share one positioned box so the moment marker can run
+          down through both. Confined to the 12px bar it was technically present
+          and practically invisible; what makes it readable is crossing the
+          crests, because that is what says which age a moment falls in.-->
+      <div class="age-scan">
+        <div class="age-track">
         <span
           v-for="segment in segments"
           :key="segment.key"
@@ -33,13 +38,27 @@
         <v-tooltip v-for="age in ages" :key="age.age" location="top">
           <div class="agett" :style="{ color: $vuetify.theme.current.colors.primary }">
             <div class="agett-title font-weight-bold">{{ nameFor(age.age) }}</div>
-            <!--No villager counts here: the marker below already carries one-->
+            <!--Both pops are named here, beside the moment each belongs to. This
+                is the only place the two can be compared, and it is why the
+                marker below can afford to carry just one of them: a bare number
+                under a crest cannot say which instant it describes, while a
+                number sitting on the row that says "Clicked up" already has.-->
             <template v-if="age.clickUp">
               <span>Clicked up</span>
-              <b>{{ age.clickUp.derived ? "~" : "" }}{{ formatAgeTime(age.clickUp.seconds) }}</b>
+              <b
+                >{{ age.clickUp.derived ? "~" : "" }}{{ formatAgeTime(age.clickUp.seconds)
+                }}<span v-if="age.clickUpVillagers" class="agett-pop">
+                  · {{ age.clickUpVillagers }} vils</span
+                ></b
+              >
             </template>
             <span>Reached</span>
-            <b>{{ age.derived ? "~" : "" }}{{ formatAgeTime(age.seconds) }}</b>
+            <b
+              >{{ age.derived ? "~" : "" }}{{ formatAgeTime(age.seconds)
+              }}<span v-if="age.villagers" class="agett-pop">
+                · {{ age.villagers }} vils</span
+              ></b
+            >
             <template v-if="age.clickUp">
               <span>Age-up took</span>
               <b>{{ formatAgeTime(age.clickUp.duration) }}</b>
@@ -54,17 +73,34 @@
               <div :class="['age-time', { 'age-time--derived': age.derived }]">
                 {{ age.derived ? "~" : "" }}{{ formatAgeTime(age.seconds) }}
               </div>
-              <!--Pop at the moment of clicking up, which is the figure build
-                  orders quote. Falls back to the arrival pop only when the build
-                  has no age-up section, where the two are the same moment.-->
-              <div v-if="popFor(age)" class="age-vils">{{ popFor(age) }} vils</div>
+              <!--Pop on arrival, matching the time printed directly above it.
+                  This used to be the pop at click-up — the figure build orders
+                  quote — which put two different moments in one label: the time
+                  said "reached", the number said "clicked up", and on a build
+                  that hires during the age-up the two genuinely disagree. The
+                  crest sits at the arrival second, so everything under it has to
+                  describe that instant. The quoted figure is in the tooltip,
+                  where it is named.-->
+              <div v-if="age.villagers" class="age-vils">{{ age.villagers }} vils</div>
               <!--The crest names the age for sighted readers; this keeps it named
                   for everyone else, since no visible text carries it-->
               <span class="age-sr">{{ labelFor(age) }}</span>
             </div>
           </template>
         </v-tooltip>
+        </div>
+
+        <!--The moment the reader is pointing at, wherever they are pointing at
+            it from. Drawn here rather than only on the economy plot, because the
+            plot is collapsible and absent on builds whose cells cannot support
+            it — while "when in the game is this?" has an answer on every build.-->
+        <span
+          v-if="highlightSeconds != null"
+          class="age-rule"
+          :style="{ left: percent(highlightSeconds) }"
+        ></span>
       </div>
+
       <div class="age-axis">
         <span v-for="tick in axis" :key="tick">{{ tick }}</span>
       </div>
@@ -115,7 +151,7 @@
 
 <script>
 //External
-import { computed, ref } from "vue";
+import { computed, inject, ref } from "vue";
 
 //Components
 import AgeChips from "@/components/builds/AgeChips.vue";
@@ -133,6 +169,7 @@ import {
 import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
 import { getEcoSeries } from "@/composables/builds/useEcoSeries.js";
+import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 
 /**
  * The narrowest the track is ever drawn: eight minutes, two ticks.
@@ -189,6 +226,11 @@ export default {
     steps: { type: Array, default: () => [] },
   },
   setup(props) {
+    //Absent wherever nothing provides it — this card is also rendered outside
+    //the build page, and a missing link is not a reason to fail to draw
+    const highlight = inject(STEP_HIGHLIGHT, null);
+    const highlightSeconds = computed(() => highlight?.moment.value?.seconds ?? null);
+
     const ages = computed(() => getAgeTimings(props.steps));
 
     /**
@@ -265,7 +307,6 @@ export default {
     const crestFor = (age) => displayFor(age)?.crest;
     const labelFor = (timing) => ageTimingLabel(displayFor(timing.age), timing);
     const nameFor = (age) => displayFor(age)?.name;
-    const popFor = (timing) => timing.clickUpVillagers ?? timing.villagers;
 
     /**
      * Explains the "~" beside a derived time, and which kind of derivation it was.
@@ -304,11 +345,11 @@ export default {
       crestFor,
       labelFor,
       nameFor,
-      popFor,
       footnoteFor,
       eco,
       ecoOpen,
       toggleEco,
+      highlightSeconds,
     };
   },
 };
@@ -345,6 +386,15 @@ export default {
   margin-top: 2px;
 }
 
+/* Rides on the time it belongs to rather than claiming a row of its own: the
+   pair is one fact — "at this moment, this many" — and splitting it across two
+   rows is how the crest below came to state a time and a count from two
+   different instants. Set back so the times still read as the column. */
+.agett-pop {
+  font-weight: 400;
+  opacity: 0.72;
+}
+
 .age-track {
   position: relative;
   height: 12px;
@@ -356,6 +406,34 @@ export default {
 
 .age-seg {
   height: 100%;
+}
+
+.age-scan {
+  position: relative;
+}
+
+/* One moment, one mark: this MUST stay identical to `.eco-rule` in EcoLines.vue.
+   The two are stacked a few pixels apart in the same card and are drawn from the
+   same seconds, so any difference in weight or colour reads as two different
+   things being pointed at rather than one.
+   Stated twice because they live in different components and there is no shared
+   stylesheet to hold it; if either changes, change both.
+
+   Under the crests rather than over them: the mark says where a moment falls,
+   and the crest it lands beside is what gives that answer meaning. */
+.age-rule {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  z-index: 0;
+  border-left: 1px solid rgba(var(--v-theme-on-surface), 0.55);
+  pointer-events: none;
+}
+
+/* Above the rule, so a crest is never cut through by it */
+.age-tick {
+  z-index: 1;
 }
 
 /* Bespoke ramp rather than theme tokens — these are four steps of one scale, and

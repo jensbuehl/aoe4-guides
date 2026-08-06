@@ -235,14 +235,22 @@
     </v-card>
 
     <!-- Summary of the steps, so it sits immediately before them: the reader gets
-         the shape, then the detail. View route only. -->
-    <AgeTimeline :steps="build.steps" />
+         the shape, then the detail. View route only.
+
+         Wrapped so its visibility can be watched: the card sits above a build
+         order that runs far past a screenful, and hovering row forty to light up
+         a chart two thousand pixels above is work spent on something nobody can
+         look at. -->
+    <div ref="timelineEl">
+      <AgeTimeline :steps="build.steps" />
+    </div>
 
     <BuildOrderEditor
       :steps="build.steps"
       :readonly="true"
       :civ="build.civ"
       :focus="focusMode"
+      :link-enabled="timelineVisible"
       @activateFocusMode="handlePlay"
     ></BuildOrderEditor>
 
@@ -273,7 +281,8 @@
 
 <script>
 //External
-import { ref, onMounted, computed, watch } from "vue";
+import { ref, onMounted, computed, provide, watch } from "vue";
+import { useElementVisibility } from "@vueuse/core";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -307,6 +316,10 @@ import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
 import useDownload from "@/composables/converter/useDownload";
 import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
 import { setSavedPlayTarget } from "@/composables/usePlayTargetPreference";
+import {
+  STEP_HIGHLIGHT,
+  useStepHighlight,
+} from "@/composables/builds/useStepHighlight.js";
 
 export default {
   name: "BuildDetails",
@@ -323,6 +336,18 @@ export default {
   },
   props: ["id"],
   setup(props) {
+    //The timeline card and the build order are siblings that never import each
+    //other; this page is the only place that knows both exist, so it owns the
+    //highlight they share. Created here rather than inside the composable so a
+    //page showing two builds cannot end up with one highlight between them.
+    provide(STEP_HIGHLIGHT, useStepHighlight());
+
+    //Coarse on purpose: any part of the card showing is enough to be worth
+    //answering, and a partial-visibility threshold is a knob nobody can tune by
+    //feel
+    const timelineEl = ref(null);
+    const timelineVisible = useElementVisibility(timelineEl);
+
     const store = useStore();
     const router = useRouter();
     const route = useRoute();
@@ -573,6 +598,8 @@ export default {
       loading,
       swipe,
       focusMode,
+      timelineEl,
+      timelineVisible,
       deleteDialog,
       focusDialog,
       shareDialog,

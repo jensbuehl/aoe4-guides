@@ -77,7 +77,8 @@ function rewinds(points) {
  * @param {Array} steps - A build's steps: the sections array.
  * @return {{points: Array, coverage: number, lastStatedSeconds: number|null}|null}
  *   Points carry one count per column in RESOURCES, plus `stated` — whether the
- *   author recorded that moment or the site worked it out.
+ *   author recorded that moment or the site worked it out — and `stepIndex`,
+ *   the step's position in the flattened list.
  *   Null whenever there is no chart worth drawing — never a sparse one.
  */
 export function getEcoSeries(steps) {
@@ -143,7 +144,18 @@ export function getEcoSeries(steps) {
       //Carried per point rather than as one split position: the plot draws a
       //segment solid only when both its ends were measured, so it needs to know
       //about every moment, not just where the last stamp was.
-      points.push({ seconds: time.seconds, stated: time.provenance === "stated", ...values });
+      //
+      //stepIndex is the flattened position, which is what lets the plot say
+      //which row a moment came from. Note the sort below: it reorders the
+      //points while the indices stay attached to their rows, so on a build with
+      //timestamps typed out of order stepIndex is NOT monotonic. Array position
+      //is never a step index.
+      points.push({
+        seconds: time.seconds,
+        stated: time.provenance === "stated",
+        stepIndex: index,
+        ...values,
+      });
     });
 
     const coverage = describedSteps ? statedSteps / describedSteps : 0;

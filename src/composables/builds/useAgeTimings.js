@@ -105,6 +105,35 @@ export function flattenSections(steps) {
 }
 
 /**
+ * Where each section begins in the flattened list.
+ *
+ * The other half of flattenSections(): everything that reads a build's steps
+ * works on the flat list, while the table renders them back in section slices.
+ * Anything that has to cross between the two — "which flat step is this row?",
+ * "which slice of the resolver output belongs to this section?" — needs the
+ * offset, and every caller that computed it for itself was one more place the
+ * two index spaces could quietly disagree.
+ *
+ * A section with no `steps` contributes zero, so an empty or malformed section
+ * shifts nothing and cannot desynchronise the sections after it.
+ *
+ * @param {Array} steps - A build's sections array.
+ * @return {Array<number>} One flat index per section, in section order. The
+ *   first is always 0. Empty when there are no sections.
+ */
+export function sectionOffsets(steps) {
+  const offsets = [];
+  let cursor = 0;
+
+  for (const section of steps ?? []) {
+    offsets.push(cursor);
+    cursor += section?.steps?.length ?? 0;
+  }
+
+  return offsets;
+}
+
+/**
  * Derives the times at which a build reaches each age beyond the first.
  *
  * Builds on getTimings() unchanged, including its contract of returning null
