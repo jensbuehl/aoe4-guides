@@ -60,7 +60,10 @@
     </div>
     <!-- empty section prompt -->
     <div v-if="!steps?.length && !readonly" class="text-center py-4">
-      <v-btn variant="text" color="primary" @click="addStep(0)">
+      <!--Label and icon share one colour. They were split across primary and
+          accent, which is invisible in dark mode (both gold) and reads as a
+          two-tone button in light mode, where primary is navy.-->
+      <v-btn variant="text" color="accent" @click="addStep(0)">
         <template v-slot:prepend><v-icon color="accent">mdi-plus</v-icon></template>
         Add build step
       </v-btn>

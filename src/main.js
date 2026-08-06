@@ -40,9 +40,26 @@ const customDarkTheme = {
 const customLightTheme = {
   dark: false,
   colors: {
-    accent: "#CCAA55",
+    //Navy, not the brand gold, and deliberately identical to primary.
+    //
+    //Accent is what the app colours *text and icons* with — 96 components and
+    //42 stylesheets read it. On the dark theme that is gold on #1D2432 and
+    //reads fine, which is why this went unnoticed: accent and primary are the
+    //same gold there, so the two tokens are indistinguishable. On the light
+    //theme it was #CCAA55 on a #FAFAFA surface — a contrast ratio of 2.1:1,
+    //against the 4.5:1 normal text needs. Every gold label, icon and link in
+    //light mode was failing it. Navy on the same surface is 8.4:1.
+    //
+    //Set here rather than by rewriting the call sites: one token cannot drift,
+    //where 143 hand edits would have, and it leaves the accent/primary split
+    //intact for whenever the light palette wants a readable gold of its own.
+    //Gold keeps its place in light mode where it is a *fill* and contrast is
+    //computed against it — tooltips (surface-variant), info snackbars, and the
+    //secondary token — so the brand does not drain out of the theme.
+    accent: "#294790",
     loading: "D8DCE0",
-    anchor: "#CCAA55",
+    //Links are text too, and were failing the same 2.1:1 as everything above.
+    anchor: "#294790",
     background: '#D8DCE0',
     surface: "#FAFAFA", //footer and header
     "surface-variant": "#CCAA55", //tooltips

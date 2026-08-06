@@ -60,9 +60,12 @@ export default {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  /* accent, not primary: primary is navy in the light theme, which reads as an
-     unrelated colour against the gold used everywhere else for attention */
-  background: rgb(var(--v-theme-accent));
+  /* Stated literally rather than read from accent, which used to be this gold
+     in the light theme and is now navy — accent carries text and icons, and
+     gold could not meet contrast there. A 7px dot is a fill nothing is read
+     against, so it keeps the gold: navy would sink into the navy controls
+     around it, which is exactly what this dot exists to stand out from. */
+  background: #ccaa55;
   flex-shrink: 0;
 }
 </style>

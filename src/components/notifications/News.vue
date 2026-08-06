@@ -6,15 +6,12 @@
     :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
     <v-card-title class="px-4 py-2 pb-2">
-      <span
-        class="v-card-title pa-0 d-flex align-center"
-        :style="{ color: $vuetify.theme.current.colors.accent }"
-      >
+      <span class="v-card-title pa-0 d-flex align-center">
         <v-icon
           icon="mdi-chart-line"
           size="small"
           class="mr-4"
-          color="accent"
+          color="primary"
         ></v-icon>
         Economy Shape
       </span>

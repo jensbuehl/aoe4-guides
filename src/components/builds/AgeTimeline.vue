@@ -370,7 +370,7 @@ export default {
   background: #b99a4e;
 }
 .age-seg-4 {
-  background: rgb(var(--v-theme-accent));
+  background: #e7c05e;
 }
 
 .v-theme--customLightTheme .age-seg-1 {
@@ -378,6 +378,14 @@ export default {
 }
 .v-theme--customLightTheme .age-seg-3 {
   background: #294790;
+}
+/* Imperial read the accent token until that token went navy for contrast, at
+   which point it collided with Castle above and the last two ages of a build
+   became one band. Stated literally like the three segments beside it: this is
+   a decorative fill nothing is read against, so it keeps the brand gold the
+   ladder was designed around. */
+.v-theme--customLightTheme .age-seg-4 {
+  background: #ccaa55;
 }
 
 /* Tall enough to clear the crest plus its two lines of label */
