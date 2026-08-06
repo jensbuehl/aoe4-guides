@@ -4,7 +4,8 @@
 
 **Created**: 2026-08-06
 
-**Status**: Clarified — ready for `/speckit-plan`
+**Status**: Implemented (code complete, manual verification outstanding) — see
+*Deviations accepted during implementation* below
 
 **Input**: "In the timeline and eco graph it is sometimes hard to follow a certain resource." Resolved
 in two parts. The first — hover a line or a legend entry to dim the other four — **shipped ahead of
@@ -308,6 +309,39 @@ expensive, and this feature earns none of that budget.
 - **NFR-006**: The figure stays `aria-hidden`. Every value the crosshair reveals is present in the
   build order table below, in a form that reads aloud, so nothing is exclusive to the hover. No
   focusable control may be introduced inside the hidden subtree.
+
+### Deviations accepted during implementation
+
+- **A-4 assumed a row-hover treatment to reuse. There wasn't one.**
+  `BuildOrderSectionEditor` tracks `hoverRowIndex` but nothing in its template
+  reads it — the state was there, the visual never arrived. So a treatment had to
+  be introduced rather than borrowed: `.step-row--linked`, an accent left edge
+  plus a faint tint. It is deliberately **not** wired to the table's own hover.
+  Lighting every row a pointer crosses would drown the one signal this feature
+  exists to send, and pointing at a row with a mouse is not a claim about it.
+  The intent of A-4 — one visual language for "this row is the one" — survives:
+  the chart's highlight and the post-scroll mark are the same treatment.
+
+- **FR-022's viewport gate moved from the table to the page.** The contract puts
+  gates in the calling component, but `BuildOrderEditor` cannot see the Timeline
+  card. `BuildDetails` owns the observer and passes the result down as
+  `linkEnabled`. The composable still holds no policy, which was the point.
+
+- **The tooltip spike (T015) was not run interactively.** Its mitigation was
+  applied up front instead: one tooltip instance whose coordinate target moves,
+  with transitions and open/close delays disabled. Whether it is *enough* is the
+  main thing manual verification must answer.
+
+- **The readout carries its own `aria-hidden`.** Vuetify teleports overlay
+  content to the body, so it escapes the figure's `aria-hidden` and would have
+  become the one part of this chart exposed to assistive technology — restating
+  table rows that already read aloud. Not anticipated by NFR-006, but required
+  by it.
+
+- **Rows are addressed by `data-step-index`, not by position.** A read-only view
+  drops rows that say nothing, so the *n*th rendered `tr.step-row` is not the
+  *n*th step. Existing code that indexes rendered rows is editor-only and was
+  left alone.
 
 ### Key Entities
 
