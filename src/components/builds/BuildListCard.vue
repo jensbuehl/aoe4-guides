@@ -56,11 +56,17 @@
 
       <!--mobile body: title · age chips · one quiet meta line-->
       <div class="blc-body blc-body--xs hidden-md-and-up">
-        <v-tooltip location="top">
+        <v-tooltip
+          location="top"
+          v-model="titleTipXs.isOpen"
+          :target="titleTipXs.target"
+          :open-on-hover="false"
+        >
           <span :style="{ color: $vuetify.theme.current.colors.primary }">{{ build.title }}</span>
           <template v-slot:activator="{ props }">
             <div
               v-bind="props"
+              v-on="titleTipXs.on"
               class="blc-title blc-title--xs"
               :style="{ color: $vuetify.theme.current.colors.primary }"
             >
@@ -117,11 +123,17 @@
         <!--desktop body: title + people line + stats line-->
         <div class="blc-body hidden-sm-and-down" :class="{ 'blc-body--cols': ageTimings.length }">
           <!-- Full title on hover, for when it is clipped -->
-          <v-tooltip location="top">
+          <v-tooltip
+            location="top"
+            v-model="titleTip.isOpen"
+            :target="titleTip.target"
+            :open-on-hover="false"
+          >
             <span :style="{ color: $vuetify.theme.current.colors.primary }">{{ build.title }}</span>
             <template v-slot:activator="{ props }">
               <div
                 v-bind="props"
+                v-on="titleTip.on"
                 class="blc-title"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
@@ -237,6 +249,7 @@ import AgeChips from "@/components/builds/AgeChips.vue";
 //Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
+import { useCursorTooltip } from "@/composables/useCursorTooltip";
 import {
   useAgeTimings,
   AGE_DISPLAY,
@@ -275,6 +288,13 @@ export default {
     //Skeleton cards are handled inside the composable, which returns an empty
     //list while build.loading is set, so no derivation runs for them.
     const ageTimings = useAgeTimings(toRef(props, "build"));
+
+    //The title is a full-width block, so an activator-anchored tooltip lands
+    //over the middle of the card rather than near the pointer. Two instances
+    //because the two layouts are separate elements — one is display:none at any
+    //given width, and a shared open flag would light up the hidden one too.
+    const titleTip = useCursorTooltip();
+    const titleTipXs = useCursorTooltip();
 
     /**
      * The rail always renders one row per age so the column positions stay
@@ -348,6 +368,8 @@ export default {
       name,
       ageTimings,
       ageRows,
+      titleTip,
+      titleTipXs,
       showAuthor,
       showCreator,
       showSeason,

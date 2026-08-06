@@ -99,6 +99,13 @@ console.log(" ");
 const vuetify = createVuetify({
   components: {},
   icons: iconOptions,
+  defaults: {
+    // Hold tooltips back a beat so sweeping the mouse across toolbars and
+    // icon rows doesn't flash a trail of them.
+    VTooltip: {
+      openDelay: 500,
+    },
+  },
   theme: {
     options: {
       customProperties: true,
