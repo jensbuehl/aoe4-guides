@@ -42,22 +42,76 @@
         <polyline
           v-for="line in lines"
           :key="line.key"
-          :class="['eco-line', 'eco-line--' + line.resource, { 'eco-line--projected': line.projected }]"
+          :class="[
+            'eco-line',
+            'eco-line--' + line.resource,
+            {
+              'eco-line--projected': line.projected,
+              'eco-line--active': active === line.resource,
+              'eco-line--dim': active && active !== line.resource,
+            },
+          ]"
           :points="line.points"
           vector-effect="non-scaling-stroke"
+        />
+
+        <!--The lines are 2.25px wide, which is not something anybody can point
+            at — least of all where several of them cross, which is exactly where
+            a reader needs to grab one. So each drawn run gets an invisible
+            companion carrying a stroke wide enough to aim for, and the visible
+            lines take themselves out of hit testing entirely.
+
+            Drawn after everything else, and in the same order, which means the
+            singled-out resource's hit stroke is topmost as well as its line:
+            once a line is held it keeps the pointer through a crossing instead
+            of handing it to whichever line happens to be painted last.-->
+        <polyline
+          v-for="line in lines"
+          :key="'hit-' + line.key"
+          class="eco-hit"
+          :points="line.points"
+          vector-effect="non-scaling-stroke"
+          @mouseenter="enter(line.resource)"
+          @mouseleave="leave()"
+          @click="togglePin(line.resource)"
         />
       </svg>
 
       <span
         v-for="cap in endCaps"
         :key="'cap-' + cap.resource"
-        :class="['eco-cap', 'eco-cap--' + cap.resource]"
+        :class="[
+          'eco-cap',
+          'eco-cap--' + cap.resource,
+          { 'eco-cap--dim': active && active !== cap.resource },
+        ]"
         :style="{ left: cap.left, bottom: cap.bottom }"
       ></span>
     </div>
 
-    <div class="eco-legend d-flex align-center flex-wrap ga-3 mt-1">
-      <span v-for="resource in RESOURCES" :key="resource.key" class="d-flex align-center ga-1">
+    <!--Set off from the plot rather than tucked under it: the entries are click
+        targets, and one sitting a few pixels below the lines invites a click
+        meant for the chart-->
+    <div class="eco-legend d-flex align-center flex-wrap ga-4 mt-2">
+      <!--Hover previews a resource, click holds it, so following a line across a
+          crossing does not mean keeping the pointer parked on the legend.
+
+          Deliberately not a <button>: the whole figure is aria-hidden, and a
+          focusable control inside a hidden subtree is reachable by keyboard but
+          unreadable once reached, which is worse than not offering it. Nothing
+          is lost — every value this reveals is in the table below, and the plot
+          only renders from md up, so there is no touch-only reader to strand.-->
+      <span
+        v-for="resource in RESOURCES"
+        :key="resource.key"
+        :class="[
+          'eco-legend-item d-flex align-center ga-1',
+          { 'eco-legend-item--dim': active && active !== resource.key },
+        ]"
+        @mouseenter="enter(resource.key)"
+        @mouseleave="leave()"
+        @click="togglePin(resource.key)"
+      >
         <span :class="['eco-swatch', 'eco-swatch--' + resource.key]"></span>
         <span class="text-caption text-medium-emphasis">{{ resource.label }}</span>
       </span>
@@ -70,7 +124,7 @@
 
 <script>
 //External
-import { computed } from "vue";
+import { computed, onBeforeUnmount, ref } from "vue";
 
 //Composables
 import { formatAgeTime } from "@/composables/builds/useAgeTimings.js";
@@ -106,6 +160,14 @@ const RESOURCES = [
 const Y_FLOOR = 16;
 const Y_STEPS = [4, 8, 16];
 const MAX_GRIDLINES = 6;
+
+/**
+ * How long a pointer has to settle on a legend entry before the chart responds.
+ *
+ * Long enough that crossing the legend on the way somewhere lights nothing,
+ * short enough that a deliberate hover does not feel like it is buffering.
+ */
+const HOVER_DELAY_MS = 120;
 
 export default {
   name: "EcoLines",
@@ -200,8 +262,55 @@ export default {
       return result;
     });
 
+    /**
+     * Which resource the reader is currently singling out, if any.
+     *
+     * Hover wins over the pin while it lasts, so moving along the legend
+     * previews each resource in turn without first having to clear the pin.
+     */
+    const hovered = ref(null);
+    const pinned = ref(null);
+    const active = computed(() => hovered.value || pinned.value);
+
+    const togglePin = (resource) => {
+      pinned.value = pinned.value === resource ? null : resource;
+    };
+
+    /**
+     * Hover intent, both ways.
+     *
+     * The five legend entries sit next to each other, so a pointer travelling to
+     * the far one crosses the three between it — and without this the chart
+     * re-lit itself three times on the way past. Entering waits, so a pointer
+     * merely passing through never lights anything; leaving waits too, so the
+     * step between two entries does not flash back through the neutral state.
+     *
+     * Once something *is* lit the wait is skipped, because then the reader has
+     * already shown intent and is comparing resources rather than travelling —
+     * making them wait again for each one would read as lag, not as steadiness.
+     */
+    let timer = null;
+
+    const enter = (resource) => {
+      clearTimeout(timer);
+
+      if (hovered.value) {
+        hovered.value = resource;
+        return;
+      }
+      timer = setTimeout(() => (hovered.value = resource), HOVER_DELAY_MS);
+    };
+
+    const leave = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => (hovered.value = null), HOVER_DELAY_MS);
+    };
+
+    //The plot unmounts whenever the reader collapses the card
+    onBeforeUnmount(() => clearTimeout(timer));
+
     /** One polyline per run per resource; a fully-measured build draws five. */
-    const lines = computed(() =>
+    const drawn = computed(() =>
       RESOURCES.flatMap((resource) =>
         runs.value.map((run, index) => ({
           key: `${resource.key}-${index}`,
@@ -211,6 +320,28 @@ export default {
         }))
       )
     );
+
+    /**
+     * Draw order, with the singled-out resource moved last.
+     *
+     * SVG has no z-index: what is drawn last is on top, so following a line
+     * through a crossing means reordering the elements themselves. The move is
+     * a stable partition rather than a sort, so the four lines left behind keep
+     * the deliberate ordering above — and with nothing active the list is the
+     * untouched original, which is the state the chart spends most of its life in.
+     *
+     * Note that a resource is several polylines whenever the build is stamped
+     * sparsely, so this lifts every run of it, not the one segment under the
+     * pointer — a half-lifted line would read as a rendering fault.
+     */
+    const lines = computed(() => {
+      if (!active.value) return drawn.value;
+
+      return [
+        ...drawn.value.filter((line) => line.resource !== active.value),
+        ...drawn.value.filter((line) => line.resource === active.value),
+      ];
+    });
 
     /** A dot at each resource's final value, so the last reading is unambiguous */
     const endCaps = computed(() => {
@@ -237,7 +368,7 @@ export default {
       return continuesAfter ? `No villagers assigned after ${formatAgeTime(lastStatedSeconds)}` : "";
     });
 
-    return { RESOURCES, gridlines, lines, endCaps, tailNote, percent };
+    return { RESOURCES, gridlines, lines, endCaps, tailNote, percent, active, enter, leave, togglePin };
   },
 };
 </script>
@@ -290,6 +421,48 @@ export default {
   stroke-width: 2.25;
   stroke-linejoin: round;
   stroke-linecap: round;
+  /* Hit testing belongs entirely to the .eco-hit strokes below. Left on, a
+     visible line sitting above another line's hit stroke would swallow the
+     pointer and answer with nothing */
+  pointer-events: none;
+  /* Short enough that sweeping along the legend does not lag behind the pointer,
+     long enough that it does not read as the chart flickering */
+  transition:
+    stroke-opacity 120ms ease,
+    stroke-width 120ms ease;
+}
+
+/* The singled-out line. The weight bump is small on purpose: what makes a line
+   followable through a crossing is the four lines around it stepping back, not
+   this — bolding alone against four equals barely registers. */
+.eco-line--active {
+  stroke-width: 3.25;
+}
+
+.eco-line--dim {
+  stroke-opacity: 0.2;
+}
+
+/* Held higher than the solid lines: a dashed line is already half gaps, so the
+   same opacity that leaves a solid line legibly present erases this one */
+.eco-line--dim.eco-line--projected {
+  stroke-opacity: 0.3;
+}
+
+/* A ±6px band to aim at, in screen pixels rather than plot units — the plot is
+   stretched hard in x and squashed in y, so a stroke measured in user space
+   would be a different target on a short build than on a long one.
+
+   Solid even where the line it shadows is dashed: the gaps in a projected line
+   are a statement about the data, not holes the pointer should fall through. */
+.eco-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 12;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  pointer-events: stroke;
+  cursor: pointer;
 }
 
 /* A segment with an end the author did not record. Roughly half of builds are
@@ -307,12 +480,52 @@ export default {
   height: 2.6px;
   border-radius: 50%;
   transform: translate(-50%, 50%);
+  transition: opacity 120ms ease;
+  /* Sits above the SVG and lands exactly on the one spot where five hit strokes
+     converge — the last place worth blocking */
+  pointer-events: none;
+}
+
+.eco-cap--dim {
+  opacity: 0.2;
 }
 
 .eco-swatch {
   width: 9px;
   height: 9px;
   border-radius: 2px;
+}
+
+/* The target is the padding box, not the words.
+
+   Grown with padding rather than with a wider gap, and the horizontal half given
+   straight back as negative margin: the labels sit where they always did, but
+   their hit boxes meet exactly midway between them. Neither overlapping — which
+   would let one entry steal a click aimed at its neighbour — nor leaving a dead
+   strip, which swallows the click entirely and reads as the legend being broken
+   rather than as having missed it. */
+.eco-legend-item {
+  cursor: pointer;
+  padding: 6px 8px;
+  margin: 0 -8px;
+  border-radius: 4px;
+  transition:
+    opacity 120ms ease,
+    background-color 120ms ease;
+}
+
+/* Immediate, unlike the emphasis it introduces. This says only "this is the
+   thing you are about to click", which is worth nothing if it waits to find out
+   whether you meant it — and showing the target is most of the fix for missing it */
+.eco-legend-item:hover {
+  background: rgba(var(--v-theme-on-surface), 0.06);
+}
+
+/* Held well above the lines' 0.2: this text is already drawn at medium emphasis,
+   and faded that far it stops being a label you can aim at — which is the one
+   thing the legend has to keep being while a resource is singled out */
+.eco-legend-item--dim {
+  opacity: 0.45;
 }
 
 /* Bespoke, like the .age-seg-* ramp above: these are the resource icon hues
