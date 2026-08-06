@@ -1,6 +1,18 @@
 <template>
-  <v-dialog v-model="focusDialog" fullscreen transition="dialog-bottom-transition">
-    <FocusMode v-on:closeDialog="focusDialog = false" :build="build"></FocusMode>
+  <v-dialog
+    v-model="focusDialog"
+    fullscreen
+    content-class="focus-dialog"
+    transition="dialog-bottom-transition"
+  >
+    <FocusMode
+      ref="focusModeRef"
+      v-on:closeDialog="focusDialog = false"
+      @poppedOut="handlePoppedOut"
+      @popOutFailed="handlePopOutFailed"
+      :popOut="popOutRequest"
+      :build="build"
+    ></FocusMode>
   </v-dialog>
 
   <!-- Build not found -->
@@ -231,7 +243,7 @@
       :readonly="true"
       :civ="build.civ"
       :focus="focusMode"
-      @activateFocusMode="focusDialog = true"
+      @activateFocusMode="handlePlay"
     ></BuildOrderEditor>
 
     <!-- Video card: always after build order -->
@@ -261,7 +273,7 @@
 
 <script>
 //External
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -294,6 +306,7 @@ import useExportOverlayFormat from "@/composables/converter/useExportOverlayForm
 import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
 import useDownload from "@/composables/converter/useDownload";
 import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
+import { setSavedPlayTarget } from "@/composables/usePlayTargetPreference";
 
 export default {
   name: "BuildDetails",
@@ -327,6 +340,72 @@ export default {
     const focusMode = ref(false);
     const clipboardIsSupported = ref(false);
     const descriptionExpanded = ref(true);
+    const focusModeRef = ref(null);
+    //A counter, not a boolean: choosing the floating window twice in a row is a
+    //request twice, and a flag that is already true says nothing the second time.
+    //
+    //It has to be *cleared* by the other targets, not merely left alone. Focus
+    //mode reads it on mount to decide whether to pop straight out, and a counter
+    //that only ever climbs answers "has the floating window ever been asked
+    //for?" — which is true forever after the first time. Playing here would then
+    //pop out anyway on any fresh mount.
+    const popOutRequest = ref(0);
+
+    /**
+     * Starts the build at the target the player chose.
+     *
+     * The preference is written once a target has actually run, never when it is
+     * clicked. A floating window the browser refuses falls back to the dialog,
+     * and persisting the choice at click time would make that one refusal the
+     * new default — a single blocked pop-up turning into a permanently wrong
+     * button.
+     *
+     * @param {'here'|'floating'|'phone'} target - Already resolved against this
+     *   browser's capabilities by the caller.
+     */
+    const handlePlay = (target) => {
+      if (target === "phone") {
+        //The share dialog already carries the QR code and already points it at
+        //focus mode. Reused rather than reimplemented.
+        shareDialog.value = true;
+        setSavedPlayTarget("phone");
+        return;
+      }
+
+      //Set before the dialog opens, so focus mode has the answer by the time it
+      //mounts and reads it.
+      popOutRequest.value = target === "floating" ? popOutRequest.value + 1 : 0;
+      focusDialog.value = true;
+      if (target === "here") setSavedPlayTarget("here");
+    };
+
+    const handlePoppedOut = () => {
+      setSavedPlayTarget("floating");
+    };
+
+    const handlePopOutFailed = () => {
+      store.dispatch("showSnackbar", {
+        text: "Your browser blocked the floating window. Playing here instead.",
+        type: "info",
+      });
+    };
+
+    //The floating window is a view onto this page's session, so it never
+    //outlives the page. The platform only closes it when the opener loads a new
+    //*document*, and a route change in this app never does — so build A to build
+    //B would otherwise leave a window floating over the game still counting
+    //through a build the player has navigated away from.
+    watch(
+      () => route.fullPath,
+      () => {
+        focusModeRef.value?.closePiP?.();
+        focusDialog.value = false;
+      }
+    );
+
+    watch(focusDialog, (open) => {
+      if (!open) focusModeRef.value?.closePiP?.();
+    });
 
     onMounted(async () => {
       const cachedBuild = props.id in store.state.cache.builds ? store.state.cache.builds[props.id] : null;
@@ -497,6 +576,11 @@ export default {
       deleteDialog,
       focusDialog,
       shareDialog,
+      focusModeRef,
+      popOutRequest,
+      handlePlay,
+      handlePoppedOut,
+      handlePopOutFailed,
       descriptionExpanded,
       handlePublish,
       handleDelete,
@@ -514,5 +598,19 @@ export default {
 .build-card-section-header {
   letter-spacing: 0.05em;
   height: 36px;
+}
+</style>
+
+<!--Unscoped on purpose: the dialog teleports to the overlay container at body
+    level, so it is not a descendant of this component and :deep() cannot reach
+    it. Kept to a single selector that only matches this one dialog.-->
+<style>
+/* Focus mode sizes itself to this box and clips its own overflow — nothing in
+   it is ever supposed to scroll. Vuetify makes a fullscreen dialog's content a
+   scroll container, which puts a scrollbar down the side of a layout built not
+   to have one, and steals a few pixels of width from the container query while
+   it is there. */
+.v-overlay__content.focus-dialog {
+  overflow: hidden;
 }
 </style>

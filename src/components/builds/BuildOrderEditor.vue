@@ -18,26 +18,82 @@
       <v-icon size="16" color="accent">mdi-format-list-numbered</v-icon>
       <span class="text-caption text-uppercase font-weight-bold">Build Order</span>
       <v-spacer></v-spacer>
-      <v-tooltip>
-        <span
-          :style="{
-            color: $vuetify.theme.current.colors.primary,
-          }"
-          >Switch to Focus Mode. This allows for Autoplay and Voice Over with less distraction.</span
+      <!--The section header is 36px and stays 36px: the Build Order card lines
+          up with Description and Timeline, and a taller button here breaks that
+          alignment down the whole page. The control is sized to fit inside it
+          rather than the header being grown around the control.-->
+      <v-btn-group v-if="readonly && !$vuetify.display.xs" class="play-group">
+        <v-btn color="primary" variant="flat" prepend-icon="mdi-play" @click="handlePlayDefault"
+          >Play</v-btn
         >
-        <template v-slot:activator="{ props }">
-          <v-btn
-            v-if="readonly"
-            v-bind="props"
-            color="accent"
-            variant="text"
-            size="small"
-            prepend-icon="mdi-play"
-            @click="activateFocusMode"
-            >Play</v-btn
-          >
-        </template>
-      </v-tooltip>
+        <v-menu location="bottom end">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              color="primary"
+              variant="flat"
+              icon="mdi-menu-down"
+              class="play-caret"
+              aria-label="Choose where to play this build"
+            ></v-btn>
+          </template>
+          <v-list width="268">
+            <!--One line each, with the explanation on the tooltip. Two-line rows
+                would make this the only stacked menu on the page.-->
+            <v-tooltip v-for="target in playTargets" :key="target.value" location="left">
+              <span :style="{ color: $vuetify.theme.current.colors.primary }">{{
+                target.description
+              }}</span>
+              <template v-slot:activator="{ props }">
+                <v-list-item v-bind="props" @click="handlePlay(target.value)">
+                  <v-icon color="primary" class="mr-4">{{ target.icon }}</v-icon>
+                  {{ target.title }}
+                </v-list-item>
+              </template>
+            </v-tooltip>
+          </v-list>
+        </v-menu>
+      </v-btn-group>
+    </div>
+
+    <!--On a phone the header has no room for it, and a play control the player
+        has to hunt for is the whole problem this replaced.-->
+    <div v-if="readonly && $vuetify.display.xs" class="px-4 pt-3">
+      <v-btn-group class="play-group play-group--block d-flex">
+        <v-btn
+          class="flex-grow-1"
+          color="primary"
+          variant="flat"
+          prepend-icon="mdi-play"
+          @click="handlePlayDefault"
+          >Play</v-btn
+        >
+        <v-menu location="bottom end">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              color="primary"
+              variant="flat"
+              icon="mdi-menu-down"
+              class="play-caret"
+              aria-label="Choose where to play this build"
+            ></v-btn>
+          </template>
+          <v-list width="268">
+            <v-tooltip v-for="target in playTargets" :key="target.value" location="left">
+              <span :style="{ color: $vuetify.theme.current.colors.primary }">{{
+                target.description
+              }}</span>
+              <template v-slot:activator="{ props }">
+                <v-list-item v-bind="props" @click="handlePlay(target.value)">
+                  <v-icon color="primary" class="mr-4">{{ target.icon }}</v-icon>
+                  {{ target.title }}
+                </v-list-item>
+              </template>
+            </v-tooltip>
+          </v-list>
+        </v-menu>
+      </v-btn-group>
     </div>
 
     <v-row no-gutters align="center" justify="center">
@@ -94,6 +150,40 @@ import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor
 //Composables
 import { flattenSections } from "@/composables/builds/useAgeTimings.js";
 import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
+import { isDocumentPiPSupported } from "@/composables/builds/useStepPiP.js";
+import {
+  getSavedPlayTarget,
+  resolvePlayTarget,
+} from "@/composables/usePlayTargetPreference.js";
+
+/**
+ * Where a build can be started from, in the order the menu offers them.
+ *
+ * The overlay export is deliberately absent: it hands the build to another
+ * application rather than starting a session here, so it stays in the build's
+ * overflow menu where the other export-shaped actions are.
+ */
+const PLAY_TARGET_ITEMS = [
+  {
+    value: "here",
+    icon: "mdi-play-circle-outline",
+    title: "Play here",
+    description: "Full-screen focus mode in this tab.",
+  },
+  {
+    value: "floating",
+    icon: "mdi-picture-in-picture-bottom-right",
+    title: "Floating window",
+    description: "Stays above the game on one monitor.",
+    requiresFloating: true,
+  },
+  {
+    value: "phone",
+    icon: "mdi-cellphone-link",
+    title: "Send to phone",
+    description: "QR code, opens focus mode there.",
+  },
+];
 
 export default {
   name: "BuildOrderEditor",
@@ -158,7 +248,47 @@ export default {
      * @return {void} This function does not return a value.
      */
     function activateFocusMode() {
-      context.emit("activateFocusMode");
+      context.emit("activateFocusMode", "here");
+    }
+
+    /**
+     * Whether this browser can float a window above the game.
+     *
+     * Read once: a capability does not change while the page is open, and a UA
+     * string is never consulted — support arriving in another browser needs no
+     * change here.
+     */
+    const floatingSupported = isDocumentPiPSupported();
+
+    /**
+     * The menu, minus anything this browser cannot do.
+     *
+     * Omitted entirely rather than shown disabled. A greyed-out row invites the
+     * player to work out why, and there is nothing they can do about it.
+     */
+    const playTargets = computed(() =>
+      PLAY_TARGET_ITEMS.filter((target) => !target.requiresFloating || floatingSupported)
+    );
+
+    /**
+     * The button body runs whatever was used last.
+     *
+     * Read at click time rather than cached at setup: the preference is written
+     * once a target has actually run, so a player who picks the floating window
+     * from the menu and comes back to the page should find the body doing that
+     * now — without the page having been reloaded in between.
+     *
+     * Resolved rather than replayed verbatim, because the preference is stored
+     * per browser and "floating" is not portable between them. A player who last
+     * used the floating window in Chrome and then opens the same build in
+     * Firefox gets a button that plays here, not one that does nothing.
+     */
+    function handlePlayDefault() {
+      handlePlay(getSavedPlayTarget());
+    }
+
+    function handlePlay(target) {
+      context.emit("activateFocusMode", resolvePlayTarget(target, floatingSupported));
     }
 
     /**
@@ -338,6 +468,9 @@ export default {
 
     return {
       activateFocusMode,
+      playTargets,
+      handlePlay,
+      handlePlayDefault,
       civ,
       readonly,
       sections,
@@ -364,5 +497,64 @@ export default {
 .build-card-section-header {
   letter-spacing: 0.05em;
   height: 36px;
+}
+
+/* 28px inside a 36px header, so the Build Order card keeps lining up with
+   Description and Timeline. Sized explicitly rather than through a density prop
+   because Vuetify's comfortable density lands at 40px, which grows the header. */
+.play-group {
+  height: 28px;
+  border-radius: 6px;
+}
+
+.play-group :deep(.v-btn) {
+  height: 28px;
+  min-height: 28px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  /* "Play", not "PLAY" — it reads as a label here, not as a shouted action. */
+  text-transform: none;
+}
+
+.play-group :deep(.v-btn:first-child) {
+  padding: 0 13px 0 14px;
+}
+
+.play-group :deep(.v-btn:first-child .v-icon) {
+  font-size: 20px;
+  margin-left: -4px;
+}
+
+/* Both halves are the same fill; only a hairline says they are two controls.
+   A themed divider reads as a gap and breaks the button into two buttons.
+
+   Drawn from the button's own text colour rather than a fixed black: primary is
+   gold in the dark theme and navy in the light one, and black on navy is no
+   hairline at all. currentColor is the one value already guaranteed to read
+   against whichever fill is underneath. The rgba line stays as the fallback for
+   browsers without color-mix. */
+.play-group :deep(.v-btn.play-caret) {
+  width: 26px;
+  min-width: 26px;
+  padding: 0;
+  border-left: 1px solid rgba(0, 0, 0, 0.18);
+  border-left-color: color-mix(in srgb, currentColor 28%, transparent);
+}
+
+.play-group :deep(.v-btn.play-caret .v-icon) {
+  font-size: 20px;
+}
+
+/* On a phone it is the primary action on the card, so it takes the full width
+   rather than sitting in a corner of it. */
+.play-group--block {
+  width: 100%;
+  height: 36px;
+}
+
+.play-group--block :deep(.v-btn) {
+  height: 36px;
+  min-height: 36px;
 }
 </style>

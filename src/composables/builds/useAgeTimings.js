@@ -21,6 +21,31 @@ export const AGE_DISPLAY = [
 ];
 
 /**
+ * Every age a build can be *in*, which is one more than the list above: a build
+ * starts in the Dark Age without ever "reaching" it.
+ *
+ * Deliberately not folded into AGE_DISPLAY. The chips and the list card rail
+ * iterate that list whole to answer "which ages does this build reach, and
+ * when" — a Dark Age entry there would print "Dark Age not reached" on every
+ * build on the site.
+ */
+const AGE_ART = [
+  { age: 1, name: "Dark Age", short: "Dark", crest: "/assets/pictures/age/age_1.webp" },
+  ...AGE_DISPLAY,
+];
+
+/**
+ * The crest and name for the age a build is currently in.
+ *
+ * @param {number|null} age - Age number as stored on an "age" section, 1-4.
+ * @return {Object|null} The art, or null for an age nothing is stored for —
+ *   including the 0 that migrated builds carry to mean "no particular age".
+ */
+export function ageArt(age) {
+  return AGE_ART.find((entry) => entry.age === age) ?? null;
+}
+
+/**
  * Formats an age arrival time as m:ss.
  *
  * Runs through the same helper the build order and Focus mode use, so the three
