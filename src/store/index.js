@@ -7,6 +7,11 @@ import {
 } from "@/composables/data/favoriteService";
 import { getUserProfile, updateUserAvatar, updateContributorIcon } from "@/composables/data/userService";
 import { civs } from "@/composables/filter/civDefaultProvider";
+import {
+  readCachedAvatar,
+  writeCachedAvatar,
+  clearCachedAvatar,
+} from "@/composables/auth/avatarCache";
 import { storage, storageRef, uploadBytes, getDownloadURL } from "@/firebase";
 
 // firebase imports
@@ -61,7 +66,8 @@ export const store = createStore({
       importDialog: { open: false },
     },
     //avatar
-    userAvatar: null,
+    //undefined = not fetched yet, null = user has no picture
+    userAvatar: undefined,
     //cache
     cache: {
       builds: {},
@@ -369,7 +375,9 @@ export const store = createStore({
 
     async loadUserAvatar({ commit, dispatch }, uid) {
       const profile = await dispatch("getCachedUserProfile", uid);
-      commit("setUserAvatar", profile?.avatar ?? null);
+      const avatar = profile?.avatar ?? null;
+      commit("setUserAvatar", avatar);
+      writeCachedAvatar(uid, avatar);
     },
 
     getCachedUserProfile({ commit, state }, uid) {
@@ -392,6 +400,7 @@ export const store = createStore({
       const uid = state.user.uid;
       await updateUserAvatar(uid, { type, ref });
       commit("setUserAvatar", { type, ref });
+      writeCachedAvatar(uid, { type, ref });
 
       // Resolve icon URL for contributors collection so it shows on author
       // filter pages and Top Contributors without extra reads at render time.
@@ -438,12 +447,20 @@ onAuthStateChanged(auth, async (user) => {
   }
   store.commit("setUser", user ? user.toJSON() : null);
   if (user) {
+    // Paint the remembered avatar now rather than after the profile read.
+    // loadUserAvatar still runs and overwrites it, so a change made on another
+    // device corrects itself within the same page load.
+    const cached = readCachedAvatar();
+    if (cached?.uid === user.uid) {
+      store.commit("setUserAvatar", cached.avatar);
+    }
     const tokenResult = await user.getIdTokenResult();
     store.commit("setIsAdmin", tokenResult.claims.admin === true);
     store.dispatch("loadUserAvatar", user.uid);
   } else {
     store.commit("setUserAvatar", null);
     store.commit("setIsAdmin", false);
+    clearCachedAvatar();
   }
 });
 

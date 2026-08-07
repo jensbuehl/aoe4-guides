@@ -21,10 +21,14 @@
             class="text-caption text-medium-emphasis mr-3"
             style="min-width: 18px; text-align: center; flex-shrink: 0"
           >{{ index + 1 }}</span>
-          <v-avatar v-if="iconFor(contributor)" size="36" color="accent" :image="iconFor(contributor)" class="mr-3"></v-avatar>
-          <v-avatar v-else size="36" color="accent" class="mr-3">
-            <span class="text-caption font-weight-bold">{{ contributor.displayName?.slice(0, 2).toUpperCase() ?? '' }}</span>
-          </v-avatar>
+          <UserAvatar
+            size="36"
+            class="mr-3"
+            :src="iconFor(contributor)"
+            :name="contributor.displayName"
+            :loading="!!contributor.loading"
+            text-class="text-caption font-weight-bold"
+          />
         </template>
 
         <v-list-item-title
@@ -54,9 +58,11 @@ import { computed } from "vue";
 import { useStore } from "vuex";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
+import UserAvatar from "@/components/common/UserAvatar.vue";
 
 export default {
   name: "TopContributors",
+  components: { UserAvatar },
   props: {
     contributors: {
       type: Array,

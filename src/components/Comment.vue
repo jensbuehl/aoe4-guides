@@ -15,10 +15,12 @@
   <v-card-text style="white-space: pre-line">
     <v-row class="my-2"no-gutters align="center">
       <v-col cols="auto">
-        <v-avatar class="mr-4" color="accent">
-          <v-img v-if="avatarSrc" :src="avatarSrc" cover />
-          <span v-else>{{ avatarInitials }}</span>
-        </v-avatar>
+        <UserAvatar
+          class="mr-4"
+          :src="avatarSrc"
+          :name="author"
+          :loading="avatarLoading"
+        />
       </v-col>
       <v-col cols="*">{{ comment }}</v-col>
       <v-col cols="auto">
@@ -60,8 +62,12 @@ import { useAvatar } from "@/composables/auth/useAvatar";
 import { deleteComment } from "@/composables/data/commentService";
 import { decrementComments } from "@/composables/data/buildService";
 
+//Components
+import UserAvatar from "@/components/common/UserAvatar.vue";
+
 export default {
   name: "Comment",
+  components: { UserAvatar },
   props: ["comment"],
   emits: ["commentRemoved"],
   setup(props, context) {
@@ -75,15 +81,20 @@ export default {
     const dialog = ref(false);
     const { timeSince, isNew } = useTimeSince();
 
-    const cachedProfile = ref(null);
+    // undefined until the profile fetch settles, so the avatar can hold off on
+    // rendering initials it is about to replace with a picture.
+    const cachedProfile = ref(undefined);
     onMounted(async () => {
-      if (authorId) {
-        cachedProfile.value = await store.dispatch("getCachedUserProfile", authorId);
+      if (!authorId) {
+        cachedProfile.value = null;
+        return;
       }
+      cachedProfile.value = (await store.dispatch("getCachedUserProfile", authorId)) ?? null;
     });
-    const authorAvatar = computed(() => cachedProfile.value?.avatar ?? null);
-    const authorUser = computed(() => ({ displayName: author }));
-    const { src: avatarSrc, initials: avatarInitials } = useAvatar(authorAvatar, authorUser);
+    const authorAvatar = computed(() =>
+      cachedProfile.value === undefined ? undefined : cachedProfile.value?.avatar ?? null
+    );
+    const { src: avatarSrc, loading: avatarLoading } = useAvatar(authorAvatar);
 
     const handleDelete = async () => {
       dialog.value = false;
@@ -103,7 +114,7 @@ export default {
       handleDelete,
       user,
       avatarSrc,
-      avatarInitials,
+      avatarLoading,
     };
   },
 };

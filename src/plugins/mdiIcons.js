@@ -3,6 +3,7 @@
 // ~2.3 MB across formats). Regenerate after adding/removing icons with:
 //   grep -rhoE "mdi-[a-z0-9-]+" src --include=*.vue --include=*.js | sort -u
 import {
+  mdiAccount,
   mdiAccountCheck,
   mdiAccountEdit,
   mdiAccountOffOutline,
@@ -59,6 +60,7 @@ import {
   mdiImageSearch,
   mdiInformation,
   mdiInformationOutline,
+  mdiLinkedin,
   mdiLockCheckOutline,
   mdiLockOutline,
   mdiLogin,
@@ -108,6 +110,7 @@ import {
 } from "@mdi/js";
 
 export const usedMdiIcons = {
+  "mdi-account": mdiAccount,
   "mdi-account-check": mdiAccountCheck,
   "mdi-account-edit": mdiAccountEdit,
   "mdi-account-off-outline": mdiAccountOffOutline,
@@ -164,6 +167,7 @@ export const usedMdiIcons = {
   "mdi-image-search": mdiImageSearch,
   "mdi-information": mdiInformation,
   "mdi-information-outline": mdiInformationOutline,
+  "mdi-linkedin": mdiLinkedin,
   "mdi-lock-check-outline": mdiLockCheckOutline,
   "mdi-lock-outline": mdiLockOutline,
   "mdi-login": mdiLogin,

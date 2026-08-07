@@ -28,10 +28,13 @@
               style="position: relative; display: inline-block; cursor: pointer;"
               @click="pickerOpen = true"
             >
-              <v-avatar size="96" color="accent">
-                <v-img v-if="avatarSrc" :src="avatarSrc" cover />
-                <span v-else class="text-h5">{{ avatarInitials }}</span>
-              </v-avatar>
+              <UserAvatar
+                size="96"
+                :src="avatarSrc"
+                :name="user.displayName"
+                :loading="avatarLoading"
+                text-class="text-h5"
+              />
               <v-avatar
                 size="28"
                 color="primary"
@@ -177,17 +180,18 @@ import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import AvatarPicker from "@/components/account/AvatarPicker.vue";
+import UserAvatar from "@/components/common/UserAvatar.vue";
 import { useAvatar } from "@/composables/auth/useAvatar";
 
 export default {
   name: "Account",
-  components: { AvatarPicker },
+  components: { AvatarPicker, UserAvatar },
   setup() {
     const store = useStore();
     const router = useRouter();
     const user = computed(() => store.state.user);
     const userAvatar = computed(() => store.state.userAvatar);
-    const { src: avatarSrc, initials: avatarInitials } = useAvatar(userAvatar, user);
+    const { src: avatarSrc, loading: avatarLoading } = useAvatar(userAvatar);
 
     const pickerOpen = ref(false);
     const deleteDialog = ref(false);
@@ -253,7 +257,7 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       avatarSrc,
-      avatarInitials,
+      avatarLoading,
       pickerOpen,
       deleteDialog,
       passwordForm,

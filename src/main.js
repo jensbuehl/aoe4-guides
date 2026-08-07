@@ -13,6 +13,11 @@ import store from "@/store";
 // Tree-shaken SVG icons (replaces the full @mdi/font webfont)
 import { iconOptions } from "@/plugins/vuetifyIcons";
 
+// Kick off the signed-in user's avatar download before anything is mounted,
+// so it is in the browser cache by the time the header asks for it.
+import { preloadCachedAvatar } from "@/composables/auth/avatarCache";
+preloadCachedAvatar();
+
 // theme definition
 const customDarkTheme = {
   dark: true,

@@ -2,14 +2,13 @@
   <v-card flat rounded="lg" class="author-header" :style="{ minHeight: height + 'px' }">
     <v-row no-gutters align="center" class="fill-height pa-3" style="min-height: inherit;">
       <v-col cols="auto" class="mr-3">
-        <v-avatar :size="avatarSize" color="primary">
-          <v-img
-            v-if="contributor.icon"
-            :src="contributor.icon"
-            :alt="contributor.displayName"
-          />
-          <span v-else class="author-initials">{{ initials }}</span>
-        </v-avatar>
+        <UserAvatar
+          :size="avatarSize"
+          color="primary"
+          :src="contributor.icon"
+          :name="contributor.displayName"
+          text-class="author-initials"
+        />
       </v-col>
       <v-col>
         <div class="author-name">{{ contributor.displayName }}</div>
@@ -34,9 +33,11 @@
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
 import useTimeSince from "@/composables/useTimeSince";
+import UserAvatar from "@/components/common/UserAvatar.vue";
 
 export default {
   name: "AuthorPageHeader",
+  components: { UserAvatar },
   props: {
     contributor: { type: Object, required: true },
     count:       { type: Number, default: null },
@@ -44,7 +45,6 @@ export default {
   setup(props) {
     const { formatCount } = useTimeSince();
     const { name } = useDisplay();
-    const initials = props.contributor.displayName?.slice(0, 2).toUpperCase() ?? "?";
 
     const height = computed(() => {
       switch (name.value) {
@@ -60,7 +60,7 @@ export default {
 
     const avatarSize = computed(() => (height.value >= 112 ? 54 : 44));
 
-    return { initials, formatCount, height, avatarSize };
+    return { formatCount, height, avatarSize };
   },
 };
 </script>
@@ -75,7 +75,8 @@ export default {
   font-weight: 700;
 }
 
-.author-initials {
+/* Deep: the initials live inside UserAvatar, past this component's scope. */
+.author-header :deep(.author-initials) {
   font-size: 18px;
   font-weight: 800;
   color: #fff;

@@ -210,11 +210,12 @@
         </v-menu>
         <v-menu class="mx-4">
           <template v-slot:activator="{ props }">
-            <v-btn class="mr-2" icon>
-              <v-avatar color="accent" v-bind="props">
-                <v-img v-if="avatarSrc" :src="avatarSrc" cover />
-                <span v-else>{{ avatarInitials }}</span>
-              </v-avatar>
+            <v-btn class="mr-2" icon v-bind="props">
+              <UserAvatar
+                :src="avatarSrc"
+                :name="user?.displayName"
+                :loading="avatarLoading"
+              />
             </v-btn>
           </template>
           <v-list v-if="!user">
@@ -353,9 +354,11 @@ import {
   THEME_STORAGE_KEY,
 } from "@/composables/useThemePreference";
 import { useAvatar } from "@/composables/auth/useAvatar";
+import UserAvatar from "@/components/common/UserAvatar.vue";
 
 export default {
   name: "Header",
+  components: { UserAvatar },
   setup() {
     const title = ref("AOE4 GUIDES");
     const subtitle = ref("Age of Empires IV Build Orders");
@@ -406,7 +409,7 @@ export default {
     const openImportDialog = () => store.dispatch("openImportDialog");
 
     const userAvatar = computed(() => store.state.userAvatar);
-    const { src: avatarSrc, initials: avatarInitials } = useAvatar(userAvatar, user);
+    const { src: avatarSrc, loading: avatarLoading } = useAvatar(userAvatar);
 
     return {
       title,
@@ -421,7 +424,7 @@ export default {
       openAuthDialog,
       openImportDialog,
       avatarSrc,
-      avatarInitials,
+      avatarLoading,
     };
   },
 };

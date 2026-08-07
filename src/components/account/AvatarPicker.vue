@@ -16,9 +16,7 @@
         <!-- Initials tab -->
         <v-window-item value="initials">
           <div class="d-flex flex-column align-center ga-4 pt-4">
-            <v-avatar size="96" color="accent">
-              <span class="text-h5">{{ initials }}</span>
-            </v-avatar>
+            <UserAvatar size="96" :name="displayName" text-class="text-h5" />
             <p class="text-medium-emphasis text-body-2 text-center">
               Your avatar will show your initials. No image stored.
             </p>
@@ -100,10 +98,11 @@ import { useStore } from "vuex";
 import { civs } from "@/composables/filter/civDefaultProvider";
 import PickerDialog from "@/components/common/PickerDialog.vue";
 import FileDropZone from "@/components/common/FileDropZone.vue";
+import UserAvatar from "@/components/common/UserAvatar.vue";
 
 export default {
   name: "AvatarPicker",
-  components: { PickerDialog, FileDropZone },
+  components: { PickerDialog, FileDropZone, UserAvatar },
   props: {
     modelValue: { type: Boolean, required: true },
   },
@@ -118,10 +117,7 @@ export default {
 
     const pending = ref({ type: "initials", ref: null });
 
-    const initials = computed(() => {
-      const name = store.state.user?.displayName ?? "";
-      return name.slice(0, 2).toUpperCase() || "?";
-    });
+    const displayName = computed(() => store.state.user?.displayName ?? null);
 
     const availableCivs = computed(() =>
       civs.value.filter((c) => c.shortName !== "ANY")
@@ -209,7 +205,7 @@ export default {
     }
 
     return {
-      activeTab, saving, uploadPreview, uploadBlob, pending, initials,
+      activeTab, saving, uploadPreview, uploadBlob, pending, displayName,
       availableCivs, canSave, selectCiv, processFiles, save,
     };
   },
