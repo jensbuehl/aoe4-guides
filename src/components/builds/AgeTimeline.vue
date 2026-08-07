@@ -317,6 +317,13 @@ export default {
      * the estimate reaches, and that is a sentence rather than a symbol, so it
      * lives here.
      *
+     * Both notes say where the estimate sits relative to what the author wrote,
+     * and neither says how it was worked out. They used to name the villager
+     * count as the source, which described the machinery rather than the claim —
+     * a reader deciding whether to trust a number is not helped by knowing which
+     * column it was derived from, and the site changing how it interpolates
+     * should not turn every one of these notes into a lie.
+     *
      * When a row mixes the two — a projected arrival after an interpolated click
      * up, or the reverse — the weaker claim wins, so the note never credits the
      * build with more evidence than it has.
@@ -330,7 +337,7 @@ export default {
       //Weakest claim wins, so the note never credits the build with more
       //evidence than it has
       if (tiers.includes("extrapolated")) return "~ projected past the last stated time";
-      if (tiers.includes("interpolated")) return "~ estimated from villager count";
+      if (tiers.includes("interpolated")) return "~ estimated between stated times";
 
       return "~ approximate, as the author wrote it";
     };

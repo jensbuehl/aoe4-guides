@@ -224,7 +224,7 @@
           <b v-if="!row.timing" class="blc-agedash">&mdash;</b>
           <v-tooltip v-else-if="row.timing.derived" location="top">
             <span :style="{ color: $vuetify.theme.current.colors.primary }"
-              >Estimated from villager count</span
+              >Estimated, not stated by the author</span
             >
             <template v-slot:activator="{ props }">
               <b v-bind="props">~{{ formatAgeTime(row.timing.seconds) }}</b>
