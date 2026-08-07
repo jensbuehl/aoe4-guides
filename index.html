@@ -23,10 +23,21 @@
     <!-- Meta Tags-->
     <meta name="description" content="Create and share build orders for Age of Empires IV. Export and use any build order with the Overlay Tool for AoE4.">
 
+    <!-- No <link rel="canonical"> here on purpose. This one file is served for
+         every route, so a hardcoded canonical would tell crawlers that every
+         build order page is a duplicate of the homepage. The router injects the
+         correct per-route canonical instead (see src/router/index.js). -->
+
     <!-- Facebook Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="AoE4 Guides">
     <meta property="og:url" content="https://aoe4guides.com">
     <meta property="og:title" content="Age of Empires IV Build Orders | AOE4 GUIDES">
     <meta property="og:description" content="Create and share build orders for Age of Empires IV. Export and use any build order with the Overlay Tool for AoE4.">
+    <meta property="og:image" content="https://aoe4guides.com/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="AoE4 Guides - Age of Empires IV build orders">
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
@@ -34,6 +45,8 @@
     <meta property="twitter:url" content="https://aoe4guides.com">
     <meta name="twitter:title" content="Age of Empires IV Build Orders | AOE4 GUIDES">
     <meta name="twitter:description" content="Create and share build orders for Age of Empires IV. Export and use any build order with the Overlay Tool for AoE4.">
+    <meta name="twitter:image" content="https://aoe4guides.com/og-image.png">
+    <meta name="twitter:image:alt" content="AoE4 Guides - Age of Empires IV build orders">
   </head>
   <body>
     <div id="app"></div>

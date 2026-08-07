@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Auth screens and per-user pages: nothing here is useful in a search result,
+# and they either redirect to login or render empty for a crawler.
+Disallow: /login
+Disallow: /register
+Disallow: /resetpassword
+Disallow: /account
+Disallow: /mybuilds
+Disallow: /favorites
+Disallow: /admin
+
+# Redirect-only routes that bounce straight off-site.
+Disallow: /github
+Disallow: /apidoc
+
+Sitemap: https://aoe4guides.com/sitemap.xml

@@ -1,30 +1,33 @@
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  The namespace URI is http://www.sitemaps.org/... and is compared literally:
+  writing https:// here puts the document in an unknown namespace and search
+  engines reject it. It is an identifier, not a link - do not "fix" the scheme.
+
+  Only publicly indexable pages belong here. Auth screens and personal pages
+  (/login, /register, /account, /mybuilds, /favorites) are excluded and are
+  also disallowed in robots.txt. Individual build order pages are not listed
+  yet - there are thousands and they need generating from Firestore.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://aoe4guides.com/</loc>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://aoe4guides.com/new</loc>
-        <priority>1.0</priority>
+        <loc>https://aoe4guides.com/builds</loc>
+        <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://aoe4guides.com/register</loc>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://aoe4guides.com/login</loc>
+        <loc>https://aoe4guides.com/builds/new</loc>
         <priority>0.5</priority>
     </url>
     <url>
         <loc>https://aoe4guides.com/about</loc>
-        <priority>1.0</priority>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>https://aoe4guides.com/privacy</loc>
-        <priority>0.1</priority>
-    </url>
-    <url>
-        <loc>https://aoe4guides.com/import</loc>
         <priority>0.1</priority>
     </url>
 </urlset>

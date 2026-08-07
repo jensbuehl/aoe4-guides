@@ -29,6 +29,55 @@ const About = () => import("@/views/About.vue");
 
 const Admin = () => import("@/views/Admin.vue");
 
+const SITE_ORIGIN = "https://aoe4guides.com";
+
+// Pages that must never claim to be canonical: auth screens, per-user pages,
+// and anything that isn't a real page. Kept in step with public/robots.txt and
+// public/sitemap.xml — a URL disallowed there should be absent here too.
+const NON_CANONICAL_ROUTES = new Set([
+  "Login",
+  "Register",
+  "ResetPassword",
+  "Account",
+  "AccountAction",
+  "Unsubscribe",
+  "MyBuilds",
+  "MyFavorites",
+  "Admin",
+  "NotFound",
+]);
+
+/**
+ * Points <link rel="canonical"> at the route currently being shown.
+ *
+ * index.html deliberately ships without a canonical tag: the same file is
+ * served for every path, so a static one would declare every build order a
+ * duplicate of the homepage. Injecting it here means crawlers that execute
+ * JavaScript (Google does) see the right URL, and those that don't see none at
+ * all — absent is neutral, wrong is harmful.
+ *
+ * @param {import("vue-router").RouteLocationNormalized} to - The route navigated to.
+ */
+function setCanonical(to) {
+  let link = document.querySelector('link[rel="canonical"]');
+
+  if (NON_CANONICAL_ROUTES.has(to.name)) {
+    link?.remove();
+    return;
+  }
+
+  if (!link) {
+    link = document.createElement("link");
+    link.setAttribute("rel", "canonical");
+    document.head.appendChild(link);
+  }
+
+  // to.path, not to.fullPath: filter and redirect query strings are different
+  // views of the same page, not pages in their own right.
+  const path = to.path.length > 1 ? to.path.replace(/\/+$/, "") : "";
+  link.setAttribute("href", `${SITE_ORIGIN}/${path.replace(/^\//, "")}`);
+}
+
 const routes = [
     {
       path: "/",
@@ -161,7 +210,7 @@ const routes = [
       name: "About",
       component: About,
       meta: {
-        title: "About"
+        title: "About AoE4 Guides"
       }
     },
     {
@@ -233,6 +282,8 @@ const routes = [
     if (to.meta.title) {
       document.title = `${to.meta.title}` + " | AOE4 GUIDES"
     }
+
+    setCanonical(to);
   });
 
   router.onError((error, to) => {
