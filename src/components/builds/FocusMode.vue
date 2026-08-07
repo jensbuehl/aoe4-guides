@@ -250,6 +250,7 @@
 <script>
 //External
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
+import { useStore } from "vuex";
 import { useEventListener, useWakeLock } from "@vueuse/core";
 
 //Components
@@ -261,7 +262,12 @@ import {
   parseVillagerCountString,
 } from "@/composables/builds/villagerAggregator.js";
 
-import { initTextToSpeech, speak, stop } from "@/composables/builds/textToSpeechHelper.js";
+import {
+  initTextToSpeech,
+  speak,
+  stop,
+  onSpeechRefused,
+} from "@/composables/builds/textToSpeechHelper.js";
 import { redundantMask, hasVisibleContent } from "@/composables/builds/stepVisibility.js";
 import { useStepPiP } from "@/composables/builds/useStepPiP.js";
 import { AGE_DISPLAY, ageArt } from "@/composables/builds/useAgeTimings.js";
@@ -329,6 +335,7 @@ export default {
     const currentStepDuration = ref(null);
     const currentStepProgress = ref(0);
     const { request, release } = useWakeLock();
+    const store = useStore();
 
     const focusRoot = ref(null);
 
@@ -479,6 +486,21 @@ export default {
       }
 
       //init speak
+      //
+      //Said once per session, and only when the browser actually turns an
+      //utterance down. Voice-over failing is otherwise indistinguishable from
+      //voice-over being off, and the player is looking at a speaker icon that
+      //says it is on.
+      let refusalReported = false;
+      onSpeechRefused(() => {
+        if (refusalReported) return;
+        refusalReported = true;
+        store.dispatch("showSnackbar", {
+          text: "Your browser would not play the voice-over. Try Chrome, or install the site as an app.",
+          type: "info",
+        });
+      });
+
       await initTextToSpeech();
       if (audio.value) {
         stop();
@@ -489,6 +511,7 @@ export default {
     onBeforeUnmount(() => {
       clearTimer();
       stop();
+      onSpeechRefused(null);
       //Required: useWakeLock registers no scope-dispose cleanup, so the lock
       //outlives the component without this. Sync hook, so catch rather than await.
       release().catch(() => {});
