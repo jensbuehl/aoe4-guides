@@ -19,8 +19,6 @@
           class="mr-4"
           :src="avatarSrc"
           :name="author"
-          :loading="avatarLoading"
-          prefer-icon
         />
       </v-col>
       <v-col cols="*">{{ comment }}</v-col>
@@ -82,26 +80,22 @@ export default {
     const dialog = ref(false);
     const { timeSince, isNew } = useTimeSince();
 
-    // undefined until the profile fetch settles, so the avatar can hold off on
-    // rendering initials it is about to replace with a picture.
-    const cachedProfile = ref(undefined);
+    // The comment document carries the author's name, so the avatar never has
+    // to wait on a fetch to have something to show: initials paint immediately
+    // and a picture, if there is one, fades in over them. Holding the circle
+    // empty until the profile settled was what left it blank.
+    const cachedProfile = ref(null);
     onMounted(async () => {
-      if (!authorId) {
-        cachedProfile.value = null;
-        return;
-      }
-      // users/{uid} is readable by its owner only, so every comment by someone
-      // else rejects here. Landing on null lets the fallback render instead of
-      // leaving the avatar stuck in its loading state forever.
+      if (!authorId) return;
+      // users/{uid} is readable by its owner only, so every comment written by
+      // someone else is denied here — hence the catch. Initials are already on
+      // screen either way.
       cachedProfile.value = await store
         .dispatch("getCachedUserProfile", authorId)
-        .then((profile) => profile ?? null)
         .catch(() => null);
     });
-    const authorAvatar = computed(() =>
-      cachedProfile.value === undefined ? undefined : cachedProfile.value?.avatar ?? null
-    );
-    const { src: avatarSrc, loading: avatarLoading } = useAvatar(authorAvatar);
+    const authorAvatar = computed(() => cachedProfile.value?.avatar ?? null);
+    const { src: avatarSrc } = useAvatar(authorAvatar);
 
     const handleDelete = async () => {
       dialog.value = false;
@@ -121,7 +115,6 @@ export default {
       handleDelete,
       user,
       avatarSrc,
-      avatarLoading,
     };
   },
 };
