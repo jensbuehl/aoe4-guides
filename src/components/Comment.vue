@@ -20,6 +20,7 @@
           :src="avatarSrc"
           :name="author"
           :loading="avatarLoading"
+          prefer-icon
         />
       </v-col>
       <v-col cols="*">{{ comment }}</v-col>
@@ -89,7 +90,13 @@ export default {
         cachedProfile.value = null;
         return;
       }
-      cachedProfile.value = (await store.dispatch("getCachedUserProfile", authorId)) ?? null;
+      // users/{uid} is readable by its owner only, so every comment by someone
+      // else rejects here. Landing on null lets the fallback render instead of
+      // leaving the avatar stuck in its loading state forever.
+      cachedProfile.value = await store
+        .dispatch("getCachedUserProfile", authorId)
+        .then((profile) => profile ?? null)
+        .catch(() => null);
     });
     const authorAvatar = computed(() =>
       cachedProfile.value === undefined ? undefined : cachedProfile.value?.avatar ?? null
