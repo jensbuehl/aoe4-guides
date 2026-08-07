@@ -437,33 +437,47 @@ export default {
 }
 
 /* Bespoke ramp rather than theme tokens — these are four steps of one scale, and
-   no token set spans them. Both themes are declared so neither is hardcoded. */
-.age-seg-1 {
-  background: #3d516b;
-}
-.age-seg-2 {
-  background: #6d7fa6;
-}
-.age-seg-3 {
-  background: #b99a4e;
-}
-.age-seg-4 {
-  background: #e7c05e;
+   no token set spans them. Both themes are declared so neither is hardcoded.
+
+   Held as properties on the track rather than written into the segment rules,
+   because the transition bands are the same four colours at a lower alpha. One
+   declaration point means a band cannot quietly become a fifth step of a ramp
+   whose four were chosen against each other.
+
+   Channels rather than hex, which is what lets the bands take an alpha at all —
+   the same form Vuetify's own tokens use, and the same form `.age-track`'s
+   background above is already written in. */
+.age-track {
+  --age-1: 61, 81, 107;
+  --age-2: 109, 127, 166;
+  --age-3: 185, 154, 78;
+  --age-4: 231, 192, 94;
 }
 
-.v-theme--customLightTheme .age-seg-1 {
-  background: #a9b2c2;
-}
-.v-theme--customLightTheme .age-seg-3 {
-  background: #294790;
-}
-/* Imperial read the accent token until that token went navy for contrast, at
-   which point it collided with Castle above and the last two ages of a build
-   became one band. Stated literally like the three segments beside it: this is
+/* Three of the four move for the light theme; Feudal reads the same against
+   either surface. Imperial read the accent token until that token went navy for
+   contrast, at which point it collided with Castle above and the last two ages
+   of a build became one band. Stated literally like the three beside it: this is
    a decorative fill nothing is read against, so it keeps the brand gold the
    ladder was designed around. */
-.v-theme--customLightTheme .age-seg-4 {
-  background: #ccaa55;
+.v-theme--customLightTheme .age-track {
+  --age-1: 169, 178, 194;
+  --age-2: 109, 127, 166;
+  --age-3: 41, 71, 144;
+  --age-4: 204, 170, 85;
+}
+
+.age-seg-1 {
+  background: rgb(var(--age-1));
+}
+.age-seg-2 {
+  background: rgb(var(--age-2));
+}
+.age-seg-3 {
+  background: rgb(var(--age-3));
+}
+.age-seg-4 {
+  background: rgb(var(--age-4));
 }
 
 /* Tall enough to clear the crest plus its two lines of label */
