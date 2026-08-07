@@ -457,48 +457,48 @@
             <td class="text-center aggregatedVillagers py-1" v-html="aggregateVillagers(item)"></td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="hasResourceValue(item.builders)" :class="['rc-pill rc-builders', hasDeltaUp('builders', index) && 'd-up']">{{ item.builders }}</span>
+                <span v-if="hasResourceValue(item.builders)" :class="['rc-pill rc-builders', deltaClass('builders', index)]">{{ item.builders }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="7" :value="item.builders"
                 @input="updateStep($event, index, 'builders')" @paste="handlePaste"
-                :class="hasResourceValue(item.builders) ? ['rc-pill','rc-builders','rc-input', hasDeltaUp('builders',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.builders) ? ['rc-pill','rc-builders','rc-input', deltaClass('builders',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="hasResourceValue(item.food)" :class="['rc-pill rc-food', hasDeltaUp('food', index) && 'd-up']">{{ item.food }}</span>
+                <span v-if="hasResourceValue(item.food)" :class="['rc-pill rc-food', deltaClass('food', index)]">{{ item.food }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="7" :value="item.food"
                 @input="updateStep($event, index, 'food')" @paste="handlePaste"
-                :class="hasResourceValue(item.food) ? ['rc-pill','rc-food','rc-input', hasDeltaUp('food',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.food) ? ['rc-pill','rc-food','rc-input', deltaClass('food',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="hasResourceValue(item.wood)" :class="['rc-pill rc-wood', hasDeltaUp('wood', index) && 'd-up']">{{ item.wood }}</span>
+                <span v-if="hasResourceValue(item.wood)" :class="['rc-pill rc-wood', deltaClass('wood', index)]">{{ item.wood }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="7" :value="item.wood"
                 @input="updateStep($event, index, 'wood')" @paste="handlePaste"
-                :class="hasResourceValue(item.wood) ? ['rc-pill','rc-wood','rc-input', hasDeltaUp('wood',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.wood) ? ['rc-pill','rc-wood','rc-input', deltaClass('wood',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="hasResourceValue(item.gold)" :class="['rc-pill rc-gold', hasDeltaUp('gold', index) && 'd-up']">{{ item.gold }}</span>
+                <span v-if="hasResourceValue(item.gold)" :class="['rc-pill rc-gold', deltaClass('gold', index)]">{{ item.gold }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" maxlength="7" :value="item.gold"
                 @input="updateStep($event, index, 'gold')" @paste="handlePaste"
-                :class="hasResourceValue(item.gold) ? ['rc-pill','rc-gold','rc-input', hasDeltaUp('gold',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.gold) ? ['rc-pill','rc-gold','rc-input', deltaClass('gold',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
               <template v-if="readonly">
-                <span v-if="hasResourceValue(item.stone)" :class="['rc-pill rc-stone', hasDeltaUp('stone', index) && 'd-up']">{{ item.stone }}</span>
+                <span v-if="hasResourceValue(item.stone)" :class="['rc-pill rc-stone', deltaClass('stone', index)]">{{ item.stone }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" maxlength="7" :value="item.stone"
                 @input="updateStep($event, index, 'stone')" @paste="handlePaste"
-                :class="hasResourceValue(item.stone) ? ['rc-pill','rc-stone','rc-input', hasDeltaUp('stone',index) && 'd-up'] : ['rc-pill','rc-ghost','rc-input']" />
+                :class="hasResourceValue(item.stone) ? ['rc-pill','rc-stone','rc-input', deltaClass('stone',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td
               @input="showAutoCompleteMenu($event, index)"
@@ -643,7 +643,11 @@ import IconToolTip from "@/components/builds/IconToolTip.vue";
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
 import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
-import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
+import {
+  aggregateVillagers,
+  hasResourceValue,
+  parseVillagerCountString,
+} from "@/composables/builds/villagerAggregator.js";
 import { formatAgeTime } from "@/composables/builds/useAgeTimings.js";
 import { saysNothing as isRedundantStep } from "@/composables/builds/stepVisibility.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
@@ -887,16 +891,48 @@ export default {
       return isRedundantStep(steps[index], index === 0 ? props.previousStep : steps[index - 1]);
     }
 
-    function hasDeltaUp(field, index) {
-      //The step before this one, crossing the section boundary when needed —
-      //the first row of an age section still follows on from the age-up before
-      //it, so an increase there deserves the same marker as any other.
+    /**
+     * How one resource cell stands against the step before it.
+     *
+     * A build order restates the whole distribution on every row, so most cells
+     * on screen carry no news. The three answers are drawn rather than written:
+     * a cell that gained villagers is barred along its top edge, one that lost
+     * them along its bottom, and one that only repeats what was already true
+     * keeps its number at full contrast but gives up its tint. Colour in a row
+     * then means "this moved", which is the question a reader is asking.
+     *
+     * Up and down share one colour deliberately. Moving four villagers off wood
+     * onto gold is the build working, not a gain and a loss, and every decrease
+     * here is somebody else's increase on the same row; a green/red pair would
+     * claim a verdict the data does not make. It would also be unreadable — the
+     * food pill is already red and the wood pill already green. Direction is
+     * carried by which edge the bar sits on, which is a channel the resource
+     * tints do not use and colour blindness does not take away.
+     *
+     * Crosses the section boundary the same way saysNothing does: the first row
+     * of an age section follows on from the age-up before it, so a reassignment
+     * made across the boundary is marked like any other. The first step of the
+     * build has nothing to be a change from and is left unmarked.
+     *
+     * Counts come from parseVillagerCountString, the same reader saysNothing and
+     * the economy plot use — so "carried over", "hidden as redundant" and "did
+     * not move" cannot disagree about what a moved villager is. It replaces a
+     * bare parseInt, which read "4+3" as 4 and would now report a *decrease*
+     * from "6" where the row in fact gained one.
+     *
+     * @param {string} field - Resource key: builders, food, wood, gold or stone.
+     * @param {number} index - Position within this section.
+     * @return {string} The modifier class, or "" when there is nothing to say.
+     */
+    function deltaClass(field, index) {
       const previous = index === 0 ? props.previousStep : steps[index - 1];
-      if (!previous) return false;
+      if (!previous) return "";
 
-      const curr = parseInt(steps[index][field]) || 0;
-      const prev = parseInt(previous[field]) || 0;
-      return curr > prev;
+      const curr = parseVillagerCountString(steps[index][field]);
+      const prev = parseVillagerCountString(previous[field]);
+      if (curr > prev) return "d-up";
+      if (curr < prev) return "d-down";
+      return "d-same";
     }
 
     const saveSelection = (event) => {
@@ -1274,7 +1310,7 @@ export default {
       registerTimestampRef,
       stoneInputRefs,
       registerStoneInputRef,
-      hasDeltaUp,
+      deltaClass,
       hoverRowIndex,
       selectedRowIndex,
       handleResourceInput,
@@ -1478,6 +1514,15 @@ export default {
    Vertical margin (not td padding) creates spacing so single-line rows
    look balanced while multiline rows keep pills pinned to the top. */
 .rc-pill {
+  /* Each tint is held as channel triplet + alpha rather than as a finished
+     rgba(), so a pill that repeats the step before it can step its fill back
+     in one rule instead of five. The neutral default keeps the shorthands
+     below valid on a pill wearing no tint class — an undefined var would make
+     the whole `border` declaration invalid and drop the outline entirely. */
+  --rc-tint: 127, 127, 127;
+  --rc-fill: 0.45;
+  --rc-edge: 0.65;
+
   display: block;
   width: 100%;
   height: 30px;
@@ -1485,18 +1530,19 @@ export default {
   margin-top: 12px;
   margin-bottom: 12px;
   border-radius: 6px;
-  border: 1px solid transparent;
+  background: rgba(var(--rc-tint), var(--rc-fill));
+  border: 1px solid rgba(var(--rc-tint), var(--rc-edge));
   text-align: center;
   font-weight: 800;
   font-size: 13.5px;
   font-variant-numeric: tabular-nums;
   box-sizing: border-box;
 }
-.rc-builders { background: rgba(94,  83,  64,  0.45); border-color: rgba(94,  83,  64,  0.65); }
-.rc-food     { background: rgba(136, 64,  64,  0.45); border-color: rgba(136, 64,  64,  0.65); }
-.rc-wood     { background: rgba(79,  107, 58,  0.45); border-color: rgba(79,  107, 58,  0.65); }
-.rc-gold     { background: rgba(138, 109, 46,  0.45); border-color: rgba(138, 109, 46,  0.65); }
-.rc-stone    { background: rgba(89,  102, 122, 0.45); border-color: rgba(89,  102, 122, 0.65); }
+.rc-builders { --rc-tint: 94,  83,  64; }
+.rc-food     { --rc-tint: 136, 64,  64; }
+.rc-wood     { --rc-tint: 79,  107, 58; }
+.rc-gold     { --rc-tint: 138, 109, 46; }
+.rc-stone    { --rc-tint: 89,  102, 122; }
 
 /* Edit-mode pill input — appearance reset only; sizing/color come from rc-pill + tint classes */
 .rc-input {
@@ -1519,8 +1565,24 @@ export default {
   border-color: rgba(var(--v-theme-on-surface), 0.15) !important;
 }
 
+/* Villagers moved onto this resource, or off it. One colour and one weight for
+   both, differing only in which edge the bar sits on — the side the value moved
+   toward. Reassignments come in pairs, so a row usually shows both at once and
+   teaches its own notation. See deltaClass() for why the pair is not red/green. */
 .rc-pill.d-up {
   border-top: 2px solid rgb(var(--v-theme-primary));
+}
+.rc-pill.d-down {
+  border-bottom: 2px solid rgb(var(--v-theme-primary));
+}
+
+/* Carried over unchanged from the step before. The tint steps back so that
+   colour across a row means "this moved"; the number keeps full contrast,
+   because a reader tracing where the villagers are right now still has to read
+   it — and because dimmed type is where the light theme's contrast goes. */
+.rc-pill.d-same {
+  --rc-fill: 0.12;
+  --rc-edge: 0.22;
 }
 
 /* Empty cell — faint dash, fills column like a filled pill */
