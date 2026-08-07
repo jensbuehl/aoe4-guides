@@ -38,34 +38,43 @@ const RESOURCES = ["builders", "food", "wood", "gold", "stone"];
 export function saysNothing(step, previous) {
   if (!step || !previous) return false;
 
-  //A note is content by definition — it is nothing but content
-  if (step.gameplan) return false;
+  //A note is content by definition — it is nothing but content. Judged the same
+  //way as a description, since an emptied note is the same `<br>` an emptied
+  //description is, and a step kept alive by one would be a blank row the reader
+  //counts.
+  if (hasVisibleContent(step.gameplan)) return false;
 
   //Only a time the author typed counts. An estimate is the site talking.
   if (toDateFromString(step.time)) return false;
 
-  if (hasContent(step.description)) return false;
+  if (hasVisibleContent(step.description)) return false;
 
   return RESOURCES.every((resource) => cell(step[resource]) === cell(previous[resource]));
 }
 
 /**
- * Whether a description says anything once the editor's leavings are stripped.
+ * Whether a scrap of the editor's HTML says anything once its leavings are
+ * stripped — a step description, or a section's note.
  *
- * The rich-text editor allows `img` and `br`, so an "empty" description is
- * routinely `<br>`, `<br><br>` or a stray `&nbsp;` — invisible on screen and
+ * The rich-text editor allows `img` and `br`, so an "empty" field is routinely
+ * `<br>`, `<br><br>` or a stray `&nbsp;` — invisible on screen and
  * indistinguishable from blank to a reader. An `img` is the opposite: on this
- * site the icons usually *are* the instruction.
+ * site the icons usually *are* the instruction, so a note holding nothing but
+ * pictures is a note.
  *
- * @param {string|null|undefined} description - The raw description HTML.
+ * Exported because a bare truthiness test cannot tell those two apart, and every
+ * place that guards on one of these fields needs to. `"<br>"` is a non-empty
+ * string: `v-if` on it renders an empty Notes block that no author wrote.
+ *
+ * @param {string|null|undefined} html - The raw field HTML.
  * @return {boolean} True when something would actually be read.
  */
-function hasContent(description) {
-  if (!description) return false;
-  if (/<img\b/i.test(description)) return true;
+export function hasVisibleContent(html) {
+  if (!html) return false;
+  if (/<img\b/i.test(html)) return true;
 
   return (
-    description
+    html
       .replace(/<[^>]*>/g, "")
       .replace(/&nbsp;/gi, " ")
       .trim().length > 0

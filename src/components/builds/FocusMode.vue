@@ -94,7 +94,7 @@
         }"
       >
         <div class="fm-step-content">
-          <div class="fm-notes" v-if="currentStep?.gameplan">
+          <div class="fm-notes" v-if="hasVisibleContent(currentStep?.gameplan)">
             Notes
             <v-icon color="accent" class="fm-notes-icon">mdi-information-outline</v-icon>
           </div>
@@ -262,7 +262,7 @@ import {
 } from "@/composables/builds/villagerAggregator.js";
 
 import { initTextToSpeech, speak, stop } from "@/composables/builds/textToSpeechHelper.js";
-import { redundantMask } from "@/composables/builds/stepVisibility.js";
+import { redundantMask, hasVisibleContent } from "@/composables/builds/stepVisibility.js";
 import { useStepPiP } from "@/composables/builds/useStepPiP.js";
 import { AGE_DISPLAY, ageArt } from "@/composables/builds/useAgeTimings.js";
 import {
@@ -364,7 +364,11 @@ export default {
               step.description = step.description.replace(/\.png\b/gi, ".webp");
             }
           });
-          if (section.gameplan) {
+          //Guarded on visible content, not on the string: a note the author
+          //emptied is "<br>", which would append two blank lines and a third
+          //to a step that reads fine without them — or become the whole of a
+          //step's content, leaving the player a card with nothing on it.
+          if (hasVisibleContent(section.gameplan)) {
             //concat gameplan to current age's last step's description
             //
             //The separator only earns its place between two things. Appended
@@ -975,6 +979,8 @@ export default {
     }
 
     return {
+      //Guards the Notes heading — see the concat above
+      hasVisibleContent,
       steps,
       focusRoot,
       getProgress,

@@ -312,7 +312,7 @@
           </div>
           <!-- Description with inline icons -->
           <div
-            v-if="item.description"
+            v-if="hasVisibleContent(item.description)"
             class="step-desc-xs"
             v-html="item.description"
             @mouseover="handleMouseOver($event)"
@@ -320,8 +320,11 @@
           ></div>
         </div>
         </template>
-        <!-- Notes card inside container — gets the same 8px gap as step cards -->
-        <div v-if="gameplan" class="gameplan-card-xs">
+        <!-- Notes card inside container — gets the same 8px gap as step cards.
+             Guarded on visible content rather than on the string: an author who
+             typed a note and deleted it leaves "<br>" behind, which is truthy
+             and would draw a Notes card with nothing in it. -->
+        <div v-if="hasVisibleContent(gameplan)" class="gameplan-card-xs">
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Notes</span>
@@ -551,8 +554,10 @@
           <tr v-if="!readonly && steps.length" class="ins-row">
             <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(steps.length - 1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
           </tr>
-          <!-- Section note row — read: only if has content; edit: always shown -->
-          <tr v-if="(gameplan && readonly) || !readonly" :class="['bo-noterow', section.type === 'ageUp' && 'age-lane-md']">
+          <!-- Section note row — read: only if has content; edit: always shown.
+               "Has content" is not "is a non-empty string": see the mobile card
+               above. -->
+          <tr v-if="(hasVisibleContent(gameplan) && readonly) || !readonly" :class="['bo-noterow', section.type === 'ageUp' && 'age-lane-md']">
             <td class="py-1 text-center">
               <v-icon size="16" color="accent">mdi-information-outline</v-icon>
             </td>
@@ -649,7 +654,10 @@ import {
   parseVillagerCountString,
 } from "@/composables/builds/villagerAggregator.js";
 import { formatAgeTime } from "@/composables/builds/useAgeTimings.js";
-import { saysNothing as isRedundantStep } from "@/composables/builds/stepVisibility.js";
+import {
+  saysNothing as isRedundantStep,
+  hasVisibleContent,
+} from "@/composables/builds/stepVisibility.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 import {
   addAutocompleteIcon,
@@ -1088,15 +1096,32 @@ export default {
       context.emit("stepsChanged", steps);
     };
 
+    /**
+     * What a contenteditable is worth saving, which is nothing at all when it
+     * holds only the editor's leavings.
+     *
+     * Clearing a rich-text field does not leave it empty: Chrome puts back a
+     * `<br>`, and a wrapping block besides. Saved verbatim that is a truthy
+     * string, so every guard downstream reads it as a note the author wrote and
+     * draws an empty Notes block for it. updateStep() already strips markup for
+     * the same reason, but it can strip *everything* — these fields carry the
+     * icons that are half the site's vocabulary, so the emptiness has to be
+     * judged rather than assumed.
+     *
+     * @param {string} html - The field's innerHTML.
+     * @return {string} The HTML, or "" when nothing in it would be read.
+     */
+    const keptOrEmptied = (html) => (hasVisibleContent(html) ? html : "");
+
     const updateSectionGameplan = (event) => {
-      gameplanCopy.value = event
-        ? event.target.innerHTML
-        : (gameplanContentEditable.value?.innerHTML ?? '');
+      gameplanCopy.value = keptOrEmptied(
+        event ? event.target.innerHTML : (gameplanContentEditable.value?.innerHTML ?? '')
+      );
       context.emit("gameplanChanged", gameplanCopy.value);
     };
 
     const updateStepDescription = (event, index) => {
-      stepsCopy[index].description = event.target.innerHTML;
+      stepsCopy[index].description = keptOrEmptied(event.target.innerHTML);
       context.emit("stepsChanged", stepsCopy);
     };
     const addStep = async (index) => {
@@ -1349,6 +1374,8 @@ export default {
       //Autocomplete
       searchText,
       autocompletePos,
+      //Guards the note and description blocks in the read-only views
+      hasVisibleContent,
       //Custom Tooltips
       handleMouseOver,
       handleMouseOut,
