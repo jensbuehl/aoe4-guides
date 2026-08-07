@@ -123,28 +123,53 @@
         <!--Only what the step actually states, plus the two things always worth
             knowing. A column the author left blank is absent rather than empty:
             a row of dashes reads as data the build does not have.-->
+        <!--Two lines wherever there is the height for them: where the build is,
+            then what it should have. The villager count heads the second line
+            rather than the first because it is the *sum* of the cells beside it
+            — a total on a different line from its addends is a number the reader
+            has to go looking for.
+
+            Stated in the markup rather than left to wrapping, so the dock keeps
+            one height for the whole build. The strip is built per step, so a
+            build that states four columns early and six later grows a second
+            line halfway through — and the dock is what the transport sits on, so
+            that moves the buttons under the thumb reaching for them.
+
+            The dense tiers dissolve both lines back into one row: see
+            `display: contents` below. There the height is what is scarce.-->
         <div class="fm-resources">
-          <!--Crest only, no label, and never in the header. Age is the one thing
-              on the dock that cannot be inferred from what is already on screen,
-              so it is also the one that has to survive the micro tier — where the
-              header is gone and .fm-res--extra is hidden, and age, time and
-              villagers are the whole plan check.-->
-          <div class="fm-res" v-if="currentAge">
-            <img class="fm-res-icon" :src="currentAge.crest" :alt="currentAge.name" />
+          <div class="fm-res-line">
+            <!--Crest only, no label, and never in the header. Age is the one
+                thing on the dock that cannot be inferred from what is already on
+                screen, so it is also the one that has to survive the micro tier
+                — where the header is gone and .fm-res--extra is hidden, and age,
+                time and villagers are the whole plan check.
+
+                It is still the first cell to go once the lines are collapsed and
+                the row runs out of width, because it is the only one that can
+                go: time and villagers are what the strip is for, and dropping a
+                resource column would leave the others reading as the whole
+                distribution.-->
+            <div class="fm-res fm-res--age" v-if="currentAge">
+              <img class="fm-res-icon" :src="currentAge.crest" :alt="currentAge.name" />
+            </div>
+            <div class="fm-res">
+              <img class="fm-res-icon" src="/assets/resources/time.webp" alt="Elapsed time" />
+              <span class="fm-res-value fm-res-value--time" :class="{ 'fm-time--derived': currentStepDerived }">
+                {{ currentStepDerived ? "~" : "" }}{{ totalElapsedTimeFormattedString }}
+              </span>
+            </div>
           </div>
-          <div class="fm-res">
-            <img class="fm-res-icon" src="/assets/resources/time.webp" alt="Elapsed time" />
-            <span class="fm-res-value fm-res-value--time" :class="{ 'fm-time--derived': currentStepDerived }">
-              {{ currentStepDerived ? "~" : "" }}{{ totalElapsedTimeFormattedString }}
-            </span>
-          </div>
-          <div class="fm-res">
-            <img class="fm-res-icon" src="/assets/resources/villager.webp" alt="Villagers" />
-            <span class="fm-res-value">{{ currentStep ? aggregateVillagers(currentStep) : "" }}</span>
-          </div>
-          <div class="fm-res fm-res--extra" v-for="cell in dockCells" :key="cell.key">
-            <img class="fm-res-icon" :src="cell.icon" :alt="cell.label" />
-            <span class="fm-res-value" v-html="cell.value" />
+
+          <div class="fm-res-line fm-res-line--eco">
+            <div class="fm-res">
+              <img class="fm-res-icon" src="/assets/resources/villager.webp" alt="Villagers" />
+              <span class="fm-res-value">{{ currentStep ? aggregateVillagers(currentStep) : "" }}</span>
+            </div>
+            <div class="fm-res fm-res--extra" v-for="cell in dockCells" :key="cell.key">
+              <img class="fm-res-icon" :src="cell.icon" :alt="cell.label" />
+              <span class="fm-res-value" v-html="cell.value" />
+            </div>
           </div>
         </div>
 
@@ -1061,9 +1086,14 @@ export default {
   --fm-ctl-icon: 20px;
   --fm-res-icon: 24px;
   --fm-res-type: 14px;
+  --fm-res-gap: 12px;
   --fm-dock-pad: 10px;
-  --fm-title-type: 15px;
+  --fm-title-type: 17px;
   --fm-title-lines: 2;
+  --fm-counter-type: 13.5px;
+  --fm-header-ctl: 36px;
+  --fm-preview-type: 13.5px;
+  --fm-preview-icon: 16px;
   --fm-gap: 8px;
 
   display: grid;
@@ -1104,7 +1134,7 @@ export default {
 
 .fm-counter {
   flex: 0 0 auto;
-  font-size: 12px;
+  font-size: var(--fm-counter-type);
   color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
   font-variant-numeric: tabular-nums;
 }
@@ -1173,7 +1203,7 @@ export default {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 11.5px;
+  font-size: var(--fm-preview-type);
   color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
   font-variant-numeric: tabular-nums;
 }
@@ -1185,8 +1215,8 @@ export default {
 }
 
 .fm-preview-icon {
-  width: 13px;
-  height: 13px;
+  width: var(--fm-preview-icon);
+  height: var(--fm-preview-icon);
   object-fit: contain;
 }
 
@@ -1201,9 +1231,22 @@ export default {
 
 .fm-resources {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+/* Wrapping is the net under the two lines, not the mechanism. Six cells of
+   economy fit a 360px phone with room, but the row is centred — so a build that
+   somehow overflowed one would be clipped at the first cell and the last, not
+   just the last. A third line is the least bad thing left. */
+.fm-res-line {
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 4px var(--fm-res-gap);
   min-width: 0;
 }
 
@@ -1256,16 +1299,27 @@ export default {
 }
 
 :deep(.fm-header .v-btn.fm-ctl-btn--small) {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
+  width: var(--fm-header-ctl);
+  height: var(--fm-header-ctl);
+  min-width: var(--fm-header-ctl);
 }
 
 :deep(.fm-transport .v-btn.fm-ghost) {
   background: rgba(var(--v-theme-primary), 0.12);
 }
 
-@container focus ((max-width: 520px) or (max-height: 300px)) {
+/* Small in the way a floating window is small, which is not the way a phone is.
+   A phone held upright is narrow and *tall* — 400x850 — and on a width test
+   alone it took the density built for a 400x230 strip over a game: 16px text and
+   30px controls, under the 44px a thumb needs, in a box with 600px of unused
+   height below them. So width alone only counts when it is genuinely a strip,
+   and everything else has to be small in both directions to read as small: a
+   short window whatever its width, or a floating one a player has resized. */
+@container focus (
+  (max-width: 340px) or
+  (max-height: 480px) or
+  ((max-width: 520px) and (max-height: 620px))
+) {
   .fm-shell {
     --fm-content-icon: 38px;
     --fm-step-type: 16px;
@@ -1277,14 +1331,51 @@ export default {
     --fm-dock-pad: 7px;
     --fm-title-type: 13px;
     --fm-title-lines: 1;
+    --fm-counter-type: 12px;
+    --fm-header-ctl: 32px;
+    --fm-preview-type: 11.5px;
+    --fm-preview-icon: 13px;
+    --fm-res-gap: 8px;
     --fm-gap: 6px;
+  }
+
+  /* One row again. Here the box is short before it is narrow — a 400x230 window
+     over a game — and a second line of dock costs the step text, which is the
+     one thing on screen the player cannot do without. */
+  .fm-resources {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px var(--fm-res-gap);
+  }
+
+  .fm-res-line {
+    display: contents;
+  }
+
+  /* Collapsed into one row, the strip is back to needing more width than a
+     narrow window has, and the crest goes first. How much it needs is not a
+     property of the box though — it is a property of the build, which states
+     between nothing and five resource columns — so this counts cells rather
+     than measuring width: five on the economy line means villagers and four
+     resources, which with the crest and the clock is seven across.
+
+     A quantity query rather than a v-if, because whether the row is crowded
+     depends on how wide its container is, and script is deliberately never told
+     which tier is in force. */
+  .fm-resources:has(.fm-res-line--eco .fm-res:nth-child(5)) .fm-res--age {
+    display: none;
   }
 }
 
 /* Below this the box is a strip beside a minimap. The OS window title already
    carries the build name, so the header row is redundant rather than merely
-   tight, and the resource strip drops to the two numbers a player checks
-   without reading. */
+   tight, and the next-step preview is a luxury at this size.
+
+   The resource split is not. It used to be the first thing dropped here, on the
+   reasoning that time and villagers are what a player checks without reading —
+   but the distribution is the thing they came for, and a dock that has shed
+   everything else has room to keep it. */
 @container focus ((max-width: 340px) or (max-height: 190px)) {
   .fm-shell {
     --fm-content-icon: 34px;
@@ -1294,6 +1385,7 @@ export default {
     --fm-ctl-icon: 15px;
     --fm-res-icon: 16px;
     --fm-res-type: 11px;
+    --fm-res-gap: 8px;
     --fm-dock-pad: 5px;
     --fm-gap: 4px;
   }
@@ -1306,19 +1398,50 @@ export default {
     display: none;
   }
 
+  /* Three items on two lines: the economy across the top, then the clock and the
+     transport sharing the row below. The dock is the wrap container itself —
+     .fm-resources dissolves — because the economy line has to span the full
+     width, and a line held inside .fm-resources could only ever be as wide as
+     the column beside the transport, which is not enough for six cells.
+
+     Centred rather than pinned to the two edges. The clock and the transport
+     only share a row while they both fit, and below roughly 250px they stop:
+     pinned, they then break into two left-aligned lines under a centred economy
+     line, which reads as three things that missed each other. Centred, every
+     line is on the same axis whether the box breaks them or not — and the
+     transport, which is what the player is aiming at, is where it is at every
+     other size. */
   .fm-dock {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    justify-content: center;
+    gap: 4px 8px;
   }
 
   .fm-resources {
-    gap: 8px;
+    display: contents;
   }
 
-  .fm-res--extra {
-    display: none;
+  /* Lines again, not the collapsed row the compact tier asked for. */
+  .fm-res-line {
+    display: flex;
+  }
+
+  /* A line of its own, and first. ~20px of dock for the one thing on screen a
+     player cannot work out from the step text — and above the transport, so the
+     controls stay on the bottom edge where every other tier puts them. */
+  .fm-res-line--eco {
+    order: -1;
+    flex-basis: 100%;
+  }
+
+  /* The economy has its own line here, so the row that carries the crest is two
+     cells wide and cannot be crowded — the crest stays however many columns the
+     build states. Same selector as the compact tier's and later in the file,
+     which is what overrides it. */
+  .fm-resources:has(.fm-res-line--eco .fm-res:nth-child(5)) .fm-res--age {
+    display: inline-flex;
   }
 }
 
@@ -1329,7 +1452,11 @@ export default {
   color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
 }
 
-/* Inline content icons — shared square box; variants override background only */
+/* Inline content icons — shared square box; variants override background only.
+   The vertical margin is the row spacing of the step text, not decoration: an
+   icon is two and a half lines tall, so line-height alone leaves two wrapped
+   rows of them touching. Kept off the padding, which is inside a fixed box and
+   would shrink the artwork rather than space it. */
 :deep(.icon),
 :deep(.icon-ability),
 :deep(.icon-tech),
@@ -1342,7 +1469,7 @@ export default {
   height: var(--fm-content-icon);
   box-sizing: border-box;
   padding: 3px;
-  margin: 3px 4px 3px 0;
+  margin: 6px 4px 6px 0;
   border-radius: 4px;
   object-fit: contain;
   vertical-align: middle;
