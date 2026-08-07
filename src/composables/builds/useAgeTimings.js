@@ -280,36 +280,107 @@ export function getAgeTimings(steps) {
 }
 
 /**
- * Splits the timeline track into one filled run per age.
+ * The second a transition band starts at, or null where none can be drawn.
  *
- * Each run is coloured for the age the build is *in* during it: the first covers
- * the starting age up to the first age-up, and the last runs from the most
- * recent age reached to the end of the track, because from then on the build
- * simply stays in that age. That final run is not special to Imperial — a build
- * that stops at Feudal is in Feudal for the rest of its timeline just the same.
+ * Every rule here is a refusal rather than a repair. A click-up that cannot be
+ * placed is never approximated, clamped into range or inferred from a duration:
+ * the absence of one is information about the build, and a band drawn from a
+ * moment nobody described would be the one claim this card has never made — its
+ * width would assert a measurement out of nothing.
+ *
+ * @param {Object} age - One getAgeTimings() entry.
+ * @param {number} previous - The previous age's arrival, or 0 for the first age.
+ * @return {number|null} The click-up second, or null when no band is drawable.
+ */
+function bandStart(age, previous) {
+  //No ageUp section for this age, or one whose timing resolved to nothing
+  if (!age.clickUp) return null;
+
+  //Strictly before, not merely not-after. getAgeTimings admits a click-up at
+  //the arrival second itself, so a build that stamps its age-up step and its
+  //age step with one timestamp carries a real clickUp of zero duration. Drawing
+  //it yields a zero-width run rather than anything a reader could see; the
+  //tooltip still reports it, which is where a 0:00 age-up belongs.
+  if (age.clickUp.seconds >= age.seconds) return null;
+
+  //A band cannot eat into an age it does not belong to. Timestamps typed out of
+  //order can resolve a click-up before the previous age even arrived — that is
+  //a build that needs fixing, not a transition that ran backwards.
+  if (age.clickUp.seconds < previous) return null;
+
+  return age.clickUp.seconds;
+}
+
+/**
+ * Splits the timeline track into runs: one per age, and one per transition.
+ *
+ * Each age run is coloured for the age the build is *in* during it: the first
+ * covers the starting age up to the first age-up, and the last runs from the
+ * most recent age reached to the end of the track, because from then on the
+ * build simply stays in that age. That final run is not special to Imperial — a
+ * build that stops at Feudal is in Feudal for the rest of its timeline just the
+ * same.
+ *
+ * Between them sit the transitions. An age-up is a span, not an instant, and a
+ * band is that span drawn at the same scale as everything else on the track, so
+ * its width is its duration and two bands can be compared by eye. The duration
+ * was always computed; until now it existed only inside a tooltip, which meant
+ * only for a reader who already suspected it was there.
+ *
+ * The band is cut out of the ages either side rather than laid over them. The
+ * runs are sliced from [0, scaleSeconds] in order, so they account for every
+ * second exactly once by construction — no run is measured against another, and
+ * there is no arithmetic that could leave a seam or double-count a second.
+ *
+ * The index is positional, not the age number: run n is the nth age of this
+ * build's life. A band leading into ages[i] therefore carries index i + 2 — the
+ * index of the run that follows it — which is what keeps a band and the age it
+ * leads into from ever drifting apart in colour.
+ *
+ * Bands say nothing about how their ends were arrived at. Every band is drawn
+ * the same striped way whether the build stated its times or the site worked
+ * them out, because the crest a band leads to already carries "~" on its face
+ * and names both moments in its tooltip — a second provenance signal on the
+ * track would say the same thing twice, in a different language, on the one
+ * part of the card with no room to explain itself.
  *
  * @param {Array} ages - Result of getAgeTimings(), ascending by age.
  * @param {number} scaleSeconds - Full width of the track in seconds.
- * @return {Array<{key: string, width: number}>} Segments, widths as percentages.
+ * @return {Array<{key: string, width: number}>} Runs in time order, widths as
+ *   percentages.
  */
 export function getAgeSegments(ages, scaleSeconds) {
   if (!ages?.length || !scaleSeconds) return [];
 
   const clamp = (value) => Math.min(100, Math.max(0, value));
+  const widthOf = (seconds) => clamp((seconds / scaleSeconds) * 100);
   const segments = [];
   let previous = 0;
 
   ages.forEach((age, index) => {
+    const clickUp = bandStart(age, previous);
+
+    //Where a band is drawn the age stops at the click-up instead of the
+    //arrival, so the pair still covers exactly the stretch the single run
+    //covered before. Where none is, this is the run this function always made.
     segments.push({
       key: `age-seg-${index + 1}`,
-      width: clamp(((age.seconds - previous) / scaleSeconds) * 100),
+      width: widthOf((clickUp ?? age.seconds) - previous),
     });
+
+    if (clickUp != null) {
+      segments.push({
+        key: `age-band-${index + 2}`,
+        width: widthOf(age.seconds - clickUp),
+      });
+    }
+
     previous = age.seconds;
   });
 
   segments.push({
     key: `age-seg-${ages.length + 1}`,
-    width: clamp(((scaleSeconds - previous) / scaleSeconds) * 100),
+    width: widthOf(scaleSeconds - previous),
   });
 
   return segments;

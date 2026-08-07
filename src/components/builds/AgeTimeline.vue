@@ -480,6 +480,67 @@ export default {
   background: rgb(var(--age-4));
 }
 
+/* A transition takes the colour of the age it leads *into*, at a lower alpha: a
+   pale Castle immediately before a solid Castle, so the run-up to an age is
+   marked in that age's colour and the eye is carried forward to the crest.
+
+   This knowingly paints the track with an age the player does not hold yet. The
+   counter-reading — colour the transition with the age being left, since that is
+   the economy and army you still have — was considered and set aside, because
+   the track is read forwards and the band's job is to lead somewhere. If it is
+   ever read as a literal answer to "which age am I in at time T", revisit.
+
+   There is no `.age-band-1`: nothing leads into the Dark Age. */
+.age-band-2 {
+  --band: var(--age-2);
+}
+.age-band-3 {
+  --band: var(--age-3);
+}
+.age-band-4 {
+  --band: var(--age-4);
+}
+
+/* Striped, always — this is what an age-up in progress looks like in the game,
+   so the card borrows the reading rather than inventing one, and the stripes
+   say "still happening" where a flat fill would just look like a paler age.
+
+   Every band is drawn this way whether its ends were stated or worked out. The
+   band asserts a duration, not a measurement, and the crest it leads to already
+   carries "~" on its face and names both moments in its tooltip — telling the
+   same story twice, in a texture the reader would have to be taught, buys
+   nothing on the one part of the card that cannot explain itself.
+
+   Two things here are load-bearing and both were got wrong first time.
+
+   4px stripes, not 2px. The stop interval is the stripe's thickness measured
+   across it, and a 2px diagonal edge covers roughly three pixels horizontally
+   on one row and two on the next, so the stripes read as alternating in weight.
+   4px is thick enough that the same one-pixel wobble stops being visible.
+
+   Both stops are the band's own colour at different alpha — never `transparent`,
+   which is transparent *black*, so every antialiased edge would blend toward
+   black and leave grey fringes through what should be a gold or blue band. A
+   fine diagonal pattern is almost all edge, so those fringes dominate it.
+
+   Left to repeat continuously rather than tiled with `background-size`: the tile
+   would start at the band's own left edge, which sits at a fractional pixel
+   because every run is a percentage width, so the tiling itself introduces the
+   seams it was meant to remove.
+
+   If the stripes ever prove too coarse on the shortest age-up a real build
+   produces, the move is 90deg — vertical stripes sit exactly on the pixel grid
+   and cannot alias at all — not a finer diagonal, which is where this started. */
+.age-band-2,
+.age-band-3,
+.age-band-4 {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(var(--band), 0.25) 0 4px,
+    rgba(var(--band), 0.65) 4px 8px
+  );
+}
+
 /* Tall enough to clear the crest plus its two lines of label */
 .age-ticks {
   position: relative;

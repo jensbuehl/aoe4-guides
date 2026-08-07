@@ -62,12 +62,31 @@ being worked around — and a band needs no label at all, which is the real win.
 
 - **Q: How should a band whose click-up time the site worked out be told apart from one the author
   measured?**
-  **A: Hatch the estimated ones.** Lightness says "transition"; texture says "estimated". A band with
-  both ends stated is drawn solid-lighter; a band with either end derived is the same band, hatched.
-  One signal per question, and both remain readable at 22px.
-  Rejected: *drawing only measured bands*, which would remove the feature from roughly half the site
-  with nothing to explain its absence; and *drawing all bands alike*, which would put a worked-out
-  duration on screen as a drawn width — the one thing this card has never done.
+  **A: It should not.** *(Revised 2026-08-07 during implementation — see below.)*
+
+  The original answer was *hatch the estimated ones*: lightness says "transition", texture says
+  "estimated", one signal per question. That was implemented and then withdrawn.
+
+  **Every band is drawn the same striped way.** Two reasons, and the second is the one that
+  settles it:
+
+  1. **Stripes are what an age-up in progress looks like in the game.** The card borrows a reading
+     the player already has rather than teaching a new one, and stripes say "still happening" where
+     a flat fill just looks like a paler age. That makes striping the right treatment for *all*
+     bands, which leaves nothing for provenance to use.
+  2. **The provenance signal is already there, and already visible without hovering.** The crest a
+     band leads to prints `~` on its face, and its tooltip names click-up, arrival and duration each
+     with `~` plus a footnote saying which kind of estimate it was. A texture on the track would say
+     the same thing a second time, in a language the reader would have to be taught, on the one part
+     of the card with no room to explain itself.
+
+  **Accepted cost**: a reader comparing two band *widths* is not told which is measured — the `~`
+  describes the times, not the width. It sits on the crest immediately beside the band, so the
+  answer is one glance away rather than hidden, and that was judged a fair price for one treatment
+  instead of two.
+
+  Still rejected: *drawing only measured bands*, which would remove the feature from roughly half
+  the site with nothing to explain its absence.
 
 - **Q: Which age's colour does the band take?**
   **A: The incoming age, lighter.** A pale Castle immediately before solid Castle, so the run-up to
@@ -106,29 +125,25 @@ band between the age segments, and the widest band is the longest age-up.
 
 ---
 
-### User Story 2 - Never show a worked-out width as a measurement (Priority: P1)
+### User Story 2 - ~~Never show a worked-out width as a measurement~~ *(WITHDRAWN 2026-08-07)*
 
-A reader can tell, without hovering, whether a band's length is something the author recorded or
-something the site worked out.
+**This story was implemented and then removed during implementation.** It required a solid band for
+a transition with both ends stated and a hatched one where either end was derived. It is withdrawn
+because every band is now striped — see the revised clarification above.
 
-**Why this priority**: Roughly half the builds on the site are stamped sparsely, so this is the
-common case rather than an edge. A drawn width is a claim; the card has never made one it could not
-support, and a band is the first thing here whose *size* asserts something.
+The reasoning is kept rather than deleted, because "tell the estimated ones apart" is the obvious
+suggestion and will be made again:
 
-**Independent Test**: Open a sparsely stamped build. Its bands are hatched. Open a fully stamped one.
-Its bands are solid.
+- Striping is the correct treatment for *every* band, since it is how an age-up in progress reads in
+  the game. That leaves no spare visual channel for provenance without inventing a second one.
+- Provenance is already on screen without hovering: the crest each band leads to prints `~`, and its
+  tooltip names both moments and the duration, each with `~`, plus a footnote naming the tier.
+- The residual gap — a band's *width* is not marked as derived — is accepted. See the clarification.
 
-**Acceptance Scenarios**:
+What survives from this story is **FR-009** and the tooltip guarantee **FR-012**, both below.
 
-1. **Given** a transition whose click-up **and** arrival times were both stated by the author,
-   **When** its band is drawn, **Then** it is solid.
-2. **Given** a transition where either end was derived by the site, **When** its band is drawn,
-   **Then** it is hatched, at the same width, lightness and colour as a solid one.
-3. **Given** a hatched and a solid band on the same track, **When** both are drawn, **Then** the
-   difference between them is legible at the width of a short age-up — this must not be a treatment
-   that only reads on wide bands.
-4. **Given** any band, **When** the reader hovers the crest it leads to, **Then** the existing
-   tooltip continues to name both moments and the duration, with `~` on any derived time.
+**Independent Test**: Open a sparsely stamped build and a fully stamped one. Their bands are drawn
+identically; only the `~` on the crests differs.
 
 ---
 
@@ -188,8 +203,9 @@ positions.
   succession. Two bands must not merge into one unbroken stretch of transition.
 - **A transition at the very start of the track**, where the click-up sits at or near zero.
 - **A transition running past the end of the scale**, where the build's last age-up never arrives.
-- **Every transition derived**, which is the common case on a sparsely stamped build: a track of four
-  hatched bands must still read as a timeline rather than as a texture.
+- **A track of several striped bands** must still read as a timeline rather than as a texture. This
+  now applies to every build with age-ups, not only sparsely stamped ones, since all bands are
+  striped.
 - **Theme switching** with bands on screen — the transitional treatment is declared for both themes,
   like the ramp it extends.
 
@@ -214,15 +230,18 @@ positions.
 - **FR-008**: A band MUST be visible at the narrowest duration a real build produces, and MUST NOT be
   given a minimum width that would make a short transition look longer than it was.
 
-**Provenance (US2)**
+**Provenance (US2, withdrawn)**
 
-- **FR-009**: A band whose click-up and arrival were both stated by the author MUST be drawn solid.
-- **FR-010**: A band with either end derived by the site MUST be drawn hatched, and MUST otherwise
-  match a solid band exactly in width, colour and lightness — texture is the only difference.
-- **FR-011**: The distinction between solid and hatched MUST be legible at the width of a short
-  age-up, not only on wide bands.
+- **FR-009** *(revised)*: Every band MUST be drawn identically, whether its ends were stated by the
+  author or derived by the site. The track MUST NOT carry a provenance signal of its own.
+- **FR-010** *(removed)*: ~~A band with either end derived MUST be drawn hatched…~~ Withdrawn with
+  US2. All bands are striped.
+- **FR-011** *(revised)*: The stripe MUST be legible at the width of a short age-up, not only on
+  wide bands — the treatment must not be one that only reads on wide bands.
 - **FR-012**: The existing crest tooltip MUST continue to name the click-up moment, the arrival
-  moment and the duration, each with `~` where derived.
+  moment and the duration, each with `~` where derived. **This is now the only provenance signal for
+  a transition**, alongside the `~` on the crest's visible time label, so it is load-bearing rather
+  than merely preserved.
 
 **Absence (US3)**
 
@@ -259,7 +278,8 @@ positions.
 - **Age segment** *(existing)* — a stretch of the track belonging to one age, with a width and a
   position in the ramp. Today the only kind of segment there is.
 - **Transition band** *(new)* — a stretch belonging to no age but leading into one: a start second,
-  an end second, the age it leads to, and whether either end was derived.
+  an end second, and the age it leads to. Deliberately *not* whether either end was derived — see
+  the revised clarification.
 - **Track** — the sequence of the two, in time order, accounting for every second of the scale
   exactly once.
 
@@ -268,8 +288,9 @@ positions.
 ### Measurable Outcomes
 
 - **SC-001**: A reader can identify a build's longest age-up without hovering anything.
-- **SC-002**: A reader can tell a measured band from an estimated one without hovering, at every
-  duration a real build produces.
+- **SC-002** *(revised)*: The stripe reads as a stripe at every duration a real build produces —
+  the narrowest band on the site is not one ambiguous diagonal. *(Was: "a reader can tell a measured
+  band from an estimated one without hovering", withdrawn with US2.)*
 - **SC-003**: Across a sample of ten builds — fully stamped, sparsely stamped, and with missing
   age-up sections — no band is drawn for a transition the build does not describe, and every
   transition it does describe has one.
@@ -278,8 +299,8 @@ positions.
 - **SC-005**: The card's height and crest positions are identical to before the feature, on every
   build.
 - **SC-006**: A build with no age-up sections is visually indistinguishable from today's rendering.
-- **SC-007**: On a build where every transition is estimated, the track still reads as a timeline —
-  four hatched bands do not turn it into a texture.
+- **SC-007**: On a build with age-ups on every age, the track still reads as a timeline — several
+  striped bands do not turn it into a texture.
 
 ## Assumptions
 
@@ -287,9 +308,10 @@ positions.
   The card has always preferred showing less to showing something unsupported.
 - **A-2**: The duration is worth showing because players compare it. "My Imperial took 1:40" is a
   thing said about builds; the card already computes it and currently hides it behind a hover.
-- **A-3**: Hatching carries "estimated" and lightness carries "transition" — one signal per question.
-  Combining them into a single treatment would make a fully-stamped short age-up and a derived long
-  one hard to tell apart, which is the failure this splits to avoid.
+- **A-3** *(revised 2026-08-07)*: The stripe carries "transition, in progress" — the reading the
+  game already gives it — and nothing else. Provenance is not a question the track answers; the
+  crest beside it does, with `~` on its face and in its tooltip. One signal per surface, rather than
+  one signal per question.
 - **A-4**: Colouring the band with the incoming age is accepted as reading *forward* to the crest,
   with the understood cost that the player does not hold that age yet. If the track is ever read as
   a literal answer to "which age am I in at time T", revisit.
