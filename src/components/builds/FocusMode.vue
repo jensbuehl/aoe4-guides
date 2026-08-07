@@ -161,7 +161,7 @@
                 variant="text"
                 icon="mdi-chevron-left"
                 aria-label="Previous step"
-                @click="handlePreviousStep"
+                @click="handlePreviousStep()"
               ></v-btn>
             </template>
           </v-tooltip>
@@ -237,7 +237,7 @@
                 variant="text"
                 icon="mdi-chevron-right"
                 aria-label="Next step"
-                @click="handleNextStep"
+                @click="handleNextStep()"
               ></v-btn>
             </template>
           </v-tooltip>
@@ -636,7 +636,7 @@ export default {
       while (currentStepIndex.value < steps.value.length - 1) {
         const nextStepTime = toDateFromString(steps.value[currentStepIndex.value + 1].time);
         if (!nextStepTime || totalElapsedTime.value < nextStepTime) break;
-        handleNextStep();
+        handleNextStep(false);
       }
     }
 
@@ -893,12 +893,29 @@ export default {
       };
     }
 
-    function handleNextStep(event) {
+    /**
+     * Move to the next step.
+     *
+     * @param {boolean} [seek=true] - Whether to move the clock to the step's own
+     *   start time. True whenever a player navigated — by button, key or swipe —
+     *   because the step is then what the clock should follow. False when the
+     *   timer advanced on its own: there the clock is what the step follows, and
+     *   re-anchoring it to the moment just reached would stall playback.
+     *
+     *   This was a bare `event` parameter, so "a player navigated" was inferred
+     *   from a DOM event being passed along. Two of the three navigations do not
+     *   pass one — the swipe handler wraps this in an arrow function, and the
+     *   key handler calls it bare — so neither moved the clock. The visible half
+     *   was a step time that stayed put while the step changed; the other half
+     *   was the anchor going unset, which left autoplay counting from wherever
+     *   the player had been before the swipe.
+     */
+    function handleNextStep(seek = true) {
       currentStepIndex.value = Math.min(++currentStepIndex.value, steps.value.length - 1);
       currentStep.value = steps.value[currentStepIndex.value];
 
       clearTimer();
-      if (event) {
+      if (seek) {
         setElapsedTimeToCurrentStepStartTime();
       }
       updateProgress();
@@ -911,12 +928,19 @@ export default {
       }
     }
 
-    function handlePreviousStep(event) {
+    /**
+     * Move to the previous step. Nothing but a player ever steps backwards, so
+     * `seek` is true at every call site; it stays a parameter to keep the pair
+     * symmetrical rather than because anything passes false.
+     *
+     * @param {boolean} [seek=true] - See handleNextStep.
+     */
+    function handlePreviousStep(seek = true) {
       currentStepIndex.value = Math.max(--currentStepIndex.value, 0);
       currentStep.value = steps.value[currentStepIndex.value];
 
       clearTimer();
-      if (event) {
+      if (seek) {
         setElapsedTimeToCurrentStepStartTime();
       }
       updateProgress();
