@@ -17,10 +17,10 @@
     </div>
 
     <div class="px-4 pb-4 d-none d-md-block">
-      <!--Scale fits the build in four-minute brackets above an 8:00 floor, and
-          reaches only as far as something is drawn: the later of the last age
-          and the last step that assigns anybody. Trailing steps that assign
-          nobody used to stretch the axis past anything it had to show.-->
+      <!--Scale fits the build in two- or four-minute brackets above a 6:00
+          floor, and reaches only as far as something is drawn: the later of the
+          last age and the last step that assigns anybody. Trailing steps that
+          assign nobody used to stretch the axis past anything it had to show.-->
       <!--Track and crests share one positioned box so the moment marker can run
           down through both. Confined to the 12px bar it was technically present
           and practically invisible; what makes it readable is crossing the
@@ -172,22 +172,43 @@ import { getEcoSeries } from "@/composables/builds/useEcoSeries.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 
 /**
- * The narrowest the track is ever drawn: eight minutes, two ticks.
+ * The narrowest the track is ever drawn: six minutes, three ticks.
  *
- * This was sixteen, chosen so that two builds compared in two tabs shared a
- * scale. The comparison is real but it was being paid for by every short build
- * on the site — a Feudal all-in ending at 5:00 spent two thirds of the track on
- * empty space and drew its whole economy squeezed into the left third.
+ * This was sixteen minutes, chosen so that two builds compared in two tabs
+ * shared a scale, then eight when that turned out to be paid for by every short
+ * build on the site. Six is the same argument carried to its end: a Feudal
+ * all-in ending at 4:30 still spent nearly half the track on nothing.
  *
- * The floor now only stops the track collapsing to something with no room to
- * read. Above it the scale fits the build in four-minute brackets, so most land
- * on 8:00, 12:00 or 16:00 and like-for-like comparison largely survives — and
- * where it does not, the axis is labelled.
+ * The floor no longer defends the comparison at all — it only stops the track
+ * collapsing to something with no room to read. What survives of like-for-like
+ * is the bracketing below, and the labelled axis for when that is not enough.
+ *
+ * Must stay a whole multiple of the narrowest TICK_STEPS entry, or a build
+ * short enough to be held up by the floor draws its last label off the ladder.
  */
-const SCALE_MIN_SECONDS = 480;
+const SCALE_MIN_SECONDS = 360;
 
-/** Axis ticks every four minutes, so an extended scale keeps round labels */
-const TICK_SECONDS = 240;
+/**
+ * Axis tick candidates, narrowest first, and the most rows of label the axis
+ * will carry.
+ *
+ * Four minutes alone rounded every build up to the next multiple of four, which
+ * is up to 3:59 of empty track — worst on exactly the short builds the lowered
+ * floor was meant to help, since there it is the larger share. Two-minute
+ * brackets halve that, at the price of an axis that would run to nine labels on
+ * a long build.
+ *
+ * So the step widens once twos would exceed the budget, the same shape as the
+ * economy plot's Y_STEPS and for the same reason: it keeps every label on a
+ * round number rather than printing every other one, and it keeps the last one
+ * on the end of the axis.
+ *
+ * There is deliberately no coarser third step. Eight-minute labels are not a
+ * unit anyone reads a build order in, and a build long enough to want them is
+ * rare enough to be worth the extra label instead.
+ */
+const TICK_STEPS = [120, 240];
+const MAX_TICKS = 6;
 
 /**
  * Whether the economy plot is open is a preference of the reader's, not of the
@@ -267,17 +288,45 @@ export default {
     });
 
     /**
+     * The narrowest bracket this build can be fitted in without the axis
+     * outgrowing its label budget.
+     *
+     * Measured against the floor as well as the build, so a short build is
+     * bracketed for the track it will actually be drawn on rather than for the
+     * one it asked for.
+     *
+     * Math.ceil(ceiling / step) is the interval count the axis ends up with —
+     * the same expression scaleSeconds rounds by — so a step that passes here
+     * cannot overflow the budget once the rounding is applied.
+     */
+    const tickSeconds = computed(() => {
+      const ceiling = Math.max(SCALE_MIN_SECONDS, lastMoment.value);
+      return (
+        TICK_STEPS.find((step) => Math.ceil(ceiling / step) <= MAX_TICKS) ||
+        TICK_STEPS[TICK_STEPS.length - 1]
+      );
+    });
+
+    /**
      * Rounded up to a whole tick so the axis labels stay round.
      *
-     * Fitted in four-minute brackets rather than pinned to one width. A fixed
-     * 16:00 made every build directly comparable, which is worth something —
-     * but it spent two thirds of the track on emptiness for a build that ends
-     * at 5:00, squashing the part anyone came to read. Most builds land on
-     * 8:00, 12:00 or 16:00, so like-for-like comparison mostly survives, and
-     * the axis is labelled for when it does not.
+     * Fitted to the build rather than pinned to one width. A fixed 16:00 made
+     * every build directly comparable, which is worth something — but it spent
+     * two thirds of the track on emptiness for a build that ends at 5:00,
+     * squashing the part anyone came to read.
+     *
+     * What is left of the comparison is that the brackets are shared: two
+     * builds of similar length land on the same scale and can be read against
+     * each other, and where they do not, the axis is labelled. That is a weaker
+     * promise than one fixed width, and it is the one worth keeping — the
+     * side-by-side reading is occasional, while the wasted track was on every
+     * build every time.
      */
     const scaleSeconds = computed(() =>
-      Math.max(SCALE_MIN_SECONDS, Math.ceil(lastMoment.value / TICK_SECONDS) * TICK_SECONDS)
+      Math.max(
+        SCALE_MIN_SECONDS,
+        Math.ceil(lastMoment.value / tickSeconds.value) * tickSeconds.value
+      )
     );
 
     const clamp = (value) => Math.min(100, Math.max(0, value));
@@ -288,7 +337,7 @@ export default {
 
     const axis = computed(() => {
       const ticks = [];
-      for (let seconds = 0; seconds <= scaleSeconds.value; seconds += TICK_SECONDS) {
+      for (let seconds = 0; seconds <= scaleSeconds.value; seconds += tickSeconds.value) {
         ticks.push(formatAgeTime(seconds));
       }
       return ticks;
