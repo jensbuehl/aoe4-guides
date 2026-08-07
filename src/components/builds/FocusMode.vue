@@ -1094,6 +1094,7 @@ export default {
   --fm-header-ctl: 36px;
   --fm-preview-type: 13.5px;
   --fm-preview-icon: 16px;
+  --fm-icon-margin-y: 6px;
   --fm-gap: 8px;
 
   display: grid;
@@ -1182,10 +1183,16 @@ export default {
   background: rgba(var(--v-theme-surface), 0.4);
 }
 
+/* Clips rather than spills. It is a flex item, so a step too tall for the space
+   left shrinks — and a shrunk box does not shorten its text, it lets it out of
+   the bottom, straight through the preview underneath. Two things painted over
+   each other is worse than either one cut off, and the preview below is the one
+   that must not move: it is the same 16px on every step. */
 .fm-step-content {
   font-size: var(--fm-step-type);
   line-height: 1.35;
   min-height: 0;
+  overflow: hidden;
 }
 
 .fm-notes {
@@ -1308,18 +1315,18 @@ export default {
   background: rgba(var(--v-theme-primary), 0.12);
 }
 
-/* Small in the way a floating window is small, which is not the way a phone is.
-   A phone held upright is narrow and *tall* — 400x850 — and on a width test
-   alone it took the density built for a 400x230 strip over a game: 16px text and
-   30px controls, under the 44px a thumb needs, in a box with 600px of unused
-   height below them. So width alone only counts when it is genuinely a strip,
-   and everything else has to be small in both directions to read as small: a
-   short window whatever its width, or a floating one a player has resized. */
-@container focus (
-  (max-width: 340px) or
-  (max-height: 480px) or
-  ((max-width: 520px) and (max-height: 620px))
-) {
+/* Where the full layout stops fitting rather than where it stops being roomy.
+   It needs about 360x320: two dock lines and a transport come to 136px, the
+   header 48 and the bars 6, which leaves a 320px box ~130 for the step — two
+   lines of 48px icons — and the economy line is ~350 wide with every column a
+   build can state.
+
+   That is a long way below where this used to turn over. The old test asked for
+   a box small in *both* directions, which was right for telling a phone from a
+   floating window but wrong about the floating window itself: a player who
+   drags one out to 900x500 has asked for the roomy layout, and a 600px-tall one
+   was still getting the strip. Each dimension now fails on its own terms. */
+@container focus ((max-width: 360px) or (max-height: 320px)) {
   .fm-shell {
     --fm-content-icon: 38px;
     --fm-step-type: 16px;
@@ -1336,12 +1343,22 @@ export default {
     --fm-preview-type: 11.5px;
     --fm-preview-icon: 13px;
     --fm-res-gap: 8px;
+    /* Back to what it was before the roomy tier asked for more. The margin is
+       row spacing for wrapped lines of icons, and at 38px in a box this size
+       there is rarely a second row to space — while 3px a line is 6px of step
+       height, which is the difference between the preview fitting and not. */
+    --fm-icon-margin-y: 3px;
     --fm-gap: 6px;
   }
 
-  /* One row again. Here the box is short before it is narrow — a 400x230 window
-     over a game — and a second line of dock costs the step text, which is the
-     one thing on screen the player cannot do without. */
+}
+
+/* One row again — and on height alone, because that is what the second line
+   costs. A 400x230 window over a game cannot spend 24px of step text on it; a
+   340x600 one has 600px of height and no reason to give the line up. Keyed off
+   the scale above for exactly that reason: the two used to move together, so a
+   box that was merely narrow lost a line it had the room for. */
+@container focus (max-height: 320px) {
   .fm-resources {
     flex-direction: row;
     flex-wrap: wrap;
@@ -1368,6 +1385,18 @@ export default {
   }
 }
 
+/* The preview goes before the step does. Below this the chrome comes to ~130px
+   — header 44, bars 6, collapsed dock 80 — and one line of step text with 38px
+   icons is another 60, so the 22px the preview and its gap take is exactly the
+   room the step needs to stay whole. It is a glance ahead; the step is the
+   instruction. Height only: it is ~110px wide and has never been what a narrow
+   box ran out of. */
+@container focus (max-height: 260px) {
+  .fm-preview {
+    display: none;
+  }
+}
+
 /* Below this the box is a strip beside a minimap. The OS window title already
    carries the build name, so the header row is redundant rather than merely
    tight, and the next-step preview is a luxury at this size.
@@ -1375,8 +1404,11 @@ export default {
    The resource split is not. It used to be the first thing dropped here, on the
    reasoning that time and villagers are what a player checks without reading —
    but the distribution is the thing they came for, and a dock that has shed
-   everything else has room to keep it. */
-@container focus ((max-width: 340px) or (max-height: 190px)) {
+   everything else has room to keep it.
+
+   Held off as long as the header can be read: a title, a counter and two 32px
+   buttons still work across 300px, and the dock below needs ~250. */
+@container focus ((max-width: 300px) or (max-height: 190px)) {
   .fm-shell {
     --fm-content-icon: 34px;
     --fm-step-type: 14px;
@@ -1391,10 +1423,6 @@ export default {
   }
 
   .fm-header {
-    display: none;
-  }
-
-  .fm-preview {
     display: none;
   }
 
@@ -1469,7 +1497,7 @@ export default {
   height: var(--fm-content-icon);
   box-sizing: border-box;
   padding: 3px;
-  margin: 6px 4px 6px 0;
+  margin: var(--fm-icon-margin-y) 4px var(--fm-icon-margin-y) 0;
   border-radius: 4px;
   object-fit: contain;
   vertical-align: middle;
