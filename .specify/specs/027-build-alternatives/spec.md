@@ -1,0 +1,207 @@
+# Feature Specification: Build Order Alternatives
+
+**Feature Branch**: `027-build-alternatives`
+
+**Created**: 2026-08-08
+
+**Status**: Draft
+
+**Input**: Build orders are linear; real games are not. Let an author mark a point in a build where there are **two (or more) ways to play on**, describe the condition for each, and give each its own steps — then let a reader pick one and follow it through the step list, the economy graph, and focus mode. Design explored in the *Branch Annotations* canvas.
+
+> **Scope guard:** this feature adds one new item kind to the build order document and the reading/editing/graph/focus-mode affordances for it. It does **not** change civilizations, filters, ratings, comments, or the home page. Drag-and-drop reordering of alternatives is explicitly **out of scope** (see Assumptions).
+
+> **Design reference:** the *Branch Annotations* canvas — seven frames: model, desktop reading view, pick-one split, mobile reading, editor, economy graph, focus mode. Captures of all seven are in `assets/` and inlined below. It forks the current-state designs of features 013, 014 and 023 (see Design Reference). The alternatives colour is the brand **secondary** (`#294790`) because gold is already spoken for by ages and timings.
+
+## User Scenarios & Testing *(mandatory)*
+
+### User Story 1 - Author two ways to play from one point (Priority: P1) 🎯 MVP
+
+An author writing a Feudal all-in reaches 4:10 and wants to say "if they scouted you, defend; if they didn't, keep booming." They open the insert menu, choose **Alternatives**, and get a bracketed block with one path. They title it, describe the condition with icons, add its steps, then add a second alternative and do the same. A common step follows the block before the age-up.
+
+**Why this priority**: Without authoring there is nothing to read. This is the whole feature's foundation and is independently shippable (the reader can be shown a flattened view until Story 2 lands).
+
+**Independent Test**: In the build editor, insert an Alternatives block, author two paths with titles/descriptions/steps, add a common step after the block, save, reload → the block and both paths persist intact.
+
+**Acceptance Scenarios**:
+
+1. **Given** the insert line in the build editor, **When** the author opens the add menu, **Then** it offers **Step**, **Note**, **Age up**, and **Alternatives** (replacing the current bottom-anchored add buttons).
+1a. **Given** the author picks **Note**, **When** it is inserted, **Then** a note is placed **at that position** — not appended to the end of the section — and it is the same rich field as a step description.
+1b. **Given** a section with no note, **When** the author edits it, **Then** **no empty note row is shown at all**. A note exists because the author asked for one.
+2. **Given** the author picks **Alternatives**, **When** the block is inserted, **Then** an opening marker, one path with one empty step, and a closing merge marker are inserted together.
+3. **Given** an alternatives block, **When** the author uses **+ Add alternative**, **Then** a second path is created sharing the same two markers, and path tabs let the author switch which path's steps are being edited.
+4. **Given** a path, **When** the author edits it, **Then** it has a plain-text **title** field and a **description** field that is the same rich field as a step note (`::` autocomplete and icon picker included).
+5. **Given** the caret is inside an alternative, **When** the add menu opens, **Then** **Age up** and **Alternatives** are shown **disabled** with the reason in a tooltip, and there is **no Close entry** (the merge line always exists).
+6. **Given** an alternatives block, **When** the author inserts a step above the merge line, **Then** it joins the active path; **when** below, **then** it is common to all paths.
+7. **Given** an alternatives block, **When** the author deletes either marker, **Then** the bracket is removed and every path's steps are lifted back into the section (not deleted).
+
+---
+
+### User Story 2 - Read a build and choose a path (Priority: P1)
+
+A reader opens the build, reaches the split, sees "Pick one" with two titled options, taps one, and the following steps show that path's steps in a coloured lane. After the lane the build continues as common steps.
+
+**Why this priority**: This is the payoff — the knowledge only helps if a reader can follow it. Depends on Story 1.
+
+**Independent Test**: Open a build containing an alternatives block on desktop and on mobile → a pick control appears at the split, choosing a path renders that path's steps in a lane, and the steps after the block are shown regardless of choice.
+
+**Acceptance Scenarios**:
+
+1. **Given** a block where no path is flagged main, **When** the steps render, **Then** a **pick-one** row appears at the split showing each path's **title only** (full description in a tooltip and in the path's first step) and no path's steps are hidden behind a disclosure.
+2. **Given** a pick-one row on desktop, **When** rendered, **Then** it occupies the height of one table row and the option controls are auto-width, not stretched to fill.
+3. **Given** a chosen path, **When** its steps render, **Then** they appear in a lane with a 3px secondary-coloured left rail, and the lane simply ends where the block ends (no closing cap in the reading view).
+4. **Given** a block where one path is flagged **main**, **When** the steps render, **Then** the main path reads on the main line exactly as a build without alternatives, and each other path collapses to one slim condition row that expands in place.
+5. **Given** an expanded condition row, **When** the reader returns to the build later, **Then** the expansion state is remembered for that build.
+6. **Given** mobile at 390px, **When** the pick control renders, **Then** options are stacked full-width with a minimum 44px target and the description on a second line, sharing the step cards' width, radius and border.
+7. **Given** mobile, **When** a path is active, **Then** its step cards sit inside a secondary-coloured rail that is continuous with the pick card's rail, nested **inside** the gold age rail.
+
+---
+
+### User Story 3 - See what a path costs in the economy graph (Priority: P2)
+
+A reader comparing the two paths switches path in the graph legend and watches the villager/resource curves change across the split's time span.
+
+**Why this priority**: The graph is where the price of a decision becomes visible, but the build is readable without it.
+
+**Independent Test**: Open the economy graph for a build with an alternatives block → the legend offers the paths, exactly one path is drawn at a time, the split's span is shaded, and switching path in the step list changes the graph too.
+
+**Acceptance Scenarios**:
+
+1. **Given** a build with alternatives, **When** the graph renders, **Then** **one path at a time** is drawn (never both overlaid) and the path selector appears in the legend below the chart.
+2. **Given** the graph and the step list are both visible, **When** the reader switches path in either, **Then** both follow the same selection.
+3. **Given** a drawn path, **When** the chart renders, **Then** the split's time span is shaded and bounded by vertical markers, and resource series keep their existing colours and icons.
+4. **Given** a block with a **main** path, **When** the graph first renders, **Then** it opens on that path; otherwise it opens on the first path.
+
+---
+
+### User Story 4 - Choose a path mid-game in focus mode (Priority: P2)
+
+A player in focus mode reaches 4:10, is asked to pick, taps one, and keeps playing. If they don't tap, the clock does not stall.
+
+**Why this priority**: Focus mode is where the branch knowledge is actually used, but it must not risk breaking the in-game timer, so it lands after the reading surfaces are stable.
+
+**Independent Test**: Run focus mode through a build with an alternatives block → the pick appears at the split, the countdown falls back if untouched, the active path is named afterwards, and switching path mid-detour works.
+
+**Acceptance Scenarios**:
+
+1. **Given** focus mode reaches a split, **When** the pick appears, **Then** it occupies the step-content area only — header, progress bars, resource dock and transport controls do not move.
+2. **Given** the pick is showing, **When** no option is tapped, **Then** a countdown falls back to the **main** path (or the first path if none is flagged) and auto-advance continues; the timer never stalls.
+3. **Given** a path was picked, **When** the step content resumes, **Then** a thin bar names the active path and offers an explicit **switch** control.
+4. **Given** the active path, **When** the player switches mid-detour, **Then** the queue re-reads from the new path's next step.
+5. **Given** the pick control, **When** rendered, **Then** it uses the secondary (alternatives) colour, not gold, so it cannot be mistaken for a transport button.
+
+---
+
+### Edge Cases
+
+- **Three or more paths** → the pick control stacks vertically instead of sitting side by side; beyond three the author should be told this is two builds, not one.
+- **A path with zero steps** → the block still saves; the reading view shows the path as selectable with no steps (it is a legitimate "do nothing different" path).
+- **A single path** (author deleted the second) → the block degrades to a plain conditional detour; if it is flagged main, it reads as an ordinary run of steps.
+- **Author tries to age up inside a path** → disabled in the add menu with the reason; the closing marker cannot be dragged/pushed past the next age-up.
+- **Existing builds** → documents with no alternatives render byte-identical to today; no migration.
+- **Overlay export** → a build with alternatives exports the **active path only** (flattened).
+- **Focus mode micro tier** → the pick collapses to two short titles side by side; descriptions and countdown label drop, the countdown bar stays.
+- **Very long condition description** → never truncated into the pick row; the row shows titles only.
+- **A note with no other content** → kept, never treated as an empty step. A note *is* content; that is all it is.
+- **An existing section note** → keeps rendering where it always did and stays editable. Only the empty row for sections that never had one goes away.
+
+## Requirements *(mandatory)*
+
+### Functional Requirements
+
+- **FR-001**: The build order document MUST support one new item kind representing an **alternatives block**: an ordered run bounded by an opening marker and a closing merge marker, containing two or more **paths**, each with a plain-text `title`, a rich-text `description`, an optional `main` boolean, and its own ordered steps.
+- **FR-002**: Rejoin MUST be **positional** — the block ends at its closing marker and the next step is common again. There MUST be no rejoin pointer or cross-reference to keep in sync.
+- **FR-003**: An alternatives block MUST open and close **within a single age section**; an age-up MUST NOT be creatable inside a path, and the closing marker MUST NOT be movable past the next age-up. Steps MAY follow the block before the age-up.
+- **FR-004**: Alternatives blocks MUST NOT nest.
+- **FR-005**: No path is main by default. At most one path per block MAY carry `main`; this boolean MUST be the only difference between the **pick-one** reading state and the **collapsed detour** reading state.
+- **FR-006**: Each path MUST carry its own step timings. Steps after the block MUST NOT be re-timed by the presence or choice of a path.
+- **FR-007**: The build editor's insert affordance MUST become a menu offering Step, Note, Age up and Alternatives, replacing the current bottom-anchored add buttons. Entries that are invalid in context MUST be shown **disabled with the reason in a tooltip** rather than hidden.
+- **FR-008**: Choosing Alternatives MUST insert the complete bracket (opening marker, one path with one empty step, closing merge marker) in one action. There MUST be no separate "close" command.
+- **FR-009**: The editor MUST provide path tabs to switch which path is being edited, an **+ Add alternative** action, and a **Set as main** toggle. Only one path's steps are edited at a time.
+- **FR-010**: A path's description field MUST reuse the existing step-note rich field, including `::` shortcode autocomplete and the icon picker. Matchups MUST be expressed as civ icons inside the description — no separate matchup field.
+- **FR-011**: Deleting either marker MUST lift all paths' steps back into the section rather than deleting them.
+- **FR-012**: The desktop steps table MUST render the pick-one control as a single table-row-height row showing **titles only**, with option controls sized to content; the active path's steps MUST render in a lane with a 3px secondary rail and no closing cap.
+- **FR-013**: The mobile steps list MUST render the pick control as a card in the step flow with options stacked full-width at ≥44px, descriptions on a second line, matching the step cards' width, radius and border; the active path's cards MUST sit in a continuous secondary rail nested inside the gold age rail.
+- **FR-014**: The economy graph MUST draw **one path at a time**, selectable from a legend below the chart, MUST shade the split's time span, and MUST share a single active-path selection with the steps view.
+- **FR-015**: Focus mode MUST present the pick in the step-content area without moving the header, progress bars, resource dock or transport controls; MUST fall back via countdown to the main path (else the first path) so auto-advance never stalls; MUST name the active path afterwards with an explicit switch control; and MUST allow switching until the rejoin.
+- **FR-016**: All alternatives affordances MUST use the brand **secondary** colour role for rails, markers and controls, and MUST NOT use gold — gold denotes age/timing/primary action. The branch mark MUST be `mdi-call-split` and the close mark `mdi-call-merge`, used consistently and consistently coloured.
+- **FR-017**: Builds without alternatives MUST render exactly as they do today, in light and dark themes, with no migration.
+- **FR-018**: Overlay-tool export MUST remain functional for builds containing alternatives by exporting the active path flattened onto the main line.
+- **FR-019**: A **note** MUST be an item the author inserts at a chosen position from the same menu, carried as a step whose content is its note text. A note MUST be exempt from the timing requirement that gates autoplay, MUST contribute no point to the economy series, and MUST show the resource position of the step it follows rather than stating one of its own.
+- **FR-020**: Notes MUST be **optional and positional**. The editor MUST NOT render an empty note row for a section that has none; a section note that already exists MUST keep rendering and MUST stay editable where it is. No migration of existing notes.
+- **FR-021**: Overlay-tool export MUST carry a note's text, so a note is not exported as an empty step.
+
+### Key Entities
+
+- **AlternativesBlock** — a build-order item: bounded by two markers, contains ≥2 paths, lives entirely inside one age section.
+- **Path** — `title` (plain text), `description` (rich text with icon shortcodes), `main` (optional boolean), `steps` (ordered, own timings).
+- **Active path selection** — **view state, not build data**: persisted per build for the reading view; focus mode holds its own for the session; the graph reads it and does not own it.
+
+## Success Criteria *(mandatory)*
+
+### Measurable Outcomes
+
+- **SC-001**: An author can express "two ways to play from here" with titles, icon-bearing conditions and separate steps, without any drag-and-drop, and reload it intact.
+- **SC-002**: A reader on desktop and mobile can identify that a decision exists, choose a path, follow its steps, and see where the paths rejoin — without expanding anything in the pick-one state.
+- **SC-003**: The economy graph never draws more than one path at a time, and its selection agrees with the steps view in both directions.
+- **SC-004**: Focus mode never stalls the timer at a split, and the pick never displaces the header, dock or transport controls.
+- **SC-005**: Builds with no alternatives are visually and functionally unchanged; no data migration is required.
+- **SC-006**: No new colour, font or component vocabulary is introduced — alternatives are built entirely from the design system already in use.
+- **SC-007**: A build that today shows **no economy chart** because its author wrote two variations one after another shows one once it is expressed as alternatives. *(Added during planning: authors are already doing this by hand and losing their chart to a guard that exists for exactly that shape — see research [R-3](./research.md#r-3--the-economy-chart-already-refuses-builds-that-contain-alternatives).)*
+
+## Assumptions
+
+- Built with Vuetify + existing theme tokens; no new dependency (Constitution Principle I & III). Pick controls = `v-btn-toggle` / `v-btn`; path tabs = `v-tabs` or `v-btn-toggle`; the insert menu = `v-menu` + `v-list`; markers and lanes = existing card/border patterns. The design HTML hand-rolled these; **the Vuetify equivalents win over the mock's markup.**
+- The description field is the **existing** step-note editor component, reused as-is — not a new editor.
+- **Notes become a first-class item kind** (FR-019…FR-021), decided during planning. The site's readers already understand a step whose content is a note — one exempts it from the autoplay timing gate, one keeps it out of the economy series, one shows it the previous step's resources — but nothing could ever create one. Notes were per-section and appeared automatically as an empty row at the end of every section in the editor. That row is now gone and a note is something the author inserts where they want it.
+- **Drag-and-drop reordering of alternatives is out of scope.** The two-marker pattern makes ordering an insert-and-delete problem, so reordering can be added later without a data migration.
+- Realistic volume is 2–3 paths per block and 1–2 blocks per build; the UI is designed for that, not for arbitrary depth.
+- Overlay round-tripping (importing alternatives back from the overlay format) is **out of scope**; flattening on export is the v1 behaviour.
+- Civ-based filtering from path descriptions is **out of scope**; the data supports reading civs back out of the description tokens later.
+- Firestore schema change is additive (a new item kind inside the existing build document), so security rules need a review per Principle V but no new collection.
+
+## Design Reference
+
+The design is the *Branch Annotations* canvas — a pannable set of seven frames. **The interactive
+HTML is not checked in**, so the static captures in `assets/`, inlined below, are the durable
+record; treat them as authoritative. Reasoning behind each decision is in `design-input.md`.
+
+It is a design reference authored in HTML, not production code: it hand-rolls menus, chips, buttons
+and tabs that the app already solves with its component library. **Where it and the real components
+disagree, the real components win** (Constitution Principle III) — port the decisions, not the CSS.
+
+**The model** — data shape, rejoin, section scope, colour role, authoring pattern
+
+![Model](assets/01-model.png)
+
+**Desktop steps table — collapsed condition row** (one path flagged `main`; US2 §4)
+
+![Reading view, collapsed](assets/02-reading-collapsed.png)
+
+**Desktop steps table — pick-one** (no `main`; US2 §1–3)
+
+![Pick one](assets/03-pick-one.png)
+
+**Mobile steps list** (pick card, rail nesting, collapsed variant; US2 §6–7)
+
+![Mobile](assets/04-mobile.png)
+
+**Build editor** (add menu in both contexts, path tabs, markers, title + description; US1)
+
+![Editor](assets/05-editor.png)
+
+**Economy graph** (one path at a time, shaded span, legend selection; US3)
+
+![Economy graph](assets/06-graph.png)
+
+**Focus mode** (pick beat, countdown fallback, path bar; US4)
+
+![Focus mode](assets/07-focus-mode.png)
+
+Current-state designs this one forks, each in its own feature's assets:
+
+- `.specify/specs/014-desktop-build-layout/assets/Desktop Build Redesign.html`
+- `.specify/specs/013-mobile-build-layout/assets/Mobile Build Redesign.html`
+- `.specify/specs/023-focus-mode-pip/assets/Focus Mode PiP.html`
+
+Real theme values come from the app's theme definition; the `#294790` above is the existing
+**secondary** role, not a new colour.

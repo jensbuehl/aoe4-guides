@@ -63,22 +63,81 @@
       <!--Label and icon share one colour. They were split across primary and
           accent, which is invisible in dark mode (both gold) and reads as a
           two-tone button in light mode, where primary is navy.-->
-      <v-btn variant="text" color="accent" @click="addStep(0)">
-        <template v-slot:prepend><v-icon color="accent">mdi-plus</v-icon></template>
-        Add build step
-      </v-btn>
+      <StepInsertMenu :options="insertOptions(-1)" @select="handleInsert($event, -1)">
+        <template v-slot:activator="{ props: menu }">
+          <v-btn variant="text" color="accent" v-bind="menu">
+            <template v-slot:prepend><v-icon color="accent">mdi-plus</v-icon></template>
+            Add to build
+          </v-btn>
+        </template>
+      </StepInsertMenu>
     </div>
     <template v-if="!readonly">
       <!-- Step cards (mobile edit) -->
       <div class="xs-steps-container">
         <!-- Insert point before the very first card (prepend) -->
-        <div v-if="steps?.length" class="step-insert-xs" @click.stop="addStep(-1)">
-          <div class="step-insert-line-xs"></div>
-          <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
-          <div class="step-insert-line-xs"></div>
-        </div>
+        <StepInsertMenu v-if="steps?.length" :options="insertOptions(-1)" @select="handleInsert($event, -1)">
+          <template v-slot:activator="{ props: menu }">
+            <div class="step-insert-xs" v-bind="menu">
+              <div class="step-insert-line-xs"></div>
+              <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
+              <div class="step-insert-line-xs"></div>
+            </div>
+          </template>
+        </StepInsertMenu>
         <template v-for="(item, index) in steps" :key="item._id ?? ('xs-edit-' + index)">
+        <!-- A note in the card flow, in the same dress the section note wears -->
+        <div v-if="isNote(item)" class="gameplan-card-xs">
+          <div class="gameplan-header-xs">
+            <v-icon size="13" color="accent">mdi-information-outline</v-icon>
+            <span>Note</span>
+          </div>
+          <div class="step-desc-col-xs">
+            <div
+              :ref="el => registerNoteRef(el, index)"
+              @keyup="saveSelection($event)"
+              @click="saveSelection($event)"
+              @paste="handlePaste"
+              @focusout="updateStepNote($event, index)"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
+              :contenteditable="true"
+              class="step-desc-xs step-desc-edit-xs"
+              v-html="item.gameplan"
+            ></div>
+          </div>
+          <div class="step-action-row-xs">
+            <v-menu :close-on-content-click="false" location="bottom">
+              <template v-slot:activator="{ props: menu }">
+                <v-btn
+                  size="x-small"
+                  variant="text"
+                  color="accent"
+                  v-bind="menu"
+                  @mousedown.prevent="saveSelection($event)"
+                  icon
+                  class="step-icon-btn-xs"
+                ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
+              </template>
+              <v-card flat rounded="lg" class="mt-4" width="350px">
+                <IconSelector
+                  @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
+                  :civ="civ"
+                ></IconSelector>
+              </v-card>
+            </v-menu>
+            <div style="flex:1"></div>
+            <v-btn
+              icon
+              size="x-small"
+              variant="text"
+              class="step-remove-xs"
+              @click.stop="removeStepConfirmationDialog = true; delteRowIndex = index;"
+            ><v-icon size="14">mdi-close</v-icon></v-btn>
+          </div>
+        </div>
         <div
+          v-else
           class="step-card-xs"
           v-on:keyup.enter.alt="addStep(index)"
           v-on:keyup.delete.alt="removeStepConfirmationDialog = true; delteRowIndex = index;"
@@ -193,9 +252,9 @@
                   color="accent"
                   v-bind="menu"
                   @mousedown.prevent="saveSelection($event)"
-                  icon="mdi-image-plus"
+                  icon
                   class="step-icon-btn-xs"
-                ></v-btn>
+                ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
               </template>
               <v-card flat rounded="lg" class="mt-4" width="350px">
                 <IconSelector
@@ -206,15 +265,21 @@
             </v-menu>
           </div>
         </div>
-        <!-- Insert after each card: addStep(index) = insert immediately after card at this index -->
-        <div class="step-insert-xs" @click.stop="addStep(index)">
-          <div class="step-insert-line-xs"></div>
-          <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
-          <div class="step-insert-line-xs"></div>
-        </div>
+        <!-- Insert after each card: index = insert immediately after card at this index -->
+        <StepInsertMenu :options="insertOptions(index)" @select="handleInsert($event, index)">
+          <template v-slot:activator="{ props: menu }">
+            <div class="step-insert-xs" v-bind="menu">
+              <div class="step-insert-line-xs"></div>
+              <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
+              <div class="step-insert-line-xs"></div>
+            </div>
+          </template>
+        </StepInsertMenu>
         </template><!-- end v-for step -->
-        <!-- Notes card inside container — gets the same 8px gap as step cards -->
-        <div class="gameplan-card-xs">
+        <!-- The section's own note, from before notes could be placed. Drawn
+             only when it says something — an empty card at the foot of every
+             section was the editor deciding a note belonged there. -->
+        <div v-if="hasVisibleContent(gameplan)" class="gameplan-card-xs">
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Notes</span>
@@ -241,9 +306,9 @@
                   color="accent"
                   v-bind="menu"
                   @mousedown.prevent="saveSelection($event)"
-                  icon="mdi-image-plus"
+                  icon
                   class="step-icon-btn-xs"
-                ></v-btn>
+                ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
               </template>
               <v-card flat rounded="lg" class="mt-4" width="350px">
                 <IconSelector
@@ -264,8 +329,20 @@
             is not a step that happened; a reader counting rows would count it.
             Hidden here and never in the editor, where the author still owns it.-->
         <template v-for="(item, index) in steps" :key="'xs-view-' + index">
+        <div v-if="isNote(item)" class="gameplan-card-xs">
+          <div class="gameplan-header-xs">
+            <v-icon size="13" color="accent">mdi-information-outline</v-icon>
+            <span>Note</span>
+          </div>
+          <div
+            class="step-desc-xs"
+            v-html="item.gameplan"
+            @mouseover="handleMouseOver($event)"
+            @mouseout="handleMouseOut($event)"
+          ></div>
+        </div>
         <div
-          v-if="!saysNothing(index)"
+          v-else-if="!saysNothing(index)"
           class="step-card-xs"
         >
           <!-- Top bar: timestamp + villager total -->
@@ -352,7 +429,7 @@
       <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
       <span class="age-marker-lbl-md">Age up to {{ targetAgeName }}</span>
       <span style="flex:1"></span>
-      <v-btn v-if="!readonly && isLastAgeUp" icon size="x-small" variant="text" class="row-x" @click.stop="$emit('ageDownRequested')"><v-icon size="14">mdi-close</v-icon></v-btn>
+      <v-btn v-if="!readonly && isLastAgeUp" icon size="small" variant="text" class="row-x" @click.stop="$emit('ageDownRequested')"><v-icon size="16">mdi-close</v-icon></v-btn>
     </div>
     <v-table
       v-if="steps?.length"
@@ -409,19 +486,263 @@
         </thead>
         <tbody ref="stepsTable">
           <tr v-if="!readonly && !steps.length" class="ins-row">
-            <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(-1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
+            <td :colspan="9" class="ins-row-cell">
+              <StepInsertMenu :options="insertOptions(-1)" @select="handleInsert($event, -1)">
+                <template v-slot:activator="{ props: menu, isOpen }">
+                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
+                </template>
+              </StepInsertMenu>
+            </td>
           </tr>
           <template v-for="(item, index) in steps" :key="item._id ?? index">
           <tr v-if="!readonly" class="ins-row">
-            <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(index - 1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
+            <td :colspan="9" class="ins-row-cell">
+              <StepInsertMenu :options="insertOptions(index - 1)" @select="handleInsert($event, index - 1)">
+                <template v-slot:activator="{ props: menu, isOpen }">
+                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
+                </template>
+              </StepInsertMenu>
+            </td>
+          </tr>
+          <!--Opening marker, path bar and the condition, as one banner. The
+              paths are siblings inside one bracket, so the tabs switch which
+              path's steps the table below is showing — the same control the
+              reader gets, doing the same thing.-->
+          <template v-if="isBlockStart(item)">
+            <tr class="alt-row alt-row--start">
+              <td class="py-1 text-center">
+                <v-icon size="16" class="alt-mark">mdi-call-split</v-icon>
+              </td>
+              <!--The paths themselves are the block's opening line. They name
+                  what a label would only have described, so the words went and
+                  the tabs took the row — the mark, the rail and the tint already
+                  say a block starts here.-->
+              <td :colspan="7" class="py-1 alt-bar-cell">
+                <div class="alt-bar">
+                  <v-btn
+                    v-for="(path, pathIndex) in item.paths"
+                    :key="'p' + pathIndex"
+                    size="small"
+                    variant="flat"
+                    :color="pathIndex === item.active ? 'alternative' : undefined"
+                    class="alt-tab"
+                    @click="switchPath(index, pathIndex)"
+                    >{{ path.title || 'Untitled path' }}
+                  </v-btn>
+                  <v-btn
+                    v-if="!readonly"
+                    size="small"
+                    variant="text"
+                    prepend-icon="mdi-plus"
+                    class="alt-tab"
+                    @click="addAlternative(index)"
+                    >Add alternative</v-btn
+                  >
+                  <!--No "set as main" control. The first path is the main line,
+                      by convention rather than by a flag: one less thing to
+                      explain, one less piece of state to get wrong, and the
+                      reader's view follows from the order the author already
+                      chose. A flag can come back if it turns out to be wanted.-->
+                </div>
+              </td>
+              <td v-if="!readonly" class="step-actions" style="width:90px">
+                <div class="step-actions-inner">
+                  <v-btn icon size="small" variant="text" class="row-x" @click="removeBlock(index)"
+                    ><v-icon size="16">mdi-close</v-icon></v-btn
+                  >
+                </div>
+              </td>
+            </tr>
+            <tr class="alt-row alt-row--cond">
+              <!--Laid out on the table's own columns rather than as a band
+                  across them: the name sits where a step's resource pills sit,
+                  the condition sits in the Description column, and the icon
+                  picker sits in the action column. A reader's eye runs down one
+                  column of descriptions instead of stepping around a row that
+                  keeps its text somewhere else.-->
+              <td class="text-center alt-cond-cell"></td>
+              <td class="alt-cond-cell"></td>
+              <td :colspan="5" class="alt-cond-cell alt-title-td">
+                <input
+                  v-if="!readonly"
+                  :ref="el => registerPathTitleRef(el, index)"
+                  type="text"
+                  :class="
+                    item.paths[item.active]?.title
+                      ? ['alt-title-input', 'rc-pill', 'rc-input']
+                      : ['alt-title-input', 'rc-pill', 'rc-ghost', 'rc-input']
+                  "
+                  placeholder="Alternative title"
+                  :value="item.paths[item.active]?.title"
+                  @input="updatePath(index, 'title', $event.target.value)"
+                  @blur="trimPathTitle(index)"
+                  @paste="handlePaste"
+                />
+                <span v-else class="alt-title-read rc-pill">{{ item.paths[item.active]?.title }}</span>
+              </td>
+              <!--The condition is a description cell, not a div dressed as one.
+                  Same element, same rules, so it cannot drift from the step
+                  descriptions above and below it — including staying one row
+                  tall when an icon goes in.-->
+              <td
+                :data-edit-index="!readonly ? index : null"
+                :data-edit-field="!readonly ? 'pathDescription' : null"
+                @input="showAutoCompleteMenu($event, index)"
+                @keyup="handleContentEditableKeyUp($event, index)"
+                @click="saveSelection($event)"
+                @paste="handlePaste"
+                @focusin="focusedDescIndex = index"
+                @focusout="updatePath(index, 'description', $event.target.innerHTML); focusedDescIndex = null"
+                @mouseover="handleMouseOver($event)"
+                @mouseout="handleMouseOut($event)"
+                :contenteditable="!readonly"
+                class="contentEditable alt-desc text-left py-1"
+                v-html="item.paths[item.active]?.description"
+              ></td>
+              <td v-if="!readonly" class="step-actions" style="width:90px">
+                <div class="step-actions-inner">
+                  <v-menu :close-on-content-click="false" max-width="700" location="bottom end">
+                    <template v-slot:activator="{ props: menu }">
+                      <v-btn
+                        v-bind="menu"
+                        icon
+                        color="accent"
+                        variant="text"
+                        size="small"
+                        :class="['step-action-icon', focusedDescIndex !== index && 'step-action-icon--hidden']"
+                        @mousedown.prevent="saveSelection($event)"
+                      ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
+                    </template>
+                    <v-card flat rounded="lg">
+                      <IconSelector
+                        @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
+                        :civ="civ"
+                      ></IconSelector>
+                    </v-card>
+                  </v-menu>
+                  <!--Removing this path, in the column every other delete in the
+                      table lives in. The start marker's ✕ removes the block; this
+                      one removes the alternative whose name and condition are on
+                      this row.-->
+                  <v-btn
+                    icon
+                    size="small"
+                    variant="text"
+                    class="row-x"
+                    @click="removePath(index)"
+                  ><v-icon size="16">mdi-close</v-icon></v-btn>
+                </div>
+              </td>
+            </tr>
+          </template>
+          <!--The merge line. Always present, never added: the paths rejoin here
+              and the next step is common to all of them.-->
+          <tr v-else-if="isBlockEnd(item)" class="alt-row alt-row--end">
+            <td class="py-1 text-center">
+              <v-icon size="16" class="alt-mark">mdi-call-merge</v-icon>
+            </td>
+            <!--The mark alone, for the same reason the opening row lost its
+                words: the rail stops here and the merge icon says what that
+                means. A line of text to state it twice would be the only text
+                in the block that names itself.-->
+            <td :colspan="7" class="py-1 px-2"></td>
+            <!--No ✕ here. The merge line is not a thing an author added, so it
+                is not a thing they remove; the block is removed from where it
+                begins. Two controls doing one job would also read as "close
+                this" versus "delete this", which are not the same act.-->
+            <td v-if="!readonly" class="step-actions" style="width:90px"></td>
+          </tr>
+          <!--A note: one wide cell where a step has nine narrow ones. Same
+              treatment the section note has always had, so a note reads as a
+              note wherever it sits.-->
+          <tr
+            v-else-if="isNote(item)"
+            :data-step-index="index"
+            :class="[
+              'step-row',
+              'bo-noterow',
+              insideBlock(index) && 'alt-inside',
+              section.type === 'ageUp' && 'age-lane-md',
+              { 'step-row--linked': linkedRow === index || flashedRow === index },
+            ]"
+            v-on:keyup.delete.alt="removeStepConfirmationDialog = true; delteRowIndex = index;"
+            @focusin="$emit('selectionChanged')"
+            @mousedown="selectStep(index)"
+          >
+            <td class="py-1 text-center note-icon-cell">
+              <!--Boxed to the height of one line of note text, so the icon
+                  centres against the first line rather than against the whole
+                  note. A one-line note reads as centred; a long one keeps its
+                  icon in the corner beside where the text starts.-->
+              <span class="note-icon-line">
+                <v-icon size="16" color="accent">mdi-information-outline</v-icon>
+              </span>
+            </td>
+            <td
+              v-if="readonly"
+              :colspan="7"
+              class="py-1 px-2 contentEditable"
+              v-html="item.gameplan"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
+            ></td>
+            <td
+              v-else
+              :ref="el => registerNoteRef(el, index)"
+              :data-edit-index="index"
+              data-edit-field="gameplan"
+              @input="showAutoCompleteMenu($event, index)"
+              @keyup="handleContentEditableKeyUp($event, index)"
+              @click="saveSelection($event)"
+              @paste="handlePaste"
+              @focusin="focusedDescIndex = index"
+              @focusout="updateStepNote($event, index); focusedDescIndex = null"
+              @mouseover="handleMouseOver($event)"
+              @mouseout="handleMouseOut($event)"
+              contenteditable="true"
+              :colspan="7"
+              class="contentEditable text-left py-1 px-2"
+              v-html="item.gameplan"
+            ></td>
+            <td v-if="!readonly" class="step-actions" style="width:90px">
+              <div class="step-actions-inner">
+                <v-menu :close-on-content-click="false" max-width="700" location="bottom end">
+                  <template v-slot:activator="{ props: menu }">
+                    <v-btn
+                      v-bind="menu"
+                      icon
+                      color="accent"
+                      variant="text"
+                      size="small"
+                      :class="['step-action-icon', focusedDescIndex !== index && 'step-action-icon--hidden']"
+                      @mousedown.prevent="saveSelection($event)"
+                    ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
+                  </template>
+                  <v-card flat rounded="lg">
+                    <IconSelector
+                      @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
+                      :civ="civ"
+                    ></IconSelector>
+                  </v-card>
+                </v-menu>
+                <v-btn
+                  icon
+                  size="small"
+                  variant="text"
+                  class="row-x"
+                  @click="removeStepConfirmationDialog = true; delteRowIndex = index;"
+                ><v-icon size="16">mdi-close</v-icon></v-btn>
+              </div>
+            </td>
           </tr>
           <!--Hidden only for readers. The editor keeps every row: an author has
               to be able to see and reach a step to fix or remove it.-->
           <tr
-            v-if="!readonly || !saysNothing(index)"
+            v-else-if="!readonly || !saysNothing(index)"
             :data-step-index="index"
             :class="[
               'step-row',
+              insideBlock(index) && 'alt-inside',
               section.type === 'ageUp' && 'age-lane-md',
               { 'step-row--linked': linkedRow === index || flashedRow === index },
             ]"
@@ -504,6 +825,8 @@
                 :class="hasResourceValue(item.stone) ? ['rc-pill','rc-stone','rc-input', deltaClass('stone',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td
+              :data-edit-index="!readonly ? index : null"
+              :data-edit-field="!readonly ? 'description' : null"
               @input="showAutoCompleteMenu($event, index)"
               @keyup="handleContentEditableKeyUp($event, index)"
               @keydown.tab.exact.prevent="timestampRefs[index + 1]?.focus()"
@@ -524,13 +847,13 @@
                   <template v-slot:activator="{ props: menu }">
                     <v-btn
                       v-bind="menu"
-                      icon="mdi-image-plus"
+                      icon
                       color="accent"
                       variant="text"
                       size="small"
                       :class="['step-action-icon', focusedDescIndex !== index && 'step-action-icon--hidden']"
                       @mousedown.prevent="saveSelection($event)"
-                    ></v-btn>
+                    ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
                   </template>
                   <v-card flat rounded="lg">
                     <IconSelector
@@ -551,13 +874,28 @@
           </tr>
           </template>
           <!-- Trailing insert row after last step -->
-          <tr v-if="!readonly && steps.length" class="ins-row">
-            <td :colspan="9" class="ins-row-cell"><div class="ins-zone" @click="addStep(steps.length - 1)"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Step</button></div></td>
+          <tr v-if="!readonly && steps.length" class="ins-row ins-row--trailing">
+            <td :colspan="9" class="ins-row-cell">
+              <StepInsertMenu
+                :options="insertOptions(steps.length - 1)"
+                @select="handleInsert($event, steps.length - 1)"
+              >
+                <template v-slot:activator="{ props: menu, isOpen }">
+                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
+                </template>
+              </StepInsertMenu>
+            </td>
           </tr>
-          <!-- Section note row — read: only if has content; edit: always shown.
+          <!-- The section's own note, from before notes could be placed. Shown
+               only when it says something, in the editor as well as the viewer:
+               an empty row at the bottom of every section was the editor
+               deciding for the author that a note belonged there. New notes are
+               inserted where they are wanted, and this stays editable in place
+               for the builds that already have one.
+
                "Has content" is not "is a non-empty string": see the mobile card
                above. -->
-          <tr v-if="(hasVisibleContent(gameplan) && readonly) || !readonly" :class="['bo-noterow', section.type === 'ageUp' && 'age-lane-md']">
+          <tr v-if="hasVisibleContent(gameplan)" :class="['bo-noterow', section.type === 'ageUp' && 'age-lane-md']">
             <td class="py-1 text-center">
               <v-icon size="16" color="accent">mdi-information-outline</v-icon>
             </td>
@@ -583,13 +921,13 @@
                 <template v-slot:activator="{ props: menu }">
                   <v-btn
                     v-bind="menu"
-                    icon="mdi-image-plus"
+                    icon
                     color="accent"
                     variant="text"
                     size="small"
                     :class="['step-action-icon', focusedDescIndex !== 'gameplan' && 'step-action-icon--hidden']"
                     @mousedown.prevent="saveSelection($event)"
-                  ></v-btn>
+                  ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
                 </template>
                 <v-card flat rounded="lg">
                   <IconSelector
@@ -610,12 +948,16 @@
       No steps yet
     </div>
     <div v-if="!steps?.length && !readonly" class="text-center py-4">
-      <v-btn variant="text" color="accent" @click="addStep(0)"
-        >Add build step
-        <template v-slot:prepend>
-          <v-icon color="accent">mdi-plus</v-icon>
-        </template></v-btn
-      >
+      <StepInsertMenu :options="insertOptions(-1)" @select="handleInsert($event, -1)">
+        <template v-slot:activator="{ props: menu }">
+          <v-btn variant="text" color="accent" v-bind="menu"
+            >Add to build
+            <template v-slot:prepend>
+              <v-icon color="accent">mdi-plus</v-icon>
+            </template></v-btn
+          >
+        </template>
+      </StepInsertMenu>
     </div>
     <!-- ageUp arrival plate — desktop -->
     <div v-if="section.type === 'ageUp' && targetAgeName" class="age-plate-md mx-4 mt-0 mb-0">
@@ -644,6 +986,7 @@ import scrollIntoView from "scroll-into-view-if-needed";
 import IconSelector from "@/components/builds/IconSelector.vue";
 import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 import IconToolTip from "@/components/builds/IconToolTip.vue";
+import StepInsertMenu from "@/components/builds/StepInsertMenu.vue";
 
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
@@ -659,6 +1002,15 @@ import {
   hasVisibleContent,
 } from "@/composables/builds/stepVisibility.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
+import {
+  expandBlocks,
+  collapseBlocks,
+  blockRanges,
+  isInsideBlock,
+  emptyPath,
+  ALT_START,
+  ALT_END,
+} from "@/composables/builds/alternativesDraft.js";
 import {
   addAutocompleteIcon,
   updateSearchText,
@@ -685,6 +1037,13 @@ export default {
     "focus",
     "isLastAgeUp",
     "previousStep",
+    //Age-up is offered from the insert menu but appends to the end of the
+    //build, so only the last section's trailing insert point can honour it.
+    //Both arrive as props because the section knows neither where it sits nor
+    //which age the build has reached.
+    "isLastSection",
+    "ageUpAvailable",
+    "nextAgeName",
     //resolveStepTimes() output for this section's steps, same order. Read-only
     //views only — the editor must never offer an author a time they did not type.
     "resolvedTimes",
@@ -698,9 +1057,10 @@ export default {
     "selectionChanged",
     "gameplanChanged",
     "ageDownRequested",
+    "ageUpRequested",
     "stepHovered",
   ],
-  components: { IconSelector, IconAutoCompleteMenu, IconToolTip },
+  components: { IconSelector, IconAutoCompleteMenu, IconToolTip, StepInsertMenu },
   setup(props, context) {
     //Absent on the editor route, where there is no timeline card to link to.
     //Every use is optional-chained rather than guarded once, so the table
@@ -722,7 +1082,7 @@ export default {
      * @return {string} "m:ss", "~m:ss", or "" when the step could not be placed.
      */
     const resolvedTime = (index) => {
-      const resolved = props.resolvedTimes?.[index];
+      const resolved = props.resolvedTimes?.[documentIndex(index)];
       if (!resolved || resolved.seconds == null) return "";
 
       const formatted = formatAgeTime(resolved.seconds);
@@ -730,7 +1090,8 @@ export default {
     };
 
     /** Whether a filled-in cell should read as an estimate rather than a fact */
-    const isEstimate = (index) => props.resolvedTimes?.[index]?.provenance !== "stated";
+    const isEstimate = (index) =>
+      props.resolvedTimes?.[documentIndex(index)]?.provenance !== "stated";
 
     const AGE_NAMES = { 1: "Feudal Age", 2: "Castle Age", 3: "Imperial Age" };
     const targetAgeName = computed(() => AGE_NAMES[props.section.age] ?? "");
@@ -740,8 +1101,12 @@ export default {
 
     //Hacky deep copy of object since working on the reference broke the current selection
     //Copy needs to be kept in sync and is used only for the description field :(
-    const steps = reactive(JSON.parse(JSON.stringify(props.section.steps)));
-    const stepsCopy = reactive(JSON.parse(JSON.stringify(props.section.steps)));
+    //
+    //Expanded on the way in: the document nests an alternatives block, the
+    //editor works on a flat run with markers, because that is what makes "above
+    //the merge line" mean something. Collapsed again in emitSteps().
+    const steps = reactive(expandBlocks(JSON.parse(JSON.stringify(props.section.steps))));
+    const stepsCopy = reactive(expandBlocks(JSON.parse(JSON.stringify(props.section.steps))));
     const readonly = props.readonly;
     // Monotonic counter for stable v-for keys — never persisted, client-side only.
     let _nextStepId = Date.now();
@@ -752,10 +1117,14 @@ export default {
     const stepsTable = ref(null);
     const timestampRefs = ref([]);
     const stoneInputRefs = ref([]);
+    //So a note can be focused the moment it is inserted, the way a new step
+    //focuses its timestamp. An author who asks for a note wants to type one.
+    const noteRefs = ref([]);
+    //Same for a new path: the first thing it needs is a name.
+    const pathTitleRefs = ref([]);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
     const focusedDescIndex = ref(null);
-    const descriptionColumnIndex = 7;
     var civIconService = iconService(props.civ);
 
     //Autocomplete
@@ -896,7 +1265,10 @@ export default {
      * @return {boolean} True when the row can be hidden from a reader.
      */
     function saysNothing(index) {
-      return isRedundantStep(steps[index], index === 0 ? props.previousStep : steps[index - 1]);
+      //Same reason deltaClass skips markers: judged against one, a row that
+      //restates the distribution unchanged would look like it had stated it for
+      //the first time, and would be kept as content it is not.
+      return isRedundantStep(steps[index], previousStepBefore(index));
     }
 
     /**
@@ -933,7 +1305,7 @@ export default {
      * @return {string} The modifier class, or "" when there is nothing to say.
      */
     function deltaClass(field, index) {
-      const previous = index === 0 ? props.previousStep : steps[index - 1];
+      const previous = previousStepBefore(index);
       if (!previous) return "";
 
       const curr = parseVillagerCountString(steps[index][field]);
@@ -941,6 +1313,30 @@ export default {
       if (curr > prev) return "d-up";
       if (curr < prev) return "d-down";
       return "d-same";
+    }
+
+    /**
+     * The step a row's numbers are a change from.
+     *
+     * Markers are skipped rather than treated as a step with nothing on it. A
+     * marker has no resource cells at all, so comparing against one read every
+     * value as a move from zero — the first row of an alternative, and the first
+     * common row after the merge, lit up every pill as if the whole distribution
+     * had just been reassigned.
+     *
+     * Skipping them also gives the right answer rather than merely a harmless
+     * one: a path carries on from wherever the build had got to, and the first
+     * step after the merge carries on from the last step of the path the reader
+     * took.
+     *
+     * @param {number} index - Position within this section.
+     * @return {Object|null} The preceding step, or the section's predecessor.
+     */
+    function previousStepBefore(index) {
+      for (let cursor = index - 1; cursor >= 0; cursor--) {
+        if (!isMarker(steps[cursor])) return steps[cursor];
+      }
+      return props.previousStep;
     }
 
     const saveSelection = (event) => {
@@ -972,13 +1368,27 @@ export default {
       }
     };
 
+    /**
+     * The editable cell a row's rich text lives in.
+     *
+     * Found by the row's own index rather than by counting rows and taking
+     * column seven: a note is one wide cell where a step is nine narrow ones, so
+     * both halves of that assumption break on the first note in a section.
+     *
+     * @param {number} index - Position of the step within this section.
+     * @return {Element|null} The contenteditable, or null on mobile.
+     */
+    const editableCell = (index) =>
+      stepsTable.value?.querySelector(`[data-edit-index="${index}"][data-edit-field]`) ?? null;
+
     const showAutoCompleteMenu = (event, index) => {
       var contentEditable = null;
       if (index != null) {
-        contentEditable = stepsTable.value.querySelectorAll('tr.step-row')[index].cells[descriptionColumnIndex];
+        contentEditable = editableCell(index);
       } else {
         contentEditable = gameplanContentEditable.value;
       }
+      if (!contentEditable) return;
 
       if (event.data === ":") {
         //Show autocomplete menu
@@ -1000,8 +1410,7 @@ export default {
     function handleAutoCompleteMenuIconSelected(iconPath, tooltip, iconClass) {
       var contentEditable = null;
       if (!gameplanSelected.value) {
-        contentEditable =
-          stepsTable.value.querySelectorAll('tr.step-row')[activeStepIndex.value].cells[descriptionColumnIndex];
+        contentEditable = editableCell(activeStepIndex.value);
       } else {
         contentEditable = gameplanContentEditable.value;
       }
@@ -1013,10 +1422,12 @@ export default {
     const handleContentEditableKeyUp = (event, index) => {
       var contentEditable = null;
       if (index != null) {
-        contentEditable = stepsTable.value.querySelectorAll('tr.step-row')[index].cells[descriptionColumnIndex];
+        contentEditable = editableCell(index);
       } else {
         contentEditable = gameplanContentEditable.value;
       }
+      if (!contentEditable) return;
+
       const keyCode = event.which;
       const allIcons = civIconService.getIcons();
 
@@ -1093,7 +1504,7 @@ export default {
 
       aggregateVillagers(steps[index]);
 
-      context.emit("stepsChanged", steps);
+      emitSteps();
     };
 
     /**
@@ -1122,76 +1533,476 @@ export default {
 
     const updateStepDescription = (event, index) => {
       stepsCopy[index].description = keptOrEmptied(event.target.innerHTML);
-      context.emit("stepsChanged", stepsCopy);
+      emitSteps(stepsCopy);
     };
-    const addStep = async (index) => {
-      var table = stepsTable.value;
+
+    /**
+     * Saves a note's text.
+     *
+     * Emptied the same way a description is: a note the author cleared leaves
+     * "<br>" behind, which is truthy and would keep drawing a note row with
+     * nothing in it. Kept as an empty string rather than deleted, because the
+     * row itself is still there until the author removes it.
+     *
+     * @param {Event} event - The focusout event from the note's field.
+     * @param {number} index - Position of the note within this section.
+     * @return {void}
+     */
+    const updateStepNote = (event, index) => {
+      stepsCopy[index].gameplan = keptOrEmptied(event.target.innerHTML);
+      steps[index].gameplan = stepsCopy[index].gameplan;
+      emitSteps();
+    };
+
+    const registerNoteRef = (el, index) => {
+      if (el) noteRefs.value[index] = el;
+    };
+
+    const registerPathTitleRef = (el, index) => {
+      if (el) pathTitleRefs.value[index] = el;
+    };
+    /**
+     * Hands the section's items back to the parent in the shape the document
+     * stores them in.
+     *
+     * The single place the editor's flat working list becomes nested again, so
+     * a marker can never reach Firestore and a block can never be emitted
+     * half-open. Every change goes through here.
+     *
+     * @param {Array} [source] - The list to emit; defaults to the live steps.
+     * @return {void}
+     */
+    const emitSteps = (source = steps) => {
+      context.emit("stepsChanged", collapseBlocks(source));
+    };
+
+    /** The opening marker of an alternatives block. */
+    const isBlockStart = (item) => item?.kind === ALT_START;
+
+    /** The closing merge line. */
+    const isBlockEnd = (item) => item?.kind === ALT_END;
+
+    /** Neither a step nor a note — a marker the reader never sees. */
+    const isMarker = (item) => isBlockStart(item) || isBlockEnd(item);
+
+    /**
+     * Whether a row belongs to the alternative currently being edited.
+     *
+     * Drives the lane the block is drawn in. Positional, like membership itself:
+     * a row is inside because of where it sits, not because anything marks it.
+     *
+     * @param {number} index - Position in the editor's working list.
+     * @return {boolean} True for the steps between the markers.
+     */
+    const insideBlock = (index) => isInsideBlock(steps, index);
+
+    /**
+     * Where a row sits in the section as the document counts it.
+     *
+     * The editor's list has markers in it and the document's does not, so a row
+     * at local position 7 may be step 5 as far as the resolved times handed down
+     * from the parent are concerned. Everything index-aligned to the flattened
+     * build — resolved times, estimates, deltas — has to come through here.
+     *
+     * @param {number} index - Position in the editor's working list.
+     * @return {number} Position among the section's real steps.
+     */
+    const documentIndex = (index) => {
+      let count = 0;
+      for (let cursor = 0; cursor < index && cursor < steps.length; cursor++) {
+        if (!isMarker(steps[cursor])) count++;
+      }
+      return count;
+    };
+
+    /**
+     * Whether an item in this section is a note rather than a step.
+     *
+     * A note is a step whose content *is* its note — no time, no resource
+     * cells. The field is one the document format has always had, and three
+     * readers already understand it: it is kept out of the economy series, kept
+     * out of the redundancy filter, and exempted from the timing gate that
+     * decides whether a build can autoplay. Only the writer was missing.
+     *
+     * @param {Object} item - The step to judge.
+     * @return {boolean} True when it should render as a note.
+     */
+    const isNote = (item) => item?.gameplan !== undefined && item?.gameplan !== null;
+
+    /**
+     * Pulls what the author has typed into contenteditable cells back into the
+     * model, before anything reorders the rows underneath them.
+     *
+     * Reads each row's own index and its own field rather than counting rows and
+     * assuming column seven. Notes are laid out differently from steps — one wide
+     * cell instead of seven narrow ones — so a positional read finds the wrong
+     * cell on the first note in a section and every row after it.
+     *
+     * @return {void}
+     */
+    const syncEditedFields = () => {
+      const table = stepsTable.value;
+
       if (table) {
-        //Pull display text into model (desktop)
-        const stepRows = Array.from(table.querySelectorAll('tr.step-row'));
-        for (var i = 0; i < stepRows.length; i++) {
-          steps[i].description = stepRows[i].cells[descriptionColumnIndex].innerHTML;
+        //Desktop
+        for (const cell of table.querySelectorAll("[data-edit-field]")) {
+          const index = Number(cell.dataset.editIndex);
+          const field = cell.dataset.editField;
+          if (!Number.isInteger(index) || !steps[index]) continue;
+
+          steps[index][field] = cell.innerHTML;
         }
-      } else {
-        // Mobile: stepsCopy holds the user-typed descriptions; sync them into steps
-        // so Vue can diff cards correctly after the splice and update DOM positions.
-        for (var i = 0; i < steps.length; i++) {
+        return;
+      }
+
+      // Mobile: stepsCopy holds the user-typed descriptions; sync them into steps
+      // so Vue can diff cards correctly after the splice and update DOM positions.
+      for (let i = 0; i < steps.length; i++) {
+        if (isNote(steps[i])) {
+          steps[i].gameplan = stepsCopy[i].gameplan;
+        } else {
           steps[i].description = stepsCopy[i].description;
         }
       }
+    };
+
+    /** A blank step, in the shape the rest of the editor expects. */
+    const blankStep = (id) => ({
+      time: "",
+      villagers: "",
+      builders: "",
+      food: "",
+      wood: "",
+      gold: "",
+      stone: "",
+      description: "",
+      _id: id,
+    });
+
+    const addStep = async (index) => {
+      syncEditedFields();
 
       //Add row
       const addIndex = index + 1;
       const newId = ++_nextStepId;
-      stepsCopy.splice(addIndex, 0, {
-        time: "",
-        villagers: "",
-        builders: "",
-        food: "",
-        wood: "",
-        gold: "",
-        stone: "",
-        description: "",
-        _id: newId,
-      });
-      steps.splice(addIndex, 0, {
-        time: "",
-        villagers: "",
-        builders: "",
-        food: "",
-        wood: "",
-        gold: "",
-        stone: "",
-        description: "",
-        _id: newId,
-      });
+      stepsCopy.splice(addIndex, 0, blankStep(newId));
+      steps.splice(addIndex, 0, blankStep(newId));
 
-      context.emit("stepsChanged", steps);
+      emitSteps();
       await nextTick();
       await nextTick();
       timestampRefs.value[addIndex]?.focus();
     };
 
-    const removeStep = (currentIndex) => {
-      var table = stepsTable.value;
-      if (table) {
-        //Pull display text into model (desktop)
-        const stepRows = Array.from(table.querySelectorAll('tr.step-row'));
-        for (var i = 0; i < stepRows.length; i++) {
-          steps[i].description = stepRows[i].cells[descriptionColumnIndex].innerHTML;
-        }
-      } else {
-        // Mobile: sync descriptions from stepsCopy so Vue can diff after splice
-        for (var i = 0; i < steps.length; i++) {
-          steps[i].description = stepsCopy[i].description;
-        }
+    /**
+     * Inserts a note where the author asked for one.
+     *
+     * Notes used to be one per section, rendered automatically at the bottom of
+     * every section whether or not anybody wanted one. This puts them where the
+     * author put them, and only where the author put them.
+     *
+     * @param {number} index - Insert after this position; -1 prepends.
+     * @return {void}
+     */
+    const addNote = async (index) => {
+      syncEditedFields();
+
+      const addIndex = index + 1;
+      const newId = ++_nextStepId;
+      //Only `gameplan` — a note states no time and no resources, which is what
+      //keeps it out of the economy series and out of the autoplay timing gate.
+      stepsCopy.splice(addIndex, 0, { gameplan: "", _id: newId });
+      steps.splice(addIndex, 0, { gameplan: "", _id: newId });
+
+      emitSteps();
+      await nextTick();
+      await nextTick();
+      noteRefs.value[addIndex]?.focus();
+    };
+
+    /**
+     * Inserts a whole alternatives bracket in one action.
+     *
+     * The opening marker, one path with one empty step, and the closing merge
+     * line all arrive together. There is deliberately no "close" command
+     * anywhere: the merge line is not something an author adds, it is something
+     * the block has, which is why a block can never be left hanging open.
+     *
+     * @param {number} index - Insert after this position; -1 prepends.
+     * @return {void}
+     */
+    const addAlternatives = async (index) => {
+      //The menu already refuses this, greyed out with the reason. Refused here
+      //too, so nesting is impossible rather than merely unoffered — a block
+      //inside a block is two builds, and the flattener would drop the inner one
+      //without telling anybody.
+      if (isInsideBlock(steps, index + 1) || isInsideBlock(steps, index)) return;
+
+      syncEditedFields();
+
+      const addIndex = index + 1;
+      const stepId = ++_nextStepId;
+      const marker = { kind: ALT_START, paths: [emptyPath()], active: 0, _id: ++_nextStepId };
+      const first = blankStep(stepId);
+      const end = { kind: ALT_END, _id: ++_nextStepId };
+
+      steps.splice(addIndex, 0, marker, first, end);
+      stepsCopy.splice(addIndex, 0, { ...marker }, blankStep(stepId), { ...end });
+
+      emitSteps();
+      await nextTick();
+      await nextTick();
+      pathTitleRefs.value[addIndex]?.focus();
+    };
+
+    /**
+     * Shows a different path's steps in the table.
+     *
+     * The steps standing between the markers belong to the path that was on
+     * screen, so they are folded back onto it before the new path's are spliced
+     * in. Switching is a splice rather than a redraw because only one path's
+     * steps are ever inline — the rest wait on the marker.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @param {number} pathIndex - Which path to show.
+     * @return {void}
+     */
+    const switchPath = (markerIndex, pathIndex) => {
+      syncEditedFields();
+
+      const marker = steps[markerIndex];
+      const range = blockRanges(steps).find((entry) => entry.start === markerIndex);
+      if (!marker || !range || !marker.paths?.[pathIndex] || pathIndex === marker.active) return;
+
+      const inline = steps.slice(range.start + 1, range.end);
+      marker.paths[marker.active] = { ...marker.paths[marker.active], steps: inline };
+      marker.active = pathIndex;
+
+      const incoming = (marker.paths[pathIndex].steps ?? []).map((step) => ({
+        ...step,
+        _id: step._id ?? ++_nextStepId,
+      }));
+
+      const count = range.end - range.start - 1;
+      steps.splice(range.start + 1, count, ...incoming);
+      stepsCopy.splice(range.start + 1, count, ...incoming.map((step) => ({ ...step })));
+      stepsCopy[markerIndex] = { ...marker };
+
+      emitSteps();
+    };
+
+    /**
+     * Adds another path to a block and switches to it, so the author can start
+     * writing it immediately.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @return {void}
+     */
+    const addAlternative = async (markerIndex) => {
+      const marker = steps[markerIndex];
+      if (!marker?.paths) return;
+
+      marker.paths.push({ ...emptyPath(), steps: [blankStep(++_nextStepId)] });
+      switchPath(markerIndex, marker.paths.length - 1);
+
+      await nextTick();
+      await nextTick();
+      pathTitleRefs.value[markerIndex]?.focus();
+    };
+
+    /**
+     * Saves a path's title or its condition.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @param {string} field - "title" or "description".
+     * @param {string} value - The new value.
+     * @return {void}
+     */
+    const updatePath = (markerIndex, field, value) => {
+      const marker = steps[markerIndex];
+      if (!marker?.paths?.[marker.active]) return;
+
+      //A title is plain text. It is rendered into a chart legend and a focus-mode
+      //bar, neither of which renders HTML, so the markup is stripped here rather
+      //than left for them to deal with — the same treatment the timestamp and
+      //resource cells get.
+      //
+      //Not trimmed here, though. The field binds one way, so trimming on every
+      //keystroke wrote the trimmed string straight back into the input and ate
+      //the space the author had just typed. Trimming happens on the way out
+      //instead, in trimPathTitle().
+      const clean = field === "title" ? value.replace(/<[^>]*>/g, "") : keptOrEmptied(value);
+
+      marker.paths[marker.active] = { ...marker.paths[marker.active], [field]: clean };
+      stepsCopy[markerIndex] = { ...marker };
+      emitSteps();
+    };
+
+    /**
+     * Tidies a path title once the author has finished typing it.
+     *
+     * On the way out rather than on every keystroke, so that typing a space
+     * inside a name is possible at all.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @return {void}
+     */
+    const trimPathTitle = (markerIndex) => {
+      const marker = steps[markerIndex];
+      const path = marker?.paths?.[marker.active];
+      if (!path || path.title === path.title?.trim()) return;
+
+      updatePath(markerIndex, "title", path.title.trim());
+    };
+
+    /**
+     * Removes the path on screen, and its steps with it.
+     *
+     * The steps go because they are that path's answer to the condition — they
+     * are not common steps that happen to be sitting there, and lifting them
+     * into the build would put one path's plan on everybody's main line.
+     *
+     * Removing the last remaining path removes the block with it — a block with
+     * nothing to choose between is not a block. Its steps are **kept** in that
+     * case, lifted onto the main line: when other paths remain, a removed path's
+     * steps belong to a branch that no longer exists and go with it, but when the
+     * block itself is going there is nothing else to claim them and losing them
+     * would be a surprise. Same outcome as the marker's own ✕.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @return {void}
+     */
+    const removePath = (markerIndex) => {
+      const marker = steps[markerIndex];
+      if (!marker?.paths) return;
+      if (marker.paths.length < 2) return removeBlock(markerIndex);
+
+      const range = blockRanges(steps).find((entry) => entry.start === markerIndex);
+      if (!range) return;
+
+      const dropped = marker.active;
+      marker.paths.splice(dropped, 1);
+      marker.active = Math.max(0, dropped - 1);
+
+      const incoming = (marker.paths[marker.active].steps ?? []).map((step) => ({
+        ...step,
+        _id: step._id ?? ++_nextStepId,
+      }));
+      const count = range.end - range.start - 1;
+
+      steps.splice(range.start + 1, count, ...incoming);
+      stepsCopy.splice(range.start + 1, count, ...incoming.map((step) => ({ ...step })));
+      stepsCopy[markerIndex] = { ...marker };
+
+      emitSteps();
+    };
+
+    /**
+     * Removes the bracket and keeps everything that was inside it.
+     *
+     * Every path's steps are lifted back into the section — the ones on screen
+     * where they already are, the ones waiting on the marker after them. Deleting
+     * a block is a decision about structure, never about an author's steps.
+     *
+     * @param {number} markerIndex - Position of either marker.
+     * @return {void}
+     */
+    const removeBlock = (markerIndex) => {
+      syncEditedFields();
+
+      const range = blockRanges(steps).find(
+        (entry) => entry.start === markerIndex || entry.end === markerIndex
+      );
+      if (!range) return;
+
+      const marker = steps[range.start];
+      const inline = steps.slice(range.start + 1, range.end);
+      const others = (marker.paths ?? [])
+        .filter((path, index) => index !== marker.active)
+        .flatMap((path) => (path.steps ?? []).map((step) => ({ ...step, _id: ++_nextStepId })));
+
+      const lifted = [...inline, ...others];
+      const count = range.end - range.start + 1;
+
+      steps.splice(range.start, count, ...lifted);
+      stepsCopy.splice(range.start, count, ...lifted.map((step) => ({ ...step })));
+
+      emitSteps();
+      removeStepConfirmationDialog.value = false;
+    };
+
+    /**
+     * What can be inserted at one position, and why anything offered is refused.
+     *
+     * Age-up appends two sections to the end of the build, so it can only be
+     * honoured from the last section's trailing insert point. Everywhere else it
+     * is shown disabled with that reason rather than hidden, so the rule is
+     * learnable instead of mysterious.
+     *
+     * @param {number} index - The insert position, as addStep() takes it.
+     * @return {Array} Options for StepInsertMenu.
+     */
+    const insertOptions = (index) => {
+      const trailing = index === steps.length - 1;
+      //The insert point sits *after* `index`, so what matters is whether the
+      //position it lands in is inside the bracket.
+      const inside = isInsideBlock(steps, index + 1) || isInsideBlock(steps, index);
+      const ageUpHere = props.isLastSection && trailing;
+
+      let ageUpReason = null;
+      if (inside) {
+        ageUpReason = "An alternative cannot span an age-up — that is two builds, not one";
+      } else if (!props.ageUpAvailable) {
+        ageUpReason = "The build already reaches the Imperial Age";
+      } else if (!ageUpHere) {
+        ageUpReason = "An age-up can only be added at the end of the build";
       }
+
+      return [
+        { value: "step", title: "Step", icon: "mdi-plus" },
+        { value: "note", title: "Note", icon: "mdi-information-outline" },
+        {
+          value: "alternatives",
+          title: "Alternatives",
+          icon: "mdi-call-split",
+          disabled: inside,
+          reason: "Alternatives cannot be nested inside one another",
+        },
+        {
+          //Just "Age up", per the design frame. The age it leads to belongs in
+          //the arrival plate the action produces, not in a menu entry that has
+          //to stay as short as the three beside it.
+          value: "ageUp",
+          title: "Age up",
+          icon: "mdi-arrow-up-bold",
+          disabled: !!ageUpReason,
+          reason: ageUpReason,
+        },
+      ];
+    };
+
+    /**
+     * Acts on a choice from the insert menu.
+     *
+     * @param {string} choice - The option's value.
+     * @param {number} index - The insert position.
+     * @return {void}
+     */
+    const handleInsert = (choice, index) => {
+      if (choice === "step") return addStep(index);
+      if (choice === "note") return addNote(index);
+      if (choice === "alternatives") return addAlternatives(index);
+      if (choice === "ageUp") return context.emit("ageUpRequested");
+    };
+
+    const removeStep = (currentIndex) => {
+      syncEditedFields();
 
       //remove row
       stepsCopy.splice(currentIndex, 1);
       steps.splice(currentIndex, 1);
 
-      context.emit("stepsChanged", steps);
+      emitSteps();
       removeStepConfirmationDialog.value = false;
     };
 
@@ -1354,8 +2165,26 @@ export default {
       updateStep,
       handleTimeBlur,
       updateStepDescription,
+      updateStepNote,
+      isNote,
+      noteRefs,
+      registerNoteRef,
+      insertOptions,
+      handleInsert,
+      isBlockStart,
+      isBlockEnd,
+      insideBlock,
+      switchPath,
+      addAlternative,
+      updatePath,
+      trimPathTitle,
+      removePath,
+      removeBlock,
+      pathTitleRefs,
+      registerPathTitleRef,
       removeStep,
       addStep,
+      addNote,
       selectStep,
       hoverStep,
       unhoverStep,
@@ -1502,8 +2331,12 @@ export default {
   padding-left: 4px !important;
   padding-right: 4px !important;
 }
-/* Description cell — middle-aligned so single-line text centers in the 52px row */
-.step-row td.contentEditable {
+/* Description cell — middle-aligned so single-line text centers in the 52px row.
+   The alternatives condition is the same kind of field and shares the rule
+   rather than copying its numbers: that is what keeps an icon from changing the
+   row's height in one place and not the other. */
+.step-row td.contentEditable,
+.alt-row--cond td.contentEditable {
   vertical-align: middle !important;
   padding-top: 7px !important;
   padding-bottom: 7px !important;
@@ -1512,14 +2345,18 @@ export default {
   line-height: 1.55;
 }
 /* Edit mode: focus-only gold highlight fills entire cell */
-.step-row td.contentEditable[contenteditable="true"]:focus {
+.step-row td.contentEditable[contenteditable="true"]:focus,
+.alt-row--cond td.contentEditable[contenteditable="true"]:focus {
   outline: none;
   background: rgba(var(--v-theme-accent), 0.08);
   box-shadow: inset 0 0 0 1px rgba(var(--v-theme-accent), 0.4);
   border-radius: 6px;
 }
-/* Action column */
-.step-row td.step-actions {
+/* Action column. Shared with the alternatives rows, which are not .step-row and
+   so were getting none of this — their buttons fell back to the cell's default
+   middle alignment and sat a few pixels below the ones above and below them. */
+.step-row td.step-actions,
+.alt-row td.step-actions {
   padding-top: 7px !important;
   padding-bottom: 4px !important;
   padding-left: 4px !important;
@@ -1632,7 +2469,12 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 12px;
+  /* 8px on the right, so this ✕ lands in the same column as the one closing
+     every step row. The banner and the table share the same mx-4 inset, so the
+     sum is all that matters: a step's ✕ is a 40px box behind 4px of cell padding,
+     putting its glyph 24px in from the edge; this one is capped to 32px, so it
+     needs 8px behind it to centre on the same 24px. */
+  padding: 4px 8px 4px 12px;
   min-height: 40px;
   box-sizing: border-box;
   border-radius: 8px;
@@ -1642,6 +2484,17 @@ export default {
 .age-marker-icon-md {
   color: rgb(var(--v-theme-accent));
   flex-shrink: 0;
+}
+/* The ✕ is capped to the height the banner has room for.
+   Vuetify sizes an icon button as its text height plus 12px, so `size="small"`
+   is a 40px box — which, inside this banner's 4px padding, needs 48px and pushed
+   it past its 40px min-height. Only the final age-up carries the button, which
+   is why exactly one banner stood taller than the rest, and only in edit mode.
+   Capping it here keeps every age annotation the same height in both modes while
+   the glyph stays the 16px every other ✕ in the editor uses. */
+.age-marker-md .row-x {
+  width: 32px !important;
+  height: 32px !important;
 }
 .age-marker-lbl-md {
   font-size: 13px;
@@ -1690,6 +2543,22 @@ export default {
   cursor: pointer;
   z-index: 2;
 }
+/* The trailing insert line hangs half its button below the last row, where the
+   next section's card paints over it. The line belongs on that boundary and a
+   strip of space to hold it would put a gap at the foot of every section, so it
+   is lifted over what follows instead.
+
+   The lift has to happen on the card, not on the zone: every section is a
+   v-card, and Vuetify gives those `z-index: 0`, which makes each one a stacking
+   context. A z-index inside the card therefore cannot reach past it, however
+   large — the whole card has to come forward.
+
+   Only while the line is actually being pointed at. The button is invisible
+   otherwise, and a card that permanently outranked its neighbour would be one
+   more piece of stacking for the next person to unpick. */
+.hidden-xs:has(.ins-row--trailing .ins-zone:hover) {
+  z-index: 5;
+}
 .ins-line {
   position: absolute;
   left: 0; right: 0; top: 50%;
@@ -1718,6 +2587,13 @@ export default {
 .ins-zone:hover .ins-line { opacity: 1; transition: opacity 0.2s 0.15s; }
 .ins-zone:hover .ins-btn  { opacity: 1; transition: opacity 0.2s 0.15s; }
 
+/* Held open while its menu is: the pointer is on the menu by then, not on the
+   line, so hover alone would hide the control the reader is in the middle of
+   using — and leave no clue which of the insert lines the menu belongs to.
+   Closing it (a second click, a click outside, Escape) hands it back to hover. */
+.ins-zone--open .ins-line,
+.ins-zone--open .ins-btn { opacity: 1; }
+
 /* Add-icon button — always in DOM for correct menu positioning; hidden via opacity when not focused */
 .step-action-icon--hidden {
   opacity: 0 !important;
@@ -1736,6 +2612,257 @@ export default {
 
 .bo-noterow td {
   border-top: none;
+}
+/* ── Alternatives block ──────────────────────────────────────────────────────
+   Secondary throughout, never gold. Gold means where you are in the build —
+   ages, timings, the primary action. Blue means which way you went. A gold
+   control here would claim the two are the same kind of thing. */
+/* A lane, not a wash: a rail down the left edge and a tint that fades away from
+   it. This is the treatment the age banner already uses (.age-marker-md is the
+   same 90deg gradient in gold), so a block reads as the same kind of annotation
+   an age is — only the colour differs, which is the whole point of the rule that
+   gold means where you are and blue means which way you went.
+
+   The rail earns its place over the start/end borders alone: those say where the
+   block begins and ends, but only the rail says *you are inside it* — which is
+   the question a reader has halfway down a long alternative, with neither marker
+   on screen.
+
+   The fade is not decoration either. A flat tint across the row dulls the
+   resource pills, which are colour-coded and carry meaning; strongest at the
+   rail and gone by the description keeps the annotation where the annotation is
+   and leaves the content alone.
+
+   Painted on the row rather than the cells, because a per-cell gradient would
+   restart nine times across the row. */
+.alt-row,
+.alt-inside {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--v-theme-alternative), 0.12),
+    rgba(var(--v-theme-alternative), 0.02) 60%,
+    rgba(var(--v-theme-alternative), 0)
+  );
+}
+/* Every row keeps its separator, first column included. */
+/* Drawn *outside* the cell, which is what lets the first column keep its
+   separator like every other column: an inset rail paints within the padding box
+   and every row's bottom border cut through it.
+
+   A pseudo-element rather than an outset shadow, and deliberately 2px taller
+   than its cell at each end. A shadow stops exactly at the border box, so any
+   seam between two rows — a collapsed border, the zero-height insert row that
+   sits between every pair of items — shows as a nick in the rail, and one of
+   those was the gap at the top of the block. Overlapping its neighbours means
+   there is no seam left to show through.
+
+   It costs no layout: the rail lands in the table's own mx-4 margin, and the
+   cell is only made a positioning context. */
+.alt-row > td:first-child,
+.alt-inside > td:first-child {
+  position: relative;
+}
+.alt-row > td:first-child::before,
+.alt-inside > td:first-child::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -2px;
+  bottom: -2px;
+  width: 3px;
+  background: rgb(var(--v-theme-alternative));
+  pointer-events: none;
+}
+/* No horizontal rules bounding the block. The rail already says where it starts
+   and stops — it simply begins and ends — and both marker rows say so in words
+   as well. A third statement of the same fact bought nothing and cost the
+   crossings. */
+.alt-row td {
+  border-top: none !important;
+}
+/* The merge line keeps a separator like any other row — but only when a row
+   actually follows it. Ending a section, it needs none: the next thing on screen
+   is the age-up banner or the card edge, and a rule there separates a section
+   from itself. Same reasoning as the two rules further down that strip the last
+   row's border; this one had been overriding them. */
+tbody tr.alt-row--end:not(:last-child):not(:has(+ tr.ins-row--trailing)) td:not(:first-child) {
+  border-bottom: thin solid rgba(var(--v-theme-on-surface), 0.12) !important;
+}
+.alt-mark {
+  color: rgb(var(--v-theme-alternative));
+}
+.alt-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+/* The tabs start at the column edge. The mark is centred in the 64px timestamp
+   column — where the note's ⓘ also sits, so the two annotation marks line up
+   down the table — which already leaves ~24px of air to its right; the cell's
+   own 8px on top of that made the gap six times the one between the tabs
+   themselves, and it read as a break rather than as grouping.
+
+   A divider used to sit in that space. It is gone: at 1px it never registered
+   against the row's tint, and with the gap closed the column edge divides them
+   anyway. One fewer hairline in a row that already has a rail and a tint. */
+.alt-bar-cell {
+  padding-left: 2px !important;
+  padding-right: 8px !important;
+}
+.alt-tab {
+  text-transform: none;
+  letter-spacing: 0;
+}
+/* The condition row is a step row's height and behaves like one: an icon
+   dropped into the text does not grow it, because a 21px icon still fits the
+   line box inside the row's own 52px. Matching the steps around it matters more
+   than being compact — the eye reads a column of equal rows as one list. */
+/* The empty cells before the name. The condition and the action column are step
+   cells now and bring their own spacing. */
+.alt-cond-cell {
+  padding: 0 !important;
+}
+/* The name starts where the builders pill starts and runs to the end of the
+   resource block, so its left edge lines up with a column that is there on every
+   step row. Right up against the Description column, so it reads as "this path —
+   and here is when you take it". */
+.alt-title-td {
+  padding: 0 4px !important;
+}
+/* Revealed on hover, like every other row's ✕. The marker rows are not
+   .step-row, so the shared rule below never reached them and the control was
+   there but permanently invisible. */
+.alt-row:hover .row-x {
+  opacity: 1;
+}
+/* The title is one line and stays one line: it is what the chart legend, the
+   focus-mode path bar and the reader's pick row show, and those have room for a
+   name, not for a condition. The condition goes in the field beside it.
+
+   Dressed as a resource pill — same height, radius, border and weight, just
+   tinted with the alternatives colour and wide enough for words. It sits in a
+   row of pills, so it should read as one. */
+.alt-title-input,
+.alt-title-read {
+  /* A resource input in every respect that is not its width: same 30px box, same
+     radius, border and weight, the same 12px margins that centre it in the row,
+     and the same two states — a ghost while it is empty, tinted once it says
+     something. Only the tint differs, because the thing it says is which path
+     you are on rather than how many villagers are on wood.
+
+     The 0.45/0.65 fill and edge are the resource pills' own values, not numbers
+     picked to look similar. */
+  --rc-tint: var(--v-theme-alternative);
+  --rc-fill: 0.45;
+  --rc-edge: 0.65;
+
+  width: 100%;
+  /* The one deviation, and the only one: names are words, and centred words in a
+     314px box read as a heading rather than as a field. Digits centre because
+     they are compared down a column; these are not. */
+  text-align: left;
+  padding: 0 10px !important;
+}
+.alt-title-read {
+  display: block;
+  box-sizing: border-box;
+}
+/* Type set like a step description's placeholder — the pill's 800 weight and
+   tabular figures are for numbers, and read as shouting under a prompt. Only the
+   type: the field itself stays a pill. */
+.alt-title-input::placeholder {
+  color: rgba(var(--v-theme-on-surface), 0.25);
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-variant-numeric: normal;
+  letter-spacing: normal;
+}
+/* Focused like the resource pill it is dressed as, gold ring and all — the same
+   reason the condition takes the step's. Focus means "you are typing here" and
+   says nothing about what kind of field it is. */
+.alt-title-input:focus {
+  background: rgba(var(--v-theme-accent), 0.15) !important;
+  border-color: rgba(var(--v-theme-accent), 0.65) !important;
+}
+/* Everything about the condition's box — padding, line box, focus ring — now
+   comes from the step description rules it shares. Only its placeholder is its
+   own. */
+.alt-desc[contenteditable="true"]:empty::before {
+  content: 'Alternative condition';
+  /* 0.25, matching a step's placeholder rather than the 0.3 a note carries */
+  color: rgba(var(--v-theme-on-surface), 0.25);
+  pointer-events: none;
+}
+
+/* A note placed in the step flow is as tall as its text, and everything in the
+   row lines up with that text's FIRST line — the icon on the left, the picker
+   and the ✕ on the right. A one-line note therefore reads as centred, and a note
+   that runs to five lines keeps its icon and its controls in the corners instead
+   of drifting to the middle of a tall row.
+
+   This is the treatment a step's own description already has; the buttons need
+   nothing beyond not being overridden, since `.step-row td.step-actions` is
+   top-aligned and `.step-actions-inner` starts its flex items at the top. */
+/* Both the icon and the text hang from the top of the row at the same offset,
+   and that offset is what centres a single line in it: 15px + half a line lands
+   on 26px, the middle of the 52px row every table row here is.
+
+   Top-anchored rather than middle-anchored, because middle has two answers. A
+   one-line note wants the middle of the row; a five-line note wants the middle
+   of its first line; and `vertical-align: middle` gives the middle of whatever
+   the note grew to, which is neither once it wraps. Anchored to the top, one
+   number satisfies both — the first line never moves, and when the note is a
+   single line that position *is* the centre.
+
+   52px is Vuetify's own row height, set on the cell rather than the row, which
+   is why overriding the row's height changed nothing. */
+/* Both of these rows are as tall as a step row *actually* is, which is 54px, not
+   the 52px `.step-row` declares: a resource pill is 30px inside 12px margins, so
+   the pills set the real floor.
+
+   That 54px is exactly what an inline icon needs — the icon box is 36px plus 2px
+   margins, and 40px + the description's 7px padding top and bottom comes to 54.
+   A step therefore never changes height when an icon is added, and these two did,
+   because they have no pills to hold the floor up and were sitting on 52. */
+.step-row.bo-noterow,
+.alt-row--cond {
+  height: 54px;
+}
+/* And 2px of slack inside that, because 54px is exactly what the icon needs and
+   exactly what these rows are — no room left for a border, a rounded line box or
+   a font whose metrics differ by a fraction. A step row gets this slack for free
+   from its pills; these have to be given it.
+
+   Taken off the padding rather than added to the height, so the rows stay the
+   same height as a step. The text does not move: it is centred in the row, so
+   symmetric padding has no say in where it sits. */
+.step-row.bo-noterow td.contentEditable,
+.alt-row--cond td.contentEditable {
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+}
+
+/* The note's text is left to the step description rules entirely — middle
+   aligned, 7px, one row tall. Top-anchoring it at 15px looked identical while
+   the note was one plain line and came apart the moment an icon went in: the
+   taller line box grew downward from a fixed top, so the text appeared to gain
+   padding above it. A step re-centres instead, and so does this now.
+
+   The icon keeps its 15px, which is where a single line's centre falls. That is
+   the same relationship a step's timestamp pill has to its description: pinned
+   near the top, centred while the row is at its standard height. */
+.step-row.bo-noterow td.note-icon-cell {
+  vertical-align: top !important;
+  padding-top: 15px !important;
+}
+.note-icon-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* One line of note text — matches the 1.55 line-height beside it, so the icon
+     centres against a line rather than against its own 16px. */
+  min-height: 1.55em;
 }
 /* Match notes editor padding/spacing to step description */
 .bo-noterow td.contentEditable {
@@ -1758,15 +2885,28 @@ export default {
   pointer-events: none;
 }
 
-/* Step description placeholder — hints :: shortcut */
-.step-row td.contentEditable[contenteditable="true"]:empty::before {
-  content: 'Describe this step... (type :: to add icons inline)';
+/* Step description placeholder — hints :: shortcut. Excludes notes, which are
+   step rows too: a note was being offered "Describe this step..." because this
+   rule outranks the note's own placeholder on both specificity and order. */
+.step-row:not(.bo-noterow) td.contentEditable[contenteditable="true"]:empty::before {
+  content: 'Step description';
   color: rgba(var(--v-theme-on-surface), 0.25);
   pointer-events: none;
 }
 
+/* A note the author placed, as opposed to the section's own note below */
+.step-row.bo-noterow td[contenteditable="true"]:empty::before {
+  content: 'Note text';
+}
+
 /* Remove bottom border from the last row (step-row or bo-noterow) to avoid doubling with card edge */
 tbody tr:last-child td {
+  border-bottom: none !important;
+}
+/* The trailing insert line is a collapsed row, so in the editor it — not the
+   last step — is what `:last-child` finds, and the last step kept a separator
+   with nothing under it to separate from. */
+tbody tr:has(+ tr.ins-row--trailing) td {
   border-bottom: none !important;
 }
 

@@ -1,4 +1,5 @@
 import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+import { flattenSections } from "@/composables/builds/useAgeTimings.js";
 
 export default function useExportOverlayFormat() {
   const convert = (build) => {
@@ -26,15 +27,19 @@ export default function useExportOverlayFormat() {
     };
   };
 
+  //Stamp each step with the age of the section it sits in, then flatten through
+  //the shared flattener rather than a private loop. A step carries no age of its
+  //own, so the stamping has to happen while the sections are still in view — but
+  //that is the only thing this needs the sections for, which leaves flattening
+  //to the one function that owns it.
   function convertSectionsToSteps(sections) {
-    var steps = [];
     sections?.forEach((section) => {
       section.steps?.forEach((step) => {
         if (section.age && section.age > 0) step.age = section.age;
       });
-      steps = steps.concat(section.steps);
     });
-    return steps;
+
+    return flattenSections(sections);
   }
 
   function convertImagePathToText(imageElement) {
@@ -55,7 +60,11 @@ export default function useExportOverlayFormat() {
   }
 
   const convertStepToOverlayFormat = (step) => {
-    const notes = convertDescription(step.description);
+    //A note carries its text in `gameplan` and has no description at all, so
+    //reading only the description exported it as a blank step: no time, no
+    //villagers, and empty notes. The overlay has no notion of a note, but it
+    //does have notes, which is where the text belongs.
+    const notes = convertDescription(step.description || step.gameplan || "");
     const time = step.time?.replaceAll("<br>", "");
     return {
       age: step.age > 0 ? step.age : -1,

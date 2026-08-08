@@ -295,7 +295,12 @@ import {
 } from "@/composables/builds/textToSpeechHelper.js";
 import { redundantMask, hasVisibleContent } from "@/composables/builds/stepVisibility.js";
 import { useStepPiP } from "@/composables/builds/useStepPiP.js";
-import { AGE_DISPLAY, ageArt } from "@/composables/builds/useAgeTimings.js";
+import {
+  AGE_DISPLAY,
+  ageArt,
+  flattenSections,
+  sectionOffsets,
+} from "@/composables/builds/useAgeTimings.js";
 import {
   getTimings,
   resolveStepTimes,
@@ -388,33 +393,52 @@ export default {
         //For backwards compatibility
         steps.value = JSON.parse(JSON.stringify(props.build.steps));
       } else {
-        props.build.steps.forEach((section) => {
-          steps.value = steps.value.concat(JSON.parse(JSON.stringify(section.steps)));
-          // Replace .png with .webp in all step descriptions
-          steps.value.forEach((step) => {
-            if (step.description) {
-              step.description = step.description.replace(/\.png\b/gi, ".webp");
-            }
-          });
+        //One flattener for the whole site. The indices produced here have to
+        //line up with getTimings(), the resolver and the age markers below, and
+        //every private copy of this loop was one more place they could quietly
+        //stop agreeing. Cloned because the queue is mutated from here on —
+        //step.time is stamped in place — and the flattener hands back the
+        //build's own step objects.
+        steps.value = JSON.parse(JSON.stringify(flattenSections(props.build.steps)));
+
+        // Replace .png with .webp in all step descriptions
+        steps.value.forEach((step) => {
+          if (step.description) {
+            step.description = step.description.replace(/\.png\b/gi, ".webp");
+          }
+        });
+
+        //Section notes are folded into the step they follow, which is the last
+        //step of their own section — or, for a section with no steps of its
+        //own, the last step before it. Read from the offsets rather than from
+        //a running total, so this cannot drift from the list above.
+        const offsets = sectionOffsets(props.build.steps);
+
+        props.build.steps.forEach((section, index) => {
           //Guarded on visible content, not on the string: a note the author
           //emptied is "<br>", which would append two blank lines and a third
           //to a step that reads fine without them — or become the whole of a
           //step's content, leaving the player a card with nothing on it.
-          if (hasVisibleContent(section.gameplan)) {
-            //concat gameplan to current age's last step's description
-            //
-            //The separator only earns its place between two things. Appended
-            //unconditionally it prefixed a step that had no description of its
-            //own with two blank lines, which is invisible on a full screen and
-            //ruinous in a 400px window: the note became a three-line block in a
-            //row barely tall enough for one, and the centred content was sliced
-            //through the middle so the reader got the second blank line and the
-            //top half of the text.
-            const last = steps.value[steps.value.length - 1];
-            last.description = last.description
-              ? last.description + " <br><br> " + section.gameplan
-              : section.gameplan;
-          }
+          if (!hasVisibleContent(section.gameplan)) return;
+
+          //concat gameplan to current age's last step's description
+          //
+          //The separator only earns its place between two things. Appended
+          //unconditionally it prefixed a step that had no description of its
+          //own with two blank lines, which is invisible on a full screen and
+          //ruinous in a 400px window: the note became a three-line block in a
+          //row barely tall enough for one, and the centred content was sliced
+          //through the middle so the reader got the second blank line and the
+          //top half of the text.
+          const end = (index + 1 < offsets.length ? offsets[index + 1] : steps.value.length) - 1;
+          const last = steps.value[end];
+          //A note before any step at all has nothing to attach to. Previously
+          //this read steps[-1] and threw.
+          if (!last) return;
+
+          last.description = last.description
+            ? last.description + " <br><br> " + section.gameplan
+            : section.gameplan;
         });
       }
 
@@ -576,20 +600,22 @@ export default {
       //Legacy flat builds have no sections, so no age boundaries exist to read
       if (!Array.isArray(sections) || !sections[0]?.type) return markers;
 
-      let cursor = 0;
+      //Where each section starts in the flattened list. Shared with the
+      //flattening above rather than counted again here: two cursors over the
+      //same sections is exactly how the markers and the steps drift apart.
+      const offsets = sectionOffsets(sections);
 
       sections.forEach((section, index) => {
-        const count = section?.steps?.length ?? 0;
+        const start = offsets[index];
+        const end = index + 1 < offsets.length ? offsets[index + 1] : length;
 
-        if (section?.type === "ageUp" && count) {
+        if (section?.type === "ageUp" && end > start) {
           const arrival = sections
             .slice(index + 1)
             .find((later) => later?.type === "age" && later.age > 1);
           const display = AGE_DISPLAY.find((entry) => entry.age === arrival?.age);
-          if (display) markers[cursor] = display.short;
+          if (display) markers[start] = display.short;
         }
-
-        cursor += count;
       });
 
       return markers;
@@ -616,12 +642,10 @@ export default {
       const markers = new Array(length).fill(null);
       if (!Array.isArray(sections) || !sections[0]?.type) return markers;
 
-      let cursor = 0;
+      const offsets = sectionOffsets(sections);
       let current = null;
 
-      sections.forEach((section) => {
-        const count = section?.steps?.length ?? 0;
-
+      sections.forEach((section, index) => {
         if (section?.type === "age" && section.age >= 1) {
           current = section.age;
         } else if (section?.type === "ageUp" && current == null && section.age >= 1) {
@@ -631,9 +655,8 @@ export default {
           current = section.age;
         }
 
-        for (let offset = 0; offset < count; offset++) markers[cursor + offset] = current;
-
-        cursor += count;
+        const end = index + 1 < offsets.length ? offsets[index + 1] : length;
+        for (let cursor = offsets[index]; cursor < end; cursor++) markers[cursor] = current;
       });
 
       return markers;

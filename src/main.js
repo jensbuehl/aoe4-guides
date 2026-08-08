@@ -32,6 +32,15 @@ const customDarkTheme = {
     "primary-darken-1": "#8D7B4B",
     secondary: "#294790",
     "secondary-darken-1": "#3D516B",
+    //Alternatives — "gold means where you are in the build, blue means which way
+    //you went". It needs its own token because `secondary` is not the same
+    //colour in both themes: navy here, gold in the light palette below. Reading
+    //alternatives off `secondary` would paint them gold in light mode, which is
+    //the one thing that colour rule forbids.
+    //
+    //Lightened from the brand #294790 because that navy on this #324156 surface
+    //is about 1.3:1 — invisible. This is 4.8:1.
+    alternative: "#8AA9E8",
     "surface-container": "#324156", //nested card surfaces (step cards, inset panels)
     "icon-background-highlight": "#646C79",
     "icon-background": "#4F5866",
@@ -72,6 +81,9 @@ const customLightTheme = {
     "primary-darken-1": "#3D516B",
     secondary: "#CCAA55",
     "secondary-darken-1": "#8D7B4B",
+    //The brand navy itself here: 8.4:1 on this surface, and unmistakably not the
+    //gold that ages and timings use. Same role as the dark theme's lighter blue.
+    alternative: "#294790",
     "surface-container": "#FAFAFA", //nested card surfaces — light blue-grey, echoes navy palette
     "icon-background-highlight": "#DEDEDF",
     "icon-background": "#C5C5C6",

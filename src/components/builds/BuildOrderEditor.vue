@@ -110,6 +110,7 @@
             @stepsChanged="(steps) => handleStepsChanged(steps, index)"
             @gameplanChanged="(gameplan) => handleGameplanChanged(gameplan, index)"
             @ageDownRequested="removeAgeConfirmationDialog = true"
+            @ageUpRequested="ageUp()"
             @stepHovered="handleStepHovered"
             :section="section"
             :resolvedTimes="resolvedTimes[index]"
@@ -119,24 +120,15 @@
             :focus="sectionFocus == index"
             :isLastAgeUp="section.type === 'ageUp' && index === sections.length - 2"
             :previousStep="previousSectionLastStep(index)"
+            :isLastSection="index === sections.length - 1"
+            :ageUpAvailable="!!sections[0]?.steps && getCurrentAge() < 4"
+            :nextAgeName="getNextAgeName()"
           ></BuildOrderSectionEditor>
         </div>
-        <v-row no-gutters justify="center" class="ma-4">
-          <v-btn
-            v-if="sections[0]?.steps && !readonly && getCurrentAge() < 4"
-            variant="text"
-            color="accent"
-            class="ma-2"
-            @click="ageUp()"
-            ><v-img
-              class="mr-2"
-              style="vertical-align: middle; height: auto; width: 30px"
-              :src="getNextAgeImgSrc()"
-            ></v-img
-            >Age up to {{ getNextAgeName() }}
-          </v-btn>
-
-        </v-row>
+        <!--The bottom-anchored "Age up" button lived here. It is now an entry in
+            the insert menu on every insert line, so adding an age-up is the same
+            gesture as adding a step — and where it cannot go, the menu says so
+            rather than the entry being somewhere else entirely.-->
       </v-col>
     </v-row>
   </v-card>

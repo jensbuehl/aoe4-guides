@@ -1,5 +1,5 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/026-age-up-band/plan.md`.
+at `.specify/specs/027-build-alternatives/plan.md`.
 <!-- SPECKIT END -->

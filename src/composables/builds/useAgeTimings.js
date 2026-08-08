@@ -82,6 +82,92 @@ export function ageTimingLabel(display, timing) {
 const AGE_KEYS = { 2: "feudal", 3: "castle", 4: "imperial" };
 
 /**
+ * The one item kind that is not a step. Everything else in a section's `steps`
+ * array is an ordinary step, which is why absence of `kind` is the discriminator:
+ * no build written before this feature carries the field, so every existing
+ * document flattens exactly as it always did.
+ */
+const ALTERNATIVES = "alternatives";
+
+/**
+ * Identity of an alternatives block, for looking up which path is being read.
+ *
+ * Positional, like every other identity in a build order — a block carries no id
+ * of its own. A selection whose block has since moved resolves to the default
+ * rather than to the wrong path, because the lookup below falls through.
+ *
+ * @param {number} sectionIndex - Position of the section in the build.
+ * @param {number} itemIndex - Position of the block within that section.
+ * @return {string} The key a selection is stored under.
+ */
+export const blockId = (sectionIndex, itemIndex) => `${sectionIndex}:${itemIndex}`;
+
+/**
+ * The path a block is currently being read down.
+ *
+ * In order: what the reader chose, then the path its author marked as the main
+ * line, then the first one. The fall-through is what makes flattening total —
+ * there is always an answer, so no caller ever has to handle "no path".
+ *
+ * @param {Object} block - The alternatives block.
+ * @param {Object|null|undefined} selection - Map of blockId to path index.
+ * @param {string} id - This block's key.
+ * @return {Object|null} The active path, or null when the block has none.
+ */
+function activePath(block, selection, id) {
+  const paths = Array.isArray(block?.paths) ? block.paths : [];
+  if (!paths.length) return null;
+
+  const chosen = selection?.[id];
+  if (Number.isInteger(chosen) && paths[chosen]) return paths[chosen];
+
+  //Admission A-3: one main at most, and the first wins if an edit left two.
+  return paths.find((path) => path?.main) ?? paths[0];
+}
+
+/**
+ * The steps one section contributes to the flattened list.
+ *
+ * The single place a block turns back into a straight run of steps. Both
+ * flattenSections() and sectionOffsets() are built on this rather than each
+ * walking the section themselves, so the list and the offsets into it cannot
+ * disagree about how long a section is — which is the whole reason
+ * sectionOffsets() exists.
+ *
+ * @param {Object} section - One section of the build.
+ * @param {number} sectionIndex - Its position, for block identity.
+ * @param {Object|null|undefined} selection - Map of blockId to path index.
+ * @return {Array} The steps, blocks already resolved to one path.
+ */
+function sectionStepList(section, sectionIndex, selection) {
+  const items = section?.steps ?? [];
+  const steps = [];
+
+  items.forEach((item, itemIndex) => {
+    //An ordinary step, which is anything without the discriminator. Pushed
+    //as-is, by reference, including the nulls a malformed document may hold —
+    //dropping those here would shift every index after them.
+    if (!item?.kind) {
+      steps.push(item);
+      return;
+    }
+
+    if (item.kind !== ALTERNATIVES) return;
+
+    const path = activePath(item, selection, blockId(sectionIndex, itemIndex));
+
+    for (const step of path?.steps ?? []) {
+      //Admission A-4: blocks do not nest. An inner one is ignored rather than
+      //reported — the editor is where a human can be told why.
+      if (step?.kind) continue;
+      steps.push(step);
+    }
+  });
+
+  return steps;
+}
+
+/**
  * Flattens a build's sections into the ordered step list the timing helpers read.
  *
  * Section steps only, in order, and never the section gameplan — exactly as
@@ -91,15 +177,27 @@ const AGE_KEYS = { 2: "feudal", 3: "castle", 4: "imperial" };
  * agree on which step is which, and two copies of this loop is how they would
  * quietly stop agreeing.
  *
+ * **This is also where a branching build becomes a linear one.** An alternatives
+ * block is replaced in place by the steps of the path being read, so nothing
+ * downstream — the resolver, the redundancy mask, the economy series, focus
+ * mode's queue — ever learns that a build could fork. They keep receiving one
+ * ordered list of steps and keep being right about it.
+ *
+ * The cost of that is worth stating: the flat index space is **relative to a
+ * selection**. Step 14 down one path and step 14 down another are different
+ * steps, so an index may only be read against the selection it was taken under.
+ *
  * @param {Array} steps - A build's sections array.
+ * @param {Object} [selection] - Map of blockId to chosen path index. Omitted,
+ *   every block resolves to its main path, or its first.
  * @return {Array} The flattened steps. Empty when there is nothing to flatten.
  */
-export function flattenSections(steps) {
+export function flattenSections(steps, selection) {
   const flat = [];
 
-  for (const section of steps ?? []) {
-    for (const step of section?.steps ?? []) flat.push(step);
-  }
+  (steps ?? []).forEach((section, sectionIndex) => {
+    for (const step of sectionStepList(section, sectionIndex, selection)) flat.push(step);
+  });
 
   return flat;
 }
@@ -117,18 +215,25 @@ export function flattenSections(steps) {
  * A section with no `steps` contributes zero, so an empty or malformed section
  * shifts nothing and cannot desynchronise the sections after it.
  *
+ * A section containing an alternatives block contributes the **active path's**
+ * step count — not one, and not the total across paths. Counted through the same
+ * helper flattenSections() uses, so the two cannot disagree; pass both the same
+ * selection or the offsets will point into a list nobody produced.
+ *
  * @param {Array} steps - A build's sections array.
+ * @param {Object} [selection] - Map of blockId to chosen path index. Must match
+ *   the one given to flattenSections().
  * @return {Array<number>} One flat index per section, in section order. The
  *   first is always 0. Empty when there are no sections.
  */
-export function sectionOffsets(steps) {
+export function sectionOffsets(steps, selection) {
   const offsets = [];
   let cursor = 0;
 
-  for (const section of steps ?? []) {
+  (steps ?? []).forEach((section, sectionIndex) => {
     offsets.push(cursor);
-    cursor += section?.steps?.length ?? 0;
-  }
+    cursor += sectionStepList(section, sectionIndex, selection).length;
+  });
 
   return offsets;
 }
