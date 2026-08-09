@@ -102,8 +102,41 @@
           </template>
         </StepInsertMenu>
         <template v-for="(item, index) in steps" :key="item._id ?? ('xs-edit-' + index)">
+        <!--The block opens with its paths, exactly as it does on desktop: the
+            same tabs component, laid out as a card because that is what this
+            breakpoint uses instead of rows.-->
+        <div v-if="isBlockStart(item)" class="alt-card-xs alt-card-xs--start">
+          <div class="alt-card-head-xs">
+            <v-icon size="15" class="alt-mark">mdi-call-split</v-icon>
+            <div style="flex:1"></div>
+            <v-btn
+              v-if="!readonly"
+              icon
+              size="x-small"
+              variant="text"
+              class="step-remove-xs"
+              @click.stop="confirmRemoveBlock(index)"
+            ><v-icon size="14">mdi-close</v-icon></v-btn>
+          </div>
+          <AlternativePathTabs
+            :paths="item.paths"
+            :active="item.active"
+            :readonly="readonly"
+            :renaming="renamingBlock === index"
+            @select="switchPath(index, $event)"
+            @add="addAlternative(index)"
+            @rename="startRename(index)"
+            @remove="confirmRemovePath(index)"
+            @title="updatePath(index, 'title', $event)"
+            @done="finishRename(index)"
+          />
+        </div>
+        <!--The merge line: the mark alone, as on desktop. The rail stops here.-->
+        <div v-else-if="isBlockEnd(item)" class="alt-card-xs alt-card-xs--end">
+          <v-icon size="15" class="alt-mark">mdi-call-merge</v-icon>
+        </div>
         <!-- A note in the card flow, in the same dress the section note wears -->
-        <div v-if="isNote(item)" class="gameplan-card-xs">
+        <div v-else-if="isNote(item)" :class="['gameplan-card-xs', insideBlock(index) && 'alt-inside-xs']">
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Note</span>
@@ -154,7 +187,7 @@
         </div>
         <div
           v-else
-          class="step-card-xs"
+          :class="['step-card-xs', insideBlock(index) && 'alt-inside-xs']"
           v-on:keyup.enter.alt="addStep(index)"
           v-on:keyup.delete.alt="removeStepConfirmationDialog = true; delteRowIndex = index;"
           @focusin="$emit('selectionChanged')"
@@ -345,7 +378,23 @@
             is not a step that happened; a reader counting rows would count it.
             Hidden here and never in the editor, where the author still owns it.-->
         <template v-for="(item, index) in steps" :key="'xs-view-' + index">
-        <div v-if="isNote(item)" class="gameplan-card-xs">
+        <!--Reading a block: the paths are shown as they are authored, and the
+            tabs are the reader's own control — clicking one switches path.-->
+        <div v-if="isBlockStart(item)" class="alt-card-xs alt-card-xs--start">
+          <div class="alt-card-head-xs">
+            <v-icon size="15" class="alt-mark">mdi-call-split</v-icon>
+          </div>
+          <AlternativePathTabs
+            :paths="item.paths"
+            :active="item.active"
+            readonly
+            @select="switchPath(index, $event)"
+          />
+        </div>
+        <div v-else-if="isBlockEnd(item)" class="alt-card-xs alt-card-xs--end">
+          <v-icon size="15" class="alt-mark">mdi-call-merge</v-icon>
+        </div>
+        <div v-else-if="isNote(item)" :class="['gameplan-card-xs', insideBlock(index) && 'alt-inside-xs']">
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Note</span>
@@ -359,7 +408,7 @@
         </div>
         <div
           v-else-if="!saysNothing(index)"
-          class="step-card-xs"
+          :class="['step-card-xs', insideBlock(index) && 'alt-inside-xs']"
         >
           <!-- Top bar: timestamp + villager total -->
           <div class="stepc-top-xs">
@@ -534,53 +583,18 @@
                   the tabs took the row — the mark, the rail and the tint already
                   say a block starts here.-->
               <td :colspan="7" class="py-1 alt-bar-cell">
-                <div class="alt-bar">
-                  <!--One box per tab, holding either the name or the field that
-                      edits it. Same container either way, so switching to rename
-                      cannot change the tab's width — and the controls keep their
-                      place whether or not the tab is the open one, so activating
-                      a tab does not resize it either.-->
-                  <div
-                    v-for="(path, pathIndex) in item.paths"
-                    :key="'p' + pathIndex"
-                    :class="['alt-tab', pathIndex === item.active && 'alt-tab--active']"
-                    @click="switchPath(index, pathIndex)"
-                  >
-                    <input
-                      v-if="renamingBlock === index && pathIndex === item.active"
-                      :ref="el => registerPathTitleRef(el, index)"
-                      type="text"
-                      class="alt-tab-field"
-                      :size="Math.max(10, (path.title || '').length + 1)"
-                      :value="path.title"
-                      @input="updatePath(index, 'title', $event.target.value)"
-                      @keyup.enter="finishRename(index)"
-                      @keyup.esc="finishRename(index)"
-                      @blur="finishRename(index)"
-                      @click.stop
-                      @paste="handlePaste"
-                    />
-                    <span v-else class="alt-tab-label">{{ path.title }}</span>
-                    <span v-if="!readonly" class="alt-tab-actions">
-                      <v-icon size="13" @click.stop="startRename(index)">mdi-pencil</v-icon>
-                      <v-icon size="13" @click.stop="confirmRemovePath(index)">mdi-close</v-icon>
-                    </span>
-                  </div>
-                  <v-btn
-                    v-if="!readonly"
-                    size="small"
-                    variant="text"
-                    prepend-icon="mdi-plus"
-                    class="alt-add"
-                    @click="addAlternative(index)"
-                    >Add alternative</v-btn
-                  >
-                  <!--No "set as main" control. The first path is the main line,
-                      by convention rather than by a flag: one less thing to
-                      explain, one less piece of state to get wrong, and the
-                      reader's view follows from the order the author already
-                      chose. A flag can come back if it turns out to be wanted.-->
-                </div>
+                <AlternativePathTabs
+                  :paths="item.paths"
+                  :active="item.active"
+                  :readonly="readonly"
+                  :renaming="renamingBlock === index"
+                  @select="switchPath(index, $event)"
+                  @add="addAlternative(index)"
+                  @rename="startRename(index)"
+                  @remove="confirmRemovePath(index)"
+                  @title="updatePath(index, 'title', $event)"
+                  @done="finishRename(index)"
+                />
               </td>
               <td v-if="!readonly" class="step-actions" style="width:90px">
                 <div class="step-actions-inner">
@@ -943,6 +957,7 @@ import IconSelector from "@/components/builds/IconSelector.vue";
 import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 import IconToolTip from "@/components/builds/IconToolTip.vue";
 import StepInsertMenu from "@/components/builds/StepInsertMenu.vue";
+import AlternativePathTabs from "@/components/builds/AlternativePathTabs.vue";
 
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
@@ -1016,7 +1031,13 @@ export default {
     "ageUpRequested",
     "stepHovered",
   ],
-  components: { IconSelector, IconAutoCompleteMenu, IconToolTip, StepInsertMenu },
+  components: {
+    IconSelector,
+    IconAutoCompleteMenu,
+    IconToolTip,
+    StepInsertMenu,
+    AlternativePathTabs,
+  },
   setup(props, context) {
     //Absent on the editor route, where there is no timeline card to link to.
     //Every use is optional-chained rather than guarded once, so the table
@@ -1076,8 +1097,6 @@ export default {
     //So a note can be focused the moment it is inserted, the way a new step
     //focuses its timestamp. An author who asks for a note wants to type one.
     const noteRefs = ref([]);
-    //Same for a new path: the first thing it needs is a name.
-    const pathTitleRefs = ref([]);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
     const focusedDescIndex = ref(null);
@@ -1519,9 +1538,6 @@ export default {
       if (el) noteRefs.value[index] = el;
     };
 
-    const registerPathTitleRef = (el, index) => {
-      if (el) pathTitleRefs.value[index] = el;
-    };
     /**
      * Hands the section's items back to the parent in the shape the document
      * stores them in.
@@ -1700,9 +1716,6 @@ export default {
       stepsCopy.splice(addIndex, 0, { ...marker }, { ...condition }, blankStep(stepId), { ...end });
 
       emitSteps();
-      await nextTick();
-      await nextTick();
-      pathTitleRefs.value[addIndex]?.focus();
     };
 
     /**
@@ -1758,10 +1771,6 @@ export default {
         steps: [{ gameplan: "", _id: ++_nextStepId }, blankStep(++_nextStepId)],
       });
       switchPath(markerIndex, marker.paths.length - 1);
-
-      await nextTick();
-      await nextTick();
-      pathTitleRefs.value[markerIndex]?.focus();
     };
 
     /**
@@ -1812,11 +1821,10 @@ export default {
      */
     const renamingBlock = ref(null);
 
-    const startRename = async (markerIndex) => {
+    //Only the flag. AlternativePathTabs focuses its own field when this turns
+    //on, which keeps the template ref inside the component that owns it.
+    const startRename = (markerIndex) => {
       renamingBlock.value = markerIndex;
-      await nextTick();
-      pathTitleRefs.value[markerIndex]?.focus();
-      pathTitleRefs.value[markerIndex]?.select?.();
     };
 
     const finishRename = (markerIndex) => {
@@ -2227,8 +2235,6 @@ export default {
       confirmRemovePath,
       confirmRemoveBlock,
       runAltConfirm,
-      pathTitleRefs,
-      registerPathTitleRef,
       removeStep,
       addStep,
       addNote,
@@ -3331,6 +3337,62 @@ tbody tr:has(+ tr.ins-row--trailing) td {
 }
 
 /* ── Age bracket lane (mobile xs only) ────────────────────────────────────── */
+/* ── Alternatives, mobile ────────────────────────────────────────────────────
+   The block's own cards. Slimmer than a step card and tinted, so the two
+   markers read as annotation rather than as steps you skipped. */
+.alt-card-xs {
+  position: relative;
+  background: rgba(var(--v-theme-alternative), 0.12);
+  border: 1px solid rgba(var(--v-theme-alternative), 0.35);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+.alt-card-xs--end {
+  padding: 4px 10px;
+  text-align: center;
+}
+.alt-card-head-xs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+/* The lane. Cards are separate boxes with an 8px gap between them, so a rail
+   drawn inside each card would come out dashed. Each one extends 4px past its
+   card at both ends — half the gap — so consecutive rails meet and read as one
+   line, the same trick the desktop rail uses across row seams.
+
+   It sits at x=10px where the gold age rail sits at x=6px: nested, not
+   competing. Inside an age-up section a reader sees both, which is the point —
+   "you are in Feudal, on the aggression path". */
+.alt-inside-xs,
+.alt-card-xs {
+  margin-left: 12px;
+}
+.alt-inside-xs {
+  position: relative;
+}
+.alt-inside-xs::before,
+.alt-card-xs::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: -4px;
+  bottom: -4px;
+  width: 3px;
+  border-radius: 2px;
+  background: rgb(var(--v-theme-alternative));
+  pointer-events: none;
+}
+/* Squared off at the block's own ends, where there is no gap to bridge. */
+.alt-card-xs--start::before {
+  top: 0;
+}
+.alt-card-xs--end::before {
+  bottom: 0;
+}
+
 .age-bracket-xs {
   position: relative;
 }

@@ -124,6 +124,15 @@ drops work.*
 
 **Checkpoint (commit: `feat:`)** — US1 complete. Quickstart gate 11–16. SC-001.
 
+### Slice C — the mobile editor (FR-013a; found during testing, not in the original plan)
+
+- [X] T025a [US1] Extract the path tab bar as `src/components/builds/AlternativePathTabs.vue`, used by the desktop table and the mobile card flow — and by the reader's pick control in US2, which is the same control with the editing affordances off
+- [X] T025b [US1] Render block markers as cards in both mobile loops in `src/components/builds/BuildOrderSectionEditor.vue`. **This was a defect, not a gap**: markers matched neither `isNote` nor a step, fell through to the step-card branch, and drew blank editable cards an author could type into
+- [X] T025c [US1] Nest the block's rail inside the gold age rail on mobile — each card's rail overhangs 4px, half the 8px card gap, so consecutive rails meet and read as one line
+
+**Checkpoint (commit: `feat:`)** — mobile authoring. Quickstart 9 and 20 cover it.
+
+
 ---
 
 ## Phase 4: User Story 2 — Read a build and choose a path (Priority: P1)
