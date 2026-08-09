@@ -160,8 +160,9 @@ the part that was never editor work — the reader's *choice*: where it is store
 what it is made on, and who else can see it.
 
 - [X] T026a [US2] Surface each path's **condition** at the moment of choosing — a tooltip on the tab, from `pathCondition()`. Scoped down by the author: with a good title the condition is one click away as the path's first row, so the tooltip is enough and no second line is needed on mobile
-- [ ] T033a [US2] Stop `switchPath` mutating the section draft in read-only, and hold the choice in `useActivePath` instead. **Not about saving it** — about the rest of the page being able to see it. `AgeTimeline` (and the economy chart it hosts) read `build.steps` with no selection, so today they show the *first* path's timings and economy while the table shows the chosen one, and the row↔chart highlight compares indices from two different flattenings (R-6)
-- [ ] T033 [US2] Provide the selection from the build page and pass it through to `flattenSections`/`sectionOffsets`, in `src/views/builds/BuildDetails.vue` and `src/components/builds/BuildOrderEditor.vue`
+- [X] T033a [US2] Hold the reader's choice in `useActivePath`, provided by `BuildDetails`. **Never about saving it** — about the rest of the page being able to see it: `AgeTimeline` and the economy chart it hosts read `build.steps`, so they showed the *first* path's timings and economy beside the chosen path's steps. They read the shared selection now, and a switch clears the row↔chart highlight (S-2)
+- [X] T033 [US2] Provide the selection from the build page and pass it through to `flattenSections`/`sectionOffsets`, in `src/views/builds/BuildDetails.vue` and `src/components/builds/BuildOrderEditor.vue`
+- [X] T033b [US2] A block is inserted with **two** paths, and removing one of two dissolves it onto the main line — *"A or B"*, never *"A or nothing"* (author's call). Optional-detour semantics are out of scope
 - [ ] T034 [US2] Sticky pick card while scrolling inside a path on mobile, so the active choice is never off-screen, in `src/components/builds/BuildOrderSectionEditor.vue`
 - [ ] T035 [US2] Verify B-plain against the T003 screenshots on both breakpoints, light and dark (FR-017, SC-005)
 

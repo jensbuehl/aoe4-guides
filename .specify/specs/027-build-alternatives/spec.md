@@ -27,7 +27,7 @@ An author writing a Feudal all-in reaches 4:10 and wants to say "if they scouted
 1. **Given** the insert line in the build editor, **When** the author opens the add menu, **Then** it offers **Step**, **Note**, **Age up**, and **Alternatives** (replacing the current bottom-anchored add buttons).
 1a. **Given** the author picks **Note**, **When** it is inserted, **Then** a note is placed **at that position** — not appended to the end of the section — and it is the same rich field as a step description.
 1b. **Given** a section with no note, **When** the author edits it, **Then** **no empty note row is shown at all**. A note exists because the author asked for one.
-2. **Given** the author picks **Alternatives**, **When** the block is inserted, **Then** an opening marker, one named path holding an empty **note** and an empty step, and a closing merge marker are inserted together. That note is the path's condition (FR-022).
+2. **Given** the author picks **Alternatives**, **When** the block is inserted, **Then** an opening marker, **two** named paths — each holding an empty **note** and an empty step — and a closing merge marker are inserted together. That note is the path's condition (FR-022). *(Two, not one: a block is a fork, and one alternative is a run of steps with a label on it.)*
 3. **Given** an alternatives block, **When** the author uses **+ Add alternative**, **Then** a second path is created sharing the same two markers, and path tabs let the author switch which path's steps are being edited.
 4. **Given** a path, **When** the author renames it, **Then** the name is edited **on its tab**, in place (FR-023); its condition is its first note, written in the ordinary note field with `::` autocomplete and the icon picker (FR-022).
 5. **Given** the caret is inside an alternative, **When** the add menu opens, **Then** **Age up** and **Alternatives** are shown **disabled** with the reason in a tooltip, and there is **no Close entry** (the merge line always exists).
@@ -95,7 +95,7 @@ A player in focus mode reaches 4:10, is asked to pick, taps one, and keeps playi
 
 - **Three or more paths** → the pick control stacks vertically instead of sitting side by side; beyond three the author should be told this is two builds, not one.
 - **A path with zero steps** → the block still saves; the reading view shows the path as selectable with no steps (it is a legitimate "do nothing different" path).
-- **A single path** → no longer reachable by deleting: removing the last alternative removes the block and keeps its steps. A single-path block already in stored data still renders, as a plain run of steps.
+- **A single path** → not reachable. Inserting creates two, and removing one of two dissolves the block onto the main line. A single-path block already in stored data still renders, as a plain run of steps.
 - **Author tries to age up inside a path** → disabled in the add menu with the reason; the closing marker cannot be dragged/pushed past the next age-up.
 - **Existing builds** → documents with no alternatives render byte-identical to today; no migration.
 - **Overlay export** → a build with alternatives exports the **active path only** (flattened).
