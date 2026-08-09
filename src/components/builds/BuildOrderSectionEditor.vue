@@ -2343,6 +2343,7 @@ export default {
       isBlockStart,
       isBlockEnd,
       insideBlock,
+      xsGroups,
       switchPath,
       addAlternative,
       updatePath,
@@ -3409,10 +3410,11 @@ tbody tr:has(+ tr.ins-row--trailing) td {
 .alt-bracket-xs::before {
   content: '';
   position: absolute;
-  /* x=6 — the age rail's own line. At the top level an alternative and an age
-     are the same kind of annotation and draw the same way; only the colour says
-     which one it is. */
-  left: 6px;
+  /* The wrapper sits inside the container's 16px padding, so -10px puts the rail
+     on x=6 — the age rail's own line, which is measured from the section edge
+     instead. At the top level an alternative and an age are the same kind of
+     annotation and draw the same way; only the colour says which it is. */
+  left: -10px;
   top: 0;
   bottom: 0;
   width: 3px;
@@ -3425,7 +3427,7 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   padding-left: 8px;
 }
 .age-bracket-xs .alt-bracket-xs::before {
-  left: 14px;
+  left: -2px;
 }
 
 .age-bracket-xs {

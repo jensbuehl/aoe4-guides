@@ -123,9 +123,10 @@ export default {
   user-select: none;
   transition: background 0.12s;
 }
-.alt-tab:hover {
-  background: rgba(var(--v-theme-alternative), 0.28);
-}
+/* No hover fill. The background says which tab is open; making it also say
+   "the pointer is here" gave one channel two meanings, and an inactive tab lit
+   up as though it had been selected. Hovering reveals the controls — that is the
+   whole of the feedback. */
 .alt-tab--active {
   background: rgb(var(--v-theme-alternative));
   color: rgb(var(--v-theme-background));
