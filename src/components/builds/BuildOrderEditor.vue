@@ -247,10 +247,17 @@ export default {
       return flat.length ? resolveStepTimes(flat) : [];
     });
 
+    //Each section's slice runs to where the next one starts, not for as many
+    //entries as the section has items. An alternatives block is one item that
+    //contributes a path's worth of steps, so counting items cut the slice short
+    //and every step past the block in that section lost its worked-out time.
     const resolvedTimes = computed(() =>
       flatTimes.value.length
         ? offsets.value.map((offset, index) =>
-            flatTimes.value.slice(offset, offset + (sections.value[index]?.steps?.length ?? 0))
+            flatTimes.value.slice(
+              offset,
+              index + 1 < offsets.value.length ? offsets.value[index + 1] : flatTimes.value.length
+            )
           )
         : []
     );
