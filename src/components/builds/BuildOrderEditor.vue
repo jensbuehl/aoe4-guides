@@ -2,14 +2,14 @@
   <!--Common delete confirmation dialog-->
   <v-dialog v-model="removeAgeConfirmationDialog" width="auto" @keydown.enter="ageDown()">
     <v-card rounded="lg" class="text-center primary" flat>
-      <v-card-title>Age down to {{ getPreviousAgeName() }}?</v-card-title>
+      <v-card-title>Return to {{ getPreviousAgeName() }}?</v-card-title>
       <v-card-text>
         This removes the advance and all steps that follow.<br />
         The action cannot be undone.
       </v-card-text>
       <v-card-actions class="justify-center ga-2">
         <v-btn variant="text" @click="removeAgeConfirmationDialog = false">Cancel</v-btn>
-        <v-btn color="error" variant="tonal" @click="ageDown()">Age down</v-btn>
+        <v-btn color="error" variant="tonal" @click="ageDown()">Return</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

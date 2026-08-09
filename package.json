@@ -11,7 +11,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "check:icons": "node scripts/check-icons.mjs"
+    "check:icons": "node scripts/check-icons.mjs",
+    "check:setup": "node scripts/check-setup.mjs"
   },
   "dependencies": {
     "@firebase/app-check": "^0.8.13",
