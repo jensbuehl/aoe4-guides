@@ -2322,7 +2322,31 @@ export default {
      * @return {number|null} The flat index.
      */
     const flatIndexOf = (index) =>
-      props.stepOffset == null ? null : props.stepOffset + index;
+      props.stepOffset == null ? null : props.stepOffset + documentIndex(index);
+
+    /**
+     * The row that holds a given step, going the other way.
+     *
+     * The inverse of documentIndex: everything outside this component counts
+     * steps, and the rows here also include the markers of any alternatives
+     * block. Hovering row 7 of a section that contains a block is not step 7,
+     * and mixing the two lit up a row further down the build.
+     *
+     * @param {number} docIndex - Position among the section's real steps.
+     * @return {number|null} The row's index, or null when there is no such step.
+     */
+    const draftIndexOf = (docIndex) => {
+      if (docIndex == null || docIndex < 0) return null;
+
+      let count = 0;
+      for (let cursor = 0; cursor < steps.length; cursor++) {
+        if (isMarker(steps[cursor])) continue;
+        if (count === docIndex) return cursor;
+        count++;
+      }
+
+      return null;
+    };
 
     /**
      * The row the timeline is currently pointing at, in local terms.
@@ -2334,8 +2358,10 @@ export default {
       const flat = highlight?.stepIndex.value;
       if (flat == null || props.stepOffset == null) return null;
 
-      const local = flat - props.stepOffset;
-      return local >= 0 && local < (props.section?.steps?.length ?? 0) ? local : null;
+      //Through the same conversion the report used, so a row lights up only when
+      //it is the one that was pointed at. draftIndexOf answers null outside this
+      //section, which is what stops four sections each lighting a row.
+      return draftIndexOf(flat - props.stepOffset);
     });
 
     /**
@@ -2360,7 +2386,12 @@ export default {
      * @return {void}
      */
     const scrollToStep = (index) => {
-      const row = stepsTable.value?.querySelector(`tr.step-row[data-step-index="${index}"]`);
+      //The parent hands over a step index; the rows are numbered by draft
+      //position, which counts markers too.
+      const draftIndex = draftIndexOf(index);
+      if (draftIndex == null) return;
+
+      const row = stepsTable.value?.querySelector(`tr.step-row[data-step-index="${draftIndex}"]`);
       if (!row) return;
 
       scrollIntoView(row, {

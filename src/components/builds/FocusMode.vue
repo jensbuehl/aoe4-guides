@@ -295,6 +295,7 @@ import {
 } from "@/composables/builds/textToSpeechHelper.js";
 import { redundantMask, hasVisibleContent } from "@/composables/builds/stepVisibility.js";
 import { useStepPiP } from "@/composables/builds/useStepPiP.js";
+import { useActivePath } from "@/composables/builds/useActivePath.js";
 import {
   AGE_DISPLAY,
   ageArt,
@@ -328,6 +329,12 @@ export default {
   setup(props, context) {
     const currentStep = ref(null);
     const currentStepIndex = ref(0);
+
+    //Focus mode holds its own reading, not the page's. A choice made mid-game is
+    //about the game being played; it must not reach back and change what the
+    //build page below is showing, and the page's choice must not change the
+    //queue under a player's feet.
+    const focusSelection = useActivePath();
     const steps = ref([]);
 
     const timer = ref(null);
@@ -387,7 +394,24 @@ export default {
       onLeave: handleLeaveFloating,
     });
 
-    onMounted(async () => {
+    /**
+     * Builds the playback queue for one reading of the build.
+     *
+     * Lifted out of onMounted so a path switch can run it again. It cannot be
+     * patched in place: the five arrays below are index-aligned to each other,
+     * `step.time` is stamped into the steps themselves, and the redundant filter
+     * shortens all of them at once. Rebuilding is the only honest way to change
+     * what is in the queue.
+     *
+     * The order is load-bearing and unchanged: flatten, then time, then mark,
+     * then filter. Filtering first would shift every anchor the resolver used
+     * and change the times of the steps that remain.
+     *
+     * @param {Object} [selection] - Which alternative each block is read down.
+     *   Omitted, every block resolves to its first path.
+     * @return {void} Assigns steps, stepsTimings, stepDerived, stepAgeUp, stepAge.
+     */
+    function buildQueue(selection) {
       //init steps
       if (!props.build.steps[0]?.type) {
         //For backwards compatibility
@@ -399,7 +423,7 @@ export default {
         //stop agreeing. Cloned because the queue is mutated from here on —
         //step.time is stamped in place — and the flattener hands back the
         //build's own step objects.
-        steps.value = JSON.parse(JSON.stringify(flattenSections(props.build.steps)));
+        steps.value = JSON.parse(JSON.stringify(flattenSections(props.build.steps, selection)));
 
         // Replace .png with .webp in all step descriptions
         steps.value.forEach((step) => {
@@ -412,7 +436,7 @@ export default {
         //step of their own section — or, for a section with no steps of its
         //own, the last step before it. Read from the offsets rather than from
         //a running total, so this cannot drift from the list above.
-        const offsets = sectionOffsets(props.build.steps);
+        const offsets = sectionOffsets(props.build.steps, selection);
 
         props.build.steps.forEach((section, index) => {
           //Guarded on visible content, not on the string: a note the author
@@ -451,8 +475,8 @@ export default {
       //entries is cheaper than making "strict" mean less.
       const resolved = resolveStepTimes(steps.value);
       stepDerived.value = resolved.map((entry) => entry.provenance !== "stated");
-      stepAgeUp.value = readAgeUpMarkers(props.build.steps, steps.value.length);
-      stepAge.value = readAgeMarkers(props.build.steps, steps.value.length);
+      stepAgeUp.value = readAgeUpMarkers(props.build.steps, steps.value.length, selection);
+      stepAge.value = readAgeMarkers(props.build.steps, steps.value.length, selection);
 
       autoplaySupported.value = stepsTimings.value ? true : false;
 
@@ -504,6 +528,11 @@ export default {
       if (stepsTimings.value) {
         stepsTimings.value = stepsTimings.value.filter((timing, index) => !redundant[index]);
       }
+
+    }
+
+    onMounted(async () => {
+      buildQueue(focusSelection.paths.value);
 
       //init current step, from the list a player will actually move through
       currentStep.value = steps.value[currentStepIndex.value];
@@ -595,7 +624,7 @@ export default {
      * @param {number} length - Length of the flattened step list.
      * @return {Array<string|null>} Index-aligned age short names, mostly null.
      */
-    function readAgeUpMarkers(sections, length) {
+    function readAgeUpMarkers(sections, length, selection) {
       const markers = new Array(length).fill(null);
       //Legacy flat builds have no sections, so no age boundaries exist to read
       if (!Array.isArray(sections) || !sections[0]?.type) return markers;
@@ -603,7 +632,7 @@ export default {
       //Where each section starts in the flattened list. Shared with the
       //flattening above rather than counted again here: two cursors over the
       //same sections is exactly how the markers and the steps drift apart.
-      const offsets = sectionOffsets(sections);
+      const offsets = sectionOffsets(sections, selection);
 
       sections.forEach((section, index) => {
         const start = offsets[index];
@@ -638,11 +667,11 @@ export default {
      * @param {number} length - Length of the flattened step list.
      * @return {Array<number|null>} Index-aligned age numbers.
      */
-    function readAgeMarkers(sections, length) {
+    function readAgeMarkers(sections, length, selection) {
       const markers = new Array(length).fill(null);
       if (!Array.isArray(sections) || !sections[0]?.type) return markers;
 
-      const offsets = sectionOffsets(sections);
+      const offsets = sectionOffsets(sections, selection);
       let current = null;
 
       sections.forEach((section, index) => {
