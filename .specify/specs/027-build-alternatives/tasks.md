@@ -181,13 +181,13 @@ exactly one is drawn, the span is shaded, and switching in either place moves bo
 **Depends on**: US2 for the shared selection. **`getEcoSeries` itself needs no change** — it receives
 a linear list either way (research R-1, R-3).
 
-- [ ] T036 [US3] Pass the shared selection into the `getEcoSeries` call path in `src/components/builds/EcoLines.vue` and `src/views/builds/BuildDetails.vue`
-- [ ] T037 [US3] Add the path selector as its **own control in the legend region** — not a sixth resource entry — in `src/components/builds/EcoLines.vue`, leaving the existing hover-dim and click-pin gestures untouched (research R-7)
-- [ ] T038 [US3] Shade the split's time span and bound it with vertical markers, keeping resource colours and icons unchanged, in `src/components/builds/EcoLines.vue`
-- [ ] T039 [US3] Wire two-way selection sync so switching in the steps table redraws the chart and switching in the legend moves the table, via `src/composables/builds/useActivePath.js`
-- [ ] T040 [US3] Clear the step highlight on every path switch (invariant S-2) in `src/composables/builds/useActivePath.js` — a `stepIndex` taken under the old selection points at a different step under the new one
-- [ ] T041 [US3] Open on the `main` path when there is one, else the first path, in `src/components/builds/EcoLines.vue` (FR-014)
-- [ ] T042 [US3] Verify SC-007 with the T004 witness: convert B-rewind to use a block and confirm it now draws a chart, **and** that an unconverted rewinding build still correctly draws none
+- [X] T036 [US3] Pass the shared selection into the `getEcoSeries` call path — done in `AgeTimeline.vue`, which is where both the timings and the chart's series are computed
+- [X] T037 [US3] ~~Path selector in the legend~~ — **dropped (author's call).** The steps table already drives the selection and sits beside the chart; a second control for one piece of state is a thing to keep in sync for no gain. R-7's problem disappears with it
+- [X] T038 [US3] ~~Shade the split's span~~ — **dropped (author's call).** The chart plots the build being read, and that is the whole statement. Shading would say which stretch the choice affects; additive, and can return if the chart ever reads as ambiguous
+- [X] T039 [US3] Selection sync — **one-way, and simpler than specified**: the table drives, the chart follows. With T037 dropped there is no second place to switch from
+- [X] T040 [US3] Clear the step highlight on every path switch (invariant S-2) — `BuildDetails` subscribes to `onSwitch` and clears both holders
+- [X] T041 [US3] Open on the first path — falls out of the flattener's own resolution; no code in the chart
+- [ ] T042 [US3] Verify SC-007 by hand: a build converted to use a block draws a chart where it drew none. **No auto-conversion is in scope** — whether an existing build adopts alternatives is the author's decision, so SC-007 describes what becomes possible, not something the site does
 
 **Checkpoint (commit: `feat:`)** — US3 complete. Quickstart gate 23–30. SC-003, SC-007.
 
