@@ -25,8 +25,8 @@
       />
       <span v-else class="alt-tab-label">{{ path.title }}</span>
       <span v-if="!readonly" class="alt-tab-actions">
-        <v-icon size="13" @click.stop="$emit('rename')">mdi-pencil</v-icon>
-        <v-icon size="13" @click.stop="$emit('remove')">mdi-close</v-icon>
+        <v-icon size="13" @click.stop="$emit('rename', pathIndex)">mdi-pencil</v-icon>
+        <v-icon size="13" @click.stop="$emit('remove', pathIndex)">mdi-close</v-icon>
       </span>
     </div>
     <v-btn
@@ -152,12 +152,16 @@ export default {
   color: rgba(var(--v-theme-on-surface), 0.4);
   font-weight: 400;
 }
-/* Space reserved in every state, so a tab is the same width open or closed. */
+/* Space reserved in every state, so a tab is the same width open or closed —
+   but not clickable while invisible. `opacity: 0` still takes pointer events, so
+   the hidden pencil on an inactive tab swallowed the click that should have
+   selected that tab, and fired rename on the open one instead. */
 .alt-tab-actions {
   display: inline-flex;
   align-items: center;
   gap: 2px;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.12s;
 }
 /* Both conditions, not either: renaming and removing act on the path you are
@@ -166,6 +170,7 @@ export default {
    nothing moves when they fade in. */
 .alt-tab--active:hover .alt-tab-actions {
   opacity: 0.85;
+  pointer-events: auto;
 }
 /* On a touch screen there is no hover to reveal them with, and a control you
    cannot discover is a control that does not exist. Shown on the open tab
@@ -173,6 +178,7 @@ export default {
 @media (hover: none) {
   .alt-tab--active .alt-tab-actions {
     opacity: 0.85;
+    pointer-events: auto;
   }
 }
 .alt-tab-actions .v-icon:hover {

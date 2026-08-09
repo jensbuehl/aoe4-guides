@@ -129,8 +129,8 @@
             :renaming="renamingBlock === index"
             @select="switchPath(index, $event)"
             @add="addAlternative(index)"
-            @rename="startRename(index)"
-            @remove="confirmRemovePath(index)"
+            @rename="renamePath(index, $event)"
+            @remove="removePathAt(index, $event)"
             @title="updatePath(index, 'title', $event)"
             @done="finishRename(index)"
           />
@@ -622,8 +622,8 @@
                   :renaming="renamingBlock === index"
                   @select="switchPath(index, $event)"
                   @add="addAlternative(index)"
-                  @rename="startRename(index)"
-                  @remove="confirmRemovePath(index)"
+                  @rename="renamePath(index, $event)"
+                  @remove="removePathAt(index, $event)"
                   @title="updatePath(index, 'title', $event)"
                   @done="finishRename(index)"
                 />
@@ -1920,6 +1920,36 @@ export default {
       renamingBlock.value = markerIndex;
     };
 
+    /**
+     * Renames the path whose pencil was clicked — not whichever path happens to
+     * be open.
+     *
+     * The tab says which one it means, and this switches to it first. Only the
+     * open tab's controls are reachable today, so the switch is a no-op in
+     * practice; it is here because "the control acts on the thing it sits on" is
+     * the property that was broken, and asserting it costs one line.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @param {number} pathIndex - The path the control belongs to.
+     * @return {void}
+     */
+    const renamePath = (markerIndex, pathIndex) => {
+      if (Number.isInteger(pathIndex)) switchPath(markerIndex, pathIndex);
+      startRename(markerIndex);
+    };
+
+    /**
+     * Removes the path whose ✕ was clicked, for the same reason.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @param {number} pathIndex - The path the control belongs to.
+     * @return {void}
+     */
+    const removePathAt = (markerIndex, pathIndex) => {
+      if (Number.isInteger(pathIndex)) switchPath(markerIndex, pathIndex);
+      confirmRemovePath(markerIndex);
+    };
+
     const finishRename = (markerIndex) => {
       trimPathTitle(markerIndex);
 
@@ -2319,6 +2349,8 @@ export default {
       trimPathTitle,
       renamingBlock,
       startRename,
+      renamePath,
+      removePathAt,
       finishRename,
       removePath,
       removeBlock,
