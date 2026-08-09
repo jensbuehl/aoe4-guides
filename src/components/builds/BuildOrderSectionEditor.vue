@@ -3381,9 +3381,14 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   border-radius: 10px;
   padding: 8px 10px;
 }
+/* The same row an age annotation is: 42px tall, icon left at the same inset.
+   "Advancing to…", "…reached" and "the paths rejoin here" are three statements
+   of the same kind, and were three different shapes. */
 .alt-card-xs--end {
-  padding: 4px 10px;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  height: 42px;
+  padding: 0 10px 0 14px;
 }
 .alt-card-head-xs {
   display: flex;
@@ -3516,5 +3521,11 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   text-transform: uppercase;
   color: rgb(var(--v-theme-accent));
   margin-bottom: 6px;
+}
+/* The header paints its label accent, and the ✕ sitting in it was inheriting
+   that. It is a control, not part of the label — same colour as the one on a
+   step card, which inherits the card's own text colour. */
+.gameplan-header-xs .step-remove-xs {
+  color: rgb(var(--v-theme-on-surface));
 }
 </style>
