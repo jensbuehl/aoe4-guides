@@ -205,10 +205,10 @@ if untouched, path is named, mid-detour switch works (quickstart 31–39).
 
 - [ ] T043 [US4] Extract the `onMounted` queue construction into a `buildQueue(selection)` function in `src/components/builds/FocusMode.vue`, preserving the existing order — timings, then provenance, then markers, then the redundant filter over all five parallel arrays (research R-5)
 - [ ] T044 [US4] Rebuild the queue on path switch and **re-seek by elapsed time**, never by index — the new cursor is the last step whose `startTime <= totalElapsedTime` — in `src/components/builds/FocusMode.vue`
-- [ ] T045 [US4] Render the pick in the step-content area only, leaving header, progress bars, resource dock and transport controls unmoved, in `src/components/builds/FocusMode.vue` (FR-015)
-- [ ] T046 [US4] Add the countdown fallback to `main` (else first path), its length the gap to the next step capped around 10s, so auto-advance never stalls, in `src/components/builds/FocusMode.vue`
-- [ ] T047 [US4] Add the ~22px active-path bar with an explicit **switch** control as a **new grid row track** — not an inserted element, or the bar stretches (design-input implementation note) — in `src/components/builds/FocusMode.vue`
-- [ ] T048 [US4] Use the secondary colour for the pick, never gold, so it cannot be mistaken for a transport button, in `src/components/builds/FocusMode.vue` (FR-016)
+- [X] T045 [US4] Render the pick in the step-content area only, leaving header, progress bars, resource dock and transport controls unmoved, in `src/components/builds/FocusMode.vue` (FR-015)
+- [X] T046 [US4] Add the countdown fallback to `main` (else first path), its length the gap to the next step capped around 10s, so auto-advance never stalls, in `src/components/builds/FocusMode.vue`
+- [X] T047 [US4] Add the ~22px active-path bar with an explicit **switch** control as a **new grid row track** — not an inserted element, or the bar stretches (design-input implementation note) — in `src/components/builds/FocusMode.vue`. The bar shows for **every** step of the block, not only the first: that is exactly how long the choice stays changeable. Switching cycles to the next path (a fork is two, not a list to read) and re-seeks to the clock
+- [X] T048 [US4] Use the `alternative` theme colour (added in `main.js`; `secondary` swaps navy↔gold between themes and would have gone gold in dark) for the pick, never gold, so it cannot be mistaken for a transport button, in `src/components/builds/FocusMode.vue` (FR-016)
 - [ ] T049 [US4] Collapse the pick to two short titles side by side at the micro tier, dropping descriptions and the countdown label but keeping the countdown bar, in `src/components/builds/FocusMode.vue`
 - [ ] T050 [US4] Ensure voice-over does not announce the pick as a step, and does announce the chosen path's first step, in `src/components/builds/FocusMode.vue`
 
