@@ -147,6 +147,21 @@
         </div>
       </div>
 
+      <!--Its own grid track, not an element slipped in: the shell states which
+          row each part sits on, and an unplaced child would take the step area's
+          1fr and stretch down the screen.-->
+      <div class="fm-path-bar" v-if="activePathBar">
+        <v-icon size="13" class="fm-path-bar-mark">mdi-call-split</v-icon>
+        <span class="fm-path-bar-title">{{ activePathBar.title }}</span>
+        <button
+          v-if="activePathBar.paths.length > 1"
+          class="fm-path-bar-switch"
+          @click="switchActivePath()"
+        >
+          switch
+        </button>
+      </div>
+
       <div class="fm-dock">
         <!--Only what the step actually states, plus the two things always worth
             knowing. A column the author left blank is absent rather than empty:
@@ -571,6 +586,17 @@ export default {
       steps.value = steps.value.filter((step, index) => !redundant[index]);
       stepDerived.value = stepDerived.value.filter((flag, index) => !redundant[index]);
       stepPick.value = stepPick.value.filter((marker, index) => !redundant[index]);
+
+      //The step that carried the question may itself have been redundant. The
+      //question still has to be asked, so it moves to whichever of the block's
+      //steps survived first — otherwise the fork passes unasked and the player
+      //silently plays path one.
+      const asked = new Set();
+      stepPick.value.forEach((marker) => {
+        if (!marker) return;
+        marker.first = !asked.has(marker.key);
+        asked.add(marker.key);
+      });
       stepAgeUp.value = stepAgeUp.value.filter((marker, index) => !redundant[index]);
       stepAge.value = stepAge.value.filter((marker, index) => !redundant[index]);
       if (stepsTimings.value) {
@@ -669,10 +695,40 @@ export default {
      */
     const pendingPick = computed(() => {
       const marker = stepPick.value?.[currentStepIndex.value];
-      if (!marker) return null;
+      if (!marker?.first) return null;
 
       return focusSelection.pathFor(marker.key) == null ? marker : null;
     });
+
+    /**
+     * The path being played, while one is — for the bar that names it.
+     *
+     * Shown for every step of the block, not only the first, because that is
+     * exactly how long the choice stays changeable: a read at 4:10 can be wrong,
+     * and the player should be able to say so until the paths rejoin.
+     */
+    const activePathBar = computed(() => {
+      const marker = stepPick.value?.[currentStepIndex.value];
+      if (!marker || pendingPick.value) return null;
+
+      const index = focusSelection.pathFor(marker.key) ?? 0;
+      return { key: marker.key, index, paths: marker.paths, title: marker.paths[index]?.title };
+    });
+
+    /**
+     * Takes the next path along.
+     *
+     * A cycle rather than a menu: a block is a fork, usually of two, and a
+     * player mid-game wants the other one — not a list to read.
+     *
+     * @return {void}
+     */
+    function switchActivePath() {
+      const bar = activePathBar.value;
+      if (!bar || bar.paths.length < 2) return;
+
+      choosePath(bar.key, (bar.index + 1) % bar.paths.length);
+    }
 
     //Armed the moment a fork reaches the screen, cleared when it leaves. A watch
     //rather than a call inside buildQueue: the question can also arrive by the
@@ -774,10 +830,15 @@ export default {
           const active = Number.isInteger(chosen) && item.paths?.[chosen] ? chosen : 0;
           const contributed = (item.paths?.[active]?.steps ?? []).filter((step) => !step?.kind).length;
 
-          //A path with no steps of its own contributes nothing to stand on, so
-          //there is no step at which to ask. The block passes silently, which is
-          //the same thing the reading view does with it.
-          if (contributed) markers[cursor] = { key, paths: item.paths ?? [] };
+          //Every step the block contributes carries it, not just the first: the
+          //first is where the question is asked, and the rest are where the
+          //answer can still be changed — the choice stays open until the paths
+          //rejoin. A path with no steps of its own contributes nothing to stand
+          //on, so there is nowhere to ask and the block passes silently, exactly
+          //as it does in the reading view.
+          for (let offset = 0; offset < contributed; offset++) {
+            markers[cursor + offset] = { key, paths: item.paths ?? [], first: offset === 0 };
+          }
           cursor += contributed;
         });
       });
@@ -1304,6 +1365,8 @@ export default {
       currentAge,
       currentStep,
       pendingPick,
+      activePathBar,
+      switchActivePath,
       pickCountdown,
       choosePath,
       conditionOfPath,
@@ -1369,7 +1432,10 @@ export default {
   --fm-gap: 8px;
 
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
+  /* header, bars, step, path bar, dock. The path bar's track collapses to
+     nothing when no block is being played, so a build without alternatives is
+     laid out exactly as before. */
+  grid-template-rows: auto auto 1fr auto auto;
   width: 100%;
   height: 100%;
   min-height: 0;
@@ -1499,7 +1565,7 @@ export default {
 }
 
 .fm-dock {
-  grid-row: 4;
+  grid-row: 5;
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1845,5 +1911,45 @@ export default {
 .fm-pick-cond {
   font-size: 12px;
   opacity: 0.8;
+}
+
+/* Thin on purpose: it answers "which way am I going" and offers to change it,
+   and it must not take room from the step a player is reading. */
+.fm-path-bar {
+  grid-row: 4;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 22px;
+  padding: 0 10px;
+  background: rgba(var(--v-theme-alternative), 0.16);
+  color: rgb(var(--v-theme-alternative));
+  font-size: 12px;
+  font-weight: 700;
+}
+.fm-path-bar-mark {
+  color: rgb(var(--v-theme-alternative));
+}
+.fm-path-bar-title {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(var(--v-theme-on-surface));
+  font-weight: 600;
+}
+/* Explicit, because a read at 4:10 can be wrong and the player should not have
+   to leave the game to correct it. */
+.fm-path-bar-switch {
+  border: 1px solid rgba(var(--v-theme-alternative), 0.6);
+  border-radius: 6px;
+  padding: 1px 8px;
+  background: transparent;
+  color: rgb(var(--v-theme-alternative));
+  font: inherit;
+  cursor: pointer;
+}
+.fm-path-bar-switch:hover {
+  background: rgba(var(--v-theme-alternative), 0.25);
 }
 </style>
