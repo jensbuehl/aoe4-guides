@@ -80,7 +80,7 @@
           >
           <v-chip
             class="mr-1 mt-1"
-            v-if="isNew(build.timeCreated.toDate())"
+            v-if="isNew(toDateSafe(build.timeCreated))"
             label
             color="accent"
             size="x-small"
@@ -105,7 +105,7 @@
           <span v-if="(showAuthor || showCreator) && build.timeCreated" class="blc-sep">·</span>
           <span v-if="build.timeCreated" 
             ><v-icon size="12" icon="mdi-clock-edit-outline"></v-icon
-            >{{ timeSince(build.timeCreated.toDate()) }}</span
+            >{{ timeSince(toDateSafe(build.timeCreated)) }}</span
           >
           <span class="blc-sep">·</span>
           <span 
@@ -163,7 +163,7 @@
               ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
             >
             <v-chip
-              v-if="build.timeCreated && isNew(build.timeCreated.toDate())"
+              v-if="build.timeCreated && isNew(toDateSafe(build.timeCreated))"
               label
               color="accent"
               size="x-small"
@@ -172,7 +172,7 @@
             >
             <span v-if="build.timeCreated" 
               ><v-icon size="13" icon="mdi-clock-edit-outline"></v-icon
-              >{{ timeSince(build.timeCreated.toDate()) }}</span
+              >{{ timeSince(toDateSafe(build.timeCreated)) }}</span
             >
             <span v-if="build.timeCreated" class="blc-sep">·</span>
             <span 
@@ -248,7 +248,7 @@ import AgeChips from "@/components/builds/AgeChips.vue";
 
 //Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
-import useTimeSince from "@/composables/useTimeSince";
+import useTimeSince, { toDateSafe } from "@/composables/useTimeSince";
 import { useCursorTooltip } from "@/composables/useCursorTooltip";
 import {
   useAgeTimings,
@@ -361,6 +361,7 @@ export default {
     });
 
     return {
+      toDateSafe,
       civs,
       height,
       timeSince,

@@ -34,7 +34,7 @@
     ><v-row no-gutters justify="end">
       <v-col cols="auto">
         <v-item-group v-if="timeCreated && author">
-          <v-chip class="mr-2" v-if="isNew(timeCreated.toDate())" label color="accent" size="small"
+          <v-chip class="mr-2" v-if="isNew(toDateSafe(timeCreated))" label color="accent" size="small"
             ><v-icon start icon="mdi-alert-decagram"></v-icon>NEW</v-chip
           >
           <v-chip class="mr-2" label size="small"
@@ -42,7 +42,7 @@
           >
           <v-chip label size="small"
             ><v-icon start icon="mdi-clock-edit-outline"></v-icon
-            >{{ timeSince(timeCreated.toDate()) }}</v-chip
+            >{{ timeSince(toDateSafe(timeCreated)) }}</v-chip
           ></v-item-group
         >
       </v-col>
@@ -56,7 +56,7 @@ import { ref, computed, onMounted } from "vue";
 import { useStore } from "vuex";
 
 //Composables
-import useTimeSince from "@/composables/useTimeSince";
+import useTimeSince, { toDateSafe } from "@/composables/useTimeSince";
 import { useAvatar } from "@/composables/auth/useAvatar";
 import { deleteComment } from "@/composables/data/commentService";
 import { decrementComments } from "@/composables/data/buildService";
@@ -105,6 +105,7 @@ export default {
     };
 
     return {
+      toDateSafe,
       comment,
       timeCreated,
       author,

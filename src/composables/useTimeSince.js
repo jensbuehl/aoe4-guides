@@ -1,3 +1,24 @@
+/**
+ * A Date from whatever shape a stored timestamp arrived in.
+ *
+ * Firestore hands back a Timestamp with `.toDate()`, but the same field can also
+ * be a plain `{ seconds }` map — a document written through a deep clone loses
+ * the class and keeps only its data, and once stored that way it comes back that
+ * way for good. Reading tolerantly is cheaper than repairing every document, and
+ * the call sites should not each carry the knowledge.
+ *
+ * @param {Object|Date|number|null} value - A Timestamp, a map, a Date, or ms.
+ * @return {Date|null} The moment, or null when there is not one.
+ */
+export function toDateSafe(value) {
+  if (!value) return null;
+  if (value instanceof Date) return value;
+  if (typeof value.toDate === "function") return value.toDate();
+  if (typeof value.seconds === "number") return new Date(value.seconds * 1000);
+  if (typeof value === "number") return new Date(value);
+  return null;
+}
+
 export default function useTimeSince() {
 
     const timeSince = (date) => {

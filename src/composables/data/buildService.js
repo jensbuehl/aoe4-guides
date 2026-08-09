@@ -435,7 +435,14 @@ function stripUndefined(value, path = "", found = []) {
     return value.map((entry, index) => stripUndefined(entry, `${path}[${index}]`, found));
   }
 
-  if (value && typeof value === "object" && !(value instanceof Date)) {
+  //Plain objects and arrays only. A Firestore Timestamp, a Date, a
+  //DocumentReference and anything else with a prototype is a *value* — rebuilt
+  //as a bare object it loses its methods, and written back it becomes a map in
+  //the document. That is what turned `timeCreated` into `{seconds, nanoseconds}`
+  //and made every list card throw on `.toDate()`.
+  const plain = value && typeof value === "object" && Object.getPrototypeOf(value) === Object.prototype;
+
+  if (plain) {
     const clean = {};
     for (const [key, entry] of Object.entries(value)) {
       const at = path ? `${path}.${key}` : key;

@@ -36,7 +36,7 @@
           </span>
           <span v-if="build.timeCreated" class="aoe-featured-meta">
             <v-icon size="14">mdi-clock-edit-outline</v-icon>
-            {{ timeSince(build.timeCreated.toDate()) }}
+            {{ timeSince(toDateSafe(build.timeCreated)) }}
           </span>
           <span v-if="build.views" class="aoe-featured-meta">
             <v-icon size="14">mdi-eye</v-icon>
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import useTimeSince from "@/composables/useTimeSince";
+import useTimeSince, { toDateSafe } from "@/composables/useTimeSince";
 
 export default {
   name: "HeroBuild",
@@ -71,7 +71,8 @@ export default {
   },
   setup() {
     const { timeSince, formatCount } = useTimeSince();
-    return { timeSince, formatCount };
+    return {
+      toDateSafe, timeSince, formatCount };
   },
 };
 </script>

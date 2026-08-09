@@ -227,9 +227,15 @@ for (const file of files) {
   // for setup() to hand back
   scan(src.slice(0, setupAt));
   scan(body.slice(0, retAt));
-  for (const m of src.matchAll(/^import\s+(?:\{([^}]+)\}|([A-Za-z_$][\w$]*))/gm)) {
-    if (m[2]) declared.add(m[2]);
-    if (m[1]) m[1].split(",").forEach((n) => declared.add(n.split(" as ").pop().trim()));
+  // `import D from`, `import { a, b } from`, and `import D, { a } from` — the
+  // mixed form is why this was reporting names that are imported right there
+  for (const m of src.matchAll(/^import\s+([^;]+?)\s+from/gm)) {
+    const clause = m[1];
+    const named = clause.match(/\{([^}]*)\}/);
+    if (named) named[1].split(",").forEach((n) => declared.add(n.split(" as ").pop().trim()));
+
+    const dflt = clause.replace(/\{[^}]*\}/, "").replace(",", "").trim();
+    if (/^[A-Za-z_$][\w$]*$/.test(dflt)) declared.add(dflt);
   }
 
   const returned = [...returnedNames(body, retAt)];

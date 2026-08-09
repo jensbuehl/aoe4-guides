@@ -57,7 +57,7 @@
           <span class="civ-tile__name">{{ civ.title }}</span>
         </span>
         <v-chip
-          v-if="isNew(recentCivBuilds.find((r) => r.civ === civ.shortName)?.timeCreated.toDate())"
+          v-if="isNew(toDateSafe(recentCivBuilds.find((r) => r.civ === civ.shortName)?.timeCreated))"
           size="x-small"
           color="accent"
           class="civ-tile__new"
@@ -71,7 +71,7 @@
 
 <script>
 import { ref, computed } from "vue";
-import useTimeSince from "@/composables/useTimeSince";
+import useTimeSince, { toDateSafe } from "@/composables/useTimeSince";
 
 export default {
   name: "CivPicker",
@@ -94,7 +94,8 @@ export default {
       );
     });
 
-    return { civFilter, filteredCivs, isNew };
+    return {
+      toDateSafe, civFilter, filteredCivs, isNew };
   },
 };
 </script>
