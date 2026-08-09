@@ -1,8 +1,13 @@
 <!--
   Sync Impact Report
   ==================
-  Version change:    N/A (first formal ratification) → 1.0.0
-  Bump type:         MINOR (new constitution — all sections added)
+  Version change:    1.0.0 → 1.1.0
+  Bump type:         MINOR (new required practice in Development Workflow)
+
+  2026-08-09 — Added "every push is a checkpoint for learning" to Development
+  Workflow. MINOR rather than PATCH: it adds an obligation, it does not clarify
+  an existing one. Operational form in CLAUDE.md, deliberately not duplicated
+  into memory — one home per rule.
 
   Principles added:
     I.   Simplicity First
@@ -114,6 +119,16 @@ Any new service or dependency MUST pass the Cost-Conscious Infrastructure princi
 - No formal test suite is required, but manual testing of the golden path MUST be done before
   merging any user-facing change.
 - The guiding question before every merge: "Is this code simpler and clearer than before?"
+- **Every push is a checkpoint for learning, not only for code.** After pushing,
+  record what the work taught — a trap in this codebase, a correction worth not
+  repeating, a document that now contradicts the code, or scope that turned out
+  already built or obsolete. Write the *cause* rather than the symptom, write it
+  in one place only, and prefer amending an existing note to adding another. The
+  operational form of this rule lives in `CLAUDE.md`.
+
+**Rationale**: this is a solo project with long gaps between sessions, and the
+expensive mistakes are the ones rediscovered rather than the ones made. Knowledge
+that stays in a session is knowledge paid for twice.
 
 ## Governance
 
@@ -128,4 +143,4 @@ This constitution supersedes all other informal project practices. Amendments re
 All spec, plan, and task documents SHOULD reference the relevant constitution principle when
 making decisions that trade off simplicity against capability or cost.
 
-**Version**: 1.0.0 | **Ratified**: 2026-06-02 | **Last Amended**: 2026-06-02
+**Version**: 1.1.0 | **Ratified**: 2026-06-02 | **Last Amended**: 2026-08-09
