@@ -429,7 +429,7 @@
         <div v-else-if="isBlockEnd(item)" class="alt-card-xs alt-card-xs--end">
           <v-icon size="15" class="alt-mark">mdi-call-merge</v-icon>
         </div>
-        <div v-else-if="isNote(item)" class="gameplan-card-xs">
+        <div v-else-if="isNote(item) && hasVisibleContent(item.gameplan)" class="gameplan-card-xs">
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Note</span>
@@ -663,7 +663,7 @@
               treatment the section note has always had, so a note reads as a
               note wherever it sits.-->
           <tr
-            v-else-if="isNote(item)"
+            v-else-if="isNote(item) && (!readonly || hasVisibleContent(item.gameplan))"
             :data-step-index="index"
             :class="[
               'step-row',
@@ -2428,6 +2428,17 @@ export default {
    reach age badges in adjacent cards (e.g. age-plate in the preceding ageUp card) */
 :deep(.v-table__wrapper) {
   overflow: visible;
+}
+/* The colgroup means what it says.
+   By default a table sizes its columns from their content, so the declared
+   widths are only a suggestion — and a run of rows that are all `colspan`
+   (an alternatives block whose steps are hidden, or whose path is empty) leaves
+   nothing to size columns 1–8 from. The browser then spread them differently,
+   and the block's marks sat 40px right of where the same marks sat one path
+   over. Fixed layout takes the widths from the colgroup and gives the remainder
+   to the description column, which is the one that should flex. */
+:deep(.v-table__wrapper > table) {
+  table-layout: fixed;
 }
 .hidden-xs {
   overflow: visible !important;
