@@ -412,6 +412,66 @@ function withAgeTimings(build) {
 }
 
 /**
+ * Removes `undefined` anywhere in a build, and says where it was.
+ *
+ * Firestore refuses a document containing `undefined` at any depth, and its
+ * error names only the document — not the field — so an author sees "we couldn't
+ * save this" and nobody can tell why. The build order is nested now (a step, a
+ * path, a path's steps), which is exactly the shape where one is easy to
+ * introduce and impossible to spot by eye.
+ *
+ * Stripping rather than throwing: an author's work is worth more than the field
+ * that went missing, and `undefined` never carries meaning here — the writers
+ * all use "" or null when they mean "nothing". The warning is how it still gets
+ * fixed rather than silently tolerated.
+ *
+ * @param {*} value - Any part of a build.
+ * @param {string} path - Dotted path, for the warning.
+ * @param {Array} found - Collects the paths that were dropped.
+ * @return {*} The same shape with every undefined removed.
+ */
+function stripUndefined(value, path = "", found = []) {
+  if (Array.isArray(value)) {
+    return value.map((entry, index) => stripUndefined(entry, `${path}[${index}]`, found));
+  }
+
+  if (value && typeof value === "object" && !(value instanceof Date)) {
+    const clean = {};
+    for (const [key, entry] of Object.entries(value)) {
+      const at = path ? `${path}.${key}` : key;
+      if (entry === undefined) {
+        found.push(at);
+        continue;
+      }
+      clean[key] = stripUndefined(entry, at, found);
+    }
+    return clean;
+  }
+
+  return value;
+}
+
+/**
+ * A build in a shape Firestore will accept.
+ *
+ * @param {Object} build - The build about to be written.
+ * @return {Object} The same build, minus any undefined field.
+ */
+function saveable(build) {
+  const found = [];
+  const clean = stripUndefined(build, "", found);
+
+  if (found.length) {
+    console.warn(
+      `[build] dropped ${found.length} undefined field(s) before saving:`,
+      found.join(", ")
+    );
+  }
+
+  return clean;
+}
+
+/**
  * Adds a build to the database and store, optionally uses a custom ID.
  *
  * @param {Object} build - The build object to be added.
@@ -421,7 +481,7 @@ function withAgeTimings(build) {
 export async function addBuild(build, customId = null) {
   withAgeTimings(build);
   store.commit("setBuild", build);
-  return add(build, customId);
+  return add(saveable(build), customId);
 }
 
 /**
@@ -443,7 +503,7 @@ export async function deleteBuild(buildId) {
  * @return {Promise} A promise that resolves with the updated build data.
  */
 export async function updateBuild(buildId, build, updateCreatedTimestamp = false) {
-  return update(buildId, withAgeTimings(build), updateCreatedTimestamp);
+  return update(buildId, saveable(withAgeTimings(build)), updateCreatedTimestamp);
 }
 
 /**

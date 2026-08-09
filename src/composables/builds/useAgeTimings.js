@@ -268,16 +268,20 @@ export function getAgeTimings(steps) {
     //step is the moment the player clicked up. Held until the age section that
     //follows claims it.
     let pendingClickUpIndex = null;
-    //Position in the flattened list at the start of the section being read. The
-    //flatten used to happen in this same loop, which is where the boundaries
-    //took their index from; this carries that running position now that it is
-    //extracted for the other charts to share.
-    let cursor = 0;
+    //Where each section starts in the flattened list. Read from sectionOffsets
+    //rather than counted here: an alternatives block is *one* entry in
+    //`section.steps` but contributes its active path's steps to the flat list,
+    //so a running total of `section.steps.length` drifts from the list these
+    //indices point into the moment a build contains one.
+    const offsets = sectionOffsets(steps);
 
-    for (const section of steps) {
+    steps.forEach((section, sectionIndex) => {
       const sectionSteps = section?.steps ?? [];
+      const cursor = offsets[sectionIndex];
+      const contributed =
+        (sectionIndex + 1 < offsets.length ? offsets[sectionIndex + 1] : flat.length) - cursor;
 
-      if (section?.type === "ageUp" && sectionSteps.length) {
+      if (section?.type === "ageUp" && contributed) {
         pendingClickUpIndex = cursor;
       }
 
@@ -288,7 +292,7 @@ export function getAgeTimings(steps) {
       if (
         section?.type === "age" &&
         section.age > 1 &&
-        sectionSteps.length &&
+        contributed &&
         !boundaries.some((boundary) => boundary.age === section.age)
       ) {
         boundaries.push({
@@ -298,9 +302,7 @@ export function getAgeTimings(steps) {
         });
         pendingClickUpIndex = null;
       }
-
-      cursor += sectionSteps.length;
-    }
+    });
 
     if (!boundaries.length || !flat.length) return [];
 
