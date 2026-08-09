@@ -317,7 +317,16 @@
         <!-- Insert after each card: index = insert immediately after card at this index -->
         <StepInsertMenu :options="insertOptions(index)" @select="handleInsert($event, index)">
           <template v-slot:activator="{ props: menu }">
-            <div class="step-insert-xs" v-bind="menu">
+            <!--The divider carries the rail when it falls inside a block. It is a
+                44px tap target, so without it the lane broke at every insert
+                point — a gap eleven times wider than the one between two cards.-->
+            <div
+              :class="[
+                'step-insert-xs',
+                (insideBlock(index) || isBlockStart(item)) && 'alt-inside-xs alt-inside-xs--gap',
+              ]"
+              v-bind="menu"
+            >
               <div class="step-insert-line-xs"></div>
               <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
               <div class="step-insert-line-xs"></div>
@@ -1571,6 +1580,25 @@ export default {
      * @return {boolean} True when the row is inside a block.
      */
     const insideBlock = (index) => isInsideBlock(steps, index);
+
+    /**
+     * Where a row sits in the section as the document counts it.
+     *
+     * The editor's list has markers in it and the document's does not, so a row
+     * at local position 7 may be step 5 as far as the resolved times handed down
+     * from the parent are concerned. Everything index-aligned to the flattened
+     * build — resolved times, estimates — has to come through here.
+     *
+     * @param {number} index - Position in the editor's working list.
+     * @return {number} Position among the section's real steps.
+     */
+    const documentIndex = (index) => {
+      let count = 0;
+      for (let cursor = 0; cursor < index && cursor < steps.length; cursor++) {
+        if (!isMarker(steps[cursor])) count++;
+      }
+      return count;
+    };
 
     /**
      * Whether an item in this section is a note rather than a step.
@@ -3270,12 +3298,16 @@ tbody tr:has(+ tr.ins-row--trailing) td {
    It sits at x=10px where the gold age rail sits at x=6px: nested, not
    competing. Inside an age-up section a reader sees both, which is the point —
    "you are in Feudal, on the aggression path". */
-.alt-inside-xs,
-.alt-card-xs {
-  margin-left: 12px;
-}
 .alt-inside-xs {
   position: relative;
+}
+/* Indented only where there is something to nest inside. In an age-up section
+   the gold rail already occupies x=6, so the block steps right to sit inside it;
+   anywhere else there is nothing to clear and the indent would just be the block
+   standing apart from the steps around it for no reason. */
+.age-bracket-xs .alt-card-xs,
+.age-bracket-xs .alt-inside-xs {
+  margin-left: 12px;
 }
 .alt-inside-xs::before,
 .alt-card-xs::before {
@@ -3288,6 +3320,11 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   border-radius: 2px;
   background: rgb(var(--v-theme-alternative));
   pointer-events: none;
+}
+/* The insert divider is a full-width flex row, not a card, so it takes the same
+   offset — and only under the same condition. */
+.age-bracket-xs .alt-inside-xs--gap {
+  margin-left: 12px;
 }
 /* Squared off at the block's own ends, where there is no gap to bridge. */
 .alt-card-xs--start::before {
@@ -3317,7 +3354,11 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   margin: 6px 16px 8px;
   padding: 0 10px 0 14px;
   height: 42px;
+  box-sizing: border-box;
   background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.14) 0%, rgba(var(--v-theme-accent), 0.04) 100%);
+  /* The same edge the desktop banner and plate carry. Mobile had the gradient
+     without it, so the two breakpoints drew the same thing differently. */
+  border: 1px solid rgba(var(--v-theme-accent), 0.25);
   border-radius: 10px;
 }
 .age-ageup-lbl-xs {
@@ -3332,7 +3373,11 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   margin: 8px 16px 4px;
   padding: 0 14px;
   height: 42px;
+  box-sizing: border-box;
   background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.14) 0%, rgba(var(--v-theme-accent), 0.04) 100%);
+  /* The same edge the desktop banner and plate carry. Mobile had the gradient
+     without it, so the two breakpoints drew the same thing differently. */
+  border: 1px solid rgba(var(--v-theme-accent), 0.25);
   border-radius: 10px;
 }
 .age-arrival-icon-xs {

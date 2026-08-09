@@ -112,7 +112,12 @@ export default {
   background: rgba(var(--v-theme-alternative), 0.16);
   color: rgb(var(--v-theme-on-surface));
   font-size: 0.875rem;
-  font-weight: 500;
+  /* One weight for every tab, in every state. The active tab is already
+     unmistakable by its filled background, so weight had nothing left to say —
+     and having it say something meant the text changed thickness when a tab was
+     activated, and again when its name was being typed, since the rename field
+     inherits the tab's type. */
+  font-weight: 600;
   line-height: 1;
   cursor: pointer;
   user-select: none;
@@ -124,7 +129,6 @@ export default {
 .alt-tab--active {
   background: rgb(var(--v-theme-alternative));
   color: rgb(var(--v-theme-background));
-  font-weight: 700;
 }
 .alt-tab-label {
   white-space: nowrap;
@@ -162,6 +166,14 @@ export default {
    nothing moves when they fade in. */
 .alt-tab--active:hover .alt-tab-actions {
   opacity: 0.85;
+}
+/* On a touch screen there is no hover to reveal them with, and a control you
+   cannot discover is a control that does not exist. Shown on the open tab
+   always — the space was already reserved, so nothing moves. */
+@media (hover: none) {
+  .alt-tab--active .alt-tab-actions {
+    opacity: 0.85;
+  }
 }
 .alt-tab-actions .v-icon:hover {
   opacity: 1;
