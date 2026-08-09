@@ -414,10 +414,11 @@
         <template v-for="{ item, index } in group.entries" :key="'xs-view-' + index">
         <!--Reading a block: the paths are shown as they are authored, and the
             tabs are the reader's own control — clicking one switches path.-->
-        <div v-if="isBlockStart(item)" class="alt-card-xs alt-card-xs--start">
-          <div class="alt-card-head-xs">
-            <v-icon size="15" class="alt-mark">mdi-call-split</v-icon>
-          </div>
+        <!--One line, not two. Reading has no ✕ to make room for, so the mark and
+            the paths it introduces sit together — the same arrangement the
+            desktop row uses, and one row less to scroll past on a phone.-->
+        <div class="alt-card-xs alt-card-xs--start alt-card-xs--read" v-if="isBlockStart(item)">
+          <v-icon size="15" class="alt-mark">mdi-call-split</v-icon>
           <AlternativePathTabs
             :paths="item.paths"
             :active="item.active"
@@ -3387,8 +3388,20 @@ tbody tr:has(+ tr.ins-row--trailing) td {
 .alt-card-xs--end {
   display: flex;
   align-items: center;
+  gap: 10px;
   height: 42px;
-  padding: 0 10px 0 14px;
+  padding: 0 14px;
+}
+/* The reading variant puts the mark and the tabs on one line, at the age
+   plate's own metrics: 42px tall, 14px inset, 10px between the icon and what it
+   introduces. A block marker and an age marker are the same kind of row. */
+.alt-card-xs--read {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-height: 42px;
+  padding: 0 14px;
 }
 .alt-card-head-xs {
   display: flex;
