@@ -101,7 +101,11 @@
             </div>
           </template>
         </StepInsertMenu>
-        <template v-for="(item, index) in steps" :key="item._id ?? ('xs-edit-' + index)">
+        <!--One wrapper per group, so a block's cards share a parent and the rail
+            is drawn once on it — the age lane's own arrangement.-->
+        <template v-for="(group, groupIndex) in xsGroups" :key="'xs-edit-g' + groupIndex">
+        <div :class="group.block ? 'alt-bracket-xs' : 'xs-group-plain'">
+        <template v-for="{ item, index } in group.entries" :key="item._id ?? ('xs-edit-' + index)">
         <!--The block opens with its paths, exactly as it does on desktop: the
             same tabs component, laid out as a card because that is what this
             breakpoint uses instead of rows.-->
@@ -136,7 +140,7 @@
           <v-icon size="15" class="alt-mark">mdi-call-merge</v-icon>
         </div>
         <!-- A note in the card flow, in the same dress the section note wears -->
-        <div v-else-if="isNote(item)" :class="['gameplan-card-xs', insideBlock(index) && 'alt-inside-xs']">
+        <div v-else-if="isNote(item)" class="gameplan-card-xs">
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Note</span>
@@ -187,7 +191,7 @@
         </div>
         <div
           v-else
-          :class="['step-card-xs', insideBlock(index) && 'alt-inside-xs']"
+          class="step-card-xs"
           v-on:keyup.enter.alt="addStep(index)"
           v-on:keyup.delete.alt="removeStepConfirmationDialog = true; delteRowIndex = index;"
           @focusin="$emit('selectionChanged')"
@@ -315,18 +319,16 @@
           </div>
         </div>
         <!-- Insert after each card: index = insert immediately after card at this index -->
-        <StepInsertMenu :options="insertOptions(index)" @select="handleInsert($event, index)">
+        <!--Skipped after the merge marker: that divider belongs outside the
+            bracket, and is rendered below the wrapper instead. Inside one, the
+            wrapper's own rail runs behind it.-->
+        <StepInsertMenu
+          v-if="!isBlockEnd(item)"
+          :options="insertOptions(index)"
+          @select="handleInsert($event, index)"
+        >
           <template v-slot:activator="{ props: menu }">
-            <!--The divider carries the rail when it falls inside a block. It is a
-                44px tap target, so without it the lane broke at every insert
-                point — a gap eleven times wider than the one between two cards.-->
-            <div
-              :class="[
-                'step-insert-xs',
-                (insideBlock(index) || isBlockStart(item)) && 'alt-inside-xs alt-inside-xs--gap',
-              ]"
-              v-bind="menu"
-            >
+            <div class="step-insert-xs" v-bind="menu">
               <div class="step-insert-line-xs"></div>
               <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
               <div class="step-insert-line-xs"></div>
@@ -334,6 +336,23 @@
           </template>
         </StepInsertMenu>
         </template><!-- end v-for step -->
+        </div><!-- end group -->
+        <!--The insert line that follows a block sits after the bracket, so the
+            rail stops at the merge marker where the block does.-->
+        <StepInsertMenu
+          v-if="group.block"
+          :options="insertOptions(group.entries[group.entries.length - 1].index)"
+          @select="handleInsert($event, group.entries[group.entries.length - 1].index)"
+        >
+          <template v-slot:activator="{ props: menu }">
+            <div class="step-insert-xs" v-bind="menu">
+              <div class="step-insert-line-xs"></div>
+              <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
+              <div class="step-insert-line-xs"></div>
+            </div>
+          </template>
+        </StepInsertMenu>
+        </template><!-- end group -->
         <!-- The section's own note, from before notes could be placed. Drawn
              only when it says something — an empty card at the foot of every
              section was the editor deciding a note belonged there. -->
@@ -386,7 +405,9 @@
         <!--A step that restates the previous distribution and says nothing else
             is not a step that happened; a reader counting rows would count it.
             Hidden here and never in the editor, where the author still owns it.-->
-        <template v-for="(item, index) in steps" :key="'xs-view-' + index">
+        <template v-for="(group, groupIndex) in xsGroups" :key="'xs-view-g' + groupIndex">
+        <div :class="group.block ? 'alt-bracket-xs' : 'xs-group-plain'">
+        <template v-for="{ item, index } in group.entries" :key="'xs-view-' + index">
         <!--Reading a block: the paths are shown as they are authored, and the
             tabs are the reader's own control — clicking one switches path.-->
         <div v-if="isBlockStart(item)" class="alt-card-xs alt-card-xs--start">
@@ -403,7 +424,7 @@
         <div v-else-if="isBlockEnd(item)" class="alt-card-xs alt-card-xs--end">
           <v-icon size="15" class="alt-mark">mdi-call-merge</v-icon>
         </div>
-        <div v-else-if="isNote(item)" :class="['gameplan-card-xs', insideBlock(index) && 'alt-inside-xs']">
+        <div v-else-if="isNote(item)" class="gameplan-card-xs">
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Note</span>
@@ -417,7 +438,7 @@
         </div>
         <div
           v-else-if="!saysNothing(index)"
-          :class="['step-card-xs', insideBlock(index) && 'alt-inside-xs']"
+          class="step-card-xs"
         >
           <!-- Top bar: timestamp + villager total -->
           <div class="stepc-top-xs">
@@ -471,6 +492,8 @@
           ></div>
         </div>
         </template>
+        </div>
+        </template><!-- end group -->
         <!-- Notes card inside container — gets the same 8px gap as step cards.
              Guarded on visible content rather than on the string: an author who
              typed a note and deleted it leaves "<br>" behind, which is truthy
@@ -1580,6 +1603,48 @@ export default {
      * @return {boolean} True when the row is inside a block.
      */
     const insideBlock = (index) => isInsideBlock(steps, index);
+
+    /**
+     * The mobile card flow, grouped so a block's cards share one parent.
+     *
+     * The age lane draws its rail once, on the section wrapper, spanning top to
+     * bottom — which is why it is one unbroken line of one colour. Per-card
+     * rails cannot be: each one is positioned against its own card's padding
+     * box, so a bordered card's rail sits a pixel right of an unbordered one's,
+     * and the insert divider is drawn at `opacity: 0.35`, which its rail
+     * inherited. Same wrapper, same result.
+     *
+     * Groups that are not blocks are still wrapped, with `display: contents`, so
+     * the template has one shape rather than two copies of every card.
+     *
+     * @return {Array<{block: boolean, entries: Array<{item: Object, index: number}>}>}
+     */
+    const xsGroups = computed(() => {
+      const groups = [];
+      let open = null;
+
+      steps.forEach((item, index) => {
+        const entry = { item, index };
+
+        if (isBlockStart(item)) {
+          open = { block: true, entries: [entry] };
+          groups.push(open);
+          return;
+        }
+
+        if (isBlockEnd(item)) {
+          if (open) open.entries.push(entry);
+          else groups.push({ block: false, entries: [entry] });
+          open = null;
+          return;
+        }
+
+        if (open) open.entries.push(entry);
+        else groups.push({ block: false, entries: [entry] });
+      });
+
+      return groups;
+    });
 
     /**
      * Where a row sits in the section as the document counts it.
@@ -3290,54 +3355,45 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   margin-bottom: 6px;
 }
 
-/* The lane. Cards are separate boxes with an 8px gap between them, so a rail
-   drawn inside each card would come out dashed. Each one extends 4px past its
-   card at both ends — half the gap — so consecutive rails meet and read as one
-   line, the same trick the desktop rail uses across row seams.
+/* The lane, drawn the way the age lane draws its own: one rail on one wrapper,
+   spanning it top to bottom. Per-card rails could not be continuous — each is
+   positioned against its own card's padding box, so a bordered card's rail sat a
+   pixel right of an unbordered one's, and the insert divider is drawn at
+   `opacity: 0.35`, which its rail inherited. One line, one colour, no jogs.
 
-   It sits at x=10px where the gold age rail sits at x=6px: nested, not
-   competing. Inside an age-up section a reader sees both, which is the point —
-   "you are in Feudal, on the aggression path". */
-.alt-inside-xs {
+   Groups that are not blocks use `display: contents` so the wrapper adds nothing
+   to the layout and the template keeps one shape. */
+.xs-group-plain {
+  display: contents;
+}
+.alt-bracket-xs {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  /* The same 8px the container puts between cards, since this box now sits
+     between the container and them. */
+  gap: 8px;
 }
-/* Indented only where there is something to nest inside. In an age-up section
-   the gold rail is already on x=6, so the block steps aside to sit within it —
-   8px, which puts the blue rail on x=14 and reads as nested rather than as a
-   second rail competing for the same line. Anywhere else there is nothing to
-   clear, and the block draws on x=6 like the age rail does. */
-.age-bracket-xs .alt-card-xs,
-.age-bracket-xs .alt-inside-xs {
-  margin-left: 8px;
-}
-.alt-inside-xs::before,
-.alt-card-xs::before {
-  content: "";
+.alt-bracket-xs::before {
+  content: '';
   position: absolute;
-  /* Cards sit at x=16 (the container's padding), so -10px puts the rail at x=6 —
-     exactly where the gold age rail runs. At the top level the two annotations
-     are the same kind of thing and draw on the same line; only the colour says
-     which one you are looking at. Same 3px width and 2px radius, for the same
-     reason. */
-  left: -10px;
-  top: -4px;
-  bottom: -4px;
+  /* x=6 — the age rail's own line. At the top level an alternative and an age
+     are the same kind of annotation and draw the same way; only the colour says
+     which one it is. */
+  left: 6px;
+  top: 0;
+  bottom: 0;
   width: 3px;
   border-radius: 2px;
   background: rgb(var(--v-theme-alternative));
-  pointer-events: none;
 }
-/* The insert divider is a full-width flex row, not a card, so it takes the same
-   offset — and only under the same condition. */
-.age-bracket-xs .alt-inside-xs--gap {
-  margin-left: 8px;
+/* Nested inside an age-up, the block steps aside so the gold rail keeps x=6 and
+   the blue one reads as within it rather than as a second rail on the same line. */
+.age-bracket-xs .alt-bracket-xs {
+  padding-left: 8px;
 }
-/* Squared off at the block's own ends, where there is no gap to bridge. */
-.alt-card-xs--start::before {
-  top: 0;
-}
-.alt-card-xs--end::before {
-  bottom: 0;
+.age-bracket-xs .alt-bracket-xs::before {
+  left: 14px;
 }
 
 .age-bracket-xs {
