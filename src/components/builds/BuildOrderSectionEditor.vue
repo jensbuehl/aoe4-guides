@@ -3064,30 +3064,27 @@ tbody tr.alt-row--end:not(:last-child):not(:has(+ tr.ins-row--trailing)) td:not(
 
    52px is Vuetify's own row height, set on the cell rather than the row, which
    is why overriding the row's height changed nothing. */
-/* Both of these rows are as tall as a step row *actually* is, which is 54px, not
+/* Both of these rows are as tall as a step row *actually* is, which is 55px, not
    the 52px `.step-row` declares: a resource pill is 30px inside 12px margins, so
-   the pills set the real floor.
+   the pills set the real floor at 54px of content — and the row separator is a
+   1px border *inside* the cell's border box, because everything here is
+   border-box and the table has `border-spacing: 0`. 54 + 1 = 55.
 
-   That 54px is exactly what an inline icon needs — the icon box is 36px plus 2px
-   margins, and 40px + the description's 7px padding top and bottom comes to 54.
-   A step therefore never changes height when an icon is added, and these two did,
-   because they have no pills to hold the floor up and were sitting on 52. */
+   That is also the number stated on the row rather than on the cell, and the two
+   mean different things: Vuetify's 52px sits on the td and is a border-box
+   height, while `height` on a tr is a minimum for the whole row box. A step row
+   overshoots both from its content; these rows have no pills, so the minimum is
+   the only thing holding them up. Set to 54 they came out one pixel short of
+   every step around them — the pixel went to the border.
+
+   The remaining 54px of content is exactly what an inline icon needs: the icon
+   box is 36px plus 2px margins, and 40px + the description's 7px padding top and
+   bottom comes to 54. So a note, like a step, never changes height when an icon
+   goes into it — and it needs no padding of its own, sharing the step
+   description's 7px unchanged. */
 .step-row.bo-noterow,
 .alt-row--cond {
-  height: 54px;
-}
-/* And 2px of slack inside that, because 54px is exactly what the icon needs and
-   exactly what these rows are — no room left for a border, a rounded line box or
-   a font whose metrics differ by a fraction. A step row gets this slack for free
-   from its pills; these have to be given it.
-
-   Taken off the padding rather than added to the height, so the rows stay the
-   same height as a step. The text does not move: it is centred in the row, so
-   symmetric padding has no say in where it sits. */
-.step-row.bo-noterow td.contentEditable,
-.alt-row--cond td.contentEditable {
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
+  height: 55px;
 }
 
 /* The note's text is left to the step description rules entirely — middle
