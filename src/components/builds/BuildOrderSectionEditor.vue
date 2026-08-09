@@ -144,6 +144,16 @@
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Note</span>
+            <!--Top right, where a step card keeps its own ✕. Same size, same
+                corner: a note is deleted the way a step is.-->
+            <div style="flex:1"></div>
+            <v-btn
+              icon
+              size="x-small"
+              variant="text"
+              class="step-remove-xs"
+              @click.stop="removeStepConfirmationDialog = true; delteRowIndex = index;"
+            ><v-icon size="14">mdi-close</v-icon></v-btn>
           </div>
           <div class="step-desc-col-xs">
             <div
@@ -179,14 +189,8 @@
                 ></IconSelector>
               </v-card>
             </v-menu>
-            <div style="flex:1"></div>
-            <v-btn
-              icon
-              size="x-small"
-              variant="text"
-              class="step-remove-xs"
-              @click.stop="removeStepConfirmationDialog = true; delteRowIndex = index;"
-            ><v-icon size="14">mdi-close</v-icon></v-btn>
+            <!--The picker alone now, and the row is flex-end, so it lands in the
+                bottom-right corner a step card puts its own in.-->
           </div>
         </div>
         <div
@@ -3493,6 +3497,9 @@ tbody tr:has(+ tr.ins-row--trailing) td {
 /* Gameplan/notes card — same surface and padding as step cards */
 .gameplan-card-xs {
   background: rgb(var(--v-theme-surface-container));
+  /* The step card's own edge. A note sits in the same column of cards, so it
+     should be bounded like one — it had the fill without the outline. */
+  border: 1px solid rgb(var(--v-theme-accent), 0.24);
   border-radius: 10px;
   padding: 10px;
   box-shadow: none;
