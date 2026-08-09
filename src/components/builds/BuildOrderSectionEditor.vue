@@ -1010,6 +1010,7 @@ import {
   hasVisibleContent,
 } from "@/composables/builds/stepVisibility.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
+import { ACTIVE_PATH } from "@/composables/builds/useActivePath.js";
 import {
   expandBlocks,
   collapseBlocks,
@@ -1019,6 +1020,7 @@ import {
   ALT_START,
   ALT_END,
 } from "@/composables/builds/alternativesDraft.js";
+import { blockId } from "@/composables/builds/useAgeTimings.js";
 import {
   addAutocompleteIcon,
   updateSearchText,
@@ -1059,6 +1061,9 @@ export default {
     //everything drawn from a build works on the flattened list, so this is what
     //lets a row say which step it is in the only index space both halves share.
     "stepOffset",
+    //Position of this section in the build, so a block inside it can be named
+    //the way the flattener names it.
+    "sectionIndex",
   ],
   emits: [
     "stepsChanged",
@@ -1080,6 +1085,10 @@ export default {
     //Every use is optional-chained rather than guarded once, so the table
     //behaves exactly as before wherever nothing provides it.
     const highlight = inject(STEP_HIGHLIGHT, null);
+
+    //The reader's chosen path, when a build page provides one. Absent in the
+    //editor, where the author is switching to edit rather than to read.
+    const activePath = inject(ACTIVE_PATH, null);
 
     /**
      * The worked-out time for a step whose author left the cell blank.
@@ -1797,9 +1806,20 @@ export default {
 
       const addIndex = index + 1;
       const stepId = ++_nextStepId;
+      //Two paths, always. A block is a fork — "A or B" — and one alternative is
+      //not a fork, it is a run of steps with a label on it. Seeding a second
+      //keeps the author from having to discover that the thing they just made
+      //means nothing until they add another.
       const marker = {
         kind: ALT_START,
-        paths: [{ ...emptyPath(), title: pathName(1) }],
+        paths: [
+          { ...emptyPath(), title: pathName(1) },
+          {
+            ...emptyPath(),
+            title: pathName(2),
+            steps: [{ gameplan: "", _id: ++_nextStepId }, blankStep(++_nextStepId)],
+          },
+        ],
         active: 0,
         _id: ++_nextStepId,
       };
@@ -1828,7 +1848,40 @@ export default {
      * @param {number} pathIndex - Which path to show.
      * @return {void}
      */
+    /**
+     * The name the flattener knows this block by.
+     *
+     * The editor works on a flat draft with markers; the document nests. The Nth
+     * opening marker in the draft is the Nth alternatives item in the section, so
+     * the two are matched by counting rather than by tracking an id neither shape
+     * carries.
+     *
+     * @param {number} markerIndex - Position of the opening marker in the draft.
+     * @return {string|null} The block's key, or null if it cannot be placed.
+     */
+    const blockKey = (markerIndex) => {
+      if (props.sectionIndex == null) return null;
+
+      const ordinal = steps.slice(0, markerIndex).filter(isBlockStart).length;
+      const items = props.section?.steps ?? [];
+      let seen = 0;
+
+      for (let i = 0; i < items.length; i++) {
+        if (items[i]?.kind !== "alternatives") continue;
+        if (seen === ordinal) return blockId(props.sectionIndex, i);
+        seen++;
+      }
+
+      return null;
+    };
+
     const switchPath = (markerIndex, pathIndex) => {
+      //Tell the page first. The table shows the new path because the draft below
+      //is respliced, but the age timeline and the economy chart read the
+      //document — they follow only because the choice is shared.
+      const key = blockKey(markerIndex);
+      if (key) activePath?.select(key, pathIndex);
+
       syncEditedFields();
 
       const marker = steps[markerIndex];
@@ -1994,8 +2047,8 @@ export default {
      */
     const altConfirm = ref({ open: false, mode: null, index: null });
 
-    /** Whether the block would go with the path — it does when it is the last. */
-    const lastPathOfBlock = (index) => (steps[index]?.paths?.length ?? 0) < 2;
+    /** Whether removing this path takes the block with it — it does at two. */
+    const lastPathOfBlock = (index) => (steps[index]?.paths?.length ?? 0) <= 2;
 
     const altConfirmTitle = computed(() => {
       const { mode, index } = altConfirm.value;
@@ -2007,6 +2060,9 @@ export default {
       const { mode, index } = altConfirm.value;
       if (mode === "path" && !lastPathOfBlock(index)) {
         return "This alternative and the steps inside it are deleted. The other alternatives stay.";
+      }
+      if (mode === "path") {
+        return "This alternative and its steps are deleted, and with one path left there is no choice to offer — the other alternative becomes part of the build.";
       }
       //Both the block's own ✕ and deleting the last remaining path land here, and
       //they do the same thing: the bracket goes, the steps stay.
@@ -2049,7 +2105,12 @@ export default {
     const removePath = (markerIndex) => {
       const marker = steps[markerIndex];
       if (!marker?.paths) return;
-      if (marker.paths.length < 2) return removeBlock(markerIndex);
+
+      //Down to one path there is no longer a choice to offer, so the block goes
+      //and the survivor becomes ordinary steps on the main line. Deleting one of
+      //two is how an author says "actually, just do this" — the fork was the
+      //thing they changed their mind about, not the steps.
+      if (marker.paths.length <= 2) return dissolveBlock(markerIndex);
 
       const range = blockRanges(steps).find((entry) => entry.start === markerIndex);
       if (!range) return;
@@ -2069,6 +2130,37 @@ export default {
       stepsCopy[markerIndex] = { ...marker };
 
       emitSteps();
+    };
+
+    /**
+     * Drops the path on screen and, with only one left, the block around it.
+     *
+     * The survivor's steps take the block's place on the main line; the removed
+     * path's go with it, as they do whenever a path is removed. A block that
+     * offers no choice is not a block.
+     *
+     * @param {number} markerIndex - Position of the opening marker.
+     * @return {void}
+     */
+    const dissolveBlock = (markerIndex) => {
+      syncEditedFields();
+
+      const marker = steps[markerIndex];
+      const range = blockRanges(steps).find((entry) => entry.start === markerIndex);
+      if (!marker || !range) return;
+
+      const survivor = (marker.paths ?? []).find((path, index) => index !== marker.active);
+      const lifted = (survivor?.steps ?? []).map((step) => ({
+        ...step,
+        _id: step._id ?? ++_nextStepId,
+      }));
+      const count = range.end - range.start + 1;
+
+      steps.splice(range.start, count, ...lifted);
+      stepsCopy.splice(range.start, count, ...lifted.map((step) => ({ ...step })));
+
+      emitSteps();
+      removeStepConfirmationDialog.value = false;
     };
 
     /**

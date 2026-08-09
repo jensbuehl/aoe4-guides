@@ -252,17 +252,19 @@ export function sectionOffsets(steps, selection) {
  *
  * @param {Array} steps - A build's steps: either the sections array or, for
  *   builds saved before sections existed, a flat step array.
+ * @param {Object} [selection] - Which alternative each block is read down. The
+ *   timings belong to the path in front of the reader, not to the first one.
  * @return {Array<{age: number, seconds: number, derived: boolean, villagers: number|null}>}
  *   Ascending by age. Empty when no ages are derivable. Never null.
  */
-export function getAgeTimings(steps) {
+export function getAgeTimings(steps, selection) {
   try {
     if (!Array.isArray(steps) || !steps.length) return [];
 
     //Legacy flat builds have no sections, so no age boundaries exist to read
     if (!steps[0]?.type) return [];
 
-    const flat = flattenSections(steps);
+    const flat = flattenSections(steps, selection);
     const boundaries = [];
     //The "ageUp" section holds the steps performed while aging up, so its first
     //step is the moment the player clicked up. Held until the age section that
@@ -273,7 +275,7 @@ export function getAgeTimings(steps) {
     //`section.steps` but contributes its active path's steps to the flat list,
     //so a running total of `section.steps.length` drifts from the list these
     //indices point into the moment a build contains one.
-    const offsets = sectionOffsets(steps);
+    const offsets = sectionOffsets(steps, selection);
 
     steps.forEach((section, sectionIndex) => {
       const sectionSteps = section?.steps ?? [];

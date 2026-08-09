@@ -169,6 +169,7 @@ import {
 import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
 import { getEcoSeries } from "@/composables/builds/useEcoSeries.js";
+import { ACTIVE_PATH } from "@/composables/builds/useActivePath.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 
 /**
@@ -252,7 +253,14 @@ export default {
     const highlight = inject(STEP_HIGHLIGHT, null);
     const highlightSeconds = computed(() => highlight?.moment.value?.seconds ?? null);
 
-    const ages = computed(() => getAgeTimings(props.steps));
+    //The path the reader is on, if this build page provides one. The timings and
+    //the economy below belong to the path in front of them — showing the first
+    //path's numbers beside the chosen path's steps is the page disagreeing with
+    //itself.
+    const activePath = inject(ACTIVE_PATH, null);
+    const selection = computed(() => activePath?.paths.value ?? undefined);
+
+    const ages = computed(() => getAgeTimings(props.steps, selection.value));
 
     /**
      * The last moment the track has to reach: something drawn on it, not merely
@@ -274,7 +282,7 @@ export default {
      * order cannot shrink the track below something drawn on it.
      */
     const lastMoment = computed(() => {
-      const flat = flattenSections(props.steps);
+      const flat = flattenSections(props.steps, selection.value);
       const times = resolveStepTimes(flat);
 
       const lastAssigned = flat.reduce(
@@ -343,7 +351,7 @@ export default {
       return ticks;
     });
 
-    const eco = computed(() => getEcoSeries(props.steps));
+    const eco = computed(() => getEcoSeries(props.steps, selection.value));
 
     const ecoOpen = ref(readEcoOpen());
 

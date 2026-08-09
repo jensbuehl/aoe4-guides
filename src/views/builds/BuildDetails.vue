@@ -320,6 +320,7 @@ import {
   STEP_HIGHLIGHT,
   useStepHighlight,
 } from "@/composables/builds/useStepHighlight.js";
+import { ACTIVE_PATH, useActivePath } from "@/composables/builds/useActivePath.js";
 
 export default {
   name: "BuildDetails",
@@ -340,7 +341,22 @@ export default {
     //other; this page is the only place that knows both exist, so it owns the
     //highlight they share. Created here rather than inside the composable so a
     //page showing two builds cannot end up with one highlight between them.
-    provide(STEP_HIGHLIGHT, useStepHighlight());
+    const highlight = useStepHighlight();
+    provide(STEP_HIGHLIGHT, highlight);
+
+    //Which alternative the reader is following, for the same reason and in the
+    //same place: the steps table, the age timeline and the economy chart are
+    //siblings, and a choice made in one has to be visible to the others or the
+    //page contradicts itself.
+    const activePath = useActivePath();
+    provide(ACTIVE_PATH, activePath);
+
+    //An index taken under one path points at a different step under another, so
+    //a switch drops whatever the two halves were pointing at (invariant S-2).
+    activePath.onSwitch(() => {
+      highlight.clear("plot");
+      highlight.clear("table");
+    });
 
     //Coarse on purpose: any part of the card showing is enough to be worth
     //answering, and a partial-visibility threshold is a knob nobody can tune by

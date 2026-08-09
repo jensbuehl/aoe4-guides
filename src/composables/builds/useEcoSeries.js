@@ -75,13 +75,15 @@ function rewinds(points) {
  * last measurement rather than abandoned there.
  *
  * @param {Array} steps - A build's steps: the sections array.
+ * @param {Object} [selection] - Which alternative each block is read down, so the
+ *   chart plots the economy of the path the reader chose.
  * @return {{points: Array, coverage: number, lastStatedSeconds: number|null}|null}
  *   Points carry one count per column in RESOURCES, plus `stated` — whether the
  *   author recorded that moment or the site worked it out — and `stepIndex`,
  *   the step's position in the flattened list.
  *   Null whenever there is no chart worth drawing — never a sparse one.
  */
-export function getEcoSeries(steps) {
+export function getEcoSeries(steps, selection) {
   try {
     if (!Array.isArray(steps) || !steps.length) return null;
 
@@ -89,7 +91,7 @@ export function getEcoSeries(steps) {
     //this off; getAgeTimings() bails on them for the same reason.
     if (!steps[0]?.type) return null;
 
-    const flat = flattenSections(steps);
+    const flat = flattenSections(steps, selection);
     if (!flat.length) return null;
 
     //One read, shared with the age markers on the same card, so the two cannot
@@ -198,6 +200,6 @@ export function getEcoSeries(steps) {
  * @param {Array|Ref} steps - The steps, or a ref to them.
  * @return {ComputedRef<Object|null>} The series, or null when there is none.
  */
-export function useEcoSeries(steps) {
-  return computed(() => getEcoSeries(unref(steps)));
+export function useEcoSeries(steps, selection) {
+  return computed(() => getEcoSeries(unref(steps), unref(selection)));
 }

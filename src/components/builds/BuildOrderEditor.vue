@@ -115,6 +115,7 @@
             :section="section"
             :resolvedTimes="resolvedTimes[index]"
             :stepOffset="offsets[index]"
+            :sectionIndex="index"
             :readonly="readonly"
             :civ="civ"
             :focus="sectionFocus == index"
@@ -146,6 +147,7 @@ import { flattenSections, sectionOffsets } from "@/composables/builds/useAgeTimi
 import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 import { isDocumentPiPSupported } from "@/composables/builds/useStepPiP.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
+import { ACTIVE_PATH } from "@/composables/builds/useActivePath.js";
 import {
   getSavedPlayTarget,
   resolvePlayTarget,
@@ -230,13 +232,18 @@ export default {
      * the failure it prevents is silent: a section-local index used as a flat
      * one picks the wrong step on every build with more than one section.
      */
-    const offsets = computed(() => sectionOffsets(sections.value));
+    //Empty in the editor, where there is no reader to have chosen anything —
+    //the flattener then resolves every block to its first path, as before.
+    const activePath = inject(ACTIVE_PATH, null);
+    const selection = computed(() => activePath?.paths.value ?? undefined);
+
+    const offsets = computed(() => sectionOffsets(sections.value, selection.value));
 
     /** One resolve for the whole build; the slices below are views onto it */
     const flatTimes = computed(() => {
       if (!readonly) return [];
 
-      const flat = flattenSections(sections.value);
+      const flat = flattenSections(sections.value, selection.value);
       return flat.length ? resolveStepTimes(flat) : [];
     });
 
