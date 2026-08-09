@@ -93,7 +93,35 @@
           right: () => handlePreviousStep(),
         }"
       >
-        <div class="fm-step-content">
+        <!--The fork takes the step area and nothing else. Header, progress bars,
+            resource dock and transport controls do not move: a player mid-game
+            is holding the shape of this screen in their head, and a question is
+            not a reason to rearrange it.-->
+        <div class="fm-step-content" v-if="pendingPick">
+          <div class="fm-pick">
+            <div class="fm-pick-ask">
+              <v-icon size="18" class="fm-pick-mark">mdi-call-split</v-icon>
+              <span>Which way?</span>
+              <span class="fm-pick-count" v-if="pickCountdown != null">{{ pickCountdown }}</span>
+            </div>
+            <div class="fm-pick-options">
+              <button
+                v-for="(path, pathIndex) in pendingPick.paths"
+                :key="'pick' + pathIndex"
+                class="fm-pick-option"
+                @click="choosePath(pendingPick.key, pathIndex)"
+              >
+                <span class="fm-pick-title">{{ path.title }}</span>
+                <span
+                  v-if="conditionOfPath(path)"
+                  class="fm-pick-cond"
+                  v-html="conditionOfPath(path)"
+                ></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="fm-step-content" v-else>
           <div class="fm-notes" v-if="hasVisibleContent(currentStep?.gameplan)">
             Notes
             <v-icon color="accent" class="fm-notes-icon">mdi-information-outline</v-icon>
@@ -296,9 +324,11 @@ import {
 import { redundantMask, hasVisibleContent } from "@/composables/builds/stepVisibility.js";
 import { useStepPiP } from "@/composables/builds/useStepPiP.js";
 import { useActivePath } from "@/composables/builds/useActivePath.js";
+import { pathCondition } from "@/composables/builds/alternativesDraft.js";
 import {
   AGE_DISPLAY,
   ageArt,
+  blockId,
   flattenSections,
   sectionOffsets,
 } from "@/composables/builds/useAgeTimings.js";
@@ -314,6 +344,13 @@ import {
  * The resource columns the dock can show, in the order it shows them. Builders
  * keep the repair icon the build order table already uses for them.
  */
+/**
+ * The longest a fork may hold the screen before the clock answers for the
+ * player. Ten seconds is long enough to read two titles and decide, short enough
+ * that a question left hanging does not become the thing on screen.
+ */
+const PICK_TIMEOUT_SECONDS = 10;
+
 const RESOURCE_COLUMNS = [
   { key: "builders", icon: "/assets/resources/repair.webp", label: "Builders" },
   { key: "food", icon: "/assets/resources/food.webp", label: "Food" },
@@ -335,6 +372,15 @@ export default {
     //build page below is showing, and the page's choice must not change the
     //queue under a player's feet.
     const focusSelection = useActivePath();
+
+    //Index-aligned to the queue, like the age markers: the block that forks at
+    //each step, or null.
+    const stepPick = ref([]);
+    //Seconds left before the clock answers for the player. Null when nothing is
+    //being asked.
+    const pickCountdown = ref(null);
+    //Elapsed-seconds moment at which the clock answers for the player.
+    const pickDeadline = ref(null);
     const steps = ref([]);
 
     const timer = ref(null);
@@ -475,6 +521,7 @@ export default {
       //entries is cheaper than making "strict" mean less.
       const resolved = resolveStepTimes(steps.value);
       stepDerived.value = resolved.map((entry) => entry.provenance !== "stated");
+      stepPick.value = readPickMarkers(props.build.steps, steps.value.length, selection);
       stepAgeUp.value = readAgeUpMarkers(props.build.steps, steps.value.length, selection);
       stepAge.value = readAgeMarkers(props.build.steps, steps.value.length, selection);
 
@@ -523,6 +570,7 @@ export default {
       const redundant = redundantMask(steps.value);
       steps.value = steps.value.filter((step, index) => !redundant[index]);
       stepDerived.value = stepDerived.value.filter((flag, index) => !redundant[index]);
+      stepPick.value = stepPick.value.filter((marker, index) => !redundant[index]);
       stepAgeUp.value = stepAgeUp.value.filter((marker, index) => !redundant[index]);
       stepAge.value = stepAge.value.filter((marker, index) => !redundant[index]);
       if (stepsTimings.value) {
@@ -613,6 +661,131 @@ export default {
     }
 
     /**
+     * The block the player is being asked about, or null.
+     *
+     * A block asks once: the marker is on its first step, and once a path has
+     * been chosen for that block the question is answered and the queue simply
+     * plays on.
+     */
+    const pendingPick = computed(() => {
+      const marker = stepPick.value?.[currentStepIndex.value];
+      if (!marker) return null;
+
+      return focusSelection.pathFor(marker.key) == null ? marker : null;
+    });
+
+    //Armed the moment a fork reaches the screen, cleared when it leaves. A watch
+    //rather than a call inside buildQueue: the question can also arrive by the
+    //player stepping onto it by hand, with no rebuild involved.
+    watch(pendingPick, (pick) => {
+      pickDeadline.value = pick ? pickDeadlineFor() : null;
+      pickCountdown.value = pick ? Math.ceil(pickDeadline.value - elapsedSecondsNow()) : null;
+    });
+
+    /** A path's condition, which is its first note — the thing being decided. */
+    const conditionOfPath = (path) => pathCondition(path);
+
+    /**
+     * Takes a path mid-run.
+     *
+     * The queue is rebuilt rather than patched — see buildQueue — and then the
+     * cursor is found again **by the clock**, not by its old index. The timer
+     * has been running throughout and is the only thing that knows where the
+     * game actually is; the path that was just chosen may be longer or shorter
+     * than the one the queue was holding, so the index the player was on means
+     * nothing once the steps behind it have changed.
+     *
+     * @param {string} key - The block's key.
+     * @param {number} pathIndex - Which path to take.
+     * @return {void}
+     */
+    function choosePath(key, pathIndex) {
+      pickCountdown.value = null;
+      pickDeadline.value = null;
+      focusSelection.select(key, pathIndex);
+
+      buildQueue(focusSelection.paths.value);
+      reseekToClock();
+    }
+
+    /**
+     * Puts the cursor where the clock says the build is.
+     *
+     * The last step whose start time has already passed. Falls back to holding
+     * the current position when the build has no usable timings at all, which is
+     * the same build that has no autoplay to keep in step with.
+     *
+     * @return {void}
+     */
+    function reseekToClock() {
+      const timings = stepsTimings.value;
+
+      if (!timings?.length) {
+        currentStepIndex.value = Math.min(currentStepIndex.value, steps.value.length - 1);
+        currentStep.value = steps.value[currentStepIndex.value];
+        return;
+      }
+
+      const now = elapsedSecondsNow();
+      let index = 0;
+      for (let cursor = 0; cursor < timings.length; cursor++) {
+        if (timings[cursor].startTime > now) break;
+        index = cursor;
+      }
+
+      currentStepIndex.value = index;
+      currentStep.value = steps.value[index];
+    }
+
+    /**
+     * Marks the step at which each alternatives block begins.
+     *
+     * One entry per queue position, almost all null: at the first step a block
+     * contributes, the block itself — so the player can be asked which way to
+     * go at the moment the build forks, rather than after it has already taken
+     * one of the paths.
+     *
+     * Counted the same way the flattener counts, from the steps each item ahead
+     * of the block contributes rather than from the item count, so a section
+     * holding a note and a block still marks the right step.
+     *
+     * @param {Array} sections - The build's sections array, or a legacy flat list.
+     * @param {number} length - Length of the flattened step list.
+     * @param {Object} [selection] - Which alternative each block is read down.
+     * @return {Array<Object|null>} Index-aligned `{ key, paths }` entries.
+     */
+    function readPickMarkers(sections, length, selection) {
+      const markers = new Array(length).fill(null);
+      if (!Array.isArray(sections) || !sections[0]?.type) return markers;
+
+      const offsets = sectionOffsets(sections, selection);
+
+      sections.forEach((section, sectionIndex) => {
+        let cursor = offsets[sectionIndex];
+
+        (section?.steps ?? []).forEach((item, itemIndex) => {
+          if (item?.kind !== "alternatives") {
+            if (!item?.kind) cursor++;
+            return;
+          }
+
+          const key = blockId(sectionIndex, itemIndex);
+          const chosen = selection?.[key];
+          const active = Number.isInteger(chosen) && item.paths?.[chosen] ? chosen : 0;
+          const contributed = (item.paths?.[active]?.steps ?? []).filter((step) => !step?.kind).length;
+
+          //A path with no steps of its own contributes nothing to stand on, so
+          //there is no step at which to ask. The block passes silently, which is
+          //the same thing the reading view does with it.
+          if (contributed) markers[cursor] = { key, paths: item.paths ?? [] };
+          cursor += contributed;
+        });
+      });
+
+      return markers;
+    }
+
+    /**
      * Marks the steps at which the build arrives in a new age.
      *
      * Read from the sections rather than the steps, because a step carries no
@@ -692,6 +865,47 @@ export default {
     }
 
     /**
+     * Counts the question down, and answers it if the player does not.
+     *
+     * The clock never waits for a decision. A player who is busy fighting gets
+     * the author's first path and keeps going — an answer they can still change
+     * until the paths rejoin — because a build that stops mid-game is worse than
+     * one that guessed.
+     *
+     * Driven from the progress tick rather than a timer of its own, so it counts
+     * only while the clock is running: paused, there is nothing to stall.
+     *
+     * @return {void}
+     */
+    function tickPick() {
+      const pick = pendingPick.value;
+      if (!pick || pickDeadline.value == null) {
+        pickCountdown.value = null;
+        return;
+      }
+
+      const left = pickDeadline.value - elapsedSecondsNow();
+      pickCountdown.value = Math.max(0, Math.ceil(left));
+
+      if (left <= 0) choosePath(pick.key, 0);
+    }
+
+    /**
+     * How long the player has: until the next step is due, and never more than
+     * ten seconds. The gap is the honest deadline — past it the build has moved
+     * on — but a long gap should not leave a question hanging on screen.
+     *
+     * @return {number|null} Elapsed-seconds deadline, or null when nothing asks.
+     */
+    function pickDeadlineFor() {
+      const timings = stepsTimings.value;
+      const now = elapsedSecondsNow();
+      const next = timings?.[currentStepIndex.value + 1]?.startTime;
+
+      return Math.min(next == null ? now + PICK_TIMEOUT_SECONDS : next, now + PICK_TIMEOUT_SECONDS);
+    }
+
+    /**
      * Seconds into the build a Date produced by the timing helpers represents.
      * They all carry today's date with the hour zeroed, so only minutes and
      * seconds mean anything.
@@ -731,6 +945,7 @@ export default {
       totalElapsedTime.value = toDateFromSeconds(Math.floor(elapsedSecondsNow()));
       totalElapsedTimeFormattedString.value = getFormattedTime(totalElapsedTime.value);
       updateProgress();
+      tickPick();
 
       //A tick that arrives late finds the build further along than one step, and
       //the build is where the clock says it is — so catch up rather than
@@ -1088,6 +1303,10 @@ export default {
       currentStepDerived,
       currentAge,
       currentStep,
+      pendingPick,
+      pickCountdown,
+      choosePath,
+      conditionOfPath,
       currentStepProgress,
       getFormattedTime,
       handleNextStep,
@@ -1560,4 +1779,71 @@ export default {
 :deep(.icon-none)     { background: radial-gradient(circle at top center, rgb(var(--v-theme-icon-background-highlight)), rgb(var(--v-theme-icon-background))); }
 :deep(.icon-default)  { background: radial-gradient(circle at top center, #4b6382, #1d2432); }
 :deep(.icon-landmark) { background: radial-gradient(circle at top center, #232e3e, #0c0f17); }
+
+/* ── The fork, mid-game ──────────────────────────────────────────────────────
+   Blue, never gold. Gold in here is the transport: play, pause, the step clock.
+   A gold button asking a question would be pressed by a player reaching for
+   pause without reading it. */
+.fm-pick {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.fm-pick-ask {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--v-theme-alternative));
+}
+.fm-pick-mark {
+  color: rgb(var(--v-theme-alternative));
+}
+/* The clock's own answer, counting down in the open. A question with a hidden
+   deadline is worse than one with none. */
+.fm-pick-count {
+  min-width: 22px;
+  text-align: center;
+  border-radius: 11px;
+  padding: 1px 7px;
+  background: rgba(var(--v-theme-alternative), 0.22);
+}
+.fm-pick-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+}
+.fm-pick-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 140px;
+  /* A thumb, not a pointer: this is pressed on a phone propped beside a game. */
+  min-height: 56px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--v-theme-alternative), 0.55);
+  background: rgba(var(--v-theme-alternative), 0.18);
+  color: rgb(var(--v-theme-on-surface));
+  cursor: pointer;
+}
+.fm-pick-option:hover {
+  background: rgba(var(--v-theme-alternative), 0.3);
+}
+.fm-pick-title {
+  font-size: 15px;
+  font-weight: 700;
+}
+.fm-pick-cond {
+  font-size: 12px;
+  opacity: 0.8;
+}
 </style>

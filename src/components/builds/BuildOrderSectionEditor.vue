@@ -2635,9 +2635,11 @@ export default {
   background: rgba(var(--v-theme-accent), 0.07);
 }
 
-.step-row--linked td:first-child {
-  box-shadow: inset 3px 0 0 0 rgb(var(--v-theme-accent));
-}
+/* No gold edge here. Gold is the age vocabulary — the age rail, the age plates,
+   the timings — and a gold bar down a row said "this is an age boundary" about a
+   row that was merely being pointed at. The tint alone is the answer; it is what
+   the chart and the table have in common, and it says "this one" without
+   claiming anything else. */
 
 .step-row td {
   transition: background-color 140ms ease;
