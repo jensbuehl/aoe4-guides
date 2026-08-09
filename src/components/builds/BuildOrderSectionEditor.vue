@@ -2764,111 +2764,15 @@ tbody tr.alt-row--end:not(:last-child):not(:has(+ tr.ins-row--trailing)) td:not(
 .alt-mark {
   color: rgb(var(--v-theme-alternative));
 }
-.alt-bar {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-/* The tabs start at the column edge. The mark is centred in the 64px timestamp
-   column — where the note's ⓘ also sits, so the two annotation marks line up
-   down the table — which already leaves ~24px of air to its right; the cell's
-   own 8px on top of that made the gap six times the one between the tabs
-   themselves, and it read as a break rather than as grouping.
-
-   A divider used to sit in that space. It is gone: at 1px it never registered
-   against the row's tint, and with the gap closed the column edge divides them
-   anyway. One fewer hairline in a row that already has a rail and a tint. */
 .alt-bar-cell {
   padding-left: 2px !important;
   padding-right: 8px !important;
-}
-.alt-tab {
-  text-transform: none;
-  letter-spacing: 0;
 }
 /* Revealed on hover, like every other row's ✕. The marker rows are not
    .step-row, so the shared rule below never reached them and the control was
    there but permanently invisible. */
 .alt-row:hover .row-x {
   opacity: 1;
-}
-/* One tab, one box. It holds the name or the field that edits it, and the two
-   controls always occupy their place — hidden, not absent, until the tab is
-   pointed at or open. Both of those are why nothing here changes width when a
-   tab is activated or renamed. */
-.alt-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  height: 28px;
-  padding: 0 10px;
-  /* 6px, matching the resource pills and the rename field rather than the 4px a
-     v-btn defaults to — which is why this is a div and not a button. */
-  border-radius: 6px;
-  background: rgba(var(--v-theme-alternative), 0.16);
-  color: rgb(var(--v-theme-on-surface));
-  font-size: 0.875rem;
-  font-weight: 500;
-  line-height: 1;
-  cursor: pointer;
-  user-select: none;
-  transition: background 0.12s;
-}
-.alt-tab:hover {
-  background: rgba(var(--v-theme-alternative), 0.28);
-}
-.alt-tab--active {
-  background: rgb(var(--v-theme-alternative));
-  color: rgb(var(--v-theme-background));
-  font-weight: 700;
-}
-.alt-tab-label {
-  white-space: nowrap;
-}
-/* Deliberately the tab's own type rather than an input's: while you are renaming
-   you are still looking at the tab, and a field that switches to form typography
-   mid-edit reads as a different control appearing. */
-.alt-tab-field {
-  font: inherit;
-  color: inherit;
-  background: transparent;
-  border: none;
-  outline: none;
-  padding: 0;
-  width: auto;
-  min-width: 60px;
-  /* Grows with what is typed. `size` is the fallback for browsers without it. */
-  field-sizing: content;
-}
-.alt-tab-field::placeholder {
-  color: rgba(var(--v-theme-on-surface), 0.4);
-  font-weight: 400;
-}
-/* Space reserved in every state, so a tab is the same width open or closed. */
-.alt-tab-actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  opacity: 0;
-  transition: opacity 0.12s;
-}
-/* Both conditions, not either: renaming and removing act on the path you are
-   editing, so they belong to the open tab — and they appear when you reach for
-   them rather than sitting there. The space stays reserved in every state, so
-   nothing moves when they fade in. */
-.alt-tab--active:hover .alt-tab-actions {
-  opacity: 0.85;
-}
-.alt-tab-actions .v-icon:hover {
-  opacity: 1;
-}
-/* Not a tab — an action. It only borrows the corner radius so the row's shapes
-   agree. */
-.alt-add {
-  text-transform: none;
-  letter-spacing: 0;
-  border-radius: 6px;
 }
 
 /* A note placed in the step flow is as tall as its text, and everything in the
