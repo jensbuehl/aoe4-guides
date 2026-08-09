@@ -3302,18 +3302,24 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   position: relative;
 }
 /* Indented only where there is something to nest inside. In an age-up section
-   the gold rail already occupies x=6, so the block steps right to sit inside it;
-   anywhere else there is nothing to clear and the indent would just be the block
-   standing apart from the steps around it for no reason. */
+   the gold rail is already on x=6, so the block steps aside to sit within it —
+   8px, which puts the blue rail on x=14 and reads as nested rather than as a
+   second rail competing for the same line. Anywhere else there is nothing to
+   clear, and the block draws on x=6 like the age rail does. */
 .age-bracket-xs .alt-card-xs,
 .age-bracket-xs .alt-inside-xs {
-  margin-left: 12px;
+  margin-left: 8px;
 }
 .alt-inside-xs::before,
 .alt-card-xs::before {
   content: "";
   position: absolute;
-  left: -8px;
+  /* Cards sit at x=16 (the container's padding), so -10px puts the rail at x=6 —
+     exactly where the gold age rail runs. At the top level the two annotations
+     are the same kind of thing and draw on the same line; only the colour says
+     which one you are looking at. Same 3px width and 2px radius, for the same
+     reason. */
+  left: -10px;
   top: -4px;
   bottom: -4px;
   width: 3px;
@@ -3324,7 +3330,7 @@ tbody tr:has(+ tr.ins-row--trailing) td {
 /* The insert divider is a full-width flex row, not a card, so it takes the same
    offset — and only under the same condition. */
 .age-bracket-xs .alt-inside-xs--gap {
-  margin-left: 12px;
+  margin-left: 8px;
 }
 /* Squared off at the block's own ends, where there is no gap to bridge. */
 .alt-card-xs--start::before {
