@@ -118,7 +118,7 @@ The active path is **not** in the document (spec, Key Entities). Three independe
 
 | Holder | Scope | Lifetime | Persistence |
 |---|---|---|---|
-| Reading view (`BuildDetails`) | one build page | the visit | `localStorage`, per build id (FR-US2 §5) |
+| Reading view (`BuildDetails`) | one build page | the visit | **none** — a choice is about the game in front of you, not the last one |
 | Focus mode | one session | the run | none — starts from `main`/first each run |
 | Economy graph | — | — | **none: reads the reading view's** (FR-014) |
 

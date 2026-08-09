@@ -9,8 +9,6 @@ import { computed, ref } from "vue";
  */
 export const ACTIVE_PATH = Symbol("activePath");
 
-const STORAGE_KEY = "aoe4-guides-active-path";
-
 /**
  * Which alternative a reader is following, per block.
  *
@@ -18,7 +16,7 @@ const STORAGE_KEY = "aoe4-guides-active-path";
  *
  * A choice is a property of the reading, not of the build. Two people reading
  * the same build take different paths, and the author's document must not
- * record either. So this is view state: persisted for the reader who made it,
+ * record either. So this is view state: held for as long as the page is open,
  * never written to Firestore, and never sent anywhere.
  *
  * ## Why one selection is shared
@@ -29,6 +27,13 @@ const STORAGE_KEY = "aoe4-guides-active-path";
  * selection across both is what keeps an index taken in one half meaningful in
  * the other. It is also why `onSwitch` exists: anything holding an index from
  * before the switch has to let go of it.
+ *
+ * ## Not remembered between visits, deliberately
+ *
+ * A choice depends on the matchup and on the game in front of you, so carrying
+ * the last one forward would answer a question the reader has not been asked
+ * yet — and answer it with a stale reading. Every visit and every run starts
+ * from the author's first path.
  *
  * ## A factory, deliberately
  *
@@ -41,20 +46,17 @@ const STORAGE_KEY = "aoe4-guides-active-path";
  * one — a playback choice made mid-game is not a change to what the page below
  * is showing.
  *
- * @param {string|null} buildId - The build being read. Persistence is keyed on
- *   it; passing null keeps the selection for the session only.
  * @return {Object} `paths` and `pathFor` to read; `select` to write; `onSwitch`
  *   to be told when the reader changed their mind.
  */
-export function useActivePath(buildId = null) {
-  const selection = ref(readStored(buildId));
+export function useActivePath() {
+  const selection = ref({});
 
   const paths = computed(() => selection.value);
 
   /**
-   * The path index in force for one block. Never null — a block with no stored
-   * choice reads down its main path, or its first, and the flattener resolves
-   * that itself.
+   * The path index in force for one block. A block nobody has chosen for reads
+   * down its first path, which the flattener resolves itself.
    *
    * @param {string} id - The block's key, from blockId().
    * @return {number|null} The chosen index, or null to mean "the default".
@@ -77,7 +79,6 @@ export function useActivePath(buildId = null) {
     if (selection.value[id] === pathIndex) return;
 
     selection.value = { ...selection.value, [id]: pathIndex };
-    writeStored(buildId, selection.value);
 
     for (const listener of listeners) listener(id, pathIndex);
   };
@@ -98,51 +99,4 @@ export function useActivePath(buildId = null) {
   };
 
   return { paths, pathFor, select, onSwitch };
-}
-
-/**
- * The selection stored for a build, or an empty one.
- *
- * Stored per build under a single key rather than one key per build, so a
- * reader who browses fifty builds does not leave fifty entries behind.
- *
- * @param {string|null} buildId - The build being read.
- * @return {Object} Map of blockId to path index.
- */
-function readStored(buildId) {
-  if (!buildId) return {};
-
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return {};
-
-    const parsed = JSON.parse(raw);
-    return parsed?.[buildId] ?? {};
-  } catch {
-    // Private mode, a full quota, or a shape written by an older build.
-    return {};
-  }
-}
-
-/**
- * Remembers the selection for a build.
- *
- * Failure is silent and harmless: the reader keeps their choice for this visit
- * and starts from the default on the next one.
- *
- * @param {string|null} buildId - The build being read.
- * @param {Object} selection - Map of blockId to path index.
- * @return {void}
- */
-function writeStored(buildId, selection) {
-  if (!buildId) return;
-
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    const all = raw ? JSON.parse(raw) ?? {} : {};
-
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...all, [buildId]: selection }));
-  } catch {
-    // Storage unavailable — the choice simply does not survive the visit.
-  }
 }

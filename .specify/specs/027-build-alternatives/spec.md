@@ -50,7 +50,7 @@ A reader opens the build, reaches the split, sees "Pick one" with two titled opt
 2. **Given** a pick-one row on desktop, **When** rendered, **Then** it occupies the height of one table row and the option controls are auto-width, not stretched to fill.
 3. **Given** a chosen path, **When** its steps render, **Then** they appear in a lane with a 3px secondary-coloured left rail, and the lane simply ends where the block ends (no closing cap in the reading view).
 4. *(Withdrawn — the `main` flag was dropped during implementation, so there is no second reading state to switch into. The collapsed-detour view is deferred rather than designed out: it can return as a per-block author choice.)*
-5. **Given** an expanded condition row, **When** the reader returns to the build later, **Then** the expansion state is remembered for that build.
+5. *(Withdrawn — nothing about a reading is remembered between visits. A choice depends on the matchup and on the game in front of you, so carrying the last one forward would answer a question the reader has not been asked yet, with a stale reading. Every visit starts from the author's first path.)*
 6. **Given** mobile at 390px, **When** the pick control renders, **Then** options are stacked full-width with a minimum 44px target and the condition on a second line, sharing the step cards' width, radius and border.
 7. **Given** mobile, **When** a path is active, **Then** its step cards sit inside a secondary-coloured rail that is continuous with the pick card's rail, nested **inside** the gold age rail.
 
@@ -137,7 +137,7 @@ A player in focus mode reaches 4:10, is asked to pick, taps one, and keeps playi
 
 - **AlternativesBlock** — a build-order item: bounded by two markers, contains ≥2 paths, lives entirely inside one age section.
 - **Path** — `title` (plain text, edited on its tab), `steps` (ordered, own timings). Its **condition is its first note**; there is no description field and no `main` flag (FR-022, FR-005).
-- **Active path selection** — **view state, not build data**: persisted per build for the reading view; focus mode holds its own for the session; the graph reads it and does not own it.
+- **Active path selection** — **view state, not build data**: held only while the page is open, never persisted; focus mode holds its own for the session; the graph reads it and does not own it.
 
 ## Success Criteria *(mandatory)*
 

@@ -24,6 +24,15 @@
         @click.stop
       />
       <span v-else class="alt-tab-label">{{ path.title }}</span>
+      <!--The condition, where a reader is deciding. It is the path's first note,
+          so it also stands as the first row once the path is chosen — this is
+          the same text, brought forward to the moment of the choice.-->
+      <v-tooltip v-if="conditionOf(path)" activator="parent" location="top" max-width="360">
+        <span
+          :style="{ color: $vuetify.theme.current.colors.primary }"
+          v-html="conditionOf(path)"
+        ></span>
+      </v-tooltip>
       <span v-if="!readonly" class="alt-tab-actions">
         <v-icon size="13" @click.stop="$emit('rename', pathIndex)">mdi-pencil</v-icon>
         <v-icon size="13" @click.stop="$emit('remove', pathIndex)">mdi-close</v-icon>
@@ -43,6 +52,8 @@
 
 <script>
 import { ref, watch, nextTick } from "vue";
+
+import { pathCondition } from "@/composables/builds/alternativesDraft.js";
 
 /**
  * The paths of one alternatives block, as tabs.
@@ -69,6 +80,14 @@ export default {
   setup(props) {
     const titleField = ref(null);
 
+    /**
+     * What a path's tooltip says: its condition, which is its first note.
+     *
+     * @param {Object} path - One path of the block.
+     * @return {string|null} The condition's rich text, or null when unwritten.
+     */
+    const conditionOf = (path) => pathCondition(path);
+
     watch(
       () => props.renaming,
       async (on) => {
@@ -81,7 +100,7 @@ export default {
       }
     );
 
-    return { titleField };
+    return { titleField, conditionOf };
   },
 };
 </script>
