@@ -13,6 +13,22 @@
     </v-card>
   </v-dialog>
 
+  <!--Removing an alternative, or the whole block, asks first — the same courtesy
+      a step and an age-up already get, and these two destroy more than either.-->
+  <v-dialog v-model="altConfirm.open" width="auto" @keydown.enter="runAltConfirm()">
+    <v-card rounded="lg" class="text-center primary" flat>
+      <v-card-title>{{ altConfirmTitle }}</v-card-title>
+      <v-card-text>
+        {{ altConfirmText }}<br />
+        The action cannot be undone.
+      </v-card-text>
+      <v-card-actions class="justify-center ga-2">
+        <v-btn variant="text" @click="altConfirm.open = false">Cancel</v-btn>
+        <v-btn color="error" variant="tonal" @click="runAltConfirm()">Delete</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
   <v-tooltip
     v-model="showToolTip"
     :attach="'body'"
@@ -47,7 +63,7 @@
     <!-- ageUp section: age-up row (same pill style as arrival plate) -->
     <div v-if="section.type === 'ageUp' && !isBareAgeUp" class="age-ageup-row-xs">
       <v-icon color="accent" size="16">mdi-arrow-up-bold</v-icon>
-      <span class="age-ageup-lbl-xs">Aging up to {{ targetAgeName }}</span>
+      <span class="age-ageup-lbl-xs">Advancing to {{ targetAgeName }}</span>
       <div style="flex:1"></div>
       <v-btn
         v-if="!readonly && isLastAgeUp"
@@ -427,7 +443,7 @@
     <!-- ageUp marker — arrow icon only, gold banner, no age image -->
     <div v-if="section.type === 'ageUp' && !isBareAgeUp" class="age-marker-md mx-4 mt-0 mb-0">
       <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
-      <span class="age-marker-lbl-md">Age up to {{ targetAgeName }}</span>
+      <span class="age-marker-lbl-md">Advance to {{ targetAgeName }}</span>
       <span style="flex:1"></span>
       <v-btn v-if="!readonly && isLastAgeUp" icon size="small" variant="text" class="row-x" @click.stop="$emit('ageDownRequested')"><v-icon size="16">mdi-close</v-icon></v-btn>
     </div>
@@ -519,22 +535,43 @@
                   say a block starts here.-->
               <td :colspan="7" class="py-1 alt-bar-cell">
                 <div class="alt-bar">
-                  <v-btn
+                  <!--One box per tab, holding either the name or the field that
+                      edits it. Same container either way, so switching to rename
+                      cannot change the tab's width — and the controls keep their
+                      place whether or not the tab is the open one, so activating
+                      a tab does not resize it either.-->
+                  <div
                     v-for="(path, pathIndex) in item.paths"
                     :key="'p' + pathIndex"
-                    size="small"
-                    variant="flat"
-                    :color="pathIndex === item.active ? 'alternative' : undefined"
-                    class="alt-tab"
+                    :class="['alt-tab', pathIndex === item.active && 'alt-tab--active']"
                     @click="switchPath(index, pathIndex)"
-                    >{{ path.title || 'Untitled path' }}
-                  </v-btn>
+                  >
+                    <input
+                      v-if="renamingBlock === index && pathIndex === item.active"
+                      :ref="el => registerPathTitleRef(el, index)"
+                      type="text"
+                      class="alt-tab-field"
+                      :size="Math.max(10, (path.title || '').length + 1)"
+                      :value="path.title"
+                      @input="updatePath(index, 'title', $event.target.value)"
+                      @keyup.enter="finishRename(index)"
+                      @keyup.esc="finishRename(index)"
+                      @blur="finishRename(index)"
+                      @click.stop
+                      @paste="handlePaste"
+                    />
+                    <span v-else class="alt-tab-label">{{ path.title }}</span>
+                    <span v-if="!readonly" class="alt-tab-actions">
+                      <v-icon size="13" @click.stop="startRename(index)">mdi-pencil</v-icon>
+                      <v-icon size="13" @click.stop="confirmRemovePath(index)">mdi-close</v-icon>
+                    </span>
+                  </div>
                   <v-btn
                     v-if="!readonly"
                     size="small"
                     variant="text"
                     prepend-icon="mdi-plus"
-                    class="alt-tab"
+                    class="alt-add"
                     @click="addAlternative(index)"
                     >Add alternative</v-btn
                   >
@@ -547,90 +584,9 @@
               </td>
               <td v-if="!readonly" class="step-actions" style="width:90px">
                 <div class="step-actions-inner">
-                  <v-btn icon size="small" variant="text" class="row-x" @click="removeBlock(index)"
+                  <v-btn icon size="small" variant="text" class="row-x" @click="confirmRemoveBlock(index)"
                     ><v-icon size="16">mdi-close</v-icon></v-btn
                   >
-                </div>
-              </td>
-            </tr>
-            <tr class="alt-row alt-row--cond">
-              <!--Laid out on the table's own columns rather than as a band
-                  across them: the name sits where a step's resource pills sit,
-                  the condition sits in the Description column, and the icon
-                  picker sits in the action column. A reader's eye runs down one
-                  column of descriptions instead of stepping around a row that
-                  keeps its text somewhere else.-->
-              <td class="text-center alt-cond-cell"></td>
-              <td class="alt-cond-cell"></td>
-              <td :colspan="5" class="alt-cond-cell alt-title-td">
-                <input
-                  v-if="!readonly"
-                  :ref="el => registerPathTitleRef(el, index)"
-                  type="text"
-                  :class="
-                    item.paths[item.active]?.title
-                      ? ['alt-title-input', 'rc-pill', 'rc-input']
-                      : ['alt-title-input', 'rc-pill', 'rc-ghost', 'rc-input']
-                  "
-                  placeholder="Alternative title"
-                  :value="item.paths[item.active]?.title"
-                  @input="updatePath(index, 'title', $event.target.value)"
-                  @blur="trimPathTitle(index)"
-                  @paste="handlePaste"
-                />
-                <span v-else class="alt-title-read rc-pill">{{ item.paths[item.active]?.title }}</span>
-              </td>
-              <!--The condition is a description cell, not a div dressed as one.
-                  Same element, same rules, so it cannot drift from the step
-                  descriptions above and below it — including staying one row
-                  tall when an icon goes in.-->
-              <td
-                :data-edit-index="!readonly ? index : null"
-                :data-edit-field="!readonly ? 'pathDescription' : null"
-                @input="showAutoCompleteMenu($event, index)"
-                @keyup="handleContentEditableKeyUp($event, index)"
-                @click="saveSelection($event)"
-                @paste="handlePaste"
-                @focusin="focusedDescIndex = index"
-                @focusout="updatePath(index, 'description', $event.target.innerHTML); focusedDescIndex = null"
-                @mouseover="handleMouseOver($event)"
-                @mouseout="handleMouseOut($event)"
-                :contenteditable="!readonly"
-                class="contentEditable alt-desc text-left py-1"
-                v-html="item.paths[item.active]?.description"
-              ></td>
-              <td v-if="!readonly" class="step-actions" style="width:90px">
-                <div class="step-actions-inner">
-                  <v-menu :close-on-content-click="false" max-width="700" location="bottom end">
-                    <template v-slot:activator="{ props: menu }">
-                      <v-btn
-                        v-bind="menu"
-                        icon
-                        color="accent"
-                        variant="text"
-                        size="small"
-                        :class="['step-action-icon', focusedDescIndex !== index && 'step-action-icon--hidden']"
-                        @mousedown.prevent="saveSelection($event)"
-                      ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
-                    </template>
-                    <v-card flat rounded="lg">
-                      <IconSelector
-                        @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
-                        :civ="civ"
-                      ></IconSelector>
-                    </v-card>
-                  </v-menu>
-                  <!--Removing this path, in the column every other delete in the
-                      table lives in. The start marker's ✕ removes the block; this
-                      one removes the alternative whose name and condition are on
-                      this row.-->
-                  <v-btn
-                    icon
-                    size="small"
-                    variant="text"
-                    class="row-x"
-                    @click="removePath(index)"
-                  ><v-icon size="16">mdi-close</v-icon></v-btn>
                 </div>
               </td>
             </tr>
@@ -1334,7 +1290,12 @@ export default {
      */
     function previousStepBefore(index) {
       for (let cursor = index - 1; cursor >= 0; cursor--) {
-        if (!isMarker(steps[cursor])) return steps[cursor];
+        //Notes are skipped along with markers. A note states no economy — it has
+        //no resource cells at all — so it is not a distribution anything can be
+        //a change from; comparing against one read every value as a move from
+        //zero and lit the whole row. Focus mode reaches past a note the same way
+        //when it fills its resource dock.
+        if (!isMarker(steps[cursor]) && !isNote(steps[cursor])) return steps[cursor];
       }
       return props.previousStep;
     }
@@ -1586,34 +1547,14 @@ export default {
     const isMarker = (item) => isBlockStart(item) || isBlockEnd(item);
 
     /**
-     * Whether a row belongs to the alternative currently being edited.
-     *
-     * Drives the lane the block is drawn in. Positional, like membership itself:
-     * a row is inside because of where it sits, not because anything marks it.
+     * Whether a row sits between two markers, and so belongs to the path being
+     * edited rather than to the build. This is the whole of "membership is
+     * positional" — nothing is stored to say so.
      *
      * @param {number} index - Position in the editor's working list.
-     * @return {boolean} True for the steps between the markers.
+     * @return {boolean} True when the row is inside a block.
      */
     const insideBlock = (index) => isInsideBlock(steps, index);
-
-    /**
-     * Where a row sits in the section as the document counts it.
-     *
-     * The editor's list has markers in it and the document's does not, so a row
-     * at local position 7 may be step 5 as far as the resolved times handed down
-     * from the parent are concerned. Everything index-aligned to the flattened
-     * build — resolved times, estimates, deltas — has to come through here.
-     *
-     * @param {number} index - Position in the editor's working list.
-     * @return {number} Position among the section's real steps.
-     */
-    const documentIndex = (index) => {
-      let count = 0;
-      for (let cursor = 0; cursor < index && cursor < steps.length; cursor++) {
-        if (!isMarker(steps[cursor])) count++;
-      }
-      return count;
-    };
 
     /**
      * Whether an item in this section is a note rather than a step.
@@ -1742,12 +1683,21 @@ export default {
 
       const addIndex = index + 1;
       const stepId = ++_nextStepId;
-      const marker = { kind: ALT_START, paths: [emptyPath()], active: 0, _id: ++_nextStepId };
+      const marker = {
+        kind: ALT_START,
+        paths: [{ ...emptyPath(), title: pathName(1) }],
+        active: 0,
+        _id: ++_nextStepId,
+      };
+      //A note first: it is where the condition goes, and seeding it is what makes
+      //"a path's condition is its first note" true by construction rather than by
+      //an author remembering to write one.
+      const condition = { gameplan: "", _id: ++_nextStepId };
       const first = blankStep(stepId);
       const end = { kind: ALT_END, _id: ++_nextStepId };
 
-      steps.splice(addIndex, 0, marker, first, end);
-      stepsCopy.splice(addIndex, 0, { ...marker }, blankStep(stepId), { ...end });
+      steps.splice(addIndex, 0, marker, condition, first, end);
+      stepsCopy.splice(addIndex, 0, { ...marker }, { ...condition }, blankStep(stepId), { ...end });
 
       emitSteps();
       await nextTick();
@@ -1802,7 +1752,11 @@ export default {
       const marker = steps[markerIndex];
       if (!marker?.paths) return;
 
-      marker.paths.push({ ...emptyPath(), steps: [blankStep(++_nextStepId)] });
+      marker.paths.push({
+        ...emptyPath(),
+        title: pathName(marker.paths.length + 1),
+        steps: [{ gameplan: "", _id: ++_nextStepId }, blankStep(++_nextStepId)],
+      });
       switchPath(markerIndex, marker.paths.length - 1);
 
       await nextTick();
@@ -1831,11 +1785,51 @@ export default {
       //keystroke wrote the trimmed string straight back into the input and ate
       //the space the author had just typed. Trimming happens on the way out
       //instead, in trimPathTitle().
-      const clean = field === "title" ? value.replace(/<[^>]*>/g, "") : keptOrEmptied(value);
+      const clean = value.replace(/<[^>]*>/g, "");
 
       marker.paths[marker.active] = { ...marker.paths[marker.active], [field]: clean };
       stepsCopy[markerIndex] = { ...marker };
       emitSteps();
+    };
+
+    /**
+     * The name a path is born with.
+     *
+     * Named on creation rather than left blank with a placeholder: a tab has to
+     * carry a word to be a tab at all, the legend and the focus-mode bar need
+     * something to print, and "Alternative 2" is a truthful name until the
+     * author has a better one.
+     *
+     * @param {number} position - 1-based, in the order the paths sit.
+     * @return {string} The default name.
+     */
+    const pathName = (position) => `Alternative ${position}`;
+
+    /**
+     * Which block's active path is being renamed, by marker position. One at a
+     * time: the pencil belongs to the tab that is open, and there is only ever
+     * one of those.
+     */
+    const renamingBlock = ref(null);
+
+    const startRename = async (markerIndex) => {
+      renamingBlock.value = markerIndex;
+      await nextTick();
+      pathTitleRefs.value[markerIndex]?.focus();
+      pathTitleRefs.value[markerIndex]?.select?.();
+    };
+
+    const finishRename = (markerIndex) => {
+      trimPathTitle(markerIndex);
+
+      //An emptied name is given its default back rather than left blank. A tab
+      //with nothing in it is not clickable in any meaningful sense, and the
+      //legend and the focus-mode bar would have nothing to print.
+      const marker = steps[markerIndex];
+      const path = marker?.paths?.[marker.active];
+      if (path && !path.title) updatePath(markerIndex, "title", pathName(marker.active + 1));
+
+      renamingBlock.value = null;
     };
 
     /**
@@ -1853,6 +1847,50 @@ export default {
       if (!path || path.title === path.title?.trim()) return;
 
       updatePath(markerIndex, "title", path.title.trim());
+    };
+
+    /**
+     * What the confirmation dialog is currently asking about.
+     *
+     * One dialog for both, because the two acts differ only in what survives —
+     * and that difference is exactly what the wording has to make clear before
+     * the author says yes.
+     */
+    const altConfirm = ref({ open: false, mode: null, index: null });
+
+    /** Whether the block would go with the path — it does when it is the last. */
+    const lastPathOfBlock = (index) => (steps[index]?.paths?.length ?? 0) < 2;
+
+    const altConfirmTitle = computed(() => {
+      const { mode, index } = altConfirm.value;
+      if (mode === "path" && !lastPathOfBlock(index)) return "Delete alternative";
+      return "Remove alternatives";
+    });
+
+    const altConfirmText = computed(() => {
+      const { mode, index } = altConfirm.value;
+      if (mode === "path" && !lastPathOfBlock(index)) {
+        return "This alternative and the steps inside it are deleted. The other alternatives stay.";
+      }
+      //Both the block's own ✕ and deleting the last remaining path land here, and
+      //they do the same thing: the bracket goes, the steps stay.
+      return "The alternatives are removed and every step inside them is kept, back on the main line.";
+    });
+
+    const confirmRemovePath = (index) => {
+      altConfirm.value = { open: true, mode: "path", index };
+    };
+
+    const confirmRemoveBlock = (index) => {
+      altConfirm.value = { open: true, mode: "block", index };
+    };
+
+    const runAltConfirm = () => {
+      const { mode, index } = altConfirm.value;
+      altConfirm.value = { open: false, mode: null, index: null };
+
+      if (mode === "path") removePath(index);
+      else if (mode === "block") removeBlock(index);
     };
 
     /**
@@ -1951,11 +1989,11 @@ export default {
 
       let ageUpReason = null;
       if (inside) {
-        ageUpReason = "An alternative cannot span an age-up — that is two builds, not one";
+        ageUpReason = "An alternative cannot span an advance — that is two builds, not one";
       } else if (!props.ageUpAvailable) {
         ageUpReason = "The build already reaches the Imperial Age";
       } else if (!ageUpHere) {
-        ageUpReason = "An age-up can only be added at the end of the build";
+        ageUpReason = "You can only advance at the end of the build";
       }
 
       return [
@@ -1969,11 +2007,11 @@ export default {
           reason: "Alternatives cannot be nested inside one another",
         },
         {
-          //Just "Age up", per the design frame. The age it leads to belongs in
+          //Just "Advance", per the design frame. The age it leads to belongs in
           //the arrival plate the action produces, not in a menu entry that has
           //to stay as short as the three beside it.
           value: "ageUp",
-          title: "Age up",
+          title: "Advance",
           icon: "mdi-arrow-up-bold",
           disabled: !!ageUpReason,
           reason: ageUpReason,
@@ -2178,8 +2216,17 @@ export default {
       addAlternative,
       updatePath,
       trimPathTitle,
+      renamingBlock,
+      startRename,
+      finishRename,
       removePath,
       removeBlock,
+      altConfirm,
+      altConfirmTitle,
+      altConfirmText,
+      confirmRemovePath,
+      confirmRemoveBlock,
+      runAltConfirm,
       pathTitleRefs,
       registerPathTitleRef,
       removeStep,
@@ -2558,6 +2605,15 @@ export default {
    more piece of stacking for the next person to unpick. */
 .hidden-xs:has(.ins-row--trailing .ins-zone:hover) {
   z-index: 5;
+  /* Lifted at once on the way in */
+  transition: z-index 0s;
+}
+/* …and dropped only after the button has finished fading out. Without the delay
+   the card falls back the instant the pointer leaves, so the next section paints
+   over the button's lower half while it is still visible — the fade appeared to
+   break in two. z-index cannot tween, but it can be made to wait. */
+.hidden-xs {
+  transition: z-index 0s 0.28s;
 }
 .ins-line {
   position: absolute;
@@ -2673,6 +2729,17 @@ export default {
   background: rgb(var(--v-theme-alternative));
   pointer-events: none;
 }
+/* The 2px overlap is for seams *between* rows, so at the block's own ends it is
+   just the rail sticking out past the thing it marks. Not squared off flush
+   either, though: 1px, which is exactly the row separator each end sits against.
+   Flush at 0 stops short of that hairline and reads as a nick; 1px meets it and
+   the rail ends where the block does. */
+.alt-row--start > td:first-child::before {
+  top: -1px;
+}
+.alt-row--end > td:first-child::before {
+  bottom: -1px;
+}
 /* No horizontal rules bounding the block. The rail already says where it starts
    and stops — it simply begins and ends — and both marker rows say so in words
    as well. A third statement of the same fact bought nothing and cost the
@@ -2714,85 +2781,88 @@ tbody tr.alt-row--end:not(:last-child):not(:has(+ tr.ins-row--trailing)) td:not(
   text-transform: none;
   letter-spacing: 0;
 }
-/* The condition row is a step row's height and behaves like one: an icon
-   dropped into the text does not grow it, because a 21px icon still fits the
-   line box inside the row's own 52px. Matching the steps around it matters more
-   than being compact — the eye reads a column of equal rows as one list. */
-/* The empty cells before the name. The condition and the action column are step
-   cells now and bring their own spacing. */
-.alt-cond-cell {
-  padding: 0 !important;
-}
-/* The name starts where the builders pill starts and runs to the end of the
-   resource block, so its left edge lines up with a column that is there on every
-   step row. Right up against the Description column, so it reads as "this path —
-   and here is when you take it". */
-.alt-title-td {
-  padding: 0 4px !important;
-}
 /* Revealed on hover, like every other row's ✕. The marker rows are not
    .step-row, so the shared rule below never reached them and the control was
    there but permanently invisible. */
 .alt-row:hover .row-x {
   opacity: 1;
 }
-/* The title is one line and stays one line: it is what the chart legend, the
-   focus-mode path bar and the reader's pick row show, and those have room for a
-   name, not for a condition. The condition goes in the field beside it.
-
-   Dressed as a resource pill — same height, radius, border and weight, just
-   tinted with the alternatives colour and wide enough for words. It sits in a
-   row of pills, so it should read as one. */
-.alt-title-input,
-.alt-title-read {
-  /* A resource input in every respect that is not its width: same 30px box, same
-     radius, border and weight, the same 12px margins that centre it in the row,
-     and the same two states — a ghost while it is empty, tinted once it says
-     something. Only the tint differs, because the thing it says is which path
-     you are on rather than how many villagers are on wood.
-
-     The 0.45/0.65 fill and edge are the resource pills' own values, not numbers
-     picked to look similar. */
-  --rc-tint: var(--v-theme-alternative);
-  --rc-fill: 0.45;
-  --rc-edge: 0.65;
-
-  width: 100%;
-  /* The one deviation, and the only one: names are words, and centred words in a
-     314px box read as a heading rather than as a field. Digits centre because
-     they are compared down a column; these are not. */
-  text-align: left;
-  padding: 0 10px !important;
-}
-.alt-title-read {
-  display: block;
-  box-sizing: border-box;
-}
-/* Type set like a step description's placeholder — the pill's 800 weight and
-   tabular figures are for numbers, and read as shouting under a prompt. Only the
-   type: the field itself stays a pill. */
-.alt-title-input::placeholder {
-  color: rgba(var(--v-theme-on-surface), 0.25);
+/* One tab, one box. It holds the name or the field that edits it, and the two
+   controls always occupy their place — hidden, not absent, until the tab is
+   pointed at or open. Both of those are why nothing here changes width when a
+   tab is activated or renamed. */
+.alt-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  /* 6px, matching the resource pills and the rename field rather than the 4px a
+     v-btn defaults to — which is why this is a div and not a button. */
+  border-radius: 6px;
+  background: rgba(var(--v-theme-alternative), 0.16);
+  color: rgb(var(--v-theme-on-surface));
   font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s;
+}
+.alt-tab:hover {
+  background: rgba(var(--v-theme-alternative), 0.28);
+}
+.alt-tab--active {
+  background: rgb(var(--v-theme-alternative));
+  color: rgb(var(--v-theme-background));
+  font-weight: 700;
+}
+.alt-tab-label {
+  white-space: nowrap;
+}
+/* Deliberately the tab's own type rather than an input's: while you are renaming
+   you are still looking at the tab, and a field that switches to form typography
+   mid-edit reads as a different control appearing. */
+.alt-tab-field {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  width: auto;
+  min-width: 60px;
+  /* Grows with what is typed. `size` is the fallback for browsers without it. */
+  field-sizing: content;
+}
+.alt-tab-field::placeholder {
+  color: rgba(var(--v-theme-on-surface), 0.4);
   font-weight: 400;
-  font-variant-numeric: normal;
-  letter-spacing: normal;
 }
-/* Focused like the resource pill it is dressed as, gold ring and all — the same
-   reason the condition takes the step's. Focus means "you are typing here" and
-   says nothing about what kind of field it is. */
-.alt-title-input:focus {
-  background: rgba(var(--v-theme-accent), 0.15) !important;
-  border-color: rgba(var(--v-theme-accent), 0.65) !important;
+/* Space reserved in every state, so a tab is the same width open or closed. */
+.alt-tab-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.12s;
 }
-/* Everything about the condition's box — padding, line box, focus ring — now
-   comes from the step description rules it shares. Only its placeholder is its
-   own. */
-.alt-desc[contenteditable="true"]:empty::before {
-  content: 'Alternative condition';
-  /* 0.25, matching a step's placeholder rather than the 0.3 a note carries */
-  color: rgba(var(--v-theme-on-surface), 0.25);
-  pointer-events: none;
+/* Both conditions, not either: renaming and removing act on the path you are
+   editing, so they belong to the open tab — and they appear when you reach for
+   them rather than sitting there. The space stays reserved in every state, so
+   nothing moves when they fade in. */
+.alt-tab--active:hover .alt-tab-actions {
+  opacity: 0.85;
+}
+.alt-tab-actions .v-icon:hover {
+  opacity: 1;
+}
+/* Not a tab — an action. It only borrows the corner radius so the row's shapes
+   agree. */
+.alt-add {
+  text-transform: none;
+  letter-spacing: 0;
+  border-radius: 6px;
 }
 
 /* A note placed in the step flow is as tall as its text, and everything in the

@@ -35,8 +35,35 @@ export function defaultPathIndex(paths) {
   return flagged >= 0 ? flagged : 0;
 }
 
-/** A path with nothing in it yet. */
-export const emptyPath = () => ({ title: "", description: "", steps: [] });
+/**
+ * A path with nothing in it yet.
+ *
+ * No condition field. A path's condition is its **first note** — the thing that
+ * says "take this one if they scouted you" is a note like any other, written
+ * with the same field, the same icons and the same rules, and it is already
+ * where the reader meets it: at the top of the path.
+ *
+ * Callers seed the note themselves (see seededPath) so the convention is made by
+ * the tool rather than left to an author's discipline.
+ */
+export const emptyPath = () => ({ title: "", steps: [] });
+
+/**
+ * The condition an alternative is taken under, or null when its author has not
+ * written one.
+ *
+ * Read positionally, which is how everything else in a build order is
+ * identified. A path whose first item is not a note simply has no condition to
+ * show — the pick control falls back to the title alone, which is a degradation
+ * rather than a break.
+ *
+ * @param {Object} path - One path of a block.
+ * @return {string|null} The condition's rich text.
+ */
+export function pathCondition(path) {
+  const first = path?.steps?.[0];
+  return first?.gameplan ? first.gameplan : null;
+}
 
 /**
  * Turns a section's items into the editor's flat working list.

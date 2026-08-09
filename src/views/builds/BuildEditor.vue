@@ -142,9 +142,10 @@
             max-width="120"
             cover
           ></v-img>
-          <v-chip color="success" size="x-small" label>
-            <v-icon start>mdi-check-circle</v-icon>Valid YouTube link
-          </v-chip>
+          <!--No "valid link" chip. The thumbnail is the confirmation: it can only
+              appear if the link resolved, and it says which video, which the
+              chip never did. The error chip below stays — that one tells the
+              author something they cannot see for themselves.-->
         </div>
         <div v-if="ytState === 'invalid'" class="d-flex align-center mt-2 mb-1">
           <v-chip color="error" size="x-small" label>

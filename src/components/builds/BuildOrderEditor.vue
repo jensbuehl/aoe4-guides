@@ -4,7 +4,7 @@
     <v-card rounded="lg" class="text-center primary" flat>
       <v-card-title>Age down to {{ getPreviousAgeName() }}?</v-card-title>
       <v-card-text>
-        This removes the age-up and all steps that follow.<br />
+        This removes the advance and all steps that follow.<br />
         The action cannot be undone.
       </v-card-text>
       <v-card-actions class="justify-center ga-2">

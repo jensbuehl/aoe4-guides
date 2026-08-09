@@ -41,10 +41,11 @@ One new item kind, living **in `section.steps`** alongside ordinary steps (R-10)
   kind: "alternatives",
   paths: [
     {
-      title: "Defend",              // plain text, one line, required
-      description: "<html>",        // rich text, same field as a step description
-      main: true,                   // optional; at most one path per block
-      steps: [ /* ordinary steps */ ]
+      title: "Defend",              // plain text, one line, edited on the tab
+      steps: [
+        { gameplan: "<html>" },     // the condition: the path's FIRST note
+        /* … ordinary steps … */
+      ]
     },
     // … 1 or more further paths
   ]

@@ -24,8 +24,8 @@ Lives in `section.steps`, never as a section (research
 | `kind` | `"alternatives"` | yes | Sole discriminator. Absent on every existing step — no migration. |
 | `paths` | array | yes | ≥2 in normal authoring; 1 degrades to a conditional detour, 0 contributes nothing. |
 | `paths[].title` | plain string | yes | One line. What the legend, the focus-mode bar and the desktop pick row show. |
-| `paths[].description` | rich HTML | no | Same sanitiser and same editor as a step description — `img` + `br` only. |
-| `paths[].main` | boolean | no | At most one per block. The **only** difference between pick-one and collapsed-detour rendering (FR-005). |
+| *(condition)* | — | no | **Not a field.** A path's condition is its first note, i.e. `paths[].steps[0].gameplan` (FR-022). |
+| *(main)* | — | — | **Dropped.** The first path is the main line by convention. |
 | `paths[].steps` | array | yes | Ordinary steps. Own timings (FR-006). No nesting, no age-up. |
 
 No `id`. Identity is positional, consistent with every other index in this codebase.

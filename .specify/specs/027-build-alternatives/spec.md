@@ -108,7 +108,7 @@ A player in focus mode reaches 4:10, is asked to pick, taps one, and keeps playi
 
 ### Functional Requirements
 
-- **FR-001**: The build order document MUST support one new item kind representing an **alternatives block**: an ordered run bounded by an opening marker and a closing merge marker, containing two or more **paths**, each with a plain-text `title`, a rich-text `description`, an optional `main` boolean, and its own ordered steps.
+- **FR-001**: The build order document MUST support one new item kind representing an **alternatives block**: an ordered run bounded by an opening marker and a closing merge marker, containing two or more **paths**, each with a plain-text `title` and its own ordered steps. *(Revised during implementation: a path carries no `description` field — its condition is its first note, see FR-022. The `main` boolean was dropped; the first path is the main line by convention.)*
 - **FR-002**: Rejoin MUST be **positional** — the block ends at its closing marker and the next step is common again. There MUST be no rejoin pointer or cross-reference to keep in sync.
 - **FR-003**: An alternatives block MUST open and close **within a single age section**; an age-up MUST NOT be creatable inside a path, and the closing marker MUST NOT be movable past the next age-up. Steps MAY follow the block before the age-up.
 - **FR-004**: Alternatives blocks MUST NOT nest.
@@ -117,7 +117,7 @@ A player in focus mode reaches 4:10, is asked to pick, taps one, and keeps playi
 - **FR-007**: The build editor's insert affordance MUST become a menu offering Step, Note, Age up and Alternatives, replacing the current bottom-anchored add buttons. Entries that are invalid in context MUST be shown **disabled with the reason in a tooltip** rather than hidden.
 - **FR-008**: Choosing Alternatives MUST insert the complete bracket (opening marker, one path with one empty step, closing merge marker) in one action. There MUST be no separate "close" command.
 - **FR-009**: The editor MUST provide path tabs to switch which path is being edited, an **+ Add alternative** action, and a **Set as main** toggle. Only one path's steps are edited at a time.
-- **FR-010**: A path's description field MUST reuse the existing step-note rich field, including `::` shortcode autocomplete and the icon picker. Matchups MUST be expressed as civ icons inside the description — no separate matchup field.
+- **FR-010**: A path's condition MUST be written with the existing note field, including `::` shortcode autocomplete and the icon picker. Matchups MUST be expressed as civ icons inside it — no separate matchup field.
 - **FR-011**: Deleting either marker MUST lift all paths' steps back into the section rather than deleting them.
 - **FR-012**: The desktop steps table MUST render the pick-one control as a single table-row-height row showing **titles only**, with option controls sized to content; the active path's steps MUST render in a lane with a 3px secondary rail and no closing cap.
 - **FR-013**: The mobile steps list MUST render the pick control as a card in the step flow with options stacked full-width at ≥44px, descriptions on a second line, matching the step cards' width, radius and border; the active path's cards MUST sit in a continuous secondary rail nested inside the gold age rail.
@@ -129,6 +129,8 @@ A player in focus mode reaches 4:10, is asked to pick, taps one, and keeps playi
 - **FR-019**: A **note** MUST be an item the author inserts at a chosen position from the same menu, carried as a step whose content is its note text. A note MUST be exempt from the timing requirement that gates autoplay, MUST contribute no point to the economy series, and MUST show the resource position of the step it follows rather than stating one of its own.
 - **FR-020**: Notes MUST be **optional and positional**. The editor MUST NOT render an empty note row for a section that has none; a section note that already exists MUST keep rendering and MUST stay editable where it is. No migration of existing notes.
 - **FR-021**: Overlay-tool export MUST carry a note's text, so a note is not exported as an empty step.
+- **FR-022**: A path's **condition** MUST be its **first note** rather than a field of its own. The editor MUST seed a new path with an empty note, so the convention holds by construction; a path whose first item is not a note MUST degrade to showing its title alone, never to an error. *(Added during implementation: the design already rendered the condition as the path's first step, so a separate field was the same text stored twice and cost the editor a row.)*
+- **FR-023**: A path's title MUST be edited on its tab, which is where the title is displayed and where the reader switches paths.
 
 ### Key Entities
 
