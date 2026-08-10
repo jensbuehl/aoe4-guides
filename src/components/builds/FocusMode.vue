@@ -675,7 +675,7 @@ export default {
       await initTextToSpeech();
       if (audio.value) {
         stop();
-        if (!autoplaySupported.value) speak(currentStep.value, announceVillagers.value);
+        if (!autoplaySupported.value) announceStep();
       }
     });
 
@@ -756,6 +756,7 @@ export default {
 
       reopenedKey.value = bar.key;
       focusSelection.clear(bar.key);
+      announceStep();
     }
 
     //Armed when a fork is on screen *and* the clock is running, disarmed the
@@ -811,6 +812,50 @@ export default {
       }
     });
 
+    /**
+     * Says the step the player is on.
+     *
+     * At a fork it says the question instead. There is no step to say: the one
+     * under the question belongs to whichever path the author happened to write
+     * first, and reading it out would tell a player looking at their game to do
+     * something they may be about to decide against.
+     *
+     * Every arrival at a step routes through here — the tick's catch-up, the
+     * transport, resuming, and answering a fork — so this is the one place that
+     * decides what is said, and nothing can say it twice.
+     *
+     * @return {void}
+     */
+    function announceStep() {
+      if (!audio.value) return;
+      if (pendingPick.value) {
+        announcePick(pendingPick.value);
+        return;
+      }
+
+      speak(currentStep.value, announceVillagers.value);
+    }
+
+    /**
+     * Says the question, as a question.
+     *
+     * Focus mode exists for a player whose eyes are on their game, and a fork
+     * that passed in silence would auto-answer ten seconds later without them
+     * ever knowing they had been asked. The path titles are read out because
+     * they are what the buttons say — the conditions are not, since a spoken
+     * paragraph outlasts the countdown.
+     *
+     * @param {Object|null} pick - The pending fork.
+     * @return {void}
+     */
+    function announcePick(pick) {
+      if (!audio.value || !pick) return;
+
+      const titles = (pick.paths ?? []).map((path) => path.title).filter(Boolean);
+      stop();
+      speak({ description: `Which way? ${titles.join(", or ")}` }, false);
+    }
+
     /** A path's condition, which is its first note — the thing being decided. */
     const conditionOfPath = (path) => pathCondition(path);
 
@@ -836,6 +881,11 @@ export default {
 
       buildQueue(focusSelection.paths.value);
       reseekToClock();
+
+      //The step the answer landed on, which is the first one down the chosen
+      //path — and the first thing the player has not already been told.
+      stop();
+      announceStep();
     }
 
     /**
@@ -1220,7 +1270,7 @@ export default {
           initTimer();
           if (audio.value) {
             stop();
-            speak(currentStep.value, announceVillagers.value);
+            announceStep();
           }
         }
       }
@@ -1231,7 +1281,7 @@ export default {
       if (!audio.value) {
         stop();
       } else {
-        if (!autoplaySupported.value) speak(currentStep.value, announceVillagers.value);
+        if (!autoplaySupported.value) announceStep();
       }
     }
 
@@ -1239,7 +1289,7 @@ export default {
       announceVillagers.value = !announceVillagers.value;
       if (audio.value) {
         stop();
-        speak(currentStep.value, announceVillagers.value);
+        announceStep();
       }
     }
 
@@ -1374,7 +1424,7 @@ export default {
       }
       if (audio.value) {
         stop();
-        speak(currentStep.value, announceVillagers.value);
+        announceStep();
       }
     }
 
@@ -1404,7 +1454,7 @@ export default {
         //announced the villager distribution on every step backwards no matter
         //what the toggle said. Silent, because forwards playback was correct and
         //nobody steps back on purpose while listening.
-        speak(currentStep.value, announceVillagers.value);
+        announceStep();
       }
     }
 
