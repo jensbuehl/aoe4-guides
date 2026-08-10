@@ -1843,10 +1843,16 @@ export default {
   }
 }
 
-@container focus ((max-width: 300px) or (max-height: 190px)) {
-  /* Nothing is left to say. Three coloured cards draining a timer, on a window
-     this size, are the question — and the row cost more height than the option
-     it was introducing. */
+/* Short, rather than narrow — 260px is where this component already decides a
+   window has no height to spare and drops the next-step preview. The fork was
+   hung on 190px, which a floating window practically never reaches, so it
+   stayed at its roomy size in exactly the windows that had no room.
+   
+   Nothing is left to say at this size: three coloured cards draining a timer
+   are the question, and the row cost more height than the option it was
+   introducing. The options stay side by side rather than going full width — two
+   to a row is half the height of two rows, and height is what is scarce. */
+@container focus ((max-width: 300px) or (max-height: 260px)) {
   .fm-pick-ask {
     display: none;
   }
@@ -1857,7 +1863,7 @@ export default {
     gap: 4px;
   }
   .fm-pick-option {
-    flex: 1 1 100%;
+    flex: 1 1 100px;
     min-height: 30px;
     padding: 2px 8px;
   }
