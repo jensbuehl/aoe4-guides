@@ -206,6 +206,40 @@ is the failure `sectionOffsets` was extracted to prevent.
 
 ---
 
+## 6b. Security rules — reviewed, unchanged (T055)
+
+Principle V requires the review to happen and be stated, so: **`firestore.rules` needs no change**,
+and here is why rather than merely that.
+
+The rule that governs a build has two halves. The owner's half allows a write when
+`request.auth.uid` matches `authorUid`. The public half allows an update whose
+`diff(resource.data).affectedKeys()` `hasOnly(['views', 'likes', 'upvotes', 'downvotes',
+'comments'])`.
+
+| What changed | Why the rules do not care |
+|---|---|
+| No new top-level field | `affectedKeys()` reads **top-level keys only**. A block lives inside `steps`, so every edit to one still surfaces as `steps` changing — already denied to the public half, already allowed to the owner's |
+| No new collection or document | Nothing to match on |
+| No new writer | Only an author edits a build, exactly as before. Path *selection* is view state and is never written (§3) |
+| No field left the document | The public allowlist is unaffected either way |
+
+Two platform constraints, checked rather than assumed:
+
+- **Firestore forbids an array directly inside an array.** Ours never is: `steps[]` → block *map* →
+  `paths[]` → path *map* → `steps[]`. Arrays hold maps and maps hold arrays, which is legal; only
+  `[[…]]` is not. This is a real constraint the nested shape had to satisfy, not a formality.
+- **Nesting depth** reaches about five of the twenty allowed.
+
+The one thing that *is* worth watching is document size: a block stores every path's steps, so a
+build with several long alternatives grows against the 1 MiB document limit. Nothing near it today —
+recorded so a future feature that multiplies paths knows where the ceiling is.
+
+Unrelated to rules but adjacent, and the reason this was worth a careful look: Firestore rejects
+`undefined` at any depth and stores class instances by their own rules. Both bit during
+implementation — see `saveable()` in `buildService.js` and `toDateSafe()` in `useTimeSince.js`.
+
+---
+
 ## 7. Entities, named
 
 - **AlternativesBlock** — `{ kind, paths }`. Lives in one section's `steps`. Cannot nest, cannot span
