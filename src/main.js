@@ -41,6 +41,16 @@ const customDarkTheme = {
     //Lightened from the brand #294790 because that navy on this #324156 surface
     //is about 1.3:1 — invisible. This is 4.8:1.
     alternative: "#8AA9E8",
+    //Ages — the other half of that same rule, and it needs its own token for the
+    //mirror-image reason. `accent` is gold here but navy in the light palette
+    //below, where it was changed for text contrast, so a rail read off `accent`
+    //came out navy in light mode — identical to `alternative`, and the age-up
+    //phase and the alternatives phase became indistinguishable.
+    //
+    //Used for the age lane's rail and fills only, never for its text: this is
+    //the "gold as a fill" half of the split, and gold text on the light surface
+    //is what failed in the first place.
+    age: "#e7c05e",
     "surface-container": "#324156", //nested card surfaces (step cards, inset panels)
     "icon-background-highlight": "#646C79",
     "icon-background": "#4F5866",
@@ -81,9 +91,20 @@ const customLightTheme = {
     "primary-darken-1": "#3D516B",
     secondary: "#CCAA55",
     "secondary-darken-1": "#8D7B4B",
-    //The brand navy itself here: 8.4:1 on this surface, and unmistakably not the
-    //gold that ages and timings use. Same role as the dark theme's lighter blue.
+    //The brand navy itself here: 8.4:1 on this surface. Same role as the dark
+    //theme's lighter blue.
     alternative: "#294790",
+    //The gold the ages keep in light mode, as a *fill*: the same #CCAA55 the
+    //tooltips, info snackbars and `secondary` use, where contrast is computed
+    //against it rather than for text sitting on it.
+    //
+    //This exists because `accent` is navy here — see the note at the top — so an
+    //age rail read off `accent` came out the same navy as `alternative`, and the
+    //age-up phase and the alternatives phase looked identical. Their text is
+    //still navy in this theme and has to be; the rail and the fill are what tell
+    //the two phases apart, which is exactly the division the light palette
+    //already draws between gold and navy.
+    age: "#CCAA55",
     "surface-container": "#FAFAFA", //nested card surfaces — light blue-grey, echoes navy palette
     "icon-background-highlight": "#DEDEDF",
     "icon-background": "#C5C5C6",

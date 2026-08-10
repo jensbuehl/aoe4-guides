@@ -63,7 +63,7 @@
     <!-- ageUp section: age-up row (same pill style as arrival plate) -->
     <div v-if="section.type === 'ageUp' && !isBareAgeUp" class="age-ageup-row-xs">
       <v-icon color="accent" size="16">mdi-arrow-up-bold</v-icon>
-      <span class="age-ageup-lbl-xs">Advancing to {{ targetAgeName }}</span>
+      <span class="annot-lbl-xs age-annot-lbl">Advancing to {{ targetAgeShortName }}</span>
       <div style="flex:1"></div>
       <v-btn
         v-if="!readonly && isLastAgeUp"
@@ -135,9 +135,12 @@
             @done="finishRename(index)"
           />
         </div>
-        <!--The merge line: the mark alone, as on desktop. The rail stops here.-->
+        <!--The merge line, named as on desktop. This card is already the same
+            42px row an age annotation is, so it carries a label the same way
+            they do — at this list's own type scale, not the table's.-->
         <div v-else-if="isBlockEnd(item)" class="alt-card-xs alt-card-xs--end">
           <v-icon size="15" class="alt-mark">mdi-call-merge</v-icon>
+          <span class="annot-lbl-xs alt-annot-lbl">Paths rejoin</span>
         </div>
         <!-- A note in the card flow, in the same dress the section note wears -->
         <div v-else-if="isNote(item)" class="gameplan-card-xs">
@@ -429,6 +432,7 @@
         </div>
         <div v-else-if="isBlockEnd(item)" class="alt-card-xs alt-card-xs--end">
           <v-icon size="15" class="alt-mark">mdi-call-merge</v-icon>
+          <span class="annot-lbl-xs alt-annot-lbl">Paths rejoin</span>
         </div>
         <div v-else-if="isNote(item) && hasVisibleContent(item.gameplan)" class="gameplan-card-xs">
           <div class="gameplan-header-xs">
@@ -521,21 +525,32 @@
   <!-- arrival plate closes the ageUp bracket -->
   <div v-if="section.type === 'ageUp'" class="age-arrival-plate-xs">
     <img :src="targetAgeImg" class="age-arrival-icon-xs" />
-    <span class="age-arrival-text-xs">{{ targetAgeName }} reached</span>
+    <span class="annot-lbl-xs age-annot-lbl">{{ targetAgeName }}</span>
   </div>
 </div>
 
   <!--Desktop UI-->
-  <v-card flat rounded="lg" :class="['hidden-xs', (section.type === 'ageUp' || (section.type === 'age' && section.age > 1)) ? 'mt-0' : 'mt-4']">
-    <!-- ageUp marker — arrow icon only, gold banner, no age image -->
-    <div v-if="section.type === 'ageUp' && !isBareAgeUp" class="age-marker-md mx-4 mt-0 mb-0">
-      <v-icon size="24" class="age-marker-icon-md">mdi-arrow-up-bold</v-icon>
-      <span class="age-marker-lbl-md">Advance to {{ targetAgeName }}</span>
-      <span style="flex:1"></span>
-      <v-btn v-if="!readonly && isLastAgeUp" icon size="small" variant="text" class="row-x" @click.stop="$emit('ageDownRequested')"><v-icon size="16">mdi-close</v-icon></v-btn>
-    </div>
+  <!--The transition is announced as a group, because the rail that says which
+      rows are inside it is decorative and a reader who is not seeing it would
+      otherwise get the two markers and no sense that anything joined them. The
+      group is the section, which already contains exactly the railed run, so the
+      boundary is real rather than invented. Rows say nothing extra: an age-up is
+      a handful of rows and repeating "still ageing up" on each one is noise.
+      The label is built from the internal age-name map, never author content.-->
+  <v-card
+    flat
+    rounded="lg"
+    :role="section.type === 'ageUp' ? 'group' : null"
+    :aria-label="section.type === 'ageUp' && targetAgeName ? `Advancing to ${targetAgeName}` : null"
+    :class="['hidden-xs', (section.type === 'ageUp' || (section.type === 'age' && section.age > 1)) ? 'mt-0' : 'mt-4']"
+  >
+    <!--The advance banner used to sit here, a full-width gold bar identical to
+        the arrival plate below. It is a row in the table now: the advance is an
+        action the player performs at a moment, exactly like "build a house",
+        while the arrival is a boundary the build crosses. Drawing them alike
+        told the reader which was which. -->
     <v-table
-      v-if="steps?.length"
+      v-if="hasTableRows"
       class="mx-4"
       style="border-radius: 0"
     >
@@ -588,6 +603,42 @@
           </tr>
         </thead>
         <tbody ref="stepsTable">
+          <!--The advance. A plain row, at the height and on the rules of every
+              other row, carrying the action and nothing else — no time of any
+              kind. The timeline above the build already states the transition's
+              span, and the arrival is on the bar that closes this section, so a
+              time here would state a known number twice.
+
+              It is the row the player clicks the landmark on, so its place in
+              the sequence is the information it carries. Deliberately no
+              data-step-index and no hover handlers: it is a marker, not a step,
+              and giving it an index would shift every index after it.-->
+          <tr
+            v-if="section.type === 'ageUp' && !isBareAgeUp"
+            :class="['age-advance-row', hasTransitionBody && 'age-lane-md']"
+          >
+            <td class="py-1 text-center">
+              <v-icon size="16" class="age-advance-mark">mdi-arrow-up-bold</v-icon>
+            </td>
+            <td :colspan="7" class="py-1 px-2">
+              <span class="annot-lbl age-annot-lbl">Advancing to {{ targetAgeShortName }}</span>
+            </td>
+            <!--The ✕ lands in the column every step row's ✕ lands in, which is
+                what the banner's height cap used to be fighting the column grid
+                to achieve.-->
+            <td v-if="!readonly" class="step-actions" style="width:90px">
+              <div class="step-actions-inner">
+                <v-btn
+                  v-if="isLastAgeUp"
+                  icon
+                  size="small"
+                  variant="text"
+                  class="row-x"
+                  @click.stop="$emit('ageDownRequested')"
+                ><v-icon size="16">mdi-close</v-icon></v-btn>
+              </div>
+            </td>
+          </tr>
           <tr v-if="!readonly && !steps.length" class="ins-row">
             <td :colspan="9" class="ins-row-cell">
               <StepInsertMenu :options="insertOptions(-1)" @select="handleInsert($event, -1)">
@@ -649,11 +700,20 @@
             <td class="py-1 text-center">
               <v-icon size="16" class="alt-mark">mdi-call-merge</v-icon>
             </td>
-            <!--The mark alone, for the same reason the opening row lost its
-                words: the rail stops here and the merge icon says what that
-                means. A line of text to state it twice would be the only text
-                in the block that names itself.-->
-            <td :colspan="7" class="py-1 px-2"></td>
+            <!--This row was the mark alone, on the grounds that the rail ending
+                and the merge icon already said it, and a label would have been
+                the only text in the block naming itself. That held while the age
+                markers were boxed bars floating beside the list. They are
+                labelled rows in this very column now, so the merge line became
+                the one annotation row with nothing in it — the odd one out
+                rather than the quiet one.
+
+                "Rejoin" rather than "both paths continue": a block can hold
+                three or more alternatives, so any wording that counts them is
+                wrong as soon as an author adds a third.-->
+            <td :colspan="7" class="py-1 px-2">
+              <span class="annot-lbl alt-annot-lbl">Paths rejoin</span>
+            </td>
             <!--No ✕ here. The merge line is not a thing an author added, so it
                 is not a thing they remove; the block is removed from where it
                 begins. Two controls doing one job would also read as "close
@@ -946,9 +1006,37 @@
               </v-menu>
             </td>
           </tr>
+          <!--The arrival. A row, matching the advance row it closes: same grid,
+              same height, same icon column, same label size, weight and case, so
+              the pair reads as one bracket opening and closing.
+
+              It stands out on **fill alone** — no border, no box, no larger type.
+              A bordered bar floating above the list looked like a widget dropped
+              onto the build rather than a row of it, and the age asset is a
+              circled numeral that at this size reads as a pause glyph, so
+              neither the icon nor a box can be what says "boundary".
+
+              It carries **no time**. The row after it already states one, and the
+              timeline above the build states the span; a time here was both a
+              restatement and stranded away from the time column.
+
+              It is the rail's last row, so the transition visibly terminates on
+              it rather than beside a floating box.-->
+          <tr
+            v-if="section.type === 'ageUp' && targetAgeName"
+            :class="['age-reached-row', hasTransitionBody && 'age-lane-md']"
+          >
+            <td class="py-1 text-center">
+              <img :src="targetAgeImg" class="age-reached-icon" alt="" />
+            </td>
+            <td :colspan="7" class="py-1 px-2">
+              <span class="annot-lbl age-annot-lbl">{{ targetAgeName }}</span>
+            </td>
+            <td v-if="!readonly" class="step-actions" style="width:90px"></td>
+          </tr>
         </tbody>
       </v-table>
-    <!-- Empty section — sits inside the ageUp bracket, above the arrival plate -->
+    <!-- Empty section — sits inside the ageUp bracket, above the arrival row -->
     <div
       v-if="!steps?.length && readonly && section.type !== 'ageUp'"
       class="text-center py-6 text-medium-emphasis text-body-2"
@@ -966,11 +1054,6 @@
           >
         </template>
       </StepInsertMenu>
-    </div>
-    <!-- ageUp arrival plate — desktop -->
-    <div v-if="section.type === 'ageUp' && targetAgeName" class="age-plate-md mx-4 mt-0 mb-0">
-      <img :src="targetAgeImg" style="width:24px;height:24px;object-fit:contain;flex-shrink:0;" alt="" />
-      <span class="age-plate-lbl-md">{{ targetAgeName }} reached</span>
     </div>
   </v-card>
 </template>
@@ -1119,6 +1202,13 @@ export default {
 
     const AGE_NAMES = { 1: "Feudal Age", 2: "Castle Age", 3: "Imperial Age" };
     const targetAgeName = computed(() => AGE_NAMES[props.section.age] ?? "");
+    //"Advancing to Feudal", not "Advancing to Feudal Age". The bar that closes
+    //this section already says "Feudal Age", and before this the word appeared
+    //four times in eight rows — twice per age-up — before the other two ages had
+    //had their turn. The arrival keeps the full name because it is the element
+    //that identifies the age; the advance only has to say which way it is going.
+    //Desktop only: the mobile marker is deliberately untouched.
+    const targetAgeShortName = computed(() => targetAgeName.value.replace(/ Age$/, ""));
     const targetAgeImg = computed(() => `/assets/pictures/age/age_${props.section.age + 1}.webp`);
     const currentAgeName = computed(() => AGE_NAMES[props.section.age - 1] ?? "");
     const currentAgeImg = computed(() => `/assets/pictures/age/age_${props.section.age}.webp`);
@@ -1170,6 +1260,39 @@ export default {
         props.section.type === "ageUp" &&
         !steps.length &&
         !gameplan.value
+    );
+
+    //Whether the desktop table has anything to draw — which is not the same
+    //question as "does this section have steps", and was written as if it were.
+    //
+    //There are two kinds of note. A note *item* lives in `steps` and is a step
+    //of a different kind, so counting steps finds it. The **section** note is
+    //`section.gameplan`: a section field, with no position and no index, that is
+    //not among the items being counted at all. Its row nevertheless lives inside
+    //this table, so a section carrying a note and no steps dropped the note
+    //silently, and only on desktop — the mobile list draws the same note as a
+    //plain sibling guarded on its own content and never had the bug.
+    //
+    //A note is shown when it says something and hidden when it does not. Nothing
+    //else decides it. Do not put the step count back.
+    const hasTableRows = computed(
+      () =>
+        !!steps.length ||
+        hasVisibleContent(gameplan.value) ||
+        //Both age markers are rows now, so an ageUp section always has at least
+        //the arrival to draw — even the bare ones an import leaves behind, where
+        //the advance is suppressed and the arrival is the whole section.
+        props.section.type === "ageUp"
+    );
+
+    //Whether the transition has anything inside it to bracket.
+    //
+    //A rail with nothing between its ends marks nothing — it would just be a
+    //gold gutter beside a single row, which is common on a fast castle with no
+    //intermediate steps. The rail opens on the advance row, so it is the advance
+    //row that has to know whether there is a body to open onto.
+    const hasTransitionBody = computed(
+      () => !!steps.length || hasVisibleContent(gameplan.value)
     );
 
     //Custom Tooltips
@@ -2528,10 +2651,13 @@ export default {
       gameplanContentEditable,
       // Age bracket
       targetAgeName,
+      targetAgeShortName,
       currentAgeName,
       currentAgeImg,
       targetAgeImg,
       isBareAgeUp,
+      hasTableRows,
+      hasTransitionBody,
     };
   },
 };
@@ -2548,8 +2674,10 @@ export default {
   font-weight: 700;
 }
 
-/* Allow ins-zone to overflow both the table wrapper and the section card so it can
-   reach age badges in adjacent cards (e.g. age-plate in the preceding ageUp card) */
+/* Allow ins-zone to overflow both the table wrapper and the section card, so it
+   can reach across a card boundary — the insert line between the last row of one
+   section and the first of the next. (It used to have to clear a floating age
+   plate here; both age markers are rows in the table now.) */
 :deep(.v-table__wrapper) {
   overflow: visible;
 }
@@ -2785,63 +2913,100 @@ export default {
 }
 
 
-/* Age-up marker — desktop (arrow only, gold card) */
-.age-marker-md {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  /* 8px on the right, so this ✕ lands in the same column as the one closing
-     every step row. The banner and the table share the same mx-4 inset, so the
-     sum is all that matters: a step's ✕ is a 40px box behind 4px of cell padding,
-     putting its glyph 24px in from the edge; this one is capped to 32px, so it
-     needs 8px behind it to centre on the same 24px. */
-  padding: 4px 8px 4px 12px;
-  min-height: 40px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.15), rgba(var(--v-theme-accent), 0.03));
-  border: 1px solid rgba(var(--v-theme-accent), 0.25);
-}
-.age-marker-icon-md {
+/* The advance — desktop.
+
+   A row, not a bar. The gold banner this replaces was drawn identically to the
+   arrival plate below, which told the reader nothing about which of the two they
+   perform and which simply happens. No box, no fill, no tint: it takes the rules
+   and the height of the rows around it, and its rail says which phase it opens.
+
+   The banner's ✕ height cap went with it. That cap existed because a 40px icon
+   button did not fit inside a 40px flex banner's padding, and the banner was
+   fighting the column grid to land its ✕ in the same column as every step row's.
+   In a real row the ✕ is in that column because it is in that cell. */
+.age-advance-row .age-advance-mark {
   color: rgb(var(--v-theme-accent));
-  flex-shrink: 0;
 }
-/* The ✕ is capped to the height the banner has room for.
-   Vuetify sizes an icon button as its text height plus 12px, so `size="small"`
-   is a 40px box — which, inside this banner's 4px padding, needs 48px and pushed
-   it past its 40px min-height. Only the final age-up carries the button, which
-   is why exactly one banner stood taller than the rest, and only in edit mode.
-   Capping it here keeps every age annotation the same height in both modes while
-   the glyph stays the 16px every other ✕ in the editor uses. */
-.age-marker-md .row-x {
-  width: 32px !important;
-  height: 32px !important;
+/* Its own top rule, which no other row needs.
+   The row above is the last row of the *previous* section's table, and that
+   row's bottom border is deliberately stripped so it does not double with its
+   card's edge — so between the last step of an age and the advance that follows
+   it there was nothing at all. The banner this replaces never showed the gap
+   because it was a bordered box sitting in its own margin. A plain row has to
+   draw the separator itself. Same declaration as every other row separator. */
+.age-advance-row > td {
+  border-top: thin solid rgba(var(--v-theme-on-surface), 0.12) !important;
 }
-.age-marker-lbl-md {
-  font-size: 13px;
+/* One label treatment for both age rows, deliberately shared rather than paired.
+   Same size, weight, case and letter-spacing means the advance and the arrival
+   read as one bracket opening and closing; two similar-but-not-identical
+   treatments would read as two unrelated announcements. It is also the treatment
+   the alternatives merge marker uses, because "advancing to…", "…reached" and
+   "the paths rejoin here" are three statements of the same kind — annotations
+   about the shape of the build rather than instructions to carry out. */
+.annot-lbl {
+  font-size: 11px;
   font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+/* Colour is the only thing that varies, and it varies by what the annotation is
+   about: gold for where you are in the build, the alternatives colour for which
+   way you went. Typography is shared rather than re-declared, so the three
+   markers cannot drift into three near-identical treatments. */
+.age-annot-lbl {
   color: rgb(var(--v-theme-accent));
-  letter-spacing: 0.2px;
+}
+.alt-annot-lbl {
+  color: rgb(var(--v-theme-alternative));
 }
 
-/* Age reached plate — desktop (age icon + text, gold card) */
-.age-plate-md {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 4px 12px;
-  min-height: 40px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.15), rgba(var(--v-theme-accent), 0.03));
-  border: 1px solid rgba(var(--v-theme-accent), 0.25);
+/* The arrival — desktop.
+
+   A row, not a bar. The bordered, inset, rounded plate this replaces floated
+   above the list and read as a widget dropped onto the build rather than a row
+   of it; worse, it sat outside the table, so the rail marking the transition
+   stopped short of the thing the transition ends on.
+
+   It stands out on FILL ALONE. No border, no box, no larger type — the fill is
+   the only difference between this row and the ones inside the rail, which is
+   enough because nothing else in the list is filled. Adding a border back would
+   restore exactly the problem this removed.
+
+   Both selectors, because the fill has to beat the lane's own gradient on a
+   railed arrival and still apply on an unrailed one (an age-up with no steps
+   draws no rail at all).
+
+   The fill carries across the whole row rather than fading to nothing at 60%
+   like the lane's. The lane fades because it runs behind the resource pills,
+   which are colour-coded and carry meaning, and a flat tint dulls them. This row
+   has no pills — one icon and a label — so there is nothing to protect and it can
+   hold its colour the whole way across. That is what makes it read as "you are in
+   the new age now" rather than as one more annotation. */
+.age-reached-row,
+.age-reached-row.age-lane-md:not(.alt-row):not(.alt-inside) {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--v-theme-age), 0.3),
+    rgba(var(--v-theme-age), 0.12) 60%,
+    rgba(var(--v-theme-age), 0.08)
+  );
 }
-.age-plate-lbl-md {
-  font-size: 13px;
-  font-weight: 800;
-  color: rgb(var(--v-theme-accent));
-  letter-spacing: 0.2px;
+/* The age asset, in the same column and at the same optical size as the advance
+   row's arrow. It identifies *which* age and nothing more: at this size the
+   circled numeral reads as a pause glyph — a near-twin of the transport control
+   below the list — and Ⅱ/Ⅲ/Ⅳ differ from each other by one stroke. The fill and
+   the age name carry the meaning. */
+.age-reached-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  vertical-align: middle;
 }
+/* Its bottom separator is restored further down, next to the two rules that
+   strip the last row's rule — not here. Same specificity and both `!important`
+   means the later rule in the sheet wins, so a declaration up here would simply
+   have been discarded. */
 
 /* Insert row — visibility:collapse removes the row from layout entirely (0px height,
    no border contribution). The cell keeps visibility:visible so the absolutely-
@@ -2937,7 +3102,7 @@ export default {
   flex-shrink: 0;
 }
 .step-row:hover .row-x { opacity: 1; }
-.age-marker-md:hover .row-x { opacity: 1; }
+.age-advance-row:hover .row-x { opacity: 1; }
 .row-x:hover :deep(.v-icon) { color: rgb(var(--v-theme-error)); }
 
 .bo-noterow td {
@@ -2948,10 +3113,10 @@ export default {
    ages, timings, the primary action. Blue means which way you went. A gold
    control here would claim the two are the same kind of thing. */
 /* A lane, not a wash: a rail down the left edge and a tint that fades away from
-   it. This is the treatment the age banner already uses (.age-marker-md is the
-   same 90deg gradient in gold), so a block reads as the same kind of annotation
-   an age is — only the colour differs, which is the whole point of the rule that
-   gold means where you are and blue means which way you went.
+   it. The age lane below is the same construction in gold, so a block reads as
+   the same kind of annotation an age-up is — only the colour differs, which is
+   the whole point of the rule that gold means where you are and blue means which
+   way you went.
 
    The rail earns its place over the start/end borders alone: those say where the
    block begins and ends, but only the rail says *you are inside it* — which is
@@ -3041,6 +3206,100 @@ tbody tr.alt-row--end:not(:last-child):not(:has(+ tr.ins-row--trailing)) td:not(
    there but permanently invisible. */
 .alt-row:hover .row-x {
   opacity: 1;
+}
+
+/* ── Age-up lane ─────────────────────────────────────────────────────────────
+   The transition drawn as a phase: the rows between clicking the landmark and
+   arriving in the new age are bracketed by a rail, so it reads as a stretch of
+   the build with its own rules rather than as two bars with strangers between
+   them. Same construction as the alternatives lane above, one colour apart —
+   gold is where you are in the build, blue is which way you went.
+
+   `age-lane-md` was applied to every row of an ageUp section long before it had
+   any rules. These are the rules.
+
+   ONE RAIL, INNERMOST WINS. There is exactly one gutter, at one x, for the whole
+   list, and it paints the innermost open context: gold for a transition, blue
+   for an alternatives block inside one, gold again after the merge. Hence the
+   :not() — a row inside a block inside a transition carries both classes, and
+   the block is the inner one. Stated here rather than left to stylesheet order,
+   because a reorder would otherwise flip it silently.
+
+   Depth cannot exceed two: an alternatives block lives inside one section and an
+   age-up cannot open inside a path, so a third rail is unreachable.
+
+   Nesting the two rails was built and rejected. It reads correctly but costs
+   ~14px of the description column, and the indented rows stop lining up with the
+   rows above them — which is the one thing the table format is good at. The rail
+   answers the local question ("which of the two am I on"); whether the age-up is
+   still open is already answered by the advance above and the bar below. */
+.age-lane-md:not(.alt-row):not(.alt-inside) {
+  background: linear-gradient(
+    90deg,
+    rgba(var(--v-theme-age), 0.12),
+    rgba(var(--v-theme-age), 0.02) 60%,
+    rgba(var(--v-theme-age), 0)
+  );
+}
+.age-lane-md:not(.alt-row):not(.alt-inside) > td:first-child {
+  position: relative;
+}
+/* The 2px overhang is load-bearing — see the alternatives rail above. Flush ends
+   nick at every row seam and at the zero-height insert row between each pair.
+   No border-radius: the design's rounded run belongs to a wrapper construction
+   that is not what ships here, and rounding would reintroduce the nick the
+   overhang exists to remove. */
+.age-lane-md:not(.alt-row):not(.alt-inside) > td:first-child::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -2px;
+  bottom: -2px;
+  width: 3px;
+  /* `age`, not `accent`: accent is navy in the light theme — changed there for
+     text contrast — and so is `alternative`, which made the two lanes identical
+     in light mode. This token is gold in both. */
+  background: rgb(var(--v-theme-age));
+  pointer-events: none;
+}
+/* The run's own ends, which are not symmetric — each one stops where the thing
+   it meets actually is.
+
+   The 2px overhang is for seams *between* rows — a collapsed border, the
+   zero-height insert row sitting between every pair of items — and there is no
+   seam at either end of a run, so carrying it through to the ends just leaves
+   the rail sticking out past the thing it marks.
+
+   **Top: -1px, so the rail includes the separator it starts under.** The advance
+   row draws its own 1px top rule, and the run begins at that line rather than
+   below it. Flush at 0 stops under the hairline and reads as the rail starting
+   late.
+
+   **Bottom: -1px, symmetrically.** The run closes on the arrival row, which
+   keeps its own bottom rule, so the rail takes that line in the same way it
+   takes the one above the advance row. Both ends now sit *on* their separator
+   rather than between them, and the bracket is the same shape at top and bottom.
+
+   The trailing-insert selector is qualified on that line actually being last.
+   The arrival row sits below it, so unqualified it matched a row in the middle
+   of the run and trimmed an interior end — a nick where there is no end.
+
+   The run opens on the advance row and closes on the arrival row, inclusive:
+   the transition visibly terminates on the thing it was heading for, instead of
+   stopping beside it.
+
+   Both selectors repeat the `:not()` guard, and must. Without it
+   `.age-advance-row > td:first-child::before` carries two class-level selectors
+   against the base rule's three, so it lost outright and the top end kept
+   overhanging while the bottom — which happened to be specific enough — did not.
+   Two ends of one run, behaving differently, for no reason visible at the
+   declaration. */
+.age-advance-row.age-lane-md:not(.alt-row):not(.alt-inside) > td:first-child::before {
+  top: -1px;
+}
+tbody tr.age-lane-md:not(.alt-row):not(.alt-inside):last-child > td:first-child::before,
+tbody tr.age-lane-md:not(.alt-row):not(.alt-inside):has(+ tr.ins-row--trailing:last-child) > td:first-child::before {
+  bottom: -1px;
 }
 
 /* A note placed in the step flow is as tall as its text, and everything in the
@@ -3144,15 +3403,35 @@ tbody tr.alt-row--end:not(:last-child):not(:has(+ tr.ins-row--trailing)) td:not(
   content: 'Note text';
 }
 
-/* Remove bottom border from the last row (step-row or bo-noterow) to avoid doubling with card edge */
-tbody tr:last-child td {
+/* Remove bottom border from the last row (step-row or bo-noterow) to avoid doubling with card edge.
+   The arrival row is the exception: it ends a *section*, and the next age's card
+   begins immediately below carrying no rule of its own, so stripping it left the
+   build's biggest division unmarked. It keeps its separator. */
+tbody tr:last-child:not(.age-reached-row) td {
   border-bottom: none !important;
 }
 /* The trailing insert line is a collapsed row, so in the editor it — not the
    last step — is what `:last-child` finds, and the last step kept a separator
-   with nothing under it to separate from. */
-tbody tr:has(+ tr.ins-row--trailing) td {
+   with nothing under it to separate from.
+   Qualified on the insert line actually being last: in an ageUp section the
+   arrival row follows it, so there *is* something under the last step to
+   separate from and the rule was eating that separator. */
+tbody tr:has(+ tr.ins-row--trailing:last-child) td {
   border-bottom: none !important;
+}
+/* …and the arrival row's rule is put back, because Vuetify strips it too.
+   Excluding it from the two rules above only stops *ours* removing it; the
+   table's own `tr:last-child td { border-bottom: none }` still applies, so the
+   rule has to be restored rather than merely left alone. Last in the sheet on
+   purpose: the two rules above have the same specificity and `!important`, so
+   whichever comes last wins, and this one has to.
+
+   It earns the exception by ending a *section*. Every other last row abuts its
+   card's edge; this one abuts the next age's card, which begins immediately
+   below carrying no rule of its own — so without this the build's biggest
+   division was the one boundary in the list with nothing drawn on it. */
+tbody tr.age-reached-row td {
+  border-bottom: thin solid rgba(var(--v-theme-on-surface), 0.12) !important;
 }
 
 
@@ -3511,7 +3790,21 @@ tbody tr:has(+ tr.ins-row--trailing) td {
    markers read as annotation rather than as steps you skipped. */
 .alt-card-xs {
   position: relative;
-  background: rgba(var(--v-theme-alternative), 0.12);
+  /* Graded from the left like every other marker, rather than a flat wash: the
+     desktop rows fade this way, and these badges were the last thing on either
+     surface still filled evenly.
+
+     The stops are the age badges' on this list (.14 → .04), not desktop's
+     (.12 → .02 → fully transparent). Desktop can fade to nothing because its
+     rows are full-bleed and have no right edge to speak of; a bordered, rounded
+     card would visibly dissolve inside its own outline. Same direction, same
+     idea, at the values this surface already uses — so the age badge and the
+     alternatives badge are the same object in two colours. */
+  background: linear-gradient(
+    90deg,
+    rgba(var(--v-theme-alternative), 0.14) 0%,
+    rgba(var(--v-theme-alternative), 0.04) 100%
+  );
   border: 1px solid rgba(var(--v-theme-alternative), 0.35);
   border-radius: 10px;
   padding: 8px 10px;
@@ -3596,6 +3889,12 @@ tbody tr:has(+ tr.ins-row--trailing) td {
 .age-bracket-xs {
   position: relative;
 }
+/* `age`, not `accent`, for the same reason the desktop lane uses it: `accent` is
+   navy in the light theme — changed there because gold text on that surface is
+   2.1:1 — and `alternative` is the same navy, so an age rail read off `accent`
+   was indistinguishable from the alternatives rail nested inside it. This token
+   is gold in both themes and is for fills and rails only; the labels below stay
+   on `accent`, which is what makes them readable. */
 .age-bracket-xs::before {
   content: '';
   position: absolute;
@@ -3603,7 +3902,7 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   top: 0;
   bottom: 0;
   width: 3px;
-  background: rgba(var(--v-theme-accent), 0.55);
+  background: rgba(var(--v-theme-age), 0.55);
   border-radius: 2px;
 }
 .age-ageup-row-xs {
@@ -3614,16 +3913,27 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   padding: 0 10px 0 14px;
   height: 42px;
   box-sizing: border-box;
-  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.14) 0%, rgba(var(--v-theme-accent), 0.04) 100%);
-  /* The same edge the desktop banner and plate carry. Mobile had the gradient
-     without it, so the two breakpoints drew the same thing differently. */
-  border: 1px solid rgba(var(--v-theme-accent), 0.25);
+  background: linear-gradient(90deg, rgba(var(--v-theme-age), 0.14) 0%, rgba(var(--v-theme-age), 0.04) 100%);
+  /* Mobile had the gradient without an edge, so the two breakpoints drew the
+     same thing differently. (Desktop's markers are plain rows now and carry no
+     edge at all; this list keeps its cards, so it keeps the border.) */
+  border: 1px solid rgba(var(--v-theme-age), 0.25);
   border-radius: 10px;
 }
-.age-ageup-lbl-xs {
-  font-size: 13px;
-  font-weight: 700;
-  color: rgb(var(--v-theme-accent));
+/* Every annotation on this list, in one treatment — the mobile counterpart of
+   `.annot-lbl`, differing from it only in size, because this list has its own
+   type scale and the table's 11px is not it. Case, weight and tracking match
+   desktop, so "advancing to…", the age name and "paths rejoin" read as the same
+   kind of statement on whichever surface you meet them.
+
+   Colour still comes from `.age-annot-lbl` / `.alt-annot-lbl`, which are shared
+   across both breakpoints: colour says what the annotation is about, and that
+   does not change with screen width. */
+.annot-lbl-xs {
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 .age-arrival-plate-xs {
   display: flex;
@@ -3633,10 +3943,8 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   padding: 0 14px;
   height: 42px;
   box-sizing: border-box;
-  background: linear-gradient(90deg, rgba(var(--v-theme-accent), 0.14) 0%, rgba(var(--v-theme-accent), 0.04) 100%);
-  /* The same edge the desktop banner and plate carry. Mobile had the gradient
-     without it, so the two breakpoints drew the same thing differently. */
-  border: 1px solid rgba(var(--v-theme-accent), 0.25);
+  background: linear-gradient(90deg, rgba(var(--v-theme-age), 0.14) 0%, rgba(var(--v-theme-age), 0.04) 100%);
+  border: 1px solid rgba(var(--v-theme-age), 0.25);
   border-radius: 10px;
 }
 .age-arrival-icon-xs {
@@ -3644,12 +3952,6 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   height: 22px;
   object-fit: contain;
   flex-shrink: 0;
-}
-.age-arrival-text-xs {
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: rgb(var(--v-theme-accent));
 }
 
 
