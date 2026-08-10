@@ -35,7 +35,15 @@
              here should learn *why*, not wonder where the entry went. The
              wrapper exists because a disabled v-list-item fires no pointer
              events, so the tooltip would never open on the item itself. -->
-        <v-tooltip v-if="option.disabled" location="end" :text="option.reason">
+        <!-- Content as a slot rather than :text, and coloured, because that is
+             what every other tooltip in the app does. The `text` prop leaves the
+             label at its inherited colour, which on this theme is dark type on
+             the tooltip's own light surface — legible in neither theme, and the
+             only tooltip in the codebase that had the problem. -->
+        <v-tooltip v-if="option.disabled" location="end">
+          <span :style="{ color: $vuetify.theme.current.colors.primary }">{{
+            option.reason
+          }}</span>
           <template v-slot:activator="{ props: tip }">
             <div v-bind="tip">
               <v-list-item disabled :title="option.title">
@@ -49,6 +57,12 @@
         <v-list-item v-else :title="option.title" @click="$emit('select', option.value)">
           <template v-slot:prepend>
             <v-icon :icon="option.icon" color="accent" size="small"></v-icon>
+          </template>
+          <!-- The shortcut, taught where somebody is already inserting by hand.
+               Only the entries that have one carry it; an entry with no hint
+               leaves the space empty rather than saying "none". -->
+          <template v-if="option.hint" v-slot:append>
+            <span class="ins-shortcut">{{ option.hint }}</span>
           </template>
         </v-list-item>
       </template>
@@ -72,3 +86,17 @@ export default {
   emits: ["select"],
 };
 </script>
+
+<style scoped>
+/* A hint, not a second label: it has to be legible when looked for and ignorable
+   when not, so it recedes by weight rather than by hiding. Tabular figures keep
+   "Alt ↵" and "Alt N" the same width, so the column does not shimmer as the
+   pointer moves down the list. */
+.ins-shortcut {
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  opacity: 0.55;
+  white-space: nowrap;
+}
+</style>

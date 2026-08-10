@@ -137,7 +137,7 @@
 
 <script>
 //External
-import { ref, computed, inject, onBeforeUnmount, onMounted, nextTick } from "vue";
+import { ref, computed, inject, provide, onBeforeUnmount, onMounted, nextTick } from "vue";
 
 //Components
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
@@ -148,6 +148,7 @@ import { resolveStepTimes } from "@/composables/builds/timingsHelper.js";
 import { isDocumentPiPSupported } from "@/composables/builds/useStepPiP.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 import { ACTIVE_PATH } from "@/composables/builds/useActivePath.js";
+import { STEP_REORDER, useStepReorder } from "@/composables/builds/useStepReorder.js";
 import {
   getSavedPlayTarget,
   resolvePlayTarget,
@@ -212,6 +213,20 @@ export default {
     const sectionFocus = ref(null);
     const sectionEditorRefs = ref([]);
     const registerSectionEditor = (el, index) => { sectionEditorRefs.value[index] = el; };
+
+    /**
+     * The channel a step travels along when it leaves one section for another.
+     *
+     * Provided here because this is the lowest component that can see every
+     * section at once. Only in the editor: a reader has nothing to reorder, and
+     * the sections inject with a null default, so the read-only view gets none
+     * of this rather than getting it disabled.
+     *
+     * Created per editor rather than per module — a preview card or focus mode
+     * can put a second build on screen, and one shared drag between two builds
+     * is the bug that would follow.
+     */
+    if (!readonly) provide(STEP_REORDER, useStepReorder());
     const civ = computed(() => {
       return props.civ;
     });

@@ -90,7 +90,7 @@
     </div>
     <template v-if="!readonly">
       <!-- Step cards (mobile edit) -->
-      <div class="xs-steps-container">
+      <div class="xs-steps-container" ref="stepsList">
         <!-- Insert point before the very first card (prepend) -->
         <StepInsertMenu v-if="steps?.length" :options="insertOptions(-1)" @select="handleInsert($event, -1)">
           <template v-slot:activator="{ props: menu }">
@@ -143,7 +143,12 @@
           <span class="annot-lbl-xs alt-annot-lbl">Paths rejoin</span>
         </div>
         <!-- A note in the card flow, in the same dress the section note wears -->
-        <div v-else-if="isNote(item)" class="gameplan-card-xs">
+        <div
+          v-else-if="isNote(item)"
+          class="gameplan-card-xs"
+          :data-card-index="index"
+          @keydown="handleRowShortcut($event, index)"
+        >
           <div class="gameplan-header-xs">
             <v-icon size="13" color="accent">mdi-information-outline</v-icon>
             <span>Note</span>
@@ -173,6 +178,11 @@
             ></div>
           </div>
           <div class="step-action-row-xs">
+            <!--Picker first, move controls last, and the order is load-bearing.
+                The picker keeps its slot while invisible so the row never shifts
+                as it fades in — put it last and that reserved slot sits against
+                the card's right edge as a gap the move buttons are held off by.
+                Inside the row, the same reserved space is invisible.-->
             <v-menu :close-on-content-click="false" location="bottom">
               <template v-slot:activator="{ props: menu }">
                 <v-btn
@@ -192,15 +202,19 @@
                 ></IconSelector>
               </v-card>
             </v-menu>
-            <!--The picker alone now, and the row is flex-end, so it lands in the
-                bottom-right corner a step card puts its own in.-->
+            <StepMoveControls
+              :up="canMoveEntry(index, -1)"
+              :down="canMoveEntry(index, 1)"
+              kind="note"
+              @move="moveCard(index, $event)"
+            />
           </div>
         </div>
         <div
           v-else
           class="step-card-xs"
-          v-on:keyup.enter.alt="addStep(index)"
-          v-on:keyup.delete.alt="removeStepConfirmationDialog = true; delteRowIndex = index;"
+          :data-card-index="index"
+          @keydown="handleRowShortcut($event, index)"
           @focusin="$emit('selectionChanged')"
           @mousedown="selectStep(index)"
         >
@@ -302,7 +316,10 @@
               v-html="item.description"
             ></div>
           </div>
-          <!-- Action row: add-icon only (desc focus) — always in DOM, no CLS -->
+          <!-- Action row: add-icon (desc focus) then move controls — always in
+               DOM, no CLS. The picker comes first because it holds its slot
+               while invisible; last, that reserved slot would sit against the
+               card's right edge and hold the move buttons off it. -->
           <div class="step-action-row-xs">
             <v-menu :close-on-content-click="false" location="bottom">
               <template v-slot:activator="{ props: menu }">
@@ -323,6 +340,12 @@
                 ></IconSelector>
               </v-card>
             </v-menu>
+            <StepMoveControls
+              :up="canMoveEntry(index, -1)"
+              :down="canMoveEntry(index, 1)"
+              kind="step"
+              @move="moveCard(index, $event)"
+            />
           </div>
         </div>
         <!-- Insert after each card: index = insert immediately after card at this index -->
@@ -602,7 +625,7 @@
             <th v-if="!readonly" class="text-right"></th>
           </tr>
         </thead>
-        <tbody ref="stepsTable">
+        <tbody ref="stepsTable" :class="isDragging && 'steps-table--dragging'">
           <!--The advance. A plain row, at the height and on the rules of every
               other row, carrying the action and nothing else — no time of any
               kind. The timeline above the build already states the transition's
@@ -639,8 +662,8 @@
               </div>
             </td>
           </tr>
-          <tr v-if="!readonly && !steps.length" class="ins-row">
-            <td :colspan="9" class="ins-row-cell">
+          <tr v-if="!readonly && !steps.length" :class="['ins-row', dropGapIndex === 0 && 'ins-row--drop']">
+            <td :colspan="9" class="ins-row-cell" data-gap-index="0">
               <StepInsertMenu :options="insertOptions(-1)" @select="handleInsert($event, -1)">
                 <template v-slot:activator="{ props: menu, isOpen }">
                   <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
@@ -649,8 +672,8 @@
             </td>
           </tr>
           <template v-for="(item, index) in steps" :key="item._id ?? index">
-          <tr v-if="!readonly" class="ins-row">
-            <td :colspan="9" class="ins-row-cell">
+          <tr v-if="!readonly" :class="['ins-row', dropGapIndex === index && 'ins-row--drop']">
+            <td :colspan="9" class="ins-row-cell" :data-gap-index="index">
               <StepInsertMenu :options="insertOptions(index - 1)" @select="handleInsert($event, index - 1)">
                 <template v-slot:activator="{ props: menu, isOpen }">
                   <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
@@ -732,8 +755,9 @@
               insideBlock(index) && 'alt-inside',
               section.type === 'ageUp' && 'age-lane-md',
               { 'step-row--linked': linkedRow === index || flashedRow === index },
+              { 'step-row--dragging': draggingIndex === index },
             ]"
-            v-on:keyup.delete.alt="removeStepConfirmationDialog = true; delteRowIndex = index;"
+            @keydown="handleRowShortcut($event, index)"
             @focusin="$emit('selectionChanged')"
             @mousedown="selectStep(index)"
           >
@@ -763,6 +787,7 @@
               @keyup="handleContentEditableKeyUp($event, index)"
               @click="saveSelection($event)"
               @paste="handlePaste"
+              @keydown.esc.prevent="releaseEditing($event)"
               @focusin="focusedDescIndex = index"
               @focusout="updateStepNote($event, index); focusedDescIndex = null"
               @mouseover="handleMouseOver($event)"
@@ -774,6 +799,41 @@
             ></td>
             <td v-if="!readonly" class="step-actions" style="width:90px">
               <div class="step-actions-inner">
+                <!--Grip and icon picker share one slot, stacked. Three controls
+                    do not begin to fit: a `size="small"` icon button is a 40px
+                    circle, the cell is 90px with 8px of padding, so two plus
+                    their gap come to 82px in an 82px box and a third would need
+                    124px. Sharing is not a workaround for that, though — the two
+                    are never both wanted. The picker matters while the
+                    description has focus; the grip matters when it does not.
+                    Stacked rather than swapped with v-if so the picker's menu is
+                    never unmounted from under itself.
+
+                    The grip is also the keyboard control: a fourth button for
+                    the arrow keys would need space that does not exist, and a
+                    focusable grip answering to them is the same affordance
+                    reached two ways.-->
+                <div class="step-action-slot">
+                  <v-btn
+                    :ref="el => registerDragHandleRef(el, index)"
+                    icon
+                    size="small"
+                    variant="text"
+                    :class="['row-grip', focusedDescIndex === index && 'row-grip--hidden']"
+                    :aria-label="moveLabel(item)"
+                    @pointerdown="startDrag($event, index)"
+                    @keydown.up.exact.prevent="moveEntry(index, -1)"
+                    @keydown.down.exact.prevent="moveEntry(index, 1)"
+                  ><v-icon size="16">mdi-drag-horizontal-variant</v-icon
+                    ><!--Suppressed mid-drag: the grip keeps pointer capture for
+                        the whole gesture, so the tooltip would sit open under
+                        the cursor the entire time a row is being carried.-->
+                    <v-tooltip activator="parent" location="top" :disabled="isDragging"
+                      ><span :style="{ color: $vuetify.theme.current.colors.primary }"
+                        >Drag to move, or Alt + ↑ / ↓</span
+                      ></v-tooltip
+                    ></v-btn
+                  >
                 <v-menu :close-on-content-click="false" max-width="700" location="bottom end">
                   <template v-slot:activator="{ props: menu }">
                     <v-btn
@@ -793,13 +853,20 @@
                     ></IconSelector>
                   </v-card>
                 </v-menu>
+                </div>
                 <v-btn
                   icon
                   size="small"
                   variant="text"
                   class="row-x"
-                  @click="removeStepConfirmationDialog = true; delteRowIndex = index;"
-                ><v-icon size="16">mdi-close</v-icon></v-btn>
+                  @click="confirmRemoveStep(index)"
+                ><v-icon size="16">mdi-close</v-icon
+                  ><v-tooltip activator="parent" location="top"
+                    ><span :style="{ color: $vuetify.theme.current.colors.primary }"
+                      >Remove, or Alt + Backspace</span
+                    ></v-tooltip
+                  ></v-btn
+                >
               </div>
             </td>
           </tr>
@@ -813,12 +880,9 @@
               insideBlock(index) && 'alt-inside',
               section.type === 'ageUp' && 'age-lane-md',
               { 'step-row--linked': linkedRow === index || flashedRow === index },
+              { 'step-row--dragging': draggingIndex === index },
             ]"
-            v-on:keyup.enter.alt="addStep(index)"
-            v-on:keyup.delete.alt="
-              removeStepConfirmationDialog = true;
-              delteRowIndex = index;
-            "
+            @keydown="handleRowShortcut($event, index)"
             @focusin="$emit('selectionChanged')"
             @mousedown="selectStep(index)"
             @mouseover="hoverStep(index)"
@@ -901,6 +965,7 @@
               @keydown.shift.tab.prevent="stoneInputRefs[index]?.focus()"
               @click="saveSelection"
               @paste="handlePaste"
+              @keydown.esc.prevent="releaseEditing($event)"
               @focusin="focusedDescIndex = index"
               @focusout="updateStepDescription($event, index); focusedDescIndex = null"
               @mouseover="handleMouseOver($event)"
@@ -911,6 +976,41 @@
             ></td>
             <td v-if="!readonly" class="step-actions" style="width:90px">
               <div class="step-actions-inner">
+                <!--Grip and icon picker share one slot, stacked. Three controls
+                    do not begin to fit: a `size="small"` icon button is a 40px
+                    circle, the cell is 90px with 8px of padding, so two plus
+                    their gap come to 82px in an 82px box and a third would need
+                    124px. Sharing is not a workaround for that, though — the two
+                    are never both wanted. The picker matters while the
+                    description has focus; the grip matters when it does not.
+                    Stacked rather than swapped with v-if so the picker's menu is
+                    never unmounted from under itself.
+
+                    The grip is also the keyboard control: a fourth button for
+                    the arrow keys would need space that does not exist, and a
+                    focusable grip answering to them is the same affordance
+                    reached two ways.-->
+                <div class="step-action-slot">
+                  <v-btn
+                    :ref="el => registerDragHandleRef(el, index)"
+                    icon
+                    size="small"
+                    variant="text"
+                    :class="['row-grip', focusedDescIndex === index && 'row-grip--hidden']"
+                    :aria-label="moveLabel(item)"
+                    @pointerdown="startDrag($event, index)"
+                    @keydown.up.exact.prevent="moveEntry(index, -1)"
+                    @keydown.down.exact.prevent="moveEntry(index, 1)"
+                  ><v-icon size="16">mdi-drag-horizontal-variant</v-icon
+                    ><!--Suppressed mid-drag: the grip keeps pointer capture for
+                        the whole gesture, so the tooltip would sit open under
+                        the cursor the entire time a row is being carried.-->
+                    <v-tooltip activator="parent" location="top" :disabled="isDragging"
+                      ><span :style="{ color: $vuetify.theme.current.colors.primary }"
+                        >Drag to move, or Alt + ↑ / ↓</span
+                      ></v-tooltip
+                    ></v-btn
+                  >
                 <v-menu :close-on-content-click="false" max-width="700" location="bottom end">
                   <template v-slot:activator="{ props: menu }">
                     <v-btn
@@ -930,20 +1030,30 @@
                     ></IconSelector>
                   </v-card>
                 </v-menu>
+                </div>
                 <v-btn
                   icon
                   size="small"
                   variant="text"
                   class="row-x"
-                  @click="removeStepConfirmationDialog = true; delteRowIndex = index;"
-                ><v-icon size="16">mdi-close</v-icon></v-btn>
+                  @click="confirmRemoveStep(index)"
+                ><v-icon size="16">mdi-close</v-icon
+                  ><v-tooltip activator="parent" location="top"
+                    ><span :style="{ color: $vuetify.theme.current.colors.primary }"
+                      >Remove, or Alt + Backspace</span
+                    ></v-tooltip
+                  ></v-btn
+                >
               </div>
             </td>
           </tr>
           </template>
           <!-- Trailing insert row after last step -->
-          <tr v-if="!readonly && steps.length" class="ins-row ins-row--trailing">
-            <td :colspan="9" class="ins-row-cell">
+          <tr
+            v-if="!readonly && steps.length"
+            :class="['ins-row', 'ins-row--trailing', dropGapIndex === steps.length && 'ins-row--drop']"
+          >
+            <td :colspan="9" class="ins-row-cell" :data-gap-index="steps.length">
               <StepInsertMenu
                 :options="insertOptions(steps.length - 1)"
                 @select="handleInsert($event, steps.length - 1)"
@@ -975,6 +1085,7 @@
               @keyup="handleContentEditableKeyUp($event)"
               @click="saveSelection($event)"
               @paste="handlePaste"
+              @keydown.esc.prevent="releaseEditing($event)"
               @focusin="focusedDescIndex = 'gameplan'"
               @focusout="updateSectionGameplan(); focusedDescIndex = null"
               @mouseover="handleMouseOver($event)"
@@ -1078,6 +1189,7 @@ import IconSelector from "@/components/builds/IconSelector.vue";
 import IconAutoCompleteMenu from "@/components/builds/IconAutoCompleteMenu.vue";
 import IconToolTip from "@/components/builds/IconToolTip.vue";
 import StepInsertMenu from "@/components/builds/StepInsertMenu.vue";
+import StepMoveControls from "@/components/builds/StepMoveControls.vue";
 import AlternativePathTabs from "@/components/builds/AlternativePathTabs.vue";
 
 //Composables
@@ -1095,6 +1207,7 @@ import {
 } from "@/composables/builds/stepVisibility.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 import { ACTIVE_PATH } from "@/composables/builds/useActivePath.js";
+import { STEP_REORDER } from "@/composables/builds/useStepReorder.js";
 import {
   expandBlocks,
   collapseBlocks,
@@ -1118,6 +1231,63 @@ import {
  * arrives, short enough that it reads as an answer rather than as selection.
  */
 const FLASH_MS = 2000;
+
+/**
+ * Monotonic counter for stable `v-for` keys. Never persisted, client-side only.
+ *
+ * **Module scope, not per component, and that is the whole point.** Seeded from the
+ * clock and held inside `setup()`, every section mounted in the same millisecond —
+ * which is all of them, they mount together — started from the same value and handed
+ * out the same sequence. Their `_id` sets were identical, not merely overlapping.
+ *
+ * That was harmless while a key only had to be unique within one section's list. It
+ * stopped being harmless when a step gained the ability to move to another section:
+ * the arriving step carries its id, and Vue is handed two rows claiming one key. The
+ * symptom is a row that renders stale content or refuses to update, which looks like
+ * a bug in the move rather than in the key.
+ *
+ * One counter for the page removes the collision rather than the one path through the
+ * code that would have hit it first.
+ */
+let _nextStepId = Date.now();
+
+/**
+ * How far outside a section's table a pointer can be and still be dragging
+ * *over* it.
+ *
+ * Sections are stacked cards with real space between them, so a pointer in that
+ * space is genuinely between two of them and both should offer their nearest
+ * line — the closer one wins. Without any reach at all the drop position would
+ * blink out every time the pointer crossed a card boundary; without a limit,
+ * a release over the page header would land on whichever line happened to be
+ * least far away.
+ */
+const DROP_REACH_PX = 160;
+
+/** How close to the window edge a drag has to get before the page follows it. */
+const AUTOSCROLL_EDGE_PX = 72;
+
+/** The most one pointer movement may scroll, so a fast drag cannot bolt. */
+const AUTOSCROLL_MAX_PX = 14;
+
+/**
+ * Follows a drag that has reached the edge of the window.
+ *
+ * Proportional to how far past the threshold the pointer is, so easing toward
+ * the edge scrolls gently and pinning against it scrolls at full speed. Driven
+ * by pointer movement rather than by a timer: a drag that has stopped moving is
+ * a drag the author is thinking about, not one asking to travel.
+ *
+ * @param {number} y - Pointer position in client coordinates.
+ * @return {void}
+ */
+function autoScrollDuringDrag(y) {
+  const aboveTop = y - AUTOSCROLL_EDGE_PX;
+  const belowBottom = y - (window.innerHeight - AUTOSCROLL_EDGE_PX);
+
+  if (aboveTop < 0) window.scrollBy(0, Math.max(-AUTOSCROLL_MAX_PX, aboveTop / 4));
+  else if (belowBottom > 0) window.scrollBy(0, Math.min(AUTOSCROLL_MAX_PX, belowBottom / 4));
+}
 
 export default {
   name: "BuildOrderSectioncontentEditable",
@@ -1162,6 +1332,7 @@ export default {
     IconAutoCompleteMenu,
     IconToolTip,
     StepInsertMenu,
+    StepMoveControls,
     AlternativePathTabs,
   },
   setup(props, context) {
@@ -1222,18 +1393,21 @@ export default {
     const steps = reactive(expandBlocks(JSON.parse(JSON.stringify(props.section.steps))));
     const stepsCopy = reactive(expandBlocks(JSON.parse(JSON.stringify(props.section.steps))));
     const readonly = props.readonly;
-    // Monotonic counter for stable v-for keys — never persisted, client-side only.
-    let _nextStepId = Date.now();
     const hoverRowIndex = ref(null);
     const selectedRowIndex = ref(null);
     const delteRowIndex = ref(null);
     const selection = ref(null);
     const stepsTable = ref(null);
+    //The phone's card list, so a card that has just moved can be followed.
+    const stepsList = ref(null);
     const timestampRefs = ref([]);
     const stoneInputRefs = ref([]);
     //So a note can be focused the moment it is inserted, the way a new step
     //focuses its timestamp. An author who asks for a note wants to type one.
     const noteRefs = ref([]);
+    //The grip on each row, kept so focus can follow an entry that has just been
+    //moved — otherwise a second arrow press moves whatever inherited the row.
+    const dragHandleRefs = ref([]);
     const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
     const focusedDescIndex = ref(null);
@@ -1373,6 +1547,19 @@ export default {
 
       //Force firefox to use BR instead of adding DIVs
       document.execCommand("defaultParagraphSeparator", false, "br");
+
+      //Announce this section to the reordering channel. Registered by index
+      //rather than in mount order, because an age-up added later mounts last
+      //and still belongs in the middle of the build.
+      reorder?.registerSection(props.sectionIndex, reorderHandlers);
+    });
+
+    onBeforeUnmount(() => {
+      //A section can be removed while something is being dragged over it — an
+      //age-down during a drag — and window listeners outlive the component that
+      //added them.
+      endDragListening();
+      reorder?.unregisterSection(props.sectionIndex);
     });
 
     watch(
@@ -1393,6 +1580,10 @@ export default {
 
     function registerTimestampRef(el, index) {
       if (el) timestampRefs.value[index] = el;
+    }
+
+    function registerDragHandleRef(el, index) {
+      if (el) dragHandleRefs.value[index] = el;
     }
 
     function registerStoneInputRef(el, index) {
@@ -1816,6 +2007,399 @@ export default {
      * @return {boolean} True when it should render as a note.
      */
     const isNote = (item) => item?.gameplan !== undefined && item?.gameplan !== null;
+
+    /**
+     * The reordering channel, or null where there is nothing to reorder.
+     *
+     * Absent in the read-only view — nothing provides it there — so every use is
+     * optional. That is what keeps handles and move controls out of a reader's
+     * build rather than rendering them disabled.
+     */
+    const reorder = inject(STEP_REORDER, null);
+
+    /**
+     * What this section lets the coordinator do to it.
+     *
+     * Deliberately small, and deliberately silent: `detach` and `attach` do not
+     * emit. A section that emitted from inside `detach` would publish a build
+     * with the entry gone from here and not yet anywhere else — briefly, but
+     * that brief moment is a whole build order missing a step.
+     *
+     * Both working lists are spliced by every one of these, at the same index,
+     * because both carry real content: `stepsCopy` holds what the author typed
+     * into a description (a focusout writes it there, and `emitSteps(stepsCopy)`
+     * reads it back out), while `steps` holds everything else. Splice one and
+     * the pair drift apart, which is a step wearing another step's text.
+     */
+    const reorderHandlers = {
+      /** Entries in the working list, markers included — the coordinator counts gaps itself. */
+      entryCount: () => steps.length,
+
+      /**
+       * The entry at a position, or null for a marker.
+       *
+       * The null is load-bearing: it is the whole of "a bracket cannot be
+       * dragged apart", expressed as an entry that is not there to be moved
+       * rather than as a rule somewhere that has to remember to check.
+       */
+      entryAt: (index) => (isMarker(steps[index]) ? null : (steps[index] ?? null)),
+
+      /**
+       * Whether a gap falls between two alternatives markers.
+       *
+       * Gap `g` sits between entry `g - 1` and entry `g`, so it is inside a
+       * bracket when the opening marker is strictly before it and the closing
+       * one is at or after it. The gap immediately above the merge marker is
+       * inside; the one immediately below it is not. That single boundary is
+       * what path membership *is*.
+       */
+      gapInsideBlock: (gap) =>
+        blockRanges(steps).some((range) => range.start < gap && gap <= range.end),
+
+      /**
+       * Takes an entry out and hands it over.
+       *
+       * The pair travels together. On desktop `syncEditedFields()` writes the
+       * DOM back into `steps` only, so the copy's text can be a focusout behind;
+       * it is squared up here, while the two are still side by side and it is
+       * obvious which is which.
+       */
+      detach: (index) => {
+        const step = steps[index];
+        const copy = stepsCopy[index];
+        if (!step || isMarker(step)) return null;
+
+        if (copy) {
+          if (isNote(step)) copy.gameplan = step.gameplan;
+          else copy.description = step.description;
+        }
+
+        steps.splice(index, 1);
+        stepsCopy.splice(index, 1);
+
+        return { step, copy: copy ?? { ...step } };
+      },
+
+      /** Puts an entry back, into both lists, at the same gap. */
+      attach: (gap, parcel) => {
+        if (!parcel?.step) return;
+
+        steps.splice(gap, 0, parcel.step);
+        stepsCopy.splice(gap, 0, parcel.copy);
+      },
+
+      syncEdits: () => syncEditedFields(),
+
+      emit: () => emitSteps(),
+
+      /**
+       * Returns focus to the entry that just moved, so a second press moves it
+       * again rather than moving whatever inherited its position.
+       */
+      focusEntry: (gap) => {
+        const handle = dragHandleRefs.value[gap];
+        (handle?.$el ?? handle)?.focus?.();
+      },
+
+      /**
+       * The insert line nearest the pointer, and how far away it is.
+       *
+       * Measured on the `.ins-row-cell`, which is a zero-height cell sitting
+       * exactly on the boundary between two rows — so its own position *is* the
+       * line, with no arithmetic to get wrong. The visible `+ Add` zone is
+       * absolutely positioned around it and would answer about itself, not
+       * about where a step would land.
+       *
+       * A pointer nowhere near this section answers null rather than "my
+       * closest, which is miles away". Without that, a release over the page
+       * header would find a nearest line somewhere and treat the drop as
+       * deliberate.
+       */
+      gapNear: (x, y) => {
+        const table = stepsTable.value;
+        if (!table) return null;
+
+        const bounds = table.getBoundingClientRect();
+        if (y < bounds.top - DROP_REACH_PX || y > bounds.bottom + DROP_REACH_PX) return null;
+
+        let best = null;
+
+        for (const cell of table.querySelectorAll("td.ins-row-cell[data-gap-index]")) {
+          const rect = cell.getBoundingClientRect();
+          const distance = Math.abs(y - (rect.top + rect.height / 2));
+          if (best && distance >= best.distance) continue;
+
+          best = { gapIndex: Number(cell.dataset.gapIndex), distance };
+        }
+
+        return best;
+      },
+    };
+
+    /**
+     * Which row this section is currently lifting, or null.
+     *
+     * Read from the session rather than held locally, so a drag that started in
+     * another section leaves every row here alone.
+     */
+    const draggingIndex = computed(() => {
+      const session = reorder?.session.value;
+      return session && session.sectionIndex === props.sectionIndex ? session.draftIndex : null;
+    });
+
+    /** Which of this section's insert lines is the one a release would take. */
+    const dropGapIndex = computed(() => {
+      const target = reorder?.session.value?.target;
+      return target && target.sectionIndex === props.sectionIndex ? target.gapIndex : null;
+    });
+
+    /** True while any drag is in flight, anywhere in the build. */
+    const isDragging = computed(() => !!reorder?.session.value);
+
+    /**
+     * Everything a live drag has attached to the window, so it can all be taken
+     * off again from one place — including from `onBeforeUnmount`, because a
+     * section can be removed while something is being dragged over it.
+     */
+    let releaseDrag = null;
+
+    const endDragListening = () => {
+      releaseDrag?.();
+      releaseDrag = null;
+    };
+
+    /**
+     * Starts a drag from a row's grip.
+     *
+     * `preventDefault` matters more here than it looks: the row's description is
+     * a contenteditable cell, which the browser already treats as draggable, and
+     * a text drag starting inside a row move is not something the two can be
+     * told apart from afterwards. The grip is the only thing that starts a move,
+     * which is why the row body keeps its ordinary text selection.
+     *
+     * @param {PointerEvent} event - The pointerdown on the grip.
+     * @param {number} index - Position of the row in the working list.
+     * @return {void}
+     */
+    const startDrag = (event, index) => {
+      if (!reorder || readonly) return;
+      //A secondary button or a context-menu press is not a move.
+      if (event.button != null && event.button !== 0) return;
+
+      //A drag that never received its pointerup — a pointer lost to a context
+      //menu, say — would otherwise leave its listeners on the window.
+      endDragListening();
+
+      reorder.begin(props.sectionIndex, index);
+      //A marker refuses to open a session, so there is nothing to listen for.
+      if (!reorder.session.value) return;
+
+      event.preventDefault();
+
+      const grip = event.currentTarget;
+      grip.setPointerCapture?.(event.pointerId);
+
+      const move = (moveEvent) => {
+        reorder.setTargetFromPoint(moveEvent.clientX, moveEvent.clientY);
+        autoScrollDuringDrag(moveEvent.clientY);
+      };
+      const finish = () => {
+        endDragListening();
+        reorder.commit();
+      };
+      const abandon = () => {
+        endDragListening();
+        reorder.cancel();
+      };
+      const key = (keyEvent) => {
+        if (keyEvent.key !== "Escape") return;
+        keyEvent.preventDefault();
+        abandon();
+      };
+
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", finish);
+      window.addEventListener("pointercancel", abandon);
+      window.addEventListener("keydown", key);
+
+      releaseDrag = () => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", finish);
+        window.removeEventListener("pointercancel", abandon);
+        window.removeEventListener("keydown", key);
+        grip.releasePointerCapture?.(event.pointerId);
+      };
+    };
+
+    /**
+     * Moves a row one position, from a button press or an arrow key.
+     *
+     * One **gap**, not one neighbour — which is what makes crossing into an
+     * alternative, or into the next age, cost its own press instead of happening
+     * as a side effect of passing an entry.
+     *
+     * @param {number} index - Position of the row in the working list.
+     * @param {number} delta - -1 for up, 1 for down.
+     * @return {void}
+     */
+    const moveEntry = (index, delta) => {
+      if (!reorder || readonly) return;
+      reorder.moveBy(props.sectionIndex, index, delta);
+    };
+
+    /** Whether a press in that direction would do anything. */
+    const canMoveEntry = (index, delta) =>
+      !!reorder && !readonly && reorder.canMove(props.sectionIndex, index, delta);
+
+    /**
+     * What a move control announces.
+     *
+     * Names the thing it moves rather than the gesture, because a screen reader
+     * meeting three identical "move" buttons in a row learns nothing from the
+     * third one.
+     *
+     * @param {Object} item - The entry the control belongs to.
+     * @return {string} The accessible name.
+     */
+    const moveLabel = (item) =>
+      `Move this ${isNote(item) ? "note" : "step"}. Use the arrow keys to move it one position.`;
+
+    /** Opens the delete confirmation for a row. */
+    const confirmRemoveStep = (index) => {
+      delteRowIndex.value = index;
+      removeStepConfirmationDialog.value = true;
+    };
+
+    /**
+     * Every Alt shortcut a row answers to, in one place.
+     *
+     * Bound on the row itself, so it acts on the row the caret is in — which is
+     * what lets these work while writing a description rather than only when the
+     * grip has focus.
+     *
+     * **Dispatched on `event.code`, not `event.key`, and that is not a style
+     * choice.** On macOS, Alt is Option, and Option+N does not produce "n" — it
+     * produces a dead key for the tilde. A `.n` key modifier would therefore
+     * work on Windows and silently not exist on a Mac. `event.code` is the
+     * physical key and says `KeyN` either way.
+     *
+     * **On keydown rather than keyup**, which is where the two older bindings
+     * differed. Keyup is too late to stop the browser inserting that dead-key
+     * character, and too late to stop Option+arrow walking the caret through the
+     * text. Auto-repeat is then handled per action rather than avoided wholesale:
+     * holding Alt+Down to walk a step several rows is useful, holding Alt+Enter
+     * to insert forty steps is not.
+     *
+     * @param {KeyboardEvent} event - The keydown from anywhere in the row.
+     * @param {number} index - The row's position in the working list.
+     * @return {void}
+     */
+    const handleRowShortcut = (event, index) => {
+      if (!event.altKey || readonly) return;
+
+      //Repeats wanted: hold to walk an entry several positions.
+      if (event.code === "ArrowUp") {
+        event.preventDefault();
+        moveEntry(index, -1);
+        return;
+      }
+      if (event.code === "ArrowDown") {
+        event.preventDefault();
+        moveEntry(index, 1);
+        return;
+      }
+
+      //Everything past here inserts or removes, where a held key runs away.
+      if (event.repeat) return;
+
+      if (event.code === "Enter" || event.code === "NumpadEnter") {
+        event.preventDefault();
+        addStep(index);
+        return;
+      }
+      if (event.code === "KeyN") {
+        event.preventDefault();
+        addNote(index);
+        return;
+      }
+      if (event.code === "Delete" || event.code === "Backspace") {
+        event.preventDefault();
+        confirmRemoveStep(index);
+      }
+    };
+
+    /**
+     * Escape steps back out of a field, one layer at a time.
+     *
+     * The icon autocomplete first, when it is open — it is the most recently
+     * opened thing and the thing Escape is expected to dismiss. Otherwise the
+     * field gives up focus, and that is what hands the row's shared slot back to
+     * the drag grip. Without this, freeing the grip meant clicking into empty
+     * space somewhere to blur the cell, which is a strange thing to have to
+     * know.
+     *
+     * Blurring **commits** what was typed, because the field's own focusout
+     * does. Escape reverting instead would be the only undo anywhere in this
+     * editor, and a lone undo is worse than none: it is the one place an author
+     * would lose work by pressing the key that everywhere else means "stop".
+     *
+     * @param {KeyboardEvent} event - The keydown from the field.
+     * @return {void}
+     */
+    const releaseEditing = (event) => {
+      if (searchText.value) {
+        searchText.value = null;
+        return;
+      }
+
+      event.target?.blur?.();
+    };
+
+    /**
+     * Keeps a card that has just moved where the author can still see it.
+     *
+     * Reuses the scroller `scrollToStep` already uses rather than a second one
+     * with its own opinion: "if-needed" leaves an already-visible card alone,
+     * and the reduced-motion check is the one this component already makes.
+     *
+     * @param {number} gap - Where the entry landed in the working list.
+     * @return {void}
+     */
+    const keepMovedEntryVisible = async (gap) => {
+      await nextTick();
+      await nextTick();
+
+      const card = stepsList.value?.querySelector(`[data-card-index="${gap}"]`);
+      if (!card) return;
+
+      scrollIntoView(card, {
+        scrollMode: "if-needed",
+        block: "nearest",
+        inline: "nearest",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "instant"
+          : "smooth",
+      });
+    };
+
+    /**
+     * A move from one of the phone's card controls.
+     *
+     * Same one-gap move the arrow keys make; only the surface differs. The card
+     * is followed afterwards because on a phone the entry can easily land past
+     * the fold, and a move whose result you cannot see reads as a move that did
+     * not happen.
+     *
+     * @param {number} index - Position of the card in the working list.
+     * @param {number} delta - -1 for up, 1 for down.
+     * @return {void}
+     */
+    const moveCard = async (index, delta) => {
+      if (!reorder || readonly) return;
+
+      const landed = await reorder.moveBy(props.sectionIndex, index, delta);
+      if (landed?.sectionIndex === props.sectionIndex) keepMovedEntryVisible(landed.gapIndex);
+    };
 
     /**
      * Pulls what the author has typed into contenteditable cells back into the
@@ -2348,9 +2932,14 @@ export default {
         ageUpReason = "You can only advance at the end of the build";
       }
 
+      //The hints are the only place these shortcuts are taught. They sit on the
+      //two entries that have one, at the moment somebody is inserting by mouse —
+      //which is exactly when learning there is a faster way is worth anything.
+      //Alternatives and Advance deliberately have none: both are refused in
+      //context with a reason, and a shortcut can only fail silently.
       return [
-        { value: "step", title: "Step", icon: "mdi-plus" },
-        { value: "note", title: "Note", icon: "mdi-information-outline" },
+        { value: "step", title: "Step", icon: "mdi-plus", hint: "Alt ↵" },
+        { value: "note", title: "Note", icon: "mdi-information-outline", hint: "Alt N" },
         {
           value: "alternatives",
           title: "Alternatives",
@@ -2625,6 +3214,23 @@ export default {
       //Called by the parent through its section refs, so a flat step index can
       //reach the one section that owns that row
       scrollToStep,
+      //Reordering: the grip and its keyboard, the phone's move controls, and the
+      //two pieces of drag state the rows are drawn against
+      registerDragHandleRef,
+      startDrag,
+      moveEntry,
+      moveCard,
+      canMoveEntry,
+      moveLabel,
+      draggingIndex,
+      dropGapIndex,
+      isDragging,
+      stepsList,
+      //Escape leaves a field, which is what frees the grip's shared slot
+      releaseEditing,
+      //Every Alt shortcut a row answers to, and the ✕ they share a target with
+      handleRowShortcut,
+      confirmRemoveStep,
       saveSelection,
       restoreSelection,
       handleIconSelectorIconSelected,
@@ -3093,6 +3699,81 @@ export default {
 .step-action-icon--hidden {
   opacity: 0 !important;
   pointer-events: none !important;
+}
+
+/* One box holding both the grip and the icon picker, since only one of them is
+   ever wanted (see the markup for why).
+
+   Grid rather than absolute positioning, and with no width of its own: both
+   children occupy the same grid cell, so the box takes their natural size and
+   they keep it. Pinning a size here is the trap — `size="small"` + `icon` is a
+   40px circle (28px of button height plus Vuetify's 12px at default density),
+   so a hand-written 28px would have quietly shrunk both controls next to a
+   40px ✕. */
+.step-action-slot {
+  display: grid;
+  flex-shrink: 0;
+}
+.step-action-slot > * {
+  grid-area: 1 / 1;
+}
+
+/* Row grip — same reveal-on-hover as the delete button beside it, and the same
+   neutral colour: these are both controls that act on the row. The icon picker
+   is accent-coloured because it puts something into the row, which is a
+   different kind of act. Focus keeps the grip visible — it is the keyboard's
+   move control, and a control you have tabbed to must be there.
+
+   `touch-action: none` is not decoration. Without it a drag begun with a finger
+   or a pen is claimed by the browser as a scroll, and the pointermove events
+   stop arriving halfway through the gesture. */
+.row-grip {
+  opacity: 0;
+  transition: opacity 0.12s;
+  flex-shrink: 0;
+  cursor: grab;
+  touch-action: none;
+}
+.step-row:hover .row-grip,
+.row-grip:focus-visible { opacity: 0.6; }
+.step-row--dragging .row-grip { opacity: 1; cursor: grabbing; }
+/* Out of the way while the description is being written: the picker has the
+   slot then, and two controls stacked in one box must never both be visible. */
+.row-grip--hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* The row being carried. Held at reduced opacity rather than transformed: a
+   `transform` on a <tr> makes it a containing block, which detaches the age and
+   alternatives rails drawn as ::before on the row's first cell — the lane would
+   break exactly where the drag is. Opacity says "this is in flight" without
+   touching layout, and being a state rather than an animation it has nothing
+   for reduced-motion to suppress. */
+.step-row--dragging > td {
+  opacity: 0.4;
+}
+
+/* The line a release would take. The insert line is already drawn here for
+   adding a step; this is the same line, told apart by weight and colour rather
+   than by being a second kind of line that means almost the same thing. */
+.ins-row--drop .ins-line {
+  height: 2px;
+  background: rgb(var(--v-theme-accent));
+  opacity: 1;
+}
+.ins-row--drop .ins-zone {
+  z-index: 3;
+}
+
+/* Nothing under the pointer should behave like a button while a row is in
+   flight — the "+ Add" zones sit exactly where the drop lines are, and lighting
+   one up mid-drag suggests a click is what is about to happen. */
+.steps-table--dragging .ins-zone {
+  pointer-events: none;
+}
+.steps-table--dragging .contentEditable {
+  cursor: grabbing;
 }
 
 /* Row delete button — always in DOM, revealed on row hover */
@@ -3741,6 +4422,11 @@ tbody tr.age-reached-row td {
   height: 28px;
   margin-top: 2px;
 }
+
+/* The move controls next to it are always visible, unlike this picker: the
+   picker is a tool you reach for while writing a card, placement is how the card
+   gets where it goes, and a placement control you have to discover is one nobody
+   uses. Their sizing lives with them, in StepMoveControls.vue. */
 
 /* Add-icon button: fades in only when description field has focus */
 .step-icon-btn-xs {
