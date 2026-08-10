@@ -1827,18 +1827,6 @@ export default {
   .fm-pick-ask {
     font-size: 11px;
   }
-  /* 90, not 120. Two options share a row only if twice the basis plus the gap
-     fits, and a floating window is around 230px wide inside — at 120 they never
-     did, so every option went full width and three of them stacked into a
-     scrollbar. */
-  .fm-pick-option {
-    min-width: 0;
-    flex: 1 1 90px;
-    min-height: 36px;
-    padding: 4px 8px;
-    align-items: center;
-    justify-content: center;
-  }
   .fm-pick-title {
     font-size: 13px;
   }
@@ -1859,17 +1847,13 @@ export default {
   .fm-pick-options {
     gap: 4px;
   }
-  .fm-pick-option {
-    min-height: 32px;
-  }
 }
 
 /* Narrower still. The options stay side by side rather than going full width —
    two to a row is half the height of two rows, and height is what runs out. */
 @container focus (max-width: 300px) {
-  .fm-pick-option {
-    flex: 1 1 80px;
-    padding: 2px 6px;
+  .fm-pick-options {
+    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
   }
   .fm-pick-title {
     font-size: 12px;
@@ -2049,29 +2033,49 @@ export default {
     transform: scaleX(0);
   }
 }
+/* The options divide the room they have; they do not ask for room.
+   
+   This was a wrapping flex row of fixed-height buttons, and every attempt to
+   make three of them fit a floating window was a guess at a breakpoint — each
+   one still overflowed into a scrollbar, which is the one control a player
+   cannot use mid-game. A grid whose rows are bounded by the space available
+   cannot overflow at any size: the columns fold from two to one when the box is
+   narrow, the rows shrink to 28px when it is short, and on a phone they open
+   out to a full thumb. No query decides any of it. */
 .fm-pick-options {
-  flex: 0 1 auto;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  /* 1fr, not a length. The rows divide a height that is already decided — the
+     step area is a fixed grid track, so this box has a definite height before
+     the rows are sized — which means three options fit a 90px floating window
+     as three 26px rows and a phone as three tall ones. A length, any length, is
+     a number that some window is smaller than. */
+  grid-auto-rows: 1fr;
+  gap: 6px;
   align-content: center;
-  /* Not the default stretch. The options box is as tall as the step area, and
-     stretched items grew to fill it — a single row of two became two slabs, and
-     three rows could not fit at any size. */
-  align-items: center;
-  max-width: 100%;
+  justify-content: center;
+  width: 100%;
+  max-width: 420px;
   min-height: 0;
-  overflow-y: auto;
+  overflow: hidden;
 }
 .fm-pick-option {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  min-width: 140px;
-  /* A thumb, not a pointer: this is pressed on a phone propped beside a game. */
-  min-height: 56px;
-  padding: 8px 14px;
+  align-items: center;
+  justify-content: center;
+  /* Both zero, so the grid track decides the size and the button never pushes
+     back. A thumb-sized target is the *track's* upper bound, not a floor the
+     button insists on — insisting is what produced the scrollbar. */
+  min-width: 0;
+  min-height: 0;
+  /* The thumb target is a ceiling here, not a floor: a tall row centres a 64px
+     button rather than growing one to fill the screen. */
+  max-height: 64px;
+  align-self: center;
+  padding: 4px 8px;
   border-radius: 10px;
   border: 1px solid rgba(var(--v-theme-alternative), 0.55);
   background: rgba(var(--v-theme-alternative), 0.18);
@@ -2084,6 +2088,10 @@ export default {
 .fm-pick-title {
   font-size: 15px;
   font-weight: 700;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .fm-pick-cond {
   font-size: 12px;
