@@ -226,7 +226,10 @@ if untouched, path is named, mid-detour switch works (quickstart 31–39).
 - [ ] T051 [P] Audit every alternatives affordance for colour and mark: secondary only, never gold; `mdi-call-split` for the branch and `mdi-call-merge` for the close, never a rotated split (FR-016, SC-006)
 - [ ] T052 [P] Check every new control in light and dark at both breakpoints (quickstart 41)
 - [ ] T053 [P] Check keyboard reachability and operation of the add menu, the pick control and the path tabs (quickstart 43)
-- [ ] T054 Export B-alt to overlay format and confirm the active path is flattened onto the main line with no marker row and no empty step (FR-018, quickstart 42)
+- [X] T054 The overlay export takes a selection and flattens it onto the main line (FR-018, quickstart 42). The overlay has no notion of a fork, so a path has to be chosen before the build leaves the site: `BuildDetails` passes the reader's, `BuildEditor` passes `selectionFromActive()` — the tab the author has open, which is what they mean by "this build". Three defects found by writing it:
+  - **Ages never reached the steps that get exported.** The stamping loop walked `section.steps` as though every entry were a step, so a block was stamped as an object and the steps *inside* it — the ones that flatten out — were left with the overlay's "no age". Sixth instance of that trap; fixed by flattening first and slicing the flat list by `sectionOffsets`, never by `section.steps.length`
+  - **Exporting mutated the build**, writing `age` onto the author's own step objects
+  - **An unwritten path condition exported as a blank row** — no time, no villagers, no text — that the overlay counts and the player cannot use. Empty *notes* are dropped; an empty *step* is still a step, since its villager distribution is the instruction
 - [ ] T055 Review `firestore.rules` against the schema change and record the outcome — the block is nested in the existing `build.steps` field, so no rules change is expected, but Principle V requires the review to happen and be stated
 - [ ] T056 Run the full quickstart 1–44 end to end on a fresh session, confirming no new console warnings
 

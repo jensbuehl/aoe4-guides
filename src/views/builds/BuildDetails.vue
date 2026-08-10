@@ -579,7 +579,7 @@ export default {
     };
 
     const handleCopyOverlayFormat = async () => {
-      const overlayBuild = convert(build.value);
+      const overlayBuild = convert(build.value, activePath.paths.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       // copyToClipboard resolves false instead of throwing when both the write
       // and its fallback fail, so a discarded result leaves the player with no
@@ -594,7 +594,7 @@ export default {
     };
 
     const handleDownloadOverlayFormat = () => {
-      const overlayBuild = convert(build.value);
+      const overlayBuild = convert(build.value, activePath.paths.value);
       const overlayBuildString = JSON.stringify(overlayBuild, null, 3);
       download(overlayBuildString, build.value.title);
     };

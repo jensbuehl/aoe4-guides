@@ -1,3 +1,5 @@
+import { blockId } from "@/composables/builds/useAgeTimings.js";
+
 /**
  * Between the document's shape and the editor's.
  *
@@ -196,4 +198,30 @@ export function blockRanges(flat) {
  */
 export function isInsideBlock(flat, index) {
   return blockRanges(flat).some((range) => index > range.start && index < range.end);
+}
+
+/**
+ * The selection an authored document already carries.
+ *
+ * A block records which of its paths the author has open as `active`. That is
+ * not how a *reader's* views resolve a block — they take the main path, or the
+ * first — but it is exactly what "the current selection" means on the editor
+ * screen, where the author is looking at one path and expects to export it.
+ *
+ * @param {Array} sections - The build's sections, in document shape.
+ * @return {Object} Map of blockId to path index, for blocks that name one.
+ */
+export function selectionFromActive(sections) {
+  const selection = {};
+
+  (sections ?? []).forEach((section, sectionIndex) => {
+    (section?.steps ?? []).forEach((item, itemIndex) => {
+      if (item?.kind !== "alternatives") return;
+      if (!Number.isInteger(item.active)) return;
+
+      selection[blockId(sectionIndex, itemIndex)] = item.active;
+    });
+  });
+
+  return selection;
 }

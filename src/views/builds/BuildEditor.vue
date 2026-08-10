@@ -253,6 +253,7 @@ import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import { maps } from "@/composables/filter/mapDefaultProvider";
 import { strategies } from "@/composables/filter/strategyDefaultProvider";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
+import { selectionFromActive } from "@/composables/builds/alternativesDraft.js";
 import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
 import useDownload from "@/composables/converter/useDownload";
 
@@ -601,7 +602,8 @@ export default {
     };
 
     const handleCopyOverlayFormat = async () => {
-      const overlayBuild = convert(build.value);
+      //The path the author has open, which is what they mean by "this build".
+      const overlayBuild = convert(build.value, selectionFromActive(build.value.steps));
       // See BuildDetails: a failed clipboard write resolves false rather than
       // throwing, so it has to be reported explicitly.
       const copied = await copyToClipboard(JSON.stringify(overlayBuild, null, 3));
@@ -614,7 +616,8 @@ export default {
     };
 
     const handleDownloadOverlayFormat = () => {
-      const overlayBuild = convert(build.value);
+      //The path the author has open, which is what they mean by "this build".
+      const overlayBuild = convert(build.value, selectionFromActive(build.value.steps));
       download(JSON.stringify(overlayBuild, null, 3), build.value.title);
     };
 

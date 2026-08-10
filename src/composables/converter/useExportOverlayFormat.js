@@ -1,11 +1,19 @@
 import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
-import { flattenSections } from "@/composables/builds/useAgeTimings.js";
+import { flattenSections, sectionOffsets } from "@/composables/builds/useAgeTimings.js";
+import { hasVisibleContent } from "@/composables/builds/stepVisibility.js";
 
 export default function useExportOverlayFormat() {
-  const convert = (build) => {
+  /**
+   * @param {Object} build - The build, in document shape.
+   * @param {Object} [selection] - Map of blockId to chosen path index. The
+   *   overlay has no notion of a fork, so one path has to be picked before the
+   *   build leaves the site; omitted, every block exports its main path or its
+   *   first, which is what a reader who chose nothing was shown.
+   */
+  const convert = (build, selection) => {
     var steps;
     if (build.steps[0]?.type) {
-      steps = convertSectionsToSteps(build.steps);
+      steps = convertSectionsToSteps(build.steps, selection);
     } else {
       steps = build.steps;
     }
@@ -27,19 +35,59 @@ export default function useExportOverlayFormat() {
     };
   };
 
-  //Stamp each step with the age of the section it sits in, then flatten through
-  //the shared flattener rather than a private loop. A step carries no age of its
-  //own, so the stamping has to happen while the sections are still in view — but
-  //that is the only thing this needs the sections for, which leaves flattening
-  //to the one function that owns it.
-  function convertSectionsToSteps(sections) {
-    sections?.forEach((section) => {
-      section.steps?.forEach((step) => {
-        if (section.age && section.age > 0) step.age = section.age;
-      });
+  /**
+   * The build as one straight run of steps, with the age of the section each sits
+   * in stamped on it.
+   *
+   * Flatten first, then stamp. Stamping first walked `section.steps` as though
+   * every entry were a step, so a block was stamped as an object — and the steps
+   * *inside* it, which are the ones that get exported, were never stamped at all
+   * and left with the overlay's "no age". That is the same trap the flattener
+   * exists to close, so this reads the flat list and slices it by section.
+   *
+   * Slicing to the next offset, never to `section.steps.length`: with a block in
+   * it a section contributes the active path's step count, not its entry count.
+   *
+   * Nothing here mutates the build. The old loop wrote `age` onto the author's
+   * own step objects as a side effect of exporting.
+   *
+   * @param {Array} sections - The build's sections.
+   * @param {Object} [selection] - Map of blockId to chosen path index.
+   * @return {Array} Flat steps, aged, blocks resolved to one path.
+   */
+  function convertSectionsToSteps(sections, selection) {
+    const flat = flattenSections(sections, selection);
+    const offsets = sectionOffsets(sections, selection);
+    const aged = [];
+
+    (sections ?? []).forEach((section, sectionIndex) => {
+      const end = offsets[sectionIndex + 1] ?? flat.length;
+      for (let index = offsets[sectionIndex]; index < end; index++) {
+        const step = flat[index];
+        aged.push(section?.age > 0 ? { ...step, age: section.age } : step);
+      }
     });
 
-    return flattenSections(sections);
+    //A path's condition is a note, and an author who never wrote one leaves an
+    //empty note behind. It would export as a step with no time, no villagers and
+    //no text — a row the overlay counts and the player cannot use.
+    return aged.filter((step) => !isEmptyNote(step));
+  }
+
+  /**
+   * Whether an entry is a note with nothing in it.
+   *
+   * Only notes are tested. A *step* with no description is still a step — its
+   * villager distribution is the instruction — but a note is nothing but its
+   * text, so an empty one is nothing at all.
+   *
+   * @param {Object} step - A flattened entry.
+   * @return {boolean} True when it would export as a blank row.
+   */
+  function isEmptyNote(step) {
+    if (step?.gameplan === undefined || step?.description !== undefined) return false;
+
+    return !hasVisibleContent(step.gameplan);
   }
 
   function convertImagePathToText(imageElement) {

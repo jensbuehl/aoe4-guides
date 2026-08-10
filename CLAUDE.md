@@ -40,5 +40,21 @@ has *not* been verified — rendering, layout and interaction need a browser.
 Logic that lives in a `.vue` file can still be tested without one: import
 `@vue/reactivity` and drive the real refs, computeds and watches. Such a
 harness has to sit **inside the project** — Node resolves packages from the
-importing file, so one written to the scratchpad cannot find `@vue/reactivity`
-or use the `@/` alias. Write it to the repo root, run it, delete it.
+importing file, so one written to the scratchpad cannot find `@vue/reactivity`.
+Write it to the repo root, run it, delete it.
+
+Anything importing `@/…` needs that alias resolved, since Node knows nothing of
+Vite's config. Drop a loader beside the harness and delete both afterwards:
+
+```js
+// alias-loader.mjs
+import { pathToFileURL } from "node:url";
+export function resolve(specifier, context, next) {
+  if (specifier.startsWith("@/")) {
+    return next(pathToFileURL(process.cwd() + "/src/" + specifier.slice(2)).href, context);
+  }
+  return next(specifier, context);
+}
+```
+
+`node --no-warnings --experimental-loader ./alias-loader.mjs harness.mjs`
