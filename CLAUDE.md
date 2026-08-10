@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/028-age-markers/plan.md`.
+at `.specify/specs/029-step-reordering/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -42,6 +42,20 @@ turn out to be wrong.
 `setup()`, which throws at render and blanks the component behind a green build.
 Run `npm run check:setup` after touching any `.vue` file, and say plainly what
 has *not* been verified — rendering, layout and interaction need a browser.
+
+**Every new `mdi-*` icon must be added to `src/plugins/mdiIcons.js`.** Icons are
+tree-shaken from `@mdi/js` through an explicit allowlist, so an icon that is not
+in it renders as *nothing* — no error, no fallback glyph, a green build, and
+only a `console.warn` in dev. The file's own header carries the regeneration
+command, but the file is not one you open unless you already know it exists,
+which is the whole trap. After adding an icon anywhere in `src`, run:
+
+```sh
+comm -23 <(grep -rhoE 'mdi-[a-z0-9-]+' src --include=*.vue --include=*.js | sort -u) \
+         <(grep -oE '"mdi-[a-z0-9-]+"' src/plugins/mdiIcons.js | tr -d '"' | sort -u)
+```
+
+It should print only `mdi-svg` and `mdi-xxx`, which come from comments.
 
 Run `npm run check:steps` after touching anything that reads a build. A
 section's `steps` holds ordinary steps, notes **and** alternatives blocks whose
