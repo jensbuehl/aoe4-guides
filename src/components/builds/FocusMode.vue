@@ -156,9 +156,9 @@
         <button
           v-if="activePathBar.paths.length > 1"
           class="fm-path-bar-switch"
-          @click="switchActivePath()"
+          @click="reopenPick()"
         >
-          switch
+          change
         </button>
       </div>
 
@@ -396,6 +396,10 @@ export default {
     const pickCountdown = ref(null);
     //Elapsed-seconds moment at which the clock answers for the player.
     const pickDeadline = ref(null);
+    //The block whose question the player asked for a second time, if any. It is
+    //what separates "not answered yet" from "answered, and asked again" — only
+    //the first counts down.
+    const reopenedKey = ref(null);
     const steps = ref([]);
 
     const timer = ref(null);
@@ -695,9 +699,10 @@ export default {
      */
     const pendingPick = computed(() => {
       const marker = stepPick.value?.[currentStepIndex.value];
-      if (!marker?.first) return null;
+      if (!marker?.first && reopenedKey.value !== marker?.key) return null;
 
-      return focusSelection.pathFor(marker.key) == null ? marker : null;
+      if (focusSelection.pathFor(marker.key) != null) return null;
+      return { ...marker, reopened: reopenedKey.value === marker.key };
     });
 
     /**
@@ -716,26 +721,61 @@ export default {
     });
 
     /**
-     * Takes the next path along.
+     * Asks the question again.
      *
-     * A cycle rather than a menu: a block is a fork, usually of two, and a
-     * player mid-game wants the other one — not a list to read.
+     * Not a cycle to the next path: cycling is guesswork — the player is asked
+     * to pick blind and, past two paths, to keep picking until the right one
+     * comes round. Re-opening brings back the card they already answered once,
+     * with the titles and conditions on it, and costs nothing to scale.
+     *
+     * The re-opened question does not count down. The countdown exists so a
+     * live game never stalls on a question nobody saw; a player who deliberately
+     * asked to be asked again has seen it, and answering it *for* them with the
+     * first path is the blind behaviour this replaces.
      *
      * @return {void}
      */
-    function switchActivePath() {
+    function reopenPick() {
       const bar = activePathBar.value;
-      if (!bar || bar.paths.length < 2) return;
+      if (!bar) return;
 
-      choosePath(bar.key, (bar.index + 1) % bar.paths.length);
+      reopenedKey.value = bar.key;
+      focusSelection.clear(bar.key);
     }
 
-    //Armed the moment a fork reaches the screen, cleared when it leaves. A watch
-    //rather than a call inside buildQueue: the question can also arrive by the
-    //player stepping onto it by hand, with no rebuild involved.
-    watch(pendingPick, (pick) => {
-      pickDeadline.value = pick ? pickDeadlineFor() : null;
-      pickCountdown.value = pick ? Math.ceil(pickDeadline.value - elapsedSecondsNow()) : null;
+    //Reset whenever a fork arrives or leaves — arriving too, or a question shown
+    //while paused would open displaying the last one's leftover count.
+    //
+    //Arming is tickPick's job, not this watch's: the deadline is a point on the
+    //build clock, and computing one while the clock is stopped dates it to an
+    //anchor that is about to move — the question would then arrive already
+    //expired the moment play resumed.
+    watch(pendingPick, () => {
+      pickDeadline.value = null;
+      pickCountdown.value = null;
+    });
+
+    /**
+     * A choice belongs to the pass through the block that made it.
+     *
+     * Step back past the fork and the decision is unmade, so walking forward
+     * asks again — going back to try the other way is a real way to use this.
+     * Stepping back *within* a block is not: that is still the same pass.
+     *
+     * No rebuild is needed. The queue is already provisional before an answer —
+     * it is laid out with the author's default and rebuilt when the player
+     * chooses — and every path shares the steps in front of the fork, so
+     * nothing the player can currently see moves.
+     */
+    watch(currentStepIndex, (index) => {
+      const firstSeen = new Map();
+      stepPick.value.forEach((marker, at) => {
+        if (marker && !firstSeen.has(marker.key)) firstSeen.set(marker.key, at);
+      });
+
+      for (const [key, at] of firstSeen) {
+        if (index < at && focusSelection.pathFor(key) != null) focusSelection.clear(key);
+      }
     });
 
     /** A path's condition, which is its first note — the thing being decided. */
@@ -758,6 +798,7 @@ export default {
     function choosePath(key, pathIndex) {
       pickCountdown.value = null;
       pickDeadline.value = null;
+      if (reopenedKey.value === key) reopenedKey.value = null;
       focusSelection.select(key, pathIndex);
 
       buildQueue(focusSelection.paths.value);
@@ -934,16 +975,21 @@ export default {
      * one that guessed.
      *
      * Driven from the progress tick rather than a timer of its own, so it counts
-     * only while the clock is running: paused, there is nothing to stall.
+     * only while the clock is running: paused, there is nothing to stall — and
+     * nothing to show either, which is why the deadline is armed here rather
+     * than when the question appears. A number frozen on screen states a
+     * deadline that is not approaching.
      *
      * @return {void}
      */
     function tickPick() {
       const pick = pendingPick.value;
-      if (!pick || pickDeadline.value == null) {
+      if (!pick || pick.reopened) {
         pickCountdown.value = null;
         return;
       }
+
+      if (pickDeadline.value == null) pickDeadline.value = pickDeadlineFor();
 
       const left = pickDeadline.value - elapsedSecondsNow();
       pickCountdown.value = Math.max(0, Math.ceil(left));
@@ -1366,7 +1412,7 @@ export default {
       currentStep,
       pendingPick,
       activePathBar,
-      switchActivePath,
+      reopenPick,
       pickCountdown,
       choosePath,
       conditionOfPath,

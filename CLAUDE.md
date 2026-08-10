@@ -36,3 +36,9 @@ turn out to be wrong.
 `setup()`, which throws at render and blanks the component behind a green build.
 Run `npm run check:setup` after touching any `.vue` file, and say plainly what
 has *not* been verified — rendering, layout and interaction need a browser.
+
+Logic that lives in a `.vue` file can still be tested without one: import
+`@vue/reactivity` and drive the real refs, computeds and watches. Such a
+harness has to sit **inside the project** — Node resolves packages from the
+importing file, so one written to the scratchpad cannot find `@vue/reactivity`
+or use the `@/` alias. Write it to the repo root, run it, delete it.

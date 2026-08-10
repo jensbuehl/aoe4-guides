@@ -46,8 +46,8 @@ export const ACTIVE_PATH = Symbol("activePath");
  * one — a playback choice made mid-game is not a change to what the page below
  * is showing.
  *
- * @return {Object} `paths` and `pathFor` to read; `select` to write; `onSwitch`
- *   to be told when the reader changed their mind.
+ * @return {Object} `paths` and `pathFor` to read; `select` and `clear` to
+ *   write; `onSwitch` to be told when the reader changed their mind.
  */
 export function useActivePath() {
   const selection = ref({});
@@ -84,6 +84,19 @@ export function useActivePath() {
   };
 
   /**
+   * Unmakes a choice, putting the block back to unanswered.
+   *
+   * Not the same as choosing the first path: the flattener reads both as "the
+   * default", but a reader looking at the block is asked again rather than told
+   * what they picked. Focus mode needs the difference — a player who rewinds
+   * past a fork has undone the decision, not remade it.
+   *
+   * @param {string} id - The block's key, from blockId().
+   * @return {void}
+   */
+  const clear = (id) => select(id, null);
+
+  /**
    * Subscribes to path switches.
    *
    * A set rather than a single handler: the plot, the table and the age track
@@ -98,5 +111,5 @@ export function useActivePath() {
     return () => listeners.delete(listener);
   };
 
-  return { paths, pathFor, select, onSwitch };
+  return { paths, pathFor, select, clear, onSwitch };
 }
