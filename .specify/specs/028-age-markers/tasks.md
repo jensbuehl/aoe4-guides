@@ -212,7 +212,7 @@ and up to the boundary bar; one continuous line; no row indents.
   where cards carry their own margins and borders. On the desktop table the shipped solution is the
   opposite (per-row pseudo-elements with a deliberate overhang). Add the scope qualifier, in place;
   do not add a second note saying the reverse.
-- [ ] T029 Harvest per `CLAUDE.md` after the push: what the work taught, written once, cause not
+- [X] T029 Harvest per `CLAUDE.md` after the push: what the work taught, written once, cause not
   symptom. Candidates already known — the two kinds of note and why only one was lost; that
   `age-lane-md` shipped as a dead class; that `isBareAgeUp` is deliberate.
 
@@ -264,6 +264,45 @@ Everything else edits `src/components/builds/BuildOrderSectionEditor.vue`.
 5. Polish, with T025 (light theme) treated as real work rather than a formality.
 
 ---
+
+## Harvest (2026-08-10, after the push)
+
+Written once, in the place that will be read again. Nothing here is duplicated
+into memory or into `CLAUDE.md`; the pointers say where each thing actually lives.
+
+**Where each lesson went**
+
+| What the work taught | Where it lives now |
+|---|---|
+| A cause recorded without its conditions gets misapplied — the "rails belong on a wrapper" rule was learned on the mobile card list and the desktop table needs the opposite | `CLAUDE.md`, rewritten in place with the conditions attached |
+| Two kinds of note, and only one is in `steps` | code comment at the guard, research R9, and the existing traversal memory extended |
+| A CSS fix that appears to do nothing was usually discarded, not wrong | a `feedback` memory; the two repo-specific cases are commented beside the rules themselves |
+| `accent` is navy in the light theme, so gold for the age lane needs its own token | `main.js`, next to the `alternative` token that exists for the mirror reason |
+| The rail technique, the bracket container, and `age-lane-md` were already built | research R1–R3 — this is the finding that most changed the shape of the work |
+
+**Scope that changed during the feature**
+
+- **Mobile came into scope, twice, deliberately.** It was excluded on the
+  reasonable belief that the desktop work was desktop-only. Both exclusions
+  turned out to be wrong for the same reason: the light-theme colour collision
+  and the unlabelled merge marker were never desktop problems, and fixing one
+  surface would have left the colour rule true in three places out of four.
+  FR-022 now describes what is actually protected — the layout — and SC-008's
+  "pixel-identical" claim is retired rather than quietly failed.
+- **The arrival time was built and then deleted.** Spec'd, plumbed through a new
+  prop, implemented, and removed a session later when the revised brief landed.
+  The plumbing went with it; nothing dead was left behind. Recorded because the
+  cost was real and the reversal was correct.
+
+**What a future session should not re-litigate**
+
+Read `design-input.md` before proposing nested rails, a twin stripe, or one
+marker per age — all three were built and rejected, with reasons. Read research
+R8 before "fixing" `isBareAgeUp`, and R6 before rounding the rail.
+
+**Still open, and honestly so:** T001, T002, T005, T013, T019, T021–T023, T027.
+Every one needs a browser. The feature's whole subject — colour, seams,
+alignment, both themes — is unverified by anything that ran here.
 
 ## Implementation notes (2026-08-10)
 
