@@ -3535,21 +3535,10 @@ tbody tr:has(+ tr.ins-row--trailing) td {
   gap: 10px;
   min-height: 42px;
   padding: 10px 14px;
-  /* The choice stays on screen for as long as its consequences do. A reader
-     scrolling down one path has no other way to see which one they are reading,
-     and scrolling back up to change it is the point at which they give up and
-     read the wrong path instead. Sticky within the block's own wrapper, so it
-     lets go the moment the paths rejoin. */
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  /* Opaque: the card's own tint is translucent, and steps scrolling underneath
-     a translucent bar are unreadable through it. */
-  background: rgb(var(--v-theme-surface));
-  background-image: linear-gradient(
-    rgba(var(--v-theme-alternative), 0.12),
-    rgba(var(--v-theme-alternative), 0.12)
-  );
+  /* Not sticky, deliberately. The rail already says a path is being read, the
+     card is one swipe away, and a bar held on screen for the length of a block
+     spends real estate on a question that has been answered. Once it is chosen
+     it is chosen, and this goes back to being a build. */
 }
 .alt-card-xs--read .alt-mark {
   /* Lines up with the first tab's text rather than the middle of the stack. */
