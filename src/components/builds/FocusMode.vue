@@ -1827,45 +1827,49 @@ export default {
   .fm-pick-ask {
     font-size: 11px;
   }
+  /* 90, not 120. Two options share a row only if twice the basis plus the gap
+     fits, and a floating window is around 230px wide inside — at 120 they never
+     did, so every option went full width and three of them stacked into a
+     scrollbar. */
   .fm-pick-option {
     min-width: 0;
-    flex: 1 1 120px;
-    min-height: 40px;
-    padding: 5px 10px;
+    flex: 1 1 90px;
+    min-height: 36px;
+    padding: 4px 8px;
     align-items: center;
     justify-content: center;
   }
   .fm-pick-title {
-    font-size: 14px;
+    font-size: 13px;
   }
   .fm-pick-timer {
     width: min(180px, 80%);
   }
 }
 
-/* Short, rather than narrow — 260px is where this component already decides a
-   window has no height to spare and drops the next-step preview. The fork was
-   hung on 190px, which a floating window practically never reaches, so it
-   stayed at its roomy size in exactly the windows that had no room.
-   
-   Nothing is left to say at this size: three coloured cards draining a timer
-   are the question, and the row cost more height than the option it was
-   introducing. The options stay side by side rather than going full width — two
-   to a row is half the height of two rows, and height is what is scarce. */
-@container focus ((max-width: 300px) or (max-height: 260px)) {
+/* Height alone, and after the tier above so it wins where both apply: the
+   question row is the first thing to go when the window is short — the split
+   icon on the options' own colour already says what is being asked — and width
+   has no bearing on it, so a narrow tall phone keeps it. */
+@container focus (max-height: 320px) {
   .fm-pick-ask {
     display: none;
   }
-  .fm-pick {
-    gap: 4px;
-  }
+  .fm-pick,
   .fm-pick-options {
     gap: 4px;
   }
   .fm-pick-option {
-    flex: 1 1 100px;
-    min-height: 30px;
-    padding: 2px 8px;
+    min-height: 32px;
+  }
+}
+
+/* Narrower still. The options stay side by side rather than going full width —
+   two to a row is half the height of two rows, and height is what runs out. */
+@container focus (max-width: 300px) {
+  .fm-pick-option {
+    flex: 1 1 80px;
+    padding: 2px 6px;
   }
   .fm-pick-title {
     font-size: 12px;
