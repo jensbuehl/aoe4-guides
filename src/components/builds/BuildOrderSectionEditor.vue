@@ -4588,7 +4588,11 @@ tbody tr.age-reached-row td {
   top: 0;
   bottom: 0;
   width: 3px;
-  background: rgba(var(--v-theme-age), 0.55);
+  /* Full strength, as on desktop. This was `rgba(…, 0.55)`, which made the age
+     rail the one annotation that differed from its neighbours by more than
+     colour — against the rule stated on `.alt-bracket-xs::before` a few lines
+     up, and against the desktop lane it is supposed to be the same mark as. */
+  background: rgb(var(--v-theme-age));
   border-radius: 2px;
 }
 .age-ageup-row-xs {
