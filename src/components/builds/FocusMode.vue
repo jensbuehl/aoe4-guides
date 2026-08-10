@@ -97,7 +97,7 @@
             resource dock and transport controls do not move: a player mid-game
             is holding the shape of this screen in their head, and a question is
             not a reason to rearrange it.-->
-        <div class="fm-step-content" v-if="pendingPick">
+        <div class="fm-step-content fm-step-content--pick" v-if="pendingPick">
           <div class="fm-pick">
             <div class="fm-pick-ask">
               <v-icon size="18" class="fm-pick-mark">mdi-call-split</v-icon>
@@ -1601,6 +1601,17 @@ export default {
   line-height: 1.35;
   min-height: 0;
   overflow: hidden;
+}
+
+/* A step is as tall as its text; the fork is as tall as the room. Without this
+   the whole chain below it is content-sized, and `1fr` rows resolve to
+   max-content — which is the fixed-height buttons all over again, by another
+   route. `.fm-step` is a grid track, so claiming its space here is what makes
+   every height beneath this definite. */
+.fm-step-content--pick {
+  flex: 1 1 auto;
+  align-self: stretch;
+  min-height: 0;
 }
 
 .fm-notes {
