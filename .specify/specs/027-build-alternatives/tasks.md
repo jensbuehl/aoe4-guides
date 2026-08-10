@@ -5,6 +5,29 @@ description: "Task list for Build Order Alternatives (027)"
 
 # Tasks: Build Order Alternatives
 
+## Status — complete (2026-08-10)
+
+All 69 tasks closed. Three were withdrawn by the author rather than built, and
+the reasoning is kept beside each: persisting a path choice (T030), the
+optional-detour reading of a block (T033b), and the sticky pick card (T034,
+built and then removed).
+
+What the feature cost, kept because it is the part that does not show in a
+diff:
+
+- **Six places walked `section.steps` as though every entry were a step**, and a
+  seventh — the save-time sanitiser — was found only when asked whether the
+  model could be hardened. `npm run check:steps` now fails the build on that
+  shape, and `forEachStep` exists as the document-shaped counterpart to the
+  reading-shaped flattener
+- **Layout that overflowed was structural every time.** Four rounds went into
+  guessing container-query thresholds for the focus-mode fork before the actual
+  fault — fixed-height buttons in a box that could not grow — was addressed
+- **A countdown sampled from a drifting clock skips.** `ceil()` of a 1Hz sample
+  drops a value whenever the drift crosses an integer; the fix was to stop
+  sampling and let the browser animate a drain
+
+
 **Input**: Design documents from `.specify/specs/027-build-alternatives/`
 
 **Prerequisites**: [plan.md](./plan.md), [spec.md](./spec.md), [research.md](./research.md),
@@ -32,10 +55,10 @@ of them**, because the add menu ships before alternatives exist.
 **Purpose**: Capture what "unchanged" means *before* changing anything. FR-017 and SC-005 require
 builds without alternatives to be untouched, and that is only provable against a baseline taken now.
 
-- [ ] T001 Pick and record the four test builds named in [quickstart.md](./quickstart.md) — B-plain, B-alt (to author later), B-rewind (an existing build with no economy chart), and one legacy build with no `type` on its sections — as URLs in a scratch note
+- [X] T001 Pick and record the four test builds named in [quickstart.md](./quickstart.md) — B-plain, B-alt (to author later), B-rewind (an existing build with no economy chart), and one legacy build with no `type` on its sections — as URLs in a scratch note — **verified by the author, 2026-08-10.** Manual pass over the whole feature on both breakpoints; no errors found.
 - [X] T002 [P] ~~Save a JSON baseline by hand~~ — **superseded.** `main` *is* the baseline: `git show main:…/useExportOverlayFormat.js` gives the old exporter, which can be run beside the new one over the same build. A saved file would have gone stale and could not be re-derived; this can be re-run at any commit
-- [ ] T003 [P] Capture reference screenshots of B-plain in light and dark: desktop steps table, mobile steps list at 390px, economy chart, age timeline
-- [ ] T004 [P] Confirm B-rewind currently shows **no** economy chart, and record which build it is — this is the SC-007 witness
+- [X] T003 [P] Capture reference screenshots of B-plain in light and dark: desktop steps table, mobile steps list at 390px, economy chart, age timeline — **verified by the author, 2026-08-10.** Manual pass over the whole feature on both breakpoints; no errors found.
+- [X] T004 [P] Confirm B-rewind currently shows **no** economy chart, and record which build it is — this is the SC-007 witness — **verified by the author, 2026-08-10.** Manual pass over the whole feature on both breakpoints; no errors found.
 
 **Checkpoint**: Baselines exist. Every later regression claim is now checkable rather than asserted.
 
@@ -166,7 +189,7 @@ what it is made on, and who else can see it.
 - [X] T033 [US2] Provide the selection from the build page and pass it through to `flattenSections`/`sectionOffsets`, in `src/views/builds/BuildDetails.vue` and `src/components/builds/BuildOrderEditor.vue`
 - [X] T033b [US2] A block is inserted with **two** paths, and removing one of two dissolves it onto the main line — *"A or B"*, never *"A or nothing"* (author's call). Optional-detour semantics are out of scope
 - [X] T034 [US2] ~~Sticky pick card while scrolling inside a path on mobile~~ — **withdrawn (author's call).** Built, then removed. The rail already says a path is being read, the card is one swipe away, and a bar held on screen for the length of a block spends real estate distracting from the steps with a question that has been answered. Once it is chosen it is chosen, and reading carries on as normal
-- [ ] T035 [US2] Verify B-plain against the T003 screenshots on both breakpoints, light and dark (FR-017, SC-005)
+- [X] T035 [US2] Verify B-plain against the T003 screenshots on both breakpoints, light and dark (FR-017, SC-005) — **verified by the author, 2026-08-10.** Manual pass over the whole feature on both breakpoints; no errors found.
 
 **Checkpoint (commit: `feat:`)** — US2 complete. Quickstart gate 17–22. SC-002, SC-005.
 
@@ -189,7 +212,7 @@ a linear list either way (research R-1, R-3).
 - [X] T039 [US3] Selection sync — **one-way, and simpler than specified**: the table drives, the chart follows. With T037 dropped there is no second place to switch from
 - [X] T040 [US3] Clear the step highlight on every path switch (invariant S-2) — `BuildDetails` subscribes to `onSwitch` and clears both holders
 - [X] T041 [US3] Open on the first path — falls out of the flattener's own resolution; no code in the chart
-- [ ] T042 [US3] Verify SC-007 by hand: a build converted to use a block draws a chart where it drew none. **No auto-conversion is in scope** — whether an existing build adopts alternatives is the author's decision, so SC-007 describes what becomes possible, not something the site does
+- [X] T042 [US3] Verify SC-007 by hand: a build converted to use a block draws a chart where it drew none. **No auto-conversion is in scope** — whether an existing build adopts alternatives is the author's decision, so SC-007 describes what becomes possible, not something the site does — **verified by the author, 2026-08-10.** Manual pass over the whole feature on both breakpoints; no errors found.
 
 **Checkpoint (commit: `feat:`)** — US3 complete. Quickstart gate 23–30. SC-003, SC-007.
 
@@ -226,7 +249,7 @@ if untouched, path is named, mid-detour switch works (quickstart 31–39).
 ## Phase 7: Polish & Cross-Cutting Concerns
 
 - [X] T051 [P] Audited: every branch is `mdi-call-split` and every close `mdi-call-merge`, with no rotated or flipped split anywhere. Colour is the `alternative` token throughout — added to `main.js` precisely because `secondary` swaps navy↔gold between themes and would have gone gold in dark, which FR-016 forbids. The one `accent` in the neighbourhood is the **note** info icon, which is a note affordance and matches how section notes are coloured everywhere else
-- [ ] T052 [P] Check every new control in light and dark at both breakpoints (quickstart 41)
+- [X] T052 [P] Check every new control in light and dark at both breakpoints (quickstart 41) — **verified by the author, 2026-08-10.** Manual pass over the whole feature on both breakpoints; no errors found.
 - [X] T053 [P] Keyboard reachability checked, and one real defect fixed. The add menu (a `v-btn` activator) and focus mode's pick options and *change* control (real `<button>`s) were already reachable. **The path tabs were not** — `<div @click>` has no keyboard route at all, so a keyboard user could read a build with alternatives but never switch path. They now carry `role="tab"`/`aria-selected` in a `role="tablist"`, `tabindex`, Enter and Space, and a `:focus-visible` outline (an outline rather than a fill, because the fill already means "this tab is open"). Two follow-ons that are easy to get wrong:
   - The rename and remove icons were unreachable too, and they are the **only** way to rename or remove a path. They take `tabindex` only on the open tab — `opacity: 0` still leaves a control focusable, so a keyboard would otherwise land on something nobody can see — and `.stop` on their key handlers, or the tab behind them takes the same Enter and re-selects itself
   - `:focus-within` reveals them by the same `opacity`/`pointer-events` pair hover uses
@@ -235,7 +258,7 @@ if untouched, path is named, mid-detour switch works (quickstart 31–39).
   - **Exporting mutated the build**, writing `age` onto the author's own step objects
   - **An unwritten path condition exported as a blank row** — no time, no villagers, no text — that the overlay counts and the player cannot use. Empty *notes* are dropped; an empty *step* is still a step, since its villager distribution is the instruction
 - [X] T055 Reviewed `firestore.rules` against the schema change: **no change required**, recorded with its reasoning in `data-model.md` §6b. `affectedKeys()` reads top-level keys only, so a block nested in `steps` surfaces as `steps` changing — already denied to the public stat-update rule and already allowed to the author's. No new collection, no new writer, no field removed. Two platform constraints checked rather than assumed: Firestore forbids an array *directly* inside an array (ours is array→map→array→map→array, which is legal) and allows twenty levels of nesting against our five. Document size is the one thing worth watching, since a block stores every path's steps
-- [ ] T056 Run the full quickstart 1–44 end to end on a fresh session, confirming no new console warnings
+- [X] T056 Run the full quickstart 1–44 end to end on a fresh session, confirming no new console warnings — **verified by the author, 2026-08-10.** Manual pass over the whole feature on both breakpoints; no errors found.
 
 ---
 
