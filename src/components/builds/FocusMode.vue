@@ -1863,9 +1863,6 @@ export default {
 /* Narrower still. The options stay side by side rather than going full width —
    two to a row is half the height of two rows, and height is what runs out. */
 @container focus (max-width: 300px) {
-  .fm-pick-options {
-    grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
-  }
   .fm-pick-title {
     font-size: 11px;
   }
@@ -2056,7 +2053,12 @@ export default {
 .fm-pick-options {
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+  /* Two, stated. auto-fit gave four columns on a desktop, which put three
+     options in one row on one screen and two-plus-one on another — and the
+     rule that centres a lone last option only means anything against a known
+     column count. A fork is a choice between a handful of named things; two
+     abreast reads as a pair at every size. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   /* 1fr, not a length. The rows divide a height that is already decided — the
      step area is a fixed grid track, so this box has a definite height before
      the rows are sized — which means three options fit a 90px floating window
@@ -2068,6 +2070,10 @@ export default {
   justify-content: center;
   width: 100%;
   max-width: 420px;
+  /* The rows divide *this*, not the screen. Without the cap a full-height
+     window gave two rows of six hundred pixels with a button floating in the
+     middle of each — technically fitting, visibly broken. */
+  max-height: 240px;
   min-height: 0;
   overflow: hidden;
 }
