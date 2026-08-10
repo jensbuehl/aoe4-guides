@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="design_doc_mode" content="canvas">
+<title>AOE4 Guides — Branch Annotations (ideation)</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+:root{--bg:#1D2432;--surface:#2c3a4e;--surface-hi:#324156;--border:rgba(255,255,255,.07);--border-hi:rgba(255,255,255,.13);--text:#e8eaf0;--title:#fff;--muted:#8b95a8;--dim:#56627a;--acc:#e7c05e;--acc-hi:#f0d478;--acc-soft:rgba(231,192,94,.12);--acc-border:rgba(231,192,94,.28);--acc-contrast:#1a2030;--sec:#7fa0e8;--sec-soft:rgba(41,71,144,.32);--sec-border:rgba(95,130,210,.4);--sec-text:#b9caf0;--sec-fill:rgba(41,71,144,.30);--sec-fill-2:rgba(41,71,144,.16);--sec-fill-3:rgba(41,71,144,.04);--sec-on:#0f1626;--aug:#e7c05e;--aug-soft-a:rgba(231,192,94,.15);--aug-soft-b:rgba(231,192,94,.03);--aug-border:rgba(231,192,94,.25);--input-bg:#1D2432;--rc-text:#fff;--danger:#e05c5c;--success:#4caf8c;--c-builder:94,83,64;--c-food:136,64,64;--c-wood:79,107,58;--c-gold:138,109,46;--c-stone:89,102,122;--tint-a:.45}
+body{background:var(--bg);color:var(--text);font:15px/1.6 Inter,-apple-system,sans-serif}
+a{color:var(--acc);text-decoration:none}a:hover{color:var(--acc-hi)}
+.frame{position:absolute;background:var(--bg);border:1px solid var(--border-hi);border-radius:14px;padding:22px;overflow:hidden}
+.fh{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
+.fh h2{font-size:16px;font-weight:800;color:var(--title);margin:0;letter-spacing:-.2px}
+.fh .tag{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--acc);background:var(--acc-soft);border:1px solid var(--acc-border);padding:2px 8px;border-radius:20px}
+.fh .tag.n{color:var(--muted);background:transparent;border-color:var(--border-hi)}
+.fsub{font-size:13px;color:var(--muted);margin:0 0 16px;max-width:70ch;text-wrap:pretty}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.card-head{display:flex;align-items:center;gap:7px;padding:13px 16px 0;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.card-head .mdi{font-size:14px;color:var(--acc)}
+.card-body{padding:10px 10px 14px}
+.spacer{flex:1}
+.bo{--cols:64px 44px repeat(5,52px) minmax(0,1fr)}
+.bo-legend{display:grid;grid-template-columns:var(--cols);gap:8px;padding:6px 10px 7px;align-items:center;border-bottom:1px solid var(--border-hi)}
+.lg{display:flex;align-items:center;justify-content:center}
+.lg:first-child{justify-content:flex-start}
+.lg.desc{justify-content:flex-start;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
+.bo-row{display:grid;grid-template-columns:var(--cols);gap:8px;padding:7px 10px;align-items:start;border-bottom:1px solid var(--border);position:relative}
+.bo-time{font-size:13.5px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums;height:30px;display:flex;align-items:center;margin-top:3px}
+.bo-pop{font-size:13px;font-weight:700;color:var(--muted);height:30px;display:flex;align-items:center;justify-content:center;margin-top:3px}
+.rc{height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13.5px;font-weight:800;color:var(--rc-text);border:1px solid transparent;font-variant-numeric:tabular-nums;margin-top:3px}
+.rc.empty{background:transparent;color:rgba(127,127,127,.28);font-weight:500}
+.tint-builder{background:rgba(var(--c-builder),var(--tint-a));border-color:rgba(var(--c-builder),.6)}
+.tint-food{background:rgba(var(--c-food),var(--tint-a));border-color:rgba(var(--c-food),.6)}
+.tint-wood{background:rgba(var(--c-wood),var(--tint-a));border-color:rgba(var(--c-wood),.6)}
+.tint-gold{background:rgba(var(--c-gold),var(--tint-a));border-color:rgba(var(--c-gold),.6)}
+.tint-stone{background:rgba(var(--c-stone),var(--tint-a));border-color:rgba(var(--c-stone),.6)}
+.bo-note{font-size:14px;line-height:1.55;color:var(--text);min-width:0}
+.ic{height:32px;border-radius:5px;padding:2px;vertical-align:middle;margin:0 2px;width:auto;object-fit:contain;background:radial-gradient(circle at top center,#4b6382,#1d2432)}
+.ic.ic-s{height:22px;border-radius:4px;padding:1px;margin:0 1px}
+.leg .c img.ic.ic-s,.leg .t img.ic.ic-s{height:18px}
+.res-ic{object-fit:contain}
+/* ── branch primitives ────────────────────────────── */
+.br-chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:var(--sec-text);background:var(--sec-soft);border:1px solid var(--sec-border);padding:3px 10px 3px 7px;border-radius:20px;cursor:pointer;white-space:nowrap}
+.br-chip .mdi{font-size:14px}
+.civ-flag{width:20px;height:14px;object-fit:cover;border-radius:2px;border:1px solid var(--border-hi);vertical-align:-2px;margin:0 1px}
+.civ-vs{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--dim)}
+.split-head{display:flex;align-items:center;gap:10px;padding:9px 10px 8px 12px;border-left:3px solid var(--sec);border-bottom:1px solid var(--border);background:linear-gradient(90deg,var(--sec-fill),var(--sec-fill-3))}
+.split-head .lbl{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--sec-text);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.split-head .lbl .mdi{font-size:16px}
+.legs{display:flex;gap:6px;min-width:0}
+.leg{flex:0 0 auto;min-width:0;display:flex;flex-direction:row;align-items:center;gap:7px;padding:0 10px;height:30px;border-radius:6px;border:1px solid var(--border-hi);background:var(--surface-hi);font-size:13px;font-weight:600;color:var(--text);cursor:pointer;overflow:hidden}
+.leg .t{font-weight:800;font-size:13px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.leg .c{font-weight:500;font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.leg.on .c{color:rgba(15,22,38,.72)}
+.leg.on{background:var(--sec);border-color:var(--sec);color:var(--sec-on)}
+.leg.on .civ-flag{border-color:rgba(0,0,0,.3)}
+.leg .mdi{font-size:16px;opacity:.8}
+.br-chip.on{background:var(--sec);border-color:var(--sec);color:var(--sec-on)}
+.br-trigger{display:flex;align-items:center;gap:9px;padding:6px 10px 6px 13px;border-bottom:1px solid var(--border);font-size:12.5px;color:var(--muted);cursor:pointer}
+.br-trigger .lead{display:inline-flex;align-items:center;gap:6px;color:var(--sec-text);font-weight:700;font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+.br-trigger .lead .mdi{font-size:16px}
+.br-trigger .cnt{font-size:11.5px;color:var(--dim)}
+.br-lane{border-left:3px solid var(--sec);background:linear-gradient(90deg,var(--sec-fill-2),transparent 55%);margin:0 0 0 0}
+.br-lane .bo-row{border-bottom:1px solid rgba(255,255,255,.05)}
+.br-lane .bo-time{color:var(--sec-text)}
+.br-head{display:flex;align-items:center;gap:9px;padding:8px 10px 8px 12px;border-left:3px solid var(--sec);background:linear-gradient(90deg,var(--sec-fill),var(--sec-fill-3));font-size:12.5px;color:var(--sec-text)}
+.br-head strong{color:var(--sec-text);font-weight:700}
+.br-rejoin{display:flex;align-items:center;gap:8px;padding:7px 10px 7px 12px;border-left:3px solid var(--sec);font-size:11.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--sec-text);background:linear-gradient(90deg,var(--sec-fill-3),transparent 60%)}
+.br-rejoin .mdi{font-size:15px;color:var(--sec)}
+.br-rejoin .cost{text-transform:none;letter-spacing:0;font-weight:500;color:var(--muted);font-size:11.5px}
+.age-marker{display:flex;align-items:center;gap:10px;padding:7px 10px;background:linear-gradient(90deg,var(--aug-soft-a),var(--aug-soft-b));border:1px solid var(--aug-border);border-radius:8px;margin:8px 0 3px}
+.age-marker .lbl{font-size:13px;font-weight:800;color:var(--aug);display:flex;align-items:center;gap:5px}
+.age-marker .lbl .mdi{font-size:15px}
+.dim{color:var(--muted)}
+.smallnote{font-size:12px;color:var(--dim);margin-top:12px;line-height:1.6}
+/* ── concept frame ── */
+.def{border-left:2px solid var(--acc-border);padding:2px 0 2px 14px;margin:0 0 18px}
+.def h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--acc);margin:0 0 6px}
+.def p{margin:0;font-size:13.5px;line-height:1.62;color:var(--text);text-wrap:pretty}
+.def p+p{margin-top:8px}
+.def p.dim{color:var(--muted)}
+.def code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--sec-text);background:var(--sec-soft);padding:1px 5px;border-radius:4px}
+.rec{background:var(--acc-soft);border:1px solid var(--acc-border);border-radius:10px;padding:13px 15px;margin-bottom:16px}
+.rec .lbl{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:5px}
+.rec p{margin:0;font-size:13.5px;line-height:1.6;color:var(--text)}
+ul.tight{margin:8px 0 0;padding-left:18px;font-size:13px;line-height:1.65;color:var(--muted)}
+ul.tight b{color:var(--text);font-weight:600}
+/* ── editor sketch ── */
+.wys{background:var(--input-bg);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:14px;line-height:1.55}
+.time-input{width:56px;height:30px;margin-top:3px;background:var(--input-bg);border:1px solid var(--border-hi);border-radius:6px;color:var(--acc);font:700 13.5px Inter,sans-serif;text-align:center;font-variant-numeric:tabular-nums}
+.ghostbtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;border-radius:9px;border:1px dashed var(--border-hi);background:transparent;color:var(--muted);font:700 12.5px Inter,sans-serif;cursor:pointer}
+.ghostbtn.sec{color:var(--sec-text);border-color:var(--sec-border)}
+.ghostbtn .mdi{font-size:16px}
+.append-row{display:flex;gap:8px;margin-top:10px}
+.append-row .ghostbtn{flex:1}
+.cond-field{display:flex;align-items:center;gap:8px;padding:8px 10px 8px 12px;border-left:3px solid var(--sec);background:linear-gradient(90deg,var(--sec-fill),var(--sec-fill-3))}
+.cond-field .title-in{width:170px;flex:none;background:var(--input-bg);border:1px solid var(--border-hi);border-radius:7px;padding:6px 10px;font:800 13px Inter,sans-serif;color:var(--sec-text)}
+.cond-field .title-in::placeholder{font-weight:600;color:var(--dim)}
+.handle{width:22px;display:flex;align-items:center;justify-content:center;color:var(--dim);font-size:16px}
+.ins-live{position:relative;height:14px;margin:-7px 0}
+.ins-live .ln{position:absolute;left:8px;right:8px;top:50%;height:2px;background:var(--acc);border-radius:1px}
+.ins-live .pl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--acc);color:var(--acc-contrast);font-size:10.5px;font-weight:800;padding:2px 10px 2px 7px;border-radius:10px;display:flex;gap:2px;align-items:center}
+.ins-live .pl .mdi{font-size:13px}
+.ins-menu{position:absolute;left:50%;top:calc(50% + 14px);transform:translateX(-50%);z-index:5;min-width:210px;background:#28344a;border:1px solid var(--border-hi);border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.45);padding:4px}
+.ins-menu .mi{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:7px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer}
+.ins-menu .mi .mdi{font-size:17px;color:var(--muted);width:18px}
+.ins-menu .mi:hover{background:var(--surface-hi)}
+.ins-menu .mi s{display:block;text-decoration:none;font-weight:500;font-size:11.5px;color:var(--dim)}
+.ins-menu.static{position:static;transform:none;box-shadow:none;min-width:0}
+.ins-menu .mi.dis{color:var(--dim);cursor:default}
+.ins-menu .mi.dis .mdi{color:var(--dim)}
+.ins-menu .mi.dis:hover{background:transparent}
+.ins-menu .mi.dis s{color:#3f4a5e}
+.menucmp{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+.menucmp .col .cap{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.split-open{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 12px;border-left:3px solid var(--sec);background:linear-gradient(90deg,var(--sec-fill),var(--sec-fill-3));font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--sec-text)}
+.split-open .mdi{font-size:16px}
+.split-close{display:flex;align-items:center;gap:9px;padding:7px 10px 7px 12px;border-left:3px solid var(--sec);border-bottom:1px solid var(--border);background:linear-gradient(90deg,rgba(41,71,144,.16),transparent 65%);font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--sec-text)}
+.split-close .mdi{font-size:16px}
+.ptabs{display:flex;align-items:center;gap:6px;padding:7px 10px 7px 12px;border-left:3px solid var(--sec);background:var(--sec-fill-3)}
+.ptab{display:flex;align-items:center;gap:6px;height:28px;padding:0 11px;border-radius:6px;border:1px solid var(--border-hi);background:var(--surface-hi);font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer}
+.ptab.on{background:var(--sec);border-color:var(--sec);color:var(--sec-on)}
+.ptab .mdi{font-size:14px;opacity:.7}
+.ptab.add{border-style:dashed;color:var(--sec-text);background:transparent;font-weight:600}
+/* ── graph ── */
+.graph-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px 10px}
+.graph-legend{display:flex;gap:14px;align-items:center;margin-bottom:10px;font-size:11.5px;color:var(--muted);font-weight:600}
+.gk{display:inline-flex;align-items:center;gap:6px}
+.gk i{width:16px;height:0;border-top:2px solid var(--acc);display:inline-block}
+.gk.b i{border-top:2px solid var(--sec)}
+.gk.off{opacity:.4}
+/* ── focus mode (lifted from Focus Mode PiP.html) ── */
+.fm{background:#1D2432;color:#E6EAF1;display:grid;grid-template-rows:auto auto 1fr auto;overflow:hidden;position:relative;font-size:15px;border-radius:12px;border:1px solid var(--border-hi)}
+.fm-top{display:flex;align-items:center;gap:10px;padding:10px 12px 9px;background:#1D2432}
+.fm-top .ttl{flex:1;font-size:13.5px;font-weight:700;color:#E6EAF1;line-height:1.3}
+.fm-top .cnt{font-size:11.5px;font-weight:700;color:#8593A6;font-variant-numeric:tabular-nums;letter-spacing:.03em}
+.iconbtn{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(231,192,94,.12);color:#e7c05e;border:0;cursor:pointer;flex:none}
+.iconbtn i{font-size:17px}
+.fm-bars{display:flex;flex-direction:column;gap:2px}
+.bar{height:3px;background:rgba(255,255,255,.08);position:relative}
+.bar span{position:absolute;inset:0 auto 0 0;background:#e7c05e}
+.bar.dim span{background:rgba(231,192,94,.4)}
+.fm-body{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;text-align:center;background:#212A3A}
+.fm-content{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;font-size:19px;font-weight:600;line-height:1.35}
+.fm-content img{width:48px;height:48px;border-radius:5px;padding:3px;background:radial-gradient(circle at top center,#4b6382,#1d2432)}
+.fm-content .ar{color:#8593A6;font-weight:400}
+.fm-next{font-size:11.5px;color:#7A8799;font-weight:500;display:flex;align-items:center;gap:6px;justify-content:center}
+.fm-next b{color:#A7B3C4;font-weight:700;font-variant-numeric:tabular-nums}
+.fm-dock{background:#1D2432;padding:10px 12px 12px;display:flex;flex-direction:column;gap:10px}
+.res{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.res div{display:flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:#E6EAF1;font-variant-numeric:tabular-nums}
+.res img{width:20px;height:20px}
+.res .t{color:#e7c05e}
+.ctrl{display:flex;align-items:center;justify-content:center;gap:10px}
+.cbtn{width:40px;height:40px;border-radius:50%;background:rgba(231,192,94,.12);color:#e7c05e;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.cbtn i{font-size:21px}
+.cbtn.main{width:56px;height:56px;background:#e7c05e;color:#1D2432;box-shadow:0 4px 14px rgba(231,192,94,.28)}
+.cbtn.main i{font-size:30px}
+/* the one addition: the pick control, replacing .fm-content while a split is live */
+.pick{display:flex;flex-direction:column;gap:8px;width:100%}
+.pick .lbl{font-size:11px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--sec-text);display:flex;align-items:center;gap:6px;justify-content:center}
+.pick .lbl .mdi{font-size:16px}
+.pick-opt{display:flex;align-items:center;gap:9px;padding:10px 13px;border-radius:10px;border:0;background:var(--sec-fill);font-size:15px;font-weight:700;color:var(--sec-text);cursor:pointer;min-height:48px;text-align:left}
+.pick-opt:hover{background:rgba(41,71,144,.45)}
+.pick-opt img{width:30px;height:30px;border-radius:4px;padding:2px;background:radial-gradient(circle at top center,#4b6382,#1d2432)}
+.pick-opt .c{font-size:12px;font-weight:500;color:#8593A6}
+.pick-timer .track i{background:var(--sec)}
+.pick-timer{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:#7A8799;justify-content:center}
+.pick-timer .track{width:90px;height:3px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
+.pick-timer .track i{display:block;width:38%;height:100%;background:var(--sec)}
+.fm:has(.fm-pathbar){grid-template-rows:auto auto auto 1fr auto}
+.fm-pathbar{display:flex;align-items:center;gap:6px;padding:3px 10px;background:var(--sec-fill);color:var(--sec-text);font-size:10.5px;font-weight:700;letter-spacing:.04em;min-height:22px}
+.fm-pathbar .mdi{font-size:13px}
+.fm-pathbar .sw{margin-left:auto;display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 7px;border-radius:9px;background:rgba(255,255,255,.1);color:var(--sec-text);font-size:9.5px;font-weight:800;letter-spacing:.05em;cursor:pointer;border:0}
+.fm-pathbar .sw .mdi{font-size:12px}
+.mini{font-size:12px;color:var(--dim);margin-top:10px}
+/* the branch mark is always the branch colour, everywhere */
+.mdi-call-split,.mdi-call-merge{color:var(--sec)}
+.ins-menu .mi .mdi-call-split{color:var(--sec)}
+.ins-menu .mi.dis .mdi-call-split{color:var(--dim)}
+.leg.on .mdi-call-split,.m-opt.on .mdi-call-split,.br-chip.on .mdi-call-split,.fm-pathbar .mdi-call-split,.fm-pathbar .sw .mdi{color:inherit}
+/* ── mobile reading (vocabulary from Mobile Build Redesign.html) ── */
+.mob{width:390px;background:var(--bg);border:1px solid var(--border-hi);border-radius:22px;overflow:hidden}
+.mob .card-head{padding:12px 14px 0;font-size:10px}
+.mob-body{padding:11px 12px 14px}
+.steps{display:flex;flex-direction:column;gap:9px}
+.m-pick+.m-lane{margin-top:-9px;padding-top:9px}
+.stepc{background:var(--surface-hi);border:1px solid var(--border);border-radius:10px;padding:10px 10px 11px}
+.stepc-top{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.step-time{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--acc);background:var(--acc-soft);border-radius:6px;padding:3px 9px 3px 6px}
+.step-time img{width:13px;height:13px;object-fit:contain}
+.step-pop{display:inline-flex;align-items:center;gap:4px;font-size:12.5px;font-weight:700;color:var(--text);background:rgba(53,80,114,.34);border:1px solid rgba(95,130,210,.25);border-radius:6px;padding:3px 8px}
+.step-pop img{width:15px;height:15px;object-fit:contain}
+.res-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:9px}
+.rcell{border-radius:8px;padding:6px 2px 5px;display:flex;flex-direction:column;align-items:center;gap:3px;border:1px solid var(--border);background:rgba(255,255,255,.02)}
+.rcell img{width:21px;height:21px;object-fit:contain}
+.rcell .rv{font-size:15px;font-weight:800;color:#fff;line-height:1}
+.rcell.has.builder{background:rgba(var(--c-builder),.42);border-color:rgba(var(--c-builder),.6)}
+.rcell.has.food{background:rgba(var(--c-food),.42);border-color:rgba(var(--c-food),.6)}
+.rcell.has.wood{background:rgba(var(--c-wood),.42);border-color:rgba(var(--c-wood),.6)}
+.rcell.has.gold{background:rgba(var(--c-gold),.42);border-color:rgba(var(--c-gold),.6)}
+.rcell.empty img{opacity:.35}
+.rcell.empty .rv{color:var(--dim);font-weight:600}
+.desc{font-size:13.5px;line-height:1.7;color:var(--text)}
+.desc .ic{height:26px}
+.ageup{display:flex;align-items:center;gap:9px;padding:7px 11px;margin:2px 0;background:linear-gradient(90deg,rgba(231,192,94,.16),rgba(231,192,94,.04));border:1px solid rgba(231,192,94,.28);border-radius:10px}
+.ageup .lbl{font-size:13px;font-weight:700;color:var(--acc);display:flex;align-items:center;gap:5px}
+.ageup .lbl .mdi{font-size:16px}
+/* the only additions for branches */
+.m-pick{background:linear-gradient(90deg,var(--sec-fill),var(--sec-fill-3));border-left:3px solid var(--sec);border-radius:0 10px 10px 0;padding:9px 0 9px 8px;display:flex;flex-direction:column;gap:7px}
+.m-pick .lbl{padding-left:0}
+.m-pick .lbl{font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--sec-text);display:flex;align-items:center;gap:6px}
+.m-pick .lbl .mdi{font-size:15px}
+.m-opt{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 11px;border-radius:10px;border:1px solid var(--border);background:var(--surface-hi);font-size:14px;font-weight:700;color:var(--text)}
+.m-opt.on{background:var(--sec);border-color:var(--sec);color:var(--sec-on)}
+.m-opt.on .c{color:rgba(15,22,38,.72)}
+.m-opt .c{font-size:11.5px;font-weight:500;color:var(--muted);display:block}
+.m-opt.on .c{color:rgba(15,22,38,.72)}
+.m-opt .mdi{font-size:16px;margin-left:auto}
+.m-lane{border-left:3px solid var(--sec);padding-left:8px;display:flex;flex-direction:column;gap:9px}
+.m-agelane{border-left:3px solid var(--aug);padding-left:8px;display:flex;flex-direction:column;gap:9px;margin:2px 0}
+.m-merge{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--sec-text);padding:2px 0 2px 11px;border-left:3px solid var(--sec)}
+.m-merge .mdi{font-size:14px}
+.m-trigger{display:flex;align-items:center;gap:8px;padding:9px 11px;margin-left:11px;border:1px solid var(--sec-border);background:linear-gradient(90deg,var(--sec-fill),var(--sec-fill-3));border-radius:10px;font-size:13px;color:var(--sec-text);min-height:44px}
+.m-trigger .mdi.lead{font-size:16px}
+.m-trigger .mdi.chev{margin-left:auto;font-size:18px}
+
+</style>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#1D2432"/><path d="M50 26 L50 46 M50 46 L34 60 L34 76 M50 46 L66 60 L66 76" stroke="#e7c05e" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="50" cy="24" r="6" fill="var(--sec)"/></svg>
+</template>
+</head>
+<body>
+
+<!-- ═══ 1. CONCEPT ═══ -->
+<div id="f-model" class="frame" style="left:0;top:0;width:640px;height:1760px">
+<div class="fh"><h2>One primitive: the detour</h2><span class="tag">Model</span></div>
+<p class="fsub">Your call — sub-branch and fork are the same thing. Both are a detour that opens and closes inside one age section.</p>
+
+<div class="def">
+<h3>Definition</h3>
+<p>A <b>branch</b> is a run of steps opened by a marker, plus a condition. It lives inside the same ordered item list you already have — one new item kind, <code>kind:'branch'</code>, wrapping child items.</p>
+<p>Rejoin is <b>positional</b>: the branch ends at its closing marker and the next step is common again. No pointer, nothing to dangle. A fork is just a branch whose closing marker sits at the end of the final section.</p>
+</div>
+
+<div class="def">
+<h3>Timings</h3>
+<p>Branch steps carry their own times; the main line is untouched. Nothing after the split is re-timed: the common steps keep the times the author wrote.</p>
+</div>
+
+<div class="def">
+<h3>Conditions</h3>
+<p>Two inputs per path. A short <b>title</b>, plain text, which is what the graph legend, the focus-mode bar and the collapsed row can show. And a <b>description</b> — the same rich field as a step note, <code>::</code> autocomplete and icon picker included — which carries the real condition. Matchups need no field of their own: the icon set already has every civ, so a matchup is just an icon in the description.</p>
+<p style="margin-top:10px"><span class="br-chip" style="cursor:default"><span class="mdi mdi-call-split"></span> vs <img class="civ-flag" src="assets/flags/mon.webp" title="Mongols" alt="Mongols"> they open <img class="ic ic-s" src="assets/res/horseman.webp" alt=""> pressure</span></p>
+<p class="dim" style="margin-top:8px;font-size:13px">If a civ icon should later drive matchup filtering, it can be read back out of the description tokens — still no extra field.</p>
+</div>
+
+<div class="def">
+<h3>When there is no main line</h3>
+<p>A branch is really a <b>split with N paths</b>, and each path carries a <b>short title</b> plus its description — the title is what the graph legend, the focus bar and the collapsed row can actually show. No path is the main line by default; nobody declares one when writing a build down.</p>
+<p>An author who does want a reference line sets a <code>main</code> boolean on one path. That path then reads as the build and the others render as collapsed detours. Untouched, the paths are equal, render as a pick-one control, and nothing collapses — because there is nothing to fall back to.</p>
+<p>Same data, one boolean apart — the reading control is the only difference. See the frame on the right.</p>
+</div>
+
+<div class="def">
+<h3>Colour</h3>
+<p>Gold is already spoken for — ages, timings and primary actions. So alternatives use <b>secondary</b>, the brand's other colour (<code>#294790</code>), for every rail, marker and pick control. Not a new hue: one token set derived from the theme value, <code>--sec</code>, <code>--sec-soft</code>, <code>--sec-border</code>, <code>--sec-text</code>, plus three fills and an on-colour.</p>
+<p>The branch mark follows one rule: <code>--sec</code> on any neutral surface, and <code>inherit</code> only where it sits on a filled branch surface — a selected path chip, the focus-mode path bar — where blue on blue would vanish. Disabled menu entries grey out whole, mark included.</p>
+<p>It reads as a deliberate second axis rather than an accident: gold means "where you are in the build", blue means "which way you went". That is also why the pick control is not the default gold button — a gold button beside a gold age plate would say the two are the same kind of thing.</p>
+</div>
+
+<div class="rec">
+<span class="lbl">Default state of the steps view</span>
+<p><b>Collapsed by default.</b> The main line reads exactly as it does today; a branch appears as one slim condition row under its parent step. Expanding it opens the lane in place.</p>
+<ul class="tight">
+<li><b>Nothing regresses.</b> Builds without branches look identical; builds with them gain one 28px row.</li>
+<li><b>The condition is the headline</b>, not the steps. A reader scanning for "what do I do if…" reads triggers, not 4 extra rows of vil counts.</li>
+<li><b>Caps at 1–2 per build</b> without the list ever looking like a tree.</li>
+</ul>
+</div>
+
+<div class="def">
+<h3>Authoring</h3>
+<p>Two markers bracket the alternatives, the way an age-up and its "reached" plate already bracket a lane. Both are inserted from one menu on the insert line and <b>both stay inside one age section</b>, so the paths can rejoin onto a common step before the age-up. Steps belong to a path by sitting between the markers. No dragging.</p>
+</div>
+
+<div class="rec">
+<span class="lbl">Rejoin</span>
+<p><b>Implicit in the data, explicit in the UI.</b> The closing marker sets the end; it is an item in the list, not a pointer, so there is no "rejoin" object to keep in sync. The reading view needs no cap for it — the lane simply ends and the next step is unindented again.</p>
+</div>
+
+
+</div>
+
+<!-- ═══ 2. DIRECTION A ═══ -->
+<div id="f-reading" class="frame" style="left:700px;top:0;width:1000px;height:1000px">
+<div class="fh"><h2>Reading view — collapsed condition row</h2><span class="tag">Direction</span></div>
+<p class="fsub">Main line reads as today. The branch is a single row you expand. Shown here: collapsed above, expanded below.</p>
+
+<div class="card" style="margin-bottom:22px">
+<div class="card-head"><span class="mdi mdi-format-list-numbered"></span> Build order<span class="spacer"></span><span style="color:var(--acc);font-weight:800;font-size:11px"><span class="mdi mdi-play"></span> FOCUS MODE</span></div>
+<div class="card-body">
+<div class="bo">
+<div class="bo-legend"><span class="lg"><img class="res-ic" src="assets/res/time.webp" width="26" alt=""></span><span class="lg"><img class="res-ic" src="assets/res/villager.webp" width="26" alt=""></span><span class="lg"><img class="res-ic" src="assets/res/builder.webp" width="26" alt=""></span><span class="lg"><img class="res-ic" src="assets/res/food.webp" width="26" alt=""></span><span class="lg"><img class="res-ic" src="assets/res/wood.webp" width="26" alt=""></span><span class="lg"><img class="res-ic" src="assets/res/gold.webp" width="26" alt=""></span><span class="lg"><img class="res-ic" src="assets/res/stone.webp" width="26" alt=""></span><span class="lg desc">Description</span></div>
+<div class="bo-row"><span class="bo-time">2:40</span><span class="bo-pop">11</span><div class="rc tint-builder">1</div><div class="rc tint-food">6</div><div class="rc tint-wood">4</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Build <img class="ic" src="assets/res/house.webp" alt=""> and scout the third sheep pack</div></div>
+<div class="bo-row"><span class="bo-time">3:30</span><span class="bo-pop">13</span><div class="rc tint-builder">1</div><div class="rc tint-food">6</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Two villagers to <img class="ic" src="assets/res/gold.webp" alt=""> under a <img class="ic" src="assets/res/mining-camp.webp" alt=""></div></div>
+<div class="bo-row"><span class="bo-time">4:10</span><span class="bo-pop">15</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Start the Age II landmark with two builders</div></div>
+<div class="br-trigger"><span class="lead"><span class="mdi mdi-call-split"></span> If</span><span>vs <img class="civ-flag" src="assets/flags/mon.webp" title="Mongols" alt="Mongols"> they scout your rush with the <img class="ic ic-s" src="assets/res/scout.webp" alt=""> at 4:00</span><span class="spacer"></span><span class="cnt">2 steps</span><span class="mdi mdi-chevron-down" style="font-size:18px;color:var(--sec)"></span></div>
+<div class="bo-row"><span class="bo-time">5:10</span><span class="bo-pop">17</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">6</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Either way: add a <img class="ic" src="assets/res/lumber-camp.webp" alt=""> and keep villagers queued</div></div>
+<div class="age-marker"><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Feudal Age reached</span></div>
+</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-head"><span class="mdi mdi-format-list-numbered"></span> Build order — branch expanded</div>
+<div class="card-body">
+<div class="bo">
+<div class="bo-row"><span class="bo-time">4:10</span><span class="bo-pop">15</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Start the Age II landmark with two builders</div></div>
+<div class="br-head"><span class="mdi mdi-call-split" style="font-size:17px;color:var(--sec)"></span><span><strong>If vs <img class="civ-flag" src="assets/flags/mon.webp" title="Mongols" alt="Mongols"> they scout your rush with the <img class="ic ic-s" src="assets/res/scout.webp" alt=""> at 4:00</strong></span><span class="spacer"></span><span class="mdi mdi-chevron-up" style="font-size:18px;color:var(--sec)"></span></div>
+<div class="br-lane">
+<div class="bo-row"><span class="bo-time">4:25</span><span class="bo-pop">15</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Wall the <img class="ic" src="assets/res/gold.webp" alt=""> line, pull the <img class="ic" src="assets/res/scout.webp" alt=""> home</div></div>
+<div class="bo-row"><span class="bo-time">4:50</span><span class="bo-pop">16</span><div class="rc tint-builder">3</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Barracks by the TC, two spearmen out of it</div></div>
+</div>
+<div class="bo-row"><span class="bo-time">5:10</span><span class="bo-pop">17</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">6</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Either way: add a <img class="ic" src="assets/res/lumber-camp.webp" alt=""> and keep villagers queued</div></div>
+<div class="age-marker"><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Feudal Age reached</span></div>
+</div>
+</div>
+</div>
+<p class="smallnote">The lane ends and the next step is unindented again — no closing row needed in the reading view. It borrows the age-up lane vocabulary you already ship, recoloured to secondary (navy/blue) so gold stays reserved for ages and timings. Expansion state persists per build.</p>
+</div>
+
+<!-- ═══ SPLIT (no main line) ═══ -->
+<div id="f-split" class="frame" style="left:1760px;top:0;width:900px;height:1000px">
+<div class="fh"><h2>When you have to choose</h2><span class="tag">Direction</span></div>
+<p class="fsub">Two alternatives and no default. Nothing to collapse behind — so the paths become a pick-one control, always open, and the build cannot be read without answering.</p>
+
+<div class="card" style="margin-bottom:22px">
+<div class="card-head"><span class="mdi mdi-format-list-numbered"></span> Build order</div>
+<div class="card-body">
+<div class="bo">
+<div class="bo-row"><span class="bo-time">4:10</span><span class="bo-pop">15</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Scout their base before committing the landmark</div></div>
+<div class="split-head">
+<span class="lbl"><span class="mdi mdi-call-split"></span> Pick one</span>
+<div class="legs">
+<span class="leg on" title="vs Mongols — they opened with horsemen before 4:00"><span class="t"><span class="mdi mdi-check"></span> Feudal aggression</span></span>
+<span class="leg" title="They stayed home on villagers"><span class="t">Booming</span></span>
+</div>
+</div>
+<div class="br-lane">
+<div class="bo-row"><span class="bo-time">4:25</span><span class="bo-pop">15</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Wall the <img class="ic" src="assets/res/gold.webp" alt=""> line, pull the <img class="ic" src="assets/res/scout.webp" alt=""> home</div></div>
+<div class="bo-row"><span class="bo-time">4:50</span><span class="bo-pop">16</span><div class="rc tint-builder">3</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Barracks by the TC, two spearmen out of it</div></div>
+</div>
+<div class="bo-row"><span class="bo-time">5:10</span><span class="bo-pop">17</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">6</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="bo-note">Either way: add a <img class="ic" src="assets/res/lumber-camp.webp" alt=""> and keep villagers queued</div></div>
+<div class="age-marker"><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Feudal Age reached</span></div>
+</div>
+</div>
+</div>
+
+<div class="def">
+<h3>Why it stays one feature</h3>
+<p>The reader sees a different control, but the author is doing the same thing: a split, two paths, a rejoin. The only difference is whether a path carries the <code>main</code> flag. In the editor that is a single "this is the main line" toggle — set it and the other path collapses into the detour row from the frame on the left.</p>
+</div>
+
+<ul class="tight">
+<li><b>Titles only in the row.</b> Two short titles fit the table's row height and stay readable; the full condition is a tooltip, and it is spelled out in the first step of each path. Truncating conditions to an ellipsis would hide the knowledge the feature exists to carry.</li>
+<li><b>Never pre-answered.</b> A path is highlighted so the table has content, but the control sits above it unanswered until tapped — the reader is told a decision exists before they read numbers.</li>
+<li><b>Graph:</b> one path at a time, named in the legend and in sync with the step list — overlaying every resource series twice is unreadable.</li>
+<li><b>Focus mode:</b> the decision cannot be dismissed. No "carry on" option, and a countdown falls back to the first path so the clock never stalls.</li>
+<li><b>Three or more paths</b> stack the pick-one control vertically instead of side by side. Beyond three, that is two builds, not one.</li>
+</ul>
+</div>
+
+<!-- ═══ MOBILE READING ═══ -->
+<div id="f-mobile" class="frame" style="left:2720px;top:0;width:460px;height:1880px">
+<div class="fh"><h2>Mobile reading</h2><span class="tag">Sketch</span></div>
+<p class="fsub">Same step cards as today. A split adds two things: a pick control card and a blue rail down the active path.</p>
+<div class="mob">
+<div class="card-head" style="color:var(--muted);text-transform:uppercase;letter-spacing:.7px;font-weight:700;display:flex;gap:7px;align-items:center"><span class="mdi mdi-format-list-numbered" style="color:var(--acc);font-size:13px"></span> Build order</div>
+<div class="mob-body">
+<div class="steps">
+<div class="ageup"><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Age up to Feudal</span></div>
+<div class="m-agelane">
+<div class="stepc"><div class="stepc-top"><span class="step-time"><img src="assets/res/time.webp" alt="">4:10</span><span class="spacer" style="flex:1"></span><span class="step-pop"><img src="assets/res/villager.webp" alt=""><b>15</b></span></div><div class="res-grid"><div class="rcell has builder"><img src="assets/res/builder.webp" alt=""><span class="rv">2</span></div><div class="rcell has food"><img src="assets/res/food.webp" alt=""><span class="rv">7</span></div><div class="rcell has wood"><img src="assets/res/wood.webp" alt=""><span class="rv">4</span></div><div class="rcell has gold"><img src="assets/res/gold.webp" alt=""><span class="rv">2</span></div><div class="rcell empty"><img src="assets/res/stone.webp" alt=""><span class="rv">–</span></div></div><div class="desc">Scout their base before committing the landmark</div></div>
+<div class="m-pick">
+<span class="lbl"><span class="mdi mdi-call-split"></span> Pick one</span>
+<span class="m-opt on"><span>Feudal aggression<span class="c">They opened before 4:00</span></span><span class="mdi mdi-check"></span></span>
+<span class="m-opt"><span>Booming<span class="c">They stayed home on villagers</span></span></span>
+</div>
+<div class="m-lane">
+<div class="stepc"><div class="stepc-top"><span class="step-time"><img src="assets/res/time.webp" alt="">4:25</span><span class="spacer" style="flex:1"></span><span class="step-pop"><img src="assets/res/villager.webp" alt=""><b>15</b></span></div><div class="res-grid"><div class="rcell has builder"><img src="assets/res/builder.webp" alt=""><span class="rv">2</span></div><div class="rcell has food"><img src="assets/res/food.webp" alt=""><span class="rv">7</span></div><div class="rcell has wood"><img src="assets/res/wood.webp" alt=""><span class="rv">4</span></div><div class="rcell has gold"><img src="assets/res/gold.webp" alt=""><span class="rv">2</span></div><div class="rcell empty"><img src="assets/res/stone.webp" alt=""><span class="rv">–</span></div></div><div class="desc">Wall the <img class="ic" src="assets/res/gold.webp" alt=""> line, pull the <img class="ic" src="assets/res/scout.webp" alt=""> home</div></div>
+<div class="stepc"><div class="stepc-top"><span class="step-time"><img src="assets/res/time.webp" alt="">4:50</span><span class="spacer" style="flex:1"></span><span class="step-pop"><img src="assets/res/villager.webp" alt=""><b>16</b></span></div><div class="res-grid"><div class="rcell has builder"><img src="assets/res/builder.webp" alt=""><span class="rv">3</span></div><div class="rcell has food"><img src="assets/res/food.webp" alt=""><span class="rv">7</span></div><div class="rcell has wood"><img src="assets/res/wood.webp" alt=""><span class="rv">4</span></div><div class="rcell has gold"><img src="assets/res/gold.webp" alt=""><span class="rv">2</span></div><div class="rcell empty"><img src="assets/res/stone.webp" alt=""><span class="rv">–</span></div></div><div class="desc">Barracks by the TC, two spearmen out of it</div></div>
+</div>
+<div class="stepc"><div class="stepc-top"><span class="step-time"><img src="assets/res/time.webp" alt="">5:10</span><span class="spacer" style="flex:1"></span><span class="step-pop"><img src="assets/res/villager.webp" alt=""><b>17</b></span></div><div class="res-grid"><div class="rcell has builder"><img src="assets/res/builder.webp" alt=""><span class="rv">2</span></div><div class="rcell has food"><img src="assets/res/food.webp" alt=""><span class="rv">7</span></div><div class="rcell has wood"><img src="assets/res/wood.webp" alt=""><span class="rv">6</span></div><div class="rcell has gold"><img src="assets/res/gold.webp" alt=""><span class="rv">2</span></div><div class="rcell empty"><img src="assets/res/stone.webp" alt=""><span class="rv">–</span></div></div><div class="desc">Either way: add a <img class="ic" src="assets/res/lumber-camp.webp" alt=""> and keep villagers queued</div></div>
+</div>
+<div class="ageup"><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Feudal Age reached</span></div>
+</div>
+</div>
+</div>
+
+<p class="smallnote" style="margin:16px 0 10px">Where a path is flagged as the main line, the alternative collapses into one tappable row instead — same component, one state apart:</p>
+<div class="mob">
+<div class="mob-body">
+<div class="steps">
+<div class="m-trigger"><span class="mdi mdi-call-split lead"></span> <span><b>If</b> vs <img class="civ-flag" src="assets/flags/mon.webp" title="Mongols" alt="Mongols"> they scout your rush</span><span class="mdi mdi-chevron-down chev"></span></div>
+<div class="stepc"><div class="stepc-top"><span class="step-time"><img src="assets/res/time.webp" alt="">5:10</span><span class="spacer" style="flex:1"></span><span class="step-pop"><img src="assets/res/villager.webp" alt=""><b>17</b></span></div><div class="res-grid"><div class="rcell has builder"><img src="assets/res/builder.webp" alt=""><span class="rv">2</span></div><div class="rcell has food"><img src="assets/res/food.webp" alt=""><span class="rv">7</span></div><div class="rcell has wood"><img src="assets/res/wood.webp" alt=""><span class="rv">6</span></div><div class="rcell has gold"><img src="assets/res/gold.webp" alt=""><span class="rv">2</span></div><div class="rcell empty"><img src="assets/res/stone.webp" alt=""><span class="rv">–</span></div></div><div class="desc">Add a <img class="ic" src="assets/res/lumber-camp.webp" alt=""> and keep villagers queued</div></div>
+</div>
+</div>
+</div>
+
+<ul class="tight">
+<li><b>No new layout.</b> The step card, resource grid and age-up plate are exactly the current mobile components; only the pick card and the rail are new.</li>
+<li><b>Stacked, not side by side.</b> At 390px two options fit vertically at a 44px target; the condition sits under the title rather than being truncated.</li>
+<li><b>Same tokens as desktop.</b> The pick card and the collapsed row use the branch fill with a 3px <code>--sec</code> rail on the left — the mobile echo of the desktop split head, so the two surfaces read as one feature.</li>
+<li><b>Rails nest, they do not compete.</b> The gold age rail is the outer one — an alternative always sits inside an age, never the other way round — and the blue path rail indents inside it. Two rails at once is the correct reading: you are in Feudal, on the aggression path.</li>
+<li><b>No merge row.</b> The rail stopping is the signal — a full-width card with no rail beside it is common again.</li>
+<li><b>The pick card sticks</b> to the top of the list while you scroll inside a path, so the active choice is never off-screen.</li>
+<li><b>The rail is the only indent</b> — cards keep full width, so nothing reflows when a path is switched.</li>
+</ul>
+</div>
+
+<!-- ═══ 5. EDITOR ═══ -->
+<div id="f-editor" class="frame" style="left:0;top:1820px;width:1000px;height:1660px">
+<div class="fh"><h2>Authoring — no dragging required</h2><span class="tag">Sketch</span></div>
+<p class="fsub">Everything is inserted, never dragged. Two markers bracket the alternatives, and both must sit inside one age section — so a common step can follow them before the age-up.</p>
+
+<div class="card">
+<div class="card-body">
+<div class="bo edit" style="--cols:70px 44px repeat(5,52px) minmax(0,1fr) 30px">
+<div class="bo-row"><input class="time-input" value="4:10"><span class="bo-pop">15</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="wys">Scout their base before committing the landmark</div><span class="handle"><span class="mdi mdi-close"></span></span></div>
+<div class="ins-live"><div class="ln"></div><div class="pl"><span class="mdi mdi-plus"></span> Add</div>
+<div class="ins-menu">
+<div class="mi"><span class="mdi mdi-plus"></span> Step</div>
+<div class="mi"><span class="mdi mdi-information-outline"></span> Note</div>
+<div class="mi"><span class="mdi mdi-arrow-up-bold"></span> Age up</div>
+<div class="mi" title="Two ways to play from here"><span class="mdi mdi-call-split"></span> Alternatives</div>
+</div>
+</div>
+<div style="height:150px"></div>
+<div class="split-open"><span class="mdi mdi-call-split"></span> Alternatives start here <span class="spacer"></span><span class="handle"><span class="mdi mdi-close"></span></span></div>
+<div class="ptabs">
+<span class="ptab on">Defend the rush <span class="mdi mdi-pencil"></span></span>
+<span class="ptab">Keep booming</span>
+<span class="ptab add"><span class="mdi mdi-plus"></span> Add alternative</span>
+<span class="spacer"></span>
+<span class="ptab" title="Make this the main line"><span class="mdi mdi-flag-outline"></span> Set as main</span>
+</div>
+<div class="cond-field"><input class="title-in" value="Defend the rush" placeholder="Short title"><div class="wys" style="flex:1;position:relative;padding-right:34px">vs <img class="civ-flag" src="assets/flags/mon.webp" title="Mongols" alt="Mongols"> they scout your rush with the <img class="ic ic-s" src="assets/res/scout.webp" alt=""> at 4:00<span class="mdi mdi-image-plus-outline" style="position:absolute;right:8px;top:7px;color:var(--acc);font-size:15px"></span></div></div>
+<div class="br-lane">
+<div class="bo-row" style="--cols:70px 44px repeat(5,52px) minmax(0,1fr) 30px"><input class="time-input" value="4:25"><span class="bo-pop">15</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="wys">Wall the <img class="ic" src="assets/res/gold.webp" alt=""> line, pull the <img class="ic" src="assets/res/scout.webp" alt=""> home</div><span class="handle"><span class="mdi mdi-close"></span></span></div>
+<div class="bo-row" style="--cols:70px 44px repeat(5,52px) minmax(0,1fr) 30px"><input class="time-input" value="4:50"><span class="bo-pop">16</span><div class="rc tint-builder">3</div><div class="rc tint-food">7</div><div class="rc tint-wood">4</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="wys">Barracks by the TC, two spearmen out of it</div><span class="handle"><span class="mdi mdi-close"></span></span></div>
+</div>
+<div class="split-close"><span class="mdi mdi-call-merge"></span> Alternatives end here <span class="spacer"></span><span class="handle"><span class="mdi mdi-close"></span></span></div>
+<div class="bo-row"><input class="time-input" value="5:10"><span class="bo-pop">17</span><div class="rc tint-builder">2</div><div class="rc tint-food">7</div><div class="rc tint-wood">6</div><div class="rc tint-gold">2</div><div class="rc empty">–</div><div class="wys">Either way: add a <img class="ic" src="assets/res/lumber-camp.webp" alt=""> and keep villagers queued</div><span class="handle"><span class="mdi mdi-close"></span></span></div>
+<div class="age-marker"><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Feudal Age reached</span></div>
+</div>
+</div>
+</div>
+
+<div class="menucmp">
+<div class="col"><div class="cap">Add menu · on the main line</div>
+<div class="ins-menu static">
+<div class="mi"><span class="mdi mdi-plus"></span> Step</div>
+<div class="mi"><span class="mdi mdi-information-outline"></span> Note</div>
+<div class="mi"><span class="mdi mdi-arrow-up-bold"></span> Age up</div>
+<div class="mi" title="Two ways to play from here"><span class="mdi mdi-call-split"></span> Alternatives</div>
+</div>
+</div>
+<div class="col"><div class="cap">Add menu · inside an alternative</div>
+<div class="ins-menu static">
+<div class="mi"><span class="mdi mdi-plus"></span> Step</div>
+<div class="mi"><span class="mdi mdi-information-outline"></span> Note</div>
+<div class="mi dis" title="An alternative stays in one age"><span class="mdi mdi-arrow-up-bold"></span> Age up</div>
+<div class="mi dis" title="No alternatives inside alternatives"><span class="mdi mdi-call-split"></span> Alternatives</div>
+</div>
+</div>
+</div>
+
+<div class="def" style="margin-top:18px">
+<h3>Your four questions</h3>
+<p><b>How do you start one?</b> The insert line's <code>+</code> becomes a small menu instead of a single "Step" pill — Step, Note, Age up, Alternatives. Picking Alternatives inserts the whole bracket at once: an opening marker, one path with an empty step, and a closing marker. Nothing is dragged and nothing is left dangling.</p>
+<p><b>How do you close one?</b> The closing marker arrives with the block, so closing is never a separate act — but it is a real item, because the paths <b>can</b> rejoin before the age-up and usually should. Move it by inserting steps: above the marker they belong to the active path, below it they are common to both. Deleting either marker removes the bracket and lifts every path's steps back into the section.</p>
+<p><b>A second alternative in the same timeframe?</b> That is the <b>+ Add alternative</b> tab in the path bar. Paths are siblings inside one bracket, so a second one shares the same two markers and needs no new ones. Editing shows one path at a time — the tabs switch which path's steps the table is showing, the same control the reader gets.</p>
+<p><b>What does the menu look like inside an alternative?</b> Your guess, and no Close entry — the merge line is always there, so closing is never something you add. Step and Note stay; Age up and Alternatives grey out rather than vanishing, with the reason in the standard tooltip, so the constraint is learnable instead of mysterious. Where you click decides membership: above the merge line the step joins the active path, below it the step is common to both.</p>
+<p><b>Different step types in the add menu?</b> Yes, and that is the whole change to the add affordance: one menu with four entries instead of a "Step" pill plus a separate "Add age-up" button at the bottom. That bottom button is why the old sketch was confusing — it is gone, and age-up now lives in the same menu as everything else.</p>
+</div>
+
+<ul class="tight">
+<li><b>Drag and drop is deliberately out of scope.</b> The markers make ordering an insert-and-delete problem, so reordering can arrive later without changing the data.</li>
+<li><b>The main-line toggle</b> lives on the path bar as "Set as main" — flag one path and the reader gets the collapsed detour view instead of the pick-one control.</li>
+<li><b>One phase only.</b> Age up is greyed out in the add menu while the caret is inside an alternative, and the closing marker cannot be pushed past the next age-up — an alternative that spans an age boundary is two builds, not one.</li>
+</ul>
+</div>
+
+<!-- ═══ 6. GRAPH ═══ -->
+<div id="f-graph" class="frame" style="left:1060px;top:1820px;width:620px;height:900px">
+<div class="fh"><h2>Eco graph</h2><span class="tag">Sketch</span></div>
+<p class="fsub">Drawing both paths doesn't work — every resource series would double and the chart becomes unreadable. So the graph shows <b>one path at a time</b>, picked from the legend. Same selection as the step list: switch in either place and both follow.</p>
+<div class="graph-wrap">
+<svg viewBox="0 0 540 250" width="100%" height="250" role="img" aria-label="Resource distribution over time for the active path">
+<g stroke="rgba(255,255,255,.07)" stroke-width="1">
+<line x1="40" y1="30" x2="530" y2="30"/><line x1="40" y1="80" x2="530" y2="80"/><line x1="40" y1="130" x2="530" y2="130"/><line x1="40" y1="180" x2="530" y2="180"/><line x1="40" y1="215" x2="530" y2="215"/>
+</g>
+<g fill="#56627a" font-size="10" font-family="Inter,sans-serif">
+<text x="14" y="34">8</text><text x="14" y="84">6</text><text x="14" y="134">4</text><text x="14" y="184">2</text><text x="14" y="219">0</text>
+<text x="40" y="238">3:00</text><text x="180" y="238">4:00</text><text x="320" y="238">5:00</text><text x="460" y="238">6:00</text>
+</g>
+<rect x="215" y="18" width="140" height="200" fill="var(--sec-fill-2)"/>
+<line x1="215" y1="18" x2="215" y2="218" stroke="var(--sec)" stroke-width="1.5"/>
+<line x1="355" y1="18" x2="355" y2="218" stroke="var(--sec)" stroke-width="1.5" stroke-dasharray="3 3"/>
+<polyline points="40,105 110,105 180,80 215,80 250,80 320,80 355,80 460,55 530,55" fill="none" stroke="#c2903d" stroke-width="2.5" stroke-linecap="round"/>
+<polyline points="40,155 110,130 180,130 215,130 250,130 320,130 355,105 460,105 530,80" fill="none" stroke="#6f9451" stroke-width="2.5" stroke-linecap="round"/>
+<polyline points="40,215 110,215 180,180 215,180 250,180 320,180 355,155 460,155 530,155" fill="none" stroke="#d8c169" stroke-width="2.5" stroke-linecap="round"/>
+<polyline points="40,180 110,180 180,155 215,155 250,130 320,130 355,130 460,130 530,130" fill="none" stroke="#9aa3b2" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
+<div class="graph-legend" style="gap:12px;margin:8px 0 0"><span class="gk"><i style="border-top-color:#c2903d"></i><img class="ic ic-s" src="assets/res/food.webp" alt="Food" title="Food" style="height:18px"></span><span class="gk"><i style="border-top-color:#6f9451"></i><img class="ic ic-s" src="assets/res/wood.webp" alt="Wood" title="Wood" style="height:18px"></span><span class="gk"><i style="border-top-color:#d8c169"></i><img class="ic ic-s" src="assets/res/gold.webp" alt="Gold" title="Gold" style="height:18px"></span><span class="gk"><i style="border-top-color:#9aa3b2"></i><img class="ic ic-s" src="assets/res/builder.webp" alt="Builders" title="Builders" style="height:18px"></span></div>
+<div class="graph-legend" style="margin:8px 0 0"><span class="mdi mdi-call-split" style="font-size:15px"></span><span class="br-chip on">Feudal aggression</span><span class="br-chip">Booming</span></div>
+</div>
+</div>
+<p class="smallnote">The shaded span is the split; outside it the two paths are identical, so that is the only region the two curves differ in.</p>
+<p class="smallnote">Switching path redraws the shaded span only — the rest of the chart is unchanged, so the eye stays put. Legend sits under the chart, as it does today.</p>
+<p class="smallnote">This is what forces <b>path titles</b>. A series cannot be labelled "the branch" and a condition ("they scout your rush with the scout at 4:00") is far too long for a legend, so each path carries a short title alongside its condition. The title is what the legend, the focus-mode bar and the collapsed row all show.</p>
+<p class="smallnote">Nobody declares a main line by default. If an author wants one, it is a <code>main</code> boolean on a path — that path is what the graph opens on. Untouched, the graph opens on the first path.</p>
+</div>
+
+<!-- ═══ 7. FOCUS MODE ═══ -->
+<div id="f-focus" class="frame" style="left:1740px;top:1820px;width:520px;height:1290px">
+<div class="fh"><h2>Focus mode</h2><span class="tag">Sketch</span></div>
+<p class="fsub">The existing component, unchanged — this is an integration, not a new screen. The split occupies the step area for one beat, then hands back — in the branch colour, so it never reads as one of the component's gold transport buttons. Header, progress bars, resource dock and transport are untouched.</p>
+
+<div class="fm" style="height:420px;margin-bottom:20px">
+<div class="fm-top">
+<button class="iconbtn" style="background:rgba(255,255,255,.06);color:#8593A6"><i class="mdi mdi-picture-in-picture-bottom-right"></i></button>
+<div class="ttl">English | Fast Castle into Longbows</div>
+<div class="cnt">14/38</div>
+<button class="iconbtn"><i class="mdi mdi-close"></i></button>
+</div>
+<div class="fm-bars"><div class="bar"><span style="width:46%"></span></div><div class="bar dim"><span style="width:12%"></span></div></div>
+<div class="fm-body">
+<div class="pick">
+<span class="lbl"><span class="mdi mdi-call-split"></span> Pick one</span>
+<span class="pick-opt"><img src="assets/res/horseman.webp" alt=""><span>Feudal aggression<br><span class="c">They opened before 4:00</span></span></span>
+<span class="pick-opt"><img src="assets/res/town-center.webp" alt=""><span>Booming<br><span class="c">They stayed home on villagers</span></span></span>
+</div>
+<div class="pick-timer"><span class="mdi mdi-timer-outline" style="font-size:14px"></span><span class="track"><i></i></span><span>Feudal aggression in 6s</span></div>
+</div>
+<div class="fm-dock">
+<div class="res">
+<div class="t"><img src="assets/res/time.webp" alt="">4:10</div>
+<div><img src="assets/res/villager.webp" alt="">15</div>
+<div><img src="assets/res/food.webp" alt="">7</div>
+<div><img src="assets/res/wood.webp" alt="">4</div>
+</div>
+<div class="ctrl">
+<button class="cbtn"><i class="mdi mdi-chevron-left"></i></button>
+<button class="cbtn"><i class="mdi mdi-volume-medium"></i></button>
+<button class="cbtn main"><i class="mdi mdi-play"></i></button>
+<button class="cbtn"><i class="mdi mdi-chevron-right"></i></button>
+</div>
+</div>
+</div>
+
+<p class="smallnote" style="margin:0 0 14px">Once picked, the component returns to normal. A thin bar under the progress bars is the only persistent addition — it names the active path and switches it:</p>
+
+<div class="fm" style="height:400px">
+<div class="fm-top">
+<button class="iconbtn" style="background:rgba(255,255,255,.06);color:#8593A6"><i class="mdi mdi-picture-in-picture-bottom-right"></i></button>
+<div class="ttl">English | Fast Castle into Longbows</div>
+<div class="cnt">15/38</div>
+<button class="iconbtn"><i class="mdi mdi-close"></i></button>
+</div>
+<div class="fm-bars"><div class="bar"><span style="width:52%"></span></div><div class="bar dim"><span style="width:14%"></span></div></div>
+<div class="fm-pathbar"><span class="mdi mdi-call-split"></span> FEUDAL AGGRESSION <button class="sw" title="Switch to Booming"><span class="mdi mdi-swap-horizontal"></span> SWITCH</button></div>
+<div class="fm-body">
+<div class="fm-content">Wall the<img src="assets/res/gold.webp" alt=""><span class="ar">·</span>pull the<img src="assets/res/scout.webp" alt="">home</div>
+<div class="fm-next">next <b>0:25</b> · <b>+1</b> builder</div>
+</div>
+<div class="fm-dock">
+<div class="res">
+<div class="t"><img src="assets/res/time.webp" alt="">4:25</div>
+<div><img src="assets/res/villager.webp" alt="">15</div>
+<div><img src="assets/res/food.webp" alt="">7</div>
+<div><img src="assets/res/wood.webp" alt="">4</div>
+</div>
+<div class="ctrl">
+<button class="cbtn"><i class="mdi mdi-chevron-left"></i></button>
+<button class="cbtn"><i class="mdi mdi-volume-medium"></i></button>
+<button class="cbtn main"><i class="mdi mdi-pause"></i></button>
+<button class="cbtn"><i class="mdi mdi-chevron-right"></i></button>
+</div>
+</div>
+</div>
+
+<ul class="tight">
+<li><b>Nothing else moves.</b> Same three rows, same dock, same transport — the pick occupies the step area for one beat only.</li>
+<li><b>The clock never stalls.</b> A countdown falls back to the <code>main</code> path, or the first path if none is flagged. Length is the gap to the next step, capped around 10s.</li>
+<li><b>Reversible</b> until the rejoin, via the path bar — a read at 4:10 can be wrong.</li>
+<li><b>Micro tier:</b> the pick collapses to two short titles side by side; conditions and the countdown label drop, the countdown bar stays.</li>
+</ul>
+</div>
+
+</body>
+</html>

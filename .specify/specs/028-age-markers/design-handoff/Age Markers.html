@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="design_doc_mode" content="canvas">
+<title>AOE4 Guides — Age markers</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+:root{--bg:#1D2432;--surface:#2c3a4e;--surface-hi:#324156;--border:rgba(255,255,255,.07);--border-hi:rgba(255,255,255,.13);--text:#e8eaf0;--title:#fff;--muted:#8b95a8;--dim:#56627a;--acc:#e7c05e;--acc-hi:#f0d478;--acc-soft:rgba(231,192,94,.12);--acc-border:rgba(231,192,94,.28);--acc-contrast:#1a2030;--sec:#7fa0e8;--sec-soft:rgba(41,71,144,.32);--sec-border:rgba(95,130,210,.4);--sec-text:#b9caf0;--aug:#e7c05e;--rc-text:#fff;--c-builder:94,83,64;--c-food:136,64,64;--c-wood:79,107,58;--c-gold:138,109,46;--c-stone:89,102,122;--tint-a:.45}
+body{background:var(--bg);color:var(--text);font:15px/1.6 Inter,-apple-system,sans-serif}
+a{color:var(--acc);text-decoration:none}a:hover{color:var(--acc-hi)}
+.frame{position:absolute;background:var(--bg);border:1px solid var(--border-hi);border-radius:14px;padding:22px;overflow:hidden}
+.fh{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
+.fh h2{font-size:16px;font-weight:800;color:var(--title);margin:0;letter-spacing:-.2px}
+.fh .tag{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--acc);background:var(--acc-soft);border:1px solid var(--acc-border);padding:2px 8px;border-radius:20px}
+.fh .tag.n{color:var(--muted);background:transparent;border-color:var(--border-hi)}
+.fsub{font-size:13px;color:var(--muted);margin:0 0 16px;max-width:72ch;text-wrap:pretty}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.card-body{padding:8px 10px 12px}
+.spacer{flex:1}
+.bo{--cols:60px 40px repeat(5,48px) minmax(0,1fr)}
+.bo-row{display:grid;grid-template-columns:var(--cols);gap:7px;padding:6px 10px;align-items:center;border-bottom:1px solid var(--border)}
+.bo-time{font-size:13px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums}
+.bo-pop{font-size:12.5px;font-weight:700;color:var(--muted);text-align:center}
+.rc{height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--rc-text);border:1px solid transparent;font-variant-numeric:tabular-nums}
+.rc.empty{background:transparent;color:rgba(127,127,127,.28);font-weight:500}
+.tint-builder{background:rgba(var(--c-builder),var(--tint-a));border-color:rgba(var(--c-builder),.6)}
+.tint-food{background:rgba(var(--c-food),var(--tint-a));border-color:rgba(var(--c-food),.6)}
+.tint-wood{background:rgba(var(--c-wood),var(--tint-a));border-color:rgba(var(--c-wood),.6)}
+.tint-gold{background:rgba(var(--c-gold),var(--tint-a));border-color:rgba(var(--c-gold),.6)}
+.bo-note{font-size:13.5px;color:var(--text);min-width:0}
+.ic{height:26px;border-radius:5px;padding:2px;vertical-align:middle;margin:0 2px;width:auto;object-fit:contain;background:radial-gradient(circle at top center,#4b6382,#1d2432)}
+/* current markers */
+.mk{display:flex;align-items:center;gap:9px;padding:9px 12px;margin:5px 0;border-radius:9px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.06);font-size:13.5px;font-weight:700;color:var(--acc)}
+.mk .mdi{font-size:16px}
+.mk .rn{width:19px;height:19px;border-radius:50%;border:1.5px solid var(--acc);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
+/* A — action row */
+.mk-act{display:grid;grid-template-columns:var(--cols);gap:7px;padding:6px 10px;align-items:center;border-bottom:1px solid var(--border)}
+.mk-act .lbl{grid-column:3/-1;display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--acc)}
+.mk-act .lbl .mdi{font-size:16px}
+/* A/B — boundary */
+.mk-bnd{display:flex;align-items:center;gap:10px;padding:8px 12px;margin:7px 0 5px;border-radius:9px;background:linear-gradient(90deg,rgba(231,192,94,.2),rgba(231,192,94,.03));border:1px solid var(--acc-border)}
+.mk-bnd img{width:22px;height:22px;object-fit:contain}
+.mk-bnd .n{font-size:13px;font-weight:800;color:var(--acc);letter-spacing:.4px;text-transform:uppercase}
+.mk-bnd .t{margin-left:auto;font-size:12px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums}
+/* B — transition bracket */
+.trans{border-left:3px solid var(--acc);background:linear-gradient(90deg,rgba(231,192,94,.09),transparent 55%);border-radius:0 8px 8px 0;margin:0 0 2px}
+.trans .cap{display:flex;align-items:center;gap:8px;padding:7px 11px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--acc)}
+.trans .cap .mdi{font-size:15px}
+.trans .cap .dur{margin-left:auto;letter-spacing:0;text-transform:none;font-weight:600;color:var(--muted);font-size:11.5px}
+.trans .bo-row:last-child{border-bottom:0}
+/* C */
+.mk-div{display:flex;align-items:center;gap:11px;padding:10px 12px;margin:9px 0 6px;border-radius:9px;background:linear-gradient(90deg,rgba(231,192,94,.2),rgba(231,192,94,.03));border:1px solid var(--acc-border)}
+.mk-div img{width:26px;height:26px;object-fit:contain}
+.mk-div .n{font-size:14px;font-weight:800;color:var(--acc);letter-spacing:.4px}
+.mk-div .t{margin-left:auto;display:flex;align-items:baseline;gap:8px}
+.mk-div .t b{font-size:13.5px;font-weight:800;color:var(--acc);font-variant-numeric:tabular-nums}
+.mk-div .t s{text-decoration:none;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+/* callouts */
+.ob{border-left:2px solid var(--acc-border);padding:1px 0 1px 14px;margin:0 0 15px}
+.ob h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--acc);margin:0 0 5px}
+.ob p{margin:0;font-size:13.5px;line-height:1.6;color:var(--text);text-wrap:pretty}
+.ob p+p{margin-top:7px}
+.ob code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--sec-text);background:var(--sec-soft);padding:1px 5px;border-radius:4px}
+.rec{background:var(--acc-soft);border:1px solid var(--acc-border);border-radius:10px;padding:13px 15px;margin-bottom:15px}
+.rec .lbl{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:5px}
+.rec p{margin:0;font-size:13.5px;line-height:1.6;color:var(--text)}
+ul.tight{margin:8px 0 0;padding-left:18px;font-size:13px;line-height:1.65;color:var(--muted)}
+ul.tight b{color:var(--text);font-weight:600}
+ul.tight li+li{margin-top:5px}
+.verdict{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:12px}
+.verdict.keep{color:#7fd0a8;background:rgba(76,175,140,.14);border:1px solid rgba(76,175,140,.35)}
+.verdict.warn{color:#e0b45c;background:rgba(231,192,94,.12);border:1px solid var(--acc-border)}
+.verdict.no{color:#e08a8a;background:rgba(224,92,92,.12);border:1px solid rgba(224,92,92,.3)}
+.smallnote{font-size:12px;color:var(--dim);margin-top:12px;line-height:1.6}
+</style>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#1D2432"/><rect x="18" y="30" width="64" height="10" rx="3" fill="#e7c05e"/><rect x="18" y="60" width="64" height="10" rx="3" fill="#e7c05e"/><path d="M50 46 L50 54" stroke="#8b95a8" stroke-width="4" stroke-linecap="round"/></svg>
+</template>
+</head>
+<body>
+
+<!-- ANALYSIS -->
+<div class="frame" style="left:0;top:0;width:660px;height:1000px">
+<div class="fh"><h2>What the two markers are doing</h2><span class="tag">Analysis</span></div>
+<p class="fsub">Short answer: not broken, but the pair is doing two different jobs in one visual voice, and it costs the list its rhythm.</p>
+
+<div class="ob">
+<h3>1 · They are different kinds of thing, drawn the same</h3>
+<p><b>Advance to Feudal Age</b> is an <b>action</b> — something the player does at a moment, exactly like "build a house". <b>Feudal Age reached</b> is a <b>state change</b> — a boundary the build crosses. Right now both are the same full-width gold bar at the same weight, so the list gives no clue which one you <i>do</i> and which one just <i>happens</i>.</p>
+</div>
+
+<div class="ob">
+<h3>2 · Eight bars compete with the steps</h3>
+<p>In this build there are 8 marker bars against 11 step rows. The markers are the loudest thing on the page — full width, gold, boxed — while the steps that carry the actual instructions are quieter. The emphasis is inverted.</p>
+</div>
+
+<div class="ob">
+<h3>3 · The transition is invisible</h3>
+<p>The gap between "Advance to" and "reached" is a real phase with its own rules: landmark under construction, no new villagers from it, vulnerable window. On screen it is just two bars with unrelated-looking rows between them. Nothing says those rows belong to the transition.</p>
+</div>
+
+<div class="ob">
+<h3>4 · The reached-marker has no time</h3>
+<p>The one number a reader wants from "Feudal Age reached" — <i>when</i> — is not on it. It is inferred from the row above. The bar occupies a full row and carries a word count of three.</p>
+</div>
+
+<div class="ob">
+<h3>5 · The boundary leans on an icon that cannot carry it</h3>
+<p>The mark on the arrival bar is the game's own age asset (<code>assets/res/age_2.webp</code>) — a circled Roman numeral. It is the correct, canonical icon and there is nothing to swap it for. But at 20px in gold it is a near-twin of a circled transport glyph, and Ⅱ / Ⅲ / Ⅳ differ from each other by one stroke.</p>
+<p>So the icon should not be what tells you a boundary was crossed. Let the <b>bar treatment and the age name</b> carry that, and keep the asset as identification rather than as the signal.</p>
+</div>
+
+<div class="ob">
+<h3>6 · Repetition</h3>
+<p>"Advance to Feudal Age" / "Feudal Age reached" — the word Age four times in eight rows, before the other two ages. The age name alone identifies it.</p>
+</div>
+
+<div class="rec">
+<span class="lbl">Recommendation</span>
+<p>Option B. Keep both markers, but stop drawing them alike: the advance becomes a <b>step row</b> because it is a step, and only the arrival stays a <b>bar</b> because only it is a boundary. Bracket the rows between them so the transition reads as a phase. This is the smallest change that fixes the semantics, and it halves the bar count without deleting information.</p>
+</div>
+<p class="smallnote">If the appetite is smaller, Option A alone is worth shipping: turning the advance into a step row and putting the arrival time on the bar fixes the two observations that cost a reader the most, and touches one row type.</p>
+</div>
+
+<!-- CURRENT -->
+<div class="frame" style="left:720px;top:0;width:620px;height:700px">
+<div class="fh"><h2>As is</h2><span class="tag n">Current</span></div>
+<p class="fsub">Reproduced from the screenshot for comparison.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="bo-row"><span class="bo-time">0:10</span><span class="bo-pop">3</span><div class="rc tint-builder">1</div><div class="rc tint-food">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk"><span class="mdi mdi-arrow-up-bold"></span> Advance to Feudal Age</div>
+<div class="bo-row"><span class="bo-time">0:45</span><span class="bo-pop">3</span><div class="rc empty">–</div><div class="rc tint-food">3</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">~1:11</span><span class="bo-pop">6</span><div class="rc tint-builder">1</div><div class="rc tint-food">3</div><div class="rc tint-wood">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk"><span class="rn">Ⅱ</span> Feudal Age reached</div>
+<div class="bo-row"><span class="bo-time">~1:17</span><span class="bo-pop">4</span><div class="rc empty">–</div><div class="rc tint-food">4</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">1:30</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk"><span class="mdi mdi-arrow-up-bold"></span> Advance to Castle Age</div>
+<div class="bo-row"><span class="bo-time">2:00</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk"><span class="rn">Ⅲ</span> Castle Age reached</div>
+<div class="bo-row"><span class="bo-time">~2:08</span><span class="bo-pop"></span><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+</div></div></div>
+<p class="smallnote">Four bars, four step rows. The bars win the page.</p>
+</div>
+
+<!-- A -->
+<div class="frame" style="left:720px;top:760px;width:620px;height:770px">
+<div class="fh"><h2>A · Asymmetry only</h2><span class="tag n">Minimal</span></div>
+<span class="verdict keep"><span class="mdi mdi-check"></span> Low risk</span>
+<p class="fsub">The advance becomes a step row. Only the arrival stays a bar, now carrying the age icon and the time.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="bo-row"><span class="bo-time">0:10</span><span class="bo-pop">3</span><div class="rc tint-builder">1</div><div class="rc tint-food">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk-act"><span class="bo-time">0:32</span><span class="bo-pop">3</span><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Advance to Feudal</span></div>
+<div class="bo-row"><span class="bo-time">0:45</span><span class="bo-pop">3</span><div class="rc empty">–</div><div class="rc tint-food">3</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">~1:11</span><span class="bo-pop">6</span><div class="rc tint-builder">1</div><div class="rc tint-food">3</div><div class="rc tint-wood">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk-bnd"><img src="assets/res/age_2.webp" alt=""><span class="n">Feudal Age</span><span class="t">~1:11</span></div>
+<div class="bo-row"><span class="bo-time">~1:17</span><span class="bo-pop">4</span><div class="rc empty">–</div><div class="rc tint-food">4</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">1:30</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk-act"><span class="bo-time">1:48</span><span class="bo-pop">5</span><span class="lbl"><span class="mdi mdi-arrow-up-bold"></span> Advance to Castle</span></div>
+<div class="bo-row"><span class="bo-time">2:00</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk-bnd"><img src="assets/res/age_3.webp" alt=""><span class="n">Castle Age</span><span class="t">~2:08</span></div>
+</div></div></div>
+<ul class="tight">
+<li><b>Fixes</b> the action/boundary confusion, the missing arrival time, the repeated word, and the icon-as-signal problem — the tinted bar and the age name now carry the boundary, the numeral only identifies it.</li>
+<li><b>Halves the bars</b> from four to two, so the steps get the page back.</li>
+<li><b>Costs nothing structurally</b> — same data, same order, one row type restyled.</li>
+<li><b>Leaves</b> the transition phase invisible. That is what B adds.</li>
+</ul>
+</div>
+
+<!-- B -->
+<div class="frame" style="left:1400px;top:0;width:620px;height:840px">
+<div class="fh"><h2>B · Asymmetry + transition bracket</h2><span class="tag">Recommended</span></div>
+<span class="verdict keep"><span class="mdi mdi-check"></span> Recommended</span>
+<p class="fsub">A on top of a gold rail down the rows between the advance and the arrival, so the transition is legible as a phase and its length is stated.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="bo-row"><span class="bo-time">0:10</span><span class="bo-pop">3</span><div class="rc tint-builder">1</div><div class="rc tint-food">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="trans">
+<div class="cap"><span class="mdi mdi-arrow-up-bold"></span> Advancing to Feudal <span class="dur">0:32 → ~1:11 · 39s</span></div>
+<div class="bo-row"><span class="bo-time">0:45</span><span class="bo-pop">3</span><div class="rc empty">–</div><div class="rc tint-food">3</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">~1:11</span><span class="bo-pop">6</span><div class="rc tint-builder">1</div><div class="rc tint-food">3</div><div class="rc tint-wood">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+</div>
+<div class="mk-bnd"><img src="assets/res/age_2.webp" alt=""><span class="n">Feudal Age</span><span class="t">~1:11</span></div>
+<div class="bo-row"><span class="bo-time">~1:17</span><span class="bo-pop">4</span><div class="rc empty">–</div><div class="rc tint-food">4</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">1:30</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="trans">
+<div class="cap"><span class="mdi mdi-arrow-up-bold"></span> Advancing to Castle <span class="dur">1:48 → ~2:08 · 20s</span></div>
+<div class="bo-row"><span class="bo-time">2:00</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+</div>
+<div class="mk-bnd"><img src="assets/res/age_3.webp" alt=""><span class="n">Castle Age</span><span class="t">~2:08</span></div>
+</div></div></div>
+<ul class="tight">
+<li><b>The transition is a phase now</b>, with a duration a reader can compare against their own game. That number is the single most requested thing about a fast castle.</li>
+<li><b>The rail is the same vocabulary</b> as the alternatives lane, one colour apart — gold for "where you are in the build", blue for "which way you went". Two rails never collide, because an alternative sits inside an age.</li>
+<li><b>Still two bars</b>, not four. The arrival is the only boundary and looks like one.</li>
+<li><b>Cost:</b> one nesting level in the renderer, and the duration has to be derived. Both are already true for the alternatives block.</li>
+</ul>
+</div>
+
+<!-- C -->
+<div class="frame" style="left:1400px;top:900px;width:620px;height:730px">
+<div class="fh"><h2>C · One marker per age</h2><span class="tag n">Considered</span></div>
+<span class="verdict warn"><span class="mdi mdi-alert-outline"></span> Loses information</span>
+<p class="fsub">Drop the advance marker entirely. One divider per age, carrying both times.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="bo-row"><span class="bo-time">0:10</span><span class="bo-pop">3</span><div class="rc tint-builder">1</div><div class="rc tint-food">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">0:45</span><span class="bo-pop">3</span><div class="rc empty">–</div><div class="rc tint-food">3</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">~1:11</span><span class="bo-pop">6</span><div class="rc tint-builder">1</div><div class="rc tint-food">3</div><div class="rc tint-wood">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk-div"><img src="assets/res/age_2.webp" alt=""><span class="n">Feudal Age</span><span class="t"><b>~1:11</b><s>up at 0:32</s></span></div>
+<div class="bo-row"><span class="bo-time">~1:17</span><span class="bo-pop">4</span><div class="rc empty">–</div><div class="rc tint-food">4</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">1:30</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="bo-row"><span class="bo-time">2:00</span><span class="bo-pop">5</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="mk-div"><img src="assets/res/age_3.webp" alt=""><span class="n">Castle Age</span><span class="t"><b>~2:08</b><s>up at 1:48</s></span></div>
+</div></div></div>
+<ul class="tight">
+<li><b>Cleanest list</b> by a distance — two markers total, steps clearly dominant.</li>
+<li><b>But the advance loses its place in the sequence.</b> "Up at 0:32" as a footnote on a later bar does not tell a player <i>when in the step order</i> to click the landmark, which is the whole point of the marker.</li>
+<li><b>And it breaks focus mode</b>, where the advance has to fire as its own cue at its own time.</li>
+<li>Worth keeping in mind as the <b>collapsed / summary</b> rendering — a build card preview, or the eco graph's age ticks.</li>
+</ul>
+</div>
+
+</body>
+</html>

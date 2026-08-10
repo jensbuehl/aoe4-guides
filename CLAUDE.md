@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/027-build-alternatives/plan.md`.
+at `.specify/specs/028-age-markers/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -21,9 +21,15 @@ what the work just taught — then write it where it will be read again:
 
 Two habits make this worth doing rather than ceremonial:
 
-- **Record the cause, not the symptom.** "The rail broke at insert dividers"
-  ages badly; "per-element rails cannot span siblings, so a lane belongs on a
-  wrapper" is still true next year.
+- **Record the cause, not the symptom — with the conditions it holds under.**
+  "The rail broke at insert dividers" ages badly. "In the mobile card list,
+  per-element rails cannot span siblings, because each card carries its own
+  margins and borders — so a lane belongs on a wrapper" is still true next year.
+  Drop the first clause and the note becomes a rule that gets misapplied: the
+  desktop table needs the *opposite* construction, per-row pseudo-elements that
+  deliberately overhang their neighbours, because rows abut and a wrapper cannot
+  span a run of `<tr>`s at all. A cause without its conditions is a symptom
+  wearing better clothes.
 - **Write it once.** If a rule lives here, it does not also belong in memory —
   duplicated guidance drifts apart and then contradicts itself.
 

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="design_doc_mode" content="canvas">
+<title>AOE4 Guides — Age markers · B detailed</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+:root{--bg:#1D2432;--surface:#2c3a4e;--surface-hi:#324156;--border:rgba(255,255,255,.07);--border-hi:rgba(255,255,255,.13);--text:#e8eaf0;--title:#fff;--muted:#8b95a8;--dim:#56627a;--acc:#e7c05e;--acc-hi:#f0d478;--acc-soft:rgba(231,192,94,.12);--acc-border:rgba(231,192,94,.28);--acc-contrast:#1a2030;--sec:#7fa0e8;--sec-soft:rgba(41,71,144,.32);--sec-border:rgba(95,130,210,.4);--sec-text:#b9caf0;--sec-fill:rgba(41,71,144,.30);--sec-fill-3:rgba(41,71,144,.04);--sec-on:#0f1626;--rc-text:#fff;--c-builder:94,83,64;--c-food:136,64,64;--c-wood:79,107,58;--c-gold:138,109,46;--c-stone:89,102,122;--tint-a:.45}
+body{background:var(--bg);color:var(--text);font:15px/1.6 Inter,-apple-system,sans-serif}
+a{color:var(--acc);text-decoration:none}a:hover{color:var(--acc-hi)}
+.frame{position:absolute;background:var(--bg);border:1px solid var(--border-hi);border-radius:14px;padding:22px;overflow:hidden}
+.fh{display:flex;align-items:baseline;gap:10px;margin:0 0 4px}
+.fh h2{font-size:16px;font-weight:800;color:var(--title);margin:0;letter-spacing:-.2px}
+.fh .tag{font-size:10px;font-weight:800;letter-spacing:.7px;text-transform:uppercase;color:var(--acc);background:var(--acc-soft);border:1px solid var(--acc-border);padding:2px 8px;border-radius:20px}
+.fh .tag.n{color:var(--muted);background:transparent;border-color:var(--border-hi)}
+.fsub{font-size:13px;color:var(--muted);margin:0 0 15px;max-width:72ch;text-wrap:pretty}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px}
+.card-body{padding:8px 10px 12px}
+.spacer{flex:1}
+.bo{--cols:60px 40px repeat(5,46px) minmax(0,1fr)}
+.bo-row{display:grid;grid-template-columns:var(--cols);gap:7px;padding:6px 10px;align-items:center;border-bottom:1px solid var(--border)}
+.bo-time{font-size:13px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums}
+.bo-pop{font-size:12.5px;font-weight:700;color:var(--muted);text-align:center}
+.rc{height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--rc-text);border:1px solid transparent;font-variant-numeric:tabular-nums}
+.rc.empty{background:transparent;color:rgba(127,127,127,.28);font-weight:500}
+.tint-builder{background:rgba(var(--c-builder),var(--tint-a));border-color:rgba(var(--c-builder),.6)}
+.tint-food{background:rgba(var(--c-food),var(--tint-a));border-color:rgba(var(--c-food),.6)}
+.tint-wood{background:rgba(var(--c-wood),var(--tint-a));border-color:rgba(var(--c-wood),.6)}
+.tint-gold{background:rgba(var(--c-gold),var(--tint-a));border-color:rgba(var(--c-gold),.6)}
+.bo-note{font-size:13.5px;color:var(--text);min-width:0}
+.ic{height:24px;border-radius:5px;padding:2px;vertical-align:middle;margin:0 2px;width:auto;object-fit:contain;background:radial-gradient(circle at top center,#4b6382,#1d2432)}
+/* B — transition bracket */
+.trans{border-left:3px solid var(--acc);background:linear-gradient(90deg,rgba(231,192,94,.09),transparent 55%);border-radius:0 8px 8px 0;margin:0 0 2px}
+.trans .cap{display:flex;align-items:center;gap:8px;padding:6px 11px;min-height:41px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--acc)}
+.trans .cap .mdi{font-size:15px}
+.trans .cap .dur{margin-left:auto;letter-spacing:0;text-transform:none;font-weight:600;color:var(--muted);font-size:11.5px}
+.trans>.bo-row:last-child{border-bottom:0}
+.mk-bnd{display:flex;align-items:center;gap:10px;padding:8px 12px;margin:7px 0 5px;border-radius:9px;background:linear-gradient(90deg,rgba(231,192,94,.2),rgba(231,192,94,.03));border:1px solid var(--acc-border)}
+.mk-bnd img{width:22px;height:22px;object-fit:contain}
+.mk-bnd .n{font-size:13px;font-weight:800;color:var(--acc);letter-spacing:.4px;text-transform:uppercase}
+.mk-bnd .t{margin-left:auto;font-size:12px;font-weight:700;color:var(--acc);font-variant-numeric:tabular-nums}
+/* alternatives block */
+.alt{border-left:3px solid var(--sec);background:linear-gradient(90deg,var(--sec-fill-3),transparent 55%);border-radius:0 8px 8px 0}
+.alt-head{display:flex;align-items:center;gap:8px;padding:6px 10px;min-height:41px;border-bottom:1px solid var(--border)}
+.alt-head .mdi-call-split{font-size:16px}
+.ptab{display:inline-flex;align-items:center;height:26px;padding:0 11px;border-radius:6px;border:1px solid var(--border-hi);background:var(--surface-hi);font-size:12.5px;font-weight:700;color:var(--muted)}
+.ptab.on{background:var(--sec);border-color:var(--sec);color:var(--sec-on)}
+.alt-note{display:grid;grid-template-columns:60px minmax(0,1fr);gap:7px;padding:6px 10px;align-items:center;border-bottom:1px solid var(--border);font-size:13.5px}
+.alt-note .mdi{font-size:15px;color:var(--acc);justify-self:center}
+.alt-merge{display:flex;align-items:center;gap:7px;padding:6px 10px;min-height:41px;border-bottom:1px solid var(--border);font-size:10px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--sec-text)}
+.alt-merge .mdi{font-size:14px}
+.mdi-call-split,.mdi-call-merge{color:var(--sec)}
+.ptab.on .mdi-call-split{color:inherit}
+/* variants */
+.v-nest{margin:4px 0 4px 11px}
+.v-baton{border-left-color:var(--sec);background:linear-gradient(90deg,var(--sec-fill-3),transparent 55%)}
+.seam{margin:0;border-radius:0}
+.seam.top{border-radius:0 8px 0 0}
+.seam.bot{border-radius:0 0 8px 0}
+.seam>.bo-row:last-child{border-bottom:1px solid var(--border)}
+.v-stripe{position:relative;border-left:0;background:linear-gradient(90deg,var(--sec-fill-3),transparent 55%)}
+.v-stripe::before{content:"";position:absolute;left:1px;top:0;bottom:0;width:3px;background:var(--sec)}
+/* callouts */
+.ob{border-left:2px solid var(--acc-border);padding:1px 0 1px 14px;margin:0 0 14px}
+.ob h3{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--acc);margin:0 0 5px}
+.ob p{margin:0;font-size:13.5px;line-height:1.6;color:var(--text);text-wrap:pretty}
+.ob p+p{margin-top:7px}
+.ob code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;color:var(--sec-text);background:var(--sec-soft);padding:1px 5px;border-radius:4px}
+.rec{background:var(--acc-soft);border:1px solid var(--acc-border);border-radius:10px;padding:13px 15px;margin-bottom:14px}
+.rec .lbl{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--acc);display:block;margin-bottom:5px}
+.rec p{margin:0;font-size:13.5px;line-height:1.6;color:var(--text)}
+ul.tight{margin:8px 0 0;padding-left:18px;font-size:13px;line-height:1.65;color:var(--muted)}
+ul.tight b{color:var(--text);font-weight:600}
+ul.tight li+li{margin-top:5px}
+.verdict{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:11px}
+.verdict.keep{color:#7fd0a8;background:rgba(76,175,140,.14);border:1px solid rgba(76,175,140,.35)}
+.verdict.warn{color:#e0b45c;background:rgba(231,192,94,.12);border:1px solid var(--acc-border)}
+.verdict.no{color:#e08a8a;background:rgba(224,92,92,.12);border:1px solid rgba(224,92,92,.3)}
+.smallnote{font-size:12px;color:var(--dim);margin-top:11px;line-height:1.6}
+.anno{display:flex;gap:9px;align-items:flex-start;font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.5}
+.anno b{color:var(--text);font-weight:700}
+.anno .k{flex:none;width:19px;height:19px;border-radius:50%;background:var(--acc);color:var(--acc-contrast);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.pin{position:absolute;width:19px;height:19px;border-radius:50%;background:var(--acc);color:var(--acc-contrast);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;z-index:3}
+.rel{position:relative}
+</style>
+<template id="__bundler_thumbnail">
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="#1D2432"/><rect x="20" y="24" width="6" height="52" rx="3" fill="#e7c05e"/><rect x="34" y="38" width="6" height="26" rx="3" fill="#7fa0e8"/><rect x="48" y="30" width="32" height="7" rx="3" fill="#e7c05e"/><rect x="48" y="64" width="32" height="7" rx="3" fill="#e7c05e"/></svg>
+</template>
+</head>
+<body>
+
+<!-- ANATOMY -->
+<div id="f-anatomy" class="frame rel" style="left:0;top:0;width:660px;height:900px">
+<div class="fh"><h2>B · anatomy</h2><span class="tag">Detail</span></div>
+<p class="fsub">Three parts. Nothing else changes about the row types you already have.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="bo-row"><span class="bo-time">0:10</span><span class="bo-pop">3</span><div class="rc tint-builder">1</div><div class="rc tint-food">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+<div class="trans">
+<div class="cap"><span class="mdi mdi-arrow-up-bold"></span> Advancing to Feudal</div>
+<div class="bo-row"><span class="bo-time">0:45</span><span class="bo-pop">3</span><div class="rc empty">–</div><div class="rc tint-food">3</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Two more to <img class="ic" src="assets/res/food.webp" alt=""></div></div>
+<div class="bo-row"><span class="bo-time">~1:11</span><span class="bo-pop">6</span><div class="rc tint-builder">1</div><div class="rc tint-food">3</div><div class="rc tint-wood">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+</div>
+<div class="mk-bnd"><img src="assets/res/age_2.webp" alt=""><span class="n">Feudal Age</span><span class="t">~1:11</span></div>
+<div class="bo-row"><span class="bo-time">~1:17</span><span class="bo-pop">4</span><div class="rc empty">–</div><div class="rc tint-food">4</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note"></div></div>
+</div></div></div>
+<div class="anno"><span class="k">1</span><span><b>Cap.</b> Replaces "Advance to Feudal Age". Carries the action and nothing else — the timeline above the build already states the transition span better than a text fragment can. It is the row the player clicks the landmark on, so it keeps its place in the sequence.</span></div>
+<div class="anno"><span class="k">2</span><span><b>Rail.</b> 3px gold, gradient fading right, over the rows that fall inside the transition. Purely a containment signal — it adds no row.</span></div>
+<div class="anno"><span class="k">3</span><span><b>Boundary bar.</b> The only full bar. Tinted, with the age asset, the age name and the arrival time. Closes the rail.</span></div>
+
+<div class="ob" style="margin-top:18px">
+<h3>Where the transition lives</h3>
+<p>The transition belongs to the age you are <i>leaving</i> — "Advance to Feudal" happens in Dark Age. So the bracket sits at the tail of a section, and the boundary bar is the section's last item. An alternatives block inside a transition is therefore still inside one age section, which keeps the alternatives constraint intact.</p>
+</div>
+<div class="ob">
+<h3>Empty transitions</h3>
+<p>If nothing sits between advancing and arriving, the rail collapses to nothing and the cap sits directly on the boundary bar. Common on a fast castle with no intermediate steps — it should not leave an empty gold gutter.</p>
+</div>
+</div>
+
+<!-- CASE 1 -->
+<div id="f-case1" class="frame" style="left:720px;top:0;width:660px;height:590px">
+<div class="fh"><h2>Case 1 · alternatives in the body of a section</h2><span class="tag n">No conflict</span></div>
+<p class="fsub">The common case, and the one already designed. Gold and blue never touch: the transition has ended, the age bar closed it, and the alternatives block starts on clean ground.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="mk-bnd"><img src="assets/res/age_3.webp" alt=""><span class="n">Castle Age</span><span class="t">~2:08</span></div>
+<div class="bo-row"><span class="bo-time">~2:12</span><span class="bo-pop">6</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Scout before committing</div></div>
+<div class="alt">
+<div class="alt-head"><span class="mdi mdi-call-split"></span><span class="ptab on">Defend</span><span class="ptab">Keep booming</span><span class="ptab">Greedy</span></div>
+<div class="alt-note"><span class="mdi mdi-information-outline"></span><span>They opened <img class="ic" src="assets/res/horseman.webp" alt=""> before 4:00</span></div>
+<div class="bo-row"><span class="bo-time">~2:24</span><span class="bo-pop">6</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc tint-wood">1</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Wall the <img class="ic" src="assets/res/gold.webp" alt=""> line</div></div>
+<div class="alt-merge"><span class="mdi mdi-call-merge"></span> Both paths continue</div>
+</div>
+<div class="bo-row"><span class="bo-time">~2:40</span><span class="bo-pop">7</span><div class="rc empty">–</div><div class="rc tint-food">5</div><div class="rc tint-wood">2</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Either way: <img class="ic" src="assets/res/lumber-camp.webp" alt=""></div></div>
+</div></div></div>
+<p class="smallnote">Nothing to solve here. The interesting case is below: an alternatives block <i>inside</i> a transition — "while the landmark is up, either wall or push" — which is a real thing authors will want.</p>
+</div>
+
+<!-- V1 -->
+<div id="f-v1" class="frame" style="left:720px;top:650px;width:660px;height:640px">
+<div class="fh"><h2>Case 2 · v1 — nested rails</h2><span class="tag n">Variant</span></div>
+<span class="verdict warn"><span class="mdi mdi-alert-outline"></span> Honest but wide</span>
+<p class="fsub">Blue rail indented inside the gold one. Both contexts visible at once.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="trans">
+<div class="cap"><span class="mdi mdi-arrow-up-bold"></span> Advancing to Imperial</div>
+<div class="bo-row"><span class="bo-time">14:40</span><span class="bo-pop">7</span><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc tint-wood">7</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Keep the landmark builders on</div></div>
+<div class="alt v-nest">
+<div class="alt-head"><span class="mdi mdi-call-split"></span><span class="ptab on">Hold</span><span class="ptab">Push out</span></div>
+<div class="bo-row"><span class="bo-time">15:40</span><span class="bo-pop">7</span><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc tint-wood">7</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Stone walls on the front</div></div>
+<div class="alt-merge"><span class="mdi mdi-call-merge"></span> Both paths continue</div>
+</div>
+<div class="bo-row"><span class="bo-time">16:00</span><span class="bo-pop">8</span><div class="rc tint-food">7</div><div class="rc empty">–</div><div class="rc tint-wood">1</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Back to <img class="ic" src="assets/res/food.webp" alt=""></div></div>
+</div>
+<div class="mk-bnd"><img src="assets/res/age_4.webp" alt=""><span class="n">Imperial Age</span><span class="t">~16:40</span></div>
+</div></div></div>
+<ul class="tight">
+<li><b>Reads correctly:</b> you are advancing to Imperial, and inside that you are on the Hold path.</li>
+<li><b>Costs 14px of the description column</b> and, worse, the nested rows no longer line up with the rows above them — which is the one thing the table format is good at.</li>
+<li><b>Depth is only ever 2</b>, so it never gets worse than this. But it looks like it could.</li>
+</ul>
+</div>
+
+<!-- V2 -->
+<div id="f-v2" class="frame" style="left:1440px;top:0;width:660px;height:790px">
+<div class="fh"><h2>Case 2 · v2 — one rail, innermost wins</h2><span class="tag">Recommended</span></div>
+<span class="verdict keep"><span class="mdi mdi-check"></span> Recommended</span>
+<p class="fsub">A single rail channel at a fixed x. It is gold while the transition is the innermost context, and turns blue for the span of the alternatives, then back. No indentation.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="trans seam top">
+<div class="cap"><span class="mdi mdi-arrow-up-bold"></span> Advancing to Imperial</div>
+<div class="bo-row"><span class="bo-time">14:40</span><span class="bo-pop">7</span><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc tint-wood">7</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Keep as is</div></div>
+</div>
+<div class="alt v-baton seam">
+<div class="alt-head"><span class="mdi mdi-call-split"></span><span class="ptab on">Hold</span><span class="ptab">Push out</span></div>
+<div class="bo-row"><span class="bo-time">15:40</span><span class="bo-pop">7</span><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc tint-wood">7</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Stone walls on the front</div></div>
+<div class="alt-merge"><span class="mdi mdi-call-merge"></span> Both paths continue</div>
+</div>
+<div class="trans seam bot">
+<div class="bo-row"><span class="bo-time">16:00</span><span class="bo-pop">8</span><div class="rc tint-food">7</div><div class="rc empty">–</div><div class="rc tint-wood">1</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Back to <img class="ic" src="assets/res/food.webp" alt=""></div></div>
+</div>
+<div class="mk-bnd"><img src="assets/res/age_4.webp" alt=""><span class="n">Imperial Age</span><span class="t">~16:40</span></div>
+</div></div></div>
+<ul class="tight">
+<li><b>Columns never move.</b> Every row in the build sits on the same grid, at any nesting depth, on any screen width. On mobile that is the difference between working and not.</li>
+<li><b>The rail answers the local question.</b> "Which of the two am I on" is the actionable one; "am I still ageing up" is already answered by the cap above and the age bar below, which bracket the whole thing.</li>
+<li><b>The gold resumes after the merge</b>, which is what tells you the transition never ended.</li>
+<li><b>It contradicts what I said earlier about rails nesting.</b> That was written for the mobile card list, where indenting is cheap. In the desktop table it is not, and consistency across the two is worth more than the extra signal.</li>
+<li><b>Cost:</b> a reader glancing at one row mid-block sees blue only. Accepted, not mitigated — an age-up phase is a handful of rows, so the gold cap and the age bar are both on screen anyway. No sticky headers.</li>
+</ul>
+</div>
+
+<!-- V3 -->
+<div id="f-v3" class="frame" style="left:1440px;top:850px;width:660px;height:620px">
+<div class="fh"><h2>Case 2 · v3 — twin stripe</h2><span class="tag n">Variant</span></div>
+<span class="verdict no"><span class="mdi mdi-close"></span> Too fine</span>
+<p class="fsub">Both rails, side by side in the same 8px gutter, no indent.</p>
+<div class="card"><div class="card-body"><div class="bo">
+<div class="trans">
+<div class="cap"><span class="mdi mdi-arrow-up-bold"></span> Advancing to Imperial</div>
+<div class="bo-row"><span class="bo-time">14:40</span><span class="bo-pop">7</span><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc tint-wood">7</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Keep the landmark builders on</div></div>
+<div class="alt v-stripe" style="border-radius:0">
+<div class="alt-head"><span class="mdi mdi-call-split"></span><span class="ptab on">Hold</span><span class="ptab">Push out</span></div>
+<div class="bo-row"><span class="bo-time">15:40</span><span class="bo-pop">7</span><div class="rc empty">–</div><div class="rc empty">–</div><div class="rc tint-wood">7</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Stone walls on the front</div></div>
+<div class="alt-merge"><span class="mdi mdi-call-merge"></span> Both paths continue</div>
+</div>
+<div class="bo-row"><span class="bo-time">16:00</span><span class="bo-pop">8</span><div class="rc tint-food">7</div><div class="rc empty">–</div><div class="rc tint-wood">1</div><div class="rc empty">–</div><div class="rc empty">–</div><div class="bo-note">Back to <img class="ic" src="assets/res/food.webp" alt=""></div></div>
+</div>
+<div class="mk-bnd"><img src="assets/res/age_4.webp" alt=""><span class="n">Imperial Age</span><span class="t">~16:40</span></div>
+</div></div></div>
+<ul class="tight">
+<li><b>Keeps both signals and the alignment.</b> The blue stripe is painted inside the gold rail's padding rather than added as a border, so rows sit on exactly the same grid as v2 — verified, zero shift.</li>
+<li><b>But two 3px stripes 1px apart is a hairline pattern.</b> It reads as one thick smudged rail at mobile density, and in the light theme gold and blue at low alpha are close enough in value to merge. The signal it buys is the one v2 argues you do not need.</li>
+<li>Recorded so it is not proposed again.</li>
+</ul>
+</div>
+
+<!-- RULES -->
+<div id="f-rules" class="frame" style="left:0;top:960px;width:660px;height:790px">
+<div class="fh"><h2>Rules that fall out of v2</h2><span class="tag">Spec</span></div>
+<p class="fsub">If the rail reports only the innermost context, these have to hold.</p>
+<div class="ob">
+<h3>One rail channel</h3>
+<p>There is exactly one rail gutter, at a fixed x, for the whole build. Its colour is the innermost open context: gold for a transition, blue for an alternatives block, nothing for plain rows. Never two at once.</p>
+</div>
+<div class="ob">
+<h3>Depth is capped at two</h3>
+<p>Transition ⊃ alternatives is the only nesting that exists. Alternatives cannot nest, and an age-up cannot open inside a path — so a third rail is unreachable by construction.</p>
+</div>
+<div class="ob">
+<h3>Nothing sticks</h3>
+<p>No sticky caps, no sticky tabs. What makes "innermost wins" safe is that the transition is <b>short</b> — a handful of rows — so its cap and its closing age bar are almost always both on screen. If a build ever has a transition long enough for that to fail, that build has a bigger problem than the rail.</p>
+</div>
+<div class="ob">
+<h3>A block cannot straddle a boundary</h3>
+<p>An alternatives block that opens inside a transition must close inside it, before the age bar. The editor refuses to push the merge marker past the boundary, same rule that already stops it crossing an age-up.</p>
+</div>
+<div class="ob">
+<h3>Focus mode is unaffected</h3>
+<p>Focus mode shows one step at a time, so there is no rail. The transition contributes a cue at the advance and a cue at the arrival; the path bar behaves exactly as designed. Nesting is a list-rendering concern only.</p>
+</div>
+<div class="ob">
+<h3>The cap carries no times</h3>
+<p>Duration and arrival both live elsewhere already — the timeline above the build for the span, the boundary bar for the arrival. The cap is a label and a rail opener, nothing more.</p>
+</div>
+</div>
+
+</body>
+</html>
