@@ -142,7 +142,7 @@
         <!--One token, never the next step's full spread. The player is looking
             at a game, so the preview is a glance: when does the next thing
             happen, and what is the one thing it asks for.-->
-        <div class="fm-preview" v-if="nextPreview">
+        <div class="fm-preview" v-if="nextPreview && !pendingPick">
           <span>next {{ nextPreview.time }}</span>
           <span v-if="nextPreview.token" class="fm-preview-token">
             <template v-if="nextPreview.token.ageUp">&#8593;</template>
@@ -1818,6 +1818,9 @@ export default {
   .fm-pick {
     gap: 6px;
   }
+  .fm-pick-options {
+    gap: 6px;
+  }
   .fm-pick-cond {
     display: none;
   }
@@ -1827,8 +1830,10 @@ export default {
   .fm-pick-option {
     min-width: 0;
     flex: 1 1 120px;
-    min-height: 44px;
-    padding: 6px 10px;
+    min-height: 40px;
+    padding: 5px 10px;
+    align-items: center;
+    justify-content: center;
   }
   .fm-pick-title {
     font-size: 14px;
@@ -1839,17 +1844,25 @@ export default {
 }
 
 @container focus ((max-width: 300px) or (max-height: 190px)) {
-  /* The icon is the question now. */
-  .fm-pick-ask-text {
+  /* Nothing is left to say. Three coloured cards draining a timer, on a window
+     this size, are the question — and the row cost more height than the option
+     it was introducing. */
+  .fm-pick-ask {
     display: none;
+  }
+  .fm-pick {
+    gap: 4px;
+  }
+  .fm-pick-options {
+    gap: 4px;
   }
   .fm-pick-option {
     flex: 1 1 100%;
-    min-height: 38px;
-    padding: 4px 8px;
+    min-height: 30px;
+    padding: 2px 8px;
   }
   .fm-pick-title {
-    font-size: 13px;
+    font-size: 12px;
   }
   .fm-path-bar-title {
     font-size: 11px;
@@ -2033,6 +2046,10 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   align-content: center;
+  /* Not the default stretch. The options box is as tall as the step area, and
+     stretched items grew to fill it — a single row of two became two slabs, and
+     three rows could not fit at any size. */
+  align-items: center;
   max-width: 100%;
   min-height: 0;
   overflow-y: auto;
