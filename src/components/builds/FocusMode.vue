@@ -1839,7 +1839,7 @@ export default {
     font-size: 11px;
   }
   .fm-pick-title {
-    font-size: 13px;
+    font-size: 12px;
   }
   .fm-pick-timer {
     width: min(180px, 80%);
@@ -1867,7 +1867,7 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
   }
   .fm-pick-title {
-    font-size: 12px;
+    font-size: 11px;
   }
   .fm-path-bar-title {
     font-size: 11px;
@@ -2093,11 +2093,22 @@ export default {
   color: rgb(var(--v-theme-on-surface));
   cursor: pointer;
 }
+/* An odd one out ends up alone on the last row, and auto-placement puts it in
+   the first column — off to the left under two options above it. Spanning the
+   row lets it sit under the middle of them. It keeps a sensible width rather
+   than shrinking to its label, so the last option does not read as a different
+   kind of control from the ones above. */
+.fm-pick-option:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  justify-self: center;
+  min-width: min(100%, 160px);
+}
+
 .fm-pick-option:hover {
   background: rgba(var(--v-theme-alternative), 0.3);
 }
 .fm-pick-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   max-width: 100%;
   overflow: hidden;
