@@ -37,6 +37,14 @@ turn out to be wrong.
 Run `npm run check:setup` after touching any `.vue` file, and say plainly what
 has *not* been verified — rendering, layout and interaction need a browser.
 
+Run `npm run check:steps` after touching anything that reads a build. A
+section's `steps` holds ordinary steps, notes **and** alternatives blocks whose
+own steps live one level down, so iterating it directly reads a block as a step
+and misses everything inside. Seven of those shipped before the check existed.
+Go through `flattenSections`/`sectionOffsets` to read the build as one path, or
+`forEachStep` to visit every step in the document — sanitising, validating and
+counting all have to reach the paths nobody chose, because those are saved too.
+
 Logic that lives in a `.vue` file can still be tested without one: import
 `@vue/reactivity` and drive the real refs, computeds and watches. Such a
 harness has to sit **inside the project** — Node resolves packages from the

@@ -254,6 +254,7 @@ import { maps } from "@/composables/filter/mapDefaultProvider";
 import { strategies } from "@/composables/filter/strategyDefaultProvider";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
 import { selectionFromActive } from "@/composables/builds/alternativesDraft.js";
+import { forEachStep } from "@/composables/builds/useAgeTimings.js";
 import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
 import useDownload from "@/composables/converter/useDownload";
 
@@ -400,32 +401,39 @@ export default {
       }
     });
 
+    /**
+     * Cleans every step's description before the build is written.
+     *
+     * Through forEachStep, because a section's entries are no longer all steps.
+     * Walking them directly reached the main line only: the steps inside an
+     * alternatives block were never cleaned — and they are saved like any other
+     * — while the block object itself was handed a description it has no use
+     * for, sanitised from `undefined`.
+     */
     const sanitizeSteps = () => {
-      build.value.steps.forEach(function (stepCollection) {
-        stepCollection.steps.forEach(function (step, index) {
-          this[index].description = sanitizeHtml(step.description, {
-            allowedTags: ["img", "br"],
-            allowedClasses: {
-              img: [
-                "icon",
-                "icon-none",
-                "icon-military",
-                "icon-tech",
-                "icon-default",
-                "icon-landmark",
-                "icon-ability",
-              ],
+      forEachStep(build.value.steps, (step) => {
+        step.description = sanitizeHtml(step.description, {
+          allowedTags: ["img", "br"],
+          allowedClasses: {
+            img: [
+              "icon",
+              "icon-none",
+              "icon-military",
+              "icon-tech",
+              "icon-default",
+              "icon-landmark",
+              "icon-ability",
+            ],
+          },
+          allowedAttributes: {
+            img: ["style", "class", "src", "title"],
+          },
+          allowedStyles: {
+            "*": {
+              "vertical-align": [/^middle$/],
             },
-            allowedAttributes: {
-              img: ["style", "class", "src", "title"],
-            },
-            allowedStyles: {
-              "*": {
-                "vertical-align": [/^middle$/],
-              },
-            },
-          });
-        }, stepCollection.steps);
+          },
+        });
       });
     };
 

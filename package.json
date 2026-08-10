@@ -12,6 +12,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "check:icons": "node scripts/check-icons.mjs",
+    "check:steps": "node scripts/check-steps.mjs",
     "check:setup": "node scripts/check-setup.mjs"
   },
   "dependencies": {

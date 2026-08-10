@@ -168,6 +168,45 @@ function sectionStepList(section, sectionIndex, selection) {
 }
 
 /**
+ * Visits every step the document holds — down every path, not just the one
+ * being read.
+ *
+ * The other half of flattenSections(), and the half that is easy to forget
+ * exists. Flattening answers "what is being read", so it resolves each block to
+ * one path; that is exactly wrong for anything acting on the *document* rather
+ * than on a reading. Sanitising, validating, migrating and counting all have to
+ * reach the paths nobody chose, because those get saved too.
+ *
+ * Steps are handed over by reference, so a visitor may write to them.
+ *
+ * @param {Array} sections - The build's sections.
+ * @param {Function} visit - Called with (step, {sectionIndex, itemIndex,
+ *   pathIndex}). `pathIndex` is null for a step on the main line.
+ * @return {void}
+ */
+export function forEachStep(sections, visit) {
+  (sections ?? []).forEach((section, sectionIndex) => {
+    (section?.steps ?? []).forEach((item, itemIndex) => {
+      if (!item?.kind) {
+        visit(item, { sectionIndex, itemIndex, pathIndex: null });
+        return;
+      }
+
+      if (item.kind !== ALTERNATIVES) return;
+
+      (item.paths ?? []).forEach((path, pathIndex) => {
+        (path?.steps ?? []).forEach((step) => {
+          //Admission A-4 again: blocks do not nest, and an inner one is skipped
+          //rather than descended into.
+          if (step?.kind) return;
+          visit(step, { sectionIndex, itemIndex, pathIndex });
+        });
+      });
+    });
+  });
+}
+
+/**
  * Flattens a build's sections into the ordered step list the timing helpers read.
  *
  * Section steps only, in order, and never the section gameplan — exactly as
