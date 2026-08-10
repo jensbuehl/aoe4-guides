@@ -1912,6 +1912,23 @@ export default {
 
 /* Narrower still. The options stay side by side rather than going full width —
    two to a row is half the height of two rows, and height is what runs out. */
+/* Two columns once the box is too narrow to be trusted to find its own count,
+   and — because the count is now known — the rule that stops an odd one out
+   sitting off to the left. Auto-placement puts it in the first column of the
+   last row; spanning lets it sit under the middle of the pair above. It keeps a
+   sensible width rather than shrinking to its label, so the last option does
+   not read as a different kind of control from the ones above it. */
+@container focus (max-width: 360px) {
+  .fm-pick-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .fm-pick-option:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    min-width: min(100%, 160px);
+  }
+}
+
 @container focus (max-width: 300px) {
   .fm-pick-title {
     font-size: 11px;
@@ -2103,12 +2120,12 @@ export default {
 .fm-pick-options {
   flex: 1 1 auto;
   display: grid;
-  /* Two, stated. auto-fit gave four columns on a desktop, which put three
-     options in one row on one screen and two-plus-one on another — and the
-     rule that centres a lone last option only means anything against a known
-     column count. A fork is a choice between a handful of named things; two
-     abreast reads as a pair at every size. */
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* As many as fit, up to the box's width — three alternatives go across in one
+     row on a monitor and fold to two-plus-one in a floating window. The column
+     count is only left to the layout above 360px; below it the tier at the
+     bottom of this file states two, because that is where the rule centring a
+     lone last option needs to know how many there are. */
+  grid-template-columns: repeat(auto-fit, minmax(116px, 1fr));
   /* 1fr, not a length. The rows divide a height that is already decided — the
      step area is a fixed grid track, so this box has a definite height before
      the rows are sized — which means three options fit a 90px floating window
@@ -2119,11 +2136,14 @@ export default {
   align-content: center;
   justify-content: center;
   width: 100%;
-  max-width: 420px;
-  /* The rows divide *this*, not the screen. Without the cap a full-height
-     window gave two rows of six hundred pixels with a button floating in the
-     middle of each — technically fitting, visibly broken. */
-  max-height: 240px;
+  max-width: 460px;
+  /* The rows divide this box, and the box is never taller than the rows want to
+     be. Both halves matter: without the cap, a full-height window gave two rows
+     of six hundred pixels with a button floating in the middle of each, so the
+     vertical gap read as ten times the horizontal one. With it, `1fr` still
+     shrinks the rows when the window is too short for them — which is the whole
+     reason they are `1fr` and not a length. */
+  max-height: max-content;
   min-height: 0;
   overflow: hidden;
 }
@@ -2149,17 +2169,6 @@ export default {
   color: rgb(var(--v-theme-on-surface));
   cursor: pointer;
 }
-/* An odd one out ends up alone on the last row, and auto-placement puts it in
-   the first column — off to the left under two options above it. Spanning the
-   row lets it sit under the middle of them. It keeps a sensible width rather
-   than shrinking to its label, so the last option does not read as a different
-   kind of control from the ones above. */
-.fm-pick-option:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-  justify-self: center;
-  min-width: min(100%, 160px);
-}
-
 .fm-pick-option:hover {
   background: rgba(var(--v-theme-alternative), 0.3);
 }
