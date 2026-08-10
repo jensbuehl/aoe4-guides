@@ -101,8 +101,18 @@
           <div class="fm-pick">
             <div class="fm-pick-ask">
               <v-icon size="18" class="fm-pick-mark">mdi-call-split</v-icon>
-              <span>Which way?</span>
-              <span class="fm-pick-count" v-if="pickCountdown != null">{{ pickCountdown }}</span>
+              <span class="fm-pick-ask-text">Which way?</span>
+            </div>
+            <!--Keyed on the deadline so a fresh question restarts the drain: the
+                animation is what makes the bar move, and an element that is only
+                restyled keeps playing the old one.-->
+            <div
+              class="fm-pick-timer"
+              v-if="pickSeconds"
+              :key="pickDeadline"
+              :style="{ '--pick-secs': pickSeconds + 's' }"
+            >
+              <i></i>
             </div>
             <div class="fm-pick-options">
               <button
@@ -393,7 +403,12 @@ export default {
     const stepPick = ref([]);
     //Seconds left before the clock answers for the player. Null when nothing is
     //being asked.
-    const pickCountdown = ref(null);
+    //How long the drain lasts, in seconds — a CSS duration, not a number on
+    //screen. The count used to be sampled from the clock once a second and
+    //rounded up, which skips: setInterval drifts a few milliseconds a tick, and
+    //ceil() of a drifting sample drops a value the moment the drift crosses an
+    //integer. A bar animated by the browser has no sampling to drift.
+    const pickSeconds = ref(null);
     //Elapsed-seconds moment at which the clock answers for the player.
     const pickDeadline = ref(null);
     //The block whose question the player asked for a second time, if any. It is
@@ -743,17 +758,35 @@ export default {
       focusSelection.clear(bar.key);
     }
 
-    //Reset whenever a fork arrives or leaves — arriving too, or a question shown
-    //while paused would open displaying the last one's leftover count.
+    //Armed when a fork is on screen *and* the clock is running, disarmed the
+    //moment either stops being true.
     //
-    //Arming is tickPick's job, not this watch's: the deadline is a point on the
-    //build clock, and computing one while the clock is stopped dates it to an
-    //anchor that is about to move — the question would then arrive already
-    //expired the moment play resumed.
-    watch(pendingPick, () => {
-      pickDeadline.value = null;
-      pickCountdown.value = null;
-    });
+    //Both, because a deadline is a point on the build clock: computing one while
+    //that clock is stopped dates it to an anchor about to move, and the question
+    //would arrive already expired the second play resumed. Paused, there is no
+    //deadline and nothing is drawn — which is the truth, since nothing is
+    //approaching.
+    //
+    //The guard against re-arming is what makes this safe to fire often:
+    //pendingPick hands back a fresh object each time it is read, so this runs on
+    //changes that are not changes, and an unguarded arm would restart the drain
+    //under the player.
+    watch(
+      [pendingPick, timer],
+      () => {
+        const pick = pendingPick.value;
+        if (!pick || pick.reopened || timer.value == null) {
+          pickDeadline.value = null;
+          pickSeconds.value = null;
+          return;
+        }
+        if (pickDeadline.value != null) return;
+
+        pickDeadline.value = pickDeadlineFor();
+        pickSeconds.value = Math.max(0, pickDeadline.value - elapsedSecondsNow());
+      },
+      { immediate: true }
+    );
 
     /**
      * A choice belongs to the pass through the block that made it.
@@ -796,7 +829,7 @@ export default {
      * @return {void}
      */
     function choosePath(key, pathIndex) {
-      pickCountdown.value = null;
+      pickSeconds.value = null;
       pickDeadline.value = null;
       if (reopenedKey.value === key) reopenedKey.value = null;
       focusSelection.select(key, pathIndex);
@@ -974,27 +1007,18 @@ export default {
      * until the paths rejoin — because a build that stops mid-game is worse than
      * one that guessed.
      *
-     * Driven from the progress tick rather than a timer of its own, so it counts
-     * only while the clock is running: paused, there is nothing to stall — and
-     * nothing to show either, which is why the deadline is armed here rather
-     * than when the question appears. A number frozen on screen states a
-     * deadline that is not approaching.
+     * Nothing is displayed from here — the drain is a CSS animation, and this is
+     * only the threshold. One crossing, so sampling once a second is exact
+     * enough; it was displaying a *count* from the same sample that made the
+     * number skip.
      *
      * @return {void}
      */
     function tickPick() {
       const pick = pendingPick.value;
-      if (!pick || pick.reopened) {
-        pickCountdown.value = null;
-        return;
-      }
+      if (!pick || pickDeadline.value == null) return;
 
-      if (pickDeadline.value == null) pickDeadline.value = pickDeadlineFor();
-
-      const left = pickDeadline.value - elapsedSecondsNow();
-      pickCountdown.value = Math.max(0, Math.ceil(left));
-
-      if (left <= 0) choosePath(pick.key, 0);
+      if (elapsedSecondsNow() >= pickDeadline.value) choosePath(pick.key, 0);
     }
 
     /**
@@ -1413,7 +1437,8 @@ export default {
       pendingPick,
       activePathBar,
       reopenPick,
-      pickCountdown,
+      pickSeconds,
+      pickDeadline,
       choosePath,
       conditionOfPath,
       currentStepProgress,
@@ -1780,6 +1805,57 @@ export default {
   }
 }
 
+/* The fork, made to fit.
+   
+   Two things give way, in this order. First the conditions: they are what the
+   author wrote to help a reader decide *before* the game, and mid-game on a
+   small window the titles carry the decision on their own. Then the question text,
+   which the split icon already says.
+   
+   The options themselves never give way past a thumb's width — a control too
+   small to hit is worse than one that has to wrap. */
+@container focus ((max-width: 420px) or (max-height: 320px)) {
+  .fm-pick {
+    gap: 6px;
+  }
+  .fm-pick-cond {
+    display: none;
+  }
+  .fm-pick-ask {
+    font-size: 11px;
+  }
+  .fm-pick-option {
+    min-width: 0;
+    flex: 1 1 120px;
+    min-height: 44px;
+    padding: 6px 10px;
+  }
+  .fm-pick-title {
+    font-size: 14px;
+  }
+  .fm-pick-timer {
+    width: min(180px, 80%);
+  }
+}
+
+@container focus ((max-width: 300px) or (max-height: 190px)) {
+  /* The icon is the question now. */
+  .fm-pick-ask-text {
+    display: none;
+  }
+  .fm-pick-option {
+    flex: 1 1 100%;
+    min-height: 38px;
+    padding: 4px 8px;
+  }
+  .fm-pick-title {
+    font-size: 13px;
+  }
+  .fm-path-bar-title {
+    font-size: 11px;
+  }
+}
+
 /* Below this the box is a strip beside a minimap. The OS window title already
    carries the build name, so the header row is redundant rather than merely
    tight, and the next-step preview is a luxury at this size.
@@ -1903,8 +1979,14 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100%;
+  /* Without this the column cannot be shorter than its content, so a third
+     alternative pushed the question itself off the top and clipped the last
+     option under the dock. Now the options give way instead, and the thing
+     being asked stays on screen. */
+  min-height: 0;
 }
 .fm-pick-ask {
+  flex: 0 0 auto;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1919,19 +2001,41 @@ export default {
 }
 /* The clock's own answer, counting down in the open. A question with a hidden
    deadline is worse than one with none. */
-.fm-pick-count {
-  min-width: 22px;
-  text-align: center;
-  border-radius: 11px;
-  padding: 1px 7px;
-  background: rgba(var(--v-theme-alternative), 0.22);
+/* The whole deadline in one glance, and nothing to read. Driven by the browser
+   rather than by the tick, so throttling a background window cannot make it
+   stutter — and there is no number to skip. */
+.fm-pick-timer {
+  width: min(220px, 70%);
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(var(--v-theme-alternative), 0.25);
+  overflow: hidden;
+}
+.fm-pick-timer i {
+  display: block;
+  height: 100%;
+  background: rgb(var(--v-theme-alternative));
+  transform-origin: left center;
+  animation: fm-pick-drain var(--pick-secs) linear forwards;
+}
+@keyframes fm-pick-drain {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
 }
 .fm-pick-options {
+  flex: 0 1 auto;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: center;
   max-width: 100%;
+  min-height: 0;
+  overflow-y: auto;
 }
 .fm-pick-option {
   display: flex;
@@ -1961,10 +2065,15 @@ export default {
 
 /* Thin on purpose: it answers "which way am I going" and offers to change it,
    and it must not take room from the step a player is reading. */
+/* Centred, because everything else on this screen is: the clock, the economy
+   and the transport all sit on the middle line, and a label pinned left with a
+   button pinned right was the one element that spread itself across a wide
+   window. */
 .fm-path-bar {
   grid-row: 4;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   min-height: 22px;
   padding: 0 10px;
@@ -1977,7 +2086,7 @@ export default {
   color: rgb(var(--v-theme-alternative));
 }
 .fm-path-bar-title {
-  flex: 1 1 auto;
+  flex: 0 1 auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1997,5 +2106,17 @@ export default {
 }
 .fm-path-bar-switch:hover {
   background: rgba(var(--v-theme-alternative), 0.25);
+}
+/* A 22px bar must not become a 44px one just to be tappable, so the target
+   grows and the button does not. */
+@media (pointer: coarse) {
+  .fm-path-bar-switch {
+    position: relative;
+  }
+  .fm-path-bar-switch::after {
+    content: "";
+    position: absolute;
+    inset: -12px -10px;
+  }
 }
 </style>
