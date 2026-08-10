@@ -1,5 +1,5 @@
 <template>
-  <div class="alt-bar">
+  <div :class="['alt-bar', stacked && 'alt-bar--stacked']">
     <!--One box per tab, holding either the name or the field that edits it. Same
         container either way, so switching to rename cannot change the tab's
         width — and the controls keep their place whether or not the tab is the
@@ -26,8 +26,22 @@
       <span v-else class="alt-tab-label">{{ path.title }}</span>
       <!--The condition, where a reader is deciding. It is the path's first note,
           so it also stands as the first row once the path is chosen — this is
-          the same text, brought forward to the moment of the choice.-->
-      <v-tooltip v-if="conditionOf(path)" activator="parent" location="top" max-width="360">
+          the same text, brought forward to the moment of the choice.
+
+          Stacked, it is written out on a second line instead of hovered for:
+          there is no hover on a phone, and a tooltip is the one place the thing
+          a reader needs in order to choose could not be reached.-->
+      <span
+        v-if="stacked && conditionOf(path)"
+        class="alt-tab-cond"
+        v-html="conditionOf(path)"
+      ></span>
+      <v-tooltip
+        v-if="!stacked && conditionOf(path)"
+        activator="parent"
+        location="top"
+        max-width="360"
+      >
         <span
           :style="{ color: $vuetify.theme.current.colors.primary }"
           v-html="conditionOf(path)"
@@ -73,6 +87,9 @@ export default {
     paths: { type: Array, required: true },
     active: { type: Number, default: 0 },
     readonly: { type: Boolean, default: false },
+    // Full-width rows rather than a row of pills, for a reader choosing with a
+    // thumb. Carries the condition on a second line, since touch has no hover.
+    stacked: { type: Boolean, default: false },
     // True while this block's active path is being renamed.
     renaming: { type: Boolean, default: false },
   },
@@ -81,7 +98,8 @@ export default {
     const titleField = ref(null);
 
     /**
-     * What a path's tooltip says: its condition, which is its first note.
+     * The condition a reader is deciding on: the path's first note. Shown in a
+     * tooltip normally, written out when stacked.
      *
      * @param {Object} path - One path of the block.
      * @return {string|null} The condition's rich text, or null when unwritten.
@@ -210,5 +228,33 @@ export default {
   text-transform: none;
   letter-spacing: 0;
   border-radius: 6px;
+}
+
+/* A reader choosing with a thumb, not a pointer over a row of pills. Same tabs,
+   same colours, same component — laid down the page at a size a thumb can hit,
+   with the thing being decided written out rather than hovered for. */
+.alt-bar--stacked {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+}
+.alt-bar--stacked .alt-tab {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  height: auto;
+  min-height: 44px;
+  padding: 8px 12px;
+  line-height: 1.3;
+}
+.alt-bar--stacked .alt-tab-label {
+  white-space: normal;
+}
+.alt-tab-cond {
+  font-size: 0.75rem;
+  font-weight: 400;
+  opacity: 0.85;
 }
 </style>

@@ -423,6 +423,7 @@
             :paths="item.paths"
             :active="item.active"
             readonly
+            stacked
             @select="switchPath(index, $event)"
           />
         </div>
@@ -3530,11 +3531,29 @@ tbody tr:has(+ tr.ins-row--trailing) td {
    introduces. A block marker and an age marker are the same kind of row. */
 .alt-card-xs--read {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
-  flex-wrap: wrap;
   min-height: 42px;
-  padding: 0 14px;
+  padding: 10px 14px;
+  /* The choice stays on screen for as long as its consequences do. A reader
+     scrolling down one path has no other way to see which one they are reading,
+     and scrolling back up to change it is the point at which they give up and
+     read the wrong path instead. Sticky within the block's own wrapper, so it
+     lets go the moment the paths rejoin. */
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  /* Opaque: the card's own tint is translucent, and steps scrolling underneath
+     a translucent bar are unreadable through it. */
+  background: rgb(var(--v-theme-surface));
+  background-image: linear-gradient(
+    rgba(var(--v-theme-alternative), 0.12),
+    rgba(var(--v-theme-alternative), 0.12)
+  );
+}
+.alt-card-xs--read .alt-mark {
+  /* Lines up with the first tab's text rather than the middle of the stack. */
+  margin-top: 12px;
 }
 .alt-card-head-xs {
   display: flex;

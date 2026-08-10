@@ -151,7 +151,7 @@ choice renders that path's steps in a lane, and the steps after the block show r
 - [X] T028 [US2] Render the pick-one row on desktop at one table-row height, **titles only**, option controls sized to content and not stretched, in `src/components/builds/BuildOrderSectionEditor.vue` (FR-012) — the block's opening row is this row, in both modes
 - [X] T029 [US2] ~~Collapsed-detour state~~ — **withdrawn with the `main` flag** (FR-005 revised). One reading state: the reader is always offered the pick
 - [X] T030 [US2] ~~Persist the chosen path~~ — **withdrawn (author's call).** Choices vary by matchup and by game; every visit and every run starts fresh. The persistence code is removed from `useActivePath.js` rather than left unused
-- [ ] T031 [US2] Render the mobile pick card — options stacked full-width, ≥44px, description on a second line, sharing the step cards' width, radius and border — in `src/components/builds/BuildOrderSectionEditor.vue` (FR-013)
+- [X] T031 [US2] Render the mobile pick card — options stacked full-width, ≥44px, description on a second line — as a `stacked` mode of the existing `AlternativePathTabs`, not a second control. Same tabs, same colours, same component, laid down the page. The condition is **written out** rather than hovered for: a tooltip was the one place the thing a reader needs in order to choose could not be reached on touch
 - [X] T032 [US2] Make the mobile path rail **continuous** with the pick card's rail and **nested inside** the gold age rail, in `src/components/builds/BuildOrderSectionEditor.vue` — one rail on the block's wrapper, x=6 at the top level and x=14 inside an age-up
 **Re-scoped after US1 and the mobile work.** Building the editor built most of
 the reading view with it: the same component renders both, so the block's rows,
@@ -163,7 +163,7 @@ what it is made on, and who else can see it.
 - [X] T033a [US2] Hold the reader's choice in `useActivePath`, provided by `BuildDetails`. **Never about saving it** — about the rest of the page being able to see it: `AgeTimeline` and the economy chart it hosts read `build.steps`, so they showed the *first* path's timings and economy beside the chosen path's steps. They read the shared selection now, and a switch clears the row↔chart highlight (S-2)
 - [X] T033 [US2] Provide the selection from the build page and pass it through to `flattenSections`/`sectionOffsets`, in `src/views/builds/BuildDetails.vue` and `src/components/builds/BuildOrderEditor.vue`
 - [X] T033b [US2] A block is inserted with **two** paths, and removing one of two dissolves it onto the main line — *"A or B"*, never *"A or nothing"* (author's call). Optional-detour semantics are out of scope
-- [ ] T034 [US2] Sticky pick card while scrolling inside a path on mobile, so the active choice is never off-screen, in `src/components/builds/BuildOrderSectionEditor.vue`
+- [X] T034 [US2] Sticky pick card while scrolling inside a path on mobile, in `src/components/builds/BuildOrderSectionEditor.vue`. Sticky within the block's own wrapper, so it lets go the moment the paths rejoin. Needs an opaque background — the card's tint is translucent, and steps scrolling under a translucent bar are unreadable through it
 - [ ] T035 [US2] Verify B-plain against the T003 screenshots on both breakpoints, light and dark (FR-017, SC-005)
 
 **Checkpoint (commit: `feat:`)** — US2 complete. Quickstart gate 17–22. SC-002, SC-005.
