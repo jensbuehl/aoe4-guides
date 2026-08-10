@@ -1,5 +1,5 @@
 <template>
-  <div :class="['alt-bar', stacked && 'alt-bar--stacked']">
+  <div :class="['alt-bar', stacked && 'alt-bar--stacked']" role="tablist">
     <!--One box per tab, holding either the name or the field that edits it. Same
         container either way, so switching to rename cannot change the tab's
         width — and the controls keep their place whether or not the tab is the
@@ -8,7 +8,12 @@
       v-for="(path, pathIndex) in paths"
       :key="'p' + pathIndex"
       :class="['alt-tab', pathIndex === active && 'alt-tab--active']"
+      role="tab"
+      :tabindex="renaming && pathIndex === active ? -1 : 0"
+      :aria-selected="pathIndex === active"
       @click="$emit('select', pathIndex)"
+      @keydown.enter.prevent="$emit('select', pathIndex)"
+      @keydown.space.prevent="$emit('select', pathIndex)"
     >
       <input
         v-if="renaming && pathIndex === active"
@@ -47,9 +52,32 @@
           v-html="conditionOf(path)"
         ></span>
       </v-tooltip>
+      <!--Reachable, not merely clickable. These are the only way to rename or
+          remove a path, so a keyboard that could select a tab but not act on it
+          would leave a reader able to read the feature and an author unable to
+          use it. `stop` on the key handlers as well as the clicks: without it
+          the tab behind them takes the same Enter and re-selects itself.-->
       <span v-if="!readonly" class="alt-tab-actions">
-        <v-icon size="13" @click.stop="$emit('rename', pathIndex)">mdi-pencil</v-icon>
-        <v-icon size="13" @click.stop="$emit('remove', pathIndex)">mdi-close</v-icon>
+        <v-icon
+          size="13"
+          role="button"
+          :tabindex="pathIndex === active ? 0 : -1"
+          aria-label="Rename this path"
+          @click.stop="$emit('rename', pathIndex)"
+          @keydown.enter.stop.prevent="$emit('rename', pathIndex)"
+          @keydown.space.stop.prevent="$emit('rename', pathIndex)"
+          >mdi-pencil</v-icon
+        >
+        <v-icon
+          size="13"
+          role="button"
+          :tabindex="pathIndex === active ? 0 : -1"
+          aria-label="Remove this path"
+          @click.stop="$emit('remove', pathIndex)"
+          @keydown.enter.stop.prevent="$emit('remove', pathIndex)"
+          @keydown.space.stop.prevent="$emit('remove', pathIndex)"
+          >mdi-close</v-icon
+        >
       </span>
     </div>
     <v-btn
@@ -164,6 +192,22 @@ export default {
    "the pointer is here" gave one channel two meanings, and an inactive tab lit
    up as though it had been selected. Hovering reveals the controls — that is the
    whole of the feedback. */
+/* The keyboard needs to see where it is. Hover was deliberately given no fill —
+   the background says which tab is open and nothing else — so focus gets an
+   outline instead of borrowing that channel. */
+.alt-tab:focus-visible,
+.alt-tab-actions .v-icon:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-alternative));
+  outline-offset: 2px;
+}
+/* Revealed by focus exactly as by hover, and by the same pair of properties —
+   `opacity: 0` alone still leaves a control focusable, so a keyboard would
+   otherwise land on something nobody can see. Only the open tab's, matching
+   the hover rule above: the others are not reachable at all. */
+.alt-tab--active:focus-within .alt-tab-actions {
+  opacity: 0.85;
+  pointer-events: auto;
+}
 .alt-tab--active {
   background: rgb(var(--v-theme-alternative));
   color: rgb(var(--v-theme-background));

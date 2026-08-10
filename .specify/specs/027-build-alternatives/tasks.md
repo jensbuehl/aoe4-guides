@@ -33,7 +33,7 @@ of them**, because the add menu ships before alternatives exist.
 builds without alternatives to be untouched, and that is only provable against a baseline taken now.
 
 - [ ] T001 Pick and record the four test builds named in [quickstart.md](./quickstart.md) — B-plain, B-alt (to author later), B-rewind (an existing build with no economy chart), and one legacy build with no `type` on its sections — as URLs in a scratch note
-- [ ] T002 [P] Export B-plain to overlay format from `main` and save the JSON as the byte-diff baseline for quickstart item 3
+- [X] T002 [P] ~~Save a JSON baseline by hand~~ — **superseded.** `main` *is* the baseline: `git show main:…/useExportOverlayFormat.js` gives the old exporter, which can be run beside the new one over the same build. A saved file would have gone stale and could not be re-derived; this can be re-run at any commit
 - [ ] T003 [P] Capture reference screenshots of B-plain in light and dark: desktop steps table, mobile steps list at 390px, economy chart, age timeline
 - [ ] T004 [P] Confirm B-rewind currently shows **no** economy chart, and record which build it is — this is the SC-007 witness
 
@@ -54,7 +54,9 @@ stop and find out why before continuing.
 - [X] T005 Replace the inline section walk in `onMounted` with a `flattenSections(props.build.steps)` call in `src/components/builds/FocusMode.vue`, keeping the `section.gameplan` folding and the `.png`→`.webp` rewrite as a post-pass over the returned list
 - [X] T005a Route `readAgeUpMarkers` and `readAgeMarkers` through `sectionOffsets` in `src/components/builds/FocusMode.vue` — **added during implementation**: both kept private cursors over `section.steps.length`, a fifth derivation of the flat index space that would desync the moment a block contributed a different count
 - [X] T006 Replace `convertSectionsToSteps` with a `flattenSections` call in `src/composables/converter/useExportOverlayFormat.js`, **preserving the `step.age` stamping exactly as it is** — including that it mutates the source step (pre-existing; not this commit's business)
-- [ ] T007 Run quickstart items 1–5 and diff the export JSON against the T002 baseline — must be byte-identical
+- [X] T007 The export is byte-identical for a build with no alternatives (FR-017), proved by running `main`'s exporter beside the current one over the same builds — a sectioned build with ages and a section note, and a legacy build with no sections at all. Both identical. Two things this turned up:
+  - The old exporter **mutated the build it was given**, so each run needs its own `structuredClone` or the second exporter sees the first one's leavings
+  - `main`'s exporter **throws** on a note entry (`convertDescription(undefined)`). Notes are new in this feature, so nothing authored before it can contain one — there is no "before" for that case to be identical to, and it is excluded from the equivalence set rather than counted as a difference
   - **Code-level equivalence proved** (harness, 8 build shapes): old vs new export flatten, exported payload, focus flatten, and section offsets all match on every well-formed shape, with step identity preserved by reference.
   - **One behaviour change found and accepted**, on a section object with **no `steps` key at all**: the old export emitted an `undefined` entry and then threw `Cannot read properties of undefined`, and the old focus-mode walk threw `"undefined" is not valid JSON`. Both now skip the section. Strictly an improvement, unreachable from any build the editor can produce, but **not** byte-identity — recorded rather than hidden.
   - **Still needed from a browser**: quickstart 1–2 and 4–5 (B-plain renders and plays, legacy build renders, console clean), plus a real export diff against a live build.
@@ -203,8 +205,8 @@ if untouched, path is named, mid-detour switch works (quickstart 31–39).
 
 **⚠️ The timer is what is under test.** Watch the clock, not the cards.
 
-- [ ] T043 [US4] Extract the `onMounted` queue construction into a `buildQueue(selection)` function in `src/components/builds/FocusMode.vue`, preserving the existing order — timings, then provenance, then markers, then the redundant filter over all five parallel arrays (research R-5)
-- [ ] T044 [US4] Rebuild the queue on path switch and **re-seek by elapsed time**, never by index — the new cursor is the last step whose `startTime <= totalElapsedTime` — in `src/components/builds/FocusMode.vue`
+- [X] T043 [US4] Extract the `onMounted` queue construction into a `buildQueue(selection)` function in `src/components/builds/FocusMode.vue`, preserving the existing order — timings, then provenance, then markers, then the redundant filter over all five parallel arrays (research R-5)
+- [X] T044 [US4] Rebuild the queue on path switch and **re-seek by elapsed time**, never by index — the new cursor is the last step whose `startTime <= totalElapsedTime` — in `src/components/builds/FocusMode.vue`
 - [X] T045 [US4] Render the pick in the step-content area only, leaving header, progress bars, resource dock and transport controls unmoved, in `src/components/builds/FocusMode.vue` (FR-015)
 - [X] T046 [US4] Add the countdown fallback to `main` (else first path), its length the gap to the next step capped around 10s, so auto-advance never stalls, in `src/components/builds/FocusMode.vue`
 - [X] T047 [US4] Add the ~22px active-path bar with an explicit **switch** control as a **new grid row track** — not an inserted element, or the bar stretches (design-input implementation note) — in `src/components/builds/FocusMode.vue`. The bar shows for **every** step of the block, not only the first: that is exactly how long the choice stays changeable. Switching cycles to the next path (a fork is two, not a list to read) and re-seeks to the clock
@@ -223,9 +225,11 @@ if untouched, path is named, mid-detour switch works (quickstart 31–39).
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T051 [P] Audit every alternatives affordance for colour and mark: secondary only, never gold; `mdi-call-split` for the branch and `mdi-call-merge` for the close, never a rotated split (FR-016, SC-006)
+- [X] T051 [P] Audited: every branch is `mdi-call-split` and every close `mdi-call-merge`, with no rotated or flipped split anywhere. Colour is the `alternative` token throughout — added to `main.js` precisely because `secondary` swaps navy↔gold between themes and would have gone gold in dark, which FR-016 forbids. The one `accent` in the neighbourhood is the **note** info icon, which is a note affordance and matches how section notes are coloured everywhere else
 - [ ] T052 [P] Check every new control in light and dark at both breakpoints (quickstart 41)
-- [ ] T053 [P] Check keyboard reachability and operation of the add menu, the pick control and the path tabs (quickstart 43)
+- [X] T053 [P] Keyboard reachability checked, and one real defect fixed. The add menu (a `v-btn` activator) and focus mode's pick options and *change* control (real `<button>`s) were already reachable. **The path tabs were not** — `<div @click>` has no keyboard route at all, so a keyboard user could read a build with alternatives but never switch path. They now carry `role="tab"`/`aria-selected` in a `role="tablist"`, `tabindex`, Enter and Space, and a `:focus-visible` outline (an outline rather than a fill, because the fill already means "this tab is open"). Two follow-ons that are easy to get wrong:
+  - The rename and remove icons were unreachable too, and they are the **only** way to rename or remove a path. They take `tabindex` only on the open tab — `opacity: 0` still leaves a control focusable, so a keyboard would otherwise land on something nobody can see — and `.stop` on their key handlers, or the tab behind them takes the same Enter and re-selects itself
+  - `:focus-within` reveals them by the same `opacity`/`pointer-events` pair hover uses
 - [X] T054 The overlay export takes a selection and flattens it onto the main line (FR-018, quickstart 42). The overlay has no notion of a fork, so a path has to be chosen before the build leaves the site: `BuildDetails` passes the reader's, `BuildEditor` passes `selectionFromActive()` — the tab the author has open, which is what they mean by "this build". Three defects found by writing it:
   - **Ages never reached the steps that get exported.** The stamping loop walked `section.steps` as though every entry were a step, so a block was stamped as an object and the steps *inside* it — the ones that flatten out — were left with the overlay's "no age". Sixth instance of that trap; fixed by flattening first and slicing the flat list by `sectionOffsets`, never by `section.steps.length`
   - **Exporting mutated the build**, writing `age` onto the author's own step objects
