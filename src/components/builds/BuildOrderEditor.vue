@@ -13,7 +13,13 @@
       </v-card-actions>
     </v-card>
   </v-dialog>
-  <v-card rounded="lg" class="mt-4" flat>
+  <!--`pb-3 pb-sm-0`: on a phone the step list is cards in a flex column with
+      16px at the sides and nothing at the foot, so the last card sat flush on
+      the card's own border. 12px closes it, mirroring the space under the Play
+      button at the top. Reset from sm up because the desktop table ends in its
+      trailing insert row, which already carries that space — this is the one
+      breakpoint that was missing it.-->
+  <v-card rounded="lg" class="mt-4 pb-3 pb-sm-0" flat>
     <div class="build-card-section-header d-flex align-center px-4 ga-2">
       <v-icon size="16" color="accent">mdi-format-list-numbered</v-icon>
       <span class="text-caption text-uppercase font-weight-bold">Build Order</span>
@@ -57,8 +63,16 @@
     </div>
 
     <!--On a phone the header has no room for it, and a play control the player
-        has to hunt for is the whole problem this replaced.-->
-    <div v-if="readonly && $vuetify.display.xs" class="px-4 pt-3">
+        has to hunt for is the whole problem this replaced.
+
+        `pb-2` because this block carried no bottom padding at all: the only
+        space under it was the first section's own `pt-1`, so the button sat 4px
+        off the first step while the steps sit 8px apart — the control read as
+        crowded into the list rather than standing above it. 8px here plus that
+        4px gives 12px, a little more than the step rhythm on purpose. Play is
+        not another row of the build; matching the gap exactly would file it as
+        one.-->
+    <div v-if="readonly && $vuetify.display.xs" class="px-4 pt-3 pb-2">
       <v-btn-group class="play-group play-group--block d-flex">
         <v-btn
           class="flex-grow-1"
