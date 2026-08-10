@@ -255,6 +255,7 @@ import { strategies } from "@/composables/filter/strategyDefaultProvider";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
 import { selectionFromActive } from "@/composables/builds/alternativesDraft.js";
 import { forEachStep } from "@/composables/builds/useAgeTimings.js";
+import { migrateSectionNotes } from "@/composables/builds/sectionNoteMigration";
 import useCopyToClipboard from "@/composables/converter/useCopyToClipboard";
 import useDownload from "@/composables/converter/useDownload";
 
@@ -299,6 +300,10 @@ export default {
     if (props.mode === "new") {
       const template = store.state.template;
       if (template) {
+        //A remix arrives carrying another build's sections, so it needs the
+        //conversion as much as an opened build does. Before the assignment, so
+        //the store object is not mutated while it is still store state.
+        migrateSectionNotes(template.steps);
         build.value = template;
         store.commit("setTemplate", null);
       } else {
@@ -364,9 +369,21 @@ export default {
           return;
         }
 
-        build.value = resBuild;
+        //Detached from the cache before anything is changed. `resBuild` is very
+        //often `store.state.cache.builds[id]` itself, which BuildDetails and
+        //focus mode read: converting in place would move the note for a reader
+        //who never opened the editor, which is the one thing the editor-only
+        //gate exists to prevent. A shallow copy keeps the Firestore Timestamps
+        //(timeCreated/timeUpdated) that a JSON round-trip would flatten, and
+        //`steps` is deep-copied because that is the tree being rewritten.
+        build.value = { ...resBuild, steps: JSON.parse(JSON.stringify(resBuild.steps ?? [])) };
+        migrateSectionNotes(build.value.steps);
+
         document.title = build.value.title + " - " + document.title;
-        originalBuild.value = JSON.parse(JSON.stringify(resBuild));
+        //Snapshot the converted build, not the document as it was read, so
+        //"Discard changes" returns to what the author is looking at rather than
+        //resurrecting the section note they have been editing as an item.
+        originalBuild.value = JSON.parse(JSON.stringify(build.value));
 
         // Seed ytState for existing video so thumbnail shows on load
         if (build.value.video) {
@@ -377,6 +394,14 @@ export default {
           }
         }
 
+        //Every load-time normalisation of the document has to happen above this
+        //line, and none may happen in a child. This flips synchronously, while
+        //the children are still unmounted — BuildOrderEditor is behind
+        //`v-if="user && build"`, so it cannot mount before `build` is assigned
+        //and therefore always mounts with isLoaded already true. Anything it
+        //changes on mount reaches the watcher unguarded and marks a build the
+        //author has only looked at as modified: unsaved indicator, enabled
+        //Publish, and a confirm dialog on the way out.
         isLoaded.value = true;
       }
 
