@@ -67,6 +67,11 @@
               :title="user.email"
             />
             <v-list-item
+              prepend-icon="mdi-lock-outline"
+              subtitle="Sign-in method"
+              :title="signInMethodLabel"
+            />
+            <v-list-item
               prepend-icon="mdi-identifier"
               subtitle="User ID"
               :title="user.uid"
@@ -88,8 +93,9 @@
       <!-- Right column: security + danger -->
       <v-col cols="12" md="7" class="d-flex flex-column ga-6">
 
-        <!-- Security -->
-        <v-card flat rounded="lg">
+        <!-- Security. Hidden entirely for an account with no password sign-in:
+             a control that fails when pressed is worse than no control. -->
+        <v-card v-if="hasPassword" flat rounded="lg">
           <v-card-title class="px-6 pt-5 pb-2">Security</v-card-title>
           <v-card-text class="px-6 pb-5">
             <v-form ref="passwordForm" @submit.prevent="changePassword">
@@ -141,7 +147,8 @@
             <v-alert type="error" variant="tonal" density="comfortable">
               <div class="text-subtitle-2 mb-1">Danger zone</div>
               <div class="text-body-2 mb-3">
-                Permanently delete your account and all your build orders. This cannot be undone.
+                Permanently delete your account. This cannot be undone. Your published
+                build orders stay on the site so the community can keep using them.
               </div>
               <v-btn color="error" variant="flat" size="small" @click="deleteDialog = true">
                 Delete account
@@ -161,7 +168,9 @@
       <v-card rounded="lg">
         <v-card-title class="pt-5 px-6">Delete account?</v-card-title>
         <v-card-text class="px-6">
-          Your account and all your build orders will be permanently deleted. This cannot be undone.
+          Your account will be permanently deleted and you will lose access to it. This
+          cannot be undone. Build orders you have published stay on the site — contact us
+          if you need one of them removed.
         </v-card-text>
         <v-card-actions class="px-6 pb-5">
           <v-spacer />
@@ -192,6 +201,20 @@ export default {
     const user = computed(() => store.state.user);
     const userAvatar = computed(() => store.state.userAvatar);
     const { src: avatarSrc, loading: avatarLoading } = useAvatar(userAvatar);
+
+    // How this person signs in. `state.user` is already `user.toJSON()`, so
+    // providerData is in hand — no extra read to answer either question.
+    const hasPassword = computed(() =>
+      (user.value?.providerData || []).some((p) => p.providerId === "password")
+    );
+    const hasGoogle = computed(() =>
+      (user.value?.providerData || []).some((p) => p.providerId === "google.com")
+    );
+    const signInMethodLabel = computed(() => {
+      if (hasPassword.value && hasGoogle.value) return "Google, or email and password";
+      if (hasGoogle.value) return "Google";
+      return "Email and password";
+    });
 
     const pickerOpen = ref(false);
     const deleteDialog = ref(false);
@@ -255,6 +278,8 @@ export default {
 
     return {
       user,
+      hasPassword,
+      signInMethodLabel,
       authIsReady: computed(() => store.state.authIsReady),
       avatarSrc,
       avatarLoading,

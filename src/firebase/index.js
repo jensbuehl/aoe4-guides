@@ -9,6 +9,9 @@ import {
   deleteUser,
   updatePassword,
   onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup,
+  reauthenticateWithPopup,
 } from "firebase/auth";
 import {
   initializeFirestore,
@@ -78,6 +81,9 @@ export {
   updatePassword,
   onAuthStateChanged,
   signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  reauthenticateWithPopup,
   //database
   collection,
   getDoc,

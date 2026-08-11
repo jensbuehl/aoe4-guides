@@ -2,13 +2,15 @@
   <v-dialog
     v-model="visible"
     max-width="430"
-    :persistent="false"
+    :persistent="isCompleting"
   >
     <v-card rounded="lg">
-      <!-- Title row with close button -->
+      <!-- Title row with close button. The completion step has no way out:
+           behind it sits an authenticated user whose account has no name, and
+           a backdrop click or an X would strand them. -->
       <v-card-title class="d-flex align-center justify-space-between pt-5 px-6 pb-1">
         {{ title }}
-        <v-btn icon="mdi-close" variant="text" size="small" @click="close" />
+        <v-btn v-if="!isCompleting" icon="mdi-close" variant="text" size="small" @click="close" />
       </v-card-title>
 
       <v-card-subtitle class="px-6 pb-3">{{ subtitle }}</v-card-subtitle>
@@ -33,13 +35,48 @@
         </v-btn>
       </v-alert>
 
-      <v-card-text class="px-6 pt-0 pb-2">
+      <!-- The completion step has no footer, so it has to close the card itself
+           — `pb-5` matches the padding the footer gives every other mode. -->
+      <v-card-text class="px-6 pt-0" :class="isCompleting ? 'pb-5' : 'pb-2'">
+        <!-- Continue with Google — above the form, because it is an alternative
+             to it rather than a footnote. Identical in login and register: for
+             Google the same click does both, and two labels would imply
+             otherwise. -->
+        <template v-if="showGoogle">
+          <v-btn
+            block
+            variant="outlined"
+            size="large"
+            class="mb-4 text-none"
+            :loading="googleLoading"
+            @click="signInWithGoogle"
+          >
+            <template #prepend>
+              <v-img src="/assets/google-g.svg" width="18" height="18" alt="" />
+            </template>
+            Continue with Google
+          </v-btn>
+
+          <div class="d-flex align-center mb-4">
+            <v-divider />
+            <span class="text-medium-emphasis text-caption px-3">or</span>
+            <v-divider />
+          </div>
+        </template>
+
         <v-form ref="form" @submit.prevent="submit">
-          <!-- Display name — register only -->
+          <!-- Display name — register, and the completion step.
+               Deliberately NOT pre-filled with the name Google supplied. That
+               name is a real, legal-looking one, and this field feeds
+               `build.author` on every build the user publishes: a pre-fill is
+               one un-noticed Enter away from publishing someone's real name.
+               It also invited appending rather than replacing — "Jens" plus a
+               typed suffix became "Jens (Google-Test)" on a live account. -->
           <v-text-field
-            v-if="mode === 'register'"
+            v-if="mode === 'register' || isCompleting"
             v-model="displayName"
             label="Display name"
+            :autofocus="isCompleting"
             prepend-inner-icon="mdi-account-outline"
             variant="outlined"
             density="comfortable"
@@ -49,8 +86,10 @@
             @keydown.enter.prevent="submit"
           />
 
-          <!-- Email — all modes -->
+          <!-- Email — every mode except the completion step, which already
+               knows who it is talking to -->
           <v-text-field
+            v-if="!isCompleting"
             v-model="email"
             label="E-mail"
             type="email"
@@ -65,7 +104,7 @@
 
           <!-- Password — login and register only -->
           <v-text-field
-            v-if="mode !== 'reset'"
+            v-if="mode !== 'reset' && !isCompleting"
             v-model="password"
             label="Password"
             prepend-inner-icon="mdi-lock-outline"
@@ -108,8 +147,9 @@
         </v-form>
       </v-card-text>
 
-      <!-- Footer mode switcher -->
-      <v-card-text class="text-center text-medium-emphasis pt-2 pb-5">
+      <!-- Footer mode switcher. Absent while completing: there is nowhere else
+           to go from here. -->
+      <v-card-text v-if="!isCompleting" class="text-center text-medium-emphasis pt-2 pb-5">
         <template v-if="mode === 'login'">
           Don't have an account?
           <v-btn variant="text" size="small" @click="switchMode('register')">Sign up</v-btn>
@@ -127,10 +167,15 @@
 </template>
 
 <script>
-import { computed, ref, watch } from "vue";
+import { computed, nextTick, ref, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
-import { mapAuthError, isEmailAlreadyInUse } from "@/composables/auth/useAuthErrors";
+import {
+  mapAuthError,
+  isEmailAlreadyInUse,
+  isAccountExistsWithDifferentCredential,
+  isPopupCancelled,
+} from "@/composables/auth/useAuthErrors";
 
 export default {
   name: "AuthDialog",
@@ -150,8 +195,12 @@ export default {
     const displayName = ref("");
     const showPassword = ref(false);
     const loading = ref(false);
+    const googleLoading = ref(false);
     const authError = ref(null);
     const isEmailInUse = ref(false);
+
+    const isCompleting = computed(() => mode.value === "complete-profile");
+    const showGoogle = computed(() => mode.value === "login" || mode.value === "register");
 
     // Clear all form state whenever the dialog opens — prevents stale/autofilled values
     // from a previous session leaking to the next user who opens the dialog.
@@ -185,18 +234,21 @@ export default {
       login: "Log in",
       register: "Create account",
       reset: "Reset password",
+      "complete-profile": "Pick your display name",
     }[mode.value]));
 
     const subtitle = computed(() => ({
       login: "Welcome back to AOE4 Guides.",
       register: "Join AOE4 Guides to save and share build orders.",
       reset: "Enter your email and we'll send you a password reset link.",
+      "complete-profile": "This is the name that will appear on your build orders.",
     }[mode.value]));
 
     const submitLabel = computed(() => ({
       login: "Log In",
       register: "Create Account",
       reset: "Send Reset Link",
+      "complete-profile": "Continue",
     }[mode.value]));
 
     const emailRules = [
@@ -239,10 +291,7 @@ export default {
       try {
         if (mode.value === "login") {
           await store.dispatch("signin", { email: email.value, password: password.value });
-          const redirect = store.state.ui.authDialog.redirect;
-          store.dispatch("closeAuthDialog");
-          store.dispatch("showSnackbar", { text: "Logged in successfully!", type: "success" });
-          if (redirect) router.push(redirect);
+          finishSignIn("Logged in successfully!");
 
         } else if (mode.value === "register") {
           await store.dispatch("signup", {
@@ -255,6 +304,10 @@ export default {
             text: `Verification email sent to ${email.value}.`,
             type: "success",
           });
+
+        } else if (mode.value === "complete-profile") {
+          await store.dispatch("completeProfile", { displayName: displayName.value });
+          finishSignIn("Welcome to AOE4 Guides!");
 
         } else {
           await store.dispatch("resetPassword", { email: email.value });
@@ -272,6 +325,57 @@ export default {
       }
     }
 
+    /**
+     * Closes the dialog and honours whatever page the user was headed for.
+     * Shared by the password login and by the two Google exits, so a first-time
+     * user who detours through the name step still lands where they meant to —
+     * the sign-in that preceded it must not eat the redirect.
+     */
+    function finishSignIn(message) {
+      const redirect = store.state.ui.authDialog.redirect;
+      store.dispatch("closeAuthDialog");
+      store.dispatch("showSnackbar", { text: message, type: "success" });
+      if (redirect) router.push(redirect);
+    }
+
+    async function signInWithGoogle() {
+      authError.value = null;
+      isEmailInUse.value = false;
+      googleLoading.value = true;
+
+      try {
+        // Nothing is awaited between this click and `signInWithPopup` inside the
+        // action — an await here would end the user gesture and the browser
+        // would block the popup.
+        const { incomplete } = await store.dispatch("signinWithGoogle");
+
+        // An unfinished account keeps the dialog: the auth-state handler has
+        // already switched it to the name step, and the redirect is still
+        // waiting for that step to finish.
+        if (!incomplete) finishSignIn("Logged in successfully!");
+
+      } catch (err) {
+        // Closing the window is a change of mind, not a failure.
+        if (isPopupCancelled(err)) return;
+
+        authError.value = mapAuthError(err);
+
+        // The address already belongs to a password account. Send them to the
+        // form that will work, with the address filled in and the reset link in
+        // reach — switchMode clears the banner, so re-set it afterwards.
+        if (isAccountExistsWithDifferentCredential(err)) {
+          const collidingEmail = err?.customData?.email || "";
+          const message = authError.value;
+          switchMode("login");
+          await nextTick();
+          email.value = collidingEmail;
+          authError.value = message;
+        }
+      } finally {
+        googleLoading.value = false;
+      }
+    }
+
     return {
       form,
       visible,
@@ -281,8 +385,11 @@ export default {
       displayName,
       showPassword,
       loading,
+      googleLoading,
       authError,
       isEmailInUse,
+      isCompleting,
+      showGoogle,
       title,
       subtitle,
       submitLabel,
@@ -293,6 +400,7 @@ export default {
       switchMode,
       close,
       submit,
+      signInWithGoogle,
     };
   },
 };

@@ -76,12 +76,21 @@ export async function removeDownvote(userId, buildId) {
 }
 
 /**
- * Creates user favorites for a specific user.
+ * Ensures a favorites document exists for a user, without disturbing one that
+ * already does.
+ *
+ * The guard is not defensive padding. `collectionService.add` writes with
+ * `setDoc` and no merge, so calling this on an established account would
+ * replace the list with `[]` — and account setup is no longer a one-shot at
+ * registration: it re-runs whenever an account is found unfinished, which is
+ * how an abandoned Google sign-up is repaired (spec 032, R-7).
  *
  * @param {string} userId - The ID of the user for whom favorites are being created.
  * @return {Promise<void>} - The function does not return anything.
  */
 export async function createUserFavorites(userId) {
+    const existing = await get(userId);
+    if (existing) return;
     return add({ favorites: [] }, userId);
 }
 

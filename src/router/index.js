@@ -321,6 +321,17 @@ const routes = [
       return { name: "Home" };
     }
 
+    // A Google account is verified on arrival but may still be unnamed, and an
+    // unnamed author must not reach the editor (spec 032, FR-007b). The dialog
+    // is already open asking for the name.
+    if (to.meta.requiresVerification && auth.currentUser && store.state.profileIncomplete) {
+      store.dispatch("showSnackbar", {
+        text: "Please choose a display name first.",
+        type: "warning",
+      });
+      return { name: "Home" };
+    }
+
     if (to.meta.requiresVerification && auth.currentUser && !auth.currentUser.emailVerified) {
       store.dispatch("showSnackbar", {
         text: "Please verify your email address to use this feature.",
