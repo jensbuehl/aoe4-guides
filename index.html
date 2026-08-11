@@ -9,6 +9,14 @@
         var isDark = saved === 'dark' || (!saved && prefersDark);
         document.documentElement.classList.add('no-transition');
         document.documentElement.style.backgroundColor = isDark ? '#161A25' : '#E9EBEE';
+        // Colours the title bar of the installed app. Set here rather than as a
+        // static tag with a prefers-color-scheme media query, because the theme
+        // toggle can override the system preference and only this line knows
+        // the result. It goes stale if the user toggles without reloading.
+        var themeColor = document.createElement('meta');
+        themeColor.name = 'theme-color';
+        themeColor.content = isDark ? '#161A25' : '#E9EBEE';
+        document.head.appendChild(themeColor);
       })();
     </script>
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons' rel="stylesheet">
@@ -17,6 +25,10 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+    <!-- iOS ignores the manifest icons and flattens transparency to black, so
+         this one is its own file: opaque and full-bleed. -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Age of Empires IV Build Orders | AOE4 GUIDES</title>
 

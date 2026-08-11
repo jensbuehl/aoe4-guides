@@ -1,0 +1,32 @@
+{
+  "id": "/",
+  "name": "AoE4 Guides - Age of Empires IV Build Orders",
+  "short_name": "AoE4 Guides",
+  "description": "Create and share build orders for Age of Empires IV.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#161A25",
+  "theme_color": "#161A25",
+  "categories": ["games"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
