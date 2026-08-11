@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/029-step-reordering/plan.md`.
+at `.specify/specs/032-google-sign-in/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
