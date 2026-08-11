@@ -4,6 +4,48 @@ There is no automated suite (constitution: *"No formal test suite is required, b
 of the golden path MUST be done before merging"*). This is that golden path, gated per phase:
 **do not open the next phase's gate until its section passes.**
 
+> **Verified so far** (2026-08-10, by hand, on the shipped 1.17.0):
+>
+> - **Item 7 / 17 — typed text travels with its own row.** The one failure that
+>   would corrupt content rather than look wrong, and the reason FR-015 exists.
+>   Confirmed on a real move. The harness could never reach it: it stubs
+>   `syncEdits` out, so the DOM read on desktop and the `stepsCopy` read on
+>   mobile were asserted only from reading the code.
+> - **Cross-section moves** (US4). The coordinator drives both ends correctly in
+>   the real editor, which is what the whole `useStepReorder` construction exists
+>   for and the part that carried all the risk.
+> - **Into and out of an alternative** (US3), both directions. The positional
+>   model held in practice, as [R-10](./research.md#r-10--the-alternatives-phase-needed-no-code-recorded-during-implementation)
+>   predicted from the code.
+> - **Item 25 — the path nobody was editing keeps every step**, across a sequence
+>   of moves. The only case in this feature where damage would have been
+>   invisible at the moment it happened: a block holds one path inline and parks
+>   the rest on the marker, so every move rewrites both and you can only see one.
+>   It needed a tab switch to confirm, and it holds.
+> - The **layout** items, incidentally, by the round of fixes that followed the
+>   release — the desktop actions cell, the mobile control sizes, the tooltips,
+>   the list's two end gaps and the age rail.
+>
+> **Left open**, both cosmetic and neither able to lose an author's work: the
+> **reduced-motion** pass and the **light-theme** pass.
+>
+> **Item 45 (overlay export) is settled, and the answer has a wrinkle** — checked
+> by running the exporter directly rather than by eye:
+>
+> - Nothing in the exporter's dependency closure — `useExportOverlayFormat`,
+>   `villagerAggregator`, `useAgeTimings`, `stepVisibility` — was touched by 029
+>   or by anything else since the pre-feature `main`. For an unchanged document
+>   the output is byte-identical **by construction**, not by sampling.
+> - A build containing an alternatives block exports cleanly: flattened to the
+>   first path, with the path's condition note carried as a step.
+> - **But a build re-saved since the section-note migration exports differently,
+>   and better.** A note held on `section.gameplan` was silently dropped by the
+>   exporter; the same note, migrated into `section.steps`, exports as a step
+>   carrying its text — which is 027 FR-021 finally being true for section notes.
+>   So "byte-identical" holds for a build nobody has re-opened, and a re-saved
+>   build legitimately gains a step. Worth knowing before diffing an export and
+>   reading the extra entry as a regression.
+
 Run `npm run dev`. Three builds are needed:
 
 - **B-plain** — any existing published build with age-ups and an economy chart. The regression
