@@ -1,8 +1,38 @@
 # Netlify serves this site (see _redirects) — the `headers` block in
-# firebase.json is not applied to anything and cannot be used to fix this.
+# firebase.json is not applied to anything and cannot be used to fix any of
+# this. Netlify's default for every file is `public,max-age=0,must-revalidate`,
+# which caches bytes but still costs a round trip per asset per page load
+# (measured against prod: 304 in ~120ms, 0 bytes).
 #
-# Without this rule the manifest goes out as application/octet-stream. Browsers
-# parse it regardless, so the install prompt works either way, but the type is
-# wrong and stricter tools flag it.
+# Verify a rule actually took effect after deploying — a header rule that fails
+# to match does not error, it is simply absent:
+#   curl -sI https://aoe4guides.com/assets/<file> | grep -i cache-control
+
+# Without this the manifest goes out as application/octet-stream. Browsers
+# parse it regardless, so installation works either way, but the type is wrong
+# and stricter tools flag it.
 /site.webmanifest
   Content-Type: application/manifest+json
+
+# Vite's bundles are content-hashed and sit flat in /assets, so a change always
+# means a new URL and a year is safe. Matched by extension rather than by a
+# splat over the directory, because /assets also holds the un-hashed files
+# below, and those must not pick this rule up.
+/assets/*.js
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Game art copied verbatim from public/assets — 1200+ files, all .webp, nested
+# one level under pictures/. The filenames are stable, so there is no rename to
+# bust a stale cache and `immutable` would be wrong: replace an icon and
+# returning users would never see it. A week is the trade — icon-heavy build
+# pages load with no network at all for anyone who visited recently, and a
+# replaced icon reaches everyone within seven days. Raise it only if you also
+# accept that swapping art then needs a filename change.
+/assets/pictures/*
+  Cache-Control: public, max-age=604800
+/assets/flags/*
+  Cache-Control: public, max-age=604800
+/assets/resources/*
+  Cache-Control: public, max-age=604800
