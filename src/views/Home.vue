@@ -2,6 +2,8 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="8">
+        <EventBanner />
+
         <CivPicker
           :civs="civs"
           :recent-civ-builds="recentCivBuilds"
@@ -43,6 +45,7 @@ import YoutubeGuides from "@/components/notifications/YoutubeGuides.vue";
 import TopContributors from "@/components/home/TopContributors.vue";
 import CivPicker from "@/components/home/CivPicker.vue";
 import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
+import EventBanner from "@/components/home/EventBanner.vue";
 
 import { getHomeSnapshot } from "@/composables/data/homeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
@@ -57,6 +60,7 @@ export default {
     TopContributors,
     CivPicker,
     BuildLaneTabs,
+    EventBanner,
   },
   setup() {
     const store = useStore();

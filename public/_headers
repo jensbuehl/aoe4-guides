@@ -36,3 +36,9 @@
   Cache-Control: public, max-age=604800
 /assets/resources/*
   Cache-Control: public, max-age=604800
+
+# Event art, one file per edition and the year is in the filename — a 2027
+# tournament gets a new URL rather than a replaced file, so this is as immutable
+# as the hashed bundles above.
+/assets/events/*
+  Cache-Control: public, max-age=31536000, immutable
