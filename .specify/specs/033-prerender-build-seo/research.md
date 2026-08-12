@@ -367,6 +367,6 @@ to keep this property from being lost to a reformat.
 |---|---|---|
 | 1 | R2 pretty-URL behaviour | Probe deploy, task 1. Blocks everything else. |
 | 2 | Service-account provisioning in **GitHub Secrets** (not Netlify — R11) | Manual setup step, owner-only. |
-| 3 | Confirm GitHub notifies on workflow failure | Required by FR-028; confirm, do not assume. |
+| 3 | Confirm GitHub notifies on workflow failure | **Confirmed 2026-08-12** by the owner. FR-028's mechanism is real, so no explicit failure-notification step is needed in the workflow. The snapshot's `generated` date in the deploy log remains the backstop for the case notifications cannot cover: a scheduled workflow *disabled* after 60 days of repository inactivity never fails, so it never notifies. |
 | 4 | First-deploy duration with ~4,000 extra files | Measure; no prediction offered. The owner has stated upload time is not a concern. |
 | 5 | `og:image` stays the site-wide image | Per-civ images deferred (spec exclusion). |
