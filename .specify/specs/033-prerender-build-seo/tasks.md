@@ -43,12 +43,12 @@ plan changes. Do not start Phase 2 speculatively while waiting for it — Phase 
 expensive to redo.
 
 - [X] T001 Write a probe page at `public/builds/__prerender-probe.html` containing a distinctive `<title>` and nothing else of consequence
-- [ ] T002 [!] Deploy the probe and check all four URLs in the R2 table of [research.md](./research.md): `/builds/__prerender-probe` serves the probe's title, and `/builds`, `/builds/new` and an existing `/builds/<real-id>` all still serve the SPA shell
-- [ ] T003 Record the outcome in the R2 section of [research.md](./research.md), replacing "UNVERIFIED" with what was observed — including whether introducing a `builds/` directory disturbed the `/builds` route
-- [ ] T004 Delete `public/builds/__prerender-probe.html` and the now-empty `public/builds/` directory
+- [X] T002 [!] Deploy the probe and check all four URLs in the R2 table of [research.md](./research.md): `/builds/__prerender-probe` serves the probe's title, and `/builds`, `/builds/new` and an existing `/builds/<real-id>` all still serve the SPA shell
+- [X] T003 Record the outcome in the R2 section of [research.md](./research.md), replacing "UNVERIFIED" with what was observed — including whether introducing a `builds/` directory disturbed the `/builds` route
+- [X] T004 Delete `public/builds/__prerender-probe.html` and the now-empty `public/builds/` directory
 - [X] T005 [P] Add `firebase-admin` to `devDependencies` in `package.json` and run `npm install`; confirm it does not appear in any `dist/assets/*.js` after a build — verified: `firebase-admin@^13.6.0` installed, `grep` over `dist/assets/*.js` finds no trace of it
 
-**Checkpoint**: the serving model is proven, or the plan is being revised.
+**Checkpoint**: **the serving model is proven.** R2 passed on the PR #131 deploy preview — extensionless resolution works and a `builds/` directory does not shadow the `/builds` route. No fallback needed, `_redirects` unchanged, FR-001 and FR-024 stand as specified.
 
 ---
 

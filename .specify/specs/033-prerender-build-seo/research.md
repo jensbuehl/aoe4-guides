@@ -30,7 +30,34 @@ change to `_redirects`.
 
 ---
 
-## R2. Does Netlify serve `/builds/<id>` from `builds/<id>.html`? — **UNVERIFIED, task 1**
+## R2. Does Netlify serve `/builds/<id>` from `builds/<id>.html`? — **VERIFIED YES**
+
+**Answered 2026-08-12** against the deploy preview for PR #131
+(`deploy-preview-131--aoe4guides-prod.netlify.app`), built by the production site's own
+configuration — same `_redirects`, same publish directory, so the only difference from prod is the
+hostname, which none of these checks depend on.
+
+| Check | Result |
+|---|---|
+| `/builds/__prerender-probe` | **200**, `<title>PRERENDER-PROBE-R2-OK</title>` |
+| `/builds` | **200**, site default title — the list page is untouched |
+| `/builds/new` | **200**, site default title — the editor route is untouched |
+| `/builds/07qM0jShA7USYa8hprgp` | **200**, site default title — an unprerendered build falls through |
+
+**Extensionless resolution works**, and — the part that actually had a chance of failing —
+**introducing a `builds/` directory into the publish output did not disturb the `/builds` route**.
+Netlify resolved the directory for the one path that has a file in it and fell through to the SPA
+catch-all for the three that do not. That is precisely the behaviour FR-001 and FR-024 assume.
+
+No fallback is needed: the generated pages can live at `dist/builds/<id>.html` as designed, and
+`public/_redirects` needs no change. The probe was deleted once this was recorded (T004).
+
+**One thing this does *not* prove**, and nothing can until Phase 6 ships: it was answered with a
+single file in that directory. Nothing here depends on the count, but ~4,000 files is the first time
+that will be true.
+
+<details>
+<summary>Original question, kept because it is why the checks are shaped this way</summary>
 
 **Question**: R1 proves files beat redirects. It does not prove that an *extensionless* request resolves
 to a `.html` file. This is Netlify's pretty-URL behaviour and is expected to work, but it cannot be
@@ -56,6 +83,8 @@ starts resolving it against the new directory instead of falling through, the bu
 **If the probe fails**: fall back to serving the generated pages from a path that is not also a route,
 and add an explicit non-force rewrite mapping `/builds/:id` to it. FR-001 would need re-specifying.
 Delete the probe file once the answer is recorded either way.
+
+</details>
 
 ---
 
