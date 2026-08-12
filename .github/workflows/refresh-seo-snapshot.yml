@@ -35,9 +35,9 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22.x
           cache: npm
@@ -62,16 +62,26 @@ jobs:
       - name: Commit the snapshot, but only if it changed
         id: commit
         run: |
-          if git diff --quiet -- data/seo-snapshot.ndjson; then
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # Staged FIRST, then compared against HEAD. `git diff` alone only
+          # considers tracked files, so on the very first run — when the
+          # snapshot does not exist in the repository yet — it reports no
+          # change and the commit is skipped. That is what happened: the run
+          # read 4,202 builds, wrote the file, announced "unchanged", and
+          # exited 0. A refresh that succeeds while doing nothing is the exact
+          # failure FR-028 exists to prevent, and the check meant to enforce it
+          # was the thing causing it.
+          git add data/seo-snapshot.ndjson
+
+          if git diff --cached --quiet -- data/seo-snapshot.ndjson; then
             echo "snapshot unchanged — no commit, and therefore no deploy"
             echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           echo "committed=true" >> "$GITHUB_OUTPUT"
 
-          git config user.name  "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/seo-snapshot.ndjson
           git commit -m "chore(seo): refresh build snapshot"
 
           # Pushed with GITHUB_TOKEN, which by design does not trigger other
