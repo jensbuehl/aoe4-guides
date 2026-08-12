@@ -387,9 +387,30 @@ export async function getBuildsFrom(startBuildId, filterConfig = getDefaultConfi
   return res;
 }
 
-//The codes that mean "App Check could not attest this client", as opposed to
-//"this build does not exist". Only these reach the fallback.
-const ATTESTATION_FAILURES = new Set(["permission-denied", "unauthenticated"]);
+//The codes that mean "the database could not answer", as opposed to "this build
+//does not exist". Only these reach the fallback.
+//
+//Both observed failure modes produce the same symptom — an existing build
+//rendering as "Build Order Not Found" — through different causes:
+//
+//  permission-denied  App Check refused to attest the client. Googlebot's
+//  unauthenticated    renderer denies the reCAPTCHA iframe storage access, so
+//                     no token can be minted. Measured in Search Console.
+//
+//  unavailable        Firestore's own connection never came up and the client
+//                     dropped into offline mode. A blocked or filtered network
+//                     reaches Firestore's transport before it reaches App Check.
+//
+//`unavailable` is included despite looking like plain "no internet", because
+//when that is genuinely the case the fetch below fails at the browser without
+//reaching Cloud Run — free, and harmlessly useless. When it is *not* the case,
+//and only Firestore is unreachable, it is the difference between a readable page
+//and an error. It is a last resort after a ten-second failure either way, never
+//a shortcut around a working database.
+//
+//Deliberately absent: a build that simply does not exist. That resolves without
+//throwing and must keep saying so.
+const RECOVERABLE_READ_FAILURES = new Set(["permission-denied", "unauthenticated", "unavailable"]);
 
 /**
  * Rebuilds Firestore Timestamps from their JSON form.
@@ -452,7 +473,7 @@ async function getBuildFromApi(buildId) {
  *
  * Firestore first, always. The API is a fallback for exactly one situation and
  * is not reached in any other: the client could not produce an App Check token,
- * so a read the security rules permit was refused anyway.
+ * so a read the security rules permit was refused anyway — or Firestore could not be reached at all.
  *
  * That situation is real and was measured, not imagined. Googlebot's renderer
  * denies the reCAPTCHA iframe storage access, App Check gets a 403 and throttles
@@ -475,7 +496,7 @@ export async function getBuild(buildId) {
   try {
     return await getOrThrow(buildId);
   } catch (err) {
-    if (!ATTESTATION_FAILURES.has(err?.code)) {
+    if (!RECOVERABLE_READ_FAILURES.has(err?.code)) {
       //Everything else keeps behaving as it always did: logged, swallowed, and
       //surfaced to the reader as "not found".
       console.error("buildService.getBuild failed:", err?.message ?? err);
@@ -483,8 +504,8 @@ export async function getBuild(buildId) {
     }
 
     console.warn(
-      `buildService.getBuild: Firestore refused the read (${err.code}) — App Check could not ` +
-        `attest this client. Falling back to the public API.`
+      `buildService.getBuild: Firestore could not answer (${err.code}). Falling back to the ` +
+        `public API, which reads server-side and needs no App Check token.`
     );
     return await getBuildFromApi(buildId);
   }
