@@ -1,6 +1,7 @@
 //External
 import { store } from "@/store/index.js";
 import { computed } from "vue";
+import { Timestamp } from "@/firebase";
 
 //Composables
 import collectionService from "@/composables/data/collectionService";
@@ -24,6 +25,7 @@ const {
   decrementNumber,
   add,
   get,
+  getOrThrow,
   getSnapshot,
   del,
   update,
@@ -385,14 +387,128 @@ export async function getBuildsFrom(startBuildId, filterConfig = getDefaultConfi
   return res;
 }
 
+//The codes that mean "the database could not answer", as opposed to "this build
+//does not exist". Only these reach the fallback.
+//
+//Both observed failure modes produce the same symptom — an existing build
+//rendering as "Build Order Not Found" — through different causes:
+//
+//  permission-denied  App Check refused to attest the client. Googlebot's
+//  unauthenticated    renderer denies the reCAPTCHA iframe storage access, so
+//                     no token can be minted. Measured in Search Console.
+//
+//  unavailable        Firestore's own connection never came up and the client
+//                     dropped into offline mode. A blocked or filtered network
+//                     reaches Firestore's transport before it reaches App Check.
+//
+//`unavailable` is included despite looking like plain "no internet", because
+//when that is genuinely the case the fetch below fails at the browser without
+//reaching Cloud Run — free, and harmlessly useless. When it is *not* the case,
+//and only Firestore is unreachable, it is the difference between a readable page
+//and an error. It is a last resort after a ten-second failure either way, never
+//a shortcut around a working database.
+//
+//Deliberately absent: a build that simply does not exist. That resolves without
+//throwing and must keep saying so.
+const RECOVERABLE_READ_FAILURES = new Set(["permission-denied", "unauthenticated", "unavailable"]);
+
+/**
+ * Rebuilds Firestore Timestamps from their JSON form.
+ *
+ * The API serialises a Timestamp as `{_seconds, _nanoseconds}` — note the
+ * underscores, which `toDateSafe` does not recognise, so every date would
+ * silently render as blank. Recursive rather than field-by-field because a
+ * build carries dates at more than one depth and a new one must not go missing.
+ *
+ * @param {*} value - Anything from the API response.
+ * @return {*} The same shape, with timestamp objects turned back into Timestamps.
+ */
+function reviveTimestamps(value) {
+  if (Array.isArray(value)) return value.map(reviveTimestamps);
+  if (!value || typeof value !== "object") return value;
+
+  if (typeof value._seconds === "number") {
+    return new Timestamp(value._seconds, value._nanoseconds ?? 0);
+  }
+
+  return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, reviveTimestamps(item)]));
+}
+
+/**
+ * Reads a build through the site's own API, which does not use App Check.
+ *
+ * The API runs server-side on Cloud Run with a service account, so the Admin
+ * SDK reads Firestore directly and neither security rules nor App Check apply.
+ * That is the whole reason it can answer where the browser cannot.
+ *
+ * @param {string} buildId
+ * @return {Promise<any>} The build, or undefined.
+ */
+async function getBuildFromApi(buildId) {
+  try {
+    const response = await fetch(`/api/builds/${encodeURIComponent(buildId)}`);
+    //404 is the API's answer for a build that genuinely does not exist.
+    if (!response.ok) return undefined;
+
+    const build = await response.json();
+
+    //Checked rather than trusted. Whatever answers on this path is whatever the
+    //environment has wired to /api — during development that was a placeholder
+    //proxy pointing at an unrelated public API, and a truthy non-build response
+    //reaches `build.value` and breaks rendering somewhere far from the cause.
+    if (!build || typeof build !== "object" || !("steps" in build)) {
+      console.error("buildService: /api/builds returned something that is not a build.");
+      return undefined;
+    }
+
+    return reviveTimestamps(build);
+  } catch (err) {
+    console.error("buildService.getBuild API fallback failed:", err?.message ?? err);
+    return undefined;
+  }
+}
+
 /**
  * Retrieve a build by its ID.
+ *
+ * Firestore first, always. The API is a fallback for exactly one situation and
+ * is not reached in any other: the client could not produce an App Check token,
+ * so a read the security rules permit was refused anyway — or Firestore could not be reached at all.
+ *
+ * That situation is real and was measured, not imagined. Googlebot's renderer
+ * denies the reCAPTCHA iframe storage access, App Check gets a 403 and throttles
+ * itself for 24 hours, and the read fails with "Missing or insufficient
+ * permissions" — so every build page rendered "Build Order Not Found" and Google
+ * classified all ~4,200 of them as soft 404s. The same happens to any reader
+ * whose browser blocks reCAPTCHA.
+ *
+ * **A successful Firestore read never touches the API.** Nor does a build that
+ * simply does not exist — that resolves to `undefined` without throwing, and
+ * must keep showing "not found" rather than costing a second round trip. The
+ * fallback is deliberately narrow: widening it to every error would quietly turn
+ * a Cloud Run invocation into the normal path and put load on the API that the
+ * database is supposed to carry.
  *
  * @param {string} buildId - The ID of the build to retrieve
  * @return {Promise<any>} The retrieved build
  */
 export async function getBuild(buildId) {
-  return get(buildId);
+  try {
+    return await getOrThrow(buildId);
+  } catch (err) {
+    if (!RECOVERABLE_READ_FAILURES.has(err?.code)) {
+      //Everything else keeps behaving as it always did: logged, swallowed, and
+      //surfaced to the reader as "not found".
+      console.error("buildService.getBuild failed:", err?.message ?? err);
+      return undefined;
+    }
+
+    console.warn(
+      `buildService.getBuild: Firestore could not answer (${err.code}). Falling back to the ` +
+        `public API, which reads server-side and needs no App Check token.`
+    );
+    return await getBuildFromApi(buildId);
+  }
 }
 
 /**

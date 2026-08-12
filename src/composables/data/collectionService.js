@@ -133,6 +133,31 @@ export function collectionService(col) {
   }
 
   /**
+   * Reads a document and lets the failure reach the caller.
+   *
+   * Identical to get() except that it does not swallow. That difference
+   * matters: get() returns `undefined` both for "this document does not exist"
+   * and for "you were not allowed to read it", and a caller cannot tell the two
+   * apart. A build page therefore rendered "Build Order Not Found" for a build
+   * that exists perfectly well — which is what Google indexed as a soft 404,
+   * and what a reader whose reCAPTCHA is blocked sees today.
+   *
+   * The write path already treats these as different (toUserMessage,
+   * writeWithTokenRetry); the read path never did.
+   *
+   * A missing document still resolves to `undefined` here — only an actual
+   * error throws.
+   *
+   * @param {string} id - The document id.
+   * @return {Promise<any>} The document data, or undefined when it does not exist.
+   * @throws {FirebaseError} Whatever Firestore rejected with, `.code` intact.
+   */
+  async function getOrThrow(id) {
+    const snapshot = await getDoc(doc(db, col, id));
+    return snapshot.data();
+  }
+
+  /**
    * Asynchronously retrieves a snapshot.
    *
    * @param {type} id - The ID of the snapshot to retrieve
@@ -348,6 +373,7 @@ export function collectionService(col) {
     error,
     add,
     get,
+    getOrThrow,
     getSnapshot,
     del,
     getAll,
