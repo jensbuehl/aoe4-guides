@@ -34,8 +34,12 @@ site-wide by design in Phase A (per-build images are a spec exclusion), and the 
 
 There is no canonical tag in the shell to remove. It was left out on purpose, and the reasoning is
 written into [index.html](../../../index.html) — one file serves every route, so a static canonical
-would declare every build a duplicate of the homepage. That comment stays true: the canonical now
-arrives per-file.
+would declare every build a duplicate of the homepage.
+
+**That comment is removed from the generated copy**, which the contract did not anticipate. It reads
+"No `<link rel="canonical">` here on purpose", and three lines below it these files now carry exactly
+that tag. True of the shell, false of every generated page, and it would ship contradicting itself in
+~4,000 files. The reasoning stays correct where it belongs — in the shell.
 
 ---
 
@@ -92,8 +96,13 @@ arrives per-file.
 - Steps converting to empty text are omitted. A build with no usable steps omits `step` entirely
   rather than emitting `[]`.
 - `dateModified` derives from `timeCreated`; builds record no modification time (data-model §5).
-- **Escaping**: `JSON.stringify`, then `<` → `<`, so a title containing `</script>` cannot
-  terminate the block (FR-011).
+- **Escaping**: `JSON.stringify`, then `<` → **`<`** — *not* the HTML entity `&lt;`, which is what
+  this contract originally said and which is wrong. The content of a
+  `<script type="application/ld+json">` block is parsed as **JSON, not HTML**, so entities in it are
+  never decoded: `&lt;` would survive into the parsed data as those four literal characters and quietly
+  corrupt every title containing a `<`. `<` is JSON's own escape — it parses back to `<` while
+  leaving no `<` in the byte stream for the HTML parser to mistake for `</script>`. Same goal, and it
+  actually achieves it (FR-011).
 
 ---
 

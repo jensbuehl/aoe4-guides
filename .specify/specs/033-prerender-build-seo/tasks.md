@@ -193,7 +193,7 @@ generator, so the guard rails go up first and are verified while there is nothin
 - [X] T035 [US3] Implement the log contract in `scripts/prerender.mjs` — one summary line or block on every run, reporting the snapshot's `project` and age so a wrong database or a refresh that has stopped running is visible in the deploy log (FR-023, FR-028)
 - [X] T036 [US3] Add `"postbuild": "node scripts/prerender.mjs"` and `"prerender": "node scripts/prerender.mjs --force"` to `package.json`, with no shell syntax — the same script runs on Windows locally and Linux on Netlify
 - [X] T037 [US3] Verify locally: `npm run build` skips in well under a second, output is byte-identical to before, exit code is 0, and no `dist/builds/` appears (SC-005)
-- [ ] T038 [US3] Verify in CI: push and confirm `.github/workflows/ci.yml` stays green with no credential configured (SC-006)
+- [X] T038 [US3] Verify in CI: push and confirm `.github/workflows/ci.yml` stays green with no credential configured (SC-006)
 
 ### Phase 5 verification
 
@@ -228,20 +228,57 @@ data when fetched without JavaScript.
 **Independent test**: `curl` 20 build URLs — each returns a distinct `<title>` and `<meta name=
 "description">`; paste one into Discord and see that build's title on the card.
 
-- [ ] T039 [US1] Read `dist/index.html` as the template in `scripts/prerender.mjs` and assert its shape — a `</head>` to inject before, and at least one hashed `<script type="module" src="/assets/…">`. Never the repo-root `index.html`, which points at `/src/main.js` and does not exist in production. Emit nothing and log loudly if the assertion fails
-- [ ] T040 [US1] Strip the shell's page-level tags from the template copy in `scripts/prerender.mjs` — `<title>`, `meta[name=description]`, `og:type`, `og:url`, `og:title`, `og:description`, `twitter:url`, `twitter:title`, `twitter:description` — keeping `og:site_name`, the image tags, `twitter:card` and `twitter:domain` (see [contracts/generated-page.md](./contracts/generated-page.md))
-- [ ] T041 [P] [US1] Implement field derivation in `scripts/prerender.mjs`: title with a civ-based fallback when blank, description stripped of markup, whitespace-collapsed and truncated on a word boundary with a composed fallback when blank (FR-008, FR-009)
-- [ ] T042 [P] [US1] Implement HTML-attribute escaping in `scripts/prerender.mjs` so a title containing `"`, `<`, `>` or emoji cannot break out of a meta attribute (FR-011)
-- [ ] T043 [US2] Produce the canonical URL in `scripts/prerender.mjs` using the **same rule** as `setCanonical` in `src/router/index.js:64` — no trailing slash, no query string — so the prerendered tag and the one the router writes can never disagree (FR-007)
-- [ ] T044 [US1] Assemble and inject the head block in `scripts/prerender.mjs` per [contracts/generated-page.md](./contracts/generated-page.md), with `og:type` set to `article`. Leave `#app` empty — nothing is added to the body (FR-003, FR-006)
-- [ ] T045 [US4] Emit the `HowTo` structured data block in `scripts/prerender.mjs` from the snapshot's already-converted `steps`, omitting `step` entirely when a build has none, and escaping with `JSON.stringify` plus `<` → `&lt;` so a title containing `</script>` cannot terminate the block (FR-010, FR-011)
-- [ ] T046 [US1] Validate each build id against a safe-filename pattern in `scripts/prerender.mjs` before using it as a path; skip and count anything that fails. The generator must not be able to write outside its output directory whatever an id contains
-- [ ] T047 [US1] Write pages into a temporary directory and rename into place as the final step in `scripts/prerender.mjs`, clearing the output directory first so a standalone `npm run prerender` is idempotent without relying on Vite having emptied `dist/` (FR-004, FR-021)
-- [ ] T048 [US1] Exercise with `npm run prerender -- --limit=20` and read the emitted HTML: distinct titles, correct canonicals, parseable structured data, hashed module script present
-- [ ] T049 [US1] Verify escaping against a build whose title contains `"`, `<`, `</script>` and emoji — markup stays well-formed and the structured data still parses
+- [X] T039 [US1] Read `dist/index.html` as the template in `scripts/prerender.mjs` and assert its shape — a `</head>` to inject before, and at least one hashed `<script type="module" src="/assets/…">`. Never the repo-root `index.html`, which points at `/src/main.js` and does not exist in production. Emit nothing and log loudly if the assertion fails
+- [X] T040 [US1] Strip the shell's page-level tags from the template copy in `scripts/prerender.mjs` — `<title>`, `meta[name=description]`, `og:type`, `og:url`, `og:title`, `og:description`, `twitter:url`, `twitter:title`, `twitter:description` — keeping `og:site_name`, the image tags, `twitter:card` and `twitter:domain` (see [contracts/generated-page.md](./contracts/generated-page.md))
+- [X] T041 [P] [US1] Implement field derivation in `scripts/prerender.mjs`: title with a civ-based fallback when blank, description stripped of markup, whitespace-collapsed and truncated on a word boundary with a composed fallback when blank (FR-008, FR-009)
+- [X] T042 [P] [US1] Implement HTML-attribute escaping in `scripts/prerender.mjs` so a title containing `"`, `<`, `>` or emoji cannot break out of a meta attribute (FR-011)
+- [X] T043 [US2] Produce the canonical URL in `scripts/prerender.mjs` using the **same rule** as `setCanonical` in `src/router/index.js:64` — no trailing slash, no query string — so the prerendered tag and the one the router writes can never disagree (FR-007)
+- [X] T044 [US1] Assemble and inject the head block in `scripts/prerender.mjs` per [contracts/generated-page.md](./contracts/generated-page.md), with `og:type` set to `article`. Leave `#app` empty — nothing is added to the body (FR-003, FR-006)
+- [X] T045 [US4] Emit the `HowTo` structured data block in `scripts/prerender.mjs` from the snapshot's already-converted `steps`, omitting `step` entirely when a build has none, and escaping with `JSON.stringify` plus `<` → `&lt;` so a title containing `</script>` cannot terminate the block (FR-010, FR-011)
+- [X] T046 [US1] Validate each build id against a safe-filename pattern in `scripts/prerender.mjs` before using it as a path; skip and count anything that fails. The generator must not be able to write outside its output directory whatever an id contains
+- [X] T047 [US1] Write pages into a temporary directory and rename into place as the final step in `scripts/prerender.mjs`, clearing the output directory first so a standalone `npm run prerender` is idempotent without relying on Vite having emptied `dist/` (FR-004, FR-021)
+- [X] T048 [US1] Exercise with `npm run prerender -- --limit=20` and read the emitted HTML: distinct titles, correct canonicals, parseable structured data, hashed module script present
+- [X] T049 [US1] Verify escaping against a build whose title contains `"`, `<`, `</script>` and emoji — markup stays well-formed and the structured data still parses
 - [ ] T050 [US1] [!] Deploy, then `curl` 20 build URLs and confirm each returns its own `<title>` and `og:title` where all previously returned the site default (SC-001)
 - [ ] T051 [US1] [!] Paste a build URL into Discord, Slack and a Twitter/X card validator — all three show that build's title and summary (SC-002)
 - [ ] T052 [US2] [!] Load a prerendered page in a browser, let the app boot, and confirm the canonical tag is byte-identical before and after (SC-004, FR-007), and that the page looks and behaves exactly as it did before this feature
+
+### Phase 6 verification
+
+Generated against a snapshot built from 230 real published builds through the actual record builder,
+plus three planted records: one hostile, one with every field blank, and two unsafe ids with one
+unparseable line. **232 pages written, 3 skipped (2 unsafe id, 1 unparseable).** Every page checked
+programmatically:
+
+- exactly one `<title>`, `description`, `canonical`, `og:title`, `og:url`, `og:type` — no shell
+  duplicates surviving, and **0 pages** still carrying the shell's default title
+- `og:site_name`, `og:image`, `twitter:card` all retained; `og:type` is `article`, never `website`
+- canonical byte-equal to the router's own rule for all 232
+- structured data parses on all 232, `@type` is `HowTo`, step positions sequential, `step` absent
+  rather than `[]` where a build has none
+- the hashed module script and an empty `<div id="app"></div>` present on all 232
+- idempotent: two runs byte-identical. A stale page planted in the output directory is removed.
+  `--dry-run` leaves the output untouched; `--limit=20` emits 20
+
+231 distinct titles across 232 pages — the one repeat is two different builds whose authors gave them
+the same name, which SC-001 permits: it asks that each page carry *its own* title, and their canonicals
+and `og:url`s differ.
+
+### Three defects found here
+
+**1. `$&` in a title would have spliced the page into itself.** The head block was interpolated into a
+`String.replace` *replacement string*, where `$&` and `$1` are substitution patterns. A build titled
+`50$&100` would have injected the matched text into its own markup. Now a replacer function, which has
+no such expansion — and the same change fixed the injected block's indentation.
+
+**2. The JSON-LD escape in the contract was wrong.** It specified `<` → `&lt;`. A
+`<script type="application/ld+json">` block is parsed as JSON, not HTML, so entities are never decoded
+and `&lt;` would corrupt any title containing `<`. Implemented as `<`, JSON's own escape, which
+parses back to `<` while leaving nothing for the HTML parser to read as `</script>`. Contract corrected.
+
+**3. The shell's canonical comment ships false.** It reads "No `<link rel="canonical">` here on
+purpose", and generated pages carry exactly that tag three lines below it. Stripped from the generated
+copy; the reasoning stays in the shell where it is still true.
 
 **Checkpoint**: the feature is real. Shared links and search results name the build.
 

@@ -26,9 +26,11 @@
 //   NETLIFY   set by Netlify. Its presence is what distinguishes a deploy from
 //             a local build or a CI run, and is why neither generates pages.
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { civs } from "../src/composables/filter/civDefaultProvider.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SNAPSHOT = join(ROOT, "data", "seo-snapshot.ndjson");
@@ -41,9 +43,271 @@ const OUTPUT_DIR = join(DIST, "builds");
 //loads nothing would be far worse than emitting none, and a changed Vite output
 //shape is a code defect that has to be visible in the deploy log.
 const HEAD_CLOSE = "</head>";
+
+//Captures the indentation so the injected block lands in column with the rest
+//of the head and </head> keeps its own. Matched with a *function* replacer
+//everywhere it is used: String.replace expands `$&` and `$1` inside a
+//replacement string, so a build titled "50$&100" would otherwise splice the
+//matched text into its own page.
+const HEAD_CLOSE_INDENTED = /([ \t]*)<\/head>/i;
 const HASHED_MODULE = /<script\b[^>]*\btype=["']module["'][^>]*\bsrc=["']\/assets\/[^"']+["']/i;
 
 const LOG = "prerender:";
+
+//Must match src/router/index.js. The router writes a canonical tag once the app
+//boots, over the one this script bakes in — so if the two rules ever disagree,
+//every page silently changes its own canonical a second after loading.
+const SITE_ORIGIN = "https://aoe4guides.com";
+
+//Google truncates around here. Not a hard limit, and the tag is valid at any
+//length; going long just wastes the part nobody reads.
+const DESCRIPTION_LIMIT = 160;
+
+//Firestore document ids are 20 alphanumeric characters. This is deliberately
+//wider than that and still cannot express a path: no dot, no slash, no
+//separator of any kind. Whatever an id turns out to contain, the generator
+//cannot be made to write outside its own output directory. (T046)
+const SAFE_ID = /^[A-Za-z0-9_-]{1,64}$/;
+
+//Civ code -> display name, from the app's own list rather than a second copy of
+//it. A name added there reaches these pages with no further edit.
+const CIV_NAMES = new Map((civs.value ?? []).map((civ) => [civ.shortName, civ.title]));
+
+/**
+ * @param {string} code - A civ short name such as "ABB".
+ * @return {string} Its display name, or the code when it is unknown.
+ */
+function civName(code) {
+  return CIV_NAMES.get(code) ?? code ?? "";
+}
+
+/**
+ * Escapes text for use inside a double-quoted HTML attribute.
+ *
+ * All five, not just the quote: a title containing `<` would otherwise open a
+ * tag when the attribute is later read, and an unescaped `&` can start an
+ * entity that swallows what follows it. (FR-011)
+ *
+ * @param {string} text
+ * @return {string}
+ */
+function escapeAttribute(text) {
+  return String(text ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+/**
+ * Serialises structured data for embedding in a <script> block.
+ *
+ * `<` becomes its JSON < escape, NOT the HTML entity `&lt;`.
+ *
+ * The contract asked for `&lt;`, and that is wrong: the content of a
+ * `<script type="application/ld+json">` block is parsed as JSON, not as HTML,
+ * so entities in it are never decoded. `&lt;` would survive into the parsed
+ * data as those four literal characters and quietly corrupt any title
+ * containing a `<`. `<` is JSON's own escape — it parses back to `<`,
+ * while leaving no `<` in the byte stream for the HTML parser to mistake for
+ * `</script>`. Same goal, and it actually works. (FR-011)
+ *
+ * @param {Object} data
+ * @return {string}
+ */
+function escapeJsonLd(data) {
+  return JSON.stringify(data).replaceAll("<", "\\u003C");
+}
+
+/**
+ * The canonical URL for a path.
+ *
+ * Deliberately the same expression as `setCanonical` in src/router/index.js —
+ * no trailing slash, no query string. The router overwrites this tag when the
+ * app boots, so any disagreement between the two shows up as a page whose
+ * canonical changes a moment after it loads. (FR-007)
+ *
+ * @param {string} path - A route path, e.g. "/builds/abc".
+ * @return {string}
+ */
+function canonicalFor(path) {
+  const trimmed = path.length > 1 ? path.replace(/\/+$/, "") : "";
+  return `${SITE_ORIGIN}/${trimmed.replace(/^\//, "")}`;
+}
+
+/**
+ * Cuts text to a length without splitting a word or ending on punctuation.
+ *
+ * @param {string} text
+ * @param {number} max
+ * @return {string}
+ */
+function truncate(text, max = DESCRIPTION_LIMIT) {
+  if (text.length <= max) return text;
+
+  const cut = text.slice(0, max);
+  const lastSpace = cut.lastIndexOf(" ");
+  //Only break at a space if one falls late enough to be a word boundary rather
+  //than the start of the string — a 160-character word would otherwise vanish.
+  const body = lastSpace > max * 0.6 ? cut.slice(0, lastSpace) : cut;
+
+  return body.replace(/[\s,;:.!?-]+$/, "") + "…";
+}
+
+/**
+ * The page title for a build.
+ *
+ * @param {Object} record - A snapshot record.
+ * @return {string}
+ */
+function titleFor(record) {
+  const title = (record.title ?? "").trim();
+  if (title) return title;
+
+  //Blank titles exist. A page called "| AOE4 GUIDES" is worse than one naming
+  //the civilisation it is about. (FR-008)
+  const civ = civName(record.civ);
+  return civ ? `${civ} Build Order` : "Build Order";
+}
+
+/**
+ * The meta description for a build.
+ *
+ * @param {Object} record - A snapshot record.
+ * @return {string}
+ */
+function descriptionFor(record) {
+  const description = (record.description ?? "").trim();
+  if (description) return truncate(description);
+
+  //46% of published builds have no description at all, measured over the
+  //sample in T022 — so this is the common path, not the edge case, and it has
+  //to read like a sentence rather than a field dump. (FR-009)
+  const civ = civName(record.civ);
+  const parts = [civ && `${civ} build order`, (record.strategy ?? "").trim(), (record.season ?? "").trim()]
+    .filter(Boolean)
+    .join(" · ");
+  const author = (record.author ?? "").trim();
+
+  return truncate([parts || "Age of Empires IV build order", author && `by ${author}`].filter(Boolean).join(" "));
+}
+
+/**
+ * Removes the shell's own page-level tags from the template.
+ *
+ * They describe the site, and would otherwise sit beside the per-build ones
+ * contradicting them — two titles, two descriptions, two og:urls. What stays is
+ * everything that is genuinely page-independent: og:site_name, the images,
+ * twitter:card and twitter:domain. (contracts/generated-page.md)
+ *
+ * @param {string} template - The built shell.
+ * @return {string}
+ */
+function stripShellTags(template) {
+  return template
+    //The shell's comment explaining why it carries no canonical. True of the
+    //shell, and false of every file this script writes — they each get one. A
+    //comment that contradicts the markup three lines below it is worse than no
+    //comment, and this one would sit in four thousand files.
+    .replace(/^[ \t]*<!--\s*No <link rel="canonical">[\s\S]*?-->[ \t]*\r?\n?/im, "")
+    .replace(/^[ \t]*<title>[\s\S]*?<\/title>[ \t]*\r?\n?/im, "")
+    .replace(/^[ \t]*<meta\s+name=["']description["'][^>]*>[ \t]*\r?\n?/im, "")
+    .replace(
+      /^[ \t]*<meta\s+(?:property|name)=["'](?:og:(?:type|url|title|description)|twitter:(?:url|title|description))["'][^>]*>[ \t]*\r?\n?/gim,
+      ""
+    );
+}
+
+/**
+ * The head block injected before </head>.
+ *
+ * @param {Object} record - A snapshot record.
+ * @return {string}
+ */
+function headBlock(record) {
+  const title = titleFor(record);
+  const description = descriptionFor(record);
+  const canonical = canonicalFor(`/builds/${record.id}`);
+  //The suffix is part of the title as displayed, so it belongs in og:title too
+  //— an unfurled card reading only the build's name looks like a broken quote.
+  const fullTitle = `${title} | AOE4 GUIDES`;
+
+  const attr = { title: escapeAttribute(fullTitle), description: escapeAttribute(description), canonical: escapeAttribute(canonical) };
+
+  const structured = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: title,
+    description,
+    ...(record.author ? { author: { "@type": "Person", name: record.author } } : {}),
+    ...(record.civ ? { about: { "@type": "Thing", name: `Age of Empires IV — ${civName(record.civ)}` } } : {}),
+    ...(record.created ? { dateModified: new Date(record.created * 1000).toISOString().slice(0, 10) } : {}),
+    //Omitted entirely when there are none. An empty array is a claim that the
+    //build has no steps, which is a different and false statement. (FR-010)
+    ...(record.steps?.length
+      ? { step: record.steps.map((text, index) => ({ "@type": "HowToStep", position: index + 1, text })) }
+      : {}),
+  };
+
+  return [
+    `    <title>${escapeAttribute(fullTitle)}</title>`,
+    `    <meta name="description" content="${attr.description}">`,
+    `    <link rel="canonical" href="${attr.canonical}">`,
+    "",
+    //article, not the shell's website: a build order is a document with an
+    //author and a date, and unfurlers present the two differently.
+    `    <meta property="og:type" content="article">`,
+    `    <meta property="og:url" content="${attr.canonical}">`,
+    `    <meta property="og:title" content="${attr.title}">`,
+    `    <meta property="og:description" content="${attr.description}">`,
+    "",
+    `    <meta property="twitter:url" content="${attr.canonical}">`,
+    `    <meta name="twitter:title" content="${attr.title}">`,
+    `    <meta name="twitter:description" content="${attr.description}">`,
+    "",
+    `    <script type="application/ld+json">${escapeJsonLd(structured)}</script>`,
+    "",
+  ].join("\n");
+}
+
+/**
+ * Parses the snapshot's records, skipping anything unusable.
+ *
+ * Per-line rather than fatal on purpose: one malformed record should cost one
+ * page, not four thousand. (contracts/prerender-cli.md, case 4)
+ *
+ * @param {string} snapshot - The whole file.
+ * @param {number|null} limit
+ * @param {Object} counters - Mutated with `unparseable` and `unsafeId` counts.
+ * @return {Array<Object>}
+ */
+function readRecords(snapshot, limit, counters) {
+  const records = [];
+
+  //Line 0 is _meta, already read by decide().
+  for (const line of snapshot.split("\n").slice(1)) {
+    if (!line.trim()) continue;
+    if (limit && records.length >= limit) break;
+
+    let record;
+    try {
+      record = JSON.parse(line);
+    } catch {
+      counters.unparseable++;
+      continue;
+    }
+
+    if (!SAFE_ID.test(record?.id ?? "")) {
+      counters.unsafeId++;
+      continue;
+    }
+
+    records.push(record);
+  }
+
+  return records;
+}
 
 /**
  * @param {Array<string>} argv - process.argv.slice(2).
@@ -209,12 +473,49 @@ function main() {
   if (options.limit) console.log(`${LOG} limit: ${options.limit} builds`);
   if (options.dryRun) console.log(`${LOG} dry run — nothing will be renamed into place`);
 
-  //── Phase 6 seam ────────────────────────────────────────────────────────────
-  //Everything above is the safe path, built and verified first on purpose: the
-  //guard rails go up before there is anything behind them that could run
-  //unsafely. Page emission into OUTPUT_DIR lands here next.
-  console.log(`${LOG} no pages emitted — generation is not implemented yet`);
-  void OUTPUT_DIR;
+  const started = Date.now();
+  const counters = { unparseable: 0, unsafeId: 0 };
+  const records = readRecords(decision.snapshot, options.limit, counters);
+  const template = stripShellTags(decision.template);
+
+  //Written into a sibling temp directory and renamed into place as the very
+  //last step, so a run that dies halfway leaves the previous state intact
+  //rather than publishing a partial set. (FR-021)
+  const staging = mkdtempSync(join(DIST, ".builds-"));
+  let written = 0;
+
+  try {
+    for (const record of records) {
+      const block = headBlock(record);
+      const page = template.replace(HEAD_CLOSE_INDENTED, (_match, indent) => `${block}${indent}${HEAD_CLOSE}`);
+      writeFileSync(join(staging, `${record.id}.html`), page, "utf8");
+      written++;
+    }
+
+    if (options.dryRun) {
+      console.log(`${LOG} dry run — would have written ${written} pages to dist/builds/`);
+      rmSync(staging, { recursive: true, force: true });
+      return;
+    }
+
+    //Cleared rather than merged. vite build empties dist/ anyway, but a
+    //standalone `npm run prerender` does not, and a page left behind from a
+    //build that no longer exists would go on being served. (FR-004)
+    rmSync(OUTPUT_DIR, { recursive: true, force: true });
+    renameSync(staging, OUTPUT_DIR);
+  } catch (error) {
+    rmSync(staging, { recursive: true, force: true });
+    throw error;
+  }
+
+  const skipped = counters.unparseable + counters.unsafeId;
+  console.log(
+    `${LOG}   ${written} page${written === 1 ? "" : "s"} written` +
+      (skipped
+        ? ` · ${skipped} skipped (${counters.unsafeId} unsafe id, ${counters.unparseable} unparseable)`
+        : "") +
+      ` · ${((Date.now() - started) / 1000).toFixed(1)}s`
+  );
 }
 
 //Nothing below this line may throw past it. A crash here is still a green
