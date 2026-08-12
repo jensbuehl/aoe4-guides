@@ -6,8 +6,8 @@ import {
   resolveStepTimes,
   toDateFromSeconds,
   getFormattedTime,
-} from "@/composables/builds/timingsHelper.js";
-import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+} from "./timingsHelper.js";
+import { aggregateVillagers } from "./villagerAggregator.js";
 
 /**
  * The ages this feature surfaces, in the order they are always displayed. Shared

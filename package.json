@@ -12,6 +12,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "check:icons": "node scripts/check-icons.mjs",
+    "check:plurals": "node scripts/check-plurals.mjs",
     "check:steps": "node scripts/check-steps.mjs",
     "check:setup": "node scripts/check-setup.mjs"
   },
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",
+    "firebase-admin": "^13.6.0",
     "firebase-functions": "^4.9.0",
     "firebase-tools": "^15.3.1",
     "vite": "^6.2.5",

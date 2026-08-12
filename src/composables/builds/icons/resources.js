@@ -1,5 +1,5 @@
 //Composables
-import { civs } from "@/composables/builds/icons/civs.js";
+import { civs } from "./civs.js";
 
 export const resources = [
   {

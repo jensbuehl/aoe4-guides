@@ -181,12 +181,15 @@ export default function useImportOverlayFormat() {
     const iconMetaData = getIconFromImgPath(imagePath);
 
     //Initialize image data with fallback values, so that broken images do get messed up (e.g. Valdemar used to copy from age4builder)
+    //getIconFromImgPath returns null when the path is in no vocabulary — an
+    //import from another site is the normal way that happens, and this is the
+    //caller that wants to keep the image rather than drop it.
     //Create image element
-    const iconPath = iconMetaData.imgSrc ? iconMetaData.imgSrc : imagePath;
-    const tooltipText = iconMetaData.title
+    const iconPath = iconMetaData?.imgSrc ? iconMetaData.imgSrc : imagePath;
+    const tooltipText = iconMetaData?.title
       ? iconMetaData.title
       : "Image not found. Please make sure to not copy and paste images from other sources.";
-    const iconClass = iconMetaData.class
+    const iconClass = iconMetaData?.class
       ? "icon-" + iconMetaData.class
       : "icon";
 
