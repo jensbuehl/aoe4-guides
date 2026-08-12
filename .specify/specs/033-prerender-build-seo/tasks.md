@@ -188,12 +188,33 @@ skip, exits 0, and creates no `dist/builds/`. CI stays green.
 **Built before the emission logic on purpose** — a generator that can fail a deploy is worse than no
 generator, so the guard rails go up first and are verified while there is nothing behind them.
 
-- [ ] T033 [US3] Create `scripts/prerender.mjs` implementing only the decision order in [contracts/prerender-cli.md](./contracts/prerender-cli.md): skip unless `NETLIFY` or `--force`; skip when `data/seo-snapshot.ndjson` is missing or unreadable; skip **loudly** when `dist/index.html` is missing or its shape is unrecognised; exit **0** in every case including failure (FR-018, FR-019, FR-020)
-- [ ] T034 [US3] Parse `--force`, `--limit=N` and `--dry-run` in `scripts/prerender.mjs` (FR-022)
-- [ ] T035 [US3] Implement the log contract in `scripts/prerender.mjs` — one summary line or block on every run, reporting the snapshot's `project` and age so a wrong database or a refresh that has stopped running is visible in the deploy log (FR-023, FR-028)
-- [ ] T036 [US3] Add `"postbuild": "node scripts/prerender.mjs"` and `"prerender": "node scripts/prerender.mjs --force"` to `package.json`, with no shell syntax — the same script runs on Windows locally and Linux on Netlify
-- [ ] T037 [US3] Verify locally: `npm run build` skips in well under a second, output is byte-identical to before, exit code is 0, and no `dist/builds/` appears (SC-005)
+- [X] T033 [US3] Create `scripts/prerender.mjs` implementing only the decision order in [contracts/prerender-cli.md](./contracts/prerender-cli.md): skip unless `NETLIFY` or `--force`; skip when `data/seo-snapshot.ndjson` is missing or unreadable; skip **loudly** when `dist/index.html` is missing or its shape is unrecognised; exit **0** in every case including failure (FR-018, FR-019, FR-020)
+- [X] T034 [US3] Parse `--force`, `--limit=N` and `--dry-run` in `scripts/prerender.mjs` (FR-022)
+- [X] T035 [US3] Implement the log contract in `scripts/prerender.mjs` — one summary line or block on every run, reporting the snapshot's `project` and age so a wrong database or a refresh that has stopped running is visible in the deploy log (FR-023, FR-028)
+- [X] T036 [US3] Add `"postbuild": "node scripts/prerender.mjs"` and `"prerender": "node scripts/prerender.mjs --force"` to `package.json`, with no shell syntax — the same script runs on Windows locally and Linux on Netlify
+- [X] T037 [US3] Verify locally: `npm run build` skips in well under a second, output is byte-identical to before, exit code is 0, and no `dist/builds/` appears (SC-005)
 - [ ] T038 [US3] Verify in CI: push and confirm `.github/workflows/ci.yml` stays green with no credential configured (SC-006)
+
+### Phase 5 verification
+
+Every branch of the decision order exercised, all exiting **0**, with `dist/` byte-identical
+(sha256 over the whole tree) before and after all of them:
+
+| Condition | Logged |
+|---|---|
+| no `NETLIFY`, no `--force` | `skipped — not a Netlify build (pass --force to run anyway)` |
+| `NETLIFY` set, no snapshot | `skipped — data/seo-snapshot.ndjson not found` |
+| `--force`, no snapshot | same |
+| snapshot present | `snapshot aoe4-guides @ 2026-08-01 (11 days old) · 4012 builds` |
+| snapshot from the dev project | summary **plus** a `WARNING` naming the wrong project |
+| snapshot 223 days old | summary **plus** a `WARNING` that the refresh has probably stopped |
+| unreadable `_meta` line | `skipped — … has no readable _meta line` |
+| `dist/index.html` missing `</head>` | `NOT GENERATING —` (loud, stderr) |
+| `dist/index.html` missing the hashed module script | `NOT GENERATING —` (loud, stderr) |
+| unknown flag | warned, run continues |
+
+The skip costs **91 ms** and creates no `dist/builds/`. `npm run build` and `npm run prerender` both
+verified through the wired npm scripts, not just by calling node directly.
 
 **Checkpoint**: the generator exists, runs nowhere by accident, and cannot fail anything.
 

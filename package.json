@@ -10,6 +10,8 @@
     "preinstall": "node scripts/only-npm.mjs",
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node scripts/prerender.mjs",
+    "prerender": "node scripts/prerender.mjs --force",
     "preview": "vite preview",
     "check:icons": "node scripts/check-icons.mjs",
     "check:plurals": "node scripts/check-plurals.mjs",

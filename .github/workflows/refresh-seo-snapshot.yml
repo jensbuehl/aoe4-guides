@@ -52,7 +52,11 @@ jobs:
           # for builds that do not exist in production. The script logs the
           # project id it read from, and records it in the file's _meta line, so
           # a wrong project shows up in this log and in the committed diff.
-          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          # Secret SEO_READER holds it; the script reads it under a name that
+          # says what the value *is* rather than who it belongs to. Two names on
+          # purpose — the secret is an identity, the variable is a credential
+          # format, and renaming either should not require touching the other.
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.SEO_READER }}
         run: node scripts/refresh-snapshot.mjs
 
       - name: Commit the snapshot, but only if it changed

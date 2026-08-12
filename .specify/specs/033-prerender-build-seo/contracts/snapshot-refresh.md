@@ -90,7 +90,7 @@ node scripts/refresh-snapshot.mjs [--limit=N] [--out=path]
 
 | Environment | Purpose |
 |---|---|
-| `FIREBASE_SERVICE_ACCOUNT` | Service-account JSON for **`aoe4-guides`**. From GitHub Secrets. |
+| `FIREBASE_SERVICE_ACCOUNT` | Service-account JSON for **`aoe4-guides`**. Fed from the GitHub Secret **`SEO_READER`** — the secret names the identity, the variable names the credential format, and the workflow maps one to the other. |
 
 | Exit | Meaning |
 |---|---|
