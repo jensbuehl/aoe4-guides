@@ -9,9 +9,14 @@
   also disallowed in robots.txt.
 
   THIS IS NO LONGER THE SITEMAP THE SITE SERVES. scripts/prerender.mjs reads
-  the <url> blocks below, appends one per public build order, and writes the
-  result over the copy of this file in dist/ - so what ships normally has
-  thousands of URLs, not five.
+  the entries below, appends one per public build order, and writes the result
+  over the copy of this file in dist/ - so what ships normally has thousands of
+  URLs, not five.
+
+  Deliberately no literal tag names in this comment: the generator finds those
+  entries by regex, and a tag spelled out up here would be counted as one of
+  them. It strips comments first and so is not fooled - but the next thing to
+  read this file might not.
 
   Two things follow. Adding a static route here still works and still reaches
   the live sitemap, because the generator reads this file rather than
