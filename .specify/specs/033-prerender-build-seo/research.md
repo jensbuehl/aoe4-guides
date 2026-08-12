@@ -155,6 +155,77 @@ the fallback R2 named for a failure it did not anticipate.
 
 ---
 
+## R2d. App Check blocks Googlebot — the real reason build pages were never indexed
+
+**Found 2026-08-12, after the pages went live.** With correct head tags shipping on all 4,202 pages,
+Search Console still reported **Soft 404** and refused to index them.
+
+**This is older than this feature.** It would have been found by one check *before* any code was
+written: inspect an existing build URL in Search Console and read the rendered HTML. The feature was
+built on the premise that head tags were what was missing. They were missing — and they were not what
+was blocking indexing.
+
+### What Google actually renders
+
+Google runs JavaScript. The app boots, tries to read the build, fails, and renders:
+
+```html
+<div class="v-card-title">Build Order Not Found</div>
+```
+
+An existing build, reported as missing, on a page whose head describes it correctly. Google is right to
+call that a soft 404.
+
+### The chain, from Search Console's own console output
+
+```
+requestStorageAccess: Permission denied            ← reCAPTCHA iframe
+AppCheck: Requests throttled due to 403 error      ← appCheck/throttled, 24h backoff
+collectionService.get failed: Missing or insufficient permissions.
+```
+
+Google's renderer denies the reCAPTCHA iframe third-party storage access, so no App Check token can be
+minted; the token request 403s and the client throttles itself for a day; Firestore then refuses a read
+that `firestore.rules` explicitly permits.
+
+**Not a timeout.** The failure appeared at **00:29** — Google waited 29 seconds and was actively
+refused. Nothing about prerendering, page weight or load time affects this.
+
+**No allowlist exists.** Firebase App Check has no bypass for verified crawlers; the issue is
+[open and closed-without-resolution](https://github.com/firebase/firebase-js-sdk/issues/8886). Google
+publishes verifiable crawler IP ranges, but there is nowhere to apply them: the token exchange happens
+between the browser and Firebase's backend, with no point that this project controls.
+
+### Why nothing caught it
+
+`collectionService.get()` caught the error and returned `undefined` — the same value it returns for a
+document that does not exist. A permission failure and a missing build were indistinguishable to every
+caller, and the UI said "not found" for both. The **write** path already drew this distinction
+(`toUserMessage`, `writeWithTokenRetry`, which name App Check and ad blockers explicitly). Reads never
+did.
+
+### Fixed in PR #133
+
+`getBuild` falls back to the site's own API, which runs on Cloud Run with a service account, so the
+Admin SDK bypasses both rules and App Check. Strictly a fallback: one call site, inside the `catch`, so
+a successful read never reaches it and a genuinely missing build still resolves without one.
+
+Verified on a deploy preview against **both** observed failure codes — `permission-denied` (the
+Googlebot case) and `unavailable` (a blocked transport) — each returning the build with a creation date
+matching the snapshot's own `dateModified`.
+
+### The part that is not about SEO
+
+Any environment where reCAPTCHA cannot run cannot read a build. Observed live: after a few blocked
+loads, reCAPTCHA kept failing in that browser session **even once the block was removed**. That state is
+easier to reach and stickier than assumed, so the fallback is a robustness fix that happens to also
+unblock indexing — not the other way round.
+
+Still failing for such a client, and deliberately out of scope: comments (`getAll`) and the view/like
+counters (`incrementNumber`). The build is the content; those are not.
+
+---
+
 ## R3. Can the generator read Firestore without a service account? — **VERIFIED NO**
 
 **Question**: [firestore.rules:10-11](../../../firestore.rules#L10-L11) grants `allow read` on

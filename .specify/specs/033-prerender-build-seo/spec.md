@@ -216,6 +216,20 @@ The sitemap today lists five URLs. Roughly four thousand build pages are reachab
 
   **Follow-up worth considering separately**: making `BuildDetails` set an absolute title (`title | AOE4 GUIDES`) rather than prepending would make the booted and prerendered titles match exactly, and would shorten a needlessly long tab title on every build page. Not done here — the scope guard permits exactly one change to the running application (the icon converter), and this would be a second.
 
+  **Amended the same day, after seeing what Google renders.** Search Console's rendered HTML showed
+  `<title>Age of Empires IV Build Orders | AOE4 GUIDES</title>` — the generic route title, on a page
+  whose `og:title` was correct. So "the end state is already correct" was **false**, and dropping this
+  on that basis was wrong. The cause: `BuildDetails` never reached its own title line, because the read
+  failed first (R2d).
+
+  With PR #133 the read succeeds, so the end state now reads `French 3:38 … - Age of Empires IV Build
+  Orders | AOE4 GUIDES` — it names the build, which is what matters, but it is long and differs from the
+  prerendered `<title>`. That returns this to genuinely cosmetic, and it stays dropped.
+
+  What survives is the finding, not the requirement: **the reason the title looked wrong was never the
+  router.** Anyone reopening this should fix the prepend, not suppress the reset — and should check what
+  Google renders rather than reasoning about what the code ought to produce.
+
 ### Key Entities
 
 - **Public build order**: A build that is not a draft. Contributes a title, description, civilisation, strategy, map, season, author and an ordered step document. Identified by the id already used in its URL.

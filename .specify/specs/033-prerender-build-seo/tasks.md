@@ -343,6 +343,8 @@ header**, and extensionless resolution still works — so FR-001 stands and no f
 - [X] T064 Add `netlify.toml` with `[build.processing.html] pretty_urls = false`, push to a branch, and check on the **preview** that `curl -sI /builds/<a mixed-case id>` returns 200 with no redirect — while `/builds`, `/builds/new` and an unprerendered build still behave. **Never straight to production**
 - [X] T065 ~~If pretty-URL canonicalisation cannot be disabled without losing extensionless resolution, re-specify FR-001 per R2's original fallback~~ — **not needed.** The two turned out to be separable: with `pretty_urls = false` a mixed-case id returns 200 directly and extensionless resolution still works, so FR-001 stands as written
 - [X] T066 Once fixed, re-run the refresh workflow to re-commit the snapshot, then redo T050–T052 against production
+- [X] T067 **Indexing was blocked by something older than this feature** — App Check refuses Googlebot's Firestore read, so every page rendered "Build Order Not Found" and Google reported soft 404 on all 4,202. Diagnosed from Search Console's own console output and fixed in PR #133 (API fallback in `getBuild`). Full finding: [research.md R2d](./research.md). The lesson is the same shape as R2c: I verified against the artefact we produce, not against the system that consumes it — a single Search Console inspection of an *existing* build page, before any code, would have found it
+- [ ] T068 [!] Re-test the same URL in Search Console now that #133 is live: expect "URL is available to Google" instead of Soft 404, then request indexing
 
 ---
 
