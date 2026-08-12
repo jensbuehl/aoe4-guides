@@ -7,8 +7,19 @@ import { nodePolyfills } from "vite-plugin-node-polyfills";
 export default {
   server: {
     proxy: {
+      // Mirrors the /api/* rule in public/_redirects, so a dev server behaves
+      // like the deployed site instead of 404ing every API call. It previously
+      // pointed at https://dog.ceo/api/ — a placeholder that answered every
+      // request with a 404 and made any local test of an API path meaningless.
+      //
+      // Note the asymmetry this creates: the app talks to aoe4-guides-DEV
+      // through Firebase, while this proxy reaches the PROD database through
+      // Cloud Run. The two hold different builds, so an id that exists on one
+      // side may not exist on the other. Fine for checking that a call is made
+      // and parsed; useless for checking that both paths return the same build
+      // — do that on a deploy preview.
       "/api": {
-        target: "https://dog.ceo/api/",
+        target: "https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app",
         changeOrigin: true,
         secure: false,
       },

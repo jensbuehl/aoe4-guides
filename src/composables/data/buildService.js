@@ -1,6 +1,7 @@
 //External
 import { store } from "@/store/index.js";
 import { computed } from "vue";
+import { Timestamp } from "@/firebase";
 
 //Composables
 import collectionService from "@/composables/data/collectionService";
@@ -24,6 +25,7 @@ const {
   decrementNumber,
   add,
   get,
+  getOrThrow,
   getSnapshot,
   del,
   update,
@@ -385,14 +387,107 @@ export async function getBuildsFrom(startBuildId, filterConfig = getDefaultConfi
   return res;
 }
 
+//The codes that mean "App Check could not attest this client", as opposed to
+//"this build does not exist". Only these reach the fallback.
+const ATTESTATION_FAILURES = new Set(["permission-denied", "unauthenticated"]);
+
+/**
+ * Rebuilds Firestore Timestamps from their JSON form.
+ *
+ * The API serialises a Timestamp as `{_seconds, _nanoseconds}` — note the
+ * underscores, which `toDateSafe` does not recognise, so every date would
+ * silently render as blank. Recursive rather than field-by-field because a
+ * build carries dates at more than one depth and a new one must not go missing.
+ *
+ * @param {*} value - Anything from the API response.
+ * @return {*} The same shape, with timestamp objects turned back into Timestamps.
+ */
+function reviveTimestamps(value) {
+  if (Array.isArray(value)) return value.map(reviveTimestamps);
+  if (!value || typeof value !== "object") return value;
+
+  if (typeof value._seconds === "number") {
+    return new Timestamp(value._seconds, value._nanoseconds ?? 0);
+  }
+
+  return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, reviveTimestamps(item)]));
+}
+
+/**
+ * Reads a build through the site's own API, which does not use App Check.
+ *
+ * The API runs server-side on Cloud Run with a service account, so the Admin
+ * SDK reads Firestore directly and neither security rules nor App Check apply.
+ * That is the whole reason it can answer where the browser cannot.
+ *
+ * @param {string} buildId
+ * @return {Promise<any>} The build, or undefined.
+ */
+async function getBuildFromApi(buildId) {
+  try {
+    const response = await fetch(`/api/builds/${encodeURIComponent(buildId)}`);
+    //404 is the API's answer for a build that genuinely does not exist.
+    if (!response.ok) return undefined;
+
+    const build = await response.json();
+
+    //Checked rather than trusted. Whatever answers on this path is whatever the
+    //environment has wired to /api — during development that was a placeholder
+    //proxy pointing at an unrelated public API, and a truthy non-build response
+    //reaches `build.value` and breaks rendering somewhere far from the cause.
+    if (!build || typeof build !== "object" || !("steps" in build)) {
+      console.error("buildService: /api/builds returned something that is not a build.");
+      return undefined;
+    }
+
+    return reviveTimestamps(build);
+  } catch (err) {
+    console.error("buildService.getBuild API fallback failed:", err?.message ?? err);
+    return undefined;
+  }
+}
+
 /**
  * Retrieve a build by its ID.
+ *
+ * Firestore first, always. The API is a fallback for exactly one situation and
+ * is not reached in any other: the client could not produce an App Check token,
+ * so a read the security rules permit was refused anyway.
+ *
+ * That situation is real and was measured, not imagined. Googlebot's renderer
+ * denies the reCAPTCHA iframe storage access, App Check gets a 403 and throttles
+ * itself for 24 hours, and the read fails with "Missing or insufficient
+ * permissions" — so every build page rendered "Build Order Not Found" and Google
+ * classified all ~4,200 of them as soft 404s. The same happens to any reader
+ * whose browser blocks reCAPTCHA.
+ *
+ * **A successful Firestore read never touches the API.** Nor does a build that
+ * simply does not exist — that resolves to `undefined` without throwing, and
+ * must keep showing "not found" rather than costing a second round trip. The
+ * fallback is deliberately narrow: widening it to every error would quietly turn
+ * a Cloud Run invocation into the normal path and put load on the API that the
+ * database is supposed to carry.
  *
  * @param {string} buildId - The ID of the build to retrieve
  * @return {Promise<any>} The retrieved build
  */
 export async function getBuild(buildId) {
-  return get(buildId);
+  try {
+    return await getOrThrow(buildId);
+  } catch (err) {
+    if (!ATTESTATION_FAILURES.has(err?.code)) {
+      //Everything else keeps behaving as it always did: logged, swallowed, and
+      //surfaced to the reader as "not found".
+      console.error("buildService.getBuild failed:", err?.message ?? err);
+      return undefined;
+    }
+
+    console.warn(
+      `buildService.getBuild: Firestore refused the read (${err.code}) — App Check could not ` +
+        `attest this client. Falling back to the public API.`
+    );
+    return await getBuildFromApi(buildId);
+  }
 }
 
 /**
