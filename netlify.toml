@@ -1,0 +1,23 @@
+# Netlify build configuration.
+#
+# Deliberately minimal. The build command and publish directory are set in the
+# Netlify UI and are NOT restated here — netlify.toml overrides the UI only for
+# the keys it declares, so declaring fewer keys means fewer places the two can
+# disagree. Everything below exists because it cannot be expressed anywhere else.
+
+[build.processing.html]
+  # Netlify's pretty-URL canonicalisation lowercases the request path and 301s
+  # to it. That is harmless for a site whose paths are lowercase, and fatal
+  # here: build order URLs carry a Firestore document id, which is a
+  # case-sensitive mixed-case [A-Za-z0-9]{20}.
+  #
+  # With prerendered pages present, /builds/00I7J47dv26cPbKmXYkO redirected to
+  # /builds/00i7j47dv26cpbkmxyko — served the right file, correct head tags, and
+  # an id that matches no document, so the app rendered nothing. It reached
+  # production on 2026-08-12 and was reverted the same hour; the full finding is
+  # in .specify/specs/033-prerender-build-seo/research.md under R2c.
+  #
+  # This does not affect extensionless resolution, which is core serving
+  # behaviour rather than part of this setting — verified on a deploy preview
+  # before the snapshot was committed again.
+  pretty_urls = false
