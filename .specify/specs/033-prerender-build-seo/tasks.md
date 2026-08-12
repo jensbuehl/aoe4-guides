@@ -154,7 +154,7 @@ step text is converted at refresh time, not at generation time.
 - [ ] T029 [!] Create a read-scoped service account for the **`aoe4-guides`** project (prod — *not* `aoe4-guides-dev`, which is what the local `.env` points at) and store it as the `FIREBASE_SERVICE_ACCOUNT` GitHub Secret. It must not be added to Netlify and must never be committed (FR-029)
 - [X] T030 Create `.github/workflows/refresh-seo-snapshot.yml` per the contract: monthly cron plus `workflow_dispatch`, `permissions: contents: write`, run the script, commit `data/seo-snapshot.ndjson` **only when it changed**, message `chore(seo): refresh build snapshot`
 - [X] T031 [!] Confirm GitHub actually notifies the owner on scheduled-workflow failure (R12 item 3). FR-028 rests on this — confirm it, do not assume it. If notifications are off, turn them on or add an explicit failure step — confirmed by the owner: Actions email notifications are on, restricted to failed runs. The address the mail reaches is `jensbuehl`, which GitHub attributes commit 611abf6 (the workflow's `cron:`) to, and for `schedule` events that attribution is what selects the recipient
-- [ ] T032 [!] Trigger the workflow by hand via `workflow_dispatch` to produce the first `data/seo-snapshot.ndjson`, then check the committed diff: `_meta.project` reads `aoe4-guides`, the build count is plausible, and spot-checked step text is readable prose
+- [X] T032 [!] Trigger the workflow by hand via `workflow_dispatch` to produce the first `data/seo-snapshot.ndjson`, then check the committed diff: `_meta.project` reads `aoe4-guides`, the build count is plausible, and spot-checked step text is readable prose — **done, and all three checks passed**: `_meta.project` = `aoe4-guides`, 4,202 builds / 50,951 steps / 5.25 MB read in 3.9s, step text reads as prose. Took three runs: the first committed nothing (a `git diff` on an untracked file reports no change), the second was rejected by `main`'s signed-commit rule, the third landed. The snapshot was then reverted for reasons unrelated to the refresh — see R2c
 
 ### Phase 4 findings
 
@@ -323,6 +323,25 @@ The static routes are **read** from `public/sitemap.xml` rather than restated, s
 they are declared and their hand-set `<priority>` values carry through.
 
 **Checkpoint**: ~4,000 URLs submitted instead of 5.
+
+---
+
+## ⚠️ BLOCKED IN PRODUCTION — R2c
+
+The feature reached production on 2026-08-12 and was reverted the same hour. Netlify **canonicalises
+request paths to lowercase and 301s to them**, and Firestore build ids are case-sensitive mixed case, so
+every generated page redirected to a URL under which the app cannot find its build. Head tags correct,
+page empty. Full finding, evidence and the fix to try: [research.md R2c](./research.md).
+
+Reverted by removing `data/seo-snapshot.ndjson` from `main` — the generator's own skip path, so no code
+changed and the site was back in 45 seconds.
+
+**Nothing below is wrong; it is waiting.** T050–T052 and T060 cannot be checked until a mixed-case id
+returns 200 with no `Location` header on a deploy preview.
+
+- [ ] T064 Add `netlify.toml` with `[build.processing.html] pretty_urls = false`, push to a branch, and check on the **preview** that `curl -sI /builds/<a mixed-case id>` returns 200 with no redirect — while `/builds`, `/builds/new` and an unprerendered build still behave. **Never straight to production**
+- [ ] T065 If pretty-URL canonicalisation cannot be disabled without losing extensionless resolution, re-specify FR-001 per R2's original fallback: emit to a path that is not also a route, plus an explicit non-force rewrite for `/builds/:id`
+- [ ] T066 Once fixed, re-run the refresh workflow to re-commit the snapshot, then redo T050–T052 against production
 
 ---
 

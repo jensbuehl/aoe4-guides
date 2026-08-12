@@ -56,6 +56,19 @@ No fallback is needed: the generated pages can live at `dist/builds/<id>.html` a
 single file in that directory. Nothing here depends on the count, but ~4,000 files is the first time
 that will be true.
 
+> ### ⚠️ R2 was right and still insufficient — see R2c
+>
+> Extensionless resolution works, exactly as measured. What the probe could not reveal is that Netlify
+> **canonicalises request paths to lowercase and 301s to them**, which breaks every mixed-case build id.
+>
+> The probe was named `__prerender-probe.html` — **all lowercase**. A lowercase path canonicalises to
+> itself, so the redirect never fired and the table above is a true result from an unrepresentative
+> input. Real build ids are mixed-case `[A-Za-z0-9]{20}`.
+>
+> **The lesson is about probe fidelity, not about Netlify**: a probe has to share the *characteristics*
+> of the thing it stands in for, not merely its shape. This one matched the shape — a file, in that
+> directory, fetched extensionlessly — and differed in the single attribute that turned out to matter.
+
 <details>
 <summary>Original question, kept because it is why the checks are shaped this way</summary>
 
@@ -85,6 +98,60 @@ and add an explicit non-force rewrite mapping `/builds/:id` to it. FR-001 would 
 Delete the probe file once the answer is recorded either way.
 
 </details>
+
+---
+
+## R2c. Netlify lowercases request paths — **VERIFIED, and it blocks the feature**
+
+**Found in production on 2026-08-12**, after the first real snapshot generated 4,202 pages. Reverted
+within minutes by removing the snapshot; the site was restored to its previous behaviour in 45 seconds.
+
+**What happens.** With a generated file present, Netlify 301s the request to a lowercased path:
+
+```
+GET /builds/00I7J47dv26cPbKmXYkO   →  301  →  /builds/00i7j47dv26cpbkmxyko   →  200
+```
+
+The redirected page is served correctly and its head is right — correct title, correct canonical
+pointing back at the mixed-case URL. **But the id in the address bar is now lowercase**, and Firestore
+document ids are case-sensitive:
+
+```
+GET /api/builds/00I7J47dv26cPbKmXYkO   →  the build
+GET /api/builds/00i7j47dv26cpbkmxyko   →  {"reason":""}
+```
+
+So the app boots, asks for a build under an id that does not exist, and renders nothing. Head tags
+correct, page empty — the worst possible split, because every automated check passes.
+
+**Causation is provable, not inferred**: a `/builds/<id>` path with **no** generated file behind it
+returns 200 with no redirect. The redirect appears only where a file exists.
+
+**Who it hit**: every arrival by HTTP — shared links, search results, pasted links, bookmarks. In-app
+navigation is client-side and never issues the request, which is why the site looked healthy to anyone
+clicking around, and why this survived a deploy preview, a merge and a production deploy.
+
+**Why nothing caught it earlier**: the R2 probe was named `__prerender-probe.html`, all lowercase, so
+it canonicalised to itself. Every local check ran against the filesystem rather than Netlify. Every
+page assertion in Phase 6 read the emitted HTML, which was and is correct.
+
+**Fix to try, on a deploy preview and never again straight to production**: Netlify's pretty-URL
+canonicalisation, via `netlify.toml`:
+
+```toml
+[build.processing.html]
+  pretty_urls = false
+```
+
+**The check that decides it** — a *mixed-case* id must return 200 directly, with no `Location` header:
+
+```sh
+curl -sI https://<preview>/builds/00I7J47dv26cPbKmXYkO | grep -iE '^HTTP|^location'
+```
+
+If it cannot be disabled without also losing extensionless resolution, FR-001 needs re-specifying after
+all: serve the pages from a path that is not a route and add an explicit non-force rewrite, which is
+the fallback R2 named for a failure it did not anticipate.
 
 ---
 
