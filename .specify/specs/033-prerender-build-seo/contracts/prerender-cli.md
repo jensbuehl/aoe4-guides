@@ -44,6 +44,15 @@ syntax — the same script runs on Windows locally and Linux on Netlify.
 checkout alone (FR-025, FR-029). `firebase-admin` is imported by `refresh-snapshot.mjs` and by nothing
 else.
 
+**It also imports nothing but `node:` builtins — not `src/`, not a dependency.** This is what makes
+"never fails a deploy" true rather than aspirational, and it was learned the hard way: one named import
+from a `src/` module turned a green build into `Build failed`, exit code 2, on Netlify only. Netlify
+pins Node 22.1.0 and module-syntax detection landed in 22.7.0, so a `src/*.js` file is CommonJS there
+and its named exports do not exist; locally and in CI the same line resolves. The exit-0 guarantee below
+could not save it, because a static import throws during module instantiation — before the `try/catch`
+around `main()` exists to run. Anything the generator needs from the application arrives through the
+snapshot's `_meta` instead. Verify with `node --no-experimental-detect-module scripts/prerender.mjs`.
+
 ### Input
 
 | Path | Purpose |

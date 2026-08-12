@@ -32,8 +32,14 @@ say so, because "let me just prettify this" is a natural and quiet way to undo i
 The first line is a metadata record, distinguishable by having no `id`:
 
 ```json
-{"_meta":{"project":"aoe4-guides","generated":"2026-08-01T03:00:00Z","builds":4012,"version":1}}
+{"_meta":{"project":"aoe4-guides","generated":"2026-08-01T03:00:00Z","builds":4012,"version":1,"civs":{"ABB":"Abbasid Dynasty","…":"…"}}}
 ```
+
+`civs` is a civ-code-to-display-name map, carried here so the generator can resolve a name without
+importing anything from `src/` — a deploy-safety constraint, not tidiness (see `prerender-cli.md`).
+Once in the header rather than on every record: 24 entries instead of 4,000 copies, and a civ rename
+touches one line rather than the whole file. A generator reading a snapshot written before this field
+existed falls back to the raw code, which still produces a page.
 
 `project` and `generated` exist so a deploy can log which database the data came from and how old it
 is — the two failures worth catching at a glance (see `prerender-cli.md`). `version` allows the record

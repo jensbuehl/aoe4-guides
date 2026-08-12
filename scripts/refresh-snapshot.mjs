@@ -41,6 +41,7 @@ import { getFirestore } from "firebase-admin/firestore";
 
 import { convertDescriptionToText } from "../src/composables/builds/icons/iconText.js";
 import { forEachStep } from "../src/composables/builds/useAgeTimings.js";
+import { civs } from "../src/composables/filter/civDefaultProvider.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_OUT = join(ROOT, "data", "seo-snapshot.ndjson");
@@ -276,6 +277,12 @@ async function main() {
       generated: new Date().toISOString(),
       builds: records.length,
       version: SNAPSHOT_VERSION,
+      //Civ code -> display name, carried in the file so the generator needs no
+      //import from src/ at all. That is a deploy-safety constraint, not tidiness
+      //— see the header of scripts/prerender.mjs. 23 entries, once, not per
+      //record: putting the name on every build would cost bytes 4,000 times and
+      //make a civ rename a whole-file diff.
+      civs: Object.fromEntries((civs.value ?? []).map((civ) => [civ.shortName, civ.title])),
     },
   };
 

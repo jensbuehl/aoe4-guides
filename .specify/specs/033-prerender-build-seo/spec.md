@@ -202,7 +202,19 @@ The sitemap today lists five URLs. Roughly four thousand build pages are reachab
 
 **Application changes**
 
-- **FR-030**: The running application MUST NOT overwrite a correct prerendered page title with the generic route title during startup. *(Cosmetic only — the end state is already correct, and search engines read the end state. Low priority; may be dropped if it costs more than it returns.)*
+- ~~**FR-030**: The running application MUST NOT overwrite a correct prerendered page title with the generic route title during startup.~~ **DROPPED (T061).** Kept struck through rather than deleted, because the reason it was dropped is worth more than the requirement was.
+
+  The proposed implementation — skip the `afterEach` title reset when a prerendered title is present — would have **introduced a bug**. `BuildDetails.vue:467` does not *set* the title, it *prepends* to whatever is already there:
+
+  ```js
+  document.title = build.value.title + " - " + document.title;
+  ```
+
+  So on a prerendered page the sequence is: `<title>Beasty 2TC | AOE4 GUIDES</title>` ships → `afterEach` overwrites with the generic route title → `BuildDetails` prepends the build's name, giving `Beasty 2TC - Age of Empires IV Build Orders | AOE4 GUIDES`. Suppress the middle step, as FR-030 asked, and the last one prepends onto the prerendered title instead: **`Beasty 2TC - Beasty 2TC | AOE4 GUIDES`**. The requirement was written against an assumption about that line that does not hold.
+
+  Dropped rather than fixed because the end state, while not identical to the prerendered title, does name the build — and the thing SC-004 actually governs, the canonical, *is* byte-identical, because the generator uses the router's own rule.
+
+  **Follow-up worth considering separately**: making `BuildDetails` set an absolute title (`title | AOE4 GUIDES`) rather than prepending would make the booted and prerendered titles match exactly, and would shorten a needlessly long tab title on every build page. Not done here — the scope guard permits exactly one change to the running application (the icon converter), and this would be a second.
 
 ### Key Entities
 

@@ -26,11 +26,29 @@
 //   NETLIFY   set by Netlify. Its presence is what distinguishes a deploy from
 //             a local build or a CI run, and is why neither generates pages.
 
+// ─────────────────────────────────────────────────────────────────────────────
+// IMPORT NOTHING HERE BUT node: BUILTINS. NOT src/, NOT A DEPENDENCY.
+//
+// This is what makes the promise above true rather than aspirational. The
+// try/catch at the bottom cannot help with a *static import* — that throws
+// during module instantiation, before any of this file's code runs, and takes
+// the whole deploy with it. It has happened: importing one named export from a
+// src/ module turned a green build into `Build failed` with exit code 2.
+//
+// It failed only on Netlify, which is the trap. Netlify pins Node 22.1.0, and
+// automatic module-syntax detection did not land until 22.7.0 — so a src/ .js
+// file, in a package with no "type": "module", is plain CommonJS there and its
+// named exports do not exist. Locally (22.22) and in CI (`22.x`, latest) the
+// same import resolves fine. engines.node "22.x" permits all three.
+//
+// Anything this script needs from the application must arrive through the
+// snapshot instead, which is also what keeps it to string assembly over a file
+// it could read on a machine with no network. (FR-025)
+// ─────────────────────────────────────────────────────────────────────────────
+
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-
-import { civs } from "../src/composables/filter/civDefaultProvider.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const STATIC_SITEMAP = join(ROOT, "public", "sitemap.xml");
@@ -71,16 +89,22 @@ const DESCRIPTION_LIMIT = 160;
 //cannot be made to write outside its own output directory. (T046)
 const SAFE_ID = /^[A-Za-z0-9_-]{1,64}$/;
 
-//Civ code -> display name, from the app's own list rather than a second copy of
-//it. A name added there reaches these pages with no further edit.
-const CIV_NAMES = new Map((civs.value ?? []).map((civ) => [civ.shortName, civ.title]));
+//Civ code -> display name, read from the snapshot's _meta rather than imported
+//from src/ (see the header). Still the app's own list, just carried here by the
+//refresh instead of resolved at generation time.
+let civNames = {};
 
 /**
  * @param {string} code - A civ short name such as "ABB".
- * @return {string} Its display name, or the code when it is unknown.
+ * @return {string} Its display name, or the code itself when unknown.
+ *
+ * Falling back to the code matters: a snapshot written before _meta.civs
+ * existed, or a civ added to the game since, must still produce a page. "ABB
+ * Build Order" is worse than "Abbasid Dynasty Build Order" and far better than
+ * a crash or a blank.
  */
 function civName(code) {
-  return CIV_NAMES.get(code) ?? code ?? "";
+  return civNames[code] ?? code ?? "";
 }
 
 /**
@@ -586,6 +610,7 @@ function main() {
 
   const { meta } = decision;
   const age = ageInDays(meta.generated);
+  civNames = meta.civs ?? {};
 
   //The one line every successful run prints, and the only observability this
   //has. Both facts on it earn their place: the project id catches a refresh
