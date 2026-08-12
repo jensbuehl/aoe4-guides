@@ -347,6 +347,7 @@ import {
   onSpeechRefused,
 } from "@/composables/builds/textToSpeechHelper.js";
 import { redundantMask, hasVisibleContent } from "@/composables/builds/stepVisibility.js";
+import { convertStepImagePaths, withWebpPaths } from "@/composables/builds/legacyImagePaths";
 import { useStepPiP } from "@/composables/builds/useStepPiP.js";
 import { useActivePath } from "@/composables/builds/useActivePath.js";
 import { pathCondition } from "@/composables/builds/alternativesDraft.js";
@@ -505,12 +506,10 @@ export default {
         //build's own step objects.
         steps.value = JSON.parse(JSON.stringify(flattenSections(props.build.steps, selection)));
 
-        // Replace .png with .webp in all step descriptions
-        steps.value.forEach((step) => {
-          if (step.description) {
-            step.description = step.description.replace(/\.png\b/gi, ".webp");
-          }
-        });
+        //Legacy .png icon paths, over every field rather than `description`
+        //alone: the flattened list carries notes too, and a note's text is its
+        //`gameplan`. Safe to mutate — the clone above is ours.
+        convertStepImagePaths(steps.value);
 
         //Section notes are folded into the step they follow, which is the last
         //step of their own section — or, for a section with no steps of its
@@ -540,9 +539,10 @@ export default {
           //this read steps[-1] and threw.
           if (!last) return;
 
-          last.description = last.description
-            ? last.description + " <br><br> " + section.gameplan
-            : section.gameplan;
+          //Converted on the way in: this text comes from props, which the pass
+          //above deliberately did not touch, so it still carries legacy paths.
+          const note = withWebpPaths(section.gameplan);
+          last.description = last.description ? last.description + " <br><br> " + note : note;
         });
       }
 

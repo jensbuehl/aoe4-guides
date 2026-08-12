@@ -38,7 +38,13 @@
     <!-- No <link rel="canonical"> here on purpose. This one file is served for
          every route, so a hardcoded canonical would tell crawlers that every
          build order page is a duplicate of the homepage. The router injects the
-         correct per-route canonical instead (see src/router/index.js). -->
+         correct per-route canonical instead (see src/router/index.js).
+
+         Build order pages are the exception and no longer rely on the router
+         for it: scripts/prerender.mjs writes one file per public build with its
+         own canonical baked in, so a crawler that runs no JavaScript still gets
+         the right one. It strips this comment from those copies, where it would
+         sit three lines above the very tag it says is absent. -->
 
     <!-- Facebook Meta Tags -->
     <meta property="og:type" content="website">

@@ -3,9 +3,7 @@ import EasySpeech from "easy-speech";
 
 //Composables
 import { aggregateVillagers, hasResourceValue } from "@/composables/builds/villagerAggregator.js";
-import iconService from "@/composables/builds/icons/iconService.js";
-
-var civIconService = null;
+import { convertDescriptionToText } from "@/composables/builds/icons/iconText.js";
 
 //How the build should sound wherever we get to choose. Restated for the
 //platform path below, which has no defaults of ours to fall back on.
@@ -44,8 +42,6 @@ export function onSpeechRefused(listener) {
 }
 
 export async function initTextToSpeech() {
-  civIconService = iconService();
-
   easySpeechReady = await initEasySpeech();
   if (!easySpeechReady) return;
 
@@ -167,17 +163,14 @@ export function stop() {
 }
 
 function getText(step, announceVillagers = true){
-  var text = "";
-
   //A note carries no description of its own, and a step can carry neither.
-  //convertImagesToText() reads .replace() straight off this, so an undefined
-  //here is not a quiet skip — it throws, and takes the utterance with it.
   const description = step?.description ?? step?.gameplan ?? "";
 
-  //convert description
-  text = convertImagesToText(description);
-  text = convertLineBreaks(text);
-  text = convertSpecialCharacters(text);
+  //The shared converter, so what is spoken and what is indexed are the same
+  //sentence. Everything below this line is speech-only and must stay here:
+  //villager counts are the step's *other* fields, and the "!" markers are
+  //pauses for the synthesiser, not words.
+  var text = convertDescriptionToText(description);
 
   //convert villagers
   if (announceVillagers && aggregateVillagers(step) > 0) {
@@ -192,54 +185,3 @@ function getText(step, announceVillagers = true){
   return text;
 }
 
-function convertImagesToText(description) {
-  const regex = /<img([\w\W]+?)>/g;
-  const convertedDescription = description.replace(
-    regex,
-    function replacer(match) {
-      return convertImageToText(match);
-    }
-  );
-  return convertedDescription;
-}
-
-function convertLineBreaks(description) {
-  return description.replaceAll("<br />", ". ");;
-}
-
-function convertSpecialCharacters(description) {
-  description = description.replaceAll("<br>", ".");
-  description = description.replaceAll("&lt;-", " See to the left. ");
-  description = description.replaceAll("-&gt;", " ,then ");
-  description = description.replaceAll("&amp;", " and ");
-  description = description.replaceAll("<-", " See to the left. ");
-  description = description.replaceAll("->", " See to the right. ");
-  description = description.replaceAll(">", " on ");
-  description = description.replaceAll("->", " on ");
-  description = description.replaceAll("=>", " on ");
-
-  return description;
-}
-
-function convertImageToText(imageElement) {
-  //Get src
-  const regex = /src\s*=\s*"(.+?)"/g;
-  const matches = imageElement.match(regex);
-
-  if (matches[0]) {
-    //Remove internal path extensions, ", and src=
-    var imageSource = matches[0].replaceAll('"', "");
-    imageSource = imageSource.replaceAll("src=", "");
-
-
-    imageSource = imageSource.replace("http://localhost:5173", "");
-    imageSource = imageSource.replace("https://aoe4guides.com", "");
-
-    //Get image metadata -> title
-    const iconMetaData = civIconService.getIconFromImgPath(imageSource);
-    const title = iconMetaData.title;
-
-    //Add spacing
-    return " "+ title +" ";
-  }
-}

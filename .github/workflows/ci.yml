@@ -22,4 +22,9 @@ jobs:
       # list in src/plugins/mdiIcons.js (would silently not render in prod).
       - run: npm run check:icons
 
+      # Fails if an entry in src/composables/builds/icons/plurals.js no longer
+      # matches an icon title. The icon JSON is regenerated upstream, so a
+      # rename orphans the exception and it lapses back to the regular rule.
+      - run: npm run check:plurals
+
       - run: npm run build

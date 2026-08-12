@@ -1,4 +1,4 @@
-import { aggregateVillagers } from "@/composables/builds/villagerAggregator.js";
+import { aggregateVillagers } from "./villagerAggregator.js";
 
 /**
  * Villager training time, used only when a build offers no measured span of its

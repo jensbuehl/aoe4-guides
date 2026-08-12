@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/032-google-sign-in/plan.md`.
+at `.specify/specs/033-prerender-build-seo/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -64,6 +64,30 @@ and misses everything inside. Seven of those shipped before the check existed.
 Go through `flattenSections`/`sectionOffsets` to read the build as one path, or
 `forEachStep` to visit every step in the document — sanitising, validating and
 counting all have to reach the paths nobody chose, because those are saved too.
+
+**A `scripts/*.mjs` file that imports from `src/` runs locally and in CI, and
+dies on Netlify.** Netlify pins **Node 22.1.0**; automatic module-syntax
+detection did not land until **22.7.0**. Below that, a `src/*.js` file — in a
+package with no `"type": "module"` — is plain CommonJS, so its named exports do
+not exist and the import throws `SyntaxError` during module instantiation.
+Locally (22.22) and in CI (`node-version: 22.x`, which resolves to the latest)
+the same line is fine, and `engines.node: "22.x"` permits all three. So the
+error appears only in the deploy log, on the one path nobody runs before
+pushing.
+
+Two consequences, and the second is the one that bites twice:
+
+- Check any script that runs *on a deploy* with
+  `node --no-experimental-detect-module scripts/thing.mjs`, which reproduces
+  22.1.0's resolution. `refresh-snapshot.mjs` and `check-plurals.mjs` are exempt
+  — they run on GitHub Actions, never on Netlify — but `prerender.mjs` is not,
+  which is why it imports **nothing but `node:` builtins** and takes what it
+  needs from the snapshot instead.
+- **A `try/catch` around `main()` does not make a script deploy-safe.** A static
+  import throws before any of the file's own code runs, so the handler never
+  executes and the deploy fails with exit 2. If a script promises never to break
+  a build, that promise is kept by what it imports, not by how it handles
+  errors.
 
 Logic that lives in a `.vue` file can still be tested without one: import
 `@vue/reactivity` and drive the real refs, computeds and watches. Such a

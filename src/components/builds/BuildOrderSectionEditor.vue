@@ -1478,9 +1478,16 @@ export default {
     async function handleMouseOver($event) {
       if ($event.target.className.includes("icon-")) {
         //set model
-        var imageSource = $event.target.getAttribute("src");
-        imageSource = imageSource.replace("https://aoe4guides.com", "");
+        //No origin stripping here: getIconFromImgPath does it, for any host
+        //rather than the one that used to be named at this call site.
+        const imageSource = $event.target.getAttribute("src");
         const iconMetaData = civIconService.getIconFromImgPath(imageSource);
+
+        //Nothing in the vocabulary matches — a legacy path, or an image pasted
+        //from elsewhere. There is nothing to describe, and IconToolTip reads
+        //.description straight off its model, so showing it would throw.
+        if (!iconMetaData) return;
+
         toolTipModel.value = iconMetaData;
 
         //show tooltip
@@ -1527,23 +1534,19 @@ export default {
         stepsCopy[i]._id = id;
       });
 
-      //Sanitize since inline icon replacement only works with <br>, NOT with \n, replace PNG by WEBP
+      //Sanitize since inline icon replacement only works with <br>, NOT with \n.
+      //Legacy .png paths are *not* rewritten here any more: this loop reads
+      //`description` only, so it never reached a note (whose text is `gameplan`)
+      //or a path that is not the active one. BuildOrderEditor converts the whole
+      //tree by field before this component mounts.
       steps.forEach((element) => {
-        element.description = element.description
-          ?.replace(/\n/gm, "<br>")
-          .replace(/\.png\b/gi, ".webp");
+        element.description = element.description?.replace(/\n/gm, "<br>");
       });
 
       stepsCopy.forEach((element) => {
-        element.description = element.description
-          ?.replace(/\n/gm, "<br>")
-          .replace(/\.png\b/gi, ".webp");
+        element.description = element.description?.replace(/\n/gm, "<br>");
       });
 
-      //Replace PNG by WEBP
-      gameplan.value = gameplan.value
-          ?.replace(/\.png\b/gi, ".webp");
-      
 
       //Force firefox to use BR instead of adding DIVs
       document.execCommand("defaultParagraphSeparator", false, "br");

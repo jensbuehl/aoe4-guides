@@ -155,6 +155,7 @@ import { ref, computed, inject, provide, onBeforeUnmount, onMounted, nextTick } 
 
 //Components
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
+import { convertSectionImagePaths } from "@/composables/builds/legacyImagePaths";
 
 //Composables
 import { flattenSections, sectionOffsets } from "@/composables/builds/useAgeTimings.js";
@@ -602,6 +603,11 @@ export default {
         sections.value = JSON.parse(JSON.stringify(props.steps));
       }
       sanitizeStepFields(sections.value);
+      //One place for the whole table — the read view and the editor both mount
+      //through here, and a section editor only ever sees its own slice, so it
+      //cannot be the owner of a rule that has to hold for every field of every
+      //entry. Safe to mutate: `sections` is already a deep copy.
+      convertSectionImagePaths(sections.value);
     }
 
     return {
