@@ -239,7 +239,7 @@ data when fetched without JavaScript.
 - [X] T047 [US1] Write pages into a temporary directory and rename into place as the final step in `scripts/prerender.mjs`, clearing the output directory first so a standalone `npm run prerender` is idempotent without relying on Vite having emptied `dist/` (FR-004, FR-021)
 - [X] T048 [US1] Exercise with `npm run prerender -- --limit=20` and read the emitted HTML: distinct titles, correct canonicals, parseable structured data, hashed module script present
 - [X] T049 [US1] Verify escaping against a build whose title contains `"`, `<`, `</script>` and emoji — markup stays well-formed and the structured data still parses
-- [ ] T050 [US1] [!] Deploy, then `curl` 20 build URLs and confirm each returns its own `<title>` and `og:title` where all previously returned the site default (SC-001)
+- [X] T050 [US1] [!] Deploy, then `curl` 20 build URLs and confirm each returns its own `<title>` and `og:title` where all previously returned the site default (SC-001) — **done against production**: 20 randomly-sampled mixed-case ids, 0 failures, 20 distinct titles, 0 still showing the shell default, every canonical matching the router's rule and every page carrying its `ld+json` block
 - [ ] T051 [US1] [!] Paste a build URL into Discord, Slack and a Twitter/X card validator — all three show that build's title and summary (SC-002)
 - [ ] T052 [US2] [!] Load a prerendered page in a browser, let the app boot, and confirm the canonical tag is byte-identical before and after (SC-004, FR-007), and that the page looks and behaves exactly as it did before this feature
 
@@ -326,7 +326,7 @@ they are declared and their hand-set `<priority>` values carry through.
 
 ---
 
-## ⚠️ BLOCKED IN PRODUCTION — R2c
+## ✅ RESOLVED — R2c, fixed and live
 
 The feature reached production on 2026-08-12 and was reverted the same hour. Netlify **canonicalises
 request paths to lowercase and 301s to them**, and Firestore build ids are case-sensitive mixed case, so
@@ -336,12 +336,13 @@ page empty. Full finding, evidence and the fix to try: [research.md R2c](./resea
 Reverted by removing `data/seo-snapshot.ndjson` from `main` — the generator's own skip path, so no code
 changed and the site was back in 45 seconds.
 
-**Nothing below is wrong; it is waiting.** T050–T052 and T060 cannot be checked until a mixed-case id
-returns 200 with no `Location` header on a deploy preview.
+**Fixed in PR #132** with `netlify.toml` → `[build.processing.html] pretty_urls = false`, verified on the
+preview before merging and confirmed on production: a mixed-case id returns **200 with no `Location`
+header**, and extensionless resolution still works — so FR-001 stands and no fallback was needed.
 
-- [ ] T064 Add `netlify.toml` with `[build.processing.html] pretty_urls = false`, push to a branch, and check on the **preview** that `curl -sI /builds/<a mixed-case id>` returns 200 with no redirect — while `/builds`, `/builds/new` and an unprerendered build still behave. **Never straight to production**
-- [ ] T065 If pretty-URL canonicalisation cannot be disabled without losing extensionless resolution, re-specify FR-001 per R2's original fallback: emit to a path that is not also a route, plus an explicit non-force rewrite for `/builds/:id`
-- [ ] T066 Once fixed, re-run the refresh workflow to re-commit the snapshot, then redo T050–T052 against production
+- [X] T064 Add `netlify.toml` with `[build.processing.html] pretty_urls = false`, push to a branch, and check on the **preview** that `curl -sI /builds/<a mixed-case id>` returns 200 with no redirect — while `/builds`, `/builds/new` and an unprerendered build still behave. **Never straight to production**
+- [X] T065 ~~If pretty-URL canonicalisation cannot be disabled without losing extensionless resolution, re-specify FR-001 per R2's original fallback~~ — **not needed.** The two turned out to be separable: with `pretty_urls = false` a mixed-case id returns 200 directly and extensionless resolution still works, so FR-001 stands as written
+- [X] T066 Once fixed, re-run the refresh workflow to re-commit the snapshot, then redo T050–T052 against production
 
 ---
 
