@@ -1,0 +1,90 @@
+# Refreshes data/seo-snapshot.ndjson, the committed build data that every deploy
+# generates prerendered pages from.
+#
+# This workflow is the ONLY thing that reads Firestore for this feature. A push
+# to main costs zero database reads, because the deploy reads the committed file
+# instead. That is the whole design (research R11) — so the service-account
+# secret belongs here and nowhere else. It must not be added to Netlify.
+#
+# Delivery is indirect and worth stating: this job commits, the commit triggers
+# Netlify, and Netlify regenerates the pages. There is no build hook and nothing
+# scheduled on the Netlify side.
+
+name: Refresh SEO snapshot
+
+on:
+  schedule:
+    # 03:00 UTC on the 1st. Monthly is a deliberate floor, not a target: the
+    # snapshot only has to be fresh enough that a new build gets indexed within
+    # weeks, and every run that changes nothing still costs a Netlify deploy.
+    - cron: "0 3 1 * *"
+  # For patch days, when a wave of builds lands at once and waiting a month is
+  # the wrong answer.
+  workflow_dispatch:
+
+# Two refreshes writing the same file would race on the push.
+concurrency:
+  group: refresh-seo-snapshot
+  cancel-in-progress: false
+
+permissions:
+  # To push the refreshed snapshot back. Nothing else is needed.
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - run: npm ci
+
+      - name: Read Firestore and write the snapshot
+        env:
+          # Service-account JSON for the aoe4-guides project — production.
+          # NOT aoe4-guides-dev, which is what the local .env points at; a
+          # refresh against dev produces an entirely plausible-looking snapshot
+          # for builds that do not exist in production. The script logs the
+          # project id it read from, and records it in the file's _meta line, so
+          # a wrong project shows up in this log and in the committed diff.
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: node scripts/refresh-snapshot.mjs
+
+      - name: Commit the snapshot, but only if it changed
+        id: commit
+        run: |
+          if git diff --quiet -- data/seo-snapshot.ndjson; then
+            echo "snapshot unchanged — no commit, and therefore no deploy"
+            echo "committed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "committed=true" >> "$GITHUB_OUTPUT"
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/seo-snapshot.ndjson
+          git commit -m "chore(seo): refresh build snapshot"
+
+          # Pushed with GITHUB_TOKEN, which by design does not trigger other
+          # workflows — so this cannot loop back into itself. It does trigger
+          # Netlify, which is exactly what regenerates the pages.
+          git push
+
+      # Only when something was actually committed — otherwise this would report
+      # the previous commit's diff and read as though this run had changed that
+      # much, which is precisely the signal it exists to give.
+      - name: Report the diff size
+        if: steps.commit.outputs.committed == 'true'
+        run: |
+          # The point of the sorted line-per-record format is that an unchanged
+          # build produces no diff at all, so an ordinary month should touch only
+          # the _meta line plus the builds that genuinely changed. If this ever
+          # approaches the build count, the format has been broken — something
+          # reformatted the file, or a fast-changing field crept into a record.
+          git diff --numstat HEAD~1 HEAD -- data/seo-snapshot.ndjson \
+            | awk '{print "lines added: "$1"  removed: "$2}'

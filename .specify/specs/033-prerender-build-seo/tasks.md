@@ -147,14 +147,32 @@ step text is converted at refresh time, not at generation time.
 
 **⚠️ This is the only code that touches Firestore.** Nothing in Phases 5–7 may import `firebase-admin`.
 
-- [ ] T025 Create `scripts/refresh-snapshot.mjs` per [contracts/snapshot-refresh.md](./contracts/snapshot-refresh.md): read `builds` where `isDraft == false` via `firebase-admin`, convert steps with `iconText.js`, traverse with `forEachStep` from `src/composables/builds/useAgeTimings.js` (**not** `flattenSections` — R8, FR-012), emit NDJSON sorted by `id` with a leading `_meta` line carrying `project` and `generated`
-- [ ] T026 Add a header comment to `scripts/refresh-snapshot.mjs` explaining that the one-object-per-line sorted format is load-bearing: reformatting or pretty-printing it turns every monthly refresh into a whole-file diff and accumulates ~48 MB of history a year (FR-027)
-- [ ] T027 Make `scripts/refresh-snapshot.mjs` exit **1** on failure — the opposite policy to the generator, because a refresh that quietly does nothing leaves pages generating from stale data indefinitely (FR-028). Write to a temp file and rename, so an interrupted run cannot leave a truncated snapshot to be committed
-- [ ] T028 Support `--limit=N` and `--out=path` in `scripts/refresh-snapshot.mjs` so it can be exercised without a full-collection read
+- [X] T025 Create `scripts/refresh-snapshot.mjs` per [contracts/snapshot-refresh.md](./contracts/snapshot-refresh.md): read `builds` where `isDraft == false` via `firebase-admin`, convert steps with `iconText.js`, traverse with `forEachStep` from `src/composables/builds/useAgeTimings.js` (**not** `flattenSections` — R8, FR-012), emit NDJSON sorted by `id` with a leading `_meta` line carrying `project` and `generated`
+- [X] T026 Add a header comment to `scripts/refresh-snapshot.mjs` explaining that the one-object-per-line sorted format is load-bearing: reformatting or pretty-printing it turns every monthly refresh into a whole-file diff and accumulates ~48 MB of history a year (FR-027)
+- [X] T027 Make `scripts/refresh-snapshot.mjs` exit **1** on failure — the opposite policy to the generator, because a refresh that quietly does nothing leaves pages generating from stale data indefinitely (FR-028). Write to a temp file and rename, so an interrupted run cannot leave a truncated snapshot to be committed
+- [X] T028 Support `--limit=N` and `--out=path` in `scripts/refresh-snapshot.mjs` so it can be exercised without a full-collection read
 - [ ] T029 [!] Create a read-scoped service account for the **`aoe4-guides`** project (prod — *not* `aoe4-guides-dev`, which is what the local `.env` points at) and store it as the `FIREBASE_SERVICE_ACCOUNT` GitHub Secret. It must not be added to Netlify and must never be committed (FR-029)
-- [ ] T030 Create `.github/workflows/refresh-seo-snapshot.yml` per the contract: monthly cron plus `workflow_dispatch`, `permissions: contents: write`, run the script, commit `data/seo-snapshot.ndjson` **only when it changed**, message `chore(seo): refresh build snapshot`
+- [X] T030 Create `.github/workflows/refresh-seo-snapshot.yml` per the contract: monthly cron plus `workflow_dispatch`, `permissions: contents: write`, run the script, commit `data/seo-snapshot.ndjson` **only when it changed**, message `chore(seo): refresh build snapshot`
 - [ ] T031 [!] Confirm GitHub actually notifies the owner on scheduled-workflow failure (R12 item 3). FR-028 rests on this — confirm it, do not assume it. If notifications are off, turn them on or add an explicit failure step
 - [ ] T032 [!] Trigger the workflow by hand via `workflow_dispatch` to produce the first `data/seo-snapshot.ndjson`, then check the committed diff: `_meta.project` reads `aoe4-guides`, the build count is plausible, and spot-checked step text is readable prose
+
+### Phase 4 findings
+
+**Section notes would have been lost from 39% of builds.** `forEachStep` iterates `section.steps`, and
+the pre-migration section note lives in `section.gameplan`, which it never visits. Measured over 230
+real published builds: 168 sections across 90 builds (39%) still store it there, because the migration
+only runs when an author next saves. The contract said "traverse with forEachStep" and did not consider
+this; following it literally would have shipped a snapshot missing section-level guidance from two
+builds in five. Included, and the contract reconciled.
+
+**Snapshot size revised: 1,243 bytes/build → ~4.7 MB at 4,000**, against R11's ~1,042 / ~4.0 MB. That
+measurement predates both section notes and the legacy `.png` fix, each of which adds text. Immaterial
+to the design — the format exists to make an *unchanged* build produce no diff, not to be small.
+
+**The refresh cannot be run without a credential, so its Firestore half is unverified.** Everything
+above it was checked offline against 230 real builds by importing the record builder directly: format
+invariants hold (no embedded newlines, sorted by id, one stable key order, every line re-parses), and
+failure paths exit 1 with a legible message and no stack trace.
 
 **Checkpoint**: real build data is in the repo, and refreshing it costs one button press.
 

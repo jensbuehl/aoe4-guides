@@ -7,7 +7,13 @@ on a deploy.
 
 ## `data/seo-snapshot.ndjson`
 
-Committed to the repository. ~4 MB across ~4,000 builds (measured: ~1,042 bytes per build, R11).
+Committed to the repository. **~4.7 MB across ~4,000 builds** — measured at 1,243 bytes per build over
+230 real published builds run through the actual record builder.
+
+R11's earlier figure of ~1,042 bytes (~4.0 MB) was measured before section notes were included and
+before the converter resolved legacy `.png` icons; both add text. 19% larger, and it changes nothing
+about the design — the format's whole point is that size per refresh is irrelevant next to whether an
+unchanged build produces a diff.
 
 ### Format
 
@@ -46,7 +52,16 @@ shape to change without the generator guessing.
 | `description` | Markup stripped, whitespace collapsed. Not truncated — truncation is a presentation choice and belongs to the generator. |
 | `civ`, `strategy`, `map`, `season`, `author` | As stored. |
 | `created` | Unix seconds, from `timeCreated`. |
-| `steps` | **Already converted to text.** Ordered, every path of every alternatives block, empty entries dropped. |
+| `steps` | **Already converted to text.** Ordered, every path of every alternatives block, empty entries dropped — **plus section notes**, see below. |
+
+**Section notes are included, which this contract originally did not ask for.** `forEachStep` iterates
+`section.steps` and so never sees `section.gameplan`, the pre-migration home of a section's note.
+Measured over 230 real published builds: **39% still store it there**, because the migration is lazy and
+only runs when an author next saves. Following `forEachStep` alone would have dropped section-level
+guidance from two builds in five — in the one artifact whose stated purpose is that the steps are the
+substance. `FocusMode` folds these in for the same reason. Emitted before the section's own steps, since
+a gameplan introduces its section rather than commenting on any one step in it. The branch stops firing
+by itself once the Firestore backfill runs; it does not need removing.
 
 **Do not rewrite `.png` paths in this script.** `convertDescriptionToText` does it (research R6b).
 Builds written before the WebP switch still store `.png`, and this script is the one caller with no
