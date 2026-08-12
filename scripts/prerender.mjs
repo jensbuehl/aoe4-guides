@@ -33,6 +33,8 @@ import { fileURLToPath } from "node:url";
 import { civs } from "../src/composables/filter/civDefaultProvider.js";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const STATIC_SITEMAP = join(ROOT, "public", "sitemap.xml");
+const ROBOTS = join(ROOT, "public", "robots.txt");
 const SNAPSHOT = join(ROOT, "data", "seo-snapshot.ndjson");
 const DIST = join(ROOT, "dist");
 const TEMPLATE = join(DIST, "index.html");
@@ -269,6 +271,146 @@ function headBlock(record) {
     `    <script type="application/ld+json">${escapeJsonLd(structured)}</script>`,
     "",
   ].join("\n");
+}
+
+//────────────────────────────────────────────────────────────────────────────
+// Sitemap
+//
+// THE NAMESPACE URI IS http:// AND IS COMPARED LITERALLY. Writing https:// puts
+// the document in a namespace no search engine recognises and the whole file is
+// rejected. It is an identifier, not a link — do not "fix" the scheme. The same
+// warning is in public/sitemap.xml, and it is repeated here because this is now
+// the file that actually ships. (T054)
+//────────────────────────────────────────────────────────────────────────────
+const SITEMAP_NS = "http://www.sitemaps.org/schemas/sitemap/0.9";
+
+//The protocol caps a single sitemap at 50,000 URLs / 50 MB. Guarded well below
+//it: at ~4,000 builds this is far out of reach, but "far out of reach" is what
+//everyone says right up until a file silently truncates. (FR-017)
+const MAX_URLS_PER_FILE = 45_000;
+
+/**
+ * @param {string} text
+ * @return {string} XML-escaped.
+ */
+function escapeXml(text) {
+  return String(text ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&apos;");
+}
+
+/**
+ * The paths robots.txt tells crawlers not to visit.
+ *
+ * A sitemap that advertises a disallowed URL is a document contradicting
+ * itself, and search consoles report it as an error. Read rather than restated,
+ * so a future robots.txt edit cannot silently create that contradiction.
+ *
+ * @return {Array<string>} Disallowed path prefixes.
+ */
+function disallowedPaths() {
+  try {
+    return [...readFileSync(ROBOTS, "utf8").matchAll(/^\s*Disallow:\s*(\S+)\s*$/gim)]
+      .map((match) => match[1])
+      .filter((path) => path !== "/");
+  } catch {
+    //No robots.txt is not a reason to emit nothing.
+    return [];
+  }
+}
+
+/**
+ * The `<url>` blocks already in public/sitemap.xml, carried through verbatim.
+ *
+ * Read rather than restated so that file stays the single place the static
+ * routes are declared — adding one there reaches the generated sitemap with no
+ * second edit, and their hand-set <priority> values survive.
+ *
+ * @return {Array<string>} Raw XML for each static <url> block.
+ */
+function staticUrlBlocks() {
+  try {
+    const xml = readFileSync(STATIC_SITEMAP, "utf8");
+    //Comments stripped first: the file's own explanation mentions URLs.
+    //Re-indented: the match starts at "<url>" and so drops the leading spaces
+    //of that one line, which would leave it out of column with its own
+    //closing tag and with every build block below it.
+    return [...xml.replace(/<!--[\s\S]*?-->/g, "").matchAll(/<url>[\s\S]*?<\/url>/g)].map((m) => `    ${m[0]}`);
+  } catch (error) {
+    console.warn(`${LOG} could not read public/sitemap.xml (${error.message}); emitting build URLs only`);
+    return [];
+  }
+}
+
+/**
+ * @param {Array<string>} blocks - Raw <url> blocks.
+ * @return {string} A complete urlset document.
+ */
+function urlsetDocument(blocks) {
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="${SITEMAP_NS}">\n${blocks.join("\n")}\n</urlset>\n`;
+}
+
+/**
+ * Writes dist/sitemap.xml, replacing the 5-URL static copy Vite put there.
+ *
+ * On a skipped run this is never reached, so that copy survives untouched and
+ * the site keeps the sitemap it has today — FR-016 with no code to implement
+ * it, which is why the skip is a plain early return rather than a flag.
+ *
+ * @param {Array<Object>} records - The builds that got pages.
+ * @return {{urls: number, files: number}}
+ */
+function writeSitemap(records) {
+  const disallowed = disallowedPaths();
+  const blocks = [...staticUrlBlocks()];
+  let excluded = 0;
+
+  for (const record of records) {
+    const path = `/builds/${record.id}`;
+    if (disallowed.some((prefix) => path.startsWith(prefix))) {
+      excluded++;
+      continue;
+    }
+
+    const lastmod = record.created
+      ? `<lastmod>${new Date(record.created * 1000).toISOString().slice(0, 10)}</lastmod>`
+      : "";
+
+    blocks.push(`    <url>\n        <loc>${escapeXml(canonicalFor(path))}</loc>\n${lastmod ? `        ${lastmod}\n` : ""}    </url>`);
+  }
+
+  if (excluded) console.log(`${LOG}   ${excluded} url(s) omitted from the sitemap — disallowed by robots.txt`);
+
+  //One file while it fits. Above the guard, split into numbered files behind a
+  //sitemapindex — the alternative is a document that silently stops at 50,000
+  //and takes every URL after it with no error anywhere.
+  if (blocks.length <= MAX_URLS_PER_FILE) {
+    writeFileSync(join(DIST, "sitemap.xml"), urlsetDocument(blocks), "utf8");
+    return { urls: blocks.length, files: 1 };
+  }
+
+  const chunks = [];
+  for (let i = 0; i < blocks.length; i += MAX_URLS_PER_FILE) {
+    chunks.push(blocks.slice(i, i + MAX_URLS_PER_FILE));
+  }
+
+  chunks.forEach((chunk, index) => {
+    writeFileSync(join(DIST, `sitemap-${index + 1}.xml`), urlsetDocument(chunk), "utf8");
+  });
+
+  const index = chunks
+    .map((_, i) => `    <sitemap>\n        <loc>${SITE_ORIGIN}/sitemap-${i + 1}.xml</loc>\n    </sitemap>`)
+    .join("\n");
+  writeFileSync(
+    join(DIST, "sitemap.xml"),
+    `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="${SITEMAP_NS}">\n${index}\n</sitemapindex>\n`,
+    "utf8"
+  );
+
+  return { urls: blocks.length, files: chunks.length + 1 };
 }
 
 /**
@@ -516,6 +658,11 @@ function main() {
         : "") +
       ` · ${((Date.now() - started) / 1000).toFixed(1)}s`
   );
+
+  //Last, and only once the pages are in place: a sitemap advertising pages that
+  //failed to write would be worse than the 5-URL copy it replaces.
+  const sitemap = writeSitemap(records);
+  console.log(`${LOG}   sitemap: ${sitemap.urls} urls, ${sitemap.files} file${sitemap.files === 1 ? "" : "s"}`);
 }
 
 //Nothing below this line may throw past it. A crash here is still a green

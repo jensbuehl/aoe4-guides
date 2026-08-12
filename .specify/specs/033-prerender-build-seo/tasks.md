@@ -294,11 +294,33 @@ public build count plus the static routes.
 **Deliberately after Phase 6**: a sitemap shipped before per-page titles would invite crawlers to index
 4,000 identical pages.
 
-- [ ] T053 [US5] Generate `dist/sitemap.xml` in `scripts/prerender.mjs` covering every emitted build page plus the static routes currently in `public/sitemap.xml`, with `lastmod` from the snapshot's `created` (FR-015)
-- [ ] T054 [US5] Carry the namespace warning from `public/sitemap.xml` into the generator's output or its source comment — the URI is `http://` and is compared literally; "fixing" it to `https://` puts the document in an unknown namespace and search engines reject it
-- [ ] T055 [US5] Guard the URL count in `scripts/prerender.mjs`: single file below 45,000, split with an index above it rather than silently truncating (FR-017)
-- [ ] T056 [US5] Confirm a skipped run leaves `public/sitemap.xml`'s 5-URL copy in `dist/` untouched — this must fall out of the design rather than need handling (FR-016)
-- [ ] T057 [US5] Validate the emitted sitemap against the sitemap schema and cross-check that no URL in it is disallowed by `public/robots.txt` (FR-017, SC-003)
+- [X] T053 [US5] Generate `dist/sitemap.xml` in `scripts/prerender.mjs` covering every emitted build page plus the static routes currently in `public/sitemap.xml`, with `lastmod` from the snapshot's `created` (FR-015)
+- [X] T054 [US5] Carry the namespace warning from `public/sitemap.xml` into the generator's output or its source comment — the URI is `http://` and is compared literally; "fixing" it to `https://` puts the document in an unknown namespace and search engines reject it
+- [X] T055 [US5] Guard the URL count in `scripts/prerender.mjs`: single file below 45,000, split with an index above it rather than silently truncating (FR-017)
+- [X] T056 [US5] Confirm a skipped run leaves `public/sitemap.xml`'s 5-URL copy in `dist/` untouched — this must fall out of the design rather than need handling (FR-016)
+- [X] T057 [US5] Validate the emitted sitemap against the sitemap schema and cross-check that no URL in it is disallowed by `public/robots.txt` (FR-017, SC-003)
+
+### Phase 7 verification
+
+Generated over 230 real builds: **235 URLs, 1 file** (5 static + 230 builds). Sixteen checks pass —
+XML declaration, the literal `http://` namespace (and explicitly *not* `https://`), every `<url>` has a
+`<loc>`, no duplicates, all absolute on the right origin, no unescaped metacharacters, no stray trailing
+slashes, every `<lastmod>` a real W3C date and none in the future, balanced tags, closes `</urlset>`.
+
+**Cross-checks that matter more than the schema**: no URL is disallowed by `public/robots.txt` (9 rules
+read from the file, not restated), and every build URL in the sitemap has a generated page behind it.
+The robots filter is enforced by the generator, not just asserted here, so a future robots.txt edit
+cannot silently produce a sitemap that contradicts it.
+
+**The split path was actually exercised**, not just written: with the guard temporarily lowered to 100,
+235 URLs produced three chunk files plus a `sitemapindex`, totalling 235 URLs. Guard restored to 45,000.
+This branch is unreachable at ~4,000 builds, which is exactly why it needed running once.
+
+**T056 fell out of the design as intended** — a skipped run never reaches the sitemap writer, so Vite's
+copy of the 5-URL static file survives untouched, comment and all. No code implements that.
+
+The static routes are **read** from `public/sitemap.xml` rather than restated, so it stays the one place
+they are declared and their hand-set `<priority>` values carry through.
 
 **Checkpoint**: ~4,000 URLs submitted instead of 5.
 
@@ -306,8 +328,8 @@ public build count plus the static routes.
 
 ## Phase 8: Polish & cross-cutting
 
-- [ ] T058 [P] Update `public/sitemap.xml`'s comment — "Individual build order pages are not listed yet" is no longer true, and the file is now a fallback for a skipped run rather than the live sitemap
-- [ ] T059 [P] Update the comment block in `index.html` explaining why there is no canonical tag, to note that build pages now receive one per file at build time
+- [X] T058 [P] Update `public/sitemap.xml`'s comment — "Individual build order pages are not listed yet" is no longer true, and the file is now a fallback for a skipped run rather than the live sitemap
+- [X] T059 [P] Update the comment block in `index.html` explaining why there is no canonical tag, to note that build pages now receive one per file at build time
 - [ ] T060 [!] Measure the first full deploy's duration and file count against a pre-feature deploy, and record it in [research.md](./research.md) R12 item 4. No prediction was offered; this is the measurement. The owner has said upload time is not a concern, so this is a data point, not a gate
 - [ ] T061 Implement FR-030 in `src/router/index.js` — skip the `afterEach` title reset when a prerendered title is already present — **or delete the requirement**. It is cosmetic, the end state is already correct, and search engines read the end state. Decide; do not let it linger
 - [ ] T062 Add a CLAUDE.md working-rules entry if Phase 1 or Phase 4 turned up a trap worth binding future work, per the harvest table. Record the cause and the conditions it holds under, not the symptom
