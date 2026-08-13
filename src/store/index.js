@@ -1,9 +1,4 @@
 import { createStore } from "vuex";
-import { decrementLikes } from "@/composables/data/buildService";
-import {
-  getUserFavorites,
-  deleteUserFavorites,
-} from "@/composables/data/favoriteService";
 import { getUserProfile, updateUserAvatar, updateContributorIcon } from "@/composables/data/userService";
 import { completeAccountSetup } from "@/composables/auth/useAccountSetup";
 import { mapAuthError } from "@/composables/auth/useAuthErrors";
@@ -437,33 +432,27 @@ export const store = createStore({
     },
 
     /**
-     * Deletes the user account which is currently logged-in,
-     * removes user from auth database,
-     * decrements likes on all builds,
-     * removes user from favorites collection, and clears the state.
+     * Deletes the account which is currently logged-in and clears the state.
+     *
+     * Auth concerns only. Giving back the likes, upvotes and downvotes the
+     * account cast belongs to the `deleteUser` trigger, which runs on the admin
+     * SDK — so it also covers deletions made by an administrator, and it cannot
+     * be refused by security rules the way cleanup from here could be. Doing it
+     * here as well would be worse than redundant: this used to delete
+     * `favorites/{uid}`, which is the trigger's entire work list.
+     *
+     * Returns as soon as the account itself is gone. The cleanup continues
+     * server-side, so someone with years of history waits no longer than
+     * someone with none.
+     *
+     * The account goes; the user's build orders stay published. That is
+     * deliberate — the community still uses them, and anything sensitive is
+     * removed by hand.
      *
      * @param {Object} context - the Vuex context object
      * @return {Promise} a promise that resolves when the account is deleted
      */
     async deleteAccount(context) {
-      const uid = auth.currentUser.uid;
-
-      // Order matters, and it used to be the other way round. Deleting the auth
-      // user first leaves `request.auth` null, after which the rules deny both
-      // the favorites read and every like decrement — so likes outlived their
-      // deleted owner. Do the Firestore work while the user still exists.
-      const favorites = await getUserFavorites(uid).then((favorites) => {
-        return favorites?.favorites;
-      });
-
-      if (favorites) {
-        await Promise.all(favorites.map((element) => decrementLikes(element)));
-        await deleteUserFavorites(uid);
-      }
-
-      // The account goes; the user's build orders stay published. That is
-      // deliberate — the community still uses them, and anything sensitive is
-      // removed by hand.
       try {
         await deleteUser(auth.currentUser);
       } catch (error) {
