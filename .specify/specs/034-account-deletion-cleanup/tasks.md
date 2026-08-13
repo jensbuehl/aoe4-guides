@@ -117,7 +117,7 @@ Consequences for these tasks:
 - [X] T016 Verify [quickstart.md](./quickstart.md) §1 in full, now that the in-app path is complete — this is the run that closes **spec 032 T011** (FR-014), the verification 032 shipped without. Mark T011 complete in `.specify/specs/032-google-sign-in/tasks.md` and note where it was actually verified
 - [X] T017 Verify [quickstart.md](./quickstart.md) §8 — an account with 500+ combined interactions clears completely with no transaction-size error in the log (FR-012, SC-005)
 - [X] T018 Run the gates: `npm run check:setup` then `npm run build`. `check:steps` and the mdi-icon allowlist check do not apply — this feature touches no build-order traversal and adds no icon
-- [ ] T019 Update GitHub issue [#100](https://github.com/jensbuehl/aoe4-guides/issues/100) to record that the account-deletion cleanup is done, and close the pointer note added when this spec was split out
+- [X] T019 Update GitHub issue [#100](https://github.com/jensbuehl/aoe4-guides/issues/100) to record that the account-deletion cleanup is done, and close the pointer note added when this spec was split out
 - [X] T020 Harvest per `CLAUDE.md`: record what this taught. The candidate worth writing is the cause, not the symptom — *a client that cleans up after itself and then deletes its own work list starves any server-side handler that runs afterwards; when moving cleanup to a trigger, the client's deletion of the evidence must go in the same change, not the follow-up.* Check whether it belongs in `CLAUDE.md`, a `project` memory, or a comment at `functions/users/deleteUser.js`, and write it in exactly one of them
 
 ---
