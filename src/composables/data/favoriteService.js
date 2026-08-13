@@ -5,8 +5,7 @@ const {
     addElementToArray,
     removeElementFromArray,
     get,
-    add,
-    del
+    add
 } = collectionService("favorites");
 
 /**
@@ -102,14 +101,4 @@ export async function createUserFavorites(userId) {
  */
 export async function getUserFavorites(userId) {
     return get(userId);
-}
-
-/**
- * Delete user's favorites.
- *
- * @param {string} userId - The ID of the user whose favorites are to be deleted
- * @return {Promise<void>} - The function does not return anything.
- */
-export async function deleteUserFavorites(userId) {
-    return del(userId);
 }
