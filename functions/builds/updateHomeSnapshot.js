@@ -33,7 +33,13 @@ function pickBuildFields(data, id) {
 }
 
 exports.updateHomeSnapshot = onSchedule(
-  { schedule: "0 * * * *", timeoutSeconds: 300 },
+  // Every rewrite invalidates this document in every visitor's persistence
+  // cache, so they all re-download it whole — the cadence is an egress cost,
+  // not just a freshness knob. Top-10 rankings and contributor standings do not
+  // move meaningfully within an hour, so six-hourly buys back 6x the forced
+  // re-downloads at no visible staleness. Raise the frequency only for content
+  // that genuinely changes faster than the page is read.
+  { schedule: "0 */6 * * *", timeoutSeconds: 300 },
   async () => {
     logger.log("updateHomeSnapshot: start");
     const db = getFirestore();
