@@ -10,13 +10,23 @@
 
 ## Context
 
-The site runs on roughly €20/month of hosting, domain and cloud costs, paid personally by the
+The site runs on about **€180 a year** of hosting, domain and cloud costs, paid personally by the
 maintainer. It serves thousands of active players and around 4,000 community-written build orders.
-The existing ask is a single "Donate" button in the footer and a paragraph on the About page. It has
-never covered costs.
+The existing ask is a "Donate" button in the footer, a second one in the home sidebar's news card,
+and a paragraph on the About page — three generic buttons, no number attached to any of them. It has
+never covered costs. All three are replaced rather than supplemented: the point is one ask with a
+figure on it, not four asks.
 
-At €2/month, covering the running costs requires roughly **thirteen recurring supporters** — a
-number reachable through a better ask alone. This feature therefore deliberately does **not**
+Covering a year is a two-figure ask spread over a handful of people — a number reachable through a
+better ask alone.
+
+The goal is stated **per calendar year**, not per month, for two reasons. It matches how the money
+actually arrives: sporadic one-off tips, not a subscription book, and a €5 coffee genuinely helps
+pay the year it was given in, where against a monthly target it would count for nothing. And it
+matches how the payment provider already presents goals, so the site and the Ko-fi page tell one
+story rather than two.
+
+This feature therefore deliberately does **not**
 monetise capability. It replaces an open-ended plea with a finite, believable, nearly-reached goal,
 and it gives the people who do contribute something visible in return.
 
@@ -29,35 +39,43 @@ something both can see.
 ### User Story 1 - A visitor sees what the site costs and how far the community has got (Priority: P1)
 
 A player lands on a build order page, scrolls to the bottom, and instead of a generic "Donate"
-button reads a concrete line: what the site costs to run this month, how much of that the community
+button reads a concrete line: what the site costs to run this year, how much of that the community
 has already covered, and by how many people. The gap is small and specific, which makes supporting
-feel like finishing something rather than filling a void. Choosing to support presents two clear
-options — €2/month or €20/year — with the annual option marked as the better value.
+feel like finishing something rather than filling a void. The amounts on offer are stated before the
+click, and one control leads to the provider's page to choose between them.
 
 **Why this priority**: This is the entire hypothesis of the feature and it stands alone. Shipped by
 itself, with no badge and no wall, it already replaces the failed ask and delivers the appreciation
 signal. Everything else is amplification.
 
-**Independent Test**: Visit the site signed out, view the footer, the About page and (signed in) the
-account page. Confirm each shows the current month's cost, the covered amount, the supporter count,
-and a support action offering monthly and annual options. No other part of the feature is required.
+**Independent Test**: Visit the site signed out, view the home page, the About page, the footer of
+any other page, and (signed in) the account page. Confirm each shows the running cost, the covered
+amount, the supporter count, and a support action stating the available amounts — and that no page
+shows it twice. No other part of the feature is required.
 
 **Acceptance Scenarios**:
 
-1. **Given** a signed-out visitor on any page, **When** they scroll to the footer, **Then** they see
-   a single line stating the approximate monthly running cost, the amount covered this month, and
-   the number of supporters who covered it.
-2. **Given** the funding status shows partial coverage, **When** the visitor reads the line, **Then**
+1. **Given** a visitor on the home page, **When** the page loads, **Then** the funding status is
+   presented in the sidebar, above the fold on desktop and in the mobile card stack on a phone,
+   without their having to scroll to the footer.
+2. **Given** a signed-out visitor on a page with no funding block of its own, **When** they scroll
+   to the footer, **Then** they see a single line naming the year, the approximate running cost for
+   it, the amount contributed so far, and the number of people who contributed.
+3. **Given** any page that presents its own funding block, **When** it loads, **Then** the footer
+   does not also present one, and the page shows the funding status exactly once in total.
+4. **Given** the funding status shows partial coverage, **When** the visitor reads the line, **Then**
    the remaining gap is expressed as a concrete shortfall, not as an open-ended request.
-3. **Given** the funding status shows full coverage, **When** the visitor reads the line, **Then** it
-   states that the month is covered and thanks the supporters, and does not present a shortfall.
-4. **Given** a visitor decides to support, **When** they activate the support action, **Then** they
-   are offered a monthly option and an annual option, with monthly presented first and annual
-   marked as the better value.
-5. **Given** a signed-in user on their account page, **When** the page loads, **Then** the funding
+5. **Given** the funding status shows full coverage, **When** the visitor reads the line, **Then** it
+   states that the year is paid for and thanks the supporters, and does not present a shortfall.
+6. **Given** a visitor decides to support, **When** they read the funding status, **Then** the
+   available amounts and whether they recur are stated before they click, and a single control
+   takes them to the provider's page to choose.
+7. **Given** a signed-in user on their account page, **When** the page loads, **Then** the funding
    status appears exactly once on that page.
-6. **Given** the About page, **When** it loads, **Then** the funding status replaces or accompanies
-   the existing donation paragraph rather than duplicating the same ask twice.
+8. **Given** the About page, **When** it loads, **Then** the funding status replaces the existing
+   donation paragraph and its button rather than sitting alongside them.
+9. **Given** a page that presents the funding status also carried a generic "Donate" control before
+   this change, **When** it loads, **Then** that control is gone and only the funding status remains.
 
 ---
 
@@ -91,9 +109,9 @@ reverse. Do the whole thing without touching a user account.
    required to identify or possess a corresponding site account.
 3. **Given** the maintainer removes a supporter from the list, **When** the funding status and
    supporters list are viewed again, **Then** neither counts nor names that person.
-4. **Given** a supporter on an annual arrangement, **When** they are counted towards coverage,
-   **Then** their contribution is reflected at the appropriate monthly rate rather than as a full
-   monthly contribution.
+4. **Given** any supporter, **When** the site is inspected by any means available to a visitor,
+   including reading the application's own bundled code, **Then** no amount attributable to that
+   individual can be found.
 5. **Given** only the maintainer holds administrative rights, **When** any non-administrator attempts
    to change the supporter list, **Then** the attempt is refused on the server, not merely hidden in
    the interface.
@@ -212,10 +230,16 @@ confirm it never appears.
 - **Drifted cost.** The hosting bill moves and the hard-wired cost figure no longer matches it. The
   figure is stated as an approximation, so small drift is tolerable; the plan should note that this
   value needs a look whenever infrastructure changes.
-- **Over-coverage.** Supporters exceed the monthly cost. The line must read as celebration and
+- **Over-coverage.** Contributions exceed the year's cost. The line must read as celebration and
   surplus, never as a bar stuck at 100% or a number that looks like an error.
-- **Zero supporters.** At launch the covered amount is zero. The line must still read as an
-  invitation rather than as a failure notice.
+- **A long thank-you list above a small current total.** This is the actual launch state: seventeen
+  people have contributed over the project's life, but the current year's total starts low. The two
+  must read coherently side by side — gratitude for everyone, an honest and inviting figure for this
+  year — never a page that looks broken or ungrateful.
+- **Year rollover.** On 1 January the yearly total would reset to zero. The reset is deliberate and
+  manual (FR-013c), the year is always named (FR-004), and the previous year's supporters move to
+  the earlier-years list rather than vanishing (FR-013d), so the page never appears to have lost
+  something.
 - **Prerendered pages.** Build order pages are prerendered for search engines. A funding figure or
   supporter marker baked into prerendered output would freeze at build time; the displayed values
   must be correct for a live visitor regardless of when the page was prerendered.
@@ -244,45 +268,100 @@ confirm it never appears.
 
 **Funding status display**
 
-- **FR-001**: The system MUST display a funding status consisting of the approximate monthly running
-  cost, the amount currently covered, and the number of people covering it.
-- **FR-001a**: The approximate monthly running cost MUST be a fixed, hand-set value; it is not
-  derived from any billing source.
-- **FR-001b**: The covered amount and supporter count MUST be derived from the maintained supporter
-  list, so that no separate figure requires maintenance.
-- **FR-001c**: The derived covered amount MUST reflect what actually arrives after payment fees, and
-  MUST account for supporters on an annual arrangement contributing at a different monthly rate than
-  those on a monthly one.
+- **FR-001**: The system MUST display a funding status consisting of the approximate running cost
+  **for a calendar year**, the amount contributed towards that year so far, and the number of people
+  who contributed it.
+- **FR-001a**: The stated yearly running cost and the year it refers to MUST be fixed, hand-set
+  values; neither is derived from any billing source.
+- **FR-001b**: The supporter count MUST be derived from the maintained supporter list, so that it
+  can never disagree with the names shown.
+- **FR-001c**: The covered amount MUST be a single hand-set total for the stated year, net of
+  payment fees. It MUST be updated in the same edit as the supporter list, never on a separate
+  cadence.
+- **FR-001e**: While the number of current-year supporters is below a small threshold, the system
+  MUST NOT publish the supporter count, and MUST NOT group the supporters list by year. Publishing a
+  total, a count and the names together stops the total being an aggregate: with two supporters
+  listed, each can subtract their own contribution and know the other's exactly, and with one the
+  total *is* that person's donation. It matters most for anyone who contributed privately — they are
+  in the total but not on the wall, so the arithmetic would expose what they gave despite their
+  having asked not to be named.
+- **FR-001f**: The suppression MUST fall on the count rather than on the money. The covered amount
+  and the progress it represents are the mechanism this feature exists to provide; the count is
+  social proof and is the cheaper thing to lose. The count is also recoverable from the length of
+  the published names list, which is why the year grouping has to go with it, while the covered
+  total is not recoverable from anything else on the site.
+- **FR-001d**: The system MUST NOT hold any individual's contribution amount **anywhere in material
+  delivered to the browser**, whether rendered or not. Not displaying a value is not the same as not
+  shipping it: configuration bundled with the application is readable by anyone, so a per-person
+  amount would be public the moment it was stored, regardless of what the page chooses to draw. The
+  per-person record stays at the payment provider, which already holds it.
 - **FR-002**: The funding status MUST be visible to signed-out visitors.
-- **FR-003**: The funding status MUST appear in the site footer, on the About page, and exactly once
-  on the signed-in account page.
-- **FR-004**: The funding status MUST read as a current statement, without claiming precision the
-  hand-set cost figure does not have.
+- **FR-003**: The funding status MUST appear in the home page sidebar, on the About page, on the
+  signed-in account page, and in the site footer.
+- **FR-003a**: The home page placement MUST appear for both the desktop sidebar and the mobile
+  layout, which are separate render positions rather than one responsive element.
+- **FR-003b**: The footer placement is the fallback: it MUST carry the funding status on every page
+  that does not present its own, so that no page is left without one.
+- **FR-004**: The funding status MUST name the year it refers to, so that a reader can see at a
+  glance which period is being counted.
 - **FR-005**: When coverage is partial, the system MUST express the remaining amount as a concrete
   shortfall.
 - **FR-006**: When coverage meets or exceeds the stated cost, the system MUST present a covered/
   thank-you state rather than a shortfall.
-- **FR-007**: The funding status MUST NOT be duplicated more than once per page.
-- **FR-008**: The funding status MUST remain truthful without any recurring maintenance step of its
-  own — editing the supporter list MUST be the only action that changes it.
+- **FR-007**: A page MUST present the funding status exactly once. A page carrying its own funding
+  block MUST suppress the footer's, so that the two never appear together.
+- **FR-007a**: A page presenting the funding status MUST NOT also carry a second, generic donation
+  ask. Any pre-existing "Donate" control on such a page MUST be removed rather than left alongside
+  it — a bare ask next to a specific one makes the specific one read as decoration.
+- **FR-008**: The funding status MUST have no maintenance cadence of its own. The covered total and
+  the supporter list MUST change together, in one edit, triggered by the same event — so the figure
+  can be behind reality but can never be inconsistent with the names beside it.
+- **FR-008a**: The stored covered total MUST sit adjacent to the supporter list and carry a note
+  stating that the two are updated together, since their consistency is a convention rather than
+  something the system can enforce.
 
 **The ask**
 
 - **FR-009**: The system MUST offer a support action adjacent to every funding status placement.
-- **FR-010**: The support action MUST present a monthly option and an annual option, with the
-  monthly option first and the annual option identified as better value.
-- **FR-011**: The support action MUST continue to function as an ordinary outbound link if any
-  embedded or scripted payment widget fails to load.
+- **FR-010**: The support action MUST be a single control leading to the payment provider's own
+  page, and MUST state the available amounts and whether they can be one-off or recurring before
+  the click. Ko-fi offers €2, €5 and €10, each as a one-off or monthly, all on one page with no
+  deep link into a particular choice — so two or three buttons here would pre-empt a decision the
+  destination asks better, and would break the moment the tiers changed again.
+- **FR-011**: The support action MUST be an ordinary outbound link, rendered by the site's own
+  components in the site's own visual language.
+- **FR-011a**: The system MUST NOT embed the payment provider's floating action button, overlay
+  widget, or any other third-party script that presents an ask. Such a widget would be a
+  context-free donation button persisting on every page — the exact thing this feature removes three
+  of — and it cannot opt out of the pages that matter most: it would float over build orders and
+  over focus mode, and sit on top of the funding status on the three pages that carry their own. It
+  would also fail closed behind an ad blocker, where a plain link does not, and load a third-party
+  bundle on every page against the standard already set by the no-cookie, lazily-loaded video embed
+  in the home sidebar.
 - **FR-012**: The system MUST NOT collect, process or store payment details itself.
 
 **Supporter recognition**
 
-- **FR-013**: The system MUST maintain a list of current supporters, each entry carrying the name
-  they supported under and which arrangement they are on.
+- **FR-013**: The system MUST maintain a list of supporters for the stated year, one entry per
+  person, carrying the name they supported under and nothing about what they gave.
+- **FR-013a**: A supporter who cannot be named MUST still occupy an entry, so that the supporter
+  count stays accurate without revealing who they are.
+- **FR-013b**: The system MUST additionally maintain a list of people who contributed in **earlier**
+  years, carrying names only. They are thanked but contribute nothing to the current year's total.
+- **FR-013c**: Rolling over to a new year MUST be a deliberate act by the maintainer, never an
+  automatic consequence of the date changing. A goal that silently empties itself at midnight on 1
+  January looks like a defect and erases the visible result of a year's support without anyone
+  deciding to.
+- **FR-013d**: On rollover, the previous year's supporters MUST move to the earlier-years list
+  rather than disappearing, so that the wall only ever grows.
 - **FR-013a**: A supporter list entry MUST NOT require a corresponding site account, and MUST NOT
   require the maintainer to determine which site account, if any, belongs to that person.
-- **FR-014**: The system MUST display the current supporters on the About page by the name they
-  supported under.
+- **FR-014**: The system MUST display supporters on the About page by the name they supported under,
+  in two sections: those who have contributed during the stated year, and those who contributed in
+  earlier years.
+- **FR-014a**: A name MUST NOT be published unless the contribution it came from was public at the
+  payment provider. Anyone who tipped privately MUST be recorded without a name, per FR-015 — they
+  gave money, not permission to be listed.
 - **FR-015**: A supporter MUST be able to be recorded as anonymous, so that their contribution counts
   towards coverage without their name being displayed.
 - **FR-016**: A supporter list entry with a missing or unusable name MUST NOT render as a blank
@@ -308,8 +387,13 @@ confirm it never appears.
   supporting.
 - **FR-021b**: Removing a link MUST remove the marker everywhere, and MUST NOT remove the person
   from the supporter list or the coverage total.
-- **FR-021c**: Deleting a user account MUST remove any supporter link and marker for that account,
-  and MUST NOT remove that person's supporter list entry or alter the coverage total.
+- **FR-021c**: Deleting a user account MUST result in that account's supporter link and marker being
+  removed by the maintainer's next monthly pass at the latest, and MUST NOT remove that person's
+  supporter list entry or alter the coverage total — deleting a site account is not a cancellation,
+  and they are still paying. Immediate removal is explicitly not required: the same lag is already
+  accepted for lapsed supporters, and requiring it here alone would force either automation that
+  cannot write to the repository or a storage choice rejected on cost grounds (see plan research
+  R1 and R9).
 - **FR-021d**: The badge capability MUST be removable in its entirety without affecting the funding
   status, the ask, the supporters wall, or the maintainer's monthly routine.
 
@@ -317,12 +401,12 @@ confirm it never appears.
 
 - **FR-022**: Only an administrator MUST be able to change the supporter list or create and remove
   account links, and this MUST be enforced on the server, not only concealed in the interface.
-- **FR-023**: The stated monthly running cost and the per-arrangement contribution rates MUST be
-  deploy-time values in the repository, changed only by a code change. They are expected to change
-  rarely — at most once or twice a year.
+- **FR-023**: The stated yearly running cost and the year it refers to MUST be deploy-time values in
+  the repository, changed only by a code change. They are expected to change once a year.
 - **FR-024**: The maintainer's recurring routine MUST consist solely of transcribing names and
-  arrangements from the payment provider into the supporter list. No separate funding figure may
-  require periodic updating, and no identity matching may be required to complete it.
+  received amounts from the payment provider into the supporter list, and MUST be occasional —
+  triggered by someone contributing, not by a calendar. No separate funding figure may require
+  periodic updating, and no identity matching may be required to complete it.
 
 **Contextual ask after focus mode**
 
@@ -349,14 +433,17 @@ confirm it never appears.
 
 ### Key Entities
 
-- **Funding Status**: The publicly displayed state of community funding. Its stated monthly running
-  cost and its per-arrangement contribution rates are fixed values in the codebase; its covered
-  amount and supporter count are derived from the current Supporter Marks. Never derived from a
-  payment API, and never separately maintained.
-- **Supporter List**: The maintained set of current supporters. Each entry carries the name the
-  person supported under, which arrangement they are on (monthly or annual), and whether they wish
-  to be named publicly. It holds no reference to a site account. It is the sole source of both the
-  coverage total and the supporters wall, and the only thing the maintainer edits month to month.
+- **Funding Status**: The publicly displayed state of community funding for a named calendar year.
+  The year, the running cost and the covered total are hand-set values in the codebase; the
+  supporter count is derived from the Supporter List. Never derived from a payment API. The covered
+  total is the one figure typed by hand, and it is typed in the same edit as the names.
+- **Supporter List**: The maintained set of supporters for the stated year, one entry per person and
+  nothing recorded about what any of them gave. A name is present only where the contribution was
+  public at the provider and the person did not ask to stay unnamed; an unnamed entry still occupies
+  a place so the count stays right. It is the source of the supporter count and the current-year
+  wall, and it holds no reference to a site account.
+- **Earlier Supporters**: Names only, from years before the stated one. Thanked on the wall,
+  contributing nothing to the current total. Grows at each rollover and never shrinks.
 - **Supporter Link**: An optional association between a supporter list entry and a site account,
   created only when that person has volunteered their username. Readable by anyone rendering that
   user's name; writable only by an administrator. Drives the badge and nothing else. Confers no
@@ -366,19 +453,22 @@ confirm it never appears.
 
 ### Measurable Outcomes
 
-- **SC-001**: A first-time visitor shown only the footer can state, within 10 seconds, roughly what
-  the site costs to run and whether that cost is currently covered.
-- **SC-002**: The site reaches at least 13 recurring supporters — full coverage of stated running
-  costs — within 6 months of launch.
-- **SC-003**: At least 10 recurring supporters within 3 months of launch.
+- **SC-001**: A first-time visitor landing on the home page can state, within 10 seconds and without
+  scrolling to the footer, roughly what the site costs to run and whether that cost is currently
+  covered.
+- **SC-001a**: No page presents the funding status, or any other donation ask, more than once.
+- **SC-002**: The stated year's running costs are fully covered by community contributions within 12
+  months of launch.
+- **SC-003**: The year's goal is at least half covered within 6 months of launch.
 - **SC-004**: Click-through on the support action is at least 5× the pre-change footer baseline
   within one month.
 - **SC-005**: For a linked supporter, the marker is visible to signed-out visitors on 100% of the
   surfaces where the site names a user.
 - **SC-005a**: 100% of supporters appear on the wall and in the coverage total without any account
   linking having taken place.
-- **SC-006**: The maintainer's monthly routine consists of transcribing names and arrangements only,
-  completes in under 5 minutes, and requires contacting no supporter and identifying no account.
+- **SC-006**: The maintainer's update consists of transcribing names and received amounts only,
+  completes in under 5 minutes, and requires contacting no supporter and identifying no account. It
+  is triggered by someone contributing, not by a calendar.
 - **SC-007**: Zero features available for free before the change require supporter status after it,
   verified by walking the full feature list signed out.
 - **SC-008**: Focus-mode session completion rate does not measurably decline after the contextual
@@ -390,16 +480,31 @@ confirm it never appears.
 
 ## Assumptions
 
-- **The number to beat is small.** Full coverage is roughly thirteen supporters at €2/month, after
-  payment fees on small recurring charges. The whole design is sized for that, not for scale.
+- **The number to beat is small.** A year costs roughly €240, about what thirteen supporters at
+  €2/month would give. The whole design is sized for that, not for scale.
+- **A yearly goal counts money, not arrangements.** Because the target is a year rather than a
+  month, every euro that actually arrived counts the same regardless of how it arrived. This removes
+  the need to model plans, apply net rates per arrangement, or decide what a one-off tip is worth
+  against a recurring target — questions that only existed because of the monthly framing.
 - **Manual administration is sufficient and preferred.** At the expected volume, hand-assignment is
   a few minutes a month and doubles as an opportunity for the maintainer to thank people
   personally. No automation is warranted, and none is specified.
 - **Payment happens entirely off-site.** The existing Ko-fi presence handles collection; the site
   links out and never sees a payment. Monthly €2 and annual €20 are the two products, configured on
   the provider's side.
-- **Figures are approximate and stated as such.** "About €20/month" is honest and does not require
+- **Figures are approximate and stated as such.** "About €240 a year" is honest and does not require
   the maintainer to reconcile a cloud bill to the cent.
+- **The bundle is the privacy boundary, not the rendered page.** Anything in the configuration is
+  public whether or not a template draws it. This is why per-person amounts are not stored at all,
+  and why an anonymous supporter has no name recorded rather than a name marked hidden. The rule
+  applies to any future field: if it should not be public, it does not go in the bundle.
+- **The per-person record lives at the payment provider.** Ko-fi already holds who gave what; the
+  repository holds only the total. Keeping the detail in one place avoids both the leak and the
+  duplication — when the maintainer needs the breakdown, they open the dashboard.
+- **One hand-typed figure is accepted as the cost of that privacy.** The covered total can no longer
+  be derived, so it is typed. The risk this reintroduces is bounded by changing it in the same edit
+  as the names, rather than on a schedule of its own: the number can lag reality, but it cannot
+  contradict the wall next to it, and nothing needs recalculating on a cadence anyone can forget.
 - **Coverage is derived, not maintained.** Because supporter marks must exist anyway to render
   badges, the covered amount and supporter count are read from them. This is what removes the
   recurring figure-update chore and makes a stale funding line structurally impossible rather than a
@@ -412,10 +517,9 @@ confirm it never appears.
   accuracy grounds, not merely for simplicity. A webhook may later be added purely as a
   *notification* that someone joined, which does not feed the funding status and is out of scope
   here.
-- **The actual constants are not yet supplied.** The stated monthly running cost and the net
-  per-supporter contribution rates for the monthly and annual arrangements are placeholders until
-  the maintainer provides real numbers. They are needed before launch, not before planning or
-  implementation.
+- **The actual figures are not yet supplied.** The stated yearly running cost (~€240) and the
+  covered total are placeholders until the maintainer reads them off the payment provider. Needed
+  before launch, not before implementation — two numbers in total, both in one block.
 - **Being named on the wall is opt-out; the badge is opt-in.** These differ deliberately. The wall
   uses the name the person already chose at the payment provider, so listing them costs nobody
   anything and being named is the perk. The badge needs a site account nobody can determine on their

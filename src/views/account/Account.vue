@@ -141,6 +141,10 @@
           </v-card-text>
         </v-card>
 
+        <!-- What the site costs and how far the community has got. Once on this
+             page; the footer's copy is suppressed on the Account route. -->
+        <FundingStatus />
+
         <!-- Danger zone -->
         <v-card flat rounded="lg">
           <v-card-text class="px-6 py-5">
@@ -190,11 +194,12 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import AvatarPicker from "@/components/account/AvatarPicker.vue";
 import UserAvatar from "@/components/common/UserAvatar.vue";
+import FundingStatus from "@/components/common/FundingStatus.vue";
 import { useAvatar } from "@/composables/auth/useAvatar";
 
 export default {
   name: "Account",
-  components: { AvatarPicker, UserAvatar },
+  components: { AvatarPicker, UserAvatar, FundingStatus },
   setup() {
     const store = useStore();
     const router = useRouter();

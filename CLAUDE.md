@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/034-account-deletion-cleanup/plan.md`.
+at `.specify/specs/036-community-funding-transparency/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules

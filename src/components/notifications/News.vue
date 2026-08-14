@@ -51,18 +51,10 @@
 
       <v-divider class="mt-3"></v-divider>
       <div class="d-flex flex-wrap justify-center ga-2 mt-3">
-        <a
-          href="https://ko-fi.com/jensbuehl"
-          target="_blank"
-          style="text-decoration: none"
-        >
-          <v-btn variant="text" size="small" color="primary">
-            <template v-slot:prepend>
-              <v-icon color="red">mdi-heart</v-icon>
-            </template>
-            Donate
-          </v-btn>
-        </a>
+        <!-- No Donate button here. The funding status card renders directly
+             below this one in the same sidebar, and a bare ask beside a
+             specific "€85 of €240" line makes the specific one read as
+             decoration. One ask per page, and it is the one with a number. -->
         <a
           href="https://discord.gg/Nau9BN5E7J"
           target="_blank"

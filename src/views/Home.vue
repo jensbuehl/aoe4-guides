@@ -15,18 +15,25 @@
           :all-time-classics="allTimeClassicsList"
           :recent-builds="recentBuildsList"
         />
-        <!-- mobile sidebar (below builds, hidden on desktop) -->
+        <!-- mobile sidebar (below builds, hidden on desktop)
+
+             This stack is a DUPLICATE of the desktop one below, not a
+             responsive variant of it, so anything added to one must be added to
+             both. A card added to only one looks perfectly correct on whichever
+             width you happen to test. -->
         <div class="hidden-md-and-up mt-4">
           <News></News>
+          <FundingStatus />
           <TopContributors :contributors="topContributorsList"></TopContributors>
           <YoutubeGuides></YoutubeGuides>
           <RegisterAd v-if="!user && authIsReady"></RegisterAd>
         </div>
       </v-col>
 
-      <!-- sidebar -->
+      <!-- sidebar (duplicate of the mobile stack above — keep them in step) -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <News></News>
+        <FundingStatus />
         <TopContributors :contributors="topContributorsList"></TopContributors>
         <YoutubeGuides></YoutubeGuides>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
@@ -46,6 +53,7 @@ import TopContributors from "@/components/home/TopContributors.vue";
 import CivPicker from "@/components/home/CivPicker.vue";
 import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
 import EventBanner from "@/components/home/EventBanner.vue";
+import FundingStatus from "@/components/common/FundingStatus.vue";
 
 import { getHomeSnapshot } from "@/composables/data/homeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
@@ -61,6 +69,7 @@ export default {
     CivPicker,
     BuildLaneTabs,
     EventBanner,
+    FundingStatus,
   },
   setup() {
     const store = useStore();

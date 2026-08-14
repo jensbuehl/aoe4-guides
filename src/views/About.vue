@@ -146,13 +146,57 @@
         <p class="mt-4">
           The cheapest way is to use the site and tell people about it: write build orders, keep
           them current, and share them with your clan or Discord. The second way is money — the
-          servers, domain and storage are paid out of pocket, and donations go straight into
-          running costs. The third way is code.
+          servers, domain and storage are paid out of pocket, and anything given goes straight into
+          them. The third way is code.
         </p>
+        <p class="mt-4 text-body-2 text-medium-emphasis">
+          For the sake of being specific: the goal below is the infrastructure alone — hosting, the
+          domain and storage. It is not everything the project costs. The other running expense is
+          an AI coding subscription, which is what lets a solo maintainer keep shipping at this
+          pace; it serves two projects, so only half of it would ever be counted here. That is
+          where anything above the goal goes.
+        </p>
+
+        <!-- The money ask lives entirely in this card. The old "Donate on Ko-fi"
+             button that stood here is gone: a generic ask beside a specific
+             figure makes the figure read as decoration. -->
+        <FundingStatus class="mt-4" />
+
+        <!-- The wall. Same markup idiom as the code-contributors list above, so
+             the page reads as one convention rather than two. Keyed by index,
+             not by name: two people can share a Ko-fi display name, and both
+             must appear. -->
+        <template v-if="supporters.length">
+          <p class="mt-6">
+            Helping cover {{ fundingYear }}'s running costs:
+          </p>
+          <ul class="pl-6 mt-2">
+            <li v-for="(person, index) in supporters" :key="index" class="mb-1">
+              {{ person.name }}
+            </li>
+          </ul>
+        </template>
+
+        <!-- While this year's group is too small to hide anyone in, the two
+             lists are merged and this heading carries everyone — otherwise
+             naming this year's supporters beside the year's total would say
+             what each of them gave. -->
+        <template v-if="earlierSupporters.length">
+          <p class="mt-4">
+            {{
+              groupByYear
+                ? "And everyone who has chipped in over the years before that:"
+                : "Everyone who has chipped in over the years:"
+            }}
+          </p>
+          <ul class="pl-6 mt-2">
+            <li v-for="(person, index) in earlierSupporters" :key="index" class="mb-1">
+              {{ person.name }}
+            </li>
+          </ul>
+        </template>
+
         <div class="d-flex flex-wrap ga-2 mt-4">
-          <v-btn :href="links.kofi" target="_blank" rel="noopener" color="primary" variant="flat" prepend-icon="mdi-heart">
-            Donate on Ko-fi
-          </v-btn>
           <v-btn :href="links.github" target="_blank" rel="noopener" variant="tonal" prepend-icon="mdi-github">
             Contribute on GitHub
           </v-btn>
@@ -192,9 +236,11 @@ import { onMounted, onUnmounted, ref } from "vue";
 
 //Components
 import UserAvatar from "@/components/common/UserAvatar.vue";
+import FundingStatus from "@/components/common/FundingStatus.vue";
 
 //Composables
 import { getBuildsCount } from "@/composables/data/buildService";
+import { useFunding, useSupporters } from "@/composables/useFunding";
 
 // Square 320px portrait — enough for the 96px avatar at 3x DPR. If it ever
 // goes missing UserAvatar falls back to initials rather than breaking.
@@ -332,7 +378,7 @@ const engineering = [
 
 export default {
   name: "About",
-  components: { UserAvatar },
+  components: { UserAvatar, FundingStatus },
   setup() {
     window.scrollTo(0, 0);
 
@@ -365,7 +411,22 @@ export default {
       }
     });
 
-    return { author, authorLinks, links, features, engineering, contributors, buildCount };
+    const { supporters, earlierSupporters, groupByYear } = useSupporters();
+    const { year: fundingYear } = useFunding();
+
+    return {
+      author,
+      authorLinks,
+      links,
+      features,
+      engineering,
+      contributors,
+      buildCount,
+      supporters,
+      earlierSupporters,
+      groupByYear,
+      fundingYear,
+    };
   },
 };
 </script>
