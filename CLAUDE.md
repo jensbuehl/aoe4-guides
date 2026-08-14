@@ -57,6 +57,26 @@ comm -23 <(grep -rhoE 'mdi-[a-z0-9-]+' src --include=*.vue --include=*.js | sort
 
 It should print only `mdi-svg` and `mdi-xxx`, which come from comments.
 
+**Anything in `src/` is public, whether or not a template renders it.** The app
+is a Vite SPA, so every module under `src/` — `src/config/` especially — is
+bundled and served to every visitor. Minification strips comments and mangles
+names; it does not make values private. "We never display it" draws the line at
+the template, and the line is the bundle.
+
+The rule bit twice inside one feature. `src/config/supporters.js` correctly
+stores *no name* for a supporter who asked not to be listed, rather than a name
+flagged hidden — and then very nearly stored a per-person `eur` amount that
+nothing would ever have rendered, which would have published exactly what the
+first decision protected. Same file, one field apart.
+
+So: if a value should not be public, it does not go in `src/` at all — keep it
+at the source that already holds it (the payment dashboard, Firestore behind a
+rule, an env var used only at build time). And when a page shows an aggregate
+next to a list of names, check the arithmetic: a total plus a count plus the
+names stops being an aggregate at small n, which is why `useFunding.js`
+withholds the supporter count below three. Verify against the built artefact,
+not the source — `grep` the emitted `dist/assets/*.js`.
+
 Run `npm run check:steps` after touching anything that reads a build. A
 section's `steps` holds ordinary steps, notes **and** alternatives blocks whose
 own steps live one level down, so iterating it directly reads a block as a step
