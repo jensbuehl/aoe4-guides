@@ -116,4 +116,30 @@ export default {
 .v-tooltip .v-overlay__content {
   background: rgba(var(--v-theme-surface-variant), 0.9) !important;
 }
+/* Reserve the fold for the route before it has rendered.
+
+   `router.beforeEach` awaits Firebase auth on every navigation, the first one
+   included (src/router/index.js), so `router-view` renders nothing for ~950ms
+   while the shell around it is already painted. Without this reservation the
+   footer paints at y~486 in a 768px viewport and is then shoved ~1770px down
+   when the route lands: one shift, measured at 0.37 CLS on desktop and 0.61 on
+   mobile, on every content page. Search Console had it as a desktop failure on
+   / and /dashboard since 2023.
+
+   Deliberately NOT `100dvh` — that tracks the mobile URL bar, and would
+   generate shifts of its own as the bar hides.
+
+   Deliberately NOT `calc(100vh - var(--v-layout-top))`, which reads like the
+   careful version and is wrong: --v-layout-top is already this element's
+   padding-top, and box-sizing is border-box globally (assets/base.css), so
+   subtracting it double-counts the header. That leaves the footer 92px inside
+   the fold and CLS at 0.12 — still failing, while looking fixed.
+
+   The reservation has to sit on the element the footer follows. body already
+   carries min-height:100vh (assets/base.css) and cannot do this job: the footer
+   is a flex sibling of v-main inside .v-application__wrap, so stretching body
+   never moves it. Costs 8px of scroll (the mt-2 margin) on a near-empty page. */
+.v-main {
+  min-height: 100vh;
+}
 </style>
