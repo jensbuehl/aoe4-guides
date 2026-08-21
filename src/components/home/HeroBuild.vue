@@ -4,7 +4,7 @@
     :to="{ name: 'BuildDetails', params: { id: build.id } }"
     style="text-decoration: none"
   >
-    <v-card class="aoe-featured mb-4" flat>
+    <v-card class="aoe-featured mb-2" rounded="lg" flat>
       <v-img
         class="aoe-featured-bg"
         :src="flagUrl ?? ''"
@@ -52,7 +52,7 @@
     type="image"
     height="230"
     width="100%"
-    class="aoe-featured-skeleton"
+    class="aoe-featured-skeleton rounded-lg"
   />
 </template>
 
@@ -83,7 +83,6 @@ export default {
   position: relative;
   display: block;
   width: 100%;
-  border-radius: 16px;
   overflow: hidden;
   min-height: 230px;
   text-align: left;
@@ -182,9 +181,11 @@ export default {
   outline-offset: 3px;
 }
 
-/* skeleton matches hero dimensions */
+/* Skeleton matches hero dimensions. Its radius comes from the rounded-lg
+   utility in the template, not from here: VSkeletonLoader has no `rounded`
+   prop, so the utility class is the only way to share the card's actual token
+   rather than restate 8px and let the two drift apart. */
 .aoe-featured-skeleton {
-  border-radius: 16px;
   overflow: hidden;
 }
 
