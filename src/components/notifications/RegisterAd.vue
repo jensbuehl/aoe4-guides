@@ -1,36 +1,33 @@
 <template>
-  <v-card
-    flat
+  <!-- A button, not a card, and deliberately so.
+
+       The header's only auth affordance is an unlabelled avatar icon whose menu
+       reads "Log in" — signing up is a text link inside the dialog behind it —
+       so this is the only visible mention of an account on the pages that carry
+       it. That job is done by the label alone; the pitch paragraph this used to
+       carry was 14px medium-emphasis body text in a sidebar, competing with
+       News and FundingStatus, which are actual content.
+
+       It stays a lone element because a pitch line plus a button cannot both
+       fit one row at md sidebar width (~318px usable), and the wrapped form
+       reads as broken layout rather than as two lines. Shortening the text
+       until it fits would be tuning against estimated glyph widths — true at
+       one font and one theme. Nothing here can wrap: the label is short enough
+       to clear even a 320px viewport, and v-btn will not break it anyway.
+
+       Accent border and accent label are load-bearing: FundingStatus.vue
+       deliberately uses a plain title so as not to compete with this. -->
+  <v-btn
+    block
+    variant="outlined"
+    color="accent"
     rounded="lg"
+    prepend-icon="mdi-sword-cross"
+    to="/register"
     class="mb-4"
-    :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
-    <v-card-title class="px-4 py-2 pb-2">
-      <span
-        class="v-card-title pa-0 d-flex align-center"
-        :style="{ color: $vuetify.theme.current.colors.accent }"
-      >
-        <v-icon
-          icon="mdi-sword-cross"
-          size="small"
-          class="mr-4"
-          color="accent"
-        ></v-icon>
-        Build. Share. Dominate.
-      </span>
-    </v-card-title>
-    <v-card-text class="px-4">
-      <div class="text-body-2 text-medium-emphasis">
-        Join thousands of AoE4 players — craft and share build orders, bookmark
-        your go-to strategies, and discuss tactics with the community.
-      </div>
-      <div class="d-flex justify-center mt-3">
-        <v-btn variant="text" size="small" color="primary" to="/register">
-          Create Free Account
-        </v-btn>
-      </div>
-    </v-card-text>
-  </v-card>
+    Create free account
+  </v-btn>
 </template>
 
 <script>
