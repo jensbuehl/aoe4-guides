@@ -67,7 +67,10 @@ import BuildListCard from "@/components/builds/BuildListCard.vue";
 import AuthorPageHeader from "@/components/page/AuthorPageHeader.vue";
 
 //Composables
-import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
+import {
+  getDefaultConfig,
+  getMostRecentBuildsConfig,
+} from "@/composables/filter/configDefaultProvider";
 import { getContributor } from "@/composables/data/contributorService";
 import {
   getBuilds,
@@ -101,10 +104,18 @@ export default {
       limit: 10,
     });
 
+    // An author page is a portfolio, not a leaderboard: a visitor who came for
+    // one person wants to see what that person published most recently, so it
+    // starts on "Time Created" instead of the all-time score the general list
+    // uses. MyBuilds and MyFavorites already default the same way. An explicit
+    // ?orderBy in the URL still wins, applied below.
+    const getPageConfig = () =>
+      route.query.author ? getMostRecentBuildsConfig() : getDefaultConfig();
+
     const initQueryParameters = async () => {
       //Reset config and only apply query parameters if they are set
       if (Object.keys(route.query).length) {
-        store.commit("setFilterConfig", getDefaultConfig());
+        store.commit("setFilterConfig", getPageConfig());
 
         //reset cache
         store.commit("setAllBuildsList", null);
@@ -126,7 +137,7 @@ export default {
     };
 
     onMounted(async () => {
-      store.commit("setFilterConfig", getDefaultConfig());
+      store.commit("setFilterConfig", getPageConfig());
       store.commit("setAllBuildsList", null);
       await initQueryParameters();
       initData();
@@ -147,7 +158,7 @@ export default {
     watch(
       () => route.query,
       async () => {
-        store.commit("setFilterConfig", getDefaultConfig());
+        store.commit("setFilterConfig", getPageConfig());
         store.commit("setAllBuildsList", null);
         await initQueryParameters();
         initData();
