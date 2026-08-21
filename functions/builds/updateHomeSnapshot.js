@@ -137,12 +137,20 @@ async function syncContributorRanks(db, ranked, previousIds) {
 }
 
 exports.updateHomeSnapshot = onSchedule(
-  // Every rewrite invalidates this document in every visitor's persistence
-  // cache, so they all re-download it whole — the cadence is an egress cost,
-  // not just a freshness knob. Top-10 rankings and contributor standings do not
-  // move meaningfully within an hour, so six-hourly buys back 6x the forced
-  // re-downloads at no visible staleness. Raise the frequency only for content
-  // that genuinely changes faster than the page is read.
+  // Six-hourly is a freshness knob, and only that. It arrived (0d43d47) on the
+  // theory that each rewrite invalidates this ~33 KB document in every visitor's
+  // Firestore persistence cache and forces a whole re-download — which was never
+  // true on this path, because src/composables/data/homeService.js had bypassed
+  // that cache in f395d19 three months earlier. The cadence cut therefore saved
+  // nothing, and the billing data shows nothing.
+  //
+  // What actually costs reads is the client TTL in homeService.js, and the two
+  // compose: worst-case staleness is that TTL plus this period. Shorten the TTL,
+  // not this, if the home page ever feels behind — a rerun here is nearly free,
+  // and it only invalidates a snapshot nobody was caching in Firestore anyway.
+  //
+  // Raise the frequency only for content that genuinely changes faster than the
+  // page is read. Top-10 rankings and contributor standings do not.
   { schedule: "0 */6 * * *", timeoutSeconds: 300 },
   async () => {
     logger.log("updateHomeSnapshot: start");

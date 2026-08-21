@@ -128,8 +128,11 @@ export default {
 
     const initData = async () => {
       // Single read replaces 4 separate live queries (~23 reads → 1 read).
-      // Data is pre-generated hourly by the updateHomeSnapshot Cloud Function.
-      // After first load, IndexedDB persistence serves this from local cache.
+      // Data is pre-generated six-hourly by the updateHomeSnapshot Cloud
+      // Function. Repeat visits inside homeService's TTL read nothing at all —
+      // note that it is that TTL doing the work and NOT Firestore's IndexedDB
+      // persistence, which this path has bypassed since f395d19. See the header
+      // of homeService.js before changing either.
       const snapshot = await getHomeSnapshot();
       recentCivBuilds.value = snapshot?.recentCivBuilds ?? [];
       // Rides inside the snapshot rather than being fetched, which is what
