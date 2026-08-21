@@ -14,6 +14,31 @@
 /apidoc  /api/api-docs/  301
 /github  https://github.com/jensbuehl/aoe4-guides  301
 
-/api/apidocs https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/api-docs/ 200
-/api/* https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/:splat 200
+# The API proxy, deliberately narrow.
+#
+# This site needs exactly one API route: a single build by id, which
+# buildService.getBuildFromApi calls when the browser could not produce an App
+# Check token and Firestore refused the read. It never calls the list endpoint.
+#
+# /api/* used to forward everything, which lent the whole service surface a
+# first-party address - list endpoints, favorites, every filter combination,
+# reachable under the site's own domain and looking endorsed by it. Narrowing
+# does not block anyone (the service answers on its own hostname either way);
+# it makes this path exactly as wide as the site needs, which is what lets the
+# two surfaces be treated differently later - the site path anonymous and dull,
+# the documented API keyed and identifiable.
+#
+# Rules are matched top to bottom, so the closing catch-all must stay last, and
+# the whole block must stay above /* or the SPA shell swallows it.
+/api/apidocs      https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/api-docs/         200
+/api/api-docs     https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/api-docs/         200
+/api/api-docs/*   https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/api-docs/:splat   200
+/api/builds/:id   https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/builds/:id        200
+
+# Anything else under /api answers with a JSON 404 naming the direct address,
+# rather than the SPA shell with status 200. A caller that breaks here has to be
+# told why and where to go instead: the published OpenAPI spec still advertises
+# https://aoe4guides.com/api as its base, so a documented list call lands here.
+/api/*            /api-not-proxied.json                                             404
+
 /* /index.html 200

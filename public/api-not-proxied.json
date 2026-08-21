@@ -1,0 +1,5 @@
+{
+  "error": "not_proxied",
+  "message": "aoe4guides.com proxies only /api/builds/{buildId} and /api/api-docs/. The full API, list endpoints included, is served directly at https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app - please use that host and cache your responses.",
+  "docs": "https://aoe4guides.com/api/api-docs/"
+}
