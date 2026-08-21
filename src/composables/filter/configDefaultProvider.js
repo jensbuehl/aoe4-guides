@@ -1,10 +1,14 @@
+// The site-wide default: newest first. A visitor arriving at a list wants to
+// see what is new since they last looked, not the same all-time leaders they
+// saw last time — the leaderboard orderings stay one click away in the sort
+// select, and Home still surfaces them explicitly via the configs below.
 export const getDefaultConfig = () => ({
     author: null,
     civs: null,
     maps: [],
     strategies: [],
     seasons: [],
-    orderBy: "scoreAllTime",
+    orderBy: "timeCreated",
     drafts: false,
 });
 

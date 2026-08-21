@@ -53,7 +53,8 @@ export const store = createStore({
       maps: [],
       strategies: [],
       seasons: [],
-      orderBy: "scoreAllTime",
+      // Keep in sync with getDefaultConfig() in configDefaultProvider.js.
+      orderBy: "timeCreated",
     },
     //snackbar
     snackbar: {
