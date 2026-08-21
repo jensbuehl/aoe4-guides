@@ -8,10 +8,18 @@
   (/login, /register, /account, /mybuilds, /favorites) are excluded and are
   also disallowed in robots.txt.
 
+  That test is about what a crawler receives, not about who the page is for.
+  The build editor was listed here until 21.08.2026 even though it is behind
+  requiresAuth: a logged-out visitor - every crawler is one - is bounced to the
+  login screen, so the URL advertised here rendered the same shell as every
+  other unresolvable path. Google files that under "Duplicate, no user-selected
+  canonical", and a sitemap entry that can never be indexed spends crawl budget
+  to say so every time.
+
   THIS IS NO LONGER THE SITEMAP THE SITE SERVES. scripts/prerender.mjs reads
   the entries below, appends one per public build order, and writes the result
   over the copy of this file in dist/ - so what ships normally has thousands of
-  URLs, not five.
+  URLs, not a handful.
 
   Deliberately no literal tag names in this comment: the generator finds those
   entries by regex, and a tag spelled out up here would be counted as one of
@@ -22,8 +30,8 @@
   the live sitemap, because the generator reads this file rather than
   restating its contents. And when the generator skips - a local build, CI, or
   a deploy with no snapshot committed - nothing overwrites the copy in dist/
-  and these five URLs ship unchanged. That is the intended fallback, not an
-  accident: five correct URLs beat none.
+  and the URLs below ship unchanged. That is the intended fallback, not an
+  accident: a few correct URLs beat none.
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
@@ -33,10 +41,6 @@
     <url>
         <loc>https://aoe4guides.com/builds</loc>
         <priority>0.9</priority>
-    </url>
-    <url>
-        <loc>https://aoe4guides.com/builds/new</loc>
-        <priority>0.5</priority>
     </url>
     <url>
         <loc>https://aoe4guides.com/about</loc>

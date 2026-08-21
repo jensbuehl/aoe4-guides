@@ -14,12 +14,28 @@ name: Refresh SEO snapshot
 
 on:
   schedule:
-    # 03:00 UTC on the 1st. Monthly is a deliberate floor, not a target: the
-    # snapshot only has to be fresh enough that a new build gets indexed within
-    # weeks, and every run that changes nothing still costs a Netlify deploy.
-    - cron: "0 3 1 * *"
-  # For patch days, when a wave of builds lands at once and waiting a month is
-  # the wrong answer.
+    # 03:00 UTC on Mondays. This was monthly until 21.08.2026, on the reasoning
+    # that a new build only has to be indexed "within weeks", and that every run
+    # costs a Netlify deploy regardless -- which it does, because the _meta line
+    # carries a generation timestamp, so the file always differs and the commit
+    # step never skips.
+    #
+    # What that missed is what an unrefreshed build looks like to a crawler. It
+    # has no page of its own yet, so it is served the shared shell: same title,
+    # same description, no canonical -- byte-identical to every other build
+    # published since the last refresh. Google does not read that as "not
+    # indexed yet", it reads it as a duplicate cluster and picks one URL to
+    # stand for all of them. Search Console listed 55 URLs under "Duplicate, no
+    # user-selected canonical" on 21.08.2026.
+    #
+    # That verdict also outlives the refresh: it clears only on the next crawl
+    # after the page becomes unique, and Google schedules that, not us. So the
+    # cost of a stale month is not a month of delay -- it is a month-wide window
+    # in which any new build can be seen wrong, plus however long the re-crawl
+    # takes afterwards.
+    - cron: "0 3 * * 1"
+  # For patch days, when a wave of builds lands at once and waiting for Monday
+  # is the wrong answer.
   workflow_dispatch:
 
 # Two refreshes writing the same file would race on the push.

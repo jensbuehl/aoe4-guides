@@ -378,7 +378,7 @@ function urlsetDocument(blocks) {
 }
 
 /**
- * Writes dist/sitemap.xml, replacing the 5-URL static copy Vite put there.
+ * Writes dist/sitemap.xml, replacing the static copy Vite put there.
  *
  * On a skipped run this is never reached, so that copy survives untouched and
  * the site keeps the sitemap it has today — FR-016 with no code to implement
@@ -685,7 +685,7 @@ function main() {
   );
 
   //Last, and only once the pages are in place: a sitemap advertising pages that
-  //failed to write would be worse than the 5-URL copy it replaces.
+  //failed to write would be worse than the static copy it replaces.
   const sitemap = writeSitemap(records);
   console.log(`${LOG}   sitemap: ${sitemap.urls} urls, ${sitemap.files} file${sitemap.files === 1 ? "" : "s"}`);
 }
