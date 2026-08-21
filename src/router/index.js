@@ -32,8 +32,13 @@ const Admin = () => import("@/views/Admin.vue");
 const SITE_ORIGIN = "https://aoe4guides.com";
 
 // Pages that must never claim to be canonical: auth screens, per-user pages,
-// and anything that isn't a real page. Kept in step with public/robots.txt and
-// public/sitemap.xml — a URL disallowed there should be absent here too.
+// and anything that isn't a real page. Kept in step with public/sitemap.xml —
+// a URL absent there should be absent here too.
+//
+// The two redirect-only routes are here for a different reason than the rest:
+// they are crawlable on purpose (public/_redirects 301s them, and
+// public/robots.txt says why), and a route that does nothing but bounce must
+// not spend the moment before it unloads claiming to be canonical.
 const NON_CANONICAL_ROUTES = new Set([
   "Login",
   "Register",
@@ -44,6 +49,8 @@ const NON_CANONICAL_ROUTES = new Set([
   "MyBuilds",
   "MyFavorites",
   "Admin",
+  "github",
+  "api",
   "NotFound",
 ]);
 

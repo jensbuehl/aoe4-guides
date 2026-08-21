@@ -1,3 +1,19 @@
+# Redirect-only routes.
+#
+# Both also exist as vue-router entries, because an in-app click is handled
+# client-side and never reaches the server. A crawler, a pasted link or a
+# search result does reach it, and must get a real 301 rather than the SPA
+# shell — which is why these cannot live in the router alone.
+#
+# They used to be disallowed in robots.txt instead. That is the one thing that
+# does NOT work: Google found /apidoc through the sitewide footer link, was
+# forbidden to fetch it, and so could never learn it was only a signpost — it
+# indexed the bare URL and reported "Indexed, though blocked by robots.txt"
+# (Search Console, 18.08.2026). A URL has to be crawlable for its 301 to be
+# seen; blocking a page is not a way to keep it out of the index.
+/apidoc  /api/api-docs/  301
+/github  https://github.com/jensbuehl/aoe4-guides  301
+
 /api/apidocs https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/api-docs/ 200
 /api/* https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app/:splat 200
 /* /index.html 200

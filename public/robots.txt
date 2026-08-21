@@ -11,8 +11,10 @@ Disallow: /mybuilds
 Disallow: /favorites
 Disallow: /admin
 
-# Redirect-only routes that bounce straight off-site.
-Disallow: /github
-Disallow: /apidoc
+# /github and /apidoc are deliberately NOT listed. They are redirect-only
+# routes, and a redirect has to be crawlable to be followed: blocked here,
+# Google indexed the bare /apidoc URL it found in the footer without ever
+# fetching it. They now 301 server-side in public/_redirects, which is what
+# actually keeps them out of the index.
 
 Sitemap: https://aoe4guides.com/sitemap.xml
