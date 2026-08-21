@@ -20,6 +20,14 @@ document and writes it into `home/home` as a `featuredContributor` field, alongs
   `src/composables/data/homeService.js`, a single `getDocFromServer` on `home/home`. That read is
   the entire reason the snapshot exists (the file's own comment records the 23 → 1 reduction). Any
   design that fetches the featured contributor from the client doubles it.
+
+  Corrected 21.08.2026 (v1.18.0): true of `Home.vue`, but not of the rendered page, which made up
+  to three reads of `home/home`. `YoutubeGuides` is mounted twice — the mobile and desktop sidebars
+  are CSS-hidden duplicates rather than `v-if` branches, so both mount — and each called
+  `getRecentYoutubeVideos()` → `get("home")`. A child's `onMounted` runs before its parent's, so
+  both fired ahead of `Home.vue`'s own read. All three now share one in-flight promise behind a
+  six-hour TTL. The decision stands: a client-side fetch would still have added a read that no
+  amount of deduplication removes, since it targets a different document.
 - `CONTRIBUTORS_LIMIT = 8`, so the snapshot's `topContributors` cannot be relied on to contain the
   featured person. Curating someone at rank 20 would force a second read.
 - A constant in `src/config/` cannot work: `functions/` is a separate CommonJS package

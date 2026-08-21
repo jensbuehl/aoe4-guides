@@ -10,9 +10,16 @@ Give the people who write the site's 4,000 build orders visible credit: a curate
 the home page, an author page header worth landing on, and self-maintained public profile fields (a
 180-character introduction plus YouTube, Twitch and AoE4World identifiers).
 
-The technical shape follows from one measurement: **the home page makes exactly one Firestore read**
+The technical shape follows from one measurement: **`Home.vue` makes exactly one Firestore read**
 — `home/home`, pre-generated six-hourly by `updateHomeSnapshot`. Everything else is arranged around
-not making a second one. That single constraint decides where the nomination lives (a constant in
+not making a second one.
+
+> Corrected 21.08.2026 (v1.18.0). This said "the home page", which was wrong: `Home.vue` made one
+> read, but the *page* made up to three, because `YoutubeGuides` is mounted twice — the mobile and
+> desktop sidebars are CSS-hidden duplicates, not `v-if` branches — and each ran its own
+> `get("home")` on the same document. The decision below is unaffected and if anything better
+> supported; only the figure it cited was. All three callers now share one in-flight promise in
+> `homeService.js`, behind a six-hour TTL, so the page makes one read cold and none inside the TTL. That single constraint decides where the nomination lives (a constant in
 the Cloud Function, because a `src/config/` module is unreachable from CommonJS `functions/`), how
 the featured contributor's details reach the page (hydrated into the snapshot at generation time,
 so a contributor at rank 20 costs the page nothing), and how the author page knows someone's rank (a
