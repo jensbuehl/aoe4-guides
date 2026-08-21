@@ -24,6 +24,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   reauthenticateWithPopup,
+  browserPopupRedirectResolver,
 } from "@/firebase";
 
 const pendingFetches = new Map();
@@ -300,7 +301,11 @@ export const store = createStore({
       }
 
       const provider = new GoogleAuthProvider();
-      const data = await signInWithPopup(auth, provider);
+      // The resolver is passed here rather than installed on `auth`, which
+      // would drag its iframe into every cold page load — see src/firebase/index.js.
+      // It is a static import for the same reason the call is on the first
+      // line: an await here would end the gesture, and the popup is blocked.
+      const data = await signInWithPopup(auth, provider, browserPopupRedirectResolver);
       context.commit("setUser", data.user.toJSON());
 
       // Answer the completeness question here rather than leaving the caller to
@@ -492,7 +497,11 @@ export const store = createStore({
         );
       }
 
-      await reauthenticateWithPopup(user, new GoogleAuthProvider());
+      await reauthenticateWithPopup(
+        user,
+        new GoogleAuthProvider(),
+        browserPopupRedirectResolver
+      );
     },
 
     /**
