@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/036-community-funding-transparency/plan.md`.
+at `.specify/specs/037-contributor-spotlight/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -109,6 +109,49 @@ Two consequences, and the second is the one that bites twice:
   a build, that promise is kept by what it imports, not by how it handles
   errors.
 
+**A reserved height must be measured, not derived.** Several components hold a
+per-breakpoint pixel height that a skeleton is set to exactly and the loaded
+content takes as a `min-height` — `BuildListCard` is the one to look at. Any
+value below what the content actually needs becomes layout shift the instant the
+data lands, and it is invisible in review: the numbers look deliberate, the build
+is green, and the page merely feels twitchy.
+
+The instinct is to correct the numbers. Check first whether something is
+*overriding* them — that was the case here, and adjusting them would have
+papered over it while leaving `sm` sliding continuously with the window. Measure
+against a real deploy with a throwaway Puppeteer in the scratchpad, never added
+to the repo:
+
+```js
+await page.setViewport({ width, height: 1400 });          // one width per breakpoint
+await page.goto(url, { waitUntil: "domcontentloaded" });  // catch the skeleton first
+// poll for .v-skeleton-loader, then wait for real content, then compare
+```
+
+Round the answer **up** to the next whole pixel; a fractional shortfall still
+shifts. Measure **both edges of each breakpoint range**, not one width inside
+it: `v-container` has a fixed `max-width` from md up, so the card is stable
+across those ranges, but at sm it is fluid and the card grew 130px → 156px
+between 600 and 959 while every text element stayed the same height.
+
+That growth is the trap worth remembering, because it looks like a text problem
+and is not. `.blc-flag` is `flex: 0 0 30%` around a 16:9 image, so once the
+column is wide enough, `width ÷ 1.778` exceeds the reserved height and the
+*picture* sets the card's height. The lg and xl figures were that ratio all
+along — 200.4/1.778 = 112.7, 240/1.778 = 135 — which is why they came out
+fractional. Give such an image a fixed `height` rather than a `min-height` and
+let `cover` crop; then the reservation governs and the ratio does not.
+
+The other structural cause is a multi-line clamp: a `-webkit-line-clamp: 2`
+title is two heights, and a placeholder can match only one of them. Truncate to
+one line with a tooltip for the full text, as the md+ title already did.
+
+Both fixed together, every card is identical within its breakpoint from 375px
+up. Note what this implies about the numbers themselves: once the image is
+pinned, `lg` needs no more room than `md` — the 113 it seemed to require was the
+aspect ratio, not the layout. A reserved height that comes out fractional is a
+strong hint that something with an intrinsic ratio is setting it, not the text.
+
 Logic that lives in a `.vue` file can still be tested without one: import
 `@vue/reactivity` and drive the real refs, computeds and watches. Such a
 harness has to sit **inside the project** — Node resolves packages from the
@@ -118,12 +161,21 @@ Write it to the repo root, run it, delete it.
 Anything importing `@/…` needs that alias resolved, since Node knows nothing of
 Vite's config. Drop a loader beside the harness and delete both afterwards:
 
+The loader must also append `.js`. Vite resolves extensionless specifiers and
+the code under `src/` is written that way throughout, so a loader that only
+rewrites the `@/` prefix dies on the *first* internal import with
+`ERR_MODULE_NOT_FOUND` — pointing at a file that is plainly there, which reads
+like a path bug rather than a resolution one.
+
 ```js
 // alias-loader.mjs
 import { pathToFileURL } from "node:url";
+import { existsSync } from "node:fs";
 export function resolve(specifier, context, next) {
   if (specifier.startsWith("@/")) {
-    return next(pathToFileURL(process.cwd() + "/src/" + specifier.slice(2)).href, context);
+    let path = process.cwd() + "/src/" + specifier.slice(2);
+    if (!existsSync(path) && existsSync(path + ".js")) path += ".js";
+    return next(pathToFileURL(path).href, context);
   }
   return next(specifier, context);
 }

@@ -45,15 +45,86 @@ service cloud.firestore {
   }
   match /databases/{database}/documents {
     match /contributors/{contributor} {
+      // The introduction and the three profile links are the only fields here a
+      // client may write that are read back as content rather than as a number,
+      // so they are the only ones needing validation rather than just a key list.
+      //
+      // ANCHORED DELIBERATELY. matches() is RE2 and is NOT implicitly anchored:
+      // without ^...$ a value like https://evil.example/@x satisfies the handle
+      // branch, and the guarantee that a profile link can only point at the site
+      // it names is gone. These patterns live in
+      // src/composables/useContributorProfile.js — transcribed, because rules
+      // cannot import, so the two change together or the form promises
+      // something the server refuses.
+      //
+      // Each stored value is an IDENTIFIER, never a URL: a channel id or handle,
+      // a Twitch login, an aoe4world player id. The address is composed at
+      // render time, which is what makes the destination impossible for a
+      // contributor to choose.
+      //
+      // The `in` guards are what permit clearing a field: deleteField() removes
+      // the key from request.resource.data, and a bare size() check would
+      // refuse the very operation the account page exists to perform.
+      //
+      // 180 is BIO_MAX_LENGTH in that same module.
+      function profileFieldsValid() {
+        return (!('bio' in request.resource.data)
+                || (request.resource.data.bio is string
+                    && request.resource.data.bio.size() <= 180))
+            && (!('youtube' in request.resource.data)
+                || (request.resource.data.youtube is string
+                    && request.resource.data.youtube.matches(
+                         '^(UC[A-Za-z0-9_-]{22}|@[A-Za-z0-9._-]{3,30})$')))
+            && (!('twitch' in request.resource.data)
+                || (request.resource.data.twitch is string
+                    && request.resource.data.twitch.matches('^[A-Za-z0-9_]{4,25}$')))
+            && (!('aoe4world' in request.resource.data)
+                || (request.resource.data.aoe4world is string
+                    && request.resource.data.aoe4world.matches('^[0-9]{1,20}$')));
+      }
+
       allow read;
       // Intentionally public: stat increments (boCount, viewCount) fire from
       // client-side on build views — same pattern as builds/{build} stat fields.
       // Field restriction is the security boundary here, not auth.
       allow update: if request.resource.data.diff(resource.data).affectedKeys()
                          .hasOnly(['boCount', 'viewCount']);
+
+      // The owner's own presentation: avatar, introduction, channel.
+      //
+      // `authorId` is in the key list because the profile write sends it, and
+      // a record old enough to lack the field would otherwise show it as an
+      // unexpected change and be refused. Pinned when present, so including it
+      // grants nothing — and guarded with `in` so that the avatar write, which
+      // does not send it, still works against such a record.
+      //
+      // `rank` appears in no list on this rule. That absence is what stops a
+      // client awarding itself a standing; only updateHomeSnapshot writes it,
+      // on the Admin SDK, which bypasses these rules entirely.
       allow update: if request.auth != null
                     && request.auth.uid == contributor
-                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['icon']);
+                    && request.resource.data.diff(resource.data).affectedKeys()
+                         .hasOnly(['authorId', 'icon', 'bio', 'youtube', 'twitch', 'aoe4world'])
+                    && (!('authorId' in request.resource.data)
+                        || request.resource.data.authorId == contributor)
+                    && profileFieldsValid();
+
+      // A repair path, not a normal one. Both the createContributor auth
+      // trigger and the updateContributorDisplayName callable create this
+      // record on the Admin SDK, so it is reachable only by an account whose
+      // setup never completed — where a plain update fails with not-found and
+      // leaves the person with no way to proceed.
+      //
+      // It deliberately cannot supply displayName, boCount or viewCount: a
+      // client may not name itself or award itself statistics. A record created
+      // this way therefore has no display name, which is why no surface renders
+      // a contributor without one.
+      allow create: if request.auth != null
+                    && request.auth.uid == contributor
+                    && request.resource.data.keys()
+                         .hasOnly(['authorId', 'icon', 'bio', 'youtube', 'twitch', 'aoe4world'])
+                    && request.resource.data.authorId == contributor
+                    && profileFieldsValid();
     }
   }
   match /databases/{database}/documents {

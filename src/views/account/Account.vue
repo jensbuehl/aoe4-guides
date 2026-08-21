@@ -141,6 +141,62 @@
           </v-card-text>
         </v-card>
 
+        <!-- What other people see. The disclosure line is not decoration: the
+             introduction can reach the home page, and someone has to know that
+             before writing it rather than on discovering themselves there. -->
+        <v-card flat rounded="lg">
+          <v-card-title class="px-6 pt-5 pb-2">Public profile</v-card-title>
+          <v-card-text class="px-6 pb-5">
+            <v-form ref="profileForm" @submit.prevent="saveProfile">
+              <v-textarea
+                v-model="bio"
+                label="About you"
+                placeholder="A sentence or two about how you play."
+                variant="outlined"
+                density="comfortable"
+                rows="3"
+                auto-grow
+                no-resize
+                counter
+                :counter-value="bioLength"
+                :max="bioMax"
+                :rules="bioRules"
+                class="mb-3"
+              />
+              <v-text-field
+                v-for="kind in linkKinds"
+                :key="kind"
+                v-model="linkInputs[kind]"
+                :label="linkMeta(kind).label"
+                :placeholder="linkMeta(kind).placeholder"
+                :prepend-inner-icon="linkMeta(kind).icon"
+                variant="outlined"
+                density="comfortable"
+                :hint="linkMeta(kind).hint + ' Optional.'"
+                persistent-hint
+                :rules="linkRules[kind]"
+                class="mb-4"
+              />
+
+              <div class="text-caption text-medium-emphasis mb-4">
+                Both appear on your author page, and on the home page if you are
+                featured there.
+              </div>
+
+              <v-btn
+                block
+                color="primary"
+                variant="flat"
+                type="submit"
+                :loading="savingProfile"
+                :disabled="savingProfile || !profileDirty"
+              >
+                Save profile
+              </v-btn>
+            </v-form>
+          </v-card-text>
+        </v-card>
+
         <!-- What the site costs and how far the community has got. Once on this
              page; the footer's copy is suppressed on the Account route. -->
         <FundingStatus />
@@ -189,13 +245,25 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import AvatarPicker from "@/components/account/AvatarPicker.vue";
 import UserAvatar from "@/components/common/UserAvatar.vue";
 import FundingStatus from "@/components/common/FundingStatus.vue";
 import { useAvatar } from "@/composables/auth/useAvatar";
+import {
+  BIO_MAX_LENGTH,
+  PROFILE_LINK_KINDS,
+  bioLength,
+  normaliseBio,
+  extractLink,
+  linkMeta,
+} from "@/composables/useContributorProfile";
+import {
+  getContributorProfile,
+  updateContributorProfile,
+} from "@/composables/data/userService";
 
 export default {
   name: "Account",
@@ -232,6 +300,113 @@ export default {
     const changingPw = ref(false);
     const deleting = ref(false);
     const verifying = ref(false);
+
+    // Public profile. Loaded from the contributor record rather than from the
+    // store, which holds the account's private side and never carries these.
+    // One read, on a page nobody visits in bulk — the read budget that matters
+    // is the home page's, and this is not it.
+    const profileForm = ref(null);
+    const bio = ref("");
+    const savingProfile = ref(false);
+
+    // One entry per link kind, driven by the same table the display components
+    // read. Adding a fourth link is then a change in one module, not in three
+    // files that must be kept in step.
+    const blankLinks = () =>
+      Object.fromEntries(PROFILE_LINK_KINDS.map((kind) => [kind, ""]));
+
+    const linkInputs = ref(blankLinks());
+
+    // What the server currently holds, in the form it holds it. Kept alongside
+    // the editable fields so the save control can tell whether pressing it
+    // would change anything.
+    const savedBio = ref(null);
+    const savedLinks = ref(Object.fromEntries(PROFILE_LINK_KINDS.map((k) => [k, null])));
+
+    // Compared after normalisation rather than on the raw text, because that is
+    // what would actually be written: a trailing space, or a pasted profile URL
+    // that resolves to the id already stored, are not changes, and offering to
+    // save them would spend a write to store what is already there.
+    const profileDirty = computed(
+      () =>
+        normaliseBio(bio.value) !== savedBio.value ||
+        PROFILE_LINK_KINDS.some(
+          (kind) => extractLink(kind, linkInputs.value[kind]) !== savedLinks.value[kind]
+        )
+    );
+
+    watch(
+      user,
+      async (current) => {
+        if (!current?.uid) return;
+        try {
+          const profile = await getContributorProfile(current.uid);
+          savedBio.value = profile.bio ?? null;
+          bio.value = profile.bio ?? "";
+          for (const kind of PROFILE_LINK_KINDS) {
+            savedLinks.value[kind] = profile[kind] ?? null;
+            linkInputs.value[kind] = profile[kind] ?? "";
+          }
+        } catch {
+          // An unreadable profile leaves the fields empty rather than blocking
+          // the rest of the page. Saving still works and will create the record.
+        }
+      },
+      { immediate: true }
+    );
+
+    const bioRules = [
+      (v) => bioLength(v ?? "") <= BIO_MAX_LENGTH || "A little too long — trim it slightly.",
+    ];
+
+    // Built once rather than from a template call, so Vuetify is not handed a
+    // freshly allocated rules array on every render.
+    const linkRules = Object.fromEntries(
+      PROFILE_LINK_KINDS.map((kind) => [
+        kind,
+        [
+          (v) =>
+            !v ||
+            !!extractLink(kind, v) ||
+            `Use your ${linkMeta(kind).label} address or name.`,
+        ],
+      ])
+    );
+
+    async function saveProfile() {
+      // Guarded here as well as on the button, because pressing Enter in either
+      // field submits the form and never touches the disabled control.
+      if (!profileDirty.value) return;
+
+      const { valid } = await profileForm.value.validate();
+      if (!valid) return;
+
+      savingProfile.value = true;
+      try {
+        const nextBio = normaliseBio(bio.value);
+        const nextLinks = Object.fromEntries(
+          PROFILE_LINK_KINDS.map((kind) => [kind, extractLink(kind, linkInputs.value[kind])])
+        );
+
+        await updateContributorProfile(user.value.uid, { bio: nextBio, ...nextLinks });
+
+        // Show what was actually stored, not what was typed: a pasted profile
+        // address becomes a bare identifier, and a bio loses its line breaks.
+        // Leaving the raw input on screen would suggest the site kept it.
+        savedBio.value = nextBio;
+        bio.value = nextBio ?? "";
+        for (const kind of PROFILE_LINK_KINDS) {
+          savedLinks.value[kind] = nextLinks[kind];
+          linkInputs.value[kind] = nextLinks[kind] ?? "";
+        }
+
+        store.dispatch("showSnackbar", { text: "Profile saved.", type: "success" });
+      } catch (err) {
+        store.dispatch("showSnackbar", { text: err.message, type: "error" });
+      } finally {
+        savingProfile.value = false;
+      }
+    }
 
     async function copyUid() {
       await navigator.clipboard.writeText(user.value.uid);
@@ -302,6 +477,18 @@ export default {
       resendVerification,
       changePassword,
       confirmDelete,
+      profileForm,
+      bio,
+      linkInputs,
+      linkKinds: PROFILE_LINK_KINDS,
+      linkMeta,
+      linkRules,
+      savingProfile,
+      profileDirty,
+      saveProfile,
+      bioRules,
+      bioLength,
+      bioMax: BIO_MAX_LENGTH,
     };
   },
 };

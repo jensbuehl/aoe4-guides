@@ -1,5 +1,5 @@
 const functions = require("firebase-functions/v1");
-const { getFirestore } = require("firebase-admin/firestore");
+const { getFirestore, FieldValue } = require("firebase-admin/firestore");
 const logger = require("firebase-functions/logger");
 const { cleanUpAccountActivity } = require("./accountCleanup");
 
@@ -19,6 +19,15 @@ const { cleanUpAccountActivity } = require("./accountCleanup");
  *
  * What deliberately survives: the account's build orders stay published, and
  * `contributors/{uid}` stays with them so they keep their attribution.
+ *
+ * Two fields on that record are the exception, and the distinction is the
+ * point: attribution is a fact about who wrote something, while the
+ * introduction and the channel are personal expression. Once the account is
+ * gone their author can never edit or withdraw them — and they can still be
+ * published, since the home page spotlight reads this same record. So the name,
+ * the avatar and the counts stay, and those two are cleared. The rule to take
+ * from this is not "clear everything on deletion" but "anything a departed
+ * person can no longer retract should not outlive them".
  *
  * @name deleteUser
  * @function
@@ -43,6 +52,25 @@ exports.deleteUser = functions.auth.user().onDelete(async (user) => {
 
   await db.collection("favorites").doc(uid).delete();
   await db.collection("users").doc(uid).delete();
+
+  // The contributor record survives for attribution; the fields its author can
+  // no longer withdraw do not. A missing record means there was nothing to
+  // clear, which is not a reason to fail a deletion that has already happened.
+  //
+  // This list must gain every new profile field. It is the one place where
+  // forgetting is silent: nothing breaks, the value simply outlives the person
+  // who wrote it. The fields are in src/composables/useContributorProfile.js,
+  // which this CommonJS package cannot import.
+  try {
+    await db.collection("contributors").doc(uid).update({
+      bio: FieldValue.delete(),
+      youtube: FieldValue.delete(),
+      twitch: FieldValue.delete(),
+      aoe4world: FieldValue.delete(),
+    });
+  } catch (error) {
+    logger.warn("deleteUser: could not clear public profile", { uid, message: error.message });
+  }
 
   logger.log("deleteUser: complete", { uid });
 });

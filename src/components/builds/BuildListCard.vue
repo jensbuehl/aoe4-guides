@@ -15,7 +15,7 @@
     >
       <div v-if="build.civ" class="blc-flag d-flex flex-column">
         <v-img
-          :min-height="height"
+          :height="height"
           :src="
             civs.find((item) => {
               return item.shortName === build.civ;
@@ -39,7 +39,7 @@
       </div>
       <div v-if="!build.civ" class="blc-flag">
         <v-img
-          :min-height="height"
+          :height="height"
           src="/assets/flags/any-large.webp"
           lazy-src="/assets/flags/any-small.webp"
           :gradient="'to right, transparent, ' + $vuetify.theme.current.colors.surface"
@@ -343,20 +343,58 @@ export default {
 
     const showPeopleLine = computed(() => showAuthor.value || showCreator.value);
 
+    // The card's height in both states: the skeleton is set to it exactly, and
+    // the loaded row takes it as a `min-height`. Any value BELOW what the
+    // content actually needs therefore shows up as layout shift the moment the
+    // data lands — the skeleton is short, then the row grows past it.
+    //
+    // These are MEASURED in a browser against the rendered card, not derived
+    // from the type scale, because the row is a flex column of ellipsised lines
+    // whose height nothing in the source states. They were wrong by 9.56px on
+    // xl and xxl and by 0.72px on lg, which is exactly the size of error that
+    // reads as "slightly jumping" rather than as a bug.
+    //
+    // If the card's content changes, re-measure rather than adjust by eye:
+    // load the list at a width per breakpoint and compare the skeleton's height
+    // against the loaded card's. Rounded UP to the next whole pixel, so the
+    // min-height is never a fraction short of what the content wants.
+    // The card's height in both states: the skeleton is set to it exactly, and
+    // the loaded row takes it as a `min-height`. They must agree, or the list
+    // shifts the moment the data lands.
+    //
+    // These are a design choice per breakpoint, and they only govern because
+    // the flag image is pinned to this same value. It used to take
+    // `:min-height`, and being a 16:9 picture in a `flex: 0 0 30%` column it
+    // then set the card's height itself wherever `width / 1.778` exceeded the
+    // number here — 112.7 on lg, 134.6 on xl, and a continuous 130 -> 156 slide
+    // across sm, where the container is fluid rather than capped. The numbers
+    // below looked wrong; the picture was overriding them. DO NOT give that
+    // image a min-height again.
+    //
+    // Verified in a headless browser at both edges of every range: every card
+    // is exactly this tall, the skeleton matches it, and no body overflows.
+    // Re-measure rather than adjust by eye if the card's content changes.
     const height = computed(() => {
       switch (name.value) {
         case "xs":
+          // Below the tallest card, deliberately. Cards here still differ — 96
+          // normally, 120 at 320px where the chip row wraps — and reserving 120
+          // would make every phone card as tall as the worst case. That is a
+          // design decision rather than a fix, so it is not taken here.
           return 96;
         case "sm":
-          return 125;
+          return 130;
         case "md":
           return 112;
+        // Same as md on purpose: the content is identical and nothing in this
+        // range needs more room. The 113 this briefly held was the flag's
+        // aspect ratio, not a requirement of the layout.
         case "lg":
           return 112;
         case "xl":
-          return 125;
+          return 135;
         case "xxl":
-          return 125;
+          return 135;
       }
     });
 
@@ -497,14 +535,16 @@ export default {
 }
 
 /* With the meta reduced to three items, a two-line title still fits the xs card */
+/* One line, truncated — not the two-line clamp this used to be. A title allowed
+   to take either one line or two makes the card two different heights, and the
+   skeleton reserved for it can only ever match one of them. The full title is
+   still reachable: the tooltip above this element carries it.
+   Same construction as the md+ title, for the same reason. */
 .blc-title--xs {
   font-size: 13.5px;
-  white-space: normal;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   line-height: 1.25;
 }
 

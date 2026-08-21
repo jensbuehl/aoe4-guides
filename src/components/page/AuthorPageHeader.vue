@@ -1,66 +1,56 @@
 <template>
-  <v-card flat rounded="lg" class="author-header" :style="{ minHeight: height + 'px' }">
-    <v-row no-gutters align="center" class="fill-height pa-3" style="min-height: inherit;">
-      <v-col cols="auto" class="mr-3">
-        <UserAvatar
-          :size="avatarSize"
-          color="primary"
-          :src="contributor.icon"
-          :name="contributor.displayName"
-          text-class="author-initials"
-        />
-      </v-col>
-      <v-col>
-        <div class="author-name">{{ contributor.displayName }}</div>
-      </v-col>
-      <v-col cols="auto">
-        <div class="d-flex align-center" style="gap: 8px;">
-          <v-chip v-if="count != null" size="small" variant="tonal">
-            <v-icon start size="13">mdi-pencil</v-icon>
-            {{ count }} {{ count === 1 ? "build" : "builds" }}
-          </v-chip>
-          <v-chip v-if="contributor.viewCount" size="small" variant="tonal">
-            <v-icon start size="13">mdi-eye</v-icon>
-            {{ formatCount(contributor.viewCount) }}
-          </v-chip>
-        </div>
-      </v-col>
-    </v-row>
+  <v-card flat rounded="lg" class="author-header">
+    <div class="author-header__body">
+      <ContributorIdentity
+        :contributor="contributor ?? {}"
+        :loading="loading"
+        :avatar-size="avatarSize"
+        :build-count="loading ? null : count"
+      />
+    </div>
   </v-card>
 </template>
 
 <script>
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import useTimeSince from "@/composables/useTimeSince";
-import UserAvatar from "@/components/common/UserAvatar.vue";
+import ContributorIdentity from "@/components/page/ContributorIdentity.vue";
 
+/**
+ * Who wrote the build orders being listed.
+ *
+ * The body is ContributorIdentity, shared with the home page spotlight rather
+ * than reimplemented: a visitor who arrives here from that card has to see the
+ * same person presented the same way, so two implementations would be a defect
+ * and not merely duplication. What this component still owns is the frame — the
+ * card, and the measured floor height below.
+ *
+ * The build count comes from the page's own query rather than from the
+ * contributor's running total, because it is the number of results the visitor
+ * is actually looking at.
+ */
 export default {
   name: "AuthorPageHeader",
-  components: { UserAvatar },
+  components: { ContributorIdentity },
   props: {
-    contributor: { type: Object, required: true },
+    contributor: { type: Object, default: null },
     count:       { type: Number, default: null },
+    // Rendered as a placeholder of the real card's shape while the contributor
+    // record is in flight, so the build list below does not get shoved down
+    // when it lands.
+    loading:     { type: Boolean, default: false },
   },
-  setup(props) {
-    const { formatCount } = useTimeSince();
+  setup() {
     const { name } = useDisplay();
 
-    const height = computed(() => {
-      switch (name.value) {
-        case "xs":  return 90;
-        case "sm":  return 125;
-        case "md":  return 90;
-        case "lg":  return 112;
-        case "xl":  return 125;
-        case "xxl": return 125;
-        default:    return 90;
-      }
-    });
+    // Sizes the avatar only. The card's own height is whatever its content
+    // needs — there is no reserved floor here, because the placeholder mirrors
+    // the content and produces the same height on its own.
+    const avatarSize = computed(() =>
+      ["lg", "xl", "xxl", "sm"].includes(name.value) ? 72 : 60
+    );
 
-    const avatarSize = computed(() => (height.value >= 112 ? 54 : 44));
-
-    return { formatCount, height, avatarSize };
+    return { avatarSize };
   },
 };
 </script>
@@ -70,15 +60,13 @@ export default {
   background: rgb(var(--v-theme-surface));
 }
 
-.author-name {
-  font-size: 18px;
-  font-weight: 700;
+.author-header__body {
+  padding: 16px 20px;
 }
 
-/* Deep: the initials live inside UserAvatar, past this component's scope. */
-.author-header :deep(.author-initials) {
-  font-size: 18px;
-  font-weight: 800;
-  color: #fff;
+@media (max-width: 620px) {
+  .author-header__body {
+    padding: 16px;
+  }
 }
 </style>

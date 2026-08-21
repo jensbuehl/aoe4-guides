@@ -6,10 +6,14 @@
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
       </v-col>
       <v-col cols="12" md="8">
+        <!-- Rendered as soon as an author filter is active, not once the
+             record arrives: waiting would mean the header appears after the
+             build list has already been painted and pushes it down. -->
         <AuthorPageHeader
-          v-if="filterConfig.author && contributor"
+          v-if="filterConfig.author && (contributor || !contributorLoaded)"
           :contributor="contributor"
           :count="count"
+          :loading="!contributorLoaded"
           class="mb-6"
         />
         <div v-if="builds" v-for="item in builds">
@@ -84,6 +88,11 @@ export default {
     const count = computed(() => store.state.resultsCount);
     const loading = computed(() => store.state.loading);
     const contributor = ref(null);
+    // Distinguishes "still fetching" from "fetched, and there is no record" —
+    // the second is real (an account whose setup never completed, or a read
+    // refused by App Check) and must stop the placeholder rather than leave it
+    // shimmering forever.
+    const contributorLoaded = ref(false);
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -151,6 +160,12 @@ export default {
       //reset results count
       store.commit("setResultsCount", null);
 
+      // Back to the placeholder for the new author. Without this, navigating
+      // from one author to another leaves the previous person's header on
+      // screen until the next record lands.
+      contributor.value = null;
+      contributorLoaded.value = false;
+
       // On a cache hit we already have the list synchronously, so show it
       // immediately instead of a skeleton (the count query below still runs in
       // parallel, but the list no longer waits on it).
@@ -168,6 +183,7 @@ export default {
       ]);
 
       contributor.value = contributorRes;
+      contributorLoaded.value = true;
       store.commit("setResultsCount", size);
       if (!cachedList) store.commit("setAllBuildsList", listRes);
       builds.value = listRes;
@@ -237,6 +253,7 @@ export default {
       nextPage,
       previousPage,
       contributor,
+      contributorLoaded,
     };
   },
 };

@@ -9,15 +9,13 @@
     :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
     <div class="event-banner__body">
-      <!-- The badge is a self-contained logo with its own navy shield, so it
-           reads on either theme surface unchanged — a plain <img>, like the
-           other fixed-size art on the site. -->
+      <!-- A plain <img>, like the other fixed-size art on the site. -->
       <img
         class="event-banner__badge"
-        src="/assets/events/dm-2026.webp"
-        width="440"
-        height="621"
-        alt="Deutschsprachige Meisterschaft tournament badge"
+        :src="EVENT.badge.src"
+        :width="EVENT.badge.width"
+        :height="EVENT.badge.height"
+        :alt="EVENT.badge.alt"
         loading="lazy"
         decoding="async"
       />
@@ -28,32 +26,30 @@
           {{ hasStarted ? "Tournament · Playing now" : "Tournament · Registration open" }}
         </span>
 
-        <h2 class="event-banner__title">Deutschsprachige Meisterschaft</h2>
+        <h2 class="event-banner__title">{{ EVENT.title }}</h2>
 
         <p class="event-banner__lead">
-          The German-language AoE4 championship, hosted by
-          <strong>AoE IV to Go</strong>. Open to players from Germany, Austria and
-          Switzerland: 128 slots, 1v1, cast live in German.
+          {{ EVENT.lead.before }} <strong>{{ EVENT.lead.host }}</strong>{{ EVENT.lead.after }}
         </p>
 
         <div class="event-banner__facts">
           <v-chip size="small" variant="tonal" color="accent" class="event-banner__chip">
             <v-icon size="13" start>mdi-calendar</v-icon>
-            Oct 10–11 &amp; 17–18, 2026 · 14:00 CEST
+            {{ EVENT.dateLabel }}
           </v-chip>
           <v-chip size="small" variant="tonal" color="accent" class="event-banner__chip">
             <v-icon size="13" start>mdi-trophy</v-icon>
-            {{ prizePool }} prize pool
+            {{ EVENT.prizePool }} prize pool
           </v-chip>
           <v-chip size="small" variant="tonal" color="accent" class="event-banner__chip">
             <v-icon size="13" start>mdi-earth</v-icon>
-            DE · AT · CH
+            {{ EVENT.region }}
           </v-chip>
         </div>
 
         <div class="event-banner__actions">
           <v-btn
-            :href="links.signup"
+            :href="EVENT.links.signup"
             target="_blank"
             rel="noopener"
             color="primary"
@@ -64,7 +60,7 @@
             {{ hasStarted ? "Follow on start.gg" : "Sign up on start.gg" }}
           </v-btn>
           <v-btn
-            :href="links.twitch"
+            :href="EVENT.links.twitch"
             target="_blank"
             rel="noopener"
             variant="text"
@@ -75,7 +71,7 @@
             Watch
           </v-btn>
           <v-btn
-            :href="links.liquipedia"
+            :href="EVENT.links.liquipedia"
             target="_blank"
             rel="noopener"
             variant="text"
@@ -86,7 +82,7 @@
             Format &amp; maps
           </v-btn>
           <v-btn
-            :href="links.matcherino"
+            :href="EVENT.links.matcherino"
             target="_blank"
             rel="noopener"
             variant="text"
@@ -107,25 +103,15 @@
 <script>
 import { computed } from "vue";
 
-// The whole announcement in one place, because every value here goes stale on a
-// known date and the next editor should not have to read the template to find
-// them. The prize pool is crowdfunded on Matcherino and only grows, hence the
-// "+" — raise the figure when it is worth re-advertising, it can never be too
-// low with the plus on it.
-const PRIZE_POOL = "$800+";
-const LINKS = {
-  signup:
-    "https://www.start.gg/tournament/deutschsprachige-meisterschaft-dm-von-aoe-iv-to-go/details",
-  liquipedia: "https://liquipedia.net/ageofempires/Deutschsprachige_Meisterschaft",
-  matcherino: "https://matcherino.com/tournaments/201880/general",
-  twitch: "https://www.twitch.tv/aoe4togo",
-};
-
-// Both in the browser's own zone. The event runs 14:00 CEST, so a viewer west of
-// Europe flips the banner to "playing now" a few hours late and a viewer east of
-// it a few hours early — neither is worth carrying a timezone library for.
-const STARTS = new Date("2026-10-10T12:00:00Z");
-const ENDS = new Date("2026-10-19T00:00:00Z");
+// What this tournament *is* lives in the config module; what an event banner
+// *looks like* lives here. The eyebrow wording and the button labels stay
+// because they describe any tournament, not this one.
+//
+// The dates went first and forced the rest: the banner hides itself with
+// `v-if`, and a component hidden that way never mounts, so it cannot report its
+// own absence. Home reads isEventLive() to decide whether the contributor
+// spotlight takes the slot instead.
+import { EVENT, hasEventStarted, isEventLive } from "@/config/event";
 
 export default {
   name: "EventBanner",
@@ -135,10 +121,9 @@ export default {
     // every second for a chip that changes twice in its life.
     const now = new Date();
     return {
-      prizePool: PRIZE_POOL,
-      links: LINKS,
-      hasStarted: computed(() => now >= STARTS),
-      isOver: computed(() => now >= ENDS),
+      EVENT,
+      hasStarted: computed(() => hasEventStarted(now)),
+      isOver: computed(() => !isEventLive(now)),
     };
   },
 };
@@ -184,13 +169,15 @@ export default {
   letter-spacing: 0.4px;
 }
 
+/* No text-shadow — see the note in ContributorIdentity.vue. --hero-shadow
+   belongs to text sitting on an image (HeroBuild), not to text on a flat
+   surface under a translucent wash. */
 .event-banner__title {
   color: var(--hero-title);
   font-size: 24px;
   font-weight: 800;
   line-height: 1.15;
   margin: 6px 0 8px;
-  text-shadow: var(--hero-shadow);
 }
 
 .event-banner__lead {
