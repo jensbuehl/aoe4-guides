@@ -318,7 +318,29 @@ const routes = [
   });
 
   router.beforeEach(async (to) => {
-    await waitForAuth;
+    // Only routes whose *decision* depends on the signed-in user wait for
+    // Firebase to boot. Every check below is gated on one of these three flags,
+    // so on a public route the await bought nothing and cost the first paint.
+    //
+    // It cost more than it looks. Resolving the initial auth state is not a
+    // local IndexedDB read: Auth is configured with a redirect resolver, so it
+    // pulls apis.google.com/js/api.js, the gapi iframes bundle and an
+    // auth iframe from firebaseapp.com before it will say "signed out". The
+    // guard runs before the *first* navigation, so `router-view` renders
+    // nothing until all of that lands — the route's own chunk is not even
+    // requested. Measured on a throttled Pixel 7 against production: the Home
+    // chunk was requested at 4133ms; with those three origins blocked, 3162ms.
+    // A second of blank fold on every cold visit to a page that never asks who
+    // the visitor is.
+    //
+    // What this changes for public routes: they now render before auth is
+    // known, so anything keyed on `authIsReady` (RegisterAd) appears a beat
+    // later rather than being present in the first frame. That is a component
+    // that reserves no space, so keep such things out of the fold — see the
+    // reservation note in App.vue.
+    if (to.meta.requiresAuth || to.meta.guestOnly || to.meta.requiresVerification) {
+      await waitForAuth;
+    }
 
     if (to.meta.requiresAuth && !auth.currentUser) {
       return { name: "Login", query: { redirect: to.fullPath } };
