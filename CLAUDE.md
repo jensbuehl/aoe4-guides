@@ -85,6 +85,27 @@ Go through `flattenSections`/`sectionOffsets` to read the build as one path, or
 `forEachStep` to visit every step in the document — sanitising, validating and
 counting all have to reach the paths nobody chose, because those are saved too.
 
+**A theme token in `src/main.js` has two call-site forms, and grepping for one
+misses the other.** Colours are read as CSS — `rgb(var(--v-theme-age))` — and as
+a bare Vuetify colour name in a prop: `:color="build.loading ? 'loading' : 'surface'"`
+in `BuildListCard`. The prop form carries no `--v-theme-` prefix, so the obvious
+search returns clean on a token that is very much in use. Search for both before
+removing or renaming one.
+
+Removal then fails silently in a particular way. A `var()` with no value and no
+fallback makes the whole declaration invalid, so the element just loses its
+background — and if the deleted token equalled what sits behind it, which is
+*exactly* the condition that made it look redundant, the broken version renders
+the same pixels as the working one and ships. Confirm against the build, not the
+source: `grep -rc "<token>" dist/assets/*` should find nothing.
+
+Before deciding a token is redundant at all, check **both** themes. `loading`
+equals `surface-variant` on dark and `background` on light; matching two
+*different* tokens is what makes it need its own name, and folding it into
+either one breaks the other theme. Same shape as the `age`/`accent` split that
+`main.js` already documents — sharing a value in one theme is not being the same
+thing.
+
 **A `scripts/*.mjs` file that imports from `src/` runs locally and in CI, and
 dies on Netlify.** Netlify pins **Node 22.1.0**; automatic module-syntax
 detection did not land until **22.7.0**. Below that, a `src/*.js` file — in a
