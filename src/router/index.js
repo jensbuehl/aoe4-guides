@@ -26,6 +26,7 @@ const Home = () => import("@/views/Home.vue");
 const NotFound = () => import("@/views/NotFound.vue");
 const Privacy = () => import("@/views/Privacy.vue");
 const About = () => import("@/views/About.vue");
+const Brand = () => import("@/views/Brand.vue");
 
 const Admin = () => import("@/views/Admin.vue");
 
@@ -226,6 +227,22 @@ const routes = [
       component: Privacy,
       meta: {
         title: "Privacy Policy"
+      }
+    },
+    // Out of the navigation on purpose - the only people who need it arrive
+    // from the About page or from the API description, which both link it.
+    // Not disallowed in robots.txt though, and not in NON_CANONICAL_ROUTES:
+    // it is linked from /about, which is indexed, so a crawler will find the
+    // URL either way. Blocking it there is precisely the mistake robots.txt
+    // records for /apidoc - Google indexed the bare URL it was forbidden to
+    // fetch. A real page that is merely unadvertised should just be indexed,
+    // so it is listed in public/sitemap.xml like any other.
+    {
+      path: "/brand",
+      name: "Brand",
+      component: Brand,
+      meta: {
+        title: "Brand Assets"
       }
     },
     {

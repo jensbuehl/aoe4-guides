@@ -113,6 +113,23 @@
           If you know some Vue, JavaScript or Firebase, contributions are genuinely welcome.
         </p>
 
+        <!-- The API's fair-use ask, in short. The full version - with the
+             numbers behind it - is the canonical copy in the OpenAPI
+             description, and this is a summary and a signpost rather than a
+             second set of terms that could drift from it. /brand exists
+             because the last sentence asks for a link back and nothing else
+             on the site says what to link with. -->
+        <p class="mt-4">
+          The API is free and needs no key, and it runs on the same out-of-pocket bill as the rest
+          of the site — so it comes with a short
+          <a class="text-primary" :href="links.apiDocs" target="_blank" rel="noopener">fair use note</a>:
+          cache what you fetch, stay inside the rate limits, and please do not enumerate the whole
+          library. If you need the data in bulk, ask me rather than crawling for it — I would much
+          rather hand it over. And if you build something on it, credit AoE4 Guides and link back;
+          the <router-link class="text-primary" to="/brand">brand page</router-link> has the logos
+          and colours to do it with.
+        </p>
+
         <v-divider class="my-8" />
 
         <h2>Credits</h2>
