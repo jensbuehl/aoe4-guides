@@ -23,8 +23,19 @@ const customDarkTheme = {
   dark: true,
   colors: {
     accent: "#e7c05e",
-    loading: "3D516B",
-    anchor: "#e7c05e",
+    //Skeleton placeholders. Do NOT fold this into another token: it equals
+    //`surface-variant` here but `background` on the light theme, and matching
+    //two *different* tokens is exactly what makes it its own. Collapsed into
+    //surface-variant, light-mode skeletons would come out #CCAA55 — gold, the
+    //tooltip colour. Same shape of mistake as reading `age` off `accent`.
+    //
+    //The `#` was missing here and on the light theme's copy below until
+    //22.08.2026, and nothing rendered wrong: Vuetify's parseColor does
+    //`color.startsWith('#') ? color.slice(1) : color`, so a bare six-digit hex
+    //resolves to the same colour with no warning. Written with the hash anyway
+    //because anything reading a token as a CSS value — /brand's palette table
+    //did — sees a string it cannot use.
+    loading: "#3D516B",
     background: '#1D2432',
     surface: "#324156",
     "surface-variant": "#3D516B", //tooltips
@@ -51,7 +62,6 @@ const customDarkTheme = {
     //the "gold as a fill" half of the split, and gold text on the light surface
     //is what failed in the first place.
     age: "#e7c05e",
-    "surface-container": "#324156", //nested card surfaces (step cards, inset panels)
     "icon-background-highlight": "#646C79",
     "icon-background": "#4F5866",
     //success: '#e7c05e',
@@ -81,9 +91,9 @@ const customLightTheme = {
     //computed against it — tooltips (surface-variant), info snackbars, and the
     //secondary token — so the brand does not drain out of the theme.
     accent: "#294790",
-    loading: "D8DCE0",
-    //Links are text too, and were failing the same 2.1:1 as everything above.
-    anchor: "#294790",
+    //Equal to this theme's `background`, and to nothing on the dark theme —
+    //see the note beside its dark counterpart for why it stays a token.
+    loading: "#D8DCE0",
     background: '#D8DCE0',
     surface: "#FAFAFA", //footer and header
     "surface-variant": "#CCAA55", //tooltips
@@ -105,7 +115,6 @@ const customLightTheme = {
     //the two phases apart, which is exactly the division the light palette
     //already draws between gold and navy.
     age: "#CCAA55",
-    "surface-container": "#FAFAFA", //nested card surfaces — light blue-grey, echoes navy palette
     "icon-background-highlight": "#DEDEDF",
     "icon-background": "#C5C5C6",
     //success: '#e7c05e',

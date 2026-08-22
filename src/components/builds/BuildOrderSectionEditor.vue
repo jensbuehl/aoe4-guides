@@ -4167,9 +4167,13 @@ tbody tr.age-reached-row td {
   padding: 0px 16px;
 }
 
-/* Step card — surface-container token: dark=#324156, light=#E8EEF4 */
+/* Step card. Reads `surface` directly: it used to read a `surface-container`
+   token, but 0af0bde (11.06.2026) set that token equal to `surface` in both
+   themes to make the dashed add-step separator readable over it, and it stayed
+   equal for over a year. The nesting is drawn by the accent border below, not
+   by a change in fill. */
 .step-card-xs {
-  background: rgb(var(--v-theme-surface-container));
+  background: rgb(var(--v-theme-surface));
   border: 1px solid rgb(var(--v-theme-accent), 0.24);
   border-radius: 10px;
   padding: 10px;
@@ -4650,7 +4654,7 @@ tbody tr.age-reached-row td {
 
 /* Gameplan/notes card — same surface and padding as step cards */
 .gameplan-card-xs {
-  background: rgb(var(--v-theme-surface-container));
+  background: rgb(var(--v-theme-surface));
   /* The step card's own edge. A note sits in the same column of cards, so it
      should be bounded like one — it had the fill without the outline. */
   border: 1px solid rgb(var(--v-theme-accent), 0.24);
