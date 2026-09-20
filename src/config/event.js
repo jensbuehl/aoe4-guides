@@ -49,15 +49,16 @@ export const EVENT = {
   // ───────────────────────────────────────────────────────────────────────────
   dateLabel: "Oct 10–11 & 17–18, 2026 · 14:00 CEST",
   starts: new Date("2026-10-10T12:00:00Z"),
-  // ENDED EARLY, ON PURPOSE — not a leftover test value. The announcement was
-  // retired on 2026-08-21, before the tournament it describes, so that the
-  // contributor spotlight could take the slot the two share. `dateLabel` above
-  // still names October because that is when the event actually runs; only the
-  // banner's own lifetime was cut short.
+  // The day after the final day of play, so the banner carries the
+  // announcement through the last match and then retires itself. The
+  // contributor spotlight takes the slot back on that date with nothing to
+  // edit — see isEventLive() below.
   //
-  // To bring the announcement back, restore this to 2026-10-19T00:00:00Z. The
-  // spotlight yields to it again with nothing else to change.
-  ends: new Date("2026-08-19T00:00:00Z"),
+  // This was once pulled back to 2026-08-19 to hand the slot to the spotlight
+  // early, then restored on 2026-09-20 to re-run the announcement. Moving this
+  // one date is the whole mechanism in either direction; there is no second
+  // switch.
+  ends: new Date("2026-10-19T00:00:00Z"),
 
   region: "DE · AT · CH",
 
