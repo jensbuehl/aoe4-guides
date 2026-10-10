@@ -50,7 +50,7 @@ export const FUNDING = {
   //worse than a vague one, because the specificity is what earns the trust.
   costPerYearEur: 100,
   //TODO: set from the Ko-fi payout total received during `year`.
-  coveredEur: 10,
+  coveredEur: 60,
 };
 
 /**
@@ -72,6 +72,7 @@ export const FUNDING = {
 export const SUPPORTERS = [ 
   { name: "Björn" },
   { name: "Elmstrukk" },
+  { name: "Louis" },
 ];
 
 /**
@@ -88,11 +89,7 @@ export const EARLIER_SUPPORTERS = [
   //     privately gave money, not permission to be listed.
   //  2. Move anyone who contributed during FUNDING.year into SUPPORTERS, and
   //     set FUNDING.coveredEur to the net total received from that group.
-  //  3. Check whether "louis" is the "Louis" already credited in the code
-  //     contributors list on About — the same person under two spellings reads
-  //     as carelessness.
   { name: "Yukgaejang" },
-  { name: "louis" },
   { name: "CrackedyHere" },
   { name: "hy" },
   { name: "znmto" },
