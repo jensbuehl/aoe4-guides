@@ -149,6 +149,13 @@ export const civs = ref([
     flagSmall: "/assets/flags/rus-small.webp",
   },
   {
+    title: "Scots",
+    shortName: "SCO",
+    tagLine: "Infantry, Fortification, Technology",
+    flagLarge: "/assets/flags/sco-large.webp",
+    flagSmall: "/assets/flags/sco-small.webp",
+  },
+  {
     title: "Sengoku Daimyo",
     shortName: "SEN",
     tagLine: "Clans, Economic Scaling, Inspiration",
@@ -161,6 +168,13 @@ export const civs = ref([
     tagLine: "Mobile Economy, Elephants, Reginal Control",
     flagLarge: "/assets/flags/tug-large.webp",
     flagSmall: "/assets/flags/tug-small.webp",
+  },
+  {
+    title: "Vikings",
+    shortName: "VIK",
+    tagLine: "Raiding, Infantry, Sagas",
+    flagLarge: "/assets/flags/vik-large.webp",
+    flagSmall: "/assets/flags/vik-small.webp",
   },
   {
     title: "Zhu Xi's Legacy",

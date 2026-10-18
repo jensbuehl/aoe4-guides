@@ -27,4 +27,7 @@ export const civs = [
   "TUG",
   //Jin Dynasty
   "JIN",
+  //Raiders of the North
+  "VIK",
+  "SCO",
 ];

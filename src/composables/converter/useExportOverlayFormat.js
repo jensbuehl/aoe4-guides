@@ -182,6 +182,9 @@ export default function useExportOverlayFormat() {
   TUG: "Tughlaq Dynasty",
   //Jin Dynasty
   JIN: "Jin Dynasty",
+  //Raiders of the North — names as RTS Overlay will spell them; confirm on release
+  VIK: "Vikings",
+  SCO: "Scots",
   };
 
   return {
