@@ -8,16 +8,24 @@
         <!-- Main Content -->
         <v-col cols="12" sm="9" align-self="start">
 
+          <header class="mb-6">
+            <h1 class="text-h6 font-weight-medium">Icon data tools</h1>
+            <p class="text-body-2 text-medium-emphasis admin-intro">
+              These tools keep the icon lists in <code>src/composables/builds/icons/json/</code> in step with AOE4World.
+              None of them changes anything by itself: each produces files you download and commit.
+              After a game update, run them in the order shown.
+            </p>
+          </header>
+
           <!-- ── Card 1: Sync Data ── -->
           <v-card flat rounded="lg" class="mb-6 pa-2">
-            <div class="d-flex align-center justify-space-between pa-4 pb-2">
-              <div class="d-flex align-center" style="gap: 6px">
-                <span class="text-subtitle-1 font-weight-medium">AOE4World Sync</span>
-                <v-tooltip text="Fetches units, buildings, technologies and abilities from the AOE4World API and matches them against local icon JSON files. For each match you can review the diff and save the updated entry." location="bottom" max-width="320">
-                  <template #activator="{ props }">
-                    <v-icon v-bind="props" size="16" color="medium-emphasis">mdi-information-outline</v-icon>
-                  </template>
-                </v-tooltip>
+            <div class="d-flex align-start justify-space-between pa-4 pb-2" style="gap: 16px">
+              <div class="d-flex align-start" style="gap: 14px; min-width: 0">
+                <v-avatar color="primary" variant="tonal" rounded="lg" size="36" class="admin-tool__step">1</v-avatar>
+                <div style="min-width: 0">
+                  <h2 class="text-subtitle-1 font-weight-medium">AOE4World Sync</h2>
+                  <p class="text-body-2 text-medium-emphasis">Refresh the icons you already have after a balance patch.</p>
+                </div>
               </div>
               <v-btn
                 v-if="syncPhase === 'idle'"
@@ -44,6 +52,14 @@
                 >Reset</v-btn>
               </div>
             </div>
+            <dl class="admin-tool__info px-4 pb-4">
+              <dt>What it does</dt>
+              <dd>Fetches units, buildings, technologies and abilities from AOE4World and matches them to the existing icon entries. Updates costs, descriptions, ages and explorer links. Entries it cannot match you link by hand or skip.</dd>
+              <dt>Use it when</dt>
+              <dd>A patch changed numbers or texts. It never adds icons or civs — that is step 2.</dd>
+              <dt>You get</dt>
+              <dd>One JSON file per category, to replace in <code>src/composables/builds/icons/json/</code>.</dd>
+            </dl>
 
             <!-- fetching: per-source progress chips -->
             <div v-if="syncPhase === 'fetching'" class="px-4 pb-4">
@@ -211,14 +227,13 @@
 
           <!-- ── Card 2: Icon Gap Sync ── -->
           <v-card flat rounded="lg" class="mb-6 pa-2">
-            <div class="d-flex align-center justify-space-between pa-4 pb-2">
-              <div class="d-flex align-center" style="gap: 6px">
-                <span class="text-subtitle-1 font-weight-medium">Icon Gap Scanner</span>
-                <v-tooltip text="Scans AOE4World for items not yet represented in local icon JSON files. Detects two kinds of gaps: new items (no local entry) and civ extensions (entry exists but a specific civilization is missing). Lets you assign categories, pre-fill image folders, and download updated JSONs and a processed icon zip." location="bottom" max-width="320">
-                  <template #activator="{ props }">
-                    <v-icon v-bind="props" size="16" color="medium-emphasis">mdi-information-outline</v-icon>
-                  </template>
-                </v-tooltip>
+            <div class="d-flex align-start justify-space-between pa-4 pb-2" style="gap: 16px">
+              <div class="d-flex align-start" style="gap: 14px; min-width: 0">
+                <v-avatar color="primary" variant="tonal" rounded="lg" size="36" class="admin-tool__step">2</v-avatar>
+                <div style="min-width: 0">
+                  <h2 class="text-subtitle-1 font-weight-medium">Icon Gap Scanner</h2>
+                  <p class="text-body-2 text-medium-emphasis">Add what is missing: new civs, units, buildings and technologies.</p>
+                </div>
               </div>
               <div class="d-flex align-center" style="gap: 8px">
                 <v-btn
@@ -238,6 +253,14 @@
                 >Reset</v-btn>
               </div>
             </div>
+            <dl class="admin-tool__info px-4 pb-4">
+              <dt>What it does</dt>
+              <dd>Lists AOE4World items without an icon (<strong>NEW</strong>), icons a civ is missing from (<strong>CIV+</strong>) and civs AOE4World no longer lists for an icon (<strong>CIV−</strong>). Suggests the target file and image folder; you confirm, and pick the artwork where a title has several variants.</dd>
+              <dt>Use it when</dt>
+              <dd>A DLC or patch adds civs or items. Add the new civ's AOE4World code to <code>CIV_SLUG_MAP</code> first — the scan lists any code it does not know.</dd>
+              <dt>You get</dt>
+              <dd>Updated JSON files, plus a zip of 48&nbsp;px WebP icons to unpack into <code>public/assets/pictures/</code>.</dd>
+            </dl>
 
             <!-- idle: intentionally empty -->
 
@@ -378,6 +401,38 @@
 
                   <!-- Right: category + folder + status (keyed on first civ) -->
                   <div class="d-flex align-center" style="gap: 6px; flex-shrink: 0">
+
+                    <!-- Civ-extension with several artwork variants: the source data
+                         cannot say which one the new civ uses, so the admin picks -->
+                    <v-select
+                      v-if="group.kind === 'civ-extension' && group.variants"
+                      :model-value="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.imgSrc"
+                      :items="group.variants.map((v) => ({ title: v.imgSrc.split('/').pop(), value: v.imgSrc }))"
+                      label="Check variant"
+                      density="compact"
+                      variant="outlined"
+                      color="warning"
+                      base-color="warning"
+                      hide-details
+                      style="width: 220px"
+                      @update:model-value="(val) => setGapVariant(group, val)"
+                    >
+                      <template #prepend-inner>
+                        <img
+                          :src="gapAssignments[group.id + ':' + group.allCivs[0].civ]?.imgSrc"
+                          width="20"
+                          height="20"
+                          style="object-fit: contain"
+                        />
+                      </template>
+                      <template #item="{ props: itemProps, item }">
+                        <v-list-item v-bind="itemProps">
+                          <template #prepend>
+                            <img :src="item.value" width="24" height="24" style="object-fit: contain; margin-right: 8px" />
+                          </template>
+                        </v-list-item>
+                      </template>
+                    </v-select>
 
                     <!-- Civ-extension: show fixed category -->
                     <v-chip
@@ -592,6 +647,18 @@
                   </div>
                 </template>
 
+                <!-- Civ changes the merge could not place: listed, never dropped silently -->
+                <v-alert
+                  v-if="gapMergeMisses.length"
+                  type="warning"
+                  variant="tonal"
+                  density="compact"
+                  class="mx-4 mt-4"
+                >
+                  {{ gapMergeMisses.length }} change(s) not applied — no matching local entry. Edit these by hand:
+                  <div v-for="miss in gapMergeMisses" :key="miss" class="text-caption">{{ miss }}</div>
+                </v-alert>
+
                 <!-- Footer actions -->
                 <div class="d-flex align-center justify-end pa-4" style="gap: 8px; flex-wrap: wrap">
                   <v-chip
@@ -632,14 +699,13 @@
 
           <!-- ── Card 3: Check Images ── -->
           <v-card flat rounded="lg" class="mb-6 pa-2">
-            <div class="d-flex align-center justify-space-between pa-4 pb-2">
-              <div class="d-flex align-center" style="gap: 6px">
-                <span class="text-subtitle-1 font-weight-medium">Check Images</span>
-                <v-tooltip text="Scans all local icon entries with imgSrc set and tests whether each image resolves. For broken entries, previews the replacement from AOE4World and lets you download individual images or a zip in the correct folder structure." location="bottom" max-width="320">
-                  <template #activator="{ props }">
-                    <v-icon v-bind="props" size="16" color="medium-emphasis">mdi-information-outline</v-icon>
-                  </template>
-                </v-tooltip>
+            <div class="d-flex align-start justify-space-between pa-4 pb-2" style="gap: 16px">
+              <div class="d-flex align-start" style="gap: 14px; min-width: 0">
+                <v-avatar color="primary" variant="tonal" rounded="lg" size="36" class="admin-tool__step">3</v-avatar>
+                <div style="min-width: 0">
+                  <h2 class="text-subtitle-1 font-weight-medium">Check Images</h2>
+                  <p class="text-body-2 text-medium-emphasis">Find icons whose image file is missing.</p>
+                </div>
               </div>
               <div class="d-flex align-center" style="gap: 8px">
                 <v-btn
@@ -656,6 +722,14 @@
                 >Reset</v-btn>
               </div>
             </div>
+            <dl class="admin-tool__info px-4 pb-4">
+              <dt>What it does</dt>
+              <dd>Loads the image of every icon entry and lists the ones that fail, each next to its AOE4World replacement.</dd>
+              <dt>Use it when</dt>
+              <dd>After step 2, or when icons show up blank in a build.</dd>
+              <dt>You get</dt>
+              <dd>Single images or a zip in the folder structure of <code>public/assets/pictures/</code>.</dd>
+            </dl>
 
             <!-- scanning -->
             <div v-if="checkImgPhase === 'scanning'" class="px-4 pb-4 text-center">
@@ -1114,6 +1188,7 @@ export default {
     const gapImageStatus = ref({});      // { [gapKey]: 'pending'|'processing'|'done'|'exists'|'skipped'|'error' }
     const gapImageErrors = ref({});
     const gapJsonSaved   = ref({});
+    const gapMergeMisses = ref([]);       // civ changes the JSON merge could not place
     const gapZipSaved        = ref(false);
     const gapZipProcessing   = ref(false);
     const gapZipNoFiles      = ref(false);
@@ -1280,7 +1355,12 @@ export default {
           if (localEntries.length === 0) {
             gaps.push({
               id: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
-              name: sourceItem.name, type: sourceItem.type, age: sourceItem.age,
+              // Items whose stats vary by age carry minAge instead of age. Abilities
+              // are the exception: the local ones keep an age only where the source
+              // sets one, so minAge would invent it.
+              name: sourceItem.name, type: sourceItem.type,
+              age: sourceItem.type === "ability" ? sourceItem.age : sourceItem.age ?? sourceItem.minAge,
+              classes: sourceItem.classes ?? [], displayClasses: sourceItem.displayClasses ?? [],
               icon: sourceItem.icon || null,
               civ: civShort, civCode, civCount,
               description: sourceItem.description || "",
@@ -1289,12 +1369,19 @@ export default {
               kind: "new", localEntry: null, localCategory: null,
             });
           } else {
-            // Use the first existing entry as the anchor for the civ-extension
+            // Use the first existing entry as the anchor for the civ-extension.
+            // AOE4World has one item per unit, but the same title can have several
+            // local entries that differ only in artwork (Villager ×8: villager-delhi,
+            // villager-china…). Which one a new civ uses is not in the source data,
+            // so the variants are carried along for the admin to pick from.
             const localEntry = localEntries[0];
             const localCat = CATEGORY_CONFIG.find((c) => c.data.includes(localEntry));
+            const variants = localCat.data.filter((e) => e.title === localEntry.title);
             gaps.push({
               id: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
-              name: sourceItem.name, type: sourceItem.type, age: sourceItem.age,
+              name: sourceItem.name, type: sourceItem.type, age: sourceItem.age ?? sourceItem.minAge,
+              classes: sourceItem.classes ?? [], displayClasses: sourceItem.displayClasses ?? [],
+              variants: variants.length > 1 ? variants : null,
               icon: sourceItem.icon || null,
               civ: civShort, civCode, civCount,
               description: sourceItem.description || "",
@@ -1412,6 +1499,7 @@ export default {
       gapImageStatus.value = {};
       gapImageErrors.value = {};
       gapJsonSaved.value = {};
+      gapMergeMisses.value = [];
       gapZipSaved.value = false;
       gapZipProcessing.value = false;
       gapZipNoFiles.value = false;
@@ -1430,6 +1518,32 @@ export default {
       const type = gap.type;
 
       if (type === "ability") return "abilityHero";
+
+      // AOE4World's displayClasses decide first. Names say little about a new
+      // civ's items ("Flower Pagoda" is a landmark, "Collective Hunting" an
+      // economic tech), so the name patterns below are only the fallback. The
+      // rules were derived from where the existing entries live.
+      const dc = (gap.displayClasses ?? []).join(" / ");
+      if (dc) {
+        if (type === "unit") {
+          if (/\bHero\b/.test(dc)) return "unitHero";
+          if (/Worker|Economic Unit/.test(dc)) return "unitEco";
+          if (/^Religious$|Battle Monk/.test(dc)) return "unitReligious";
+          return "unitMilitary";
+        }
+        if (type === "building") {
+          if (/Landmark|Wonder/.test(dc) || gap.classes?.includes("landmark")) return "landmarks";
+          if (/Religious Building/.test(dc)) return "buildingReligious";
+          if (/^Technology Building/.test(dc)) return "buildingTech";
+          if (/Military|Defensive/.test(dc)) return "buildingMilitary";
+          if (/Economy|Population|Food|Influence/.test(dc)) return "buildingEco";
+        }
+        if (type === "technology") {
+          if (/Hero Level Up/.test(dc)) return "abilityHero";
+          if (/^(Hunting|Economic|Trade|Villager|Woodcutting|Wood Gathering|Food Gathering|Stone Gathering|Mining|Fishing|Farm|Gathering|Imperial Official|Tributary|Packing|Yatai|Population|Society|Research) Technology|^Unlock Bonuses/.test(dc)) return "techEco";
+          return "techMilitary";
+        }
+      }
 
       if (type === "technology") {
         if (/farm|trade|gold|food|wood|eco|market|granary/.test(name)) return "techEco";
@@ -1493,9 +1607,27 @@ export default {
     }
 
     // T011 — JSON download
+    // Icon background in the picker (IconAutoCompleteMenu). Each file uses one
+    // class throughout, except buildingMilitary (production buildings are
+    // "military", walls and towers "default") and abilityHero.
+    const CATEGORY_ENTRY_CLASS = {
+      unitEco: "default", unitReligious: "military", unitMilitary: "military", unitHero: "military",
+      buildingEco: "default", buildingReligious: "default", buildingTech: "tech",
+      landmarks: "landmark", techEco: "tech", techMilitary: "tech",
+    };
+
+    function entryClassFor(catKey, gap) {
+      if (catKey === "buildingMilitary") {
+        return (gap.displayClasses ?? []).some((d) => /Military/.test(d)) ? "military" : "default";
+      }
+      if (catKey === "abilityHero") return gap.type === "technology" ? "tech" : "none";
+      return CATEGORY_ENTRY_CLASS[catKey] ?? "default";
+    }
+
     async function downloadGapJsons() {
       const ignoredSet = new Set(gapSyncIgnore.value);
       const byCategory = {};
+      const misses = [];
 
       for (const gap of gapItems.value) {
         if (ignoredSet.has(gap.id)) continue;
@@ -1519,46 +1651,68 @@ export default {
           newById.get(gap.id).civCodes.add(gap.civCode);
         }
         for (const { gap, assignment, civCodes } of newById.values()) {
+          // Same shape and field order as the hand-kept entries. The id carries
+          // the age suffix the rest of the files use (iron-pagoda-2); the image
+          // file does not (iron-pagoda.webp). Ability ids carry no suffix.
+          const id = gap.age && gap.type !== "ability" && !/-\d+$/.test(gap.id) ? `${gap.id}-${gap.age}` : gap.id;
           arr.push({
             title: gap.name,
-            civ: [...civCodes].sort(),
             age: gap.age,
-            id: gap.id,
-            type: gap.type,
-            description: gap.description,
-            costs: gap.costs,
-            exploreUrl: gap.exploreUrl,
             imgSrc: assignment.imgSrc || (assignment.imageFolder ? `/assets/pictures/${assignment.imageFolder}/${gap.id}.webp` : ""),
+            civ: [...civCodes].sort(),
+            class: entryClassFor(catKey, gap),
+            costs: gap.costs,
+            id,
+            type: gap.type,
+            exploreUrl: gap.exploreUrl,
+            description: gap.description,
           });
         }
 
         for (const { gap, assignment } of entries) {
-          if (gap.kind === "civ-extension") {
-            const idx = arr.findIndex((e) => (e.id && e.id === gap.id) || e.title === gap.name);
-            if (idx !== -1 && Array.isArray(arr[idx].civ)) {
-              if (!arr[idx].civ.includes(gap.civCode)) {
-                arr[idx].civ = [...arr[idx].civ, gap.civCode].sort();
-              }
-              if (gap.costs) arr[idx].costs = gap.costs;
-            }
-          } else if (gap.kind === "civ-removal") {
-            const idx = arr.findIndex((e) => (e.id && e.id === gap.id) || e.title === gap.name);
-            if (idx !== -1 && Array.isArray(arr[idx].civ)) {
-              arr[idx].civ = arr[idx].civ.filter((c) => c !== gap.civCode);
-              if (gap.costs) arr[idx].costs = gap.costs;
-            }
+          if (gap.kind !== "civ-extension" && gap.kind !== "civ-removal") continue;
+          // Locate the entry the scan anchored on, not a fresh id/title search:
+          // the scan matches on the age-stripped id, so "Palisade" finds the local
+          // "Palisade Wall" (palisade-1) there and nothing here. Variants share
+          // title and id and differ only in imgSrc, which is why that is compared.
+          const targetImg = gap.kind === "civ-extension" ? assignment.imgSrc : gap.localEntry?.imgSrc;
+          const idx = arr.findIndex((e) => e.title === gap.localEntry?.title && e.imgSrc === targetImg);
+          if (idx === -1 || !Array.isArray(arr[idx].civ)) {
+            misses.push(`${gap.kind === "civ-extension" ? "CIV+" : "CIV-"} ${gap.civCode} ${gap.name} (${catKey})`);
+            continue;
           }
+          if (gap.kind === "civ-extension") {
+            if (!arr[idx].civ.includes(gap.civCode)) {
+              arr[idx].civ = [...arr[idx].civ, gap.civCode].sort();
+            }
+          } else {
+            arr[idx].civ = arr[idx].civ.filter((c) => c !== gap.civCode);
+          }
+          if (gap.costs) arr[idx].costs = gap.costs;
         }
 
         await downloadObjectAsJSONFile(arr, config.filename);
         gapJsonSaved.value = { ...gapJsonSaved.value, [catKey]: true };
+      }
+      gapMergeMisses.value = misses;
+    }
+
+    // Applies the chosen variant to every civ in the group; the merge reads it
+    // from assignment.imgSrc.
+    function setGapVariant(group, imgSrc) {
+      for (const item of group.allCivs) {
+        const key = item.id + ":" + item.civ;
+        if (gapAssignments.value[key]) gapAssignments.value[key] = { ...gapAssignments.value[key], imgSrc };
       }
     }
 
     // T013 — Image folder resolution
     function resolveImageFolder(gap) {
       const prefixMap = { unit: "unit_", building: "building_", technology: "technology_", ability: "ability_" };
-      const prefix = prefixMap[gap.type];
+      // Landmarks have their own per-civ folders (landmark_jin), apart from building_jin
+      const isLandmark = gap.type === "building" &&
+        ((gap.displayClasses ?? []).some((d) => /Landmark|Wonder/.test(d)) || gap.classes?.includes("landmark"));
+      const prefix = isLandmark ? "landmark_" : prefixMap[gap.type];
       if (!prefix) return null;
 
       if (gap.civCount <= 3) {
@@ -2008,7 +2162,7 @@ export default {
       getCategorySourceItems, filterSourceItems, findLocalIconByName, getItemSubtitle, downloadCategory,
       // Icon Gap Sync
       CIV_DISPLAY_NAME,
-      gapPhase, gapItems, gapSourceCount, gapUnmappedCivs, gapFetchErrors, gapCivFilter, gapKindFilter, gapAssignments, gapImageStatus, gapImageErrors, gapJsonSaved, gapZipSaved,
+      gapPhase, gapItems, gapSourceCount, gapUnmappedCivs, gapFetchErrors, gapCivFilter, gapKindFilter, gapAssignments, gapImageStatus, gapImageErrors, gapJsonSaved, gapMergeMisses, setGapVariant, gapZipSaved,
       gapZipProcessing, gapZipNoFiles, gapGroupDownloading, gapGroupCopied,
       filteredGapItems, gapCivOptions, canDownloadJsons, canDownloadImages, gapCategoryKeys,
       gapNoIconKeys, filteredGapGroups, filteredSkippedGroups,
@@ -2026,3 +2180,55 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.admin-intro {
+  max-width: 68ch;
+}
+
+.admin-tool__step {
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* What / when / result, aligned under the title (avatar 36px + 14px gap) */
+.admin-tool__info {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 6px 16px;
+  margin: 0 0 0 50px;
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.admin-tool__info dt {
+  font-weight: 500;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+
+.admin-tool__info dd {
+  margin: 0;
+  max-width: 68ch;
+}
+
+.admin-tool__info code,
+.admin-intro code {
+  font-size: 0.8125rem;
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: rgba(var(--v-theme-on-surface), 0.06);
+}
+
+/* Phone: label above text, no indent */
+@media (max-width: 599px) {
+  .admin-tool__info {
+    grid-template-columns: 1fr;
+    gap: 2px;
+    margin-left: 0;
+  }
+
+  .admin-tool__info dd + dt {
+    margin-top: 8px;
+  }
+}
+</style>
