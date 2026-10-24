@@ -1309,6 +1309,18 @@ export default {
         }
       }
 
+      // AOE4World reuses an id across types now and then (danevirke is a building
+      // and a technology, worker-elephant a unit and a building). Every gap key
+      // here is id + civ, so the second one was dropped as a duplicate. Those
+      // gaps get a type-qualified id for the tool's bookkeeping; sourceId stays
+      // the AOE4World id that the written entry and its image file use.
+      const typesById = new Map();
+      for (const item of allSourceItems) {
+        if (!typesById.has(item.id)) typesById.set(item.id, new Set());
+        typesById.get(item.id).add(item.type);
+      }
+      const gapId = (item) => (typesById.get(item.id).size > 1 ? `${item.id}~${item.type}` : item.id);
+
       const localAll = CATEGORY_CONFIG.flatMap((c) => c.data);
       const seen = new Set();
       const gaps = [];
@@ -1327,6 +1339,14 @@ export default {
         // with civ-specific icons (e.g. two Longbowman entries: one BYZ, one ENG).
         const nameLC = sourceItem.name?.toLowerCase();
         const localEntries = localAll.filter((e) => {
+          // Names and ids repeat across types: the Danevirke building must not
+          // "cover" the Danevirke technology. Abilities are the exception — an
+          // ability is the active part of a technology, landmark or unit and
+          // shares its name and icon (Arrow Volley, King's College), and the
+          // local files keep one entry for the pair. Entries without a type
+          // still match as before.
+          const crossType = e.type && sourceItem.type && e.type !== sourceItem.type;
+          if (crossType && e.type !== "ability" && sourceItem.type !== "ability") return false;
           if (e.id) {
             if (e.id === sourceItem.id) return true;
             // local ids carry an age suffix (e.g. "palisade-1"); strip it to compare against baseId
@@ -1341,7 +1361,7 @@ export default {
         });
 
         for (const civShort of civs) {
-          const gapKey = sourceItem.id + ":" + civShort;
+          const gapKey = gapId(sourceItem) + ":" + civShort;
           if (seen.has(gapKey)) continue;
           seen.add(gapKey);
 
@@ -1357,7 +1377,7 @@ export default {
 
           if (localEntries.length === 0) {
             gaps.push({
-              id: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
+              id: gapId(sourceItem), sourceId: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
               // Items whose stats vary by age carry minAge instead of age. Abilities
               // are the exception: the local ones keep an age only where the source
               // sets one, so minAge would invent it.
@@ -1384,7 +1404,7 @@ export default {
             const localCat = CATEGORY_CONFIG.find((c) => c.data.includes(localEntry));
             const variants = localCat.data.filter((e) => e.title === localEntry.title);
             gaps.push({
-              id: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
+              id: gapId(sourceItem), sourceId: sourceItem.id, baseId: sourceItem.baseId || sourceItem.id,
               name: sourceItem.name, type: sourceItem.type, age: sourceItem.age ?? sourceItem.minAge,
               classes: sourceItem.classes ?? [], displayClasses: sourceItem.displayClasses ?? [],
               variants: variants.length > 1 ? variants : null,
@@ -1533,7 +1553,7 @@ export default {
       if (dc) {
         if (type === "unit") {
           if (/\bHero\b/.test(dc)) return "unitHero";
-          if (/Worker|Economic Unit/.test(dc)) return "unitEco";
+          if (/Worker|Economic Unit|Gatherer/.test(dc)) return "unitEco";
           if (/^Religious$|Battle Monk/.test(dc)) return "unitReligious";
           return "unitMilitary";
         }
@@ -1660,11 +1680,12 @@ export default {
           // Same shape and field order as the hand-kept entries. The id carries
           // the age suffix the rest of the files use (iron-pagoda-2); the image
           // file does not (iron-pagoda.webp). Ability ids carry no suffix.
-          const id = gap.age && gap.type !== "ability" && !/-\d+$/.test(gap.id) ? `${gap.id}-${gap.age}` : gap.id;
+          const srcId = gap.sourceId ?? gap.id;
+          const id = gap.age && gap.type !== "ability" && !/-\d+$/.test(srcId) ? `${srcId}-${gap.age}` : srcId;
           arr.push({
             title: gap.name,
             age: gap.age,
-            imgSrc: assignment.imgSrc || (assignment.imageFolder ? `/assets/pictures/${assignment.imageFolder}/${gap.id}.webp` : ""),
+            imgSrc: assignment.imgSrc || (assignment.imageFolder ? `/assets/pictures/${assignment.imageFolder}/${srcId}.webp` : ""),
             civ: [...civCodes].sort(),
             class: entryClassFor(catKey, gap),
             costs: gap.costs,
@@ -1812,9 +1833,10 @@ export default {
       // Paths from the repository root: the 48px icon is served, and the
       // untouched original is kept beside the others in pictures_original_size.
       const folder = assignment.imageFolder;
-      const zipPath = `public/assets/pictures/${folder}/${gap.id}.webp`;
-      const origPath = `src/assets/pictures_original_size/${folder}/${gap.id}.png`;
-      assignment.imgSrc = `/assets/pictures/${folder}/${gap.id}.webp`;
+      const file = gap.sourceId ?? gap.id;
+      const zipPath = `public/assets/pictures/${folder}/${file}.webp`;
+      const origPath = `src/assets/pictures_original_size/${folder}/${file}.png`;
+      assignment.imgSrc = `/assets/pictures/${folder}/${file}.webp`;
       return { skip: false, blob: webpBlob, zipPath, origBlob: pngBlob, origPath };
     }
 
