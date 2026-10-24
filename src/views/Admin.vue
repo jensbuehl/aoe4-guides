@@ -259,7 +259,7 @@
               <dt>Use it when</dt>
               <dd>A DLC or patch adds civs or items. Add the new civ's AOE4World code to <code>CIV_SLUG_MAP</code> first — the scan lists any code it does not know.</dd>
               <dt>You get</dt>
-              <dd>Updated JSON files, plus a zip of 48&nbsp;px WebP icons to unpack into <code>public/assets/pictures/</code>.</dd>
+              <dd>Updated JSON files, plus a zip to unpack at the repository root: 48&nbsp;px WebP icons for <code>public/assets/pictures/</code> and the untouched originals for <code>src/assets/pictures_original_size/</code>.</dd>
             </dl>
 
             <!-- idle: intentionally empty -->
@@ -1143,8 +1143,10 @@ export default {
       ot:  "OTT",  // ottomans
       ru:  "RUS",  // rus
       kt:  "KTE",  // knights templar
+      sco: "SCO",  // scots
       sen: "SEN",  // sengoku
       tug: "TUG",  // tughluq sultanate
+      vik: "VIK",  // vikings
       zx:  "ZXL",  // zhuxi legacists
     };
 
@@ -1157,7 +1159,8 @@ export default {
       hl:  "lancaster",    mac: "macedonian",   ma:  "malians",
       mo:  "mongols",      od:  "dragon",       ot:  "ottomans",
       ru:  "rus",          kt:  "templar",      sen: "sengoku",
-      tug: "tughluq",      zx:  "zhuxi",
+      tug: "tughluq",      zx:  "zhuxi",        vik: "vikings",
+      sco: "scots",
     };
 
     // API short code → full display name (e.g. "ab" → "Abbasid Dynasty")
@@ -1374,7 +1377,10 @@ export default {
             // local entries that differ only in artwork (Villager ×8: villager-delhi,
             // villager-china…). Which one a new civ uses is not in the source data,
             // so the variants are carried along for the admin to pick from.
-            const localEntry = localEntries[0];
+            // Prefer the entry named like the source item: one baseId can cover
+            // several civ-named entries (galley → Galley, Dhow, Junk), and the
+            // first match would hand the Scots' Galley the Abbasid Dhow.
+            const localEntry = localEntries.find((e) => e.title === sourceItem.name) ?? localEntries[0];
             const localCat = CATEGORY_CONFIG.find((c) => c.data.includes(localEntry));
             const variants = localCat.data.filter((e) => e.title === localEntry.title);
             gaps.push({
@@ -1533,10 +1539,10 @@ export default {
         }
         if (type === "building") {
           if (/Landmark|Wonder/.test(dc) || gap.classes?.includes("landmark")) return "landmarks";
-          if (/Religious Building/.test(dc)) return "buildingReligious";
+          if (/Religious (Building|Site)/.test(dc)) return "buildingReligious";
           if (/^Technology Building/.test(dc)) return "buildingTech";
           if (/Military|Defensive/.test(dc)) return "buildingMilitary";
-          if (/Economy|Population|Food|Influence/.test(dc)) return "buildingEco";
+          if (/Economy|Population|Food|Influence|Source/.test(dc)) return "buildingEco";
         }
         if (type === "technology") {
           if (/Hero Level Up/.test(dc)) return "abilityHero";
@@ -1688,7 +1694,10 @@ export default {
           } else {
             arr[idx].civ = arr[idx].civ.filter((c) => c !== gap.civCode);
           }
-          if (gap.costs) arr[idx].costs = gap.costs;
+          // Costs are left alone: the entry is shared, and the source item's
+          // costs are one civ's (Hulk, Transport Ship popcap) and lack fields
+          // other civs need (Macedonian oliveoil). Updating costs is the
+          // AOE4World Sync's job.
         }
 
         await downloadObjectAsJSONFile(arr, config.filename);
@@ -1784,19 +1793,29 @@ export default {
       });
       URL.revokeObjectURL(bitmapUrl);
 
+      // Fit inside 48x48 without stretching: a few icons are not square
+      // (Mustering Hall Influence is 120x104).
       const canvas = document.createElement("canvas");
       canvas.width = 48;
       canvas.height = 48;
-      canvas.getContext("2d").drawImage(img, 0, 0, 48, 48);
+      const scale = 48 / Math.max(img.naturalWidth, img.naturalHeight);
+      const w = img.naturalWidth * scale, h = img.naturalHeight * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(img, (48 - w) / 2, (48 - h) / 2, w, h);
 
+      // Quality 85 matches the icons resized by hand (lanczos3, WebP q85)
       const webpBlob = await new Promise((resolve) =>
-        canvas.toBlob(resolve, "image/webp", 0.8)
+        canvas.toBlob(resolve, "image/webp", 0.85)
       );
 
+      // Paths from the repository root: the 48px icon is served, and the
+      // untouched original is kept beside the others in pictures_original_size.
       const folder = assignment.imageFolder;
-      const zipPath = `${folder}/${gap.id}.webp`;
-      assignment.imgSrc = `/assets/pictures/${zipPath}`;
-      return { skip: false, blob: webpBlob, zipPath };
+      const zipPath = `public/assets/pictures/${folder}/${gap.id}.webp`;
+      const origPath = `src/assets/pictures_original_size/${folder}/${gap.id}.png`;
+      assignment.imgSrc = `/assets/pictures/${folder}/${gap.id}.webp`;
+      return { skip: false, blob: webpBlob, zipPath, origBlob: pngBlob, origPath };
     }
 
     // T015 — Build and download images zip
@@ -1829,6 +1848,7 @@ export default {
             gapImageErrors.value = { ...gapImageErrors.value, [gapKey]: result.error };
           } else {
             zip.file(result.zipPath, result.blob);
+            zip.file(result.origPath, result.origBlob);
             hasFiles = true;
             processedIds.add(gap.id);
             gapImageStatus.value = { ...gapImageStatus.value, [gapKey]: "done" };
@@ -1879,7 +1899,7 @@ export default {
         canvas.height = 48;
         canvas.getContext("2d").drawImage(img, 0, 0, 48, 48);
         const webpBlob = await new Promise((resolve) =>
-          canvas.toBlob(resolve, "image/webp", 0.8)
+          canvas.toBlob(resolve, "image/webp", 0.85)
         );
         const href = URL.createObjectURL(webpBlob);
         const link = document.createElement("a");
@@ -2093,7 +2113,7 @@ export default {
       const canvas = document.createElement("canvas");
       canvas.width = 48; canvas.height = 48;
       canvas.getContext("2d").drawImage(imgEl, 0, 0, 48, 48);
-      return new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.8));
+      return new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 0.85));
     }
 
     async function downloadCheckImage(item) {
