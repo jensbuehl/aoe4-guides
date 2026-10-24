@@ -5224,28 +5224,6 @@
     "description": "Ranged infantry with reduced weapon range for extra damage. Great vs. unarmored targets.\n+ Damage\n+ High rate of fire\n- Weapon range\n- Weak against high ranged armor targets\n- Countered by Horsemen"
   },
   {
-    "title": "Highland Cattle",
-    "age": 1,
-    "imgSrc": "/assets/pictures/unit_scots/highland-cattle.webp",
-    "civ": [
-      "SCO"
-    ],
-    "class": "military",
-    "costs": {
-      "food": 75,
-      "wood": 0,
-      "stone": 0,
-      "gold": 25,
-      "total": 100,
-      "popcap": 0,
-      "time": 25
-    },
-    "id": "highland-cattle-1",
-    "type": "unit",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/highland-cattle",
-    "description": "Highland Cattle sustain themselves at Berry Bushes for Food. While eating they produce Food at a rate of 30 per minute.\nThey begin with a capacity of 9, and that increases by 4 with every Highland Landmark built."
-  },
-  {
     "title": "Pikeman",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_scots/pikeman.webp",

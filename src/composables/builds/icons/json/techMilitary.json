@@ -8238,5 +8238,27 @@
     "type": "technology",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ulfr-saga",
     "description": "Complete this Saga by recruiting 25 infantry.\nSaga reward: Melee Infantry gain +5 torch damage and +1 tile torch attack range."
+  },
+  {
+    "title": "Danevirke",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/danevirke.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 500,
+      "gold": 0,
+      "total": 500,
+      "popcap": 0,
+      "time": 45
+    },
+    "id": "danevirke-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/danevirke",
+    "description": "Converts Palisades to Danevirke walls, which have +1000 increased health and 5 fire armor."
   }
 ]

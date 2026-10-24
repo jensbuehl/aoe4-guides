@@ -564,5 +564,27 @@
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/fishing-knarr",
     "description": "Small boat that gathers Food from either Deep Water Fish or Shoreline Fish and that is also able to transport a small number of land units across water. Drops off gathered resources at the Dock."
+  },
+  {
+    "title": "Highland Cattle",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_scots/highland-cattle.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 75,
+      "wood": 0,
+      "stone": 0,
+      "gold": 25,
+      "total": 100,
+      "popcap": 0,
+      "time": 25
+    },
+    "id": "highland-cattle-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/highland-cattle",
+    "description": "Highland Cattle sustain themselves at Berry Bushes for Food. While eating they produce Food at a rate of 30 per minute.\nThey begin with a capacity of 9, and that increases by 4 with every Highland Landmark built."
   }
 ]
