@@ -22,6 +22,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "TUG",
       "ZXL"
     ],
@@ -64,6 +65,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "TUG",
       "ZXL"
     ],
@@ -106,6 +108,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "TUG",
       "ZXL"
     ],
@@ -240,6 +243,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -284,6 +288,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -328,6 +333,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -372,6 +378,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -458,6 +465,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -502,6 +510,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -546,6 +555,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -588,6 +598,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "TUG",
       "ZXL"
     ],
@@ -630,6 +641,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -674,6 +686,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -718,6 +731,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -761,8 +775,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -802,7 +818,8 @@
       "MON",
       "RUS",
       "SEN",
-      "TUG"
+      "TUG",
+      "VIK"
     ],
     "class": "tech",
     "description": "With new gunpowder, Handcannoneers gain +5 damage against melee infantry and gain a brief increase to their movement speed after firing their weapon.",
@@ -843,8 +860,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
-      "TUG"
+      "TUG",
+      "VIK"
     ],
     "class": "tech",
     "description": "Stringing bows with silk grants Archers +1 range and Mounted Archers +0.5 range.",
@@ -882,8 +901,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -924,8 +945,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1010,8 +1033,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1053,8 +1078,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1096,7 +1123,9 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1139,8 +1168,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1337,8 +1368,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1379,8 +1412,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
-      "TUG"
+      "TUG",
+      "VIK"
     ],
     "class": "tech",
     "description": "Increases Mangonel range by +1, blast radius by +75%, and adds +1 projectile to attacks.",
@@ -1421,8 +1456,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1463,8 +1500,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
-      "TUG"
+      "TUG",
+      "VIK"
     ],
     "class": "tech",
     "description": "Add defensive arrowslits to this structure and increase garrison arrow range by +1. Only one weapon emplacement can be added.",
@@ -1503,8 +1542,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1545,8 +1586,10 @@
       "MAL",
       "MON",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1586,7 +1629,9 @@
       "MAL",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1628,8 +1673,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1671,6 +1718,7 @@
       "OTT",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -1713,6 +1761,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -1756,8 +1805,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -3562,6 +3613,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -3606,8 +3658,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -3647,6 +3701,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -3689,8 +3744,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -3732,7 +3789,9 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -3774,8 +3833,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -3948,8 +4009,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -5182,8 +5245,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -5226,8 +5291,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "tech",
@@ -5267,6 +5334,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -7318,5 +7386,857 @@
     },
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/single-whip-reform",
     "imgSrc": "/assets/pictures/technology_zhuxi/single-whip-reform.webp"
+  },
+  {
+    "title": "Barmkins",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_scots/barmkins.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 25,
+      "total": 125,
+      "popcap": 0,
+      "time": 30
+    },
+    "id": "barmkins-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/barmkins",
+    "description": "Tower Houses are granted lands to construct Barmkins, offering 4 additional garrison slots for Highland Cattle in the event of raids."
+  },
+  {
+    "title": "Basket-hilted Broadswords",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_scots/basket-hilted-broadswords.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 100,
+      "wood": 0,
+      "stone": 0,
+      "gold": 250,
+      "total": 350,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "basket-hilted-broadswords-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/basket-hilted-broadswords",
+    "description": "Caterans wield Scottish broadswords and dirks, increasing attack speed by 25% and melee armor by 2."
+  },
+  {
+    "title": "Birlinn Crews",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_scots/birlinn-crews.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 100,
+      "total": 200,
+      "popcap": 0,
+      "time": 30
+    },
+    "id": "birlinn-crews-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/birlinn-crews",
+    "description": "Masters of oar and sail, Galleys gain 15% movement speed and 20% attack speed."
+  },
+  {
+    "title": "Cateran's Trail",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_scots/caterans-trail.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 600,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 600,
+      "popcap": 0,
+      "time": 45
+    },
+    "id": "caterans-trail-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/caterans-trail",
+    "description": "Cateran increases the movement speed of infantry by 15%. Infantry heal for 1 health per second in Stealth Forests while out of combat."
+  },
+  {
+    "title": "Clan Traditions",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_scots/clan-traditions.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 1200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 1200,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "clan-traditions-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/clan-traditions",
+    "description": "Melee infantry damage is increased by 15%. Highland Ambush bonus duration is increased by 10 seconds."
+  },
+  {
+    "title": "Fairy's Protection",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_scots/fairys-protection.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 50,
+      "total": 50,
+      "popcap": 0,
+      "time": 15
+    },
+    "id": "fairys-protection-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/fairys-protection",
+    "description": "Create a Stealth Forest at this Tower House. The first 3 Stealth Forests from Tower Houses come with no cost."
+  },
+  {
+    "title": "Feuds Aside",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_scots/feuds-aside.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 2400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 2400,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "feuds-aside-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/feuds-aside",
+    "description": "The Highlands share their gunpowder stores among all regions, increasing the attack speed of Tacksmen, Border Reivers, and gunpowder siege engines by 20%"
+  },
+  {
+    "title": "Fortified Tower Houses",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_scots/fortified-tower-houses.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 200,
+      "gold": 0,
+      "total": 200,
+      "popcap": 0,
+      "time": 30
+    },
+    "id": "fortified-tower-houses-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/fortified-tower-houses",
+    "description": "All Tower Houses fortify themselves with stone, increasing their fire armor by 5."
+  },
+  {
+    "title": "Lion's Duty",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_scots/lions-duty.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 500,
+      "total": 500,
+      "popcap": 0,
+      "time": 45
+    },
+    "id": "lions-duty-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/lions-duty",
+    "description": "Infantry gain 1 armor when near Landmarks, Keeps, Tower Houses, and Stone Wall Towers."
+  },
+  {
+    "title": "Lochaber Axes",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_scots/lochaber-axes.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 100,
+      "wood": 0,
+      "stone": 0,
+      "gold": 250,
+      "total": 350,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "lochaber-axes-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/lochaber-axes",
+    "description": "Men-at-Arms equip Lochaber Axes, gaining 3 damage and 4 anti-cavalry damage. Men-at-Arms brace against cavalry charges."
+  },
+  {
+    "title": "Snaphance Locks",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_scots/snaphance-locks.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 300,
+      "wood": 0,
+      "stone": 0,
+      "gold": 500,
+      "total": 800,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "snaphance-locks-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/snaphance-locks",
+    "description": "With new snaphance mechanisms, Tacksmen and Border Reivers gain +5 damage against melee infantry, and gain a brief increase to their movement speed after firing their weapon."
+  },
+  {
+    "title": "Wallace's Rally",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_scots/wallaces-rally.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 100,
+      "wood": 0,
+      "stone": 0,
+      "gold": 250,
+      "total": 350,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "wallaces-rally-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/wallaces-rally",
+    "description": "Wallace's legacy continues to inspire his people, increasing infantry production speed by 50%. Infantry rally with 25% increased movement speed while out of combat for 25 seconds."
+  },
+  {
+    "title": "We Stand Alone",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_scots/we-stand-alone.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 2500,
+      "total": 2500,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "we-stand-alone-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/we-stand-alone",
+    "description": "Embrace the master masonry of the Lowlands. All building health is increased by 30%, and emplacement attack speeds are increased by 50%. Masons automatically repair buildings whenever they're damaged for 3 health per second."
+  },
+  {
+    "title": "Björn Saga",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_vikings/bjorn-saga.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "bjorn-saga-1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/bjorn-saga",
+    "description": "Complete this Saga by regaining 1000 health on Infantry.\nSaga reward: All Infantry gain 10% health and charge range is increased by 2 tiles."
+  },
+  {
+    "title": "Bone Ash Steel",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/bone-ash-steel.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "bone-ash-steel-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/bone-ash-steel",
+    "description": "Increases damage of all infantry, cavalry and emplacements by +2."
+  },
+  {
+    "title": "Crucible Steel",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_vikings/crucible-steel.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "crucible-steel-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/crucible-steel",
+    "description": "Increases damage of all infantry, cavalry and emplacements by +3."
+  },
+  {
+    "title": "Dreki Saga",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_vikings/dreki-saga.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "dreki-saga-1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/dreki-saga",
+    "description": "Complete this Saga by constructing the Gullinn Temple Landmark.\nSaga reward: Sacred Groves produce Berserkers 15% faster."
+  },
+  {
+    "title": "Extra Oars",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/extra-oars.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 75,
+      "stone": 0,
+      "gold": 125,
+      "total": 200,
+      "popcap": 0,
+      "time": 20
+    },
+    "id": "extra-oars-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/extra-oars",
+    "description": "Increases the hold size of Longships by +6 and increases weapon damage by +1."
+  },
+  {
+    "title": "Falkr Saga",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_vikings/falkr-saga.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "falkr-saga-1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/falkr-saga",
+    "description": "Complete this Saga by upgrading 6 Longhouses with attachments.\nSaga reward: Villager production speed reduced by 2 seconds and reduced Longhouse attachment cost by 20%."
+  },
+  {
+    "title": "Forge Welding",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/forge-welding.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "forge-welding-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/forge-welding",
+    "description": "Increases damage of all infantry, cavalry and emplacements by +1."
+  },
+  {
+    "title": "Hagl Brodda",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/hagl-brodda.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 150,
+      "wood": 0,
+      "stone": 0,
+      "gold": 350,
+      "total": 500,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "hagl-brodda-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/hagl-brodda",
+    "description": "The Archer unleashes a hail of arrows when attacking, firing 2 additional arrows at random nearby locations that do 3 less damage."
+  },
+  {
+    "title": "Hamrammr",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/hamrammr.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 150,
+      "total": 250,
+      "popcap": 0,
+      "time": 30
+    },
+    "id": "hamrammr-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/hamrammr",
+    "description": "Berserkergang triggers at 50% health and heals +50% more health."
+  },
+  {
+    "title": "Heavy Tunics",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/heavy-tunics.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "heavy-tunics-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/heavy-tunics",
+    "description": "Increases ranged and melee armor of all non-siege by +1."
+  },
+  {
+    "title": "Hrafn Saga",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_vikings/hrafn-saga.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "hrafn-saga-1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/hrafn-saga",
+    "description": "Complete this Saga by destroying 2 Technology or Economy buildings.\nSaga reward: All technologies cost 15% less and Smithy/Loom research 45 seconds faster."
+  },
+  {
+    "title": "Jofurr Saga",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_vikings/jofurr-saga.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "jofurr-saga-1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/jofurr-saga",
+    "description": "Complete this Saga by gathering 2500 Food from Boar, Deer, or Shore Fish with Villagers.\nSaga reward: Villagers gather 10% faster and get +5 carry capacity."
+  },
+  {
+    "title": "Jörmungandr Saga",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_vikings/jormungandr-saga.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "jormungandr-saga-1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/jormungandr-saga",
+    "description": "Complete this Saga by earning 1000 Gold by Traders or Trade Ships.\nSaga reward: Ships and Siege Weapons cost 8% less."
+  },
+  {
+    "title": "Lamellar Plating",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_vikings/lamellar-plating.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "lamellar-plating-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/lamellar-plating",
+    "description": "Increases ranged and melee armor of all non-siege by +3."
+  },
+  {
+    "title": "Leding",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/leding.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "total": 400,
+      "popcap": 0,
+      "time": 50
+    },
+    "id": "leding-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/leding",
+    "description": "The Dock influence will also increase ship production speed by 5% for each Longhouse up to 20%."
+  },
+  {
+    "title": "Leikr Training",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_vikings/leikr-training.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 500,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1000,
+      "total": 1500,
+      "popcap": 0,
+      "time": 90
+    },
+    "id": "leikr-training-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/leikr-training",
+    "description": "Physical sports or games that improve the weapon skills and agility of infantry. Melee Infantry gain +15% damage, +20% health, and +0.3 tile weapon range."
+  },
+  {
+    "title": "Mail Shirts",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/mail-shirts.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "mail-shirts-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/mail-shirts",
+    "description": "Increases ranged and melee armor of all non-siege by +2."
+  },
+  {
+    "title": "Pasture and Loom",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/pasture-and-loom.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 100,
+      "total": 200,
+      "popcap": 0,
+      "time": 20
+    },
+    "id": "pasture-and-loom-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/pasture-and-loom",
+    "description": "Automatically researches melee and ranged armor technologies. Technologies from previous ages will research 60 seconds faster. Increases Longhouse health by 750.\nLimited to 1 Pasture and Loom upgraded Longhouse."
+  },
+  {
+    "title": "Reinforced Keel",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/reinforced-keel.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 100,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "total": 300,
+      "popcap": 0,
+      "time": 20
+    },
+    "id": "reinforced-keel-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/reinforced-keel",
+    "description": "Increases ship health by +25% and ranged armor by +1."
+  },
+  {
+    "title": "Ship Barding",
+    "age": 4,
+    "imgSrc": "/assets/pictures/technology_vikings/ship-barding.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 300,
+      "wood": 0,
+      "stone": 0,
+      "gold": 550,
+      "total": 850,
+      "popcap": 0,
+      "time": 50
+    },
+    "id": "ship-barding-4",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ship-barding",
+    "description": "Increases the health of all military ships by +25% and ranged armor by +1."
+  },
+  {
+    "title": "Smithy",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/smithy.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 100,
+      "stone": 0,
+      "gold": 100,
+      "total": 200,
+      "popcap": 0,
+      "time": 20
+    },
+    "id": "smithy-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/smithy",
+    "description": "Automatically researches melee and ranged damage technologies. Technologies from previous ages will research 60 seconds faster. Increases Longhouse health by 750.\nLimited to 1 Smithy upgraded Longhouse."
+  },
+  {
+    "title": "Snaerisspjot",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/snaerisspjot.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 100,
+      "wood": 0,
+      "stone": 0,
+      "gold": 250,
+      "total": 350,
+      "popcap": 0,
+      "time": 25
+    },
+    "id": "snaerisspjot-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/snaerisspjot",
+    "description": "Changes the Drakkar weapon to throwing spears which have +2 damage and +1 range."
+  },
+  {
+    "title": "Sunstones",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/sunstones.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 75,
+      "stone": 0,
+      "gold": 75,
+      "total": 150,
+      "popcap": 0,
+      "time": 20
+    },
+    "id": "sunstones-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/sunstones",
+    "description": "Increases ship vision range by +50% and movement speed by +15%."
+  },
+  {
+    "title": "Turnshoes",
+    "age": 2,
+    "imgSrc": "/assets/pictures/technology_vikings/turnshoes.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 100,
+      "wood": 0,
+      "stone": 0,
+      "gold": 250,
+      "total": 350,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "turnshoes-2",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/turnshoes",
+    "description": "Increases Melee Infantry movement speed by +15% and charge damage by +30%."
+  },
+  {
+    "title": "Ulfberht Swords",
+    "age": 3,
+    "imgSrc": "/assets/pictures/technology_vikings/ulfberht-swords.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 700,
+      "total": 700,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "ulfberht-swords-3",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ulfberht-swords",
+    "description": "Hirdmen equip Ulfberht Swords, increasing their damage by +5."
+  },
+  {
+    "title": "Ulfr Saga",
+    "age": 1,
+    "imgSrc": "/assets/pictures/technology_vikings/ulfr-saga.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "tech",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "ulfr-saga-1",
+    "type": "technology",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/technologies/ulfr-saga",
+    "description": "Complete this Saga by recruiting 25 infantry.\nSaga reward: Melee Infantry gain +5 torch damage and +1 tile torch attack range."
   }
 ]

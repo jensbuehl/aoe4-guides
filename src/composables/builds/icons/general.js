@@ -305,4 +305,24 @@ export const general = [
     description:
       "The Tuglhaq Dynasty is known for its powerful military and innovative tactics. With a focus on heavy cavalry and phalanx formations, the Tuglhaq can dominate the battlefield. Their unique technologies and units allow them to excel in both offense and defense.",
   },
+  {
+    title: "Vikings",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/vik.webp",
+    civ: civs,
+    class: "none",
+    shorthand: "vik",
+    description:
+      "The Vikings are raiders from the north that overwhelmed their enemies with powerful melee infantry that could live off enemy lands. Their flexible Longhouses allow them to build up their population and economy with ease. Sagas and the Norse religion inspire their warriors to fight without fear for the honor of the gods.",
+  },
+  {
+    title: "Scots",
+    age: "1",
+    imgSrc: "/assets/pictures/civilization_flag/sco.webp",
+    civ: civs,
+    class: "none",
+    shorthand: "sco",
+    description:
+      "The Scots field resilient infantry that excel at ambushing enemies from stealth. Tower Houses and Keeps protect their communities and precious cattle from raiders across the countryside. Muster reinforcements quickly at the Mustering Hall and research powerful Highland or Lowland technologies and secure the Kingdom of Scotland.",
+  },
 ];

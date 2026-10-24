@@ -43,6 +43,12 @@ export const IRREGULAR_PLURALS = {
   "Palatine Cataphracts": "Palatine Cataphracts",
   Limitanei: "Limitanei",
   Militia: "Militia",
+  "Skåne Crossbowmen": "Skåne Crossbowmen",
+  // Invariant: cattle is a mass noun, Bondi and Völur are Old Norse plurals the
+  // game uses for one unit as well as many.
+  "Highland Cattle": "Highland Cattle",
+  Bondi: "Bondi",
+  Völur: "Völur",
   "Szlachta Cavalry": "Szlachta Cavalry",
 
   // --- Loanwords the game does not inflect ------------------------------------

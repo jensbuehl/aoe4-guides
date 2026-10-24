@@ -16,6 +16,8 @@
       "KTE",
       "MAC",
       "RUS",
+      "SCO",
+      "VIK",
       "ZXL"
     ],
     "class": "default",
@@ -155,5 +157,48 @@
       "popcap": 0,
       "time": 20
     }
+  },
+  {
+    "title": "Sacred Grove",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_vikings/sacred-grove.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0,
+      "time": 10
+    },
+    "id": "sacred-grove-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/sacred-grove",
+    "description": "The Sacred Grove increases the armor of nearby units by +1 and Berserkers are automatically recruited at the Sacred Grove. Can be placed on Sacred Sites and will capture the Sacred Site.\nThe Sacred Grove health regenerates at 5/s if no enemies are nearby for at least 30 seconds.\nLimited to 3 Sacred Groves."
+  },
+  {
+    "title": "Saga Pillars",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_vikings/saga-pillars.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "saga-pillars-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/saga-pillars",
+    "description": "Carve the story of your Sagas in each of the Pillars of this site. Inspiring the people and immortalizing your legend."
   }
 ]

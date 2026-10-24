@@ -19,13 +19,15 @@
       "JDA",
       "JIN",
       "KTE",
-      "MAL",
       "MAC",
+      "MAL",
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -656,7 +658,8 @@
       "MON",
       "OTT",
       "RUS",
-      "TUG"
+      "TUG",
+      "VIK"
     ],
     "class": "military",
     "shorthand": [
@@ -889,6 +892,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "TUG",
       "ZXL"
     ],
@@ -953,7 +957,8 @@
       "JDA",
       "MAC",
       "MON",
-      "TUG"
+      "TUG",
+      "VIK"
     ],
     "class": "military",
     "description": "Powerful all-purpose ranged infantry.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen",
@@ -1053,6 +1058,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "TUG"
     ],
     "class": "military",
@@ -1187,6 +1193,8 @@
       "MAC",
       "MON",
       "RUS",
+      "SCO",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -1256,7 +1264,8 @@
       "ENG",
       "HOL",
       "HRE",
-      "RUS"
+      "RUS",
+      "SCO"
     ],
     "class": "military",
     "description": "Expensive cavalry with high damage and melee armor. Effective against melee units.\n+ Heavy armor\n+ Strong in melee combat\n- Countered by Spearmen and Crossbowmen",
@@ -3007,6 +3016,7 @@
       "MAL",
       "MON",
       "OTT",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -3232,6 +3242,7 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -3275,8 +3286,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -3362,7 +3375,9 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -3402,8 +3417,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
-      "TUG"
+      "TUG",
+      "VIK"
     ],
     "class": "military",
     "description": "Fires multiple projectiles dealing damage in an area.\n+ Effective against massed units\n- Must be set up to fire",
@@ -3486,8 +3503,10 @@
       "MAL",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -3523,6 +3542,7 @@
       "RUS",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -3550,7 +3570,8 @@
       "FRE",
       "JAP",
       "JDA",
-      "OTT"
+      "OTT",
+      "SCO"
     ],
     "class": "military",
     "description": "Five-barreled gunpowder weapon effective against massed units. Deals little damage to buildings.\n+ Can hit multiple targets in a single volley\n- Short range\n- Low ranged armor",
@@ -3575,8 +3596,9 @@
       "ABB",
       "AYY",
       "DRA",
+      "HOL",
       "HRE",
-      "HOL"
+      "SCO"
     ],
     "class": "military",
     "description": "Long-range mobile cannon with bonus vs buildings.\n+ Effective against Defenses\n+ Does not require setup to fire",
@@ -3632,7 +3654,8 @@
       "HRE",
       "JDA",
       "KTE",
-      "MAC"
+      "MAC",
+      "SCO"
     ],
     "class": "military",
     "description": "Oared war vessel armed with a crew of archers.\n+ Increased maneuverability\n+ Benefits from ranged damage Blacksmith technology",
@@ -3756,7 +3779,8 @@
       "HOL",
       "HRE",
       "KTE",
-      "OTT"
+      "OTT",
+      "SCO"
     ],
     "class": "military",
     "description": "Ship equipped with broadside ballistae.\n+ Strong against Arrow Ships\n- Lower maneuverability",
@@ -3909,7 +3933,9 @@
       "KTE",
       "MAC",
       "MAL",
-      "OTT"
+      "OTT",
+      "SCO",
+      "VIK"
     ],
     "class": "military",
     "description": "Small ship packed with explosives. Detonates when killed, damaging any units in the area.\n- Damage is reduced further from the explosion center\n- No weapons other than self-destruction",
@@ -3992,7 +4018,8 @@
       "HOL",
       "HRE",
       "JDA",
-      "OTT"
+      "OTT",
+      "SCO"
     ],
     "class": "military",
     "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
@@ -4041,7 +4068,8 @@
     "age": 4,
     "imgSrc": "/assets/pictures/unit_ship/xebec.webp",
     "civ": [
-      "MAC"
+      "MAC",
+      "VIK"
     ],
     "class": "military",
     "description": "Large sailed war vessel armed with broadside cannons.\n+ Anti-structure specialist\n- Low movement speed",
@@ -5106,5 +5134,335 @@
     },
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/ranged-specialists",
     "imgSrc": "/assets/pictures/unit_zhuxi/ranged-specialists.webp"
+  },
+  {
+    "title": "Border Reiver",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_scots/border-reiver.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 120,
+      "wood": 0,
+      "stone": 0,
+      "gold": 30,
+      "total": 150,
+      "popcap": 1,
+      "time": 17
+    },
+    "id": "border-reiver-4",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/border-reiver",
+    "description": "Fast moving light cavalry that excel at countering ranged cavalry and raiding.\n+ Uses Torches when attacking buildings\n+ Bonus damage to ranged cavalry\n- Low Health\n- Countered by Horseman and Archers"
+  },
+  {
+    "title": "Cateran",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_scots/cateran.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 90,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 90,
+      "popcap": 1,
+      "time": 10
+    },
+    "id": "cateran-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/cateran",
+    "description": "Swift light melee infantry with bonus damage against workers and buildings.\n+ Fast move speed\n+ Stronger torch\n- Countered by Archers, Knights, Lancers"
+  },
+  {
+    "title": "Gallowglass",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_scots/gallowglass.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 140,
+      "wood": 0,
+      "stone": 0,
+      "gold": 80,
+      "total": 220,
+      "popcap": 1,
+      "time": 28
+    },
+    "id": "gallowglass-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/gallowglass",
+    "description": "Heavy melee infantry equipped with a two-handed claymore, effective in mixed armies.\n+ Melee attack deals area damage\n+ Braces for cavalry charges\n- Slow attack speed\n- Countered by Crossbows, Knights"
+  },
+  {
+    "title": "Highland Archer",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_scots/highland-archer.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 45,
+      "wood": 35,
+      "stone": 0,
+      "gold": 0,
+      "total": 80,
+      "popcap": 1,
+      "time": 15
+    },
+    "id": "highland-archer-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/highland-archer",
+    "description": "Ranged infantry with reduced weapon range for extra damage. Great vs. unarmored targets.\n+ Damage\n+ High rate of fire\n- Weapon range\n- Weak against high ranged armor targets\n- Countered by Horsemen"
+  },
+  {
+    "title": "Highland Cattle",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_scots/highland-cattle.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 75,
+      "wood": 0,
+      "stone": 0,
+      "gold": 25,
+      "total": 100,
+      "popcap": 0,
+      "time": 25
+    },
+    "id": "highland-cattle-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/highland-cattle",
+    "description": "Highland Cattle sustain themselves at Berry Bushes for Food. While eating they produce Food at a rate of 30 per minute.\nThey begin with a capacity of 9, and that increases by 4 with every Highland Landmark built."
+  },
+  {
+    "title": "Pikeman",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_scots/pikeman.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 60,
+      "wood": 25,
+      "stone": 0,
+      "gold": 0,
+      "total": 85,
+      "popcap": 1,
+      "time": 15
+    },
+    "id": "pikeman-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/pikeman",
+    "description": "Infantry equipped with a long pike, best used against mounted units.\n+ Increased weapon range\n+ Anti-cavalry specialist\n+ Additional damage against Elephants\n- Countered by Archers"
+  },
+  {
+    "title": "Tacksman",
+    "age": 4,
+    "imgSrc": "/assets/pictures/unit_scots/tacksman.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 160,
+      "wood": 0,
+      "stone": 0,
+      "gold": 90,
+      "total": 250,
+      "popcap": 1,
+      "time": 35
+    },
+    "id": "tacksman-4",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/tacksman",
+    "description": "Powerful all-purpose ranged infantry that enhances nearby Highland Warrior damage.\n+ High damage\n- High cost\n- Slow movement speed\n- Countered by Horsemen"
+  },
+  {
+    "title": "Berserker",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_vikings/berserker.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 75,
+      "wood": 0,
+      "stone": 0,
+      "gold": 40,
+      "total": 115,
+      "popcap": 1,
+      "time": 22
+    },
+    "id": "berserker-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/berserker",
+    "description": "Fast and light infantry that have good damage and are effective against light units.\n+ High movement\n+ When health is below 25% they will heal and get increased damage\n- Low Armor\n- Countered by Archers"
+  },
+  {
+    "title": "Bondi",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_vikings/bondi.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 75,
+      "wood": 25,
+      "stone": 0,
+      "gold": 0,
+      "total": 100,
+      "popcap": 1,
+      "time": 17
+    },
+    "id": "bondi-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/bondi",
+    "description": "Infantry best used against mounted units with increased health and armor. While they are near other Bondi they form a shield wall giving them bonus health.\n+ Anti-cavalry specialist\n+ Additional damage against Elephants\n- More expensive\n- Weak against heavy infantry\n- Countered by Archers"
+  },
+  {
+    "title": "Drakkar",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_vikings/drakkar.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 110,
+      "wood": 200,
+      "stone": 0,
+      "gold": 30,
+      "total": 340,
+      "popcap": 3,
+      "time": 30
+    },
+    "id": "drakkar-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/drakkar",
+    "description": "Oared war vessel armed with a crew of axe throwers.\n+ Increased maneuverability\n+ Can slow enemy ships with nets"
+  },
+  {
+    "title": "Hirdman",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_vikings/hirdman.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 120,
+      "wood": 0,
+      "stone": 0,
+      "gold": 30,
+      "total": 150,
+      "popcap": 1,
+      "time": 26
+    },
+    "id": "hirdman-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/hirdman",
+    "description": "Tough infantry with increased damage and armor.\n+ High armor\n- More expensive\n- Slow movement\n- Countered by Knights, Lancers, and Crossbowmen"
+  },
+  {
+    "title": "Jylland Knight",
+    "age": 3,
+    "imgSrc": "/assets/pictures/unit_vikings/jylland-knight.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 120,
+      "wood": 0,
+      "stone": 0,
+      "gold": 90,
+      "total": 210,
+      "popcap": 1,
+      "time": 30
+    },
+    "id": "jylland-knight-3",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/jylland-knight",
+    "description": "Expensive cavalry with high damage and melee armor. Effective against melee units. Lower cost but with reduced damage and health. \n+ Heavy armor\n+ Strong in melee combat\n+ Grants 10 Gold on death\n- Countered by Spearmen and Crossbowmen"
+  },
+  {
+    "title": "Longship",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_vikings/longship.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 80,
+      "wood": 150,
+      "stone": 0,
+      "gold": 0,
+      "total": 230,
+      "popcap": 3,
+      "time": 25
+    },
+    "id": "longship-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/longship",
+    "description": "Oared war vessel armed with archers that is also able to transport land units across water.\n+ Increased maneuverability\n+ Each non-Villager loaded increases health by +30 and +1 arrow fired."
+  },
+  {
+    "title": "Shield Maiden",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_vikings/shield-maiden.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 90,
+      "wood": 0,
+      "stone": 0,
+      "gold": 40,
+      "total": 130,
+      "popcap": 1,
+      "time": 13
+    },
+    "id": "shield-maiden-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/shield-maiden",
+    "description": "Heavy ranged unit that has +2 damage and +25% move speed when near allied buildings. \n+ High armor\n+ High health\n+ Provides +2 armor to nearby Villagers\n- Countered by Horsemen"
+  },
+  {
+    "title": "Skåne Crossbowmen",
+    "age": 1,
+    "imgSrc": "/assets/pictures/unit_vikings/sk-ne-crossbowmen.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 75,
+      "wood": 0,
+      "stone": 0,
+      "gold": 30,
+      "total": 105,
+      "popcap": 1,
+      "time": 19.5
+    },
+    "id": "sk-ne-crossbowmen-1",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/sk-ne-crossbowmen",
+    "description": "High damage ranged unit best against heavy targets. Lower cost but with reduced damage and health. \n+ Anti-heavy specialist\n- Low health\n- Countered by Horsemen"
   }
 ]

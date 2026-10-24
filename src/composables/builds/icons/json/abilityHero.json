@@ -463,8 +463,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "none",
@@ -506,8 +508,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "none",
@@ -549,8 +553,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "none",
@@ -634,8 +640,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "none",
@@ -3101,5 +3109,777 @@
     },
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-ranged-specialists",
     "imgSrc": "/assets/pictures/ability_zhuxi/ability-ranged-specialists.webp"
+  },
+  {
+    "title": "Cateran Production (Off)",
+    "imgSrc": "/assets/pictures/ability_scots/ability-cateran-production-off.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-cateran-production-off",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-cateran-production-off",
+    "description": "Toggle on to resume producing free Cateran."
+  },
+  {
+    "title": "Fear-Taic",
+    "imgSrc": "/assets/pictures/ability_scots/ability-fear-taic.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-fear-taic",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-fear-taic",
+    "description": "Increases other nearby Highlanders damage by 1."
+  },
+  {
+    "title": "Ghillie Stealth",
+    "imgSrc": "/assets/pictures/ability_scots/ability-ghillie-stealth.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-ghillie-stealth",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-ghillie-stealth",
+    "description": "Enter Stealth with reduced movement speed. While in Stealth Ghillies are invisible until they are revealed by enemy Scouts, Outposts, Landmark Town Centers, or they engage in combat."
+  },
+  {
+    "title": "Highland Archer Production (Off)",
+    "imgSrc": "/assets/pictures/ability_scots/ability-highland-archer-production-off.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-highland-archer-production-off",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-highland-archer-production-off",
+    "description": "Toggle on to resume producing free Highland Archers."
+  },
+  {
+    "title": "Feudal Age Highland Landmark",
+    "imgSrc": "/assets/pictures/ability_scots/ability-highland-landmark-1.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "ability-highland-landmark-1",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-highland-landmark-1",
+    "description": "Highland technology costs are reduced by 50%."
+  },
+  {
+    "title": "Castle Age Highland Landmark",
+    "imgSrc": "/assets/pictures/ability_scots/ability-highland-landmark-2.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "ability-highland-landmark-2",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-highland-landmark-2",
+    "description": "Multiple Landmarks from the Highlands constructed. Highland technology costs are further reduced by 50%."
+  },
+  {
+    "title": "Imperial Age Highland Landmark",
+    "imgSrc": "/assets/pictures/ability_scots/ability-highland-landmark-3.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "ability-highland-landmark-3",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-highland-landmark-3",
+    "description": "Multiple Landmarks from the Highlands constructed. Highland technology costs are further reduced by 50%."
+  },
+  {
+    "title": "Kings Blessing",
+    "imgSrc": "/assets/pictures/ability_scots/ability-kings-blessing.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {},
+    "id": "ability-kings-blessing",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-kings-blessing",
+    "description": "Attack speed of units from Barracks increased by 15%."
+  },
+  {
+    "title": "Lion's Duty",
+    "imgSrc": "/assets/pictures/ability_scots/ability-lions-duty.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-lions-duty",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-lions-duty",
+    "description": "Emitting an aura that increases armor of infantry."
+  },
+  {
+    "title": "Loch Defensive Network",
+    "imgSrc": "/assets/pictures/ability_scots/ability-loch-defensive-network.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-loch-defensive-network",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-loch-defensive-network",
+    "description": "Arrowslit emplacement cost reduced by 50%."
+  },
+  {
+    "title": "Feudal Age Lowland Landmark",
+    "imgSrc": "/assets/pictures/ability_scots/ability-lowland-landmark-1.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "ability-lowland-landmark-1",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-lowland-landmark-1",
+    "description": "Lowland technology costs are reduced by 50%."
+  },
+  {
+    "title": "Castle Age Lowland Landmark",
+    "imgSrc": "/assets/pictures/ability_scots/ability-lowland-landmark-2.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "ability-lowland-landmark-2",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-lowland-landmark-2",
+    "description": "Multiple Landmarks from the Lowlands constructed. Lowland technology costs are further reduced by 50%."
+  },
+  {
+    "title": "Imperial Age Lowland Landmark",
+    "imgSrc": "/assets/pictures/ability_scots/ability-lowland-landmark-3.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "time": 0,
+      "popcap": 0
+    },
+    "id": "ability-lowland-landmark-3",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-lowland-landmark-3",
+    "description": "Multiple Landmarks from the Lowlands constructed. Lowland technology costs are further reduced by 50%."
+  },
+  {
+    "title": "Men-at-Arms Production (Off)",
+    "imgSrc": "/assets/pictures/ability_scots/ability-men-at-arms-production-off.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-men-at-arms-production-off",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-men-at-arms-production-off",
+    "description": "Toggle on to resume producing free Men-at-Arms."
+  },
+  {
+    "title": "Move Saint's Relic",
+    "imgSrc": "/assets/pictures/ability_scots/ability-move-saints-relic.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-move-saints-relic",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-move-saints-relic",
+    "description": "Move the Saint's Relic to this building to boost it's research and production speed while providing healing in the area. Goes on a 120 second cooldown once moved. Cannot be moved to Landmarks or buildings with defenses."
+  },
+  {
+    "title": "Muster Border Reivers",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-border-reivers.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-border-reivers",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-border-reivers",
+    "description": "Call upon Border Reivers and recruit 13 to the Mustering Hall. Can only be used once."
+  },
+  {
+    "title": "Muster Cateran",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-cateran.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-cateran",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-cateran",
+    "description": "Call upon loyal Highland chiefs to recruit 8 Caterans to the Mustering Hall. Can only be used once."
+  },
+  {
+    "title": "Muster Gallowglass",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-gallowglass.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-gallowglass",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-gallowglass",
+    "description": "Call upon loyal Highland chiefs to recruit 7 Gallowglass to the Mustering Hall. Can only be used once."
+  },
+  {
+    "title": "Muster Highland Archers",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-highland-archers.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-highland-archers",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-highland-archers",
+    "description": "Call upon loyal Highland chiefs to recruit 9 Highland Archers to the Mustering Hall. Can only be used once."
+  },
+  {
+    "title": "Muster Mangonels",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-mangonels.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-mangonels",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-mangonels",
+    "description": "Call upon landholding vassals to recruit 2 Mangonels to the Mustering Hall. Can only be used once."
+  },
+  {
+    "title": "Muster Pikemen",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-pikemen.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-pikemen",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-pikemen",
+    "description": "Call upon landholding vassals to recruit 8 Pikemen to the Mustering Hall. Can only be used once."
+  },
+  {
+    "title": "Muster Royal Navy",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-royal-navy.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-royal-navy",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-royal-navy",
+    "description": "The King calls upon royal shipyards to send reinforcements to the Three Loch Lookout, recruiting 4 Galleys, 4 Hulks, and 3 Carracks. Can only be used once."
+  },
+  {
+    "title": "Muster Tacksmen",
+    "imgSrc": "/assets/pictures/ability_scots/ability-muster-tacksmen.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-muster-tacksmen",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-muster-tacksmen",
+    "description": "Call upon loyal Highland chiefs to recruit 7 Tacksmen to the Mustering Hall. Can only be used once."
+  },
+  {
+    "title": "Mustering Hall Influence",
+    "imgSrc": "/assets/pictures/ability_scots/ability-mustering-hall-influence.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-mustering-hall-influence",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-mustering-hall-influence",
+    "description": "Structures built within Mustering Hall's influence area provide benefits to Musters."
+  },
+  {
+    "title": "Pikemen Production (Off)",
+    "imgSrc": "/assets/pictures/ability_scots/ability-pikemen-production-off.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-pikemen-production-off",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-pikemen-production-off",
+    "description": "Toggle on to resume producing free Pikemen."
+  },
+  {
+    "title": "Relocate Fishpond",
+    "imgSrc": "/assets/pictures/ability_scots/ability-relocate-fishpond.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-relocate-fishpond",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-relocate-fishpond",
+    "description": "Relocate this Fishpond to the target location. Any Kirkman working the Fishpond will try to continue to gather from the new location."
+  },
+  {
+    "title": "Saint's Relic",
+    "imgSrc": "/assets/pictures/ability_scots/ability-saints-relic.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-saints-relic",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-saints-relic",
+    "description": "Nearby friendly non-siege units heal for 1 health every second in the presence of the relic. Each Age increases the amount of health gained per second by 1."
+  },
+  {
+    "title": "Scorched Earth",
+    "imgSrc": "/assets/pictures/ability_scots/ability-scorched-earth.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-scorched-earth",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-scorched-earth",
+    "description": "When Keeps are destroyed by enemy forces, the immediate area is sabotaged for 60 seconds and become Keep Ruins. Enemies affected have their attack speed reduced by 15% and movement speed reduced by 25%. Keep Ruins can be restored if repaired at any point within 60 seconds"
+  },
+  {
+    "title": "Baugr Fort Production",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-baugr-fort-production.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {},
+    "id": "ability-baugr-fort-production",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-baugr-fort-production",
+    "description": "Barracks work 25% faster"
+  },
+  {
+    "title": "Call Shield Maidens",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-call-shield-maidens.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 800,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 800,
+      "popcap": 0
+    },
+    "id": "ability-call-shield-maidens",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-call-shield-maidens",
+    "description": "Dispatch 1 Shield Maiden, plus 1 additional Shield Maiden for each Longhouse constructed. Ignores the normal Shield Maiden recruitment limit. Can only be used once."
+  },
+  {
+    "title": "Dock Influence",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-dock-influence.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-dock-influence",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-dock-influence",
+    "description": "The cost of ships in all Docks are reduced by 4% for each Longhouse within influence of any Dock up to a maximum of 16%."
+  },
+  {
+    "title": "Establish Sacred Grove",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-establish-sacred-grove.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 50,
+      "wood": 0,
+      "stone": 0,
+      "gold": 100,
+      "total": 150,
+      "popcap": 0
+    },
+    "id": "ability-establish-sacred-grove",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-establish-sacred-grove",
+    "description": "Recruit a Völur that will establish a Sacred Grove on a Relic or Sacred Site which increases the armor of nearby units by +1 and Berserkers are automatically recruited over time.\nThe Sacred Grove health regenerates at 5/s if no enemies are nearby for at least 30 seconds.\nLimited to 3 Sacred Groves."
+  },
+  {
+    "title": "Hamingja",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-hamingja.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-hamingja",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-hamingja",
+    "description": "Units near the Sacred Grove gain +1 melee and ranged armor."
+  },
+  {
+    "title": "Living Off The Land",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-living-off-the-land.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-living-off-the-land",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-living-off-the-land",
+    "description": "Consume Food from the target Food source to heal yourself. Consume 1 Food every 3 seconds to regain 0.4 health per second. Automatically improves with each Age."
+  },
+  {
+    "title": "Northern Migration",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-northern-migration.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-northern-migration",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-northern-migration",
+    "description": "Villagers are automatically recruited at no cost as long as there is spare Villager Capacity. Villager Capacity is increased by constructing more Longhouses.\nVillager Capacity is at the maximum, Villager can no longer be recruited until more Longhouse are constructed."
+  },
+  {
+    "title": "Rikets Nyckel Castle",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-rikets-nyckel-castle.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-rikets-nyckel-castle",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-rikets-nyckel-castle",
+    "description": "Acts as a Keep that fires volleys of arrows. Increases population and maximum population by +10. Reduces the cost of all unit tier technologies by 50%. Recruits 10 Skåne Crossbowmen upon construction completion."
+  },
+  {
+    "title": "Royal Procession",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-royal-procession.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-royal-procession",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-royal-procession",
+    "description": "Expands the area for collecting tithes from Longhouses."
+  },
+  {
+    "title": "Toggle Berserker Production (Off)",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-toggle-berserker-production-off.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-toggle-berserker-production-off",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-toggle-berserker-production-off",
+    "description": "Toggle On to resume producing Berserkers at this Sacred Grove."
+  },
+  {
+    "title": "Toggle Villager Production (Off)",
+    "imgSrc": "/assets/pictures/ability_vikings/ability-toggle-villager-production-off.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "none",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 0,
+      "total": 0,
+      "popcap": 0
+    },
+    "id": "ability-toggle-villager-production-off",
+    "type": "ability",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-toggle-villager-production-off",
+    "description": "Toggle On to resume producing Villagers at this Town Center."
   }
 ]

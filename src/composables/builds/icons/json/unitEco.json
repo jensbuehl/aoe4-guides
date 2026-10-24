@@ -3,7 +3,7 @@
     "title": "Villager",
     "age": 1,
     "imgSrc": "/assets/pictures/unit_worker/villager.webp",
-    "civ": ["BYZ", "ENG", "FRE", "HOL", "HRE", "JDA", "KTE", "MAC", "RUS"],
+    "civ": ["BYZ", "ENG", "FRE", "HOL", "HRE", "JDA", "KTE", "MAC", "RUS", "SCO", "VIK"],
     "class": "default",
     "shorthand": "vil",
     "costs": {
@@ -274,6 +274,7 @@
       "MAL",
       "MON",
       "OTT",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -305,8 +306,8 @@
       "ENG",
       "FRE",
       "GOH",
-      "HRE",
       "HOL",
+      "HRE",
       "JAP",
       "JDA",
       "JIN",
@@ -315,8 +316,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "default",
@@ -438,8 +441,10 @@
       "MAL",
       "MON",
       "OTT",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "default",
@@ -537,5 +542,27 @@
     "id": "emissary-1",
     "type": "unit",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/emissary"
+  },
+  {
+    "title": "Fishing Knarr",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_vikings/fishing-knarr.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 80,
+      "stone": 0,
+      "gold": 0,
+      "total": 80,
+      "popcap": 1,
+      "time": 30
+    },
+    "id": "fishing-knarr-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/fishing-knarr",
+    "description": "Small boat that gathers Food from either Deep Water Fish or Shoreline Fish and that is also able to transport a small number of land units across water. Drops off gathered resources at the Dock."
   }
 ]

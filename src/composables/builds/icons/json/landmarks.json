@@ -2341,5 +2341,313 @@
       "popcap": 0,
       "time": 300
     }
+  },
+  {
+    "title": "Abbey of the Isles",
+    "age": 1,
+    "imgSrc": "/assets/pictures/landmark_scots/abbey-of-the-isles.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "total": 600,
+      "popcap": 0,
+      "time": 190
+    },
+    "id": "abbey-of-the-isles-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/abbey-of-the-isles",
+    "description": "Contains a Saint's Relic to provide area healing that increases in effectiveness for each Age. The relic can be moved to military and technology buildings to provide 135% increased research and production speed in addition to area healing. Cannot be moved to other Landmarks or buildings with defenses."
+  },
+  {
+    "title": "Dhùn Èideann",
+    "age": 3,
+    "imgSrc": "/assets/pictures/landmark_scots/dhun-eideann.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 2400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1200,
+      "total": 3600,
+      "popcap": 0,
+      "time": 250
+    },
+    "id": "dhun-eideann-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/dhun-eideann",
+    "description": "Equipped with the \"Seven Sisters\" cannons to defend the area. Produces gunpowder siege engines for 100 less Gold. Gunpowder siege weapons gain 1 tile range."
+  },
+  {
+    "title": "Guardian of Scotland",
+    "age": 4,
+    "imgSrc": "/assets/pictures/landmark_scots/guardian-of-scotland.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 5000,
+      "wood": 5000,
+      "stone": 5000,
+      "gold": 5000,
+      "total": 20000,
+      "popcap": 0,
+      "time": 600
+    },
+    "id": "guardian-of-scotland-4",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/guardian-of-scotland",
+    "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it."
+  },
+  {
+    "title": "Snowdoun Gate",
+    "age": 2,
+    "imgSrc": "/assets/pictures/landmark_scots/snowdoun-gate.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 1200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 600,
+      "total": 1800,
+      "popcap": 0,
+      "time": 220
+    },
+    "id": "snowdoun-gate-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/snowdoun-gate",
+    "description": "Produces toggled infantry for free with a value of 190 resources per minute. \nTechnologies researched at the Mustering Hall increase infantry production speed at this Landmark by 15%. When enemies are nearby, infantry hasten their deployment and gain an additional 15% production speed."
+  },
+  {
+    "title": "Stone of Destiny",
+    "age": 1,
+    "imgSrc": "/assets/pictures/landmark_scots/stone-of-destiny.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "total": 600,
+      "popcap": 0,
+      "time": 190
+    },
+    "id": "stone-of-destiny-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/stone-of-destiny",
+    "description": "Buildings constructed around the Stone of Destiny have 30% of their construction cost rebated as Gold. Does not apply to Landmarks. Grants early access to Kirkman that can create Fishponds."
+  },
+  {
+    "title": "Three Loch Lookout",
+    "age": 3,
+    "imgSrc": "/assets/pictures/landmark_scots/three-loch-lookout.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 2400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1200,
+      "total": 3600,
+      "popcap": 0,
+      "time": 250
+    },
+    "id": "three-loch-lookout-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/three-loch-lookout",
+    "description": "Has a large line of sight and adds 3 muster charges for the Mustering Hall or Three Loch Lookout. The number of warriors received from mustering is increased by 75%. Comes with the option to muster a navy if constructed adjacent to water."
+  },
+  {
+    "title": "Tower of Skye",
+    "age": 2,
+    "imgSrc": "/assets/pictures/landmark_scots/tower-of-skye.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 1200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 600,
+      "total": 1800,
+      "popcap": 0,
+      "time": 220
+    },
+    "id": "tower-of-skye-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/tower-of-skye",
+    "description": "Acts as a Tower House equipped with arrowslits and a springald emplacement. Creates a local Stealth Forest and increases infantry damage by 15% while in Stealth Forests. Tower Houses unlock the ability to create additional Stealth Forests. Galleys unlock the Fairy's Chosen ability."
+  },
+  {
+    "title": "Baugr Fort",
+    "age": 1,
+    "imgSrc": "/assets/pictures/landmark_vikings/baugr-fort.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "total": 600,
+      "popcap": 0,
+      "time": 190
+    },
+    "id": "baugr-fort-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/baugr-fort",
+    "description": "Acts as a Barracks with all units and technologies. All Barracks work +25% faster and reduces Barracks technology costs by 15%.\nImmediately upgrades Bondi and Berserkers to Hardened."
+  },
+  {
+    "title": "Dreki Stave Church",
+    "age": 4,
+    "imgSrc": "/assets/pictures/landmark_vikings/dreki-stave-church.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 5000,
+      "wood": 5000,
+      "stone": 5000,
+      "gold": 5000,
+      "total": 20000,
+      "popcap": 0,
+      "time": 600
+    },
+    "id": "dreki-stave-church-4",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/dreki-stave-church",
+    "description": "Build and defend a Wonder to secure victory. Rival civilizations will be aware of its construction and seek to destroy it."
+  },
+  {
+    "title": "Gullinn Temple",
+    "age": 2,
+    "imgSrc": "/assets/pictures/landmark_vikings/gullinn-temple.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 1200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 600,
+      "total": 1800,
+      "popcap": 0,
+      "time": 220
+    },
+    "id": "gullinn-temple-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/gullinn-temple",
+    "description": "Acts as a Sacred Grove. Allows Völur to establish Sacred Groves on Sacred Sites and unlock the Dreki Saga which increases Sacred Grove Berserker production by 15%."
+  },
+  {
+    "title": "Kongens Dør Cathedral",
+    "age": 3,
+    "imgSrc": "/assets/pictures/landmark_vikings/kongens-d-r-cathedral.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 2400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1200,
+      "total": 3600,
+      "popcap": 0,
+      "time": 250
+    },
+    "id": "kongens-d-r-cathedral-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/kongens-d-r-cathedral",
+    "description": "Acts as a Monastery. Increases population and maximum population by +10. Has a slowly expanding area that gathers a tithe of 10 Gold for each Longhouse every 30 seconds. Has a unique technology that further increases maximum population."
+  },
+  {
+    "title": "Konungr Hall",
+    "age": 1,
+    "imgSrc": "/assets/pictures/landmark_vikings/konungr-hall.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 200,
+      "total": 600,
+      "popcap": 0,
+      "time": 190
+    },
+    "id": "konungr-hall-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/konungr-hall",
+    "description": "Hosts a feast every 60 seconds which provides 10 Food +5 Food for each Longhouse and has a one-time Shield Maiden rally.\nCan recruit Shield Maidens up to 1 +1 for each Longhouse constructed."
+  },
+  {
+    "title": "Rikets Nyckel Castle",
+    "age": 3,
+    "imgSrc": "/assets/pictures/landmark_vikings/rikets-nyckel-castle.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 2400,
+      "wood": 0,
+      "stone": 0,
+      "gold": 1200,
+      "total": 3600,
+      "popcap": 0,
+      "time": 250
+    },
+    "id": "rikets-nyckel-castle-3",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/rikets-nyckel-castle",
+    "description": "Acts as a Keep that fires volleys of arrows. Increases population and maximum population by +10. Reduces the cost of all unit tier technologies by 50%. Recruits 10 Skåne Crossbowmen upon construction completion."
+  },
+  {
+    "title": "Valdemar Castle",
+    "age": 2,
+    "imgSrc": "/assets/pictures/landmark_vikings/valdemar-castle.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "landmark",
+    "costs": {
+      "food": 1200,
+      "wood": 0,
+      "stone": 0,
+      "gold": 600,
+      "total": 1800,
+      "popcap": 0,
+      "time": 220
+    },
+    "id": "valdemar-castle-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/valdemar-castle",
+    "description": "Acts as a Keep. Grants the Danevirke technology which replaces Palisades with stronger walls that have +5 fire armor. Jylland Knights grant 20 more Gold when they are killed."
   }
 ]

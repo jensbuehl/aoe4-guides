@@ -23,8 +23,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -151,8 +153,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -195,8 +199,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -260,8 +266,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -304,8 +312,10 @@
       "MON",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -356,6 +366,8 @@
       "MAL",
       "OTT",
       "RUS",
+      "SCO",
+      "VIK",
       "ZXL"
     ],
     "class": "default",
@@ -439,6 +451,7 @@
       "OTT",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "default",
@@ -500,8 +513,10 @@
       "MAC",
       "MAL",
       "OTT",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "default",
@@ -543,8 +558,10 @@
       "MAC",
       "MAL",
       "OTT",
+      "SCO",
       "SEN",
       "TUG",
+      "VIK",
       "ZXL"
     ],
     "class": "default",
@@ -646,6 +663,7 @@
       "MAL",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -689,6 +707,7 @@
       "MAL",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -792,6 +811,7 @@
       "MAL",
       "OTT",
       "RUS",
+      "SCO",
       "SEN",
       "TUG",
       "ZXL"
@@ -951,5 +971,93 @@
     },
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/harbor",
     "imgSrc": "/assets/pictures/building_templar/harbor.webp"
+  },
+  {
+    "title": "Mustering Hall",
+    "age": 2,
+    "imgSrc": "/assets/pictures/building_scots/mustering-hall.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 0,
+      "wood": 50,
+      "stone": 0,
+      "gold": 0,
+      "total": 50,
+      "popcap": 0,
+      "time": 15
+    },
+    "id": "mustering-hall-2",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/mustering-hall",
+    "description": "Holds technology from the Highlands and Lowlands. Each time a Landmark from a region is chosen, costs of their powerful technologies are reduced. Musters warriors using Food and Muster Charge costs. Each type of muster is one-time use.\nGenerates influence to military production buildings. Each building provides a count towards Muster Hall levels to improve its mustering efficiency and adds additional Muster Charges.\nComes with 1 Muster Charge by default."
+  },
+  {
+    "title": "Tower House",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_scots/tower-house.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 175,
+      "stone": 0,
+      "gold": 0,
+      "total": 175,
+      "popcap": 0,
+      "time": 60
+    },
+    "id": "tower-house-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/tower-house",
+    "description": "Produces Highland Cattle, has extended line of sight, and detects units in stealth or disguises. Can be upgraded with weaponry and fortifications. Attacks while garrisoned. Increases maximum population by 15."
+  },
+  {
+    "title": "Danevirke",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_vikings/danevirke.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 7,
+      "stone": 0,
+      "gold": 0,
+      "total": 7,
+      "popcap": 0,
+      "time": 8
+    },
+    "id": "danevirke-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/danevirke",
+    "description": "Heavier Palisade wall that has 5 fire armor."
+  },
+  {
+    "title": "Danevirke Gate",
+    "age": 1,
+    "imgSrc": "/assets/pictures/building_vikings/danevirke-gate.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "default",
+    "costs": {
+      "food": 0,
+      "wood": 25,
+      "stone": 0,
+      "gold": 0,
+      "total": 25,
+      "popcap": 0,
+      "time": 10
+    },
+    "id": "danevirke-gate-1",
+    "type": "building",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/buildings/danevirke-gate",
+    "description": "Light defensive gate. Must be built on a Danevirke Wall segment."
   }
 ]

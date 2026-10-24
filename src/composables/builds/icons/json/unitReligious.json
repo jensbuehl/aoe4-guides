@@ -13,6 +13,7 @@
       "JIN",
       "KTE",
       "MAC",
+      "VIK",
       "ZXL"
     ],
     "class": "military",
@@ -251,5 +252,49 @@
     },
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/khaganate-warrior-monk",
     "imgSrc": "/assets/pictures/unit_mongols/khaganate-warrior-monk.webp"
+  },
+  {
+    "title": "Kirkman",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_scots/kirkman.webp",
+    "civ": [
+      "SCO"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 0,
+      "wood": 0,
+      "stone": 0,
+      "gold": 150,
+      "total": 150,
+      "popcap": 1,
+      "time": 30
+    },
+    "id": "kirkman-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/kirkman",
+    "description": "Support unit that can establish and gather from Fishponds. Can pick up Relics, convert enemy units, and capture Sacred Sites.\n+ Heals friendly units\n- Slow movement speed"
+  },
+  {
+    "title": "Völur",
+    "age": 2,
+    "imgSrc": "/assets/pictures/unit_vikings/volur.webp",
+    "civ": [
+      "VIK"
+    ],
+    "class": "military",
+    "costs": {
+      "food": 50,
+      "wood": 0,
+      "stone": 0,
+      "gold": 100,
+      "total": 150,
+      "popcap": 1,
+      "time": 25
+    },
+    "id": "volur-2",
+    "type": "unit",
+    "exploreUrl": "https://aoe4world.com/explorer/civs/all/units/volur",
+    "description": "Support unit with no combat capability that can be sacrificed to establish a Sacred Grove on a Relic or can automatically move between Longhouses boosting their production.\n- Weak to all attacks\n- Slow movement speed"
   }
 ]
