@@ -142,6 +142,14 @@
           >, and wanted to build on it and take it all the way to something mature.
         </p>
         <p class="mt-4">
+          The game data behind every icon — names, costs, descriptions and the icons themselves —
+          comes from <a class="text-primary" :href="links.aoe4worldSite" target="_blank" rel="noopener">AoE4World</a>
+          and their open
+          <a class="text-primary" :href="links.aoe4worldData" target="_blank" rel="noopener">data project</a>.
+          Special thanks to CascadeFury, who went through the Vikings and Scots data ahead of the
+          Raiders of the North release so both civilizations could be here on day one.
+        </p>
+        <p class="mt-4">
           It is mostly a solo project, but not entirely — these people have contributed code, fixes
           and improvements:
         </p>
@@ -273,6 +281,8 @@ const links = {
   lenProject: "https://github.com/LENpolygon/Build-Order-Tool-AoE4-",
   discord: "https://discord.gg/Nau9BN5E7J",
   aoe4world: "https://aoe4world.com/players/76561197963612898",
+  aoe4worldSite: "https://aoe4world.com",
+  aoe4worldData: "https://github.com/aoe4world/data",
   kofi: "https://ko-fi.com/jensbuehl",
   apiDocs: "https://aoe4guides.com/api/api-docs/",
   linkedin: LINKEDIN_URL,
