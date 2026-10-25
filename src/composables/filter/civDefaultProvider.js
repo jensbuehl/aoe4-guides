@@ -2,6 +2,11 @@ import { ref } from "vue";
 
 export const civs = ref([
   // Sorted alphabetically by title
+  //
+  // ?v=2 on the Scots and Vikings flags: they replaced placeholder art under
+  // the same filenames, and public/_headers lets a browser reuse a flag for a
+  // week without asking, so returning visitors kept the old images through
+  // any reload. Bump it whenever a flag file is replaced in place.
   {
     title: "Abbasid Dynasty",
     shortName: "ABB",
@@ -152,8 +157,8 @@ export const civs = ref([
     title: "Scots",
     shortName: "SCO",
     tagLine: "Infantry, Defense, Mustering",
-    flagLarge: "/assets/flags/sco-large.webp",
-    flagSmall: "/assets/flags/sco-small.webp",
+    flagLarge: "/assets/flags/sco-large.webp?v=2",
+    flagSmall: "/assets/flags/sco-small.webp?v=2",
   },
   {
     title: "Sengoku Daimyo",
@@ -173,8 +178,8 @@ export const civs = ref([
     title: "Vikings",
     shortName: "VIK",
     tagLine: "Longhouses, Infantry, Sagas",
-    flagLarge: "/assets/flags/vik-large.webp",
-    flagSmall: "/assets/flags/vik-small.webp",
+    flagLarge: "/assets/flags/vik-large.webp?v=2",
+    flagSmall: "/assets/flags/vik-small.webp?v=2",
   },
   {
     title: "Zhu Xi's Legacy",

@@ -72,21 +72,15 @@
                 height="40"
               />
               <div>
-              <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
+              <!-- One title for every platform. iOS and Android used to get a copy
+                   with mt-1, a shift for system fonts rendering differently there.
+                   The name is now a self-hosted face that renders alike everywhere,
+                   and beside a centred mark that shift put the text 2px low. -->
               <v-card-title
-                v-if="!(platform.android || platform.ios)"
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
                 class="title my-0 py-0"
-                >{{ title }}</v-card-title
-              >
-              <v-card-title
-                v-if="platform.android || platform.ios"
-                :style="{
-                  color: $vuetify.theme.current.colors.primary,
-                }"
-                class="title mb-0 mt-1 pb-0 pt-0"
                 >{{ title }}</v-card-title
               >
               <v-card-subtitle
@@ -480,14 +474,20 @@ export default {
 .header-brand .subtitle {
   padding-right: 11.5px;
 }
+/* The ring sits outside the image, which is 2px smaller than its slot and
+   centred in it by a 1px margin. So the ring's outer edge is where the slot's
+   edge is and still meets the text, but no longer lies over the tile's own
+   edge right beside the monogram, whose letters nearly fill it. Drawn inside,
+   it looked cramped. A stopgap until the mark itself is reworked: a CSS
+   "BO" in EB Garamond was tried and rejected, because it is not the icon's
+   lettering. */
 .header-mark {
   flex-shrink: 0;
-  margin-left: 12px;
-  border-radius: 6px;
-  /* Inside the edge, not a box-shadow ring: a ring outside adds a pixel at
-     each end and the mark visibly overshoots the text it was sized to. */
-  outline: 1px solid rgba(var(--v-theme-accent), 0.55);
-  outline-offset: -1px;
+  width: 38px;
+  height: 38px;
+  margin: 1px 1px 1px 13px;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px rgba(var(--v-theme-accent), 0.55);
 }
 /* The compact 60px bar (phones, and desktop below 1280px): one line, no
    tagline, so the mark is centred on the name instead of spanning two lines.
@@ -503,10 +503,10 @@ export default {
   padding: 0 0.215em 0 0.3em;
 }
 .header-brand--compact .header-mark {
-  width: 1.2em;
-  height: 1.2em;
-  margin-left: 0;
-  border-radius: 0.15em;
+  width: calc(1.2em - 2px);
+  height: calc(1.2em - 2px);
+  margin: 1px;
+  border-radius: calc(0.15em - 1px);
 }
 .header-brand--compact .title {
   font-size: 1em;
