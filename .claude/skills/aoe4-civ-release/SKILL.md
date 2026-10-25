@@ -125,6 +125,21 @@ desktop and 390px, About credits.
   Völur, Skåne Crossbowmen); `-man → -men` is automatic.
 - **Credits**: thank AOE4World and whoever prepared the data on About.vue.
 
+## Announce it
+
+- **Home top slot**: `src/config/release.js` (title, lead, civ codes with
+  their official pages, `releases`/`ends` dates, store/trailer links) drives
+  `ReleaseBanner.vue` — pre-order wording until `releases`, "available now"
+  with links to the civs' builds after, gone at `ends` so the contributor
+  spotlight returns. A running tournament (`event.js`) outranks it. Both
+  banners share `HomeBanner.vue`; keep four buttons per state so none wraps
+  alone at the md=8 column.
+- **News card** (`src/components/notifications/News.vue`): what is new in
+  the editor, the official trailer (16:9, youtube-nocookie, lazy) and the
+  thanks.
+- New `mdi-*` icons for store buttons must go into `src/plugins/mdiIcons.js`
+  (ASCII-sorted — insert, do not re-sort the file).
+
 ## Traps the tool had (fixed — keep them fixed)
 
 - AOE4World reuses an id across types (`danevirke` building + technology,
