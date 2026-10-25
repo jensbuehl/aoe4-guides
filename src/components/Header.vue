@@ -4,7 +4,7 @@
     scroll-threshold="150"
     :scroll-behavior= "(platform.android || platform.ios) ? 'hide' : '' "
     app
-    :height="(platform.android || platform.ios || mobile) ? 60 : 100"
+    :height="compact ? 60 : 100"
     :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.accent"
   >
     <v-container class="fill-height d-flex align-center my-0 py-0">
@@ -53,10 +53,23 @@
         </v-menu>
       </v-app-bar-nav-icon>
 
-      <v-app-bar-title style="min-width: 240px">
+      <v-app-bar-title :style="{ minWidth: compact ? '240px' : '300px' }">
         <v-row no-gutters class="fill-height" align="center" justify="start">
           <v-col cols="12">
-            <v-card to="/" flat width="240">
+            <v-card to="/" flat :width="compact ? 240 : 300" class="d-flex align-center">
+              <!-- The app icon, so the header and the browser tab are visibly the
+                   same site. Decorative: the name beside it is the link text.
+                   Full bar only: at 375px the compact bar has no 56px to spare
+                   beside the menu and avatar, and the title wraps out of it. -->
+              <img
+                v-if="!compact"
+                src="/android-chrome-192x192.png"
+                alt=""
+                class="header-mark"
+                width="42"
+                height="42"
+              />
+              <div>
               <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
               <v-card-title
                 v-if="!(platform.android || platform.ios)"
@@ -82,6 +95,7 @@
                 class="subtitle mb-1"
                 >{{ subtitle }}</v-card-subtitle
               >
+              </div>
             </v-card>
           </v-col>
         </v-row>
@@ -367,6 +381,8 @@ export default {
     const router = useRouter();
     const theme = useTheme();
     const { mobile, platform } = useDisplay();
+    // The 60px bar, as opposed to the 100px one; the mark shrinks with it.
+    const compact = computed(() => platform.value.android || platform.value.ios || mobile.value);
     const savedMode = ref(localStorage.getItem(THEME_STORAGE_KEY) || "system");
 
     const mode = computed({
@@ -414,6 +430,7 @@ export default {
     return {
       title,
       subtitle,
+      compact,
       user,
       showBottomNavigation: computed(() => store.state.showBottomNavigation),
       authIsReady: computed(() => store.state.authIsReady),
@@ -434,15 +451,45 @@ export default {
 .v-container {
   max-width: 1400px !important;
 }
+/* The tile's navy is the dark bar's navy, so without the ring only the gold
+   letters show and the mark reads as stray text. The radius follows the
+   tile's own rounded corners.
+
+   Sized to the ink, not the boxes, then corrected by eye. With EB Garamond
+   loaded the drawn text runs 30px to 74px down the 100px bar (pixel scan),
+   but a 44px tile matching that exactly looked too big. A solid block reads
+   larger than thin strokes, the topmost ink is the overshoot of O and G
+   rather than the flat caps, and the pale tagline seems to end before its
+   last pixels. So 42px, one pixel inside the text at each end (31 to 73).
+   Centring alone sets the mark 2px high, because the text block's box
+   includes the subtitle's bottom margin, which has no ink. A different title
+   face moves both edges, so re-measure rather than adjust. */
+.header-mark {
+  flex-shrink: 0;
+  margin-left: 16px;
+  position: relative;
+  top: 2px;
+  border-radius: 6px;
+  /* Inside the edge, not a box-shadow ring: a ring outside adds a pixel at
+     each end and the mark visibly overshoots the text it was sized to. */
+  outline: 1px solid rgba(var(--v-theme-accent), 0.55);
+  outline-offset: -1px;
+}
+/* The name is set in EB Garamond, the same classical serif voice as the BO
+   monogram beside it, and self-hosted (main.js) so it looks the same on every
+   platform. The tagline stays a UI sans, which reads better small. Segoe UI is
+   not a web font and cannot be served, so it exists only on Windows; the
+   fallbacks are each platform's own UI face. Brand.vue restates both. */
 .title {
-  font-size: 1.5rem;
-  font-family: "Segoe UI";
+  font-size: 1.65rem;
+  font-family: "EB Garamond", Georgia, "Times New Roman", serif;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 .subtitle {
   font-size: 0.8rem;
-  font-family: "Segoe UI";
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
   text-transform: uppercase;
 }
 </style>

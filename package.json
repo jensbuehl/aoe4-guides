@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@firebase/app-check": "^0.8.13",
+    "@fontsource/eb-garamond": "^5.3.0",
     "@mdi/js": "^7.4.47",
     "@vueuse/core": "^13.0.0",
     "axios": "^1.8.4",

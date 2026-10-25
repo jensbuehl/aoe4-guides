@@ -92,16 +92,21 @@
         <p class="mt-4">
           There is no lockup image to hand out, because the site does not use one — the wordmark in
           the header is live text, and this is its specification. Set it in
-          <strong>{{ wordmark.font }}</strong>, uppercase, {{ wordmark.tracking }} letter-spacing,
-          in the theme's <code>primary</code>. Anything close in a humanist sans will look right;
-          the tracking matters more than the face.
+          <strong>{{ wordmark.font }}</strong> SemiBold, uppercase, {{ wordmark.tracking }}
+          letter-spacing, in the theme's <code>primary</code>. It is the same classical serif voice
+          as the monogram, which is why it was chosen. The tagline under it is a plain UI sans
+          (<strong>{{ wordmark.subtitleFont }}</strong>), uppercase. The header sets the app icon to
+          their left, from the name's cap height down to the tagline's baseline.
         </p>
-        <v-card variant="outlined" rounded="lg" class="mt-6 pa-6">
-          <div class="brand-wordmark" :style="{ color: currentColors.primary }">
-            {{ wordmark.title }}
-          </div>
-          <div class="brand-wordmark-sub" :style="{ color: currentColors.primary }">
-            {{ wordmark.subtitle }}
+        <v-card variant="outlined" rounded="lg" class="mt-6 pa-6 d-flex align-center ga-4">
+          <img src="/android-chrome-192x192.png" alt="" width="40" height="40" />
+          <div>
+            <div class="brand-wordmark" :style="{ color: currentColors.primary }">
+              {{ wordmark.title }}
+            </div>
+            <div class="brand-wordmark-sub" :style="{ color: currentColors.primary }">
+              {{ wordmark.subtitle }}
+            </div>
           </div>
         </v-card>
 
@@ -259,8 +264,9 @@ const gameContentRulesUrl = "https://www.xbox.com/en-us/developers/rules";
 const wordmark = {
   title: "AOE4 GUIDES",
   subtitle: "Age of Empires IV Build Orders",
-  font: "Segoe UI",
-  tracking: "2px",
+  font: "EB Garamond",
+  subtitleFont: "Segoe UI",
+  tracking: "1.5px",
 };
 
 // Every file here is already in public/ and already served to every visitor;
@@ -665,15 +671,16 @@ export default {
 /* The same three declarations as Header.vue's .title and .subtitle. Copied
    rather than shared for the reason given on the `wordmark` object above. */
 .brand-wordmark {
-  font-size: 1.5rem;
-  font-family: "Segoe UI";
+  font-size: 1.65rem;
+  font-family: "EB Garamond", Georgia, "Times New Roman", serif;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
 }
 
 .brand-wordmark-sub {
   font-size: 0.8rem;
-  font-family: "Segoe UI";
+  font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
   text-transform: uppercase;
 }
 </style>

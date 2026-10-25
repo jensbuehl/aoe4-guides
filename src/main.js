@@ -6,6 +6,9 @@ import router from "@/router/";
 // global styles and icons
 import "@/assets/main.css";
 import "vuetify/dist/vuetify.min.css";
+// The wordmark's face, served from our own origin. Latin at the one weight the
+// header title uses; nothing else on the site is set in it.
+import "@fontsource/eb-garamond/latin-600.css";
 
 // import store
 import store from "@/store";
