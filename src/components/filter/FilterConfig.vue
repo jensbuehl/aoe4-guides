@@ -95,6 +95,9 @@
                 clearable
                 multiple
               >
+                <template #item="{ props: itemProps, item }">
+                  <SeasonListItem :item-props="itemProps" :title="item.raw.title" :selected="(draft.seasons || []).includes(item.raw.title)" />
+                </template>
                 <template v-if="dirtyFields.seasons" #append-inner>
                   <span class="fl-dot" />
                 </template>
@@ -199,6 +202,9 @@
           clearable
           multiple
         >
+          <template #item="{ props: itemProps, item }">
+            <SeasonListItem :item-props="itemProps" :title="item.raw.title" :selected="(draft.seasons || []).includes(item.raw.title)" />
+          </template>
           <template v-if="dirtyFields.seasons" #append-inner>
             <span class="fl-dot" />
           </template>
@@ -271,12 +277,13 @@ import FilterChips from "@/components/filter/FilterChips.vue";
 import FilterApplyBar from "@/components/filter/FilterApplyBar.vue";
 import FilterSortGroup from "@/components/filter/FilterSortGroup.vue";
 import CivFlag from "@/components/common/CivFlag.vue";
+import SeasonListItem from "@/components/common/SeasonListItem.vue";
 
 export default {
   name: "FilterConfig",
   inheritAttrs: false,
   emits: ["configChanged"],
-  components: { FilterChips, FilterApplyBar, FilterSortGroup, CivFlag },
+  components: { FilterChips, FilterApplyBar, FilterSortGroup, CivFlag, SeasonListItem },
   props: {
     context: { type: String, default: "default" },
     civName: { type: String, default: null },

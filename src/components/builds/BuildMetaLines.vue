@@ -58,9 +58,14 @@
         <v-icon size="12">mdi-message-outline</v-icon>{{ build.comments }}
       </span>
       <template v-if="build.season"><span class="bml-sep">·</span></template>
-      <span v-if="build.season" class="d-inline-flex align-center">
-        <v-icon size="12">mdi-trophy</v-icon>{{ build.season }}
-      </span>
+      <v-tooltip v-if="build.season" location="top">
+        <SeasonToolTip :title="build.season" />
+        <template #activator="{ props: tipProps }">
+          <span v-bind="tipProps" class="d-inline-flex align-center">
+            <v-icon size="12">mdi-trophy</v-icon>{{ build.season }}
+          </span>
+        </template>
+      </v-tooltip>
       <template v-if="showSecondary && build.map"><span class="bml-sep">·</span></template>
       <span v-if="showSecondary && build.map" class="d-inline-flex align-center">
         <v-icon size="12">mdi-map</v-icon>{{ build.map }}
@@ -79,9 +84,11 @@ import { computed } from "vue";
 
 //Composables
 import useTimeSince from "@/composables/useTimeSince";
+import SeasonToolTip from "@/components/common/SeasonToolTip.vue";
 
 export default {
   name: "BuildMetaLines",
+  components: { SeasonToolTip },
   props: {
     build: { type: Object, default: () => ({}) },
     createdDate: { type: Date, default: null },

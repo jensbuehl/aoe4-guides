@@ -192,9 +192,14 @@
             </template>
             <template v-if="showSeason">
               <span class="blc-sep">·</span>
-              <span 
-                ><v-icon size="13" icon="mdi-trophy"></v-icon>{{ build.season }}</span
-              >
+              <v-tooltip location="top">
+                <SeasonToolTip :title="build.season" />
+                <template #activator="{ props: tipProps }">
+                  <span v-bind="tipProps"
+                    ><v-icon size="13" icon="mdi-trophy"></v-icon>{{ build.season }}</span
+                  >
+                </template>
+              </v-tooltip>
             </template>
             <template v-if="showMap">
               <span class="blc-sep">·</span>
@@ -245,6 +250,7 @@ import { useDisplay } from "vuetify";
 
 //Components
 import AgeChips from "@/components/builds/AgeChips.vue";
+import SeasonToolTip from "@/components/common/SeasonToolTip.vue";
 
 //Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
@@ -258,7 +264,7 @@ import {
 } from "@/composables/builds/useAgeTimings.js";
 
 export default {
-  components: { AgeChips },
+  components: { AgeChips, SeasonToolTip },
   name: "BuildListCard",
   props: {
     build: { type: Object, required: true },

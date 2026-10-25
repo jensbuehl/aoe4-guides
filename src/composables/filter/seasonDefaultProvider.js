@@ -3,16 +3,24 @@ import { ref } from "vue";
 // Newest first — the build editor takes the first entry as the default season.
 // Since Season 13, ranked seasons are no longer tied to updates: four
 // three-month seasons a year, each starting on the 1st at 10:00 PT
-// (Spring Mar, Summer Jun, Fall Sep, Winter Dec), per Update 16.1.9737.
+// (Spring Mar, Summer Jun, Fall Sep, Winter Dec), per Update 16.1.9737. So the
+// tagline is the time of year from then on, and the expansion released during
+// the season, if any, gets its own field.
+//
+// A season ends where the next one starts (seasonEndDate below); only the
+// newest needs an explicit endDate, since nothing follows it yet.
 export const seasons = ref([
   {
     title: "Season 14",
-    tagline: "Fall Season",
-    startDate: new Date(2026, 8, 1)
+    tagline: "Fall 2026",
+    expansion: "Raiders of the North",
+    startDate: new Date(2026, 8, 1),
+    endDate: new Date(2026, 10, 30),
   },
   {
     title: "Season 13",
-    tagline: "Yue Fei's Legacy",
+    tagline: "Summer 2026",
+    expansion: "Yue Fei's Legacy",
     startDate: new Date(2026, 4, 7)
   },
   {
@@ -76,3 +84,42 @@ export const seasons = ref([
     startDate: new Date(2022, 3, 7)
   },
 ]);
+
+/**
+ * Looks a season up by the title a build stores ("Season 13").
+ *
+ * @param {string} title
+ * @return {Object|null}
+ */
+export function getSeasonByTitle(title) {
+  return seasons.value.find((s) => s.title === title) ?? null;
+}
+
+/**
+ * The last day of a season: its own endDate, or the day before the next
+ * season starts. Null for the newest season when it has no endDate.
+ *
+ * @param {Object} season - An entry of `seasons`.
+ * @return {Date|null}
+ */
+export function seasonEndDate(season) {
+  if (season.endDate) return season.endDate;
+  const index = seasons.value.indexOf(season);
+  const next = index > 0 ? seasons.value[index - 1] : null;
+  if (!next) return null;
+  const end = new Date(next.startDate);
+  end.setDate(end.getDate() - 1);
+  return end;
+}
+
+/**
+ * Whether a season is running on the given day.
+ *
+ * @param {Object} season - An entry of `seasons`.
+ * @param {Date} [now]
+ * @return {boolean}
+ */
+export function isSeasonCurrent(season, now = new Date()) {
+  const end = seasonEndDate(season);
+  return now >= season.startDate && (!end || now < new Date(end.getTime() + 86400000));
+}

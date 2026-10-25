@@ -192,7 +192,11 @@
               density="compact"
               item-value="title"
               item-title="title"
-            ></v-select>
+            >
+              <template #item="{ props: itemProps, item }">
+                <SeasonListItem :item-props="itemProps" :title="item.raw.title" />
+              </template>
+            </v-select>
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <v-select
@@ -242,6 +246,7 @@ import sanitizeHtml from "sanitize-html";
 import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
 import CivFlag from "@/components/common/CivFlag.vue";
+import SeasonListItem from "@/components/common/SeasonListItem.vue";
 
 import { getCreator, addCreator } from "@/composables/data/creatorService";
 import {
@@ -271,7 +276,7 @@ import useDownload from "@/composables/converter/useDownload";
 
 export default {
   name: "BuildEditor",
-  components: { BuildOrderEditor, BuildHeader, CivFlag },
+  components: { BuildOrderEditor, BuildHeader, CivFlag, SeasonListItem },
   props: {
     mode: {
       type: String,
