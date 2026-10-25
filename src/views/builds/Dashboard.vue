@@ -63,7 +63,12 @@
           ></v-col>
 
           <v-col cols="12">
-            <NoFilterResults v-if="count !== null && count === 0" @cleared="handleCleared" />
+            <NoFilterResults
+              v-if="count !== null && count === 0"
+              :civ="civ"
+              :civ-name="civDisplayName"
+              @cleared="handleCleared"
+            />
             <BuildLaneTabs
               v-else
               :popular-builds="popularBuildsList"

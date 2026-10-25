@@ -239,7 +239,7 @@
 <script>
 import { ref, computed, watch, onMounted } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { onBeforeRouteLeave } from "vue-router";
 import sanitizeHtml from "sanitize-html";
 
@@ -290,6 +290,7 @@ export default {
   },
   setup(props) {
     const store = useStore();
+    const route = useRoute();
     const router = useRouter();
 
     const error = ref(null);
@@ -350,7 +351,9 @@ export default {
           video: "",
           creatorId: null,
           creatorName: "",
-          civ: "",
+          // A civ page's "Create build order" passes its civ along; anything
+          // that is not a civ's short name is ignored, not stored.
+          civ: civs.some((c) => c.shortName === route.query.civ) ? route.query.civ : "",
           map: "",
           season: seasons.value[0].title,
           strategy: "",
