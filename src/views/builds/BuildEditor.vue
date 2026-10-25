@@ -347,7 +347,7 @@ export default {
           creatorName: "",
           civ: "",
           map: "",
-          season: "Season 13",
+          season: seasons.value[0].title,
           strategy: "",
           views: 0,
           likes: 0,

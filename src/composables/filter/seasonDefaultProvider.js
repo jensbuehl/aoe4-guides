@@ -1,6 +1,15 @@
 import { ref } from "vue";
 
+// Newest first — the build editor takes the first entry as the default season.
+// Since Season 13, ranked seasons are no longer tied to updates: four
+// three-month seasons a year, each starting on the 1st at 10:00 PT
+// (Spring Mar, Summer Jun, Fall Sep, Winter Dec), per Update 16.1.9737.
 export const seasons = ref([
+  {
+    title: "Season 14",
+    tagline: "Fall Season",
+    startDate: new Date(2026, 8, 1)
+  },
   {
     title: "Season 13",
     tagline: "Yue Fei's Legacy",
