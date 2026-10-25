@@ -3254,19 +3254,6 @@
     "description": "Multiple Landmarks from the Highlands constructed. Highland technology costs are further reduced by 50%."
   },
   {
-    "title": "Kings Blessing",
-    "imgSrc": "/assets/pictures/ability_scots/ability-kings-blessing.webp",
-    "civ": [
-      "SCO"
-    ],
-    "class": "none",
-    "costs": {},
-    "id": "ability-kings-blessing",
-    "type": "ability",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-kings-blessing",
-    "description": "Attack speed of units from Barracks increased by 15%."
-  },
-  {
     "title": "Lion's Duty",
     "imgSrc": "/assets/pictures/ability_scots/ability-lions-duty.webp",
     "civ": [
@@ -3701,26 +3688,6 @@
     "type": "ability",
     "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-call-shield-maidens",
     "description": "Dispatch 1 Shield Maiden, plus 1 additional Shield Maiden for each Longhouse constructed. Ignores the normal Shield Maiden recruitment limit. Can only be used once."
-  },
-  {
-    "title": "Dock Influence",
-    "imgSrc": "/assets/pictures/ability_vikings/ability-dock-influence.webp",
-    "civ": [
-      "VIK"
-    ],
-    "class": "none",
-    "costs": {
-      "food": 0,
-      "wood": 0,
-      "stone": 0,
-      "gold": 0,
-      "total": 0,
-      "popcap": 0
-    },
-    "id": "ability-dock-influence",
-    "type": "ability",
-    "exploreUrl": "https://aoe4world.com/explorer/civs/all/abilities/ability-dock-influence",
-    "description": "The cost of ships in all Docks are reduced by 4% for each Longhouse within influence of any Dock up to a maximum of 16%."
   },
   {
     "title": "Establish Sacred Grove",
