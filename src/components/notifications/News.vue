@@ -7,30 +7,23 @@
   >
     <v-card-title class="px-4 py-2 pb-2">
       <span class="v-card-title pa-0 d-flex align-center">
-        <v-icon
-          icon="mdi-picture-in-picture-bottom-right"
-          size="small"
-          class="mr-4"
-          color="primary"
-        ></v-icon>
-        Build Order Overlay
+        <v-icon icon="mdi-alert-decagram" size="small" class="mr-4" color="primary"></v-icon>
+        Vikings &amp; Scots
       </span>
     </v-card-title>
     <v-card-text class="px-4">
       <div class="text-body-2 text-medium-emphasis">
-        Your build order, always on top. <strong>Play > Floating window</strong> opens the
-        current build in focus mode that floats above the game.
+        Both civilizations from <strong>Raiders of the North</strong> are in the build order editor:
+        every unit, building, technology, landmark and ability, with icons, costs and descriptions.
       </div>
 
-      <!-- Vertical short, capped: the sidebar is a quarter of the page, and a
-           9:16 video at full column width would be taller than the card it is
-           announcing. Lazy so the home page does not pay for YouTube's player
-           on every visit, and the no-cookie host so watching it here does not
-           follow anyone around. -->
-      <div class="news-short mx-auto mt-3">
+      <!-- The official trailer, 16:9 at column width. Lazy so the home page
+           does not pay for YouTube's player on every visit, and the no-cookie
+           host so watching it here does not follow anyone around. -->
+      <div class="news-video mt-3">
         <iframe
-          src="https://www.youtube-nocookie.com/embed/iQwBrcphC5E"
-          title="Floating window on AOE4 Guides"
+          src="https://www.youtube-nocookie.com/embed/7NPJPZX896Y"
+          title="Age of Empires IV: Raiders of the North trailer"
           loading="lazy"
           frameborder="0"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -39,14 +32,17 @@
       </div>
 
       <div class="text-body-2 text-medium-emphasis mt-3">
-        Chrome and Edge for now. The RTS Overlay export is untouched if you would rather keep using
-        that.
+        <v-icon icon="mdi-sword-cross" size="x-small" class="mr-1" color="accent"></v-icon>
+        <strong>Also new.</strong> The icon picker groups military units by kind, with siege and
+        ships last, civ menus show each flag, and hovering a season shows when it ran.
       </div>
 
       <div class="text-body-2 text-medium-emphasis mt-2">
-        <v-icon icon="mdi-chart-line" size="x-small" class="mr-1" color="accent"></v-icon>
-        <strong>Build timeline.</strong> Ages on a track, so you can see when a build reaches Feudal,
-        Castle and Imperial. Expand <strong>Economy</strong> to see where its villagers go.
+        <v-icon icon="mdi-heart" size="x-small" class="mr-1" color="red"></v-icon>
+        The game data comes from
+        <a class="text-primary" href="https://aoe4world.com" target="_blank" rel="noopener">AoE4World</a>.
+        Special thanks to <strong>CascadeFury</strong>, who went through the Vikings and Scots data
+        ahead of release.
       </div>
 
       <v-divider class="mt-3"></v-divider>
@@ -55,50 +51,45 @@
              below this one in the same sidebar, and a bare ask beside a
              specific "€85 of €240" line makes the specific one read as
              decoration. One ask per page, and it is the one with a number. -->
-        <a
-          href="https://discord.gg/Nau9BN5E7J"
-          target="_blank"
-          style="text-decoration: none"
-        >
-          <v-btn
-            variant="text"
-            size="small"
-            color="primary"
-            prepend-icon="mdi-chat"
-          >
-            Discord
-          </v-btn>
-        </a>
         <v-btn
+          v-for="civ in ['VIK', 'SCO']"
+          :key="civ"
           variant="text"
           size="small"
           color="primary"
-          prepend-icon="mdi-github"
-          to="/github"
+          :to="{ name: 'Dashboard', query: { civ } }"
         >
-          Contribute
+          <template #prepend><CivFlag :civ="civ" /></template>
+          {{ civ === "VIK" ? "Vikings" : "Scots" }}
         </v-btn>
+        <a href="https://discord.gg/Nau9BN5E7J" target="_blank" style="text-decoration: none">
+          <v-btn variant="text" size="small" color="primary" prepend-icon="mdi-chat">
+            Discord
+          </v-btn>
+        </a>
       </div>
     </v-card-text>
   </v-card>
 </template>
 
 <script>
+import CivFlag from "@/components/common/CivFlag.vue";
+
 export default {
   name: "News",
+  components: { CivFlag },
 };
 </script>
 
 <style scoped>
-.news-short {
+.news-video {
   width: 100%;
-  max-width: 240px;
-  aspect-ratio: 9 / 16;
+  aspect-ratio: 16 / 9;
   border-radius: 8px;
   overflow: hidden;
 }
 
-.news-short iframe {
+.news-video iframe {
   display: block;
   width: 100%;
   height: 100%;
