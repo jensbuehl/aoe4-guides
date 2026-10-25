@@ -19,7 +19,8 @@ compare hit counts:
 
 | Where | What |
 |---|---|
-| `src/composables/filter/civDefaultProvider.js` | title, code, tagLine, flags (alphabetical) — also feeds the SEO snapshot |
+| `src/composables/filter/civDefaultProvider.js` | title, code, `slug`, tagLine, flags (alphabetical) — also feeds the SEO snapshot. `slug` is the civ page's address, `/civ/<slug>`: written out, never derived from the title, and never changed once live; without it the civ has no page |
+| `public/assets/og/civ/<slug>.jpg` | the civ's link-preview card, for its page and all its builds: `node scripts/og-images.mjs XYZ`, run from a scratch folder with `npm i puppeteer`, once the flag and tagline are final (re-run if either changes). Without it those pages fall back to the site card |
 | `src/composables/builds/icons/civs.js` | code |
 | `src/composables/converter/use{Export,Import}OverlayFormat.js` | RTS Overlay names |
 | `src/composables/builds/icons/general.js` | flag as a build-step icon, with the civ description |
@@ -136,8 +137,15 @@ desktop and 390px, About credits.
   `ReleaseBanner.vue` — pre-order wording until `releases`, "available now"
   with links to the civs' builds after, gone at `ends` so the contributor
   spotlight returns. A running tournament (`event.js`) outranks it. Both
-  banners share `HomeBanner.vue`; keep four buttons per state so none wraps
-  alone at the md=8 column.
+  banners share `HomeBanner.vue`, which lays out by the card's own width (a
+  container query) with breakpoints measured from its widest row: the civ
+  chips after release, which link to the civ pages. Adding a chip or a
+  button means re-measuring those breakpoints, not hoping it fits.
+- **Search**: on release day, and again two or three days later, run the
+  "Refresh SEO snapshot" workflow by hand (`gh workflow run
+  refresh-seo-snapshot.yml --ref main`). The weekly run would otherwise leave
+  the new civ's first builds without pre-rendered pages, and its civ page
+  without its list, for up to a week.
 - **News card** (`src/components/notifications/News.vue`): what is new in
   the editor, the official trailer (16:9, youtube-nocookie, lazy) and the
   thanks.
