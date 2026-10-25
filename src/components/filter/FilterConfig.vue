@@ -58,6 +58,14 @@
                 clearable
                 prepend-inner-icon="mdi-earth"
               >
+                <template #item="{ props: itemProps, item }">
+                  <v-list-item v-bind="itemProps">
+                    <template #prepend><CivFlag :civ="item.raw.shortName" class="mr-3" /></template>
+                  </v-list-item>
+                </template>
+                <template #selection="{ item }">
+                  <CivFlag :civ="item.raw.shortName" class="mr-2" />{{ item.title }}
+                </template>
                 <template v-if="dirtyFields.civs" #append-inner>
                   <span class="fl-dot" />
                 </template>
@@ -154,6 +162,14 @@
           clearable
           prepend-inner-icon="mdi-earth"
         >
+          <template #item="{ props: itemProps, item }">
+            <v-list-item v-bind="itemProps">
+              <template #prepend><CivFlag :civ="item.raw.shortName" class="mr-3" /></template>
+            </v-list-item>
+          </template>
+          <template #selection="{ item }">
+            <CivFlag :civ="item.raw.shortName" class="mr-2" />{{ item.title }}
+          </template>
           <template v-if="dirtyFields.civs" #append-inner>
             <span class="fl-dot" />
           </template>
@@ -254,12 +270,13 @@ import { useFilterCountPreview } from "@/composables/filter/useFilterCountPrevie
 import FilterChips from "@/components/filter/FilterChips.vue";
 import FilterApplyBar from "@/components/filter/FilterApplyBar.vue";
 import FilterSortGroup from "@/components/filter/FilterSortGroup.vue";
+import CivFlag from "@/components/common/CivFlag.vue";
 
 export default {
   name: "FilterConfig",
   inheritAttrs: false,
   emits: ["configChanged"],
-  components: { FilterChips, FilterApplyBar, FilterSortGroup },
+  components: { FilterChips, FilterApplyBar, FilterSortGroup, CivFlag },
   props: {
     context: { type: String, default: "default" },
     civName: { type: String, default: null },

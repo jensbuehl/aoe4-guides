@@ -172,7 +172,16 @@
               density="compact"
               item-value="shortName"
               item-title="title"
-            ></v-select>
+            >
+              <template #item="{ props: itemProps, item }">
+                <v-list-item v-bind="itemProps">
+                  <template #prepend><CivFlag :civ="item.raw.shortName" class="mr-3" /></template>
+                </v-list-item>
+              </template>
+              <template #selection="{ item }">
+                <CivFlag :civ="item.raw.shortName" class="mr-2" />{{ item.title }}
+              </template>
+            </v-select>
           </v-col>
           <v-col cols="12" sm="6" md="3">
             <v-select
@@ -232,6 +241,7 @@ import sanitizeHtml from "sanitize-html";
 
 import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
+import CivFlag from "@/components/common/CivFlag.vue";
 
 import { getCreator, addCreator } from "@/composables/data/creatorService";
 import {
@@ -261,7 +271,7 @@ import useDownload from "@/composables/converter/useDownload";
 
 export default {
   name: "BuildEditor",
-  components: { BuildOrderEditor, BuildHeader },
+  components: { BuildOrderEditor, BuildHeader, CivFlag },
   props: {
     mode: {
       type: String,
