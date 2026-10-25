@@ -26,7 +26,7 @@
     <template #lead>
       {{ RELEASE.lead }}
       <strong v-if="released">Both are in the build order editor now, every unit, building, technology and landmark.</strong>
-      <strong v-else>Both are ready in the build order editor for release day.</strong>
+      <strong v-else>Both are prepared in the build order editor and will be available on release day.</strong>
     </template>
 
     <template #facts>
