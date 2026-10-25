@@ -1682,7 +1682,7 @@ export default {
           // file does not (iron-pagoda.webp). Ability ids carry no suffix.
           const srcId = gap.sourceId ?? gap.id;
           const id = gap.age && gap.type !== "ability" && !/-\d+$/.test(srcId) ? `${srcId}-${gap.age}` : srcId;
-          arr.push({
+          const entry = {
             title: gap.name,
             age: gap.age,
             imgSrc: assignment.imgSrc || (assignment.imageFolder ? `/assets/pictures/${assignment.imageFolder}/${srcId}.webp` : ""),
@@ -1693,7 +1693,13 @@ export default {
             type: gap.type,
             exploreUrl: gap.exploreUrl,
             description: gap.description,
-          });
+          };
+          // The icon picker lists a file in order, so a new entry goes after the
+          // last one of its class: in buildingMilitary a production building
+          // appended at the end sat among the walls (Mustering Hall, Harbor).
+          const lastSameClass = arr.findLastIndex((e) => e.class === entry.class);
+          if (lastSameClass === -1) arr.push(entry);
+          else arr.splice(lastSameClass + 1, 0, entry);
         }
 
         for (const { gap, assignment } of entries) {

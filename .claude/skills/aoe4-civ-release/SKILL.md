@@ -108,6 +108,9 @@ desktop and 390px, About credits.
   military (unitEco default), buildingEco/Religious default, buildingMilitary
   military for production and default for walls/towers, landmarks landmark,
   tech* tech, abilities none.
+- **Order matters**: the icon picker lists a file as it stands, so entries stay
+  grouped by `class` (buildingMilitary: production buildings, then walls and
+  towers). The sync inserts a new entry after the last one of its class.
 - **Landmarks** carry the age they are built in ("Age II Landmark" = 1).
 - **Shared entries' costs are never touched** when adding a civ — they are one
   civ's numbers; costs belong to the AOE4World Sync.
