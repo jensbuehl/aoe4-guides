@@ -34,7 +34,6 @@ export const RELEASE = {
     steam: "https://store.steampowered.com/app/4336170/Age_of_Empires_IV_Raiders_of_the_North/",
     xbox: "https://www.xbox.com/en-us/games/store/age-of-empires-iv-raiders-of-the-north/9mzxplnlct5f",
     trailer: "https://www.youtube.com/watch?v=7NPJPZX896Y",
-    devBlog: "https://www.ageofempires.com/news/pre-order-raiders-of-the-north-for-age-of-empires-iv/",
     reddit: "https://www.reddit.com/r/aoe4/comments/1wtkyht/megathread_preorder_raiders_of_the_north/",
   },
 };
