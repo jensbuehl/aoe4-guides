@@ -128,7 +128,6 @@ export default {
   height: 63px;
   object-fit: cover;
   border-radius: 6px;
-  border: 2px solid rgba(var(--v-theme-surface), 0.9);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
 }
 
