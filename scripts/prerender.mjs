@@ -107,6 +107,13 @@ const SAFE_SLUG = /^[a-z0-9-]{1,64}$/;
 //How many of a civ's newest builds its page lists in structured data.
 const CIV_PAGE_BUILDS = 10;
 
+//The social preview cards. The site card is what the shell carries; each civ
+//has its own, rendered by scripts/og-images.mjs and committed under public/.
+//A page names its civ's card only if the file is really in dist/, so a civ
+//added without one keeps the site card rather than a broken image.
+const SITE_IMAGE = { url: `${SITE_ORIGIN}/og-image.png`, alt: "AoE4 Guides - Age of Empires IV build orders" };
+const CIV_IMAGE_DIR = join(DIST, "assets", "og", "civ");
+
 /**
  * @param {string} code - A civ short name such as "ABB".
  * @return {string} Its display name, or the code itself when unknown.
@@ -255,7 +262,39 @@ function stripShellTags(template) {
     .replace(
       /^[ \t]*<meta\s+(?:property|name)=["'](?:og:(?:type|url|title|description)|twitter:(?:url|title|description))["'][^>]*>[ \t]*\r?\n?/gim,
       ""
-    );
+    )
+    //The image tags too: every generated page names its own card (imageTags),
+    //either its civ's or the site card again.
+    .replace(/^[ \t]*<meta\s+(?:property|name)=["'](?:og:image(?::\w+)?|twitter:image(?::\w+)?)["'][^>]*>[ \t]*\r?\n?/gim, "");
+}
+
+/**
+ * The image tags for a page about a civ, or about none.
+ *
+ * Its civ's card when there is one in dist/, the site card otherwise. Build
+ * pages use their civ's card as well: a shared build is the link people
+ * actually post, and the flag says at a glance which civ it is for.
+ *
+ * @param {string} [code] - A civ short name.
+ * @return {Array<string>} Lines for the head block.
+ */
+function imageTags(code) {
+  const slug = civPages[code]?.slug;
+  const civCard = slug && SAFE_SLUG.test(slug) && existsSync(join(CIV_IMAGE_DIR, `${slug}.jpg`));
+  const image = civCard
+    ? { url: canonicalFor(`/assets/og/civ/${slug}.jpg`), alt: `${civName(code)} build orders on AoE4 Guides` }
+    : SITE_IMAGE;
+  const url = escapeAttribute(image.url);
+  const alt = escapeAttribute(image.alt);
+
+  return [
+    `    <meta property="og:image" content="${url}">`,
+    `    <meta property="og:image:width" content="1200">`,
+    `    <meta property="og:image:height" content="630">`,
+    `    <meta property="og:image:alt" content="${alt}">`,
+    `    <meta name="twitter:image" content="${url}">`,
+    `    <meta name="twitter:image:alt" content="${alt}">`,
+  ];
 }
 
 /**
@@ -314,6 +353,7 @@ function headBlock(record) {
     `    <meta property="twitter:url" content="${attr.canonical}">`,
     `    <meta name="twitter:title" content="${attr.title}">`,
     `    <meta name="twitter:description" content="${attr.description}">`,
+    ...imageTags(record.civ),
     "",
     `    <script type="application/ld+json">${escapeJsonLd(structured)}</script>`,
     "",
@@ -424,6 +464,7 @@ function civHeadBlock(code, builds) {
     `    <meta property="twitter:url" content="${attr.canonical}">`,
     `    <meta name="twitter:title" content="${attr.title}">`,
     `    <meta name="twitter:description" content="${attr.description}">`,
+    ...imageTags(code),
     "",
     `    <script type="application/ld+json">${escapeJsonLd(structured)}</script>`,
     "",

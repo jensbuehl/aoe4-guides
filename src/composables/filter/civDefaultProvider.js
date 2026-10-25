@@ -199,7 +199,7 @@ export const civs = ref([
     title: "Tughlaq Dynasty",
     shortName: "TUG",
     slug: "tughlaq-dynasty",
-    tagLine: "Mobile Economy, Elephants, Reginal Control",
+    tagLine: "Mobile Economy, Elephants, Regional Control",
     flagLarge: "/assets/flags/tug-large.webp",
     flagSmall: "/assets/flags/tug-small.webp",
   },

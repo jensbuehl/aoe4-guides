@@ -29,9 +29,15 @@ The shell's site-wide tags would otherwise sit alongside the per-build ones and 
 - `<meta name="description">`
 - `og:type`, `og:url`, `og:title`, `og:description`
 - `twitter:url`, `twitter:title`, `twitter:description`
+- `og:image`, `og:image:*`, `twitter:image`, `twitter:image:alt`, replaced by the page's own card
 
-**Keep** `og:site_name`, `og:image*`, `twitter:card`, `twitter:image*`, `twitter:domain` — the image is
-site-wide by design in Phase A (per-build images are a spec exclusion), and the rest are page-independent.
+**Keep** `og:site_name`, `twitter:card`, `twitter:domain`, which are page-independent.
+
+The image was site-wide in Phase A. Each page now names a card: its civ's,
+`/assets/og/civ/<slug>.jpg`, when the snapshot has a page for that civ and the file is in `dist/`, and
+the site card `/og-image.png` otherwise (builds for "Any Civilization"). Build pages use their civ's
+card too, since a shared build is the link people post most. The cards are rendered by hand with
+`scripts/og-images.mjs` and committed; nothing generates images on a deploy.
 
 There is no canonical tag in the shell to remove. It was left out on purpose, and the reasoning is
 written into [index.html](../../../index.html) — one file serves every route, so a static canonical
