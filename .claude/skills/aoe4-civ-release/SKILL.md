@@ -119,7 +119,11 @@ desktop and 390px, About credits.
   48×48 `pictures/civilization_flag/<code>.webp` is the **centre section** of
   the large flag. Fandom's CDN answers scripts with 403 — ask the user to save
   the file from a browser; don't work around the bot check. AOE4World's
-  explorer has the same render at only 104×56.
+  explorer has the same render at only 104×56. **Replacing a flag that has
+  already shipped** (e.g. a "coming soon" placeholder) under the same filename
+  needs a `?v=N` bump on its paths in `civDefaultProvider.js`. Flags are
+  cached for a week without revalidation (`public/_headers`), so a reload,
+  and an installed PWA especially, keeps the old art until then.
 - **Plurals**: `check:plurals` only catches stale keys. Add new titles that are
   already plural or invariant to `icons/plurals.js` (Highland Cattle, Bondi,
   Völur, Skåne Crossbowmen); `-man → -men` is automatic.
