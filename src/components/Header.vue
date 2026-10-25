@@ -53,16 +53,18 @@
         </v-menu>
       </v-app-bar-nav-icon>
 
-      <v-app-bar-title :style="{ minWidth: compact ? '240px' : '300px' }">
+      <v-app-bar-title :style="{ minWidth: compact ? 'fit-content' : '300px' }">
         <v-row no-gutters class="fill-height" align="center" justify="start">
           <v-col cols="12">
-            <v-card to="/" flat :width="compact ? 240 : undefined" class="d-flex align-center" :class="{ 'header-brand': !compact }">
+            <v-card
+              to="/"
+              flat
+              class="header-brand d-flex align-center"
+              :class="{ 'header-brand--compact': compact }"
+            >
               <!-- The app icon, so the header and the browser tab are visibly the
-                   same site. Decorative: the name beside it is the link text.
-                   Full bar only: at 375px the compact bar has no 56px to spare
-                   beside the menu and avatar, and the title wraps out of it. -->
+                   same site. Decorative: the name beside it is the link text. -->
               <img
-                v-if="!compact"
                 src="/android-chrome-192x192.png"
                 alt=""
                 class="header-mark"
@@ -101,7 +103,10 @@
         </v-row>
       </v-app-bar-title>
       <v-spacer></v-spacer>
-      <span v-if="authIsReady">
+      <!-- Never shrinks: as a plain inline span it gave way first when the bar
+           got tight, and at 375px and below the avatar wrapped onto a second
+           line under the bar. The wordmark scales down instead. -->
+      <span v-if="authIsReady" class="d-flex align-center flex-shrink-0">
         <v-tooltip location="top">
           <span
             :style="{
@@ -483,6 +488,32 @@ export default {
      each end and the mark visibly overshoots the text it was sized to. */
   outline: 1px solid rgba(var(--v-theme-accent), 0.55);
   outline-offset: -1px;
+}
+/* The compact 60px bar (phones, and desktop below 1280px): one line, no
+   tagline, so the mark is centred on the name instead of spanning two lines.
+   Everything is in em of the card's font size, which scales with the viewport
+   from 1.1rem up to the full bar's 1.65rem. The bar's fixed parts (container
+   padding, menu icon, avatar) take about 136px, and the lockup is about 9.75em
+   wide, which is where 10vw - 14px comes from: it still fits at 320px and
+   reaches full size near 400px. The hover frame is 0.3em on every side, so it
+   stays even at every size. The right padding is 0.085em less, because the
+   tracking after the last letter and its side bearing already leave that much. */
+.header-brand--compact {
+  font-size: clamp(1.1rem, 10vw - 14px, 1.65rem);
+  padding: 0 0.215em 0 0.3em;
+}
+.header-brand--compact .header-mark {
+  width: 1.2em;
+  height: 1.2em;
+  margin-left: 0;
+  border-radius: 0.15em;
+}
+.header-brand--compact .title {
+  font-size: 1em;
+  line-height: 1.8em;
+  letter-spacing: 0.057em;
+  padding: 0 0 0 0.45em;
+  white-space: nowrap;
 }
 /* The name is set in EB Garamond, the same classical serif voice as the BO
    monogram beside it, and self-hosted (main.js) so it looks the same on every
