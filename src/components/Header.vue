@@ -66,8 +66,8 @@
                 src="/android-chrome-192x192.png"
                 alt=""
                 class="header-mark"
-                width="42"
-                height="42"
+                width="40"
+                height="40"
               />
               <div>
               <!--xs has other padding to compensate for rendering difference between mobile browser and desktop browser-->
@@ -455,13 +455,10 @@ export default {
    letters show and the mark reads as stray text. The radius follows the
    tile's own rounded corners.
 
-   Sized to the ink, not the boxes, then corrected by eye. With EB Garamond
-   loaded the drawn text runs 30px to 74px down the 100px bar (pixel scan),
-   but a 44px tile matching that exactly looked too big. A solid block reads
-   larger than thin strokes, the topmost ink is the overshoot of O and G
-   rather than the flat caps, and the pale tagline seems to end before its
-   last pixels. So 42px, one pixel inside the text at each end (31 to 73).
-   Centring alone sets the mark 2px high, because the text block's box
+   Edge to edge with the drawn text, not the boxes: with EB Garamond loaded
+   the ink runs 32px to 72px down the 100px bar (pixel scan), so the tile is
+   40px and spans exactly that. Deliberately not inset for optical effect;
+   the edges are meant to line up. Centring alone sets the mark 2px high, because the text block's box
    includes the subtitle's bottom margin, which has no ink. A different title
    face moves both edges, so re-measure rather than adjust. */
 .header-mark {
@@ -491,5 +488,8 @@ export default {
   font-size: 0.8rem;
   font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, sans-serif;
   text-transform: uppercase;
+  /* Pulls the tagline up under the name: 12px between their ink instead of
+     16px. The mark above is sized to the result, so change both together. */
+  margin-top: -4px;
 }
 </style>
