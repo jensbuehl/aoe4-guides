@@ -557,8 +557,8 @@ export default {
         // the deleted build on screen until a manual reload.
         const listRoutes = ["/builds", "/mybuilds", "/favorites", "/dashboard"];
         const back = window.history.state?.back;
-        const cameFromList =
-          typeof back === "string" && listRoutes.includes(back.split("?")[0]);
+        const backPath = typeof back === "string" ? back.split("?")[0] : "";
+        const cameFromList = listRoutes.includes(backPath) || backPath.startsWith("/civ/");
         router.replace(cameFromList ? back : "/");
       }
       deleteDialog.value = false;

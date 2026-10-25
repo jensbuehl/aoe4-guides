@@ -5,14 +5,21 @@
     <!-- Civ lockup + overflow ⋮, mirroring the desktop top bar: civ is identity,
          so it reads as a flag and a name rather than as one more chip. -->
     <div class="d-flex align-center pt-2 pl-4 pr-1">
-      <template v-if="civEntry">
+      <!-- A link to the civ's page wherever the author is linked too, so never
+           in the editor. -->
+      <component
+        :is="shouldLinkChips ? 'router-link' : 'div'"
+        v-if="civEntry"
+        :to="shouldLinkChips ? civRoute : undefined"
+        class="build-header-civ d-flex align-center"
+      >
         <img
           :src="civEntry.flagLarge"
           alt=""
           style="width:32px;height:24px;border-radius:3px;object-fit:cover;flex-shrink:0;"
         />
         <span class="text-body-2 font-weight-bold ml-2 mr-2">{{ civLabel }}</span>
-      </template>
+      </component>
       <v-spacer></v-spacer>
       <!-- Slot renders the v-btn icon directly, no extra wrapper padding -->
       <slot name="actions"></slot>
@@ -65,10 +72,15 @@
   <v-card flat rounded="lg" class="d-none d-md-block">
     <!-- Top bar: civ lockup (left) + actions slot (right) -->
     <div class="d-flex align-center pt-3 pl-4 pr-2 pb-1">
-      <template v-if="civEntry">
+      <component
+        :is="shouldLinkChips ? 'router-link' : 'div'"
+        v-if="civEntry"
+        :to="shouldLinkChips ? civRoute : undefined"
+        class="build-header-civ d-flex align-center"
+      >
         <img :src="civEntry.flagLarge" alt="" style="width:46px;height:34px;border-radius:4px;object-fit:cover;flex-shrink:0;" />
         <span class="text-subtitle-1 font-weight-bold ml-2 mr-4">{{ civLabel }}</span>
-      </template>
+      </component>
       <v-spacer></v-spacer>
       <slot name="actions"></slot>
     </div>
@@ -109,7 +121,7 @@
 
 <script>
 import { computed } from "vue";
-import { civs as allCivs, getCivById } from "@/composables/filter/civDefaultProvider";
+import { civs as allCivs, getCivById, civPageRoute } from "@/composables/filter/civDefaultProvider";
 import useTimeSince from "@/composables/useTimeSince";
 import BuildMetaLines from "@/components/builds/BuildMetaLines.vue";
 
@@ -153,6 +165,8 @@ export default {
       return allCivs.value.find((c) => c.shortName === civ) ?? null;
     });
 
+    const civRoute = computed(() => civPageRoute(props.build?.civ));
+
     const civLabel = computed(() => {
       return getCivById(props.build?.civ)?.title ?? props.build?.civ ?? "";
     });
@@ -161,6 +175,7 @@ export default {
       isNew,
       shouldLinkChips,
       civEntry,
+      civRoute,
       civLabel,
       createdDate,
       updatedDate,
@@ -170,6 +185,17 @@ export default {
 </script>
 
 <style scoped>
+/* The civ lockup as a link: same colour and no underline, so it looks as it
+   always did; the underline on hover is the only hint. */
+.build-header-civ {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.build-header-civ:hover span {
+  text-decoration: underline;
+}
+
 .build-header-title {
   display: -webkit-box;
   -webkit-line-clamp: 2;

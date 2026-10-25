@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import { auth, onAuthStateChanged } from "@/firebase";
 import store from "@/store";
+import { civs, getCivById, getCivBySlug } from "@/composables/filter/civDefaultProvider";
 
 // Views are lazy-loaded so each route ships as its own chunk — the initial
 // bundle only contains what the landing route needs, not every view (heavy
@@ -100,8 +101,34 @@ const routes = [
       path: "/dashboard",
       name: "Dashboard",
       component: Dashboard,
+      // /dashboard?civ=VIK was the civ page's address, and it canonicalised to
+      // /dashboard, so every civ page claimed to be a duplicate of one URL.
+      // Forwarded to /civ/<slug>, keeping any other query, so old links and
+      // bookmarks land on the page that now owns the civ.
+      beforeEnter: (to) => {
+        const civ = getCivById(to.query.civ);
+        if (!civ?.slug) return true;
+        const { civ: _civ, ...rest } = to.query;
+        return { name: "Civ", params: { slug: civ.slug }, query: rest, replace: true };
+      },
       meta: {
         title: "Age of Empires IV Build Orders",
+        showFab: true
+      }
+    },
+    {
+      // One page per civ, the address scripts/prerender.mjs writes a head for.
+      // The title must match the one it bakes in, or the tab changes a moment
+      // after the page loads.
+      //
+      // The path matches the known slugs only, so anything else falls through
+      // to the catch-all and is a plain 404 at the address that was asked for.
+      // Slugs are [a-z0-9-], nothing in them needs escaping in the pattern.
+      path: `/civ/:slug(${civs.value.filter((civ) => civ.slug).map((civ) => civ.slug).join("|")})`,
+      name: "Civ",
+      component: Dashboard,
+      meta: {
+        title: (to) => `${getCivBySlug(to.params.slug)?.title ?? "Civilization"} Build Orders`,
         showFab: true
       }
     },
@@ -303,8 +330,10 @@ const routes = [
     // still handled by the reload logic below.
     sessionStorage.removeItem(CHUNK_RELOAD_KEY);
 
-    if (to.meta.title) {
-      document.title = `${to.meta.title}` + " | AOE4 GUIDES"
+    // A function where the title depends on the route, as on a civ page.
+    const title = typeof to.meta.title === "function" ? to.meta.title(to) : to.meta.title;
+    if (title) {
+      document.title = `${title}` + " | AOE4 GUIDES"
     }
 
     setCanonical(to);

@@ -283,6 +283,14 @@ async function main() {
       //record: putting the name on every build would cost bytes 4,000 times and
       //make a civ rename a whole-file diff.
       civs: Object.fromEntries((civs.value ?? []).map((civ) => [civ.shortName, civ.title])),
+      //Code -> the civ page's slug and tagline, for the civs that have a page
+      //(/civ/<slug>). Separate from `civs` so a snapshot written before civ
+      //pages existed still reads, and the generator simply writes none.
+      civPages: Object.fromEntries(
+        (civs.value ?? [])
+          .filter((civ) => civ.slug)
+          .map((civ) => [civ.shortName, { slug: civ.slug, tagLine: civ.tagLine ?? "" }])
+      ),
     },
   };
 

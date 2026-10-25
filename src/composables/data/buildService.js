@@ -30,6 +30,7 @@ const {
   del,
   update,
   getAll,
+  getAllOrThrow,
   getQuery,
   getSize,
   error: collectionServiceError,
@@ -508,6 +509,104 @@ export async function getBuild(buildId) {
         `public API, which reads server-side and needs no App Check token.`
     );
     return await getBuildFromApi(buildId);
+  }
+}
+
+//The public API host, NOT the site's /api proxy. The proxy is deliberately
+//narrow, one build by id and nothing else (public/_redirects), and RTS Overlay
+//depends on it staying exactly that; widening it to lists would lend the whole
+//list surface the site's own address again. The public host answers lists to
+//anyone already, with CORS open and its own rate limits.
+const PUBLIC_API = "https://aoe4-guides-api-7h2vti5ckq-ey.a.run.app";
+
+//The sorts GET /builds accepts. Anything else it rejects with a 400.
+const API_SORTS = new Set(["score", "scoreAllTime", "timeCreated", "views", "likes"]);
+
+/**
+ * Whether the public API can answer a list query exactly as Firestore would.
+ *
+ * Only a civ and a sort: the API has no map, strategy, season or creator filter,
+ * returns at most 10 builds and cannot page. Anything it cannot reproduce is
+ * left to fail as it always did, rather than answered with a different list.
+ *
+ * @param {Object} config - A filter config.
+ * @param {number} limit
+ * @return {boolean}
+ */
+function apiCanServe(config, limit) {
+  return Boolean(
+    config?.civs &&
+      config.civs !== "ANY" &&
+      !config.creator &&
+      !config.author &&
+      !config.drafts &&
+      !config.maps?.length &&
+      !config.strategies?.length &&
+      !config.seasons?.length &&
+      API_SORTS.has(config.orderBy) &&
+      limit &&
+      limit <= 10
+  );
+}
+
+/**
+ * A civ's builds through the public API, which reads server-side and needs no
+ * App Check token. Published builds only, with their Timestamps revived.
+ *
+ * @param {string} civ - A civ short name.
+ * @param {string} orderBy - One of API_SORTS.
+ * @return {Promise<Array|undefined>}
+ */
+async function getCivBuildsFromApi(civ, orderBy) {
+  try {
+    const params = new URLSearchParams({ civ, orderBy });
+    const response = await fetch(`${PUBLIC_API}/builds?${params}`);
+    if (!response.ok) return undefined;
+
+    const builds = await response.json();
+    //Checked rather than trusted, as in getBuildFromApi.
+    if (!Array.isArray(builds) || builds.some((build) => !build || typeof build !== "object" || !build.id)) {
+      console.error("buildService: the API's /builds returned something that is not a list of builds.");
+      return undefined;
+    }
+
+    return builds.map(reviveTimestamps);
+  } catch (err) {
+    console.error("buildService.getCivBuilds API fallback failed:", err?.message ?? err);
+    return undefined;
+  }
+}
+
+/**
+ * A civ page's builds: Firestore first, the public API when Firestore refuses.
+ *
+ * The list counterpart of getBuild, for the same reason. Googlebot's renderer
+ * cannot mint an App Check token, so every list read on a civ page is refused
+ * and the page rendered nothing but loading placeholders forever, to the
+ * crawler and to any visitor whose browser blocks reCAPTCHA. Same narrow
+ * condition as getBuild: only the recoverable failures, and only queries the
+ * API can answer exactly (apiCanServe). A working database never reaches it.
+ *
+ * @param {Object} filterConfig - The page's filter config.
+ * @param {number} limit
+ * @return {Promise<Array|undefined>} The builds, or undefined when neither source could answer.
+ */
+export async function getCivBuilds(filterConfig, limit) {
+  try {
+    const result = await getAllOrThrow(getQuery(getQueryParametersFromConfig(filterConfig, limit)));
+    store.commit("setBuilds", result);
+    return result;
+  } catch (err) {
+    if (!RECOVERABLE_READ_FAILURES.has(err?.code) || !apiCanServe(filterConfig, limit)) {
+      console.error("buildService.getCivBuilds failed:", err?.message ?? err);
+      return undefined;
+    }
+
+    console.warn(
+      `buildService.getCivBuilds: Firestore could not answer (${err.code}). Falling back to the ` +
+        `public API, which reads server-side and needs no App Check token.`
+    );
+    return await getCivBuildsFromApi(filterConfig.civs, filterConfig.orderBy);
   }
 }
 

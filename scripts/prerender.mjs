@@ -57,6 +57,7 @@ const SNAPSHOT = join(ROOT, "data", "seo-snapshot.ndjson");
 const DIST = join(ROOT, "dist");
 const TEMPLATE = join(DIST, "index.html");
 const OUTPUT_DIR = join(DIST, "builds");
+const CIV_OUTPUT_DIR = join(DIST, "civ");
 
 //The built shell must contain both of these or it cannot boot the application.
 //Asserted rather than assumed: emitting thousands of pages from a template that
@@ -93,6 +94,18 @@ const SAFE_ID = /^[A-Za-z0-9_-]{1,64}$/;
 //from src/ (see the header). Still the app's own list, just carried here by the
 //refresh instead of resolved at generation time.
 let civNames = {};
+
+//Civ code -> { slug, tagLine } for the civs that have a page at /civ/<slug>,
+//from the snapshot's _meta.civPages. Empty for a snapshot written before civ
+//pages existed, in which case none are generated and nothing else changes.
+let civPages = {};
+
+//Slugs come from the app's own civ list, but are checked like ids anyway: a
+//slug is a filename here, and nothing that could express a path is written.
+const SAFE_SLUG = /^[a-z0-9-]{1,64}$/;
+
+//How many of a civ's newest builds its page lists in structured data.
+const CIV_PAGE_BUILDS = 10;
 
 /**
  * @param {string} code - A civ short name such as "ABB".
@@ -267,7 +280,17 @@ function headBlock(record) {
     name: title,
     description,
     ...(record.author ? { author: { "@type": "Person", name: record.author } } : {}),
-    ...(record.civ ? { about: { "@type": "Thing", name: `Age of Empires IV — ${civName(record.civ)}` } } : {}),
+    ...(record.civ
+      ? {
+          about: {
+            "@type": "Thing",
+            name: `Age of Empires IV — ${civName(record.civ)}`,
+            //The civ's own page, where it has one: the build points at the
+            //page that collects every build for that civ.
+            ...(civPageUrl(record.civ) ? { url: civPageUrl(record.civ) } : {}),
+          },
+        }
+      : {}),
     ...(record.created ? { dateModified: new Date(record.created * 1000).toISOString().slice(0, 10) } : {}),
     //Omitted entirely when there are none. An empty array is a claim that the
     //build has no steps, which is a different and false statement. (FR-010)
@@ -295,6 +318,164 @@ function headBlock(record) {
     `    <script type="application/ld+json">${escapeJsonLd(structured)}</script>`,
     "",
   ].join("\n");
+}
+
+//────────────────────────────────────────────────────────────────────────────
+// Civ pages
+//
+// One per civ at /civ/<slug>, the route src/router/index.js serves with the
+// Dashboard. Like a build page it carries only a head: the body is the app,
+// which reads the live builds itself (falling back to the public API where the
+// browser cannot read Firestore, as Googlebot cannot). So nothing in here can
+// go stale on screen. The head is kept deliberately slow-moving: no counts,
+// no dates, just the civ, so a week-old snapshot is still exactly right. Only
+// the structured data's list of newest builds ages, and a week is fine there.
+//────────────────────────────────────────────────────────────────────────────
+
+/**
+ * @param {string} code - A civ short name.
+ * @return {string|null} The civ page's canonical URL, or null when it has none.
+ */
+function civPageUrl(code) {
+  const slug = civPages[code]?.slug;
+  return slug && SAFE_SLUG.test(slug) ? canonicalFor(`/civ/${slug}`) : null;
+}
+
+/**
+ * The page title for a civ, without the site suffix. Must match the Civ
+ * route's meta.title in src/router/index.js, which sets it again once the app
+ * boots.
+ *
+ * @param {string} code
+ * @return {string}
+ */
+function civTitleFor(code) {
+  return `${civName(code)} Build Orders`;
+}
+
+/**
+ * The meta description for a civ page: its name and tagline, and what the page
+ * is. No numbers, so the snapshot's age never makes it wrong.
+ *
+ * @param {string} code
+ * @return {string}
+ */
+function civDescriptionFor(code) {
+  const name = civName(code);
+  const tagLine = (civPages[code]?.tagLine ?? "").trim();
+  return truncate(
+    `${name} build orders for Age of Empires IV${tagLine ? ` — ${tagLine}` : ""}. ` +
+      `Step-by-step openings, timings and strategies from the community.`
+  );
+}
+
+/**
+ * The head block for a civ page.
+ *
+ * @param {string} code - A civ short name.
+ * @param {Array<Object>} builds - That civ's records, newest first.
+ * @return {string}
+ */
+function civHeadBlock(code, builds) {
+  const title = civTitleFor(code);
+  const description = civDescriptionFor(code);
+  const canonical = civPageUrl(code);
+  const fullTitle = `${title} | AOE4 GUIDES`;
+
+  const attr = { title: escapeAttribute(fullTitle), description: escapeAttribute(description), canonical: escapeAttribute(canonical) };
+
+  const listed = builds.slice(0, CIV_PAGE_BUILDS);
+  const structured = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: title,
+    description,
+    url: canonical,
+    about: { "@type": "Thing", name: `Age of Empires IV — ${civName(code)}` },
+    //Omitted when the civ has no builds yet: an empty list is a claim about
+    //the page's content, and the live page may already disagree.
+    ...(listed.length
+      ? {
+          mainEntity: {
+            "@type": "ItemList",
+            itemListElement: listed.map((record, index) => ({
+              "@type": "ListItem",
+              position: index + 1,
+              url: canonicalFor(`/builds/${record.id}`),
+              name: titleFor(record),
+            })),
+          },
+        }
+      : {}),
+  };
+
+  return [
+    `    <title>${attr.title}</title>`,
+    `    <meta name="description" content="${attr.description}">`,
+    `    <link rel="canonical" href="${attr.canonical}">`,
+    "",
+    //website, as the shell's own: a civ page is a section of the site, not a
+    //document with an author and a date like a build.
+    `    <meta property="og:type" content="website">`,
+    `    <meta property="og:url" content="${attr.canonical}">`,
+    `    <meta property="og:title" content="${attr.title}">`,
+    `    <meta property="og:description" content="${attr.description}">`,
+    "",
+    `    <meta property="twitter:url" content="${attr.canonical}">`,
+    `    <meta name="twitter:title" content="${attr.title}">`,
+    `    <meta name="twitter:description" content="${attr.description}">`,
+    "",
+    `    <script type="application/ld+json">${escapeJsonLd(structured)}</script>`,
+    "",
+  ].join("\n");
+}
+
+/**
+ * Writes dist/civ/<slug>.html for every civ with a page, staged and renamed
+ * into place like the build pages.
+ *
+ * @param {string} template - The shell, page-level tags stripped.
+ * @param {Array<Object>} records - All build records.
+ * @param {boolean} dryRun
+ * @return {Array<{code: string, path: string, lastmod: number|null}>} The pages written.
+ */
+function writeCivPages(template, records, dryRun) {
+  const codes = Object.keys(civPages).filter((code) => civPageUrl(code));
+  if (!codes.length) {
+    console.log(`${LOG}   civ pages: none — the snapshot predates civ pages (no _meta.civPages)`);
+    return [];
+  }
+
+  const byCiv = new Map(codes.map((code) => [code, []]));
+  for (const record of records) byCiv.get(record.civ)?.push(record);
+
+  const staging = mkdtempSync(join(DIST, ".civ-"));
+  const written = [];
+  try {
+    for (const code of codes) {
+      const builds = byCiv.get(code).sort((a, b) => (b.created ?? 0) - (a.created ?? 0));
+      const block = civHeadBlock(code, builds);
+      const page = template.replace(HEAD_CLOSE_INDENTED, (_match, indent) => `${block}${indent}${HEAD_CLOSE}`);
+      const slug = civPages[code].slug;
+      writeFileSync(join(staging, `${slug}.html`), page, "utf8");
+      written.push({ code, path: `/civ/${slug}`, lastmod: builds[0]?.created ?? null });
+    }
+
+    if (dryRun) {
+      console.log(`${LOG} dry run — would have written ${written.length} civ pages to dist/civ/`);
+      rmSync(staging, { recursive: true, force: true });
+      return [];
+    }
+
+    rmSync(CIV_OUTPUT_DIR, { recursive: true, force: true });
+    renameSync(staging, CIV_OUTPUT_DIR);
+  } catch (error) {
+    rmSync(staging, { recursive: true, force: true });
+    throw error;
+  }
+
+  console.log(`${LOG}   ${written.length} civ page${written.length === 1 ? "" : "s"} written`);
+  return written;
 }
 
 //────────────────────────────────────────────────────────────────────────────
@@ -385,12 +566,24 @@ function urlsetDocument(blocks) {
  * it, which is why the skip is a plain early return rather than a flag.
  *
  * @param {Array<Object>} records - The builds that got pages.
+ * @param {Array<{path: string, lastmod: number|null}>} civEntries - The civ pages written.
  * @return {{urls: number, files: number}}
  */
-function writeSitemap(records) {
+function writeSitemap(records, civEntries = []) {
   const disallowed = disallowedPaths();
   const blocks = [...staticUrlBlocks()];
   let excluded = 0;
+
+  //Civ pages after the static routes and before the builds: they are the
+  //site's second tier, and lastmod is their newest build.
+  for (const { path, lastmod } of civEntries) {
+    if (disallowed.some((prefix) => path.startsWith(prefix))) {
+      excluded++;
+      continue;
+    }
+    const tag = lastmod ? `        <lastmod>${new Date(lastmod * 1000).toISOString().slice(0, 10)}</lastmod>\n` : "";
+    blocks.push(`    <url>\n        <loc>${escapeXml(canonicalFor(path))}</loc>\n${tag}    </url>`);
+  }
 
   for (const record of records) {
     const path = `/builds/${record.id}`;
@@ -611,6 +804,7 @@ function main() {
   const { meta } = decision;
   const age = ageInDays(meta.generated);
   civNames = meta.civs ?? {};
+  civPages = meta.civPages ?? {};
 
   //The one line every successful run prints, and the only observability this
   //has. Both facts on it earn their place: the project id catches a refresh
@@ -684,9 +878,18 @@ function main() {
       ` · ${((Date.now() - started) / 1000).toFixed(1)}s`
   );
 
+  //Civ pages after the build pages, and on their own: a failure here costs the
+  //civ pages and their sitemap entries, never the four thousand build pages.
+  let civEntries = [];
+  try {
+    civEntries = writeCivPages(template, records, options.dryRun);
+  } catch (error) {
+    console.error(`${LOG}   civ pages failed, continuing without them — ${error?.message ?? error}`);
+  }
+
   //Last, and only once the pages are in place: a sitemap advertising pages that
   //failed to write would be worse than the static copy it replaces.
-  const sitemap = writeSitemap(records);
+  const sitemap = writeSitemap(records, civEntries);
   console.log(`${LOG}   sitemap: ${sitemap.urls} urls, ${sitemap.files} file${sitemap.files === 1 ? "" : "s"}`);
 }
 

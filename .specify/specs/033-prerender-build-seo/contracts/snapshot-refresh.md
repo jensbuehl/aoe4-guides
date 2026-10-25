@@ -32,8 +32,14 @@ say so, because "let me just prettify this" is a natural and quiet way to undo i
 The first line is a metadata record, distinguishable by having no `id`:
 
 ```json
-{"_meta":{"project":"aoe4-guides","generated":"2026-08-01T03:00:00Z","builds":4012,"version":1,"civs":{"ABB":"Abbasid Dynasty","…":"…"}}}
+{"_meta":{"project":"aoe4-guides","generated":"2026-08-01T03:00:00Z","builds":4012,"version":1,"civs":{"ABB":"Abbasid Dynasty","…":"…"},"civPages":{"ABB":{"slug":"abbasid-dynasty","tagLine":"Technology, Camels, City Planning"},"…":"…"}}}
 ```
+
+`civPages` maps a civ code to its page's `slug` (the page is `/civ/<slug>`) and its `tagLine`, for
+every civ that has a page, which is every civ except "Any Civilization". Slugs are written out in
+`civDefaultProvider.js`, never derived from the title, so a rename cannot move a URL. Kept apart from
+`civs` so that a snapshot written before civ pages existed still reads: the generator then writes no
+civ pages and changes nothing else (see `generated-page.md`).
 
 `civs` is a civ-code-to-display-name map, carried here so the generator can resolve a name without
 importing anything from `src/` — a deploy-safety constraint, not tidiness (see `prerender-cli.md`).

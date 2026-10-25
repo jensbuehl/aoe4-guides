@@ -81,7 +81,7 @@
 <script>
 import { computed } from "vue";
 import { RELEASE, isReleased, isReleaseLive } from "@/config/release";
-import { getCivById } from "@/composables/filter/civDefaultProvider";
+import { getCivById, civPageRoute } from "@/composables/filter/civDefaultProvider";
 import HomeBanner from "@/components/home/HomeBanner.vue";
 import CivFlag from "@/components/common/CivFlag.vue";
 
@@ -99,7 +99,7 @@ export default {
     // out, the official civ page until then.
     const civLink = (civ) =>
       released.value
-        ? { to: { name: "Dashboard", query: { civ: civ.code } } }
+        ? { to: civPageRoute(civ.code) }
         : { href: civ.page, target: "_blank", rel: "noopener" };
 
     return {

@@ -104,9 +104,9 @@ import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 
 //Composables
-import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
+import { civs as allCivs, getCivBySlug } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { getBuilds, getBuildsCount } from "@/composables/data/buildService";
+import { getBuilds, getBuildsCount, getCivBuilds } from "@/composables/data/buildService";
 
 export default {
   name: "Dashboard",
@@ -132,11 +132,16 @@ export default {
       civs.find((c) => c.shortName === civ.value)?.title ?? civ.value
     );
 
+    // The page's civ: from /civ/<slug>, or from ?civ= on the bare dashboard for
+    // a civ the router could not forward (none today, but a code without a slug).
+    const routeCiv = () =>
+      route.params.slug ? getCivBySlug(route.params.slug)?.shortName : route.query.civ;
+
     const initQueryParameters = async () => {
-      //pply query parameters if they are set
-      if (route.query.civ) {
-        store.commit("setCivs", route.query.civ);
-        civ.value = route.query.civ;
+      const code = routeCiv();
+      if (code) {
+        store.commit("setCivs", code);
+        civ.value = code;
       }
     };
 
@@ -145,7 +150,7 @@ export default {
     };
 
     const handleCleared = () => {
-      if (route.query.civ) store.commit("setCivs", route.query.civ);
+      if (routeCiv()) store.commit("setCivs", routeCiv());
       initData();
     };
 
@@ -197,11 +202,15 @@ export default {
       var configRecentBuildsList = JSON.parse(JSON.stringify(filterConfig.value));
       configRecentBuildsList.orderBy = "timeCreated";
 
+      // On a civ page the lanes can be answered by the public API when
+      // Firestore refuses the read (Googlebot, blocked reCAPTCHA); see
+      // getCivBuilds. Without a civ they read exactly as before.
+      const lanesFrom = civ.value ? getCivBuilds : getBuilds;
       const countPromise = getBuildsCount(configpopularBuildsList);
       const lanes = [
-        { promise: getBuilds(configpopularBuildsList, 10), target: popularBuildsList },
-        { promise: getBuilds(configAllTimeClassicsList, 10), target: allTimeClassicsList },
-        { promise: getBuilds(configRecentBuildsList, 10), target: recentBuildsList },
+        { promise: lanesFrom(configpopularBuildsList, 10), target: popularBuildsList },
+        { promise: lanesFrom(configAllTimeClassicsList, 10), target: allTimeClassicsList },
+        { promise: lanesFrom(configRecentBuildsList, 10), target: recentBuildsList },
       ];
 
       // The count aggregation is consistently the slowest of the four queries,
@@ -221,13 +230,23 @@ export default {
       // Still await the lanes so a mid-flight supersede is detected and any
       // rejection surfaces; the progressive handlers above already assigned
       // their results, so only the count value is needed here.
-      const [count] = await Promise.all([
+      const [countResult, ...laneResults] = await Promise.all([
         countPromise,
         ...lanes.map((lane) => lane.promise),
       ]);
 
       // A newer initData run (filter change mid-flight) supersedes this one.
       if (runId !== initDataRun) return;
+
+      // The count is refused wherever the lanes were (it has no API fallback),
+      // and then comes back undefined. If the lanes were answered anyway, their
+      // longest list stands in for it: enough to choose between the lanes and
+      // the empty state, which is all the count decides here. If nothing could
+      // be read at all, it stays undefined and the skeletons stay up, rather
+      // than claiming the civ has no builds.
+      const answered = laneResults.filter(Array.isArray);
+      const count =
+        countResult ?? (answered.length ? Math.max(...answered.map((builds) => builds.length)) : countResult);
 
       // Commit the count: >0 keeps the progressively-assigned lanes on screen;
       // ===0 leaves the lanes as skeletons and flips the template to

@@ -1,6 +1,7 @@
 # Contract: the generated page
 
-What `dist/builds/<id>.html` contains, and what it must not.
+What `dist/builds/<id>.html` contains, and what it must not. Civ pages, `dist/civ/<slug>.html`, are
+built the same way and are described in their own section below.
 
 ---
 
@@ -83,7 +84,7 @@ that tag. True of the shell, false of every generated page, and it would ship co
   "name": "{title}",
   "description": "{description}",
   "author":   { "@type": "Person", "name": "{author}" },
-  "about":    { "@type": "Thing",  "name": "Age of Empires IV — {civ}" },
+  "about":    { "@type": "Thing",  "name": "Age of Empires IV — {civ}", "url": "https://aoe4guides.com/civ/{slug}" },
   "dateModified": "{timeCreated, ISO-8601}",
   "step": [
     { "@type": "HowToStep", "position": 1, "text": "6 on Sheep with 1 Build House" }
@@ -96,6 +97,8 @@ that tag. True of the shell, false of every generated page, and it would ship co
 - Steps converting to empty text are omitted. A build with no usable steps omits `step` entirely
   rather than emitting `[]`.
 - `dateModified` derives from `timeCreated`; builds record no modification time (data-model §5).
+- `about.url` is the civ's page, present only when the snapshot carries a page for that civ
+  (`_meta.civPages`).
 - **Escaping**: `JSON.stringify`, then `<` → **`<`** — *not* the HTML entity `&lt;`, which is what
   this contract originally said and which is wrong. The content of a
   `<script type="application/ld+json">` block is parsed as **JSON, not HTML**, so entities in it are
@@ -137,6 +140,11 @@ carries the full step list rather than a summary.
   <url><loc>https://aoe4guides.com/</loc><priority>1.0</priority></url>
   <!-- … the existing static routes … -->
   <url>
+    <loc>https://aoe4guides.com/civ/{slug}</loc>
+    <lastmod>{the civ's newest build}</lastmod>
+  </url>
+  <!-- … one per civ page, then the builds … -->
+  <url>
     <loc>https://aoe4guides.com/builds/{id}</loc>
     <lastmod>2026-08-11</lastmod>
   </url>
@@ -149,6 +157,32 @@ carries the full step list rather than a summary.
 - Single file below 45,000 URLs; above that, split and emit an index (FR-017).
 - Nothing disallowed by [robots.txt](../../../public/robots.txt) may appear.
 - On skip, this file is never touched and the static 5-URL version ships (FR-016).
+
+---
+
+## Civ pages
+
+`dist/civ/<slug>.html`, one per entry in `_meta.civPages`, for the route `/civ/:slug` that
+`src/router/index.js` serves with the Dashboard. Same shell, same stripped tags, same empty `#app`.
+Written to a staging directory and renamed into place after the build pages; a failure there costs
+the civ pages and their sitemap entries, never the build pages.
+
+| Tag | Value |
+|---|---|
+| `<title>`, `og:title`, `twitter:title` | `{civ} Build Orders \| AOE4 GUIDES`, the Civ route's `meta.title` plus the suffix |
+| `description` | `{civ} build orders for Age of Empires IV — {tagLine}. Step-by-step openings, timings and strategies from the community.`, truncated as for builds |
+| `canonical`, `og:url`, `twitter:url` | `https://aoe4guides.com/civ/{slug}` |
+| `og:type` | `website`: a section of the site, not a dated document |
+
+The head holds no counts and no dates, so a week-old snapshot is still exactly right. The structured
+data is a `CollectionPage` whose `mainEntity` is an `ItemList` of the civ's ten newest builds (url and
+name), the only part that ages; it is omitted for a civ with no builds yet.
+
+The body is the app. Unlike a build page, a civ page's content is a list query, and Googlebot's
+renderer cannot read Firestore (App Check). So the page falls back to the public API's `GET /builds`
+for its three lanes when the read is refused or Firestore is unreachable (`getCivBuilds` in
+`buildService.js`): the crawler renders the same live list a visitor sees, and nothing pre-rendered is
+ever shown, so there is no shift when the app takes over.
 
 ---
 

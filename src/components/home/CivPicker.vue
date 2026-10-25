@@ -39,7 +39,7 @@
         :key="civ.shortName"
         class="civ-tile"
         flat
-        :to="{ name: 'Dashboard', query: { civ: civ.shortName } }"
+        :to="civPageRoute(civ.shortName)"
         :aria-label="civ.title"
       >
         <v-img
@@ -72,6 +72,7 @@
 <script>
 import { ref, computed } from "vue";
 import useTimeSince, { toDateSafe } from "@/composables/useTimeSince";
+import { civPageRoute } from "@/composables/filter/civDefaultProvider";
 
 export default {
   name: "CivPicker",
@@ -95,7 +96,7 @@ export default {
     });
 
     return {
-      toDateSafe, civFilter, filteredCivs, isNew };
+      toDateSafe, civFilter, filteredCivs, isNew, civPageRoute };
   },
 };
 </script>

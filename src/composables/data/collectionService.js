@@ -286,6 +286,32 @@ export function collectionService(col) {
   }
 
   /**
+   * Like getAll, but rejects instead of swallowing the error, so a caller can
+   * tell App Check refusing the read from a query that matched nothing, as
+   * getOrThrow does for a single document.
+   *
+   * @param {Object} query - The query to run.
+   * @return {Promise<Array>} The documents' data.
+   * @throws {FirebaseError} Whatever Firestore rejected with, `.code` intact.
+   */
+  async function getAllOrThrow(query) {
+    const snapshot = await getDocs(query);
+
+    // With the persistent cache, an unreachable server is not an error for a
+    // query: getDocs answers from the cache instead, and on a device that has
+    // cached nothing for it that is an empty list, indistinguishable from a
+    // query that matched nothing. Surfaced as the failure it is. A cached list
+    // that is not empty is still returned, as getDocs intends.
+    if (snapshot.empty && snapshot.metadata.fromCache) {
+      const err = new Error("Firestore could not be reached, and nothing is cached for this query.");
+      err.code = "unavailable";
+      throw err;
+    }
+
+    return snapshot.docs.map((doc) => doc.data());
+  }
+
+  /**
    * Updates a document in the database with the given ID.
    *
    * @param {string} id - The ID of the document to update.
@@ -377,6 +403,7 @@ export function collectionService(col) {
     getSnapshot,
     del,
     getAll,
+    getAllOrThrow,
     update,
     getQuery,
     getSize,
