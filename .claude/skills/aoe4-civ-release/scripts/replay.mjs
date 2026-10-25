@@ -49,6 +49,7 @@ const code = [
   extract(/function initAssignment\(/),
   extract(/const CATEGORY_ENTRY_CLASS = /) + ";",
   extract(/function entryClassFor\(/),
+  extract(/function unitGroupFor\(/),
   extract(/async function downloadGapJsons\(/),
   "return { buildGapList, initAssignment, downloadGapJsons, suggestCategory };",
 ].join("\n");
@@ -79,7 +80,7 @@ console.log(`needs manual category: ${unconfirmed.length}`, unconfirmed.map((g) 
 // What the result holds for CIV vs. what the files hold today.
 const result = Object.fromEntries(keys.map((k) => [k, out[k] ?? stripped[k]]));
 const label = (e) => `${e.title}${e.age ? " (age " + e.age + ")" : ""}`;
-const sig = (e) => [e.imgSrc, e.title, e.class, e.age, e.id].join("|");
+const sig = (e) => [e.imgSrc, e.title, e.class, e.age, e.id, e.unitGroup].join("|");
 const has = (set, k) => set[k].filter((e) => Array.isArray(e.civ) && e.civ.includes(CIV));
 let ok = 0; const missing = [], wrongFile = [], wrongImg = [], extra = [];
 const resAll = keys.flatMap((k) => has(result, k).map((e) => ({ k, e })));
@@ -91,7 +92,7 @@ for (const { k, e } of truAll) {
   if (sameTitleOther && sameTitleOther.k !== k) wrongFile.push(`${label(e)}: ${k} → landed in ${sameTitleOther.k}`);
   else if (sameTitleOther) {
     const r = sameTitleOther.e, d = [];
-    for (const f of ["imgSrc", "class", "age", "id"]) if (r[f] !== e[f]) d.push(`${f}: want ${e[f]}, got ${r[f]}`);
+    for (const f of ["imgSrc", "class", "age", "id", "unitGroup"]) if (r[f] !== e[f]) d.push(`${f}: want ${e[f]}, got ${r[f]}`);
     wrongImg.push(`${label(e)} in ${k}: ${d.join("; ")}`);
   }
   else missing.push(`${label(e)} [${k}]`);

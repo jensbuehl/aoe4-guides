@@ -56,6 +56,7 @@ const code = [
   extract(/function initAssignment\(/),
   extract(/const CATEGORY_ENTRY_CLASS = /) + ";",
   extract(/function entryClassFor\(/),
+  extract(/function unitGroupFor\(/),
   extract(/async function downloadGapJsons\(/),
   "return { buildGapList, initAssignment, downloadGapJsons };",
 ].join("\n");

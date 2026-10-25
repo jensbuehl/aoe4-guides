@@ -37,6 +37,7 @@ for (const k of keys) for (const e of J(k)) {
   if (!e.exploreUrl) add("no exploreUrl", label);
   if (e.type !== "ability" && e.age == null) add("no age", label);
   if (e.type !== "ability" && !e.costs) add("no costs", label);
+  if (k === "unitMilitary" && !e.unitGroup) add("no unitGroup (picker grouping)", label);
   // source cross-check: does AoE4World list this civ for this item?
   const base = e.id?.replace(/-\d+$/, "");
   const src = opt.filter((s) => s.id === e.id || s.id === base || s.baseId === base || s.name === e.title);

@@ -1650,6 +1650,20 @@ export default {
       return CATEGORY_ENTRY_CLASS[catKey] ?? "default";
     }
 
+    // Kind of a military unit, for the icon picker's grouping (IconSelector):
+    // infantry-melee, infantry-ranged, cavalry, mixed, siege, ship. Order of the
+    // checks matters — a Ballista Elephant is siege, a ship with archers a ship.
+    function unitGroupFor(gap) {
+      const c = new Set(gap.classes ?? []), dc = (gap.displayClasses ?? []).join(" / ");
+      if (/Mixed Force Army/.test(dc)) return "mixed";
+      if (c.has("ship") || c.has("naval_unit") || /Ship/.test(dc)) return "ship";
+      if (c.has("siege") || /Siege/.test(dc)) return "siege";
+      if (c.has("cavalry") || c.has("horse") || c.has("elephant") || c.has("camel") || /Cavalry|Camel|Elephant/.test(dc)) return "cavalry";
+      if (c.has("ranged") || /Ranged/.test(dc)) return "infantry-ranged";
+      if (c.has("infantry") || /Infantry/.test(dc)) return "infantry-melee";
+      return "mixed";
+    }
+
     async function downloadGapJsons() {
       const ignoredSet = new Set(gapSyncIgnore.value);
       const byCategory = {};
@@ -1688,6 +1702,7 @@ export default {
             imgSrc: assignment.imgSrc || (assignment.imageFolder ? `/assets/pictures/${assignment.imageFolder}/${srcId}.webp` : ""),
             civ: [...civCodes].sort(),
             class: entryClassFor(catKey, gap),
+            ...(catKey === "unitMilitary" ? { unitGroup: unitGroupFor(gap) } : {}),
             costs: gap.costs,
             id,
             type: gap.type,

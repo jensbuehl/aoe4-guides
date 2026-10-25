@@ -454,7 +454,22 @@ export default {
     const general = getIcons("unitEco").concat(
       getIcons("unitReligious").concat(getIcons("resource"))
     );
-    const militaryUnits = getIcons("unitMilitary").concat(getIcons("unitReligious"));
+    // Grouped by kind, ships last: the file order only says when an entry was
+    // added. unitGroup comes from AOE4World's classes (set by the Admin gap
+    // sync); religious units are known by their file. Stable within a group.
+    // An entry without a known group sits with "mixed", ahead of siege and ships.
+    const UNIT_GROUP_ORDER = ["infantry-melee", "infantry-ranged", "cavalry", "mixed", "religious", "siege", "ship"];
+    const religiousUnits = getIcons("unitReligious");
+    const unitRank = (icon) => {
+      const group = icon.unitGroup ?? (religiousUnits.includes(icon) ? "religious" : "mixed");
+      const rank = UNIT_GROUP_ORDER.indexOf(group);
+      return rank === -1 ? UNIT_GROUP_ORDER.indexOf("mixed") : rank;
+    };
+    const militaryUnits = getIcons("unitMilitary")
+      .concat(religiousUnits)
+      .map((icon, index) => ({ icon, index }))
+      .sort((a, b) => unitRank(a.icon) - unitRank(b.icon) || a.index - b.index)
+      .map(({ icon }) => icon);
     const ecoTechnologies = getIcons("techEco");
     const militaryTechnologies = getIcons("techMilitary");
     const landmarks = getIcons("landmark").concat(getIcons("general"));
