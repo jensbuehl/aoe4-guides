@@ -130,7 +130,9 @@ export default {
   filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.28));
 }
 
-@media (max-width: 620px) {
+/* Smaller media once HomeBanner stacks; the same container and width as its
+   own narrow layout. */
+@container home-banner (width < 553px) {
   .event-banner__badge {
     width: 76px;
   }

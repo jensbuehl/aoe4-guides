@@ -29,6 +29,9 @@
       <strong v-else>Both are prepared in the build order editor and will be available on release day.</strong>
     </template>
 
+    <!-- One chip per civ and one path: before release to the official civ page,
+         after it to our builds for that civ, with a chevron to say so. There
+         are no separate civ buttons below, which would only repeat these. -->
     <template #facts>
       <v-chip
         v-for="civ in civs"
@@ -36,12 +39,11 @@
         size="small"
         variant="tonal"
         color="accent"
-        :href="civ.page"
-        target="_blank"
-        rel="noopener"
+        v-bind="civLink(civ)"
       >
         <CivFlag :civ="civ.code" class="mr-2" />
         {{ civ.title }} · {{ civ.tagLine }}
+        <v-icon v-if="released" end size="14">mdi-chevron-right</v-icon>
       </v-chip>
     </template>
 
@@ -60,24 +62,11 @@
       <v-btn :href="RELEASE.links.xbox" target="_blank" rel="noopener" variant="text" size="small" color="primary" prepend-icon="mdi-microsoft-xbox">
         Xbox &amp; PC
       </v-btn>
-      <!-- Four buttons per state, so none wraps alone onto a second row at the
-           md=8 column. After release the builds take the trailer's place; the
-           trailer is in the news card by then. Before it, the civ chips above
-           already lead to the official civ pages, so the dev blog is left out. -->
-      <template v-if="released">
-        <v-btn
-          v-for="civ in civs"
-          :key="civ.code"
-          :to="{ name: 'Dashboard', query: { civ: civ.code } }"
-          variant="text"
-          size="small"
-          color="primary"
-        >
-          <template #prepend><CivFlag :civ="civ.code" /></template>
-          {{ civ.title }}
-        </v-btn>
-      </template>
-      <template v-else>
+      <!-- After release the store links are all that is left here: the civ chips
+           above lead to the builds, and the trailer is in the news card by then.
+           Before it, the chips lead to the official civ pages, so the dev blog
+           is left out. -->
+      <template v-if="!released">
         <v-btn :href="RELEASE.links.trailer" target="_blank" rel="noopener" variant="text" size="small" color="primary" prepend-icon="mdi-youtube">
           Trailer
         </v-btn>
@@ -104,10 +93,20 @@ export default {
     // the banner's life and nobody keeps the page open across either.
     const now = new Date();
     const civs = RELEASE.civs.map((c) => ({ ...c, ...getCivById(c.code) }));
+    const released = computed(() => isReleased(now));
+
+    // The chip's link props for the current state: our builds once the civ is
+    // out, the official civ page until then.
+    const civLink = (civ) =>
+      released.value
+        ? { to: { name: "Dashboard", query: { civ: civ.code } } }
+        : { href: civ.page, target: "_blank", rel: "noopener" };
+
     return {
       RELEASE,
       civs,
-      released: computed(() => isReleased(now)),
+      released,
+      civLink,
       isOver: computed(() => !isReleaseLive(now)),
     };
   },
@@ -143,7 +142,9 @@ export default {
   transform: rotate(5deg);
 }
 
-@media (max-width: 620px) {
+/* Smaller media once HomeBanner stacks; the same container and width as its
+   own narrow layout. */
+@container home-banner (width < 553px) {
   .release-banner__flags {
     width: 132px;
     height: 92px;
