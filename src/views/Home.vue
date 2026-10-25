@@ -2,14 +2,15 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="8">
-        <!-- One slot, two possible occupants, never both. The banner hides
-             itself once the tournament is over, and the spotlight takes the
-             position with nothing to edit — but the banner cannot announce its
-             own absence from inside a `v-if`, so the same predicate is asked
-             here. See src/config/event.js. -->
+        <!-- One slot, three possible occupants, at most one at a time: a running
+             tournament, then an expansion announcement, then the contributor
+             spotlight. Each banner hides itself on its own end date, but cannot
+             announce its absence from inside a `v-if`, so the same predicates
+             are asked here. See src/config/event.js and src/config/release.js. -->
         <EventBanner />
+        <ReleaseBanner v-if="!eventLive" />
         <ContributorSpotlight
-          v-if="!eventLive && (featuredContributor || spotlightPending)"
+          v-if="!eventLive && !releaseLive && (featuredContributor || spotlightPending)"
           :contributor="featuredContributor"
           :loading="!snapshotLoaded"
         />
@@ -63,10 +64,12 @@ import TopContributors from "@/components/home/TopContributors.vue";
 import CivPicker from "@/components/home/CivPicker.vue";
 import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
 import EventBanner from "@/components/home/EventBanner.vue";
+import ReleaseBanner from "@/components/home/ReleaseBanner.vue";
 import ContributorSpotlight from "@/components/home/ContributorSpotlight.vue";
 import FundingStatus from "@/components/common/FundingStatus.vue";
 
 import { isEventLive } from "@/config/event";
+import { isReleaseLive } from "@/config/release";
 import { getHomeSnapshot } from "@/composables/data/homeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
@@ -81,6 +84,7 @@ export default {
     CivPicker,
     BuildLaneTabs,
     EventBanner,
+    ReleaseBanner,
     ContributorSpotlight,
     FundingStatus,
   },
@@ -117,6 +121,7 @@ export default {
     // keeps the home page open across the boundary, and a ticking clock would
     // re-render the page every second for a card that changes twice in its life.
     const eventLive = isEventLive();
+    const releaseLive = isReleaseLive();
 
     onMounted(() => {
       store.commit("setFilterConfig", getDefaultConfig());
@@ -164,6 +169,7 @@ export default {
       snapshotLoaded,
       spotlightPending,
       eventLive,
+      releaseLive,
       recentBuildsList,
       popularBuildsList,
       allTimeClassicsList,

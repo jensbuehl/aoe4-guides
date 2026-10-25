@@ -151,7 +151,7 @@ export const civs = ref([
   {
     title: "Scots",
     shortName: "SCO",
-    tagLine: "Infantry, Fortification, Technology",
+    tagLine: "Infantry, Defense, Mustering",
     flagLarge: "/assets/flags/sco-large.webp",
     flagSmall: "/assets/flags/sco-small.webp",
   },
@@ -172,7 +172,7 @@ export const civs = ref([
   {
     title: "Vikings",
     shortName: "VIK",
-    tagLine: "Raiding, Infantry, Sagas",
+    tagLine: "Longhouses, Infantry, Sagas",
     flagLarge: "/assets/flags/vik-large.webp",
     flagSmall: "/assets/flags/vik-small.webp",
   },
