@@ -56,7 +56,7 @@
       <v-app-bar-title :style="{ minWidth: compact ? '240px' : '300px' }">
         <v-row no-gutters class="fill-height" align="center" justify="start">
           <v-col cols="12">
-            <v-card to="/" flat :width="compact ? 240 : 300" class="d-flex align-center">
+            <v-card to="/" flat :width="compact ? 240 : undefined" class="d-flex align-center" :class="{ 'header-brand': !compact }">
               <!-- The app icon, so the header and the browser tab are visibly the
                    same site. Decorative: the name beside it is the link text.
                    Full bar only: at 375px the compact bar has no 56px to spare
@@ -92,7 +92,7 @@
                 :style="{
                   color: $vuetify.theme.current.colors.primary,
                 }"
-                class="subtitle mb-1"
+                class="subtitle mb-2"
                 >{{ subtitle }}</v-card-subtitle
               >
               </div>
@@ -456,16 +456,28 @@ export default {
    tile's own rounded corners.
 
    Edge to edge with the drawn text, not the boxes: with EB Garamond loaded
-   the ink runs 32px to 72px down the 100px bar (pixel scan), so the tile is
+   the ink runs 30px to 70px down the 100px bar (pixel scan), so the tile is
    40px and spans exactly that. Deliberately not inset for optical effect;
-   the edges are meant to line up. Centring alone sets the mark 2px high, because the text block's box
-   includes the subtitle's bottom margin, which has no ink. A different title
-   face moves both edges, so re-measure rather than adjust. */
+   the edges are meant to line up. A different title face, size or tagline
+   gap moves both edges, so re-measure rather than adjust. */
+/* The link card is what the hover overlay fills, so it hugs its content and
+   frames the mark with the same 12px on every side: 12px margin on the left,
+   and the text block's empty space above the name matched by the tagline's
+   bottom margin (mb-2) below. That symmetry is also what lets plain centring
+   put the mark on the ink, with no nudge. */
+.header-brand {
+  width: fit-content;
+}
+/* 11.5px, not Vuetify's 16px: the tracking after the last letter and the
+   glyph's side bearing add about 4.5px of their own, and this lands the drawn
+   text 12px from the card's right edge like the other three sides. */
+.header-brand .title,
+.header-brand .subtitle {
+  padding-right: 11.5px;
+}
 .header-mark {
   flex-shrink: 0;
-  margin-left: 16px;
-  position: relative;
-  top: 2px;
+  margin-left: 12px;
   border-radius: 6px;
   /* Inside the edge, not a box-shadow ring: a ring outside adds a pixel at
      each end and the mark visibly overshoots the text it was sized to. */
