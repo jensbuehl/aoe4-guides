@@ -1,11 +1,12 @@
 <template>
   <v-app-bar
     flat
-    scroll-threshold="150"
-    :scroll-behavior= "(platform.android || platform.ios) ? 'hide' : '' "
     app
     :height="compact ? 60 : 100"
-    :style="'border-bottom: 2px solid ' + $vuetify.theme.current.colors.accent"
+    :style="{
+      borderBottom: '2px solid ' + $vuetify.theme.current.colors.accent,
+      transform: barHidden ? 'translateY(-100%)' : undefined,
+    }"
   >
     <v-container class="fill-height d-flex align-center my-0 py-0">
       <v-app-bar-nav-icon
@@ -358,7 +359,7 @@
 
 <script>
 //External
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { useDisplay, useTheme } from "vuetify";
@@ -418,7 +419,43 @@ export default {
       }
     };
 
-    onMounted(() => {});
+    // On phones the bar slides away while scrolling down and returns on the way
+    // up. This is done here rather than with Vuetify's scroll-behavior="hide",
+    // because a hidden layout item counts as size 0 (composables/layout.js), so
+    // v-main's padding-top collapsed with the bar and every build order moved
+    // 60px under the reader's finger. The bar stays active and keeps its space
+    // reserved at the top of the page; hiding it is only a transform, which our
+    // style overrides because VAppBar applies props.style after its own.
+    const HIDE_AFTER = 150;
+    const barHidden = ref(false);
+    let lastScroll = 0;
+    let lastScrollHeight = 0;
+    const onScroll = () => {
+      const root = document.documentElement;
+      // Clamped, so iOS rubber-banding past either end does not read as a
+      // change of direction.
+      const scroll = Math.min(
+        Math.max(window.scrollY, 0),
+        root.scrollHeight - window.innerHeight
+      );
+      // Content that grew or shrank (lazy lists, images) moved the scroll
+      // position without the reader doing anything; take the new baseline.
+      if (root.scrollHeight !== lastScrollHeight) {
+        lastScrollHeight = root.scrollHeight;
+      } else if (scroll < HIDE_AFTER) {
+        barHidden.value = false;
+      } else if (scroll !== lastScroll) {
+        barHidden.value = scroll > lastScroll;
+      }
+      lastScroll = scroll;
+    };
+
+    onMounted(() => {
+      if (platform.value.android || platform.value.ios) {
+        window.addEventListener("scroll", onScroll, { passive: true });
+      }
+    });
+    onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 
     const openAuthDialog = () => store.dispatch("openAuthDialog", { mode: "login" });
     const openImportDialog = () => store.dispatch("openImportDialog");
@@ -430,6 +467,7 @@ export default {
       title,
       subtitle,
       compact,
+      barHidden,
       user,
       showBottomNavigation: computed(() => store.state.showBottomNavigation),
       authIsReady: computed(() => store.state.authIsReady),
