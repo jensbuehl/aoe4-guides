@@ -57,7 +57,7 @@
           variant="text"
           size="small"
           color="primary"
-          :to="{ name: 'Dashboard', query: { civ } }"
+          :to="civPageRoute(civ)"
         >
           <template #prepend><CivFlag :civ="civ" /></template>
           {{ civ === "VIK" ? "Vikings" : "Scots" }}
@@ -74,10 +74,14 @@
 
 <script>
 import CivFlag from "@/components/common/CivFlag.vue";
+import { civPageRoute } from "@/composables/filter/civDefaultProvider";
 
 export default {
   name: "News",
   components: { CivFlag },
+  setup() {
+    return { civPageRoute };
+  },
 };
 </script>
 
