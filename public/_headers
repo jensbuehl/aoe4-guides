@@ -22,6 +22,13 @@
   Cache-Control: public, max-age=31536000, immutable
 /assets/*.css
   Cache-Control: public, max-age=31536000, immutable
+# The self-hosted wordmark font is hashed the same way. Without this it fell to
+# Netlify's default of revalidating on every load, and that round trip is long
+# enough for the title to paint in its fallback face first on each reload.
+/assets/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*.woff
+  Cache-Control: public, max-age=31536000, immutable
 
 # Game art copied verbatim from public/assets — 1200+ files, all .webp, nested
 # one level under pictures/. The filenames are stable, so there is no rename to

@@ -3,6 +3,33 @@ import vue from "@vitejs/plugin-vue";
 import vuetify from "vite-plugin-vuetify";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
+// The wordmark's face is requested from CSS that main.js imports, so the
+// browser asks for it only once the header is already being laid out — even on
+// a reload with the file in cache. Fontsource sets `font-display: swap`, so that
+// first frame is Georgia, which is wider, and the title visibly jumps to EB
+// Garamond. A preload starts the fetch while the HTML is parsed, in parallel
+// with the bundle, so the face is ready before Vue mounts the header. The file
+// name is content-hashed, so it is read from the bundle rather than written out.
+const preloadWordmarkFont = {
+  name: "preload-wordmark-font",
+  transformIndexHtml: {
+    order: "post",
+    handler(html, ctx) {
+      const font = Object.keys(ctx.bundle ?? {}).find((file) =>
+        /eb-garamond-latin-600-normal-[\w-]+\.woff2$/.test(file)
+      );
+      if (!font) return html;
+      return [
+        {
+          tag: "link",
+          attrs: { rel: "preload", href: `/${font}`, as: "font", type: "font/woff2", crossorigin: "" },
+          injectTo: "head",
+        },
+      ];
+    },
+  },
+};
+
 // https://vitejs.dev/config/
 export default {
   server: {
@@ -36,6 +63,7 @@ export default {
       },
     }),
     vuetify(),
+    preloadWordmarkFont,
   ],
   define: {
     APP_VERSION: JSON.stringify(process.env.npm_package_version),
