@@ -54,9 +54,9 @@ export default {
     eyebrow: { type: String, required: true },
     eyebrowIcon: { type: String, required: true },
     title: { type: String, required: true },
-    // Passed through to HomeBannerFold, which explains both: the one-line
-    // strip once the reader has seen this announcement (phones only), and
-    // whether it has been opened again, held by the caller (v-model).
+    // Passed through to HomeBannerFold, which explains both: whether this
+    // announcement can fold to the one-line strip on phones, and whether it is
+    // open, held by the caller (v-model).
     compact: { type: Boolean, default: false },
     expanded: { type: Boolean, default: false },
   },

@@ -73,6 +73,9 @@
            row reserved. -->
       <div v-if="loading" class="contributor-identity__actions">
         <span class="contributor-identity__ghost contributor-identity__ghost--button"></span>
+        <!-- The links wrap to a second row on narrow screens, and they are not
+             known yet. An invisible row holds that space; see the media query. -->
+        <span class="contributor-identity__ghost-row"></span>
       </div>
       <div v-else-if="$slots.actions || links.length" class="contributor-identity__actions">
         <slot name="actions"></slot>
@@ -238,6 +241,22 @@ export default {
   width: 116px;
   height: 28px;
   border-radius: 7px;
+}
+
+.contributor-identity__ghost-row {
+  display: none;
+  flex: 0 0 100%;
+  height: 28px;
+}
+
+/* Where the button and three links stop fitting one row, stacked and again
+   just after the side-by-side layout begins. Measured on a real
+   card: a contributor with fewer links shifts the other way on arrival, so this
+   is a best guess at the common case, not a guarantee. */
+@media (max-width: 525px), (min-width: 621px) and (max-width: 653px) {
+  .contributor-identity__ghost-row {
+    display: block;
+  }
 }
 
 @keyframes contributor-identity-pulse {

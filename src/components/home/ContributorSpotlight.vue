@@ -11,13 +11,15 @@
     class="contributor-spotlight mb-6"
     :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
-    <!-- Folds to one line on phones once this contributor has been seen, in
-         the same strip as the expansion banner it shares the slot with. -->
+    <!-- Foldable on phones from the first visit, in the same strip as the
+         expansion banner it shares the slot with; starts folded once this
+         contributor has been seen. -->
     <HomeBannerFold
       icon="mdi-account-star"
       :title="contributor?.displayName || 'Contributor spotlight'"
-      :compact="compact"
-      v-model:expanded="expanded"
+      compact
+      :expanded="open"
+      @update:expanded="choice = $event"
     >
       <!-- The face, not the star: a strip that says only a name has to say
            whose. Decorative beside that name, hence the empty alt. -->
@@ -88,10 +90,12 @@ import UserAvatar from "@/components/common/UserAvatar.vue";
 // arrangement as ReleaseBanner's SEEN_KEY, and decided once per page load for
 // the same reason: Home remounts on every Back, and a card that folded between
 // two mounts moves everything under it, so the router's saved scroll position
-// lands the reader hundreds of pixels off. `expanded` is kept the same way.
+// lands the reader hundreds of pixels off. The reader's own tap is kept the same
+// way; null until there is one, because the starting form depends on a
+// contributor who has not arrived yet.
 const SEEN_KEY = "aoe4guides.spotlightSeenId";
 let seenIdThisLoad = null;
-const expanded = ref(false);
+const choice = ref(null);
 
 /**
  * One member of the community, introduced at the top of the home page.
@@ -131,11 +135,12 @@ export default {
     // While the snapshot is in flight the contributor is unknown, so the
     // placeholder takes the form the last visit ended with — wrong at most
     // once, on the visit the nominee changes, like Home's spotlight memo.
-    const compact = computed(() =>
+    const seen = computed(() =>
       props.contributor
         ? props.contributor.id === seenIdThisLoad
         : props.loading && seenIdThisLoad !== "",
     );
+    const open = computed(() => choice.value ?? !seen.value);
 
     // Shown, so seen — takes effect on the next page load (see seenIdThisLoad).
     watch(
@@ -151,7 +156,7 @@ export default {
       { immediate: true },
     );
 
-    return { compact, expanded };
+    return { open, choice };
   },
 };
 </script>

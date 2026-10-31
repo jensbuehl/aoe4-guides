@@ -107,16 +107,17 @@ export default {
 
     // Reserving space for a card that never comes is its own layout shift, and
     // on a site with nobody nominated that would be every single home page load.
-    // So the placeholder is shown only when the *last* visit ended with a
+    // So the placeholder is skipped only when the *last* visit ended without a
     // spotlight — a one-bit memo that is wrong at most once, on the visit where
     // the answer changes, and corrects itself the same load.
     //
-    // First-ever visitors get no reservation and one shift. Nothing available
-    // before the snapshot arrives can tell us more than this.
+    // A first-ever visitor has no memo and gets the placeholder: someone is
+    // nominated nearly all the time, and without it the card's arrival moved
+    // everything under it by its full height, a CLS of 0.33 on a clean load.
     const SPOTLIGHT_MEMO = "aoe4guides.spotlightSeen";
     const readMemo = () => {
       try {
-        return localStorage.getItem(SPOTLIGHT_MEMO) === "1";
+        return localStorage.getItem(SPOTLIGHT_MEMO) !== "0";
       } catch {
         return false; // private mode, or storage disabled
       }

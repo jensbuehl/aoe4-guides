@@ -5,9 +5,8 @@
        it is shown or traded for the one-line strip, and owns both toggles, so
        the cards cannot fold differently: folded, they stack as one row style. -->
   <div :id="regionId">
-    <!-- The one-line form, for a reader who has already seen this card: the
-         title, which expands it, and whatever links the caller puts in #strip.
-         See the `compact` prop. -->
+    <!-- The one-line form: the title, which expands it, and whatever links the
+         caller puts in #strip. See the `compact` prop. -->
     <div v-if="strip || disclosure" class="home-banner-fold__strip">
       <v-btn
         ref="toggleBtn"
@@ -48,8 +47,8 @@
     <template v-if="disclosure ? expanded : !strip">
       <slot />
 
-      <!-- Only on a card the reader opened from the strip: what one tap
-           expanded, one tap folds away again. -->
+      <!-- On every foldable card on a phone, first visit included: a card that
+           can fold says so from the start, not only once it has been folded. -->
       <v-btn
         v-if="collapsible"
         ref="collapseBtn"
@@ -75,16 +74,17 @@ export default {
   props: {
     icon: { type: String, required: true },
     title: { type: String, required: true },
-    // Ask for the one-line strip instead of the full card. *Whether* the
-    // reader has seen this card is the caller's to know — it is specific to
-    // what the card shows. *Where* the strip is worth having is decided here:
+    // Let this card fold to the one-line strip; `expanded` says which form it
+    // is in. *Which form to start in* is the caller's to know — open until the
+    // reader has seen what it shows. *Where* the strip is worth having is
+    // decided here:
     // below md the card is the whole column and stacks to 420px+ of a phone's
     // first screen, pushing the civ picker past the fold. From md up it sits
     // beside the sidebar at about a third of the fold and the picker is in view
     // anyway, so folding it there would take something away from a desktop
     // reader and give nothing back.
     compact: { type: Boolean, default: false },
-    // Whether a compact card has been opened, held by the caller (v-model).
+    // Whether a compact card is open, held by the caller (v-model).
     // It cannot live here: this component remounts with Home on every Back,
     // and a card that refolds on remount moves everything under it, so the
     // router's saved scroll position lands the reader hundreds of pixels off.

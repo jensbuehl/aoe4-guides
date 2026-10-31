@@ -7,7 +7,7 @@
     :eyebrow="released ? 'New expansion · Available now' : 'New expansion · ' + RELEASE.dateLabel"
     :title="RELEASE.title"
     v-model:expanded="expanded"
-    :compact="seen"
+    compact
   >
     <!-- The strip keeps the one thing a returning reader came back for: a way
          to the new civs. Flags alone: at 360px the names would truncate the
@@ -154,6 +154,9 @@ export default {
       } catch {
         // Unreadable storage: show it in full.
       }
+      // Open until seen, and foldable either way. Set only here, once per
+      // load, so a Back keeps whatever the reader last chose.
+      expanded.value = !seenThisLoad;
     }
 
     // Shown, so seen — whichever form was on screen, and it takes effect on
@@ -173,7 +176,6 @@ export default {
       civs,
       released,
       civLink,
-      seen: seenThisLoad,
       expanded,
       isOver: computed(() => !isReleaseLive(now)),
     };
