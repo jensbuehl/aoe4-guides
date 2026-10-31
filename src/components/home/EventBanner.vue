@@ -6,7 +6,24 @@
     eyebrow-icon="mdi-sword-cross"
     :eyebrow="hasStarted ? 'Tournament · Playing now' : 'Tournament · Registration open'"
     :title="EVENT.title"
+    v-model:expanded="expanded"
+    compact
   >
+    <!-- The strip keeps what a returning reader came back for: the stream. -->
+    <template #strip>
+      <v-btn
+        :href="EVENT.links.twitch"
+        target="_blank"
+        rel="noopener"
+        class="text-none"
+        variant="text"
+        color="primary"
+        height="44"
+      >
+        Watch
+      </v-btn>
+    </template>
+
     <template #media>
       <!-- A plain <img>, like the other fixed-size art on the site. -->
       <img
@@ -91,7 +108,7 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 
 // What this tournament *is* lives in the config module; what an event banner
 // *looks like* lives here. The eyebrow wording and the button labels stay
@@ -104,6 +121,14 @@ import { computed } from "vue";
 import { EVENT, hasEventStarted, isEventLive } from "@/config/event";
 import HomeBanner from "@/components/home/HomeBanner.vue";
 
+// Which announcement this browser has already been shown in full, and decided
+// once per page load: the same arrangement as ReleaseBanner, whose note explains
+// why. Registration and "playing now" are different news, so the start of play
+// shows the full banner once more.
+const SEEN_KEY = "aoe4guides.eventSeen";
+let seenThisLoad = null;
+const expanded = ref(false);
+
 export default {
   name: "EventBanner",
   components: { HomeBanner },
@@ -112,9 +137,36 @@ export default {
     // open across the boundary, and a ticking clock would re-render the page
     // every second for a chip that changes twice in its life.
     const now = new Date();
+    const hasStarted = computed(() => hasEventStarted(now));
+
+    // Read before the first render, so the page paints in its final form.
+    // Unreadable storage means nothing is ever "seen": it shows in full.
+    const announcement = EVENT.title + (hasStarted.value ? " · playing" : " · registration");
+    if (seenThisLoad === null) {
+      seenThisLoad = false;
+      try {
+        seenThisLoad = localStorage.getItem(SEEN_KEY) === announcement;
+      } catch {
+        // Unreadable storage: show it in full.
+      }
+      // Open until seen, and foldable either way.
+      expanded.value = !seenThisLoad;
+    }
+
+    // Shown, so seen. Takes effect on the next page load.
+    onMounted(() => {
+      if (!isEventLive(now)) return;
+      try {
+        localStorage.setItem(SEEN_KEY, announcement);
+      } catch {
+        // Unwritable storage: the next visit shows it in full again.
+      }
+    });
+
     return {
       EVENT,
-      hasStarted: computed(() => hasEventStarted(now)),
+      hasStarted,
+      expanded,
       isOver: computed(() => !isEventLive(now)),
     };
   },
