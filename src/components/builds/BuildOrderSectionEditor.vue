@@ -53,6 +53,28 @@
     :pos="autocompletePos"
   ></IconAutoCompleteMenu>
 
+  <!--The phone's icon picker: one fullscreen sheet for every card, where the
+      table has a menu per row. A 350px menu under the card left the grid behind
+      the keyboard and off the bottom of the screen; the sheet has the whole
+      height, closes on ✕ and on Back, and closes itself once an icon is in.
+      Back is handled in setup rather than by closeOnBack — see iconSheetOpen.
+      Keyed by civ because the selector reads its lists once, at setup.-->
+  <PickerDialog
+    v-if="!readonly"
+    v-model="iconSheetOpen"
+    title="Add an icon"
+    title-icon="mdi-image-plus"
+    fullscreen
+    :close-on-back="false"
+  >
+    <IconSelector
+      :key="civ"
+      sheet
+      :civ="civ"
+      @iconSelected="(iconPath, tooltip, iconClass) => insertIconFromSheet(iconPath, tooltip, iconClass)"
+    ></IconSelector>
+  </PickerDialog>
+
   <!--Mobile UI (XS) — bracketed age lane design -->
   <!--A bare age-up is only the arrival plate, and the plate carries its own
       margins: the section spacing on top of those would sit it off-centre-->
@@ -93,17 +115,22 @@
       <div class="xs-steps-container" ref="stepsList">
         <!-- Insert point before the very first card (prepend) -->
         <StepInsertMenu v-if="steps?.length" :options="insertOptions(-1)" @select="handleInsert($event, -1)">
-          <template v-slot:activator="{ props: menu }">
-            <div class="step-insert-xs" v-bind="menu">
+          <template v-slot:activator="{ props: menu, isOpen }">
+            <div :class="['step-insert-xs', isOpen && 'step-insert-xs--open']" v-bind="menu">
               <div class="step-insert-line-xs"></div>
-              <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
+              <span class="step-insert-circle-xs"><v-icon size="16">mdi-plus</v-icon></span>
               <div class="step-insert-line-xs"></div>
             </div>
           </template>
         </StepInsertMenu>
         <!--One wrapper per group, so a block's cards share a parent and the rail
-            is drawn once on it — the age lane's own arrangement.-->
-        <template v-for="(group, groupIndex) in xsGroups" :key="'xs-edit-g' + groupIndex">
+            is drawn once on it — the age lane's own arrangement.
+            Keyed by the group's first entry (a block's opening marker, or the
+            one card a plain group holds), never by position. Every plain card
+            is a group of its own, so a positional key re-used the group and
+            swapped the card inside it: a move unmounted the card and mounted a
+            new one, which dropped the focus out of it mid-Alt+↓.-->
+        <template v-for="(group, groupIndex) in xsGroups" :key="'xs-edit-g' + (group.entries[0].item._id ?? groupIndex)">
         <div :class="group.block ? 'alt-bracket-xs' : 'xs-group-plain'">
         <template v-for="{ item, index } in group.entries" :key="item._id ?? ('xs-edit-' + index)">
         <!--The block opens with its paths, exactly as it does on desktop: the
@@ -166,10 +193,12 @@
           <div class="step-desc-col-xs">
             <div
               :ref="el => registerNoteRef(el, index)"
+              :data-edit-index="index"
+              data-edit-field="gameplan"
               @keyup="saveSelection($event)"
               @click="saveSelection($event)"
               @paste="handlePaste"
-              @focusout="updateStepNote($event, index)"
+              @focusout="updateStepNote($event, item)"
               @mouseover="handleMouseOver($event)"
               @mouseout="handleMouseOut($event)"
               :contenteditable="true"
@@ -183,25 +212,16 @@
                 as it fades in — put it last and that reserved slot sits against
                 the card's right edge as a gap the move buttons are held off by.
                 Inside the row, the same reserved space is invisible.-->
-            <v-menu :close-on-content-click="false" location="bottom">
-              <template v-slot:activator="{ props: menu }">
-                <v-btn
-                  size="x-small"
-                  variant="text"
-                  color="accent"
-                  v-bind="menu"
-                  @mousedown.prevent="saveSelection($event)"
-                  icon
-                  class="step-icon-btn-xs"
-                ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
-              </template>
-              <v-card flat rounded="lg" class="mt-4" width="350px">
-                <IconSelector
-                  @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
-                  :civ="civ"
-                ></IconSelector>
-              </v-card>
-            </v-menu>
+            <v-btn
+              size="x-small"
+              variant="text"
+              color="accent"
+              @mousedown.prevent="saveSelection($event)"
+              @click="openIconSheet"
+              icon
+              aria-haspopup="dialog"
+              class="step-icon-btn-xs"
+            ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
             <StepMoveControls
               :up="canMoveEntry(index, -1)"
               :down="canMoveEntry(index, 1)"
@@ -222,11 +242,20 @@
           <div class="stepc-top-xs">
             <div class="step-time-xs">
               <img src="/assets/resources/time.webp" />
+              <!--`decimal`, not `numeric`: the pad then carries a separator,
+                  and "1.30" or "1,30" (whichever the locale offers) is turned
+                  into 1:30 on blur, as is a bare "130". What neither pad can
+                  type is "~" or a range — rare, and still pasteable.
+                  Enter moves on rather than writing a <br> into the time.-->
               <span
                 @paste="handlePaste"
-                @focusout="handleTimeBlur($event, index)"
+                @focusout="handleTimeBlur($event, item)"
                 @input="handleResourceInput"
+                @keydown.enter="advanceOnEnter"
+                @beforeinput="advanceOnLineBreak"
                 :contenteditable="true"
+                inputmode="decimal"
+                enterkeyhint="next"
                 class="step-time-input"
                 v-html="item.time"
               ></span>
@@ -244,15 +273,25 @@
               @click.stop="removeStepConfirmationDialog = true; delteRowIndex = index;"
             ><v-icon size="14">mdi-close</v-icon></v-btn>
           </div>
-          <!-- 5-slot grid (editable) -->
+          <!-- 5-slot grid (editable). A digit pad, because nine values in ten
+               are a bare count — but `tel`, not `numeric`: the numeric pad has
+               no "+", and 5.8% of resource values in published builds carry
+               one ("4+1"). The phone pad has "+" on both platforms and "-" on
+               Android. What it still cannot type — the "X" in "3+X", "-" on
+               iOS, "~" — is pasted or written on desktop. Enter walks on to the
+               next cell and from stone into the description. -->
           <div class="step-grid-xs">
             <div :class="['slot-xs', 'slot-builder', hasResourceValue(item.builders) ? 'slot-has' : 'slot-empty', 'slot-edit']">
               <div class="slot-icon"><img src="/assets/resources/repair.webp" /></div>
               <span
                 @paste="handlePaste"
-                @focusout="updateStep($event, index, 'builders')"
+                @focusout="updateStep($event, item, 'builders')"
                 @input="handleResourceInput"
+                @keydown.enter="advanceOnEnter"
+                @beforeinput="advanceOnLineBreak"
                 :contenteditable="true"
+                inputmode="tel"
+                enterkeyhint="next"
                 class="slot-val slot-val-edit"
                 v-html="item.builders ? item.builders : ''"
               ></span>
@@ -261,9 +300,13 @@
               <div class="slot-icon"><img src="/assets/resources/food.webp" /></div>
               <span
                 @paste="handlePaste"
-                @focusout="updateStep($event, index, 'food')"
+                @focusout="updateStep($event, item, 'food')"
                 @input="handleResourceInput"
+                @keydown.enter="advanceOnEnter"
+                @beforeinput="advanceOnLineBreak"
                 :contenteditable="true"
+                inputmode="tel"
+                enterkeyhint="next"
                 class="slot-val slot-val-edit"
                 v-html="item.food ? item.food : ''"
               ></span>
@@ -272,9 +315,13 @@
               <div class="slot-icon"><img src="/assets/resources/wood.webp" /></div>
               <span
                 @paste="handlePaste"
-                @focusout="updateStep($event, index, 'wood')"
+                @focusout="updateStep($event, item, 'wood')"
                 @input="handleResourceInput"
+                @keydown.enter="advanceOnEnter"
+                @beforeinput="advanceOnLineBreak"
                 :contenteditable="true"
+                inputmode="tel"
+                enterkeyhint="next"
                 class="slot-val slot-val-edit"
                 v-html="item.wood ? item.wood : ''"
               ></span>
@@ -283,9 +330,13 @@
               <div class="slot-icon"><img src="/assets/resources/gold.webp" /></div>
               <span
                 @paste="handlePaste"
-                @focusout="updateStep($event, index, 'gold')"
+                @focusout="updateStep($event, item, 'gold')"
                 @input="handleResourceInput"
+                @keydown.enter="advanceOnEnter"
+                @beforeinput="advanceOnLineBreak"
                 :contenteditable="true"
+                inputmode="tel"
+                enterkeyhint="next"
                 class="slot-val slot-val-edit"
                 v-html="item.gold ? item.gold : ''"
               ></span>
@@ -294,9 +345,13 @@
               <div class="slot-icon"><img src="/assets/resources/stone.webp" /></div>
               <span
                 @paste="handlePaste"
-                @focusout="updateStep($event, index, 'stone')"
+                @focusout="updateStep($event, item, 'stone')"
                 @input="handleResourceInput"
+                @keydown.enter="advanceOnEnter"
+                @beforeinput="advanceOnLineBreak"
                 :contenteditable="true"
+                inputmode="tel"
+                enterkeyhint="next"
                 class="slot-val slot-val-edit"
                 v-html="item.stone ? item.stone : ''"
               ></span>
@@ -305,10 +360,12 @@
           <!-- Description field -->
           <div class="step-desc-col-xs">
             <div
+              :data-edit-index="index"
+              data-edit-field="description"
               @keyup="saveSelection($event)"
               @click="saveSelection($event)"
               @paste="handlePaste"
-              @focusout="updateStepDescription($event, index)"
+              @focusout="updateStepDescription($event, item)"
               @mouseover="handleMouseOver($event)"
               @mouseout="handleMouseOut($event)"
               :contenteditable="true"
@@ -321,25 +378,16 @@
                while invisible; last, that reserved slot would sit against the
                card's right edge and hold the move buttons off it. -->
           <div class="step-action-row-xs">
-            <v-menu :close-on-content-click="false" location="bottom">
-              <template v-slot:activator="{ props: menu }">
-                <v-btn
-                  size="x-small"
-                  variant="text"
-                  color="accent"
-                  v-bind="menu"
-                  @mousedown.prevent="saveSelection($event)"
-                  icon
-                  class="step-icon-btn-xs"
-                ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
-              </template>
-              <v-card flat rounded="lg" class="mt-4" width="350px">
-                <IconSelector
-                  @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
-                  :civ="civ"
-                ></IconSelector>
-              </v-card>
-            </v-menu>
+            <v-btn
+              size="x-small"
+              variant="text"
+              color="accent"
+              @mousedown.prevent="saveSelection($event)"
+              @click="openIconSheet"
+              icon
+              aria-haspopup="dialog"
+              class="step-icon-btn-xs"
+            ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
             <StepMoveControls
               :up="canMoveEntry(index, -1)"
               :down="canMoveEntry(index, 1)"
@@ -357,10 +405,10 @@
           :options="insertOptions(index)"
           @select="handleInsert($event, index)"
         >
-          <template v-slot:activator="{ props: menu }">
-            <div class="step-insert-xs" v-bind="menu">
+          <template v-slot:activator="{ props: menu, isOpen }">
+            <div :class="['step-insert-xs', isOpen && 'step-insert-xs--open']" v-bind="menu">
               <div class="step-insert-line-xs"></div>
-              <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
+              <span class="step-insert-circle-xs"><v-icon size="16">mdi-plus</v-icon></span>
               <div class="step-insert-line-xs"></div>
             </div>
           </template>
@@ -374,10 +422,10 @@
           :options="insertOptions(group.entries[group.entries.length - 1].index)"
           @select="handleInsert($event, group.entries[group.entries.length - 1].index)"
         >
-          <template v-slot:activator="{ props: menu }">
-            <div class="step-insert-xs" v-bind="menu">
+          <template v-slot:activator="{ props: menu, isOpen }">
+            <div :class="['step-insert-xs', isOpen && 'step-insert-xs--open']" v-bind="menu">
               <div class="step-insert-line-xs"></div>
-              <span class="step-insert-circle-xs"><v-icon size="11">mdi-plus</v-icon></span>
+              <span class="step-insert-circle-xs"><v-icon size="16">mdi-plus</v-icon></span>
               <div class="step-insert-line-xs"></div>
             </div>
           </template>
@@ -405,25 +453,16 @@
             ></div>
           </div>
           <div class="step-action-row-xs">
-            <v-menu :close-on-content-click="false" location="bottom">
-              <template v-slot:activator="{ props: menu }">
-                <v-btn
-                  size="x-small"
-                  variant="text"
-                  color="accent"
-                  v-bind="menu"
-                  @mousedown.prevent="saveSelection($event)"
-                  icon
-                  class="step-icon-btn-xs"
-                ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
-              </template>
-              <v-card flat rounded="lg" class="mt-4" width="350px">
-                <IconSelector
-                  @iconSelected="(iconPath, tooltip, iconClass) => handleIconSelectorIconSelected(iconPath, tooltip, iconClass)"
-                  :civ="civ"
-                ></IconSelector>
-              </v-card>
-            </v-menu>
+            <v-btn
+              size="x-small"
+              variant="text"
+              color="accent"
+              @mousedown.prevent="saveSelection($event)"
+              @click="openIconSheet"
+              icon
+              aria-haspopup="dialog"
+              class="step-icon-btn-xs"
+            ><v-icon>mdi-image-plus</v-icon><v-tooltip activator="parent" location="top"><span :style="{ color: $vuetify.theme.current.colors.primary }">Add an icon, or type :: in the text</span></v-tooltip></v-btn>
           </div>
         </div>
       </div>
@@ -666,7 +705,7 @@
             <td :colspan="9" class="ins-row-cell" data-gap-index="0">
               <StepInsertMenu :options="insertOptions(-1)" @select="handleInsert($event, -1)">
                 <template v-slot:activator="{ props: menu, isOpen }">
-                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
+                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+<span class="ins-btn-word"> Add</span></button></div>
                 </template>
               </StepInsertMenu>
             </td>
@@ -676,7 +715,7 @@
             <td :colspan="9" class="ins-row-cell" :data-gap-index="index">
               <StepInsertMenu :options="insertOptions(index - 1)" @select="handleInsert($event, index - 1)">
                 <template v-slot:activator="{ props: menu, isOpen }">
-                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
+                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+<span class="ins-btn-word"> Add</span></button></div>
                 </template>
               </StepInsertMenu>
             </td>
@@ -789,7 +828,7 @@
               @paste="handlePaste"
               @keydown.esc.prevent="releaseEditing($event)"
               @focusin="focusedDescIndex = index"
-              @focusout="updateStepNote($event, index); focusedDescIndex = null"
+              @focusout="updateStepNote($event, item); focusedDescIndex = null"
               @mouseover="handleMouseOver($event)"
               @mouseout="handleMouseOut($event)"
               contenteditable="true"
@@ -903,9 +942,11 @@
                 v-else
                 :ref="el => registerTimestampRef(el, index)"
                 type="text"
+                inputmode="decimal"
+                enterkeyhint="next"
                 :value="item.time"
-                @input="updateStep($event, index, 'time')"
-                @blur="handleTimeBlur($event, index)"
+                @input="updateStep($event, item, 'time')"
+                @blur="handleTimeBlur($event, item)"
                 @paste="handlePaste"
                 :class="['ts-pill', !item.time && 'ts-ghost']"
               />
@@ -916,8 +957,8 @@
                 <span v-if="hasResourceValue(item.builders)" :class="['rc-pill rc-builders', deltaClass('builders', index)]">{{ item.builders }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="7" :value="item.builders"
-                @input="updateStep($event, index, 'builders')" @paste="handlePaste"
+              <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.builders"
+                @input="updateStep($event, item, 'builders')" @paste="handlePaste"
                 :class="hasResourceValue(item.builders) ? ['rc-pill','rc-builders','rc-input', deltaClass('builders',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -925,8 +966,8 @@
                 <span v-if="hasResourceValue(item.food)" :class="['rc-pill rc-food', deltaClass('food', index)]">{{ item.food }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="7" :value="item.food"
-                @input="updateStep($event, index, 'food')" @paste="handlePaste"
+              <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.food"
+                @input="updateStep($event, item, 'food')" @paste="handlePaste"
                 :class="hasResourceValue(item.food) ? ['rc-pill','rc-food','rc-input', deltaClass('food',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -934,8 +975,8 @@
                 <span v-if="hasResourceValue(item.wood)" :class="['rc-pill rc-wood', deltaClass('wood', index)]">{{ item.wood }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="7" :value="item.wood"
-                @input="updateStep($event, index, 'wood')" @paste="handlePaste"
+              <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.wood"
+                @input="updateStep($event, item, 'wood')" @paste="handlePaste"
                 :class="hasResourceValue(item.wood) ? ['rc-pill','rc-wood','rc-input', deltaClass('wood',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -943,8 +984,8 @@
                 <span v-if="hasResourceValue(item.gold)" :class="['rc-pill rc-gold', deltaClass('gold', index)]">{{ item.gold }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else type="text" maxlength="7" :value="item.gold"
-                @input="updateStep($event, index, 'gold')" @paste="handlePaste"
+              <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.gold"
+                @input="updateStep($event, item, 'gold')" @paste="handlePaste"
                 :class="hasResourceValue(item.gold) ? ['rc-pill','rc-gold','rc-input', deltaClass('gold',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -952,8 +993,8 @@
                 <span v-if="hasResourceValue(item.stone)" :class="['rc-pill rc-stone', deltaClass('stone', index)]">{{ item.stone }}</span>
                 <span v-else class="rc-empty">–</span>
               </template>
-              <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" maxlength="7" :value="item.stone"
-                @input="updateStep($event, index, 'stone')" @paste="handlePaste"
+              <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.stone"
+                @input="updateStep($event, item, 'stone')" @paste="handlePaste"
                 :class="hasResourceValue(item.stone) ? ['rc-pill','rc-stone','rc-input', deltaClass('stone',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td
@@ -967,7 +1008,7 @@
               @paste="handlePaste"
               @keydown.esc.prevent="releaseEditing($event)"
               @focusin="focusedDescIndex = index"
-              @focusout="updateStepDescription($event, index); focusedDescIndex = null"
+              @focusout="updateStepDescription($event, item); focusedDescIndex = null"
               @mouseover="handleMouseOver($event)"
               @mouseout="handleMouseOut($event)"
               :contenteditable="!readonly"
@@ -1059,7 +1100,7 @@
                 @select="handleInsert($event, steps.length - 1)"
               >
                 <template v-slot:activator="{ props: menu, isOpen }">
-                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+ Add</button></div>
+                  <div :class="['ins-zone', isOpen && 'ins-zone--open']" v-bind="menu"><div class="ins-line"></div><button class="ins-btn" tabindex="-1">+<span class="ins-btn-word"> Add</span></button></div>
                 </template>
               </StepInsertMenu>
             </td>
@@ -1182,6 +1223,7 @@ import {
   onMounted,
   nextTick,
 } from "vue";
+import { useRouter } from "vue-router";
 import scrollIntoView from "scroll-into-view-if-needed";
 
 //Components
@@ -1191,6 +1233,7 @@ import IconToolTip from "@/components/builds/IconToolTip.vue";
 import StepInsertMenu from "@/components/builds/StepInsertMenu.vue";
 import StepMoveControls from "@/components/builds/StepMoveControls.vue";
 import AlternativePathTabs from "@/components/builds/AlternativePathTabs.vue";
+import PickerDialog from "@/components/common/PickerDialog.vue";
 
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
@@ -1222,6 +1265,8 @@ import {
   addAutocompleteIcon,
   updateSearchText,
   placeCaretAtEnd,
+  caretOffset,
+  placeCaretAt,
 } from "@/composables/builds/contentEditableHelper.js";
 
 /**
@@ -1334,6 +1379,7 @@ export default {
     StepInsertMenu,
     StepMoveControls,
     AlternativePathTabs,
+    PickerDialog,
   },
   setup(props, context) {
     //Absent on the editor route, where there is no timeline card to link to.
@@ -1384,8 +1430,24 @@ export default {
     const currentAgeName = computed(() => AGE_NAMES[props.section.age - 1] ?? "");
     const currentAgeImg = computed(() => `/assets/pictures/age/age_${props.section.age}.webp`);
 
-    //Hacky deep copy of object since working on the reference broke the current selection
-    //Copy needs to be kept in sync and is used only for the description field :(
+    //Two lists, one entry per row in each, spliced together at the same index.
+    //
+    //`steps` is what the template renders. `stepsCopy` is the model: every edit
+    //is written to it, and it is the only list emitSteps() hands upwards.
+    //
+    //They are split because a rich-text focusout — a description's or a
+    //note's — must not write `steps`. That would change the v-html under the
+    //field the author has just left and re-set its innerHTML, collapsing the
+    //caret the icon picker saved a moment earlier (the picker takes focus
+    //first), so the icon would land at the start of the field or nowhere. So
+    //their text lives in the copy alone until syncEditedFields() squares the
+    //two up before a structural change.
+    //
+    //Rows are addressed by position, and positions move: a field's handler
+    //asks positionOf() where its entry is now rather than trusting the index it
+    //was rendered with. Anything that writes `steps` alone, or
+    //emits it, publishes descriptions as they were before the last one typed —
+    //which is how a note edit used to revert the step above it (T17).
     //
     //Expanded on the way in: the document nests an alternatives block, the
     //editor works on a flat run with markers, because that is what makes "above
@@ -1685,7 +1747,10 @@ export default {
 
     const saveSelection = (event) => {
       //navigate to aoe4world if clicked on an image
-      if (event?.target.className.includes("icon-") && toolTipModel.value?.exploreUrl) {
+      //An SVG's className is an SVGAnimatedString, not a string — and the
+      //picker button's glyph is an SVG, so a press landing on it threw here,
+      //before the caret below was stored.
+      if (typeof event?.target.className === "string" && event.target.className.includes("icon-") && toolTipModel.value?.exploreUrl) {
         window.open(toolTipModel.value.exploreUrl);
       }
 
@@ -1781,8 +1846,39 @@ export default {
       saveSelection(event);
     };
 
+    /**
+     * The editable field the saved caret is in.
+     *
+     * @return {Element|null} The contenteditable, or null when the caret is not
+     *   in one that is still on the page (its card was removed meanwhile).
+     */
+    const fieldOfSelection = () => {
+      const anchor = selection.value?.startContainer;
+      const field = (anchor?.nodeType === Node.ELEMENT_NODE ? anchor : anchor?.parentElement)
+        ?.closest('[contenteditable="true"]');
+      return field?.isConnected ? field : null;
+    };
+
+    /**
+     * Puts a picked icon at the saved caret and saves the field.
+     *
+     * The save is the part that is easy to miss. The field's text is written
+     * back on focusout, and the field lost focus to the picker — before the icon
+     * was in it. Inserting into the DOM alone left the icon on screen and out of
+     * the model, on desktop and phone alike, so it vanished on the next reorder
+     * and never reached a save unless the author happened to click into that
+     * field and out again. Dispatching focusout runs the field's own handler, so
+     * a step, a note and the section note each save through their own path with
+     * their own index, exactly as when the author leaves the field.
+     *
+     * @param {string} iconPath - The icon's image path.
+     * @param {string} tooltipText - The icon's title.
+     * @param {string} iconClass - The icon's background class, without prefix.
+     * @return {void}
+     */
     const handleIconSelectorIconSelected = (iconPath, tooltipText, iconClass) => {
-      if (!selection.value) return;
+      const field = fieldOfSelection();
+      if (!field) return;
       iconClass = iconClass ? "icon-" + iconClass : "icon";
 
       const img = document.createElement('img');
@@ -1797,27 +1893,156 @@ export default {
       range.setStartAfter(img);
       range.collapse(true);
       selection.value = range;
+      field.dispatchEvent(new FocusEvent("focusout"));
+    };
+
+    //The phone's icon sheet. One per section, opened by every card's picker
+    //button; the card is identified by the caret the button saved, not by a prop.
+    const iconSheetOpen = ref(false);
+
+    //Back closes the sheet, and it cannot be Vuetify's closeOnBack that does it.
+    //That cancels the navigation from a global beforeEach, and the router runs
+    //the editor's own leave guard before any global one — so on a build with
+    //unsaved changes, which is every build being edited, Back asked "leave
+    //anyway?", and yes left the editor with the sheet still open over it.
+    //
+    //So the sheet pushes its own entry, for the same URL, through the router's
+    //history object rather than through router.push. Back then pops to the same
+    //route: the router still resolves it, but nothing is left, so no leave
+    //guard runs. Pushed this way the entry underneath keeps the scroll position
+    //from the moment before the sheet opened, which is what the router restores
+    //on that pop — read any later and it would be the 0 that Vuetify's scroll
+    //lock reports while the sheet is up, and the page would land at the top.
+    //✕ and a pick step back over the entry with the router's listeners off, so
+    //no entry is left behind and closing never becomes a navigation at all.
+    //Optional so a section rendered outside a router (none today) still mounts.
+    const routerHistory = useRouter()?.options.history;
+    let iconSheetEntry = false;
+    const onIconSheetPopstate = () => {
+      window.removeEventListener("popstate", onIconSheetPopstate);
+      iconSheetEntry = false;
+      iconSheetOpen.value = false;
+    };
+    const openIconSheet = () => {
+      if (routerHistory && !iconSheetEntry) {
+        routerHistory.push(routerHistory.location, { iconSheet: true });
+        iconSheetEntry = true;
+        window.addEventListener("popstate", onIconSheetPopstate);
+      }
+      iconSheetOpen.value = true;
+    };
+    //Closing hands the author back to the text, caret after the icon (or where
+    //it was, after ✕): left on <body>, the card's action row disappeared with
+    //its focus, and the next icon took a tap on the text first. After the
+    //flush, so the dialog has dropped its focus trap before the field asks.
+    watch(iconSheetOpen, (open) => {
+      if (open) return;
+      if (iconSheetEntry) routerHistory.go(-1, false);
+      nextTick(() => {
+        const field = fieldOfSelection();
+        if (!field) return;
+        field.focus({ preventScroll: true });
+        restoreSelection();
+      });
+    });
+    onBeforeUnmount(() => window.removeEventListener("popstate", onIconSheetPopstate));
+
+    /**
+     * Puts the icon chosen on the phone's sheet at the caret and closes the
+     * sheet — once. A second tap on a tile 90ms later, or a tap on the text
+     * that lands on the sheet as it fades, arrives after the sheet has closed
+     * and is ignored rather than inserted.
+     *
+     * @param {string} iconPath - The icon's image path.
+     * @param {string} tooltipText - The icon's title.
+     * @param {string} iconClass - The icon's background class, without prefix.
+     * @return {void}
+     */
+    const insertIconFromSheet = (iconPath, tooltipText, iconClass) => {
+      if (!iconSheetOpen.value) return;
+      handleIconSelectorIconSelected(iconPath, tooltipText, iconClass);
+      iconSheetOpen.value = false;
     };
 
     /**
-     * A bare number is a minute count: "13" means 13:00 and "0" means 0:00.
-     * Anything else is left exactly as typed — "1:5" is not normalised, because
-     * it could as easily mean 1:05 as 1:50 and guessing would silently rewrite
-     * the author's timing.
+     * A bare number of one or two digits is a minute count: "13" means 13:00
+     * and "0" means 0:00. Three or four digits are minutes and seconds, the way
+     * a number pad types a clock — "130" is 1:30, "045" is 0:45 — and so is a
+     * dot or comma in place of the colon, which is all a decimal pad offers.
+     *
+     * Neither of those widens what a time can mean. The parser already reads
+     * "1.30" as 1:30, and three or four bare digits never parsed at all, so
+     * this only turns a rejected value into an accepted one. Seconds past 59
+     * are left as typed, and so is anything else — "1:5" is not normalised,
+     * because it could as easily mean 1:05 as 1:50 and guessing would silently
+     * rewrite the author's timing.
      *
      * @param {string} value - The raw field contents.
      * @return {string} The normalised timestamp.
      */
     const normalizeTimeString = (value) => {
       const text = (value ?? "").replace(/<[^>]*>/g, "").trim();
-      return /^\d{1,2}$/.test(text) ? `${parseInt(text, 10)}:00` : text;
+      if (/^\d{1,2}$/.test(text)) return `${parseInt(text, 10)}:00`;
+
+      const clock = text.match(/^(\d{1,2})[.,]?(\d\d)$/);
+      if (clock && parseInt(clock[2], 10) < 60) return `${parseInt(clock[1], 10)}:${clock[2]}`;
+
+      return text;
+    };
+
+    /**
+     * Enter in a single-line cell of a phone card moves to the card's next
+     * field, and from the last one into the description. Left to itself it
+     * writes a <br> into the cell, and updateStep() strips markup on save, so
+     * "130", Enter, "2" was saved as the time "1302".
+     *
+     * Alt+Enter is let through untouched: it bubbles to the card's
+     * handleRowShortcut, which inserts a step.
+     *
+     * @param {KeyboardEvent} event - The keydown from a time or resource cell.
+     * @return {void}
+     */
+    const advanceOnEnter = (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || event.isComposing) return;
+      event.preventDefault();
+      advanceFrom(event.currentTarget);
+    };
+
+    /**
+     * The same move, for keyboards that never send an Enter keydown. Several
+     * Android IMEs (Samsung Keyboard, anything mid-composition) report every
+     * key as keyCode 229 / "Unidentified", so advanceOnEnter() never sees one
+     * and the <br> lands after all. The line break itself still arrives here.
+     *
+     * It cannot fire twice for one press: when advanceOnEnter() — or Alt+Enter's
+     * handleRowShortcut — cancels the keydown, the browser raises no
+     * beforeinput for it at all.
+     *
+     * @param {InputEvent} event - The beforeinput from a time or resource cell.
+     * @return {void}
+     */
+    const advanceOnLineBreak = (event) => {
+      if (event.inputType !== "insertParagraph" && event.inputType !== "insertLineBreak") return;
+      event.preventDefault();
+      advanceFrom(event.currentTarget);
+    };
+
+    /**
+     * @param {Element} field - The cell being left.
+     * @return {void}
+     */
+    const advanceFrom = (field) => {
+      const fields = [...(field.closest(".step-card-xs")?.querySelectorAll('[contenteditable="true"]') ?? [])];
+      const next = fields[fields.indexOf(field) + 1];
+      if (next) placeCaretAtEnd(next);
+      else field.blur();
     };
 
     /**
      * Normalises on blur rather than on input: rewriting mid-keystroke would
      * turn "1" into "1:00" before the author had finished typing "13".
      */
-    const handleTimeBlur = (event, index) => {
+    const handleTimeBlur = (event, item) => {
       const isInput = event.target.tagName === "INPUT";
       const normalized = normalizeTimeString(
         isInput ? event.target.value : event.target.innerHTML
@@ -1829,10 +2054,42 @@ export default {
         event.target.innerHTML = normalized;
       }
 
-      updateStep(event, index, "time");
+      updateStep(event, item, "time");
     };
 
-    const updateStep = (event, index, propertyName) => {
+    /**
+     * Where an entry stands in the working lists right now, or -1 once it is
+     * gone from them.
+     *
+     * Every field handler asks this instead of trusting the index it was
+     * rendered with, because a focusout can arrive with a closure from before a
+     * move. Taking a focused node out of the document — Vue unmounting a card,
+     * or re-inserting it elsewhere — fires focusout in the middle of the patch,
+     * before the card's handlers are updated: an Alt+↓ from inside a card's
+     * description wrote that description onto the card that had taken its
+     * place. The entry itself is still the right one, so its
+     * position is looked up rather than remembered.
+     *
+     * -1 is a field whose entry has left the lists — its path was switched
+     * away, it was removed, or it was moved into another section — and the
+     * focusout is ignored. Nothing is lost by that only because the field was
+     * saved before its entry left: a tab, button or dialog that starts the
+     * change takes focus first, which runs the field's handler; descriptions
+     * and notes are also read by syncEditedFields() before every structural
+     * change; and a keyboard move, which starts from inside the field, runs
+     * the field's own handler before it moves (moveEntry). A new way of taking
+     * an entry out of the lists while one of its fields keeps focus needs the
+     * same.
+     *
+     * @param {Object} item - The entry the field belongs to, as rendered.
+     * @return {number} Its position in `steps` and `stepsCopy`.
+     */
+    const positionOf = (item) => steps.indexOf(item);
+
+    const updateStep = (event, item, propertyName) => {
+      const index = positionOf(item);
+      if (index < 0) return;
+
       let val = event.target.tagName === 'INPUT' ? event.target.value : event.target.innerHTML;
       // These are plain-text/numeric fields (time, builders, food, wood, gold,
       // stone). When edited via a contenteditable div, Chrome leaves a stray
@@ -1875,9 +2132,13 @@ export default {
       context.emit("gameplanChanged", gameplanCopy.value);
     };
 
-    const updateStepDescription = (event, index) => {
+    const updateStepDescription = (event, item) => {
+      const index = positionOf(item);
+      if (index < 0) return;
+
+      //The copy only — see where the two lists are declared.
       stepsCopy[index].description = keptOrEmptied(event.target.innerHTML);
-      emitSteps(stepsCopy);
+      emitSteps();
     };
 
     /**
@@ -1888,13 +2149,20 @@ export default {
      * nothing in it. Kept as an empty string rather than deleted, because the
      * row itself is still there until the author removes it.
      *
+     * The copy only, exactly as a description: writing `steps` here re-set the
+     * note's v-html the moment the icon picker or sheet took focus, which
+     * collapsed the caret the picker had saved to the start of the note, so
+     * the icon landed in front of everything typed.
+     *
      * @param {Event} event - The focusout event from the note's field.
-     * @param {number} index - Position of the note within this section.
+     * @param {Object} item - The note, as rendered; see positionOf().
      * @return {void}
      */
-    const updateStepNote = (event, index) => {
+    const updateStepNote = (event, item) => {
+      const index = positionOf(item);
+      if (index < 0) return;
+
       stepsCopy[index].gameplan = keptOrEmptied(event.target.innerHTML);
-      steps[index].gameplan = stepsCopy[index].gameplan;
       emitSteps();
     };
 
@@ -1910,11 +2178,18 @@ export default {
      * a marker can never reach Firestore and a block can never be emitted
      * half-open. Every change goes through here.
      *
-     * @param {Array} [source] - The list to emit; defaults to the live steps.
+     * Always the copy, never `steps`, and deliberately not a parameter. It used
+     * to default to `steps` while a description's focusout passed the copy, so
+     * whichever handler ran last decided which list was published — a note, a
+     * time on another row or a path rename emitted `steps`, which had never
+     * received the description typed just before, and the saved build lost it
+     * while the field still showed it. Every edit writes the copy, so the copy
+     * is complete; `steps` is only complete straight after syncEditedFields().
+     *
      * @return {void}
      */
-    const emitSteps = (source = steps) => {
-      context.emit("stepsChanged", collapseBlocks(source));
+    const emitSteps = () => {
+      context.emit("stepsChanged", collapseBlocks(stepsCopy));
     };
 
     /** The opening marker of an alternatives block. */
@@ -2028,11 +2303,10 @@ export default {
      * with the entry gone from here and not yet anywhere else — briefly, but
      * that brief moment is a whole build order missing a step.
      *
-     * Both working lists are spliced by every one of these, at the same index,
-     * because both carry real content: `stepsCopy` holds what the author typed
-     * into a description (a focusout writes it there, and `emitSteps(stepsCopy)`
-     * reads it back out), while `steps` holds everything else. Splice one and
-     * the pair drift apart, which is a step wearing another step's text.
+     * Both working lists are spliced by every one of these, at the same index:
+     * `stepsCopy` is the model that is emitted, `steps` the one on screen (see
+     * where they are declared). Splice one and the pair drift apart, which is a
+     * step wearing another step's text.
      */
     const reorderHandlers = {
       /** Entries in the working list, markers included — the coordinator counts gaps itself. */
@@ -2062,20 +2336,15 @@ export default {
       /**
        * Takes an entry out and hands it over.
        *
-       * The pair travels together. On desktop `syncEditedFields()` writes the
-       * DOM back into `steps` only, so the copy's text can be a focusout behind;
-       * it is squared up here, while the two are still side by side and it is
-       * obvious which is which.
+       * The pair travels together. The coordinator has already called
+       * `syncEdits`, which leaves the two agreeing — so nothing is copied across
+       * here. It used to copy `steps` over the copy, which ran from the list on
+       * screen to the model, and on a phone undid the description just typed.
        */
       detach: (index) => {
         const step = steps[index];
         const copy = stepsCopy[index];
         if (!step || isMarker(step)) return null;
-
-        if (copy) {
-          if (isNote(step)) copy.gameplan = step.gameplan;
-          else copy.description = step.description;
-        }
 
         steps.splice(index, 1);
         stepsCopy.splice(index, 1);
@@ -2241,13 +2510,46 @@ export default {
      * alternative, or into the next age, cost its own press instead of happening
      * as a side effect of passing an entry.
      *
+     * On the card list an Alt+↑/↓ is pressed from inside a field, and the
+     * author is still typing there afterwards — so the field gets its focus and
+     * caret back. A move re-inserts the card's node, which drops focus, and the
+     * sync before it re-sets the field's markup, which drops the caret. The
+     * table hands focus to the row's grip instead (focusEntry), as before.
+     *
      * @param {number} index - Position of the row in the working list.
      * @param {number} delta - -1 for up, 1 for down.
      * @return {void}
      */
-    const moveEntry = (index, delta) => {
+    const moveEntry = async (index, delta) => {
       if (!reorder || readonly) return;
-      reorder.moveBy(props.sectionIndex, index, delta);
+
+      const field = document.activeElement;
+      const typing = !!field?.isContentEditable && !!stepsList.value?.contains(field);
+      const caret = typing ? caretOffset(field) : null;
+      const fieldsOf = (card) => [...(card?.querySelectorAll('[contenteditable="true"]') ?? [])];
+      const slot = typing ? fieldsOf(field.closest("[data-card-index]")).indexOf(field) : -1;
+
+      //Saved through the field's own handler first, while this section still
+      //holds the entry. A card's time and resource cells save on focusout and
+      //nowhere else — syncEditedFields() reads only descriptions and notes — and
+      //the focusout the move itself causes arrives once the entry has left: an
+      //entry carried into another section is no longer here to be found, and
+      //a time typed into it was dropped. The same dispatch the icon picker uses.
+      if (typing) field.dispatchEvent(new FocusEvent("focusout"));
+
+      const landed = await reorder.moveBy(props.sectionIndex, index, delta);
+      if (!typing) return;
+
+      //The same node when the card moved within its group of cards. A card
+      //that crosses into or out of an alternatives bracket changes parent, so
+      //Vue mounts a new one; the field is then found again by the card's new
+      //position and its place among the card's fields. One that crosses into
+      //another section belongs to that section's list, and is left there.
+      let target = field.isConnected ? field : null;
+      if (!target && landed?.sectionIndex === props.sectionIndex) {
+        target = fieldsOf(stepsList.value?.querySelector(`[data-card-index="${landed.gapIndex}"]`))[slot];
+      }
+      if (target) placeCaretAt(target, caret);
     };
 
     /** Whether a press in that direction would do anything. */
@@ -2405,6 +2707,20 @@ export default {
     };
 
     /**
+     * The layout that is displayed, not merely the one that exists — the table
+     * or the card list, or null when neither is on screen.
+     *
+     * Both are always mounted and one is hidden by a breakpoint class, so
+     * `stepsTable` is set on a phone too. Asked as "is there a table", a phone
+     * read its hidden table, whose cells only ever hold `steps`, and a ref
+     * registered by both layouts ends up holding the hidden one.
+     *
+     * @return {Element|null}
+     */
+    const liveLayout = () =>
+      [stepsTable.value, stepsList.value].find((el) => el?.getClientRects().length) ?? null;
+
+    /**
      * Pulls what the author has typed into contenteditable cells back into the
      * model, before anything reorders the rows underneath them.
      *
@@ -2413,26 +2729,37 @@ export default {
      * cell instead of seven narrow ones — so a positional read finds the wrong
      * cell on the first note in a section and every row after it.
      *
+     * Leaves both lists agreeing, because what follows reads `steps` — a path
+     * switch files the rows on screen away from it, a block's removal lifts them
+     * from it, a move carries its entry — and emits the copy.
+     *
+     * The cells are read rather than the copy trusted, because one of them may
+     * still have focus: Alt+Enter, Alt+N or Alt+↑/↓ from inside a description
+     * reach here before its focusout has saved anything.
+     *
      * @return {void}
      */
     const syncEditedFields = () => {
-      const table = stepsTable.value;
+      const live = liveLayout();
 
-      if (table) {
-        //Desktop
-        for (const cell of table.querySelectorAll("[data-edit-field]")) {
+      if (live) {
+        for (const cell of live.querySelectorAll("[data-edit-field]")) {
           const index = Number(cell.dataset.editIndex);
           const field = cell.dataset.editField;
           if (!Number.isInteger(index) || !steps[index]) continue;
 
           steps[index][field] = cell.innerHTML;
+          //Emptied the way the field's own focusout would have done it.
+          if (stepsCopy[index]) stepsCopy[index][field] = keptOrEmptied(cell.innerHTML);
         }
         return;
       }
 
-      // Mobile: stepsCopy holds the user-typed descriptions; sync them into steps
-      // so Vue can diff cards correctly after the splice and update DOM positions.
+      //Neither on screen: what the focusouts saved is all there is to go on.
       for (let i = 0; i < steps.length; i++) {
+        //A marker has neither field; copying one onto it would only add an
+        //`undefined` key.
+        if (isMarker(steps[i]) || !stepsCopy[i]) continue;
         if (isNote(steps[i])) {
           steps[i].gameplan = stepsCopy[i].gameplan;
         } else {
@@ -2466,7 +2793,14 @@ export default {
       emitSteps();
       await nextTick();
       await nextTick();
-      timestampRefs.value[addIndex]?.focus();
+      //The card's time cell when the cards are on screen: timestampRefs holds
+      //only the table's inputs, which are hidden there, so focus stayed on the
+      //page and the author's first keystrokes went nowhere. Same as addNote.
+      const cards = liveLayout() === stepsList.value ? stepsList.value : null;
+      const time =
+        cards?.querySelector(`[data-card-index="${addIndex}"] .step-time-input`) ??
+        timestampRefs.value[addIndex];
+      time?.focus();
     };
 
     /**
@@ -2492,7 +2826,13 @@ export default {
       emitSteps();
       await nextTick();
       await nextTick();
-      noteRefs.value[addIndex]?.focus();
+      //Looked up in the layout on screen: both layouts register into noteRefs,
+      //and the table's registers last, so on a phone the ref is a hidden cell
+      //that cannot take focus and the author's typing went nowhere.
+      const field =
+        liveLayout()?.querySelector(`[data-edit-index="${addIndex}"][data-edit-field="gameplan"]`) ??
+        noteRefs.value[addIndex];
+      field?.focus();
     };
 
     /**
@@ -3144,8 +3484,10 @@ export default {
     const handlePaste = async (e) => {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
-      const clean = sanitizeStepDescription(dirty);
+      const clean = sanitizeStepDescription(dirty, e.clipboardData.getData("text/plain"));
 
+      // Every paste is ours, a refused age4builder one included (it comes
+      // back empty): the sanitiser is pure and leaves the event to this handler.
       document.execCommand("insertHTML", false, clean);
       e.stopPropagation();
       e.preventDefault();
@@ -3177,6 +3519,8 @@ export default {
       saysNothing,
       updateStep,
       handleTimeBlur,
+      advanceOnEnter,
+      advanceOnLineBreak,
       updateStepDescription,
       updateStepNote,
       isNote,
@@ -3237,6 +3581,9 @@ export default {
       saveSelection,
       restoreSelection,
       handleIconSelectorIconSelected,
+      iconSheetOpen,
+      openIconSheet,
+      insertIconFromSheet,
       activeStepIndex,
       focusedDescIndex,
       handleAutoCompleteMenuIconSelected,
@@ -3789,6 +4136,114 @@ export default {
 .age-advance-row:hover .row-x { opacity: 1; }
 .row-x:hover :deep(.v-icon) { color: rgb(var(--v-theme-error)); }
 
+/* The table on a device without hover: a landscape phone (sm and up), a touch
+   tablet or PC. Every control above is revealed by hover, which never comes, so
+   an author there had no visible way to add, move or remove a row. Shown at
+   rest instead, quietly — the precedent is the open path tab's controls under
+   the same query (AlternativePathTabs) and the phone divider's 0.6.
+
+   The insert control becomes the phone divider's outlined "+" rather than the
+   "+ Add" pill: a pill on every row boundary at rest is louder than the rows.
+
+   And the zone shrinks to a 44px square over the villager column. Full width
+   and 20px tall, invisible on touch until now, it was silently taking taps
+   meant for the top and bottom edges of every row's fields; centred, its
+   target would sit on the start of the description, exactly where an author
+   taps to write. The villager column (64px in, 44px wide — the colgroup) is
+   the one cell of a step row that holds nothing to tap: the count is worked
+   out, not typed. The zone stays the menu's activator, so the menu opens
+   under the circle rather than under the middle of the table. The line it
+   used to carry is drawn on the cell instead, which still spans the row.
+
+   Each opacity rule names `:hover` as well, at the same specificity and later
+   in the sheet: a tap leaves :hover stuck on what it touched, and the desktop
+   rules would otherwise light the last-used control for good — the divider's
+   own bug (see `.step-insert-xs--open`). Open state comes from `ins-zone--open`
+   only, and the drop line keeps full strength mid-drag. */
+@media (hover: none) {
+  .ins-zone {
+    left: 64px;
+    right: auto;
+    width: 44px;
+    top: -22px;
+    height: 44px;
+  }
+  .ins-zone .ins-line {
+    display: none;
+  }
+  .ins-row-cell::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 1px;
+    transform: translateY(-50%);
+    background: rgb(var(--v-theme-accent));
+    opacity: 0.3;
+    pointer-events: none;
+  }
+  .ins-row-cell:has(.ins-zone--open)::after,
+  .ins-row--drop .ins-row-cell::after {
+    height: 2px;
+    opacity: 1;
+  }
+  .ins-zone .ins-btn,
+  .ins-zone:hover .ins-btn {
+    opacity: 0.6;
+  }
+  .ins-zone.ins-zone--open .ins-btn {
+    opacity: 1;
+  }
+  .ins-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: 1px solid rgb(var(--v-theme-accent));
+    background: rgb(var(--v-theme-surface));
+    color: rgb(var(--v-theme-accent));
+    font-size: 15px;
+    line-height: 1;
+  }
+  .ins-btn-word {
+    display: none;
+  }
+  /* Room for the trailing circle inside its own card. On desktop it hangs half
+     below the section and the card is lifted over its neighbour while hovered
+     (see `.hidden-xs:has(…:hover)` above); with no hover that lift never
+     happens, so the next section painted over the circle's lower half, and the
+     last section's was clipped by the Build Order card — and the centre of the
+     target, where a thumb lands, took no taps at all. */
+  .hidden-xs:has(.ins-row--trailing) {
+    padding-bottom: 12px;
+  }
+  .row-x,
+  .step-row:hover .row-x,
+  .age-advance-row:hover .row-x {
+    opacity: 0.6;
+  }
+  .row-grip,
+  .step-row:hover .row-grip {
+    opacity: 0.45;
+  }
+  .step-row.step-row--dragging .row-grip {
+    opacity: 1;
+  }
+  /* The first path tab begins where the 44px zone reaches into the row below
+     it, so it is stacked above the zone and keeps its own pixels. A note's text
+     begins there too but is deliberately not lifted: the circle sits on the
+     boundary, so a note above the zone covers the circle's lower half and its
+     centre — measured, the "+" over a note stopped opening at all. A tap on the
+     note's first ~20px opening the visible "+" is the lesser cost. */
+  :deep(.alt-tab) {
+    position: relative;
+    z-index: 3;
+  }
+}
+
 .bo-noterow td {
   border-top: none;
 }
@@ -3890,6 +4345,14 @@ tbody tr.alt-row--end:not(:last-child):not(:has(+ tr.ins-row--trailing)) td:not(
    there but permanently invisible. */
 .alt-row:hover .row-x {
   opacity: 1;
+}
+/* …and at rest without hover, like every other row's (see the `hover: none`
+   block above the alternatives section — this rule comes later, so it is
+   restated here rather than outranked from there). */
+@media (hover: none) {
+  .alt-row:hover .row-x {
+    opacity: 0.6;
+  }
 }
 
 /* ── Age-up lane ─────────────────────────────────────────────────────────────
@@ -4422,6 +4885,34 @@ tbody tr.age-reached-row td {
   outline: 1px solid rgba(var(--v-theme-accent), 0.35);
 }
 
+/* Every editable at 16px on touch, below which iOS zooms the page in on focus
+   and leaves it zoomed. Touch only, so a mouse keeps today's density. That
+   includes the table: a phone held landscape (iPhones are 844–932 wide) and a
+   touch tablet are past 600px and get it, not the cards. Its pills hold
+   "15/20" at 16px, and a row stays 54px at 851 and 1024; only at 600, where
+   the description column is already narrow, do rows grow (84 → 93px empty).
+
+   A resource tile at 360px has 45px inside it, and a 16px "12‑14" or "15/20"
+   is wider than that and cannot break — the hyphen is a non-breaking one and
+   "15/20" is a number to the line breaker. The grid's 1fr columns would then
+   widen to fit it and push the row past the card. Dropping the value's own
+   side padding buys the 4px that five characters need; past that the value
+   may wrap anywhere, inside its own tile, rather than widen the row. */
+@media (pointer: coarse) {
+  .step-time-input,
+  .slot-val-edit,
+  .step-desc-edit-xs,
+  input.ts-pill,
+  input.rc-input,
+  td.contentEditable[contenteditable="true"] {
+    font-size: 16px;
+  }
+  .slot-val-edit {
+    padding: 1px 0;
+    overflow-wrap: anywhere;
+  }
+}
+
 /* Action row: add-icon only, right-aligned, always in DOM (no CLS) */
 .step-action-row-xs {
   display: flex;
@@ -4445,36 +4936,89 @@ tbody tr.age-reached-row td {
   opacity: 0.75;
   pointer-events: auto;
 }
+/* Touch target: grown into the free space only, so it takes no tap from a
+   neighbour. Left is the empty start of the row: 12px makes it 44 wide. Right
+   is the move-up button, flush against it. Up is the text, 2px away; down,
+   3px of card padding before the insert divider's own 44px target begins. So
+   it is 44 × 37 — the last 7px of height would have to come out of the text
+   or the divider. ::before, because Vuetify draws a button's focus ring on
+   ::after; inherits pointer-events: none while the button is hidden. */
+@media (pointer: coarse) {
+  .step-icon-btn-xs::before {
+    content: "";
+    position: absolute;
+    inset: -2px 0 -3px -12px;
+  }
+}
 
-/* Between-card insert divider — 44px tall for reliable mobile tap target */
+/* Between-card insert divider: the only way to insert mid-build on a phone.
+   Drawn 20px tall, and the circle overflows that into the container's 8px gaps,
+   so the cards sit 4px further apart than they did at 16px — the circle needs
+   some air, the target does not. The target is the 44px box below.
+
+   `position` + `z-index` are for that box, not for the drawing. The opacity
+   makes this divider a stacking context of its own, painted in tree order with
+   the positioned elements around it, so without a z-index a later positioned
+   sibling covers the overhang — `.alt-bracket-xs` is one, and the divider just
+   above a block lost the half of its target that reaches into the block. */
 .step-insert-xs {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 6px;
-  height: 16px;
+  height: 20px;
   cursor: pointer;
-  opacity: 0.35;
+  opacity: 0.6;
   transition: opacity 0.15s;
 }
-.step-insert-xs:hover,
+/* Lit while its menu is open, from the activator's `is-open` as the desktop
+   line's `ins-zone--open` is, rather than by hover. A tap leaves :hover stuck on
+   whatever it touched until the next tap lands elsewhere, so the divider last
+   used stayed bright after its menu had closed and read as still selected.
+   Hover is kept for a real pointer, where it ends when the pointer leaves. */
+.step-insert-xs--open,
 .step-insert-xs:active {
   opacity: 1;
 }
+@media (hover: hover) {
+  .step-insert-xs:hover {
+    opacity: 1;
+  }
+}
+/* The lines stay as faint as they were at the old 0.35 (0.45 × 0.6 ≈ 0.7 ×
+   0.35): the circle is what has to be findable, and twenty dashed rules at full
+   strength would out-draw the cards they separate. */
 .step-insert-line-xs {
   flex: 1;
-  border-top: 1px dashed rgba(var(--v-theme-accent), 0.70);
+  border-top: 1px dashed rgba(var(--v-theme-accent), 0.45);
 }
+/* Outlined rather than filled. A filled disc put an accent glyph on an accent
+   ground, which hid the + in both themes, and one solid disc between every
+   pair of cards is louder than the cards. */
 .step-insert-circle-xs {
-  width: 16px;
-  height: 16px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: rgba(var(--v-theme-accent), 0.50);
+  border: 1px solid rgb(var(--v-theme-accent));
+  background: rgba(var(--v-theme-accent), 0.12);
   color: rgb(var(--v-theme-accent));
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
   user-select: none;
+}
+/* Touch target: 44px, centred on the 20px divider, so it reaches 12px each way
+   — through the 8px gap and 4px into the neighbouring cards' 10px padding,
+   where no control sits. Added area, not layout (FocusMode's
+   `.fm-path-bar-switch` construction). */
+@media (pointer: coarse) {
+  .step-insert-xs::before {
+    content: "";
+    position: absolute;
+    inset: -12px 0;
+  }
 }
 
 /* ── Age bracket lane (mobile xs only) ────────────────────────────────────── */

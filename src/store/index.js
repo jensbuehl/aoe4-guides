@@ -147,6 +147,9 @@ export const store = createStore({
       delete state.cache.builds[payload];
     },
     setBuilds(state, payload) {
+      //A list that could not be read arrives as undefined (see buildService's
+      //cacheBuilds). Nothing to cache — and iterating it threw.
+      if (!Array.isArray(payload)) return;
       for (const build of payload) {
         state.cache.builds[build.id] = build;
       }

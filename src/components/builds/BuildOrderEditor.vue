@@ -28,7 +28,15 @@
           up with Description and Timeline, and a taller button here breaks that
           alignment down the whole page. The control is sized to fit inside it
           rather than the header being grown around the control.-->
-      <v-btn-group v-if="readonly && !$vuetify.display.xs" class="play-group">
+      <!--A chooser with one entry is a second tap that decides nothing, so where
+          only "here" is offered — a handheld — Play is a plain button instead
+          (play-solo). Not a group of one: the group clips its content to round
+          the corners, and that clipping is what kept the hit area at the drawn
+          size.-->
+      <v-btn-group
+        v-if="readonly && !$vuetify.display.xs && playTargets.length > 1"
+        class="play-group"
+      >
         <v-btn color="primary" variant="flat" prepend-icon="mdi-play" @click="handlePlayDefault"
           >Play</v-btn
         >
@@ -45,8 +53,16 @@
           </template>
           <v-list width="268">
             <!--One line each, with the explanation on the tooltip. Two-line rows
-                would make this the only stacked menu on the page.-->
-            <v-tooltip v-for="target in playTargets" :key="target.value" location="left">
+                would make this the only stacked menu on the page — except where
+                there is no hover to open a tooltip with: a touch tablet that is
+                not a handheld still gets this chooser, and there the explanation
+                is written under each row instead (canHover).-->
+            <v-tooltip
+              v-for="target in playTargets"
+              :key="target.value"
+              location="left"
+              :disabled="!canHover"
+            >
               <span :style="{ color: $vuetify.theme.current.colors.primary }">{{
                 target.description
               }}</span>
@@ -54,12 +70,22 @@
                 <v-list-item v-bind="props" @click="handlePlay(target.value)">
                   <v-icon color="primary" class="mr-4">{{ target.icon }}</v-icon>
                   {{ target.title }}
+                  <div v-if="!canHover" class="play-target-desc">{{ target.description }}</div>
                 </v-list-item>
               </template>
             </v-tooltip>
           </v-list>
         </v-menu>
       </v-btn-group>
+      <v-btn
+        v-else-if="readonly && !$vuetify.display.xs"
+        class="play-solo"
+        color="primary"
+        variant="flat"
+        prepend-icon="mdi-play"
+        @click="handlePlayDefault"
+        >Play</v-btn
+      >
     </div>
 
     <!--On a phone the header has no room for it, and a play control the player
@@ -73,7 +99,7 @@
         not another row of the build; matching the gap exactly would file it as
         one.-->
     <div v-if="readonly && $vuetify.display.xs" class="px-4 pt-3 pb-2">
-      <v-btn-group class="play-group play-group--block d-flex">
+      <v-btn-group v-if="playTargets.length > 1" class="play-group play-group--block d-flex">
         <v-btn
           class="flex-grow-1"
           color="primary"
@@ -94,7 +120,12 @@
             ></v-btn>
           </template>
           <v-list width="268">
-            <v-tooltip v-for="target in playTargets" :key="target.value" location="left">
+            <v-tooltip
+              v-for="target in playTargets"
+              :key="target.value"
+              location="left"
+              :disabled="!canHover"
+            >
               <span :style="{ color: $vuetify.theme.current.colors.primary }">{{
                 target.description
               }}</span>
@@ -102,12 +133,23 @@
                 <v-list-item v-bind="props" @click="handlePlay(target.value)">
                   <v-icon color="primary" class="mr-4">{{ target.icon }}</v-icon>
                   {{ target.title }}
+                  <div v-if="!canHover" class="play-target-desc">{{ target.description }}</div>
                 </v-list-item>
               </template>
             </v-tooltip>
           </v-list>
         </v-menu>
       </v-btn-group>
+      <v-btn
+        v-else
+        block
+        class="play-solo play-solo--block"
+        color="primary"
+        variant="flat"
+        prepend-icon="mdi-play"
+        @click="handlePlayDefault"
+        >Play</v-btn
+      >
     </div>
 
     <v-row no-gutters align="center" justify="center">
@@ -152,6 +194,7 @@
 <script>
 //External
 import { ref, computed, inject, provide, onBeforeUnmount, onMounted, nextTick } from "vue";
+import { useDisplay } from "vuetify";
 
 //Components
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
@@ -166,6 +209,7 @@ import { ACTIVE_PATH } from "@/composables/builds/useActivePath.js";
 import { STEP_REORDER, useStepReorder } from "@/composables/builds/useStepReorder.js";
 import {
   getSavedPlayTarget,
+  isHandheld,
   resolvePlayTarget,
 } from "@/composables/usePlayTargetPreference.js";
 
@@ -198,12 +242,14 @@ const PLAY_TARGET_ITEMS = [
     title: "Floating window",
     description: "Stays above the game on one monitor.",
     requiresFloating: true,
+    deskOnly: true,
   },
   {
     value: "phone",
     icon: "mdi-cellphone-link",
     title: "Send to phone",
     description: "QR code, opens focus mode there.",
+    deskOnly: true,
   },
 ];
 
@@ -400,13 +446,31 @@ export default {
     const floatingSupported = isDocumentPiPSupported();
 
     /**
-     * The menu, minus anything this browser cannot do.
+     * Whether this is the phone or tablet beside the game, not the PC running
+     * it. Unlike the capability above this cannot be detected, only inferred
+     * from the platform — see isHandheld() for why that and not the viewport.
+     */
+    const { platform } = useDisplay();
+    const handheld = isHandheld(platform.value);
+
+    // Whether a tooltip can open here at all — StepInsertMenu's test. A touch
+    // PC is no handheld, so it keeps the chooser, but its explanations cannot
+    // live on hover there.
+    const canHover = window.matchMedia("(hover: hover)").matches;
+
+    /**
+     * The menu, minus anything this browser cannot do or this device has no
+     * use for.
      *
      * Omitted entirely rather than shown disabled. A greyed-out row invites the
-     * player to work out why, and there is nothing they can do about it.
+     * player to work out why, and there is nothing they can do about it. On a
+     * handheld that leaves "here" alone, and the template drops the chooser.
      */
     const playTargets = computed(() =>
-      PLAY_TARGET_ITEMS.filter((target) => !target.requiresFloating || floatingSupported)
+      PLAY_TARGET_ITEMS.filter(
+        (target) =>
+          (!target.requiresFloating || floatingSupported) && !(target.deskOnly && handheld)
+      )
     );
 
     /**
@@ -427,7 +491,13 @@ export default {
     }
 
     function handlePlay(target) {
-      context.emit("activateFocusMode", resolvePlayTarget(target, floatingSupported));
+      context.emit(
+        "activateFocusMode",
+        resolvePlayTarget(
+          target,
+          playTargets.value.map((item) => item.value)
+        )
+      );
     }
 
     /**
@@ -613,6 +683,7 @@ export default {
     return {
       activateFocusMode,
       playTargets,
+      canHover,
       handlePlay,
       handlePlayDefault,
       civ,
@@ -648,12 +719,14 @@ export default {
 /* 28px inside a 36px header, so the Build Order card keeps lining up with
    Description and Timeline. Sized explicitly rather than through a density prop
    because Vuetify's comfortable density lands at 40px, which grows the header. */
-.play-group {
+.play-group,
+.play-solo {
   height: 28px;
   border-radius: 6px;
 }
 
-.play-group :deep(.v-btn) {
+.play-group :deep(.v-btn),
+.play-solo {
   height: 28px;
   min-height: 28px;
   font-size: 12.5px;
@@ -663,11 +736,13 @@ export default {
   text-transform: none;
 }
 
-.play-group :deep(.v-btn:first-child) {
+.play-group :deep(.v-btn:first-child),
+.play-solo {
   padding: 0 13px 0 14px;
 }
 
-.play-group :deep(.v-btn:first-child .v-icon) {
+.play-group :deep(.v-btn:first-child .v-icon),
+.play-solo :deep(.v-icon) {
   font-size: 20px;
   margin-left: -4px;
 }
@@ -699,8 +774,52 @@ export default {
   height: 36px;
 }
 
-.play-group--block :deep(.v-btn) {
+.play-group--block :deep(.v-btn),
+.play-solo--block {
   height: 36px;
   min-height: 36px;
+}
+
+/* A chooser target's explanation, written out where it cannot be hovered for.
+   Indented past the 24px icon and its 16px margin so it hangs under the label,
+   at the subtitle's size and emphasis. */
+.play-target-desc {
+  padding-left: 40px;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  opacity: var(--v-medium-emphasis-opacity);
+}
+
+/* On a handheld Play is the one control the reader came for, so its hit area
+   reaches 44px while the drawn button keeps its size and the layout its height.
+   ::before, because a v-btn's ::after is its focus ring and has pointer events
+   turned off (AuthDialog's .auth-hit, FilterConfig's .fl-reset-touch).
+
+   Only on the plain button: the split button is a v-btn-group, which clips its
+   children to round the corners, and the desktop control stays as it was.
+
+   In the header the card clips at its top edge, 4px above the button, so the
+   area grows down into the header's own bottom padding and the empty band
+   under it rather than evenly. On a phone the Play row has 12px above the
+   button and 8px below, so it grows evenly and stays inside both.
+
+   The z-index is what lets the overhang below the header take a tap at all.
+   The step list's v-col is positioned and comes later in the document, so it
+   paints over anything of the header's that reaches into it — the hit area
+   was drawn there and the list received the tap. */
+@media (pointer: coarse) {
+  .play-solo {
+    z-index: 1;
+  }
+
+  .play-solo::before {
+    content: "";
+    position: absolute;
+    inset: -4px 0 -12px;
+  }
+
+  .play-solo--block::before {
+    inset: -4px 0;
+  }
 }
 </style>

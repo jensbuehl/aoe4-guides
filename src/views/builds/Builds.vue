@@ -185,8 +185,13 @@ export default {
       contributor.value = contributorRes;
       contributorLoaded.value = true;
       store.commit("setResultsCount", size);
-      if (!cachedList) store.commit("setAllBuildsList", listRes);
-      builds.value = listRes;
+      // A list that could not be read comes back undefined (buildService's
+      // cacheBuilds). The skeletons stay up, as on the Dashboard, rather than
+      // an empty list that would read as "no builds".
+      if (Array.isArray(listRes)) {
+        if (!cachedList) store.commit("setAllBuildsList", listRes);
+        builds.value = listRes;
+      }
 
       //init pagination config
       paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
@@ -201,11 +206,14 @@ export default {
       store.commit("setAllBuildsList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
-      builds.value = await getBuildsFrom(
+      const page = await getBuildsFrom(
         paginationConfig.value.pageEnd,
         filterConfig.value,
         paginationConfig.value.limit
       );
+      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
+      if (!Array.isArray(page)) return;
+      builds.value = page;
 
       //set cache
       store.commit("setAllBuildsList", builds.value);
@@ -219,11 +227,14 @@ export default {
       store.commit("setAllBuildsList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
-      builds.value = await getBuildsUntil(
+      const page = await getBuildsUntil(
         paginationConfig.value.pageStart,
         filterConfig.value,
         paginationConfig.value.limit
       );
+      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
+      if (!Array.isArray(page)) return;
+      builds.value = page;
 
       //set cache
       store.commit("setAllBuildsList", builds.value);

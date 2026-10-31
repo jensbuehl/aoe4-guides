@@ -85,6 +85,7 @@ const GLOBALS = new Set([
   "setTimeout", "clearTimeout", "setInterval", "clearInterval", "requestAnimationFrame",
   "console", "window", "document", "navigator", "getComputedStyle", "structuredClone",
   "Image", "Blob", "File", "FileReader", "Audio", "AbortController", "IntersectionObserver",
+  "FocusEvent",
   "encodeURIComponent", "decodeURIComponent", "fetch", "URL", "Intl",
 ]);
 

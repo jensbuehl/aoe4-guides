@@ -220,20 +220,34 @@ export function collectionService(col) {
   }
 
   /**
-   * Asynchronously adds an element to an array in a document.
+   * Asynchronously adds an element to an array in a document, creating the
+   * document if it does not exist yet.
+   *
+   * A merge rather than `updateDoc`, because the only caller is the per-user
+   * favorites document, and not every account has one: a sign-up whose setup
+   * never finished, or an account older than the document. Such a user now gets
+   * the heart and vote buttons (favoriteService.getUserFavorites reads a
+   * missing document as an empty one), and their first click lands here.
+   * `updateDoc` fails on a missing document, and this function logs instead of
+   * throwing, so that click would be lost while the build's counter, written
+   * separately, still went up. A merge with `arrayUnion` never disturbs an
+   * existing list, so it cannot clobber one either.
+   *
+   * With no elements it only makes sure the array exists, which is how
+   * `createUserFavorites` creates the document without a read-then-write race.
    *
    * @param {string} documentId - The ID of the document.
    * @param {string} arrayName - The name of the array field.
-   * @param {any} element - The element to be added to the array.
+   * @param {...any} elements - The elements to be added to the array.
    */
-  async function addElementToArray(documentId, arrayName, element) {
+  async function addElementToArray(documentId, arrayName, ...elements) {
     error.value = null;
 
     try {
       const docRef = doc(db, col, documentId);
-      await updateDoc(docRef, {
-        [arrayName]: arrayUnion(...[element]),
-      });
+      await writeWithTokenRetry(() =>
+        setDoc(docRef, { [arrayName]: arrayUnion(...elements) }, { merge: true })
+      );
     } catch (err) {
       console.error("collectionService.addElementToArray failed:", err.message);
       error.value = "Element could not be added.";
@@ -265,8 +279,13 @@ export function collectionService(col) {
   /**
    * Retrieves all documents from the specified collection based on the given query.
    *
+   * A failed read is logged and swallowed, and resolves to `undefined` — not to
+   * an empty array, which would be indistinguishable from a query that matched
+   * nothing. Callers that cache or iterate the result must check for it; see
+   * getAllOrThrow for a caller that needs the error itself.
+   *
    * @param {Object} query - The query object to filter the documents.
-   * @return {Array} An array of document data objects.
+   * @return {Promise<Array|undefined>} The documents' data, or undefined when the read failed.
    */
   async function getAll(query) {
     error.value = null;

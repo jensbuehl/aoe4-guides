@@ -4,16 +4,18 @@
     max-width="430"
     :persistent="isCompleting"
   >
-    <v-card rounded="lg">
+    <v-card rounded="lg" class="auth-dialog">
       <!-- Title row with close button. The completion step has no way out:
            behind it sits an authenticated user whose account has no name, and
            a backdrop click or an X would strand them. -->
       <v-card-title class="d-flex align-center justify-space-between pt-5 px-6 pb-1">
         {{ title }}
-        <v-btn v-if="!isCompleting" icon="mdi-close" variant="text" size="small" @click="close" />
+        <v-btn v-if="!isCompleting" icon="mdi-close" variant="text" size="small" class="auth-hit" @click="close" />
       </v-card-title>
 
-      <v-card-subtitle class="px-6 pb-3">{{ subtitle }}</v-card-subtitle>
+      <!-- text-wrap: a card subtitle is one ellipsised line by default, and
+           the register line does not fit a phone-width dialog. -->
+      <v-card-subtitle class="px-6 pb-3 text-wrap">{{ subtitle }}</v-card-subtitle>
 
       <!-- Error banner (login / register modes only) -->
       <v-alert
@@ -28,7 +30,7 @@
           v-if="isEmailInUse"
           variant="text"
           size="small"
-          class="ml-1"
+          class="ml-1 auth-hit"
           @click="switchMode('login')"
         >
           Log in instead
@@ -81,28 +83,37 @@
             variant="outlined"
             density="comfortable"
             class="mb-3"
-            autocomplete="username"
+            autocomplete="nickname"
+            :enterkeyhint="isCompleting ? 'done' : 'next'"
             :rules="displayNameRules"
-            @keydown.enter.prevent="submit"
+            @keydown.enter.prevent="(e) => advanceOrSubmit(e, submit)"
           />
 
           <!-- Email — every mode except the completion step, which already
-               knows who it is talking to -->
+               knows who it is talking to. `username` in every mode, sign-up
+               included: the address is the account's login, and naming it so
+               is what makes a password manager save it — rather than the
+               display name above it — against the new password. -->
           <v-text-field
             v-if="!isCompleting"
             v-model="email"
             label="E-mail"
             type="email"
+            inputmode="email"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
             density="comfortable"
             class="mb-3"
-            autocomplete="off"
+            autocomplete="username"
+            :enterkeyhint="mode === 'reset' ? 'send' : 'next'"
             :rules="emailRules"
-            @keydown.enter.prevent="submit"
+            @keydown.enter.prevent="(e) => advanceOrSubmit(e, submit)"
           />
 
-          <!-- Password — login and register only -->
+          <!-- Password — login and register only. Vue reuses this input across
+               the switch, so `autocomplete` must be bound, not set once:
+               `new-password` on a login is what makes a manager offer to
+               generate a password instead of filling the saved one. -->
           <v-text-field
             v-if="mode !== 'reset' && !isCompleting"
             v-model="password"
@@ -113,10 +124,11 @@
             variant="outlined"
             density="comfortable"
             class="mb-1"
-            autocomplete="new-password"
+            :autocomplete="mode === 'register' ? 'new-password' : 'current-password'"
+            enterkeyhint="go"
             :rules="mode === 'register' ? passwordRegisterRules : passwordLoginRules"
             @click:append-inner="showPassword = !showPassword"
-            @keydown.enter.prevent="submit"
+            @keydown.enter.prevent="(e) => advanceOrSubmit(e, submit)"
           />
 
           <!-- Forgot password — login only -->
@@ -124,7 +136,7 @@
             <v-btn
               variant="text"
               size="small"
-              class="px-0 text-medium-emphasis"
+              class="px-0 text-medium-emphasis auth-hit"
               @click="switchMode('reset')"
             >
               Forgot password?
@@ -139,6 +151,7 @@
             block
             color="primary"
             type="submit"
+            class="auth-hit"
             :loading="loading"
             :disabled="loading"
           >
@@ -152,14 +165,14 @@
       <v-card-text v-if="!isCompleting" class="text-center text-medium-emphasis pt-2 pb-5">
         <template v-if="mode === 'login'">
           Don't have an account?
-          <v-btn variant="text" size="small" @click="switchMode('register')">Sign up</v-btn>
+          <v-btn variant="text" size="small" class="auth-hit" @click="switchMode('register')">Sign up</v-btn>
         </template>
         <template v-else-if="mode === 'register'">
           Already have an account?
-          <v-btn variant="text" size="small" @click="switchMode('login')">Log in</v-btn>
+          <v-btn variant="text" size="small" class="auth-hit" @click="switchMode('login')">Log in</v-btn>
         </template>
         <template v-else>
-          <v-btn variant="text" size="small" @click="switchMode('login')">← Back to log in</v-btn>
+          <v-btn variant="text" size="small" class="auth-hit" @click="switchMode('login')">← Back to log in</v-btn>
         </template>
       </v-card-text>
     </v-card>
@@ -176,6 +189,7 @@ import {
   isAccountExistsWithDifferentCredential,
   isPopupCancelled,
 } from "@/composables/auth/useAuthErrors";
+import { advanceOrSubmit } from "@/composables/formEnterHelper";
 
 export default {
   name: "AuthDialog",
@@ -280,9 +294,13 @@ export default {
       if (form.value) form.value.resetValidation();
     }
 
+    // Resolves to `false` when validation fails, which tells advanceOrSubmit to
+    // focus the first invalid field.
     async function submit() {
+      // Enter reaches here directly, past the disabled button.
+      if (loading.value) return;
       const { valid } = await form.value.validate();
-      if (!valid) return;
+      if (!valid) return false;
 
       authError.value = null;
       isEmailInUse.value = false;
@@ -399,9 +417,32 @@ export default {
       displayNameRules,
       switchMode,
       close,
+      advanceOrSubmit,
       submit,
       signInWithGoogle,
     };
   },
 };
 </script>
+
+<style scoped>
+/* Touch hit areas. The dialog's controls are drawn at desktop density — the
+   text buttons 28px tall, the eye toggle 24px — and must stay so, so on a
+   coarse pointer the target grows and the control does not (the same
+   construction as FocusMode's `.fm-path-bar-switch`). A centred box of at
+   least 44px, never smaller than the control itself; it adds no layout, so
+   the dialog keeps its height. `::before`, because a v-btn's `::after` is its
+   focus ring and has pointer events turned off. */
+@media (pointer: coarse) {
+  .auth-hit::before,
+  .auth-dialog :deep(.v-field__append-inner > .v-icon--clickable)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
+  }
+}
+</style>

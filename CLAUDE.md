@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/037-contributor-spotlight/plan.md`.
+at `.specify/specs/038-mobile-ux/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules

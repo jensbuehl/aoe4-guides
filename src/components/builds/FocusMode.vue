@@ -20,7 +20,7 @@
           >
           <template v-slot:activator="{ props }">
             <v-btn
-              v-if="pipSupported && !pipActive"
+              v-if="pipOffered && !pipActive"
               v-bind="props"
               class="fm-ctl-btn fm-ctl-btn--small"
               color="accent"
@@ -330,6 +330,7 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
 import { useEventListener, useWakeLock } from "@vueuse/core";
+import { useDisplay } from "vuetify";
 
 //Components
 
@@ -349,6 +350,7 @@ import {
 import { redundantMask, hasVisibleContent } from "@/composables/builds/stepVisibility.js";
 import { convertStepImagePaths, withWebpPaths } from "@/composables/builds/legacyImagePaths";
 import { useStepPiP } from "@/composables/builds/useStepPiP.js";
+import { isHandheld } from "@/composables/usePlayTargetPreference.js";
 import { useActivePath } from "@/composables/builds/useActivePath.js";
 import { pathCondition } from "@/composables/builds/alternativesDraft.js";
 import {
@@ -387,8 +389,10 @@ const RESOURCE_COLUMNS = [
 
 export default {
   name: "FocusMode",
-  props: ["build", "popOut"],
-  emits: ["closeDialog", "poppedOut", "popOutFailed"],
+  //resume: where the player was when this session last closed on the same page,
+  //{ index, paths }, or null to start at the first step. Read once, on mount.
+  props: ["build", "popOut", "resume"],
+  emits: ["closeDialog", "poppedOut", "popOutFailed", "progress"],
   setup(props, context) {
     const currentStep = ref(null);
     const currentStepIndex = ref(0);
@@ -474,6 +478,12 @@ export default {
       onEnter: handleEnterFloating,
       onLeave: handleLeaveFloating,
     });
+
+    //The header's pop-out control, on the same terms as Play's chooser: a
+    //handheld has no game on its own screen to float above, so it is not
+    //offered there even where the browser could do it.
+    const { platform } = useDisplay();
+    const pipOffered = pipSupported && !isHandheld(platform.value);
 
     /**
      * Builds the playback queue for one reading of the build.
@@ -625,7 +635,19 @@ export default {
     }
 
     onMounted(async () => {
+      //Closing focus mode unmounts this component, and an accidental Back mid-
+      //game is the likeliest way it closes. Reopened on the same page, it picks
+      //up at the step the player had reached rather than at step one. The path
+      //choices come back first, and with them the queue the index belongs to:
+      //an index taken under one path points at a different step under another.
+      for (const [key, pathIndex] of Object.entries(props.resume?.paths ?? {})) {
+        focusSelection.select(key, pathIndex);
+      }
       buildQueue(focusSelection.paths.value);
+      currentStepIndex.value = Math.max(
+        0,
+        Math.min(props.resume?.index ?? 0, steps.value.length - 1)
+      );
 
       //init current step, from the list a player will actually move through
       currentStep.value = steps.value[currentStepIndex.value];
@@ -796,10 +818,11 @@ export default {
      * asks again — going back to try the other way is a real way to use this.
      * Stepping back *within* a block is not: that is still the same pass.
      *
-     * No rebuild is needed. The queue is already provisional before an answer —
-     * it is laid out with the author's default and rebuilt when the player
-     * chooses — and every path shares the steps in front of the fork, so
-     * nothing the player can currently see moves.
+     * The queue is laid out again with the author's default, as it was before
+     * the answer. Every path shares the steps in front of the fork, so the step
+     * on screen does not move — but the step count does, and left alone it
+     * would keep counting the abandoned path until the next answer, while the
+     * same session reopened after a Back counted the default.
      */
     watch(currentStepIndex, (index) => {
       const firstSeen = new Map();
@@ -807,10 +830,25 @@ export default {
         if (marker && !firstSeen.has(marker.key)) firstSeen.set(marker.key, at);
       });
 
+      let unmade = false;
       for (const [key, at] of firstSeen) {
-        if (index < at && focusSelection.pathFor(key) != null) focusSelection.clear(key);
+        if (index < at && focusSelection.pathFor(key) != null) {
+          focusSelection.clear(key);
+          unmade = true;
+        }
       }
+      if (!unmade) return;
+      buildQueue(focusSelection.paths.value);
+      currentStep.value = steps.value[currentStepIndex.value];
     });
+
+    //Reported for `resume`: the page outlives this component, so the page keeps
+    //the place. `last` lets it tell a run that was finished from one that was
+    //interrupted — a finished one is not worth coming back to.
+    watch(
+      [currentStepIndex, () => focusSelection.paths.value, () => steps.value.length],
+      ([index, paths, length]) => context.emit("progress", { index, paths, last: index >= length - 1 })
+    );
 
     /**
      * Says the step the player is on.
@@ -1187,7 +1225,9 @@ export default {
      * tell the player about.
      */
     async function requestFloatingWindow() {
-      if (!pipSupported || pipActive.value) return;
+      //Offered, not merely supported: Play's chooser never asks for it on a
+      //handheld, and a stray request from anywhere else should not either.
+      if (!pipOffered || pipActive.value) return;
 
       try {
         await openPiP();
@@ -1500,7 +1540,7 @@ export default {
       handleToggleVillagerAnnouncements,
       handlePopOut,
       closePiP,
-      pipSupported,
+      pipOffered,
       pipActive,
       timer,
       audio,

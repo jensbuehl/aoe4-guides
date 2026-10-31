@@ -303,10 +303,41 @@ const routes = [
     }
   ];
   
+/**
+ * Whether a navigation does nothing but open or close focus mode.
+ *
+ * Focus mode is a dialog, but it is given a history entry of its own
+ * (`?focus=true`) so that Back closes it rather than leaving the build. That
+ * makes opening and closing it a navigation, and the router's page-level
+ * reactions — scroll to the top, retitle the tab — must sit those out: the page
+ * underneath has not changed.
+ *
+ * Narrow on purpose. Every other query-only change, a filter on /builds or a
+ * civ page included, is a new view of the page and keeps scrolling to the top.
+ *
+ * @param {import("vue-router").RouteLocationNormalized} to
+ * @param {import("vue-router").RouteLocationNormalized} from
+ */
+function isFocusToggle(to, from) {
+  if (to.path !== from.path || !to.query.focus === !from.query.focus) return false;
+  const { focus: _to, ...toRest } = to.query;
+  const { focus: _from, ...fromRest } = from.query;
+  const keys = Object.keys(toRest);
+  return (
+    keys.length === Object.keys(fromRest).length &&
+    keys.every((key) => String(toRest[key]) === String(fromRest[key]))
+  );
+}
+
   const router = createRouter({
     history: createWebHistory(),
     routes,
     scrollBehavior(to, from, savedPosition) {
+      //No scroll at all, not even to a saved position. The entry under focus
+      //mode was saved while the dialog's scroll lock had <html> pinned, which
+      //reads as 0, so "restoring" it would throw the reader to the top. Vuetify
+      //puts the page back where it was when it releases the lock.
+      if (isFocusToggle(to, from)) return false;
 
       if (savedPosition) {
         return savedPosition
@@ -324,11 +355,21 @@ const routes = [
   // hard-reloads; this key guards against a reload loop.
   const CHUNK_RELOAD_KEY = "chunk-reload";
 
-  router.afterEach(to => {
+  router.afterEach((to, from) => {
     // A navigation succeeded, so any earlier chunk-load failure is resolved.
     // Clear the one-shot guard so a later deploy in this same session is
-    // still handled by the reload logic below.
-    sessionStorage.removeItem(CHUNK_RELOAD_KEY);
+    // still handled by the reload logic below. Guarded: with site data
+    // blocked, touching sessionStorage throws, and this runs on every
+    // navigation, the first one included.
+    try {
+      sessionStorage.removeItem(CHUNK_RELOAD_KEY);
+    } catch {
+      // No guard was ever set.
+    }
+
+    // The build page titles itself after the build once it has loaded, and it
+    // is not remounted by this navigation to put that title back.
+    if (isFocusToggle(to, from)) return;
 
     // A function where the title depends on the route, as on a civ page.
     const title = typeof to.meta.title === "function" ? to.meta.title(to) : to.meta.title;
@@ -347,8 +388,14 @@ const routes = [
 
     // Guard against a reload loop: if a reload didn't fix it (e.g. the route
     // genuinely no longer exists, or the user is offline), don't keep looping.
-    if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return;
-    sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+    // Without storage there is no guard, so no reload either: a loop is worse
+    // than the failed navigation it would retry.
+    try {
+      if (sessionStorage.getItem(CHUNK_RELOAD_KEY)) return;
+      sessionStorage.setItem(CHUNK_RELOAD_KEY, "1");
+    } catch {
+      return;
+    }
 
     // Full page load to the intended destination so the browser re-requests
     // index.html and the current chunk graph.

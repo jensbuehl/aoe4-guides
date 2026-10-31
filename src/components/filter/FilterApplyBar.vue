@@ -2,6 +2,7 @@
   <div class="fl-footer">
     <v-btn
       v-if="isDirty"
+      ref="applyBtn"
       block
       color="primary"
       variant="flat"
@@ -34,6 +35,14 @@ export default {
     appliedCount:   { type: Number,  default: null },
     previewCount:   { type: Number,  default: null },
     previewLoading: { type: Boolean, default: false },
+  },
+  methods: {
+    // Focuses "Show N results" if it is showing; reports whether it was.
+    focus() {
+      const el = this.$refs.applyBtn?.$el;
+      el?.focus();
+      return !!el;
+    },
   },
 };
 </script>

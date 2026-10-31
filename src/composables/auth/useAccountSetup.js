@@ -14,17 +14,26 @@ import { createUserFavorites } from "@/composables/data/favoriteService";
  * app can find an account in and repair, not a step that happens once: someone
  * can close the tab at the display-name prompt and be asked again on their next
  * sign-in. So this runs a second time on accounts that are partly set up. Both
- * callables merge, and `createUserFavorites` now checks before writing.
+ * callables merge, and so does `createUserFavorites`, which cannot replace an
+ * existing list.
  *
- * **Rejects rather than swallows.** The chain this replaced logged its failures
- * and resolved anyway, which left accounts half-made with nobody the wiser. The
- * caller needs the failure: it is what keeps the dialog open and what makes the
- * next sign-in try again.
+ * **The name rejects; the favorites document does not.** The chain this
+ * replaced logged its failures and resolved anyway, which left accounts
+ * half-made with nobody the wiser. The display name is what makes an account
+ * complete, so a failed callable rejects: the caller needs that failure to keep
+ * the dialog open and to make the next sign-in try again.
+ *
+ * The favorites document is best-effort on purpose. It is optional — the first
+ * heart or vote creates it with the same merge, and a missing one reads as "no
+ * favorites" — and Firestore enforces App Check where the callables do not, so
+ * a browser that blocks reCAPTCHA would otherwise fail sign-up, or be held at
+ * the completion dialog, over a document it does not need.
  *
  * @param {Object} args
  * @param {string} args.uid - The account to set up.
  * @param {string} args.displayName - Already validated by the form that collected it.
- * @return {Promise<void>} Resolves once the name and the favorites document have landed.
+ * @return {Promise<void>} Resolves once the name has landed and the favorites
+ *   document has been attempted.
  */
 export async function completeAccountSetup({ uid, displayName }) {
   const updateUserDisplayName = httpsCallable(functions, "updateUserDisplayName");

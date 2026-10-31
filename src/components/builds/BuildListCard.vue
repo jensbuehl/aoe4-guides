@@ -89,34 +89,31 @@
           <!--age chips take the slot season and map used to occupy-->
           <AgeChips :timings="ageTimings" />
         </div>
-        <!--everything passive collapses to one wrapping line-->
+        <!--everything passive collapses to one line, written in priority order:
+            what does not fit drops off the end whole (see .blc-meta--xs)-->
         <div class="blc-meta blc-meta--xs">
           <router-link
             v-if="showAuthor"
-            class="text-decoration-none blc-link"
+            class="text-decoration-none blc-link blc-name"
+            :class="{ 'blc-name--paired': showCreator }"
             :to="{ name: 'Builds', query: { author: build.authorUid } }"
             @click.stop
             ><v-icon size="12" icon="mdi-account-edit"></v-icon>{{ build.author }}</router-link
           >
-          <span v-if="showAuthor && showCreator" class="blc-sep">·</span>
-          <span v-if="showCreator" class="blc-link">
-            <v-icon size="12" icon="mdi-youtube"></v-icon>{{ build.creatorName }}
-          </span>
-          <span v-if="(showAuthor || showCreator) && build.timeCreated" class="blc-sep">·</span>
-          <span v-if="build.timeCreated" 
+          <span
+            v-if="showCreator"
+            class="blc-link blc-name"
+            :class="{ 'blc-name--paired': showAuthor }"
+            ><v-icon size="12" icon="mdi-youtube"></v-icon>{{ build.creatorName }}</span
+          >
+          <span v-if="build.timeCreated"
             ><v-icon size="12" icon="mdi-clock-edit-outline"></v-icon
             >{{ timeSince(toDateSafe(build.timeCreated)) }}</span
           >
-          <span class="blc-sep">·</span>
-          <span 
-            ><v-icon size="12" icon="mdi-eye"></v-icon>{{ formatCount(build.views || 0) }}</span
+          <span><v-icon size="12" icon="mdi-eye"></v-icon>{{ formatCount(build.views || 0) }}</span>
+          <span v-if="showLikes"
+            ><v-icon size="12" icon="mdi-heart"></v-icon>{{ formatCount(build.likes) }}</span
           >
-          <template v-if="showLikes">
-            <span class="blc-sep">·</span>
-            <span 
-              ><v-icon size="12" icon="mdi-heart"></v-icon>{{ formatCount(build.likes) }}</span
-            >
-          </template>
         </div>
       </div>
 
@@ -456,13 +453,56 @@ export default {
   margin-top: -4px;
 }
 
-/* The one mobile meta line wraps rather than truncates — there is no age column
-   at this breakpoint competing for the width, so the room is there to use */
-.blc-meta--xs {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: clip;
-  font-size: 11px;
+/* The one mobile meta line, which must stay one line: the card's reserved height
+   has no room for a second. It used to be ellipsised as a whole, which cut
+   whichever item happened to sit at the edge mid-word ("t…").
+
+   Instead it is a wrapping flex row clipped to the height of its first line.
+   An item that does not fit moves to the second line and is clipped away
+   whole, so the line degrades from the end, and the template writes the items
+   in priority order: the people (actionable), then age (whether the build
+   still fits the patch), then views (social proof the sort already expresses
+   by position) — views is the item a phone loses first. The separator is each
+   item's own ::before, so it leaves with its item instead of dangling.
+
+   Every person shows. A name alone truncates only if it cannot fit the line by
+   itself; two names are capped at 45% each, or the second would be dropped
+   whole while the first kept its full width. Doubled class: .blc-meta below is written later
+   and would win the tie, which silently defeated the rule this replaces. */
+.blc-meta.blc-meta--xs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 1.4em;
+  overflow: hidden;
+}
+
+/* 1.4em is .blc-meta's own line-height. Pinned on the items as well, because
+   an inline icon otherwise stretches each line box a pixel past it, and the
+   xs card has no pixel to spare */
+.blc-meta--xs > * {
+  flex: none;
+  height: 1.4em;
+}
+
+/* .blc-sep's look; the colour is restated because a name's link colour would
+   otherwise reach its own separator */
+.blc-meta--xs > * + *::before {
+  content: "·";
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+  opacity: 0.4;
+  margin: 0 6px;
+}
+
+.blc-meta--xs > .blc-name {
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.blc-meta--xs > .blc-name--paired {
+  max-width: 45%;
 }
 
 /* --- three-line body (md+) --- */

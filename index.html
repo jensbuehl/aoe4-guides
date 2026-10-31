@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <script>
       (function() {
-        var saved = localStorage.getItem('aoe4-guides-theme');
+        // Guarded: with site data blocked, touching localStorage throws, and
+        // this script would stop before painting the background.
+        var saved = null;
+        try { saved = localStorage.getItem('aoe4-guides-theme'); } catch (e) {}
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         var isDark = saved === 'dark' || (!saved && prefersDark);
         document.documentElement.classList.add('no-transition');

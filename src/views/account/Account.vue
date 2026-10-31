@@ -99,6 +99,9 @@
           <v-card-title class="px-6 pt-5 pb-2">Security</v-card-title>
           <v-card-text class="px-6 pb-5">
             <v-form ref="passwordForm" @submit.prevent="changePassword">
+              <!-- The account the new password belongs to, for password
+                   managers — see AccountAction. -->
+              <input type="text" autocomplete="username" :value="user.email" hidden />
               <v-text-field
                 v-model="newPassword"
                 label="New password"
@@ -109,9 +112,10 @@
                 density="comfortable"
                 class="mb-3"
                 autocomplete="new-password"
+                enterkeyhint="next"
                 :rules="[v => !!v || 'Password is required.', v => (v && v.length >= 6) || 'Use at least 6 characters.']"
                 @click:append-inner="showPw = !showPw"
-                @keydown.enter.prevent="changePassword"
+                @keydown.enter.prevent="(e) => advanceOrSubmit(e, changePassword)"
               />
               <v-text-field
                 v-model="confirmPassword"
@@ -123,9 +127,10 @@
                 density="comfortable"
                 class="mb-4"
                 autocomplete="new-password"
+                enterkeyhint="done"
                 :rules="[v => !!v || 'Please confirm your password.', v => v === newPassword || 'Passwords do not match.']"
                 @click:append-inner="showPwConfirm = !showPwConfirm"
-                @keydown.enter.prevent="changePassword"
+                @keydown.enter.prevent="(e) => advanceOrSubmit(e, changePassword)"
               />
               <v-btn
                 block
@@ -264,6 +269,7 @@ import {
   getContributorProfile,
   updateContributorProfile,
 } from "@/composables/data/userService";
+import { advanceOrSubmit } from "@/composables/formEnterHelper";
 
 export default {
   name: "Account",
@@ -425,9 +431,11 @@ export default {
       }
     }
 
+    // Resolves to `false` on invalid input, for advanceOrSubmit to focus it.
     async function changePassword() {
+      if (changingPw.value) return;
       const { valid } = await passwordForm.value.validate();
-      if (!valid) return;
+      if (!valid) return false;
       changingPw.value = true;
       try {
         await store.dispatch("changePassword", { password: newPassword.value });
@@ -476,6 +484,7 @@ export default {
       copyUid,
       resendVerification,
       changePassword,
+      advanceOrSubmit,
       confirmDelete,
       profileForm,
       bio,

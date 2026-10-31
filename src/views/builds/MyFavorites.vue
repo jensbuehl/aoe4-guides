@@ -20,7 +20,10 @@
             ></BuildListCard>
           </router-link>
         </div>
-        <div style="text-align: center" v-if="!loading && count === 0">
+        <div style="text-align: center" v-if="emptyReason">
+          <NoFilterResults :favorites="emptyReason" :retrying="retrying" @retry="retry"></NoFilterResults>
+        </div>
+        <div style="text-align: center" v-else-if="!loading && count === 0">
           <NoFilterResults @cleared="configChanged"></NoFilterResults>
         </div>
 
@@ -68,6 +71,10 @@ export default {
   setup() {
     const builds = ref(null);
     const favorites = ref(null);
+    // Why the list is empty before any filter applies: "none" or "unreadable"
+    // (see NoFilterResults). Null while unknown, so nothing claims "no
+    // favorites" before the read has answered.
+    const emptyReason = ref(null);
     const store = useStore();
     const user = computed(() => store.state.user);
     const filterConfig = computed(() => store.state.filterConfig);
@@ -115,7 +122,22 @@ export default {
       initData();
     };
 
+    // The empty state stays up while the read is out (initData sets
+    // emptyReason only once it answers), so the button carries the spinner.
+    const retrying = ref(false);
+    const retry = async () => {
+      retrying.value = true;
+      try {
+        await initData();
+      } finally {
+        retrying.value = false;
+      }
+    };
+
     const initData = async () => {
+      // The user watch also fires on sign-out, before the route guard leaves.
+      if (!user.value) return;
+
       store.commit("setLoading", true);
 
       //reset results count
@@ -126,10 +148,15 @@ export default {
 
       // Favorites array is needed by both the count and list queries, so it
       // must be fetched first.
-      favorites.value = await getUserFavoritesArray(user.value.uid).then((user) => {
-        return user.favorites;
-      });
-      if (!(favorites.value.length > 0)) {
+      // A missing document already reads as an empty list; only a failed read
+      // comes back undefined.
+      const favoritesDoc = await getUserFavoritesArray(user.value.uid);
+      favorites.value = favoritesDoc?.favorites ?? [];
+      emptyReason.value = !favoritesDoc ? "unreadable" : favorites.value.length ? null : "none";
+      if (emptyReason.value) {
+        // "0 builds" in the filter strip, as My Builds shows. Not for an
+        // unreadable list: its count is unknown, not zero.
+        if (emptyReason.value === "none") store.commit("setResultsCount", 0);
         builds.value = null;
         store.commit("setLoading", false);
         return;
@@ -148,6 +175,16 @@ export default {
           : getUserFavorites(favorites.value, filterConfig.value, paginationConfig.value.limit),
       ]);
 
+      // The favorites document was readable but the builds it names were not
+      // (buildService's cacheBuilds passes that back as undefined): the same
+      // honest state as an unreadable document, with its retry.
+      if (!Array.isArray(listRes)) {
+        emptyReason.value = "unreadable";
+        builds.value = null;
+        store.commit("setLoading", false);
+        return;
+      }
+
       store.commit("setResultsCount", size);
       if (!cachedList) store.commit("setMyFavoritesList", listRes);
       builds.value = listRes;
@@ -165,12 +202,15 @@ export default {
       store.commit("setMyFavoritesList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
-      builds.value = await getUserFavoritesFrom(
+      const page = await getUserFavoritesFrom(
         paginationConfig.value.pageEnd,
         favorites.value,
         filterConfig.value,
         paginationConfig.value.limit
       );
+      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
+      if (!Array.isArray(page)) return;
+      builds.value = page;
 
       //set cache
       store.commit("setMyFavoritesList", builds.value);
@@ -184,12 +224,15 @@ export default {
       store.commit("setMyFavoritesList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
-      builds.value = await getUserFavoritesUntil(
+      const page = await getUserFavoritesUntil(
         paginationConfig.value.pageStart,
         favorites.value,
         filterConfig.value,
         paginationConfig.value.limit
       );
+      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
+      if (!Array.isArray(page)) return;
+      builds.value = page;
 
       //set cache
       store.commit("setMyFavoritesList", builds.value);
@@ -209,12 +252,15 @@ export default {
 
     return {
       builds,
+      emptyReason,
       user,
       count,
       loading,
       paginationConfig,
       filterConfig,
       configChanged,
+      retrying,
+      retry,
       myFavoritesCountFn,
       nextPage,
       previousPage,

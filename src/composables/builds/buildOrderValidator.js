@@ -41,18 +41,40 @@ export function validateVideo(video) {
 }
 
 /**
+ * Plain text made safe to insert as HTML. The caller inserts the result with
+ * `insertHTML`, so pasted text such as "<img onerror=…>" must arrive as text.
+ *
+ * @param {string} text
+ * @return {string}
+ */
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+/**
  * Sanitizes a step description by removing unwanted tags, classes, attributes, and styles.
  *
- * @param {string} dirty - The dirty step description to be sanitized.
+ * Pure: it returns the HTML to insert, and leaves the event to the caller, which
+ * stops and prevents the paste either way. It was extracted from the editor's
+ * paste handler with two references to that handler's event `e` left behind,
+ * so every plain-text paste threw "e is not defined" before preventDefault
+ * ran; the browser's own paste then went through and hid the error. The plain
+ * text is a parameter now for that reason.
+ *
+ * @param {string} dirty - The pasted `text/html`, possibly empty.
+ * @param {string} [plain] - The pasted `text/plain`, used when there is no HTML.
  * @return {string} The sanitized step description.
  */
-export function sanitizeStepDescription(dirty) {
+export function sanitizeStepDescription(dirty, plain = "") {
   var clean = "";
 
-  const ageBuilderSource = dirty.match("age4builder");
-  if (ageBuilderSource) {
-    e.stopPropagation();
-    e.preventDefault();
+  //Pastes from age4builder are refused outright: nothing is inserted.
+  if (dirty && dirty.match("age4builder")) {
     return clean;
   }
 
@@ -81,8 +103,8 @@ export function sanitizeStepDescription(dirty) {
     });
   } else {
     //Fallback to plain text otherwise
-    clean = e.clipboardData.getData("text/plain");
+    clean = escapeHtml(plain || "");
   }
 
-  return clean.trim().replace(/\n/gm, "<br>")
+  return clean.trim().replace(/\r?\n/gm, "<br>");
 }

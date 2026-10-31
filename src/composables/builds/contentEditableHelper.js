@@ -194,6 +194,72 @@ export function placeCaretAtEnd(contentEditable) {
   }
 }
 
+/**
+ * The units a caret position is counted in: each character of text, and each
+ * icon or line break as one, so a position survives the field's markup being
+ * re-set from an equivalent string.
+ */
+const caretUnits = (field) => {
+  const units = [];
+  const walk = (node) => {
+    for (const child of node.childNodes) {
+      if (child.nodeType === Node.TEXT_NODE) {
+        for (let i = 0; i < child.data.length; i++) units.push({ node: child, offset: i });
+      } else if (child.nodeName === "IMG" || child.nodeName === "BR") {
+        units.push({ node: child });
+      } else {
+        walk(child);
+      }
+    }
+  };
+  walk(field);
+  return units;
+};
+
+/**
+ * Where the caret sits in a field, counted in caretUnits().
+ *
+ * @param {Element} field - The contentEditable.
+ * @return {number|null} The count before the caret, or null when the caret is
+ *   not in this field.
+ */
+export function caretOffset(field) {
+  const selection = window.getSelection();
+  if (!selection?.rangeCount) return null;
+
+  const range = selection.getRangeAt(0);
+  if (!field.contains(range.startContainer)) return null;
+
+  const before = document.createRange();
+  before.selectNodeContents(field);
+  before.setEnd(range.startContainer, range.startOffset);
+  const fragment = document.createElement("div");
+  fragment.appendChild(before.cloneContents());
+  return caretUnits(fragment).length;
+}
+
+/**
+ * Focuses a field and puts the caret back at a position from caretOffset().
+ *
+ * @param {Element} field - The contentEditable.
+ * @param {number|null} offset - Units before the caret; null puts it at the end.
+ * @return {void}
+ */
+export function placeCaretAt(field, offset) {
+  const units = caretUnits(field);
+  if (offset == null || offset >= units.length) return placeCaretAtEnd(field);
+
+  field.focus({ preventScroll: true });
+  const unit = units[offset];
+  const range = document.createRange();
+  if (unit.offset != null) range.setStart(unit.node, unit.offset);
+  else range.setStartBefore(unit.node);
+  range.collapse(true);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+}
+
 function getLineBreakPosition(contentEditable) {
   let currentNode = null;
 

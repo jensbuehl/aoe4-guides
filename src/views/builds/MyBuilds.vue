@@ -36,8 +36,10 @@
             ></BuildListCard>
           </router-link>
         </div>
-        <div style="text-align: center" v-if="!loading && count === 0">
-          <NoFilterResults @cleared="configChanged"></NoFilterResults>
+        <!-- Unfiltered and empty means nothing published yet: drafts, if any,
+             are listed above, and otherwise it is a first build, not a filter. -->
+        <div style="text-align: center" v-if="!loading && count === 0 && !(unfiltered && drafts?.length)">
+          <NoFilterResults :mine="unfiltered ? 'none' : null" @cleared="configChanged"></NoFilterResults>
         </div>
 
         <v-pagination
@@ -83,6 +85,17 @@ export default {
     const filterConfig = computed(() => store.state.filterConfig);
     const count = computed(() => store.state.resultsCount);
     const loading = computed(() => store.state.loading);
+    // Sort order is left out: it reorders, it never hides.
+    const unfiltered = computed(() => {
+      const cfg = filterConfig.value;
+      return (
+        cfg?.creator == null &&
+        (!cfg?.civs || cfg.civs === "ANY") &&
+        !cfg?.maps?.length &&
+        !cfg?.strategies?.length &&
+        !cfg?.seasons?.length
+      );
+    });
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
@@ -150,8 +163,13 @@ export default {
 
       drafts.value = userDrafts;
       store.commit("setResultsCount", size);
-      if (!cachedList) store.commit("setMyBuildsList", listRes);
-      builds.value = listRes;
+      // A list that could not be read comes back undefined (buildService's
+      // cacheBuilds). The skeletons stay up, as on the Dashboard, rather than
+      // an empty list that would read as "no builds".
+      if (Array.isArray(listRes)) {
+        if (!cachedList) store.commit("setMyBuildsList", listRes);
+        builds.value = listRes;
+      }
 
       //init pagination config
       paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
@@ -166,12 +184,15 @@ export default {
       store.commit("setMyBuildsList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
-      builds.value = await getUserBuildsFrom(
+      const page = await getUserBuildsFrom(
         user.value.uid,
         paginationConfig.value.pageEnd,
         filterConfig.value,
         paginationConfig.value.limit
       );
+      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
+      if (!Array.isArray(page)) return;
+      builds.value = page;
 
       //set cache
       store.commit("setMyBuildsList", builds.value);
@@ -185,12 +206,15 @@ export default {
       store.commit("setMyBuildsList", null);
       builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
 
-      builds.value = await getUserBuildsUntil(
+      const page = await getUserBuildsUntil(
         user.value.uid,
         paginationConfig.value.pageStart,
         filterConfig.value,
         paginationConfig.value.limit
       );
+      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
+      if (!Array.isArray(page)) return;
+      builds.value = page;
 
       //set cache
       store.commit("setMyBuildsList", builds.value);
@@ -214,6 +238,7 @@ export default {
       user,
       count,
       loading,
+      unfiltered,
       paginationConfig,
       filterConfig,
       configChanged,

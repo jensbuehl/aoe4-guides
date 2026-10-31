@@ -1,16 +1,23 @@
 <template>
+  <!-- Back is answered through the route (?focus=true, see handlePlay), not by
+       closeOnBack. That cancels the Back navigation, and the router undoes a
+       cancelled Back by stepping forward again — onto the ?focus entry, under a
+       dialog that has just closed. -->
   <v-dialog
     v-model="focusDialog"
     fullscreen
     content-class="focus-dialog"
     transition="dialog-bottom-transition"
+    :close-on-back="false"
   >
     <FocusMode
       ref="focusModeRef"
       v-on:closeDialog="focusDialog = false"
       @poppedOut="handlePoppedOut"
       @popOutFailed="handlePopOutFailed"
+      @progress="handleFocusProgress"
       :popOut="popOutRequest"
+      :resume="focusResume"
       :build="build"
     ></FocusMode>
   </v-dialog>
@@ -20,13 +27,7 @@
     ><BuildNotFound></BuildNotFound
   ></v-container>
 
-  <v-container
-    v-if="build"
-    v-touch="{
-      up: () => swipe('Up'),
-      down: () => swipe('Down'),
-    }"
-  >
+  <v-container v-if="build">
     <v-dialog v-model="deleteDialog" width="auto">
       <v-card rounded="lg" flat class="text-center primary">
         <v-card-title>Delete Build</v-card-title>
@@ -204,6 +205,9 @@
           ></Vote>
           <Favorite v-model="userData" :buildId="build.id"></Favorite>
         </div>
+        <!-- The row's height while the buttons are on their way (actionsPending):
+             one icon button, measured. -->
+        <div v-else-if="actionsPending" class="d-md-none" style="height: 48px"></div>
       </template>
     </BuildHeader>
 
@@ -281,8 +285,8 @@
 
 <script>
 //External
-import { ref, onMounted, computed, provide, watch } from "vue";
-import { useElementVisibility } from "@vueuse/core";
+import { ref, onMounted, onUnmounted, computed, provide, watch } from "vue";
+import { useElementVisibility, useEventListener, useSwipe } from "@vueuse/core";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 
@@ -296,6 +300,7 @@ import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
 import BuildShareDialog from "@/components/builds/BuildShareDialog.vue";
+import { HIDE_AFTER } from "@/components/Header.vue";
 
 //composables
 import { getUserFavorites } from "@/composables/data/favoriteService";
@@ -391,6 +396,25 @@ export default {
     //for?" — which is true forever after the first time. Playing here would then
     //pop out anyway on any fresh mount.
     const popOutRequest = ref(0);
+    //The step and path choices focus mode had reached, kept for as long as this
+    //page lives. Focus mode unmounts when it closes, and a Back pressed by
+    //accident mid-game should cost the player a press to get back in, not
+    //their place in the build. A fresh load starts at the first step.
+    //
+    //Kept only across a Back, the close that happens by accident. ✕ and Esc —
+    //in the page or in the floating window — say the player is done with this
+    //run, and a finished run is done however it closed: either way the next
+    //Play starts a fresh one, which is what a practice run needs.
+    const focusResume = ref(null);
+    //Set by the route watcher for the one close that came from Back, and read
+    //by the close itself, which runs right after it.
+    let closedByBack = false;
+
+    //Only while open: a step taken during the closing animation, by the clock,
+    //must not bring back a place the close has just let go of.
+    const handleFocusProgress = (progress) => {
+      if (focusDialog.value) focusResume.value = progress;
+    };
 
     /**
      * Starts the build at the target the player chose.
@@ -415,10 +439,53 @@ export default {
 
       //Set before the dialog opens, so focus mode has the answer by the time it
       //mounts and reads it.
+      //A ?focus link opens focus mode through here too, and it is the link's
+      //choice, not the player's: the phone that scanned the QR code would
+      //otherwise overwrite the target this browser remembers.
+      const fromLink = !!route.query.focus;
+
       popOutRequest.value = target === "floating" ? popOutRequest.value + 1 : 0;
       focusDialog.value = true;
-      if (target === "here") setSavedPlayTarget("here");
+      if (target === "here" && !fromLink) setSavedPlayTarget("here");
+
+      //Focus mode gets a history entry of its own, so that Back — the press
+      //most likely to happen by accident mid-game — closes it instead of
+      //leaving the build, or the site for a reader who came from Discord or a
+      //search. The router keeps the page where it is for this navigation
+      //(isFocusToggle).
+      //
+      //The dialog opens first, without waiting for the navigation: the
+      //floating window is requested as focus mode mounts, and only while the
+      //click still counts as a user gesture. A link already stands on its
+      //?focus entry, with the build put underneath it below.
+      if (!fromLink) router.push({ query: { ...route.query, focus: "true" } });
     };
+
+    //A ?focus link arrives with no build page under it. The QR code opens one
+    //in a fresh tab on the phone, whose only entry is that link, so Back mid-
+    //game would close the tab or drop the player in the camera app — the one
+    //thing the focus entry exists to prevent. The link's entry becomes the
+    //plain build and the focus entry goes back on top: Back closes focus mode,
+    //and the next Back leaves as it always did.
+    //
+    //Through the router's history object, not router.replace/push, and before
+    //anything renders. Those would be navigations, and the route watcher below
+    //would read the first as Back (close) and the second as Forward (open,
+    //before the build has loaded). Written directly, the address bar ends
+    //where the route already is, so the route never changes at all.
+    //
+    //Skipped when the plain build is already underneath: a reload after Play
+    //here, or of a link that was already put on top of its build this way.
+    if (route.query.focus) {
+      const routerHistory = router.options.history;
+      const { focus: _focus, ...query } = route.query;
+      const plain = router.resolve({ query }).fullPath;
+      if (window.history.state?.back !== plain) {
+        const link = routerHistory.location;
+        routerHistory.replace(plain);
+        routerHistory.push(link);
+      }
+    }
 
     const handlePoppedOut = () => {
       setSavedPlayTarget("floating");
@@ -436,33 +503,101 @@ export default {
     //*document*, and a route change in this app never does — so build A to build
     //B would otherwise leave a window floating over the game still counting
     //through a build the player has navigated away from.
+    //
+    //Opening focus mode is itself a route change, to ?focus on the same path,
+    //and the one this must sit out. Back off that entry is not exempt: it is
+    //how Back closes focus mode.
+    //
+    //Arriving on that entry with the dialog closed is Forward, after a Back or
+    //a ✕, and it reopens focus mode rather than leave a focus URL over the
+    //plain page. Here, never floating: a floating window needs a click, and
+    //this has none.
     watch(
-      () => route.fullPath,
-      () => {
+      () => [route.path, !!route.query.focus],
+      ([path, focus], [previousPath]) => {
+        if (focus && path === previousPath) {
+          if (!focusDialog.value) {
+            popOutRequest.value = 0;
+            focusDialog.value = true;
+          }
+          return;
+        }
+        //Same path and no ?focus: Back off the focus entry. Only when the
+        //dialog is still open — ✕ steps back over the entry too, after it has
+        //closed, and that close is not a Back.
+        closedByBack = focus === false && path === previousPath && focusDialog.value;
         focusModeRef.value?.closePiP?.();
         focusDialog.value = false;
       }
     );
 
+    //Every other way out — ✕, Esc — takes the ?focus entry with it. Left
+    //behind, the build would stand on a focus URL, and the next Back would
+    //"close" a dialog that is already gone, with nothing visible happening.
+    //Back has removed the entry itself by the time this runs.
+    //
+    //Stepped back over when it sits directly on the build, so ✕ and Back end
+    //in the same place: a replace would leave the build in history twice, and
+    //the Back after ✕ would land on it again rather than on the page before.
+    //A link is given the build underneath on arrival (above), so the replace
+    //is only a fallback, for an entry that somehow has something else under it.
     watch(focusDialog, (open) => {
-      if (!open) focusModeRef.value?.closePiP?.();
+      if (open) return;
+      if (!closedByBack || focusResume.value?.last) focusResume.value = null;
+      closedByBack = false;
+      focusModeRef.value?.closePiP?.();
+      if (!route.query.focus) return;
+      const { focus: _focus, ...query } = route.query;
+      const underneath = router.resolve({ query }).fullPath;
+      if (window.history.state?.back === underneath) router.back();
+      else router.replace({ query });
     });
+
+    //Vote and Favorite need the user's favorites document, so they follow the
+    //user rather than reading it once on mount. This is a public route, and the
+    //router does not wait for auth on those (router.beforeEach), so a hard load
+    //or a shared link mounts the page before anyone is signed in — read once,
+    //that left a signed-in reader without the buttons until they navigated
+    //within the app. Following it also answers a sign-in or sign-out made here.
+    //
+    //Immediate, so an already-known user's fetch starts in setup, alongside the
+    //build's in onMounted rather than after it. Keyed on the uid: the store
+    //replaces the user object on profile edits too, and those change nothing
+    //here.
+    //
+    //On a phone the buttons get a row of their own in the header, above the
+    //steps, and the favorites read lands just after the build. Arriving into
+    //nothing, the row pushed the build down 48px under a reader who had
+    //already started on it, so it is held open while the read is out
+    //(actionsPending). A read that fails lets it go, leaving the page as a
+    //signed-out reader sees it.
+    //
+    //Nothing is held before auth has answered, and nothing needs to be:
+    //Firestore queues every read until auth has reported its first user, so
+    //the build cannot arrive sooner, and by then this knows whether to wait.
+    //The /api fallback cannot beat it either: it runs only after a Firestore
+    //read has failed, and that read waited for auth too.
+    const actionsPending = ref(false);
+    watch(
+      () => user.value?.uid,
+      async (uid) => {
+        userData.value = null;
+        actionsPending.value = !!uid;
+        if (!uid) return;
+        const favorites = await getUserFavorites(uid);
+        //A sign-out made while this was in flight has already cleared it.
+        if (user.value?.uid !== uid) return;
+        userData.value = favorites;
+        actionsPending.value = false;
+      },
+      { immediate: true }
+    );
 
     onMounted(async () => {
       const cachedBuild = props.id in store.state.cache.builds ? store.state.cache.builds[props.id] : null;
-
-      // The build and the user's favorites are independent (favorites only needs
-      // the uid, not the build), so fetch them in parallel instead of in series.
-      const [resBuild, favorites] = await Promise.all([
-        cachedBuild ? Promise.resolve(cachedBuild) : getBuild(props.id),
-        user.value ? getUserFavorites(user.value.uid) : Promise.resolve(null),
-      ]);
+      const resBuild = cachedBuild ? cachedBuild : await getBuild(props.id);
 
       if (resBuild) {
-        if (user.value) {
-          userData.value = favorites;
-        }
-
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
         incrementViews(props.id);
@@ -478,16 +613,66 @@ export default {
       loading.value = false;
     });
 
-    const swipe = async (dir) => {
-      switch (dir) {
-        case "Up":
-          store.commit("setShowBottomNavigation", false);
-          break;
-        case "Down":
+    //Swiping up hides the bottom navigation for more canvas, and swiping down
+    //is the way back. Only this page has that gesture, so the hidden state
+    //belongs to it.
+    //
+    //Heard on the whole document, not on the build's container: the footer
+    //sits outside this view, and at the end of a build it fills half the
+    //screen or more, so a swipe down that started on it scrolled the page but
+    //never brought the navigation back. The geometry is the v-touch directive's
+    //that this replaced: 16px of travel, and vertical only while the sideways
+    //part stays under half the vertical one.
+    //
+    //A swipe that starts in an overlay is not about this page. Focus mode is a
+    //fullscreen dialog that steps on sideways swipes of its own, and a drag in
+    //a menu, sheet or dialog belongs to that overlay.
+    let swipeInOverlay = false;
+    const { lengthX, lengthY } = useSwipe(document, {
+      threshold: 16,
+      onSwipeStart: (e) => {
+        swipeInOverlay = !!e.target.closest?.(".v-overlay");
+      },
+      onSwipeEnd: (e, direction) => {
+        if (swipeInOverlay || !build.value) return;
+        if (Math.abs(lengthX.value) >= 0.5 * Math.abs(lengthY.value)) return;
+        if (direction === "up") store.commit("setShowBottomNavigation", false);
+        if (direction === "down") store.commit("setShowBottomNavigation", true);
+      },
+    });
+
+    //Back near the top, the navigation returns by itself, at the line where the
+    //header's bar always shows. That covers a reader who never learned the
+    //gesture, and the iOS status-bar tap that jumps to the top. Only when the
+    //page crosses that line on the way up: a swipe up made near the top scrolls
+    //the page too, and a rule that held for the whole band would undo it.
+    //
+    //An open dialog pins <html> with `position: fixed`, which reads as scrollY
+    //0 and would cross the line every time Focus mode opened. Those events are
+    //skipped and the last real position kept, so closing it is not a crossing
+    //either.
+    let lastScroll = window.scrollY;
+    useEventListener(
+      window,
+      "scroll",
+      () => {
+        if (document.documentElement.classList.contains("v-overlay-scroll-blocked")) return;
+        const scroll = window.scrollY;
+        if (scroll < HIDE_AFTER && lastScroll >= HIDE_AFTER) {
           store.commit("setShowBottomNavigation", true);
-          break;
-      }
-    };
+        }
+        lastScroll = scroll;
+      },
+      { passive: true }
+    );
+
+    //The flag lives in the store because the header draws the navigation, so
+    //the page that set it has to clear it on the way out. The bottom navigation
+    //is the only navigation on Android/iOS, and no other page can swipe it back.
+    //Unmount, not a router hook, marks the page's end: `<router-view>` is keyed
+    //on the path, so every path change remounts this view, build to build too.
+    //A query-only change (?focus) stays on the page and keeps the reader's choice.
+    onUnmounted(() => store.commit("setShowBottomNavigation", true));
 
     const handleRemix = async () => {
       if (!assertVerified()) return;
@@ -611,8 +796,8 @@ export default {
       props,
       user,
       userData,
+      actionsPending,
       loading,
-      swipe,
       focusMode,
       timelineEl,
       timelineVisible,
@@ -621,6 +806,8 @@ export default {
       shareDialog,
       focusModeRef,
       popOutRequest,
+      focusResume,
+      handleFocusProgress,
       handlePlay,
       handlePoppedOut,
       handlePopOutFailed,

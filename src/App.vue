@@ -41,7 +41,6 @@ import { useTheme } from "vuetify";
 import {
   getSavedTheme,
   applyVuetifyTheme,
-  THEME_STORAGE_KEY,
 } from "@/composables/useThemePreference";
 
 export default {
@@ -68,7 +67,7 @@ export default {
 
     onBeforeMount(() => {
       const applyIfSystem = () => {
-        if (localStorage.getItem(THEME_STORAGE_KEY) != null) return;
+        if (getSavedTheme() != null) return;
         applyVuetifyTheme(theme, media.matches);
       };
       media.addEventListener("change", applyIfSystem);

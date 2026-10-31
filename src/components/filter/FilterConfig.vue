@@ -1,5 +1,5 @@
 <template>
-  <v-card rounded="lg" flat>
+  <v-card ref="card" rounded="lg" flat>
     <!-- Header: desktop card title with inline Reset -->
     <div v-if="!smAndDown" class="fl-card-header px-4 pt-3 pb-1 d-flex align-center justify-space-between">
       <div class="d-flex align-center" style="gap: 6px;">
@@ -19,8 +19,8 @@
 
     <!-- Mobile: collapsible expansion panel -->
     <template v-if="smAndDown">
-      <v-expansion-panels>
-        <v-expansion-panel :elevation="0">
+      <v-expansion-panels v-model="openPanel">
+        <v-expansion-panel value="filters" :elevation="0">
           <v-expansion-panel-title>
             <div class="d-flex align-center justify-space-between pr-2" style="width: 100%;">
               <div class="d-flex align-center" style="gap: 6px;">
@@ -31,6 +31,7 @@
                 v-if="showReset"
                 variant="plain"
                 size="small"
+                class="fl-reset-touch"
                 @click.stop="handleReset"
               >
                 <template #prepend><v-icon color="primary" size="14">mdi-close</v-icon></template>
@@ -46,6 +47,7 @@
                 :context="context"
                 class="mb-2"
                 @remove-chip="onRemoveChip"
+                @emptied="focusAfterChips"
               />
               <v-select
                 v-if="context !== 'civ-locked'"
@@ -141,6 +143,29 @@
           </v-expansion-panel-text>
         </v-expansion-panel>
       </v-expansion-panels>
+      <!-- Collapsed, the panel would otherwise say only "Filters", and a list
+           narrowed to one civ and one strategy looks like the whole catalogue.
+           The same chips the open panel leads with, so removing one here leaves
+           "Show N results" directly beneath it, exactly as it does inside. -->
+      <!-- Animated with the panel: inserted instantly, the row jumped the
+           other way for the panel's first few frames on every toggle. The
+           transition animates `height` alone, so it goes on a bare wrapper:
+           on the row itself, its padding, margin and min-height would still
+           land instantly (40px of the jump). flow-root keeps the row's margin
+           inside the height being animated. -->
+      <v-expand-transition>
+        <div v-if="openPanel !== 'filters'" class="fl-collapsed-chips">
+          <FilterChips
+            :draft="draft"
+            :dirtyFields="dirtyFields"
+            :applied="appliedConfig"
+            :context="context"
+            class="px-6 pt-3 mb-3"
+            @remove-chip="onRemoveChip"
+            @emptied="focusAfterChips"
+          />
+        </div>
+      </v-expand-transition>
     </template>
 
     <!-- Desktop: direct fields -->
@@ -153,6 +178,7 @@
           :context="context"
           class="mb-1"
           @remove-chip="onRemoveChip"
+          @emptied="focusAfterChips"
         />
         <v-autocomplete
           v-if="context !== 'civ-locked'"
@@ -249,6 +275,7 @@
     </template>
 
     <FilterApplyBar
+      ref="applyBar"
       :isDirty="isDirty"
       :appliedCount="count"
       :previewCount="previewCount"
@@ -298,6 +325,8 @@ export default {
     const count = computed(() => store.state.resultsCount);
     const appliedConfig = computed(() => store.state.filterConfig);
     const { smAndDown } = useDisplay();
+    // The mobile panel's open value: "filters" when expanded, undefined when not.
+    const openPanel = ref();
 
     const { draft, dirtyFields, dirtyCount, isDirty, resetField, applyDraft } =
       useDraftFilterConfig();
@@ -370,8 +399,25 @@ export default {
       context.emit("configChanged");
     };
 
-    const onRemoveChip = ({ field }) => {
-      draft.value[field] = getDefaultConfig()[field];
+    // A chip is one value, so its removal takes only that value out of a
+    // multi-select field — resetting the field took every sibling chip with it.
+    // `value` is the stored value (title, shortName, creatorId), not the label.
+    const onRemoveChip = ({ field, value }) => {
+      const current = draft.value[field];
+      draft.value[field] = Array.isArray(current)
+        ? current.filter((v) => v !== value)
+        : getDefaultConfig()[field];
+    };
+
+    // The last chip went by keyboard: focus "Show N results", the step that
+    // follows. Removing a chip only drafted back to what is applied leaves no
+    // such button, so fall back to the first control in the card (the panel
+    // header on a phone) rather than letting focus drop to <body>.
+    const card = ref(null);
+    const applyBar = ref(null);
+    const focusAfterChips = () => {
+      if (applyBar.value?.focus()) return;
+      card.value?.$el.querySelector("button, input")?.focus();
     };
 
     return {
@@ -392,9 +438,13 @@ export default {
       handleApply,
       showReset,
       onRemoveChip,
+      focusAfterChips,
+      card,
+      applyBar,
       previewCount,
       previewLoading,
       smAndDown,
+      openPanel,
     };
   },
 };
@@ -419,5 +469,20 @@ export default {
   background: #ccaa55;
   flex-shrink: 0;
   align-self: center;
+}
+
+/* Contains the chip row's bottom margin, so the expand transition animates it. */
+.fl-collapsed-chips {
+  display: flow-root;
+}
+
+/* Reset is drawn small to keep the header one line, and the header around it
+   is the expand toggle — so a near miss used to toggle the panel instead. The
+   hit area overhangs to 44px tall inside the header's own height. ::before,
+   because v-btn's ::after is its focus ring and is pointer-events: none. */
+.fl-reset-touch::before {
+  content: "";
+  position: absolute;
+  inset: -8px 0;
 }
 </style>

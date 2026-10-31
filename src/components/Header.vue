@@ -50,6 +50,13 @@
               <v-icon class="mr-4" color="accent">mdi-plus</v-icon>
               Create New Build Order
             </v-list-item>
+            <v-list-item
+              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              @click="openImportDialog"
+            >
+              <v-icon class="mr-4" color="accent">mdi-tray-arrow-down</v-icon>
+              Import Build Order
+            </v-list-item>
           </v-list>
         </v-menu>
       </v-app-bar-nav-icon>
@@ -359,16 +366,25 @@
 
 <script>
 //External
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
 import { useStore } from "vuex";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useDisplay, useTheme } from "vuetify";
 import {
   applyVuetifyTheme,
-  THEME_STORAGE_KEY,
+  getSavedTheme,
+  setSavedTheme,
+  clearSavedTheme,
 } from "@/composables/useThemePreference";
 import { useAvatar } from "@/composables/auth/useAvatar";
 import UserAvatar from "@/components/common/UserAvatar.vue";
+
+/**
+ * Scroll offset in px below which the phone's navigation is always shown: the
+ * top bar here, and the bottom navigation a build page hid by swiping
+ * (BuildDetails.vue). One line for both, so the two bars return together.
+ */
+export const HIDE_AFTER = 150;
 
 export default {
   name: "Header",
@@ -379,23 +395,26 @@ export default {
     const store = useStore();
     const user = computed(() => store.state.user);
     const router = useRouter();
+    const route = useRoute();
     const theme = useTheme();
     const { mobile, platform } = useDisplay();
     // The 60px bar, as opposed to the 100px one; the mark shrinks with it.
     const compact = computed(() => platform.value.android || platform.value.ios || mobile.value);
-    const savedMode = ref(localStorage.getItem(THEME_STORAGE_KEY) || "system");
+    // Through the guarded helpers: blocked site data makes `localStorage`
+    // itself throw, and this runs in the first render.
+    const savedMode = ref(getSavedTheme() || "system");
 
     const mode = computed({
       get: () => savedMode.value,
       set: (newMode) => {
         if (newMode === "system") {
-          localStorage.removeItem(THEME_STORAGE_KEY);
+          clearSavedTheme();
           applyVuetifyTheme(
             theme,
             window.matchMedia("(prefers-color-scheme: dark)").matches
           );
         } else {
-          localStorage.setItem(THEME_STORAGE_KEY, newMode);
+          setSavedTheme(newMode);
           applyVuetifyTheme(theme, newMode === "dark");
         }
         savedMode.value = newMode;
@@ -426,7 +445,6 @@ export default {
     // 60px under the reader's finger. The bar stays active and keeps its space
     // reserved at the top of the page; hiding it is only a transform, which our
     // style overrides because VAppBar applies props.style after its own.
-    const HIDE_AFTER = 150;
     const barHidden = ref(false);
     let lastScroll = 0;
     let lastScrollHeight = 0;
@@ -449,6 +467,18 @@ export default {
       }
       lastScroll = scroll;
     };
+
+    // A new page arrives with the bar shown. The scroll to the top that comes
+    // with it does not bring the bar back by itself: the new page's height
+    // differs, so the handler only takes a new baseline, and the bar would stay
+    // hidden over an empty band until the reader scrolled again. Keyed on the
+    // path like `<router-view>`, so a query change on the same page is not one.
+    watch(
+      () => route.path,
+      () => {
+        barHidden.value = false;
+      }
+    );
 
     onMounted(() => {
       if (platform.value.android || platform.value.ios) {

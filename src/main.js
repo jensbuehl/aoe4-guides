@@ -152,8 +152,24 @@ const vuetify = createVuetify({
   defaults: {
     // Hold tooltips back a beat so sweeping the mouse across toolbars and
     // icon rows doesn't flash a trail of them.
+    //
+    // And never open them on a device that cannot hover. Vuetify skips the
+    // mouseenter a tap synthesises only by `sourceCapabilities.firesTouchEvents`,
+    // which Safari and Firefox do not implement — so there a tap on Next in Focus
+    // mode opened "Next Build Order Step" and left it over the resource strip
+    // until the next tap landed somewhere else. VTooltip does not open on click,
+    // so this makes them inert on touch rather than tap-toggles; anything a
+    // touch user needs is written out where it is needed (StepInsertMenu, the
+    // Play chooser, AlternativePathTabs). An unset openOnFocus follows
+    // openOnHover, so focus stays quiet there too. Tooltips that pass their own
+    // openOnHover or drive v-model (BuildListCard, the step-icon tooltip) are
+    // unaffected: an explicit prop outranks a default. Read once at startup.
     VTooltip: {
       openDelay: 500,
+      openOnHover:
+        typeof window === "undefined" ||
+        typeof window.matchMedia !== "function" ||
+        window.matchMedia("(hover: hover)").matches,
     },
   },
   theme: {

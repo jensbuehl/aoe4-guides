@@ -1,8 +1,8 @@
 <template>
-  <v-card flat>
+  <v-card flat :class="{ 'icon-selector--sheet': sheet }">
     <v-row>
       <v-col cols="12">
-        <v-text-field autofocus v-model="searchText" label="Search..." clearable></v-text-field>
+        <v-text-field :autofocus="autofocus" v-model="searchText" label="Search..." clearable enterkeyhint="search"></v-text-field>
       </v-col>
     </v-row>
     <v-tabs center-active show-arrows class="mt-n4" v-model="tab" color="accent">
@@ -95,11 +95,44 @@
         </template>
       </v-tooltip>
     </v-tabs>
-    <v-card fluid class="overflow-y-auto pb-2" min-height="400" max-height="400" flat>
-      <v-window v-model="tab" v-if="!searchText">
-        <v-window-item value="general">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in general" :key="icon.imgSrc">
+    <p v-if="sheet && anyCiv" class="text-caption text-medium-emphasis px-4 pt-2 mb-0">
+      Choose a civilization to see only its icons.
+    </p>
+    <!--Desktop: a fixed 400px window under a menu, as it has always been. Sheet:
+        the grid takes whatever height the fullscreen dialog leaves under the
+        search and the tabs, and is the only part that scrolls, so the search and
+        the tab strip stay in reach however far down the author has gone.-->
+    <v-card
+      fluid
+      class="overflow-y-auto pb-2"
+      :class="{ 'icon-grid--sheet': sheet }"
+      :min-height="sheet ? undefined : 400"
+      :max-height="sheet ? undefined : 400"
+      flat
+    >
+      <v-window v-model="tab" v-if="!searching">
+        <v-window-item v-for="pane in panes" :key="pane.value" :value="pane.value">
+          <!--Sheet tiles name their icon. A phone never opens a hover tooltip, and
+              the name was the only thing telling one villager portrait from the
+              next. The tile is AvatarPicker's civ tile: a text card, image over
+              a caption — wrapped to up to three lines here rather than truncated
+              to one, because unit and tech names run to twice the length of a
+              civ's.-->
+          <v-row v-if="sheet" dense class="mt-1 mx-1">
+            <v-col cols="3" v-for="icon in pane.icons" :key="icon.imgSrc">
+              <v-card
+                variant="text"
+                rounded="lg"
+                class="pa-1 icon-tile"
+                @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
+              >
+                <v-img :class="iconClass(icon)" class="mx-auto" style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
+                <p class="text-caption text-center mt-1 icon-tile-name">{{ icon.title }}</p>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row v-else class="mt-2 mx-2 mx-sm-8" no-gutters align="center">
+            <v-col class="mb-2" cols="2" v-for="icon in pane.icons" :key="icon.imgSrc">
               <v-container>
                 <v-row align="center" justify="center">
                   <v-tooltip location="top">
@@ -113,19 +146,7 @@
                         height="60"
                         width="60"
                       >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
+                        <v-img :class="iconClass(icon)" style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
                       </v-btn>
                     </template>
                   </v-tooltip>
@@ -134,294 +155,45 @@
             </v-col>
           </v-row>
         </v-window-item>
-        <v-window-item value="abilities">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in heroes" :key="icon.imgSrc">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip location="top">
-                    <IconToolTip :icon="icon"></IconToolTip>
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                        height="60"
-                        width="60"
-                      >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
-            </v-col> </v-row
-        ></v-window-item>
-        <v-window-item value="landmarks">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in landmarks" :key="icon.imgSrc">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip location="top">
-                    <IconToolTip :icon="icon"></IconToolTip>
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                        height="60"
-                        width="60"
-                      >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
-            </v-col> </v-row
-        ></v-window-item>
-        <v-window-item value="buildings_eco">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in ecoBuildings" :key="icon.imgSrc">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip location="top">
-                    <IconToolTip :icon="icon"></IconToolTip>
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                        height="60"
-                        width="60"
-                      >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
-            </v-col> </v-row
-        ></v-window-item>
-        <v-window-item value="buildings_military">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in militaryBuildings" :key="icon.imgSrc">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip location="top">
-                    <IconToolTip :icon="icon"></IconToolTip>
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                        height="60"
-                        width="60"
-                      >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
-            </v-col> </v-row
-        ></v-window-item>
-        <v-window-item value="techEco">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in ecoTechnologies" :key="icon.imgSrc">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip location="top">
-                    <IconToolTip :icon="icon"></IconToolTip>
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                        height="60"
-                        width="60"
-                      >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
-            </v-col> </v-row
-        ></v-window-item>
-        <v-window-item value="techMilitary">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in militaryTechnologies" :key="icon.imgSrc">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip location="top">
-                    <IconToolTip :icon="icon"></IconToolTip>
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                        height="60"
-                        width="60"
-                      >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
-            </v-col> </v-row
-        ></v-window-item>
-        <v-window-item value="units_military">
-          <v-row class="mt-2 mx-2 mx-sm-8" v-show="general.length" no-gutters align="center">
-            <v-col class="mb-2" cols="2" v-for="icon in militaryUnits" :key="icon.imgSrc">
-              <v-container>
-                <v-row align="center" justify="center">
-                  <v-tooltip location="top">
-                    <IconToolTip :icon="icon"></IconToolTip>
-                    <template v-slot:activator="{ props }">
-                      <v-btn
-                        color="primary"
-                        v-bind="props"
-                        variant="text"
-                        @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                        height="60"
-                        width="60"
-                      >
-                        <v-img
-                          v-bind:class="{
-                            'icon-landmark-selector': icon.class == 'landmark',
-                            'icon-tech-selector': icon.class == 'tech',
-                            'icon-ability-selector': icon.class == 'ability',
-                            'icon-military-selector': icon.class == 'military',
-                            'icon-default-selector': icon.class == 'default',
-                            'icon-none-selector': icon.class == 'none',
-                            'icon-selector': !icon.class,
-                          }"
-                          style="height: 48px; width: 48px"
-                          :src="icon.imgSrc"
-                        ></v-img>
-                      </v-btn>
-                    </template>
-                  </v-tooltip>
-                </v-row>
-              </v-container>
-            </v-col> </v-row
-        ></v-window-item>
       </v-window>
-      <v-row class="mt-2 mx-2 mx-sm-8" v-if="searchText" no-gutters align="center">
-        <v-col class="mb-2" cols="2" v-for="icon in searchResults" :key="icon.imgSrc">
-          <v-container>
-            <v-row align="center" justify="center">
-              <v-tooltip location="top">
-                <IconToolTip :icon="icon"></IconToolTip>
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    color="primary"
-                    v-bind="props"
-                    variant="text"
-                    @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
-                    height="60"
-                    width="60"
-                  >
-                    <v-img
-                      v-bind:class="{
-                        'icon-landmark-selector': icon.class == 'landmark',
-                        'icon-tech-selector': icon.class == 'tech',
-                        'icon-ability-selector': icon.class == 'ability',
-                        'icon-military-selector': icon.class == 'military',
-                        'icon-default-selector': icon.class == 'default',
-                        'icon-none-selector': icon.class == 'none',
-                        'icon-selector': !icon.class,
-                      }"
-                      style="height: 48px; width: 48px"
-                      :src="icon.imgSrc"
-                    ></v-img>
-                  </v-btn>
-                </template>
-              </v-tooltip>
-            </v-row>
-          </v-container>
-        </v-col>
-      </v-row>
+      <template v-if="searching">
+        <v-row v-if="sheet" dense class="mt-1 mx-1">
+          <v-col cols="3" v-for="icon in searchResults" :key="icon.imgSrc">
+            <v-card
+              variant="text"
+              rounded="lg"
+              class="pa-1 icon-tile"
+              @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
+            >
+              <v-img :class="iconClass(icon)" class="mx-auto" style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
+              <p class="text-caption text-center mt-1 icon-tile-name">{{ icon.title }}</p>
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row v-else class="mt-2 mx-2 mx-sm-8" no-gutters align="center">
+          <v-col class="mb-2" cols="2" v-for="icon in searchResults" :key="icon.imgSrc">
+            <v-container>
+              <v-row align="center" justify="center">
+                <v-tooltip location="top">
+                  <IconToolTip :icon="icon"></IconToolTip>
+                  <template v-slot:activator="{ props }">
+                    <v-btn
+                      color="primary"
+                      v-bind="props"
+                      variant="text"
+                      @click="imageSelected(icon.imgSrc, icon.title, icon.class)"
+                      height="60"
+                      width="60"
+                    >
+                      <v-img :class="iconClass(icon)" style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
+                    </v-btn>
+                  </template>
+                </v-tooltip>
+              </v-row>
+            </v-container>
+          </v-col>
+        </v-row>
+      </template>
     </v-card>
   </v-card>
 </template>
@@ -438,13 +210,25 @@ import iconService from "@/composables/builds/icons/iconService.js";
 
 export default {
   name: "IconSelector",
-  props: ["civ"],
+  props: {
+    civ: { default: null },
+    //The phone layout: named tiles in a grid that fills its container's height,
+    //for a fullscreen dialog. Off, this is the desktop menu exactly as it was.
+    sheet: { type: Boolean, default: false },
+  },
   emits: ["iconSelected"],
   components: { IconToolTip },
   setup(props, context) {
     const { getIcons } = iconService(props.civ);
     const searchText = ref("");
     const tab = ref(null);
+
+    //Focusing the search on open suits a mouse, where the author picks by name.
+    //On a touch screen focus is the on-screen keyboard, which comes up over the
+    //grid the picker was opened to show — so the search waits to be tapped.
+    //Asked of the primary pointer rather than of touch support, so a laptop
+    //with a touchscreen still gets the focused field it has always had.
+    const autofocus = !props.sheet && !window.matchMedia("(pointer: coarse)").matches;
 
     //unfiltered raw data
     const ecoBuildings = getIcons("buildingEco")
@@ -488,13 +272,47 @@ export default {
       }
     };
 
-   
+    //Below two letters the filter matches everything, so the desktop menu shows
+    //the whole vocabulary, as it always has. The sheet keeps the current tab
+    //instead: its named tiles are heavier, and all ~1,100 of them took over two
+    //seconds to render on the first keystroke, and fourteen on a throttled CPU.
+    const searching = computed(() =>
+      props.sheet ? searchText.value?.length >= 2 : Boolean(searchText.value)
+    );
+    //No civ means every civ's variant of a unit — eight villagers, all named
+    //"Villager". Said once in the sheet, where the names make it visible.
+    const anyCiv = !props.civ || props.civ === "ANY";
+
+    //The tabs' windows, in the order they have always been declared in.
+    const panes = [
+      { value: "general", icons: general },
+      { value: "abilities", icons: heroes },
+      { value: "landmarks", icons: landmarks },
+      { value: "buildings_eco", icons: ecoBuildings },
+      { value: "buildings_military", icons: militaryBuildings },
+      { value: "techEco", icons: ecoTechnologies },
+      { value: "techMilitary", icons: militaryTechnologies },
+      { value: "units_military", icons: militaryUnits },
+    ];
+
+    const iconClass = (icon) => ({
+      "icon-landmark-selector": icon.class == "landmark",
+      "icon-tech-selector": icon.class == "tech",
+      "icon-ability-selector": icon.class == "ability",
+      "icon-military-selector": icon.class == "military",
+      "icon-default-selector": icon.class == "default",
+      "icon-none-selector": icon.class == "none",
+      "icon-selector": !icon.class,
+    });
 
     const imageSelected = (imgSrc, tooltip, imgClass) => {
       context.emit("iconSelected", imgSrc, tooltip, imgClass);
     };
 
     return {
+      autofocus,
+      panes,
+      iconClass,
       ecoBuildings,
       militaryBuildings,
       general,
@@ -504,6 +322,8 @@ export default {
       landmarks,
       heroes,
       searchResults,
+      searching,
+      anyCiv,
       searchText,
       filter,
       imageSelected,
@@ -564,5 +384,39 @@ export default {
   width: 48px;
   border-radius: 4px;
   background: radial-gradient(circle at top center, #4b6382, #1d2432);
+}
+
+/* Sheet layout. The dialog's card is a flex column of a fixed height, so the
+   selector takes what the title leaves and hands the grid what the search and
+   tabs leave; min-height: 0 is what lets each of them be shorter than its
+   content, which is the condition for the grid to scroll instead of the page.
+   The search row opts out of v-row's flex: 1 1 auto, which in a column would
+   grow it to an equal share of the height. */
+.icon-selector--sheet {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-height: 0;
+}
+.icon-selector--sheet > .v-row {
+  flex: 0 0 auto;
+}
+.icon-grid--sheet {
+  flex: 1 1 0;
+  min-height: 0;
+}
+/* Room for two lines on every tile, so most rows line up whatever the length
+   of the names in them, and up to three: a clipped name is the one thing the
+   tile is there to show, and a tenth of the military techs need a third line
+   at 360px. A word too long for the tile is hyphenated rather than cut. */
+.icon-tile-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.25;
+  min-height: 2.5em;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 </style>

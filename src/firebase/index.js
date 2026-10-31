@@ -20,6 +20,7 @@ import {
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
+  memoryLocalCache,
   collection,
   getDoc,
   getDocFromServer,
@@ -79,8 +80,24 @@ const app = initializeApp(firebaseConfig);
 const auth = initializeAuth(app, {
   persistence: [indexedDBLocalPersistence, browserLocalPersistence],
 });
+// The multi-tab manager coordinates tabs through localStorage. With site data
+// blocked entirely, merely touching `localStorage` throws, and it does so inside
+// Firestore's own asynchronous start-up: uncaught, and no read ever answers, so
+// every list stays a skeleton. Firestore does not fall back by itself here, so
+// the probe is ours. Such a browser has no IndexedDB either, so the memory
+// cache costs it nothing it could have had.
+function webStorageAvailable() {
+  try {
+    return !!window.localStorage;
+  } catch {
+    return false;
+  }
+}
+
 const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+  localCache: webStorageAvailable()
+    ? persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+    : memoryLocalCache(),
 });
 const functions = getFunctions(app);
 const storage = getStorage(app);

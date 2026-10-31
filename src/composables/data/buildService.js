@@ -37,6 +37,27 @@ const {
 } = collectionService("builds");
 
 /**
+ * Puts a list read into the build cache, if it was read at all, and returns it.
+ *
+ * `getAll` resolves to `undefined` when Firestore refused or failed the read —
+ * App Check denying a client that cannot mint a token, or no connection — and
+ * to an array, possibly empty, only when the query was answered. It logs and
+ * swallows instead of throwing, so that undefined is the only trace of the
+ * failure, and callers rely on it: Dashboard keeps its skeletons up rather
+ * than claiming a filter has no builds. So it is passed back unchanged. It must
+ * not reach `setBuilds`, though, which iterates its payload: committed as it
+ * was, it threw "is not iterable" inside every list getter, and the getter
+ * rejected instead of answering.
+ *
+ * @param {Array|undefined} result - What getAll resolved to.
+ * @return {Array|undefined} The same value.
+ */
+function cacheBuilds(result) {
+  if (Array.isArray(result)) store.commit("setBuilds", result);
+  return result;
+}
+
+/**
  * Returns the error value of the collectionService composable.
  *
  * @return {Ref<string|null>} The error value, which is a reactive reference to a string or null.
@@ -208,8 +229,7 @@ export async function getUserDrafts(userId, limit = null) {
 export async function getUserBuilds(userId, filterConfig = getDefaultConfig(), limit = null) {
   const userDraftsQuery = getQuery(getQueryParametersFromConfig(filterConfig, limit, userId));
   const result = await getAll(userDraftsQuery);
-  store.commit("setBuilds", result);
-  return result;
+  return cacheBuilds(result);
 }
 
 /**
@@ -230,8 +250,7 @@ export async function getUserFavorites(
     getQueryParametersFromConfig(filterConfig, limit, null, favorites)
   );
   const result = await getAll(userDraftsQuery);
-  store.commit("setBuilds", result);
-  return result;
+  return cacheBuilds(result);
 }
 
 /**
@@ -244,8 +263,7 @@ export async function getUserFavorites(
 export async function getBuilds(filterConfig = getDefaultConfig(), limit = null) {
   const userDraftsQuery = getQuery(getQueryParametersFromConfig(filterConfig, limit));
   const result = await getAll(userDraftsQuery);
-  store.commit("setBuilds", result);
-  return result;
+  return cacheBuilds(result);
 }
 
 /**
@@ -271,8 +289,7 @@ export async function getUserBuildsUntil(
       .concat(getEndBeforeQueryParam(snapshot))
   );
   const res = await getAll(query);
-  store.commit("setBuilds", res);
-  return res;
+  return cacheBuilds(res);
 }
 
 /**
@@ -299,8 +316,7 @@ export async function getUserFavoritesUntil(
       .concat(getEndBeforeQueryParam(snapshot))
   );
   const res = await getAll(query);
-  store.commit("setBuilds", res);
-  return res;
+  return cacheBuilds(res);
 }
 
 /**
@@ -320,8 +336,7 @@ export async function getBuildsUntil(endBuildId, filterConfig = getDefaultConfig
       .concat(getEndBeforeQueryParam(snapshot))
   );
   const res = await getAll(query);
-  store.commit("setBuilds", res);
-  return res;
+  return cacheBuilds(res);
 }
 
 /**
@@ -347,8 +362,7 @@ export async function getUserBuildsFrom(
     )
   );
   const res = await getAll(query);
-  store.commit("setBuilds", res);
-  return res;
+  return cacheBuilds(res);
 }
 
 export async function getUserFavoritesFrom(
@@ -365,8 +379,7 @@ export async function getUserFavoritesFrom(
     )
   );
   const res = await getAll(query);
-  store.commit("setBuilds", res);
-  return res;
+  return cacheBuilds(res);
 }
 
 /**
@@ -384,8 +397,7 @@ export async function getBuildsFrom(startBuildId, filterConfig = getDefaultConfi
     getQueryParametersFromConfig(filterConfig, limit).concat(getStartAfterQueryParam(snapshot))
   );
   const res = await getAll(query);
-  store.commit("setBuilds", res);
-  return res;
+  return cacheBuilds(res);
 }
 
 //The codes that mean "the database could not answer", as opposed to "this build
@@ -739,8 +751,7 @@ export async function getRecentBuilds(limit) {
     getQueryParametersFromConfig(getMostRecentBuildsConfig(), limit)
   );
   const result = await getAll(mostRecentQuery);
-  store.commit("setBuilds", result);
-  return result;
+  return cacheBuilds(result);
 }
 
 /**
@@ -752,8 +763,7 @@ export async function getRecentBuilds(limit) {
 export async function getPopularBuilds(limit) {
   const popularQuery = getQuery(getQueryParametersFromConfig(getPopularBuildsConfig(), limit));
   const result = await getAll(popularQuery);
-  store.commit("setBuilds", result);
-  return result;
+  return cacheBuilds(result);
 }
 
 /**
@@ -765,6 +775,5 @@ export async function getPopularBuilds(limit) {
 export async function getAllTimeClassics(limit) {
   const popularQuery = getQuery(getQueryParametersFromConfig(getAllTimeClassicsConfig(), limit));
   const result = await getAll(popularQuery);
-  store.commit("setBuilds", result);
-  return result;
+  return cacheBuilds(result);
 }
