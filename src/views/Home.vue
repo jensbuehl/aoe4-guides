@@ -39,20 +39,20 @@
              width you happen to test. The one exception is News, which on
              phones sits under the top banner instead (see above). -->
         <div class="hidden-md-and-up mt-4">
-          <FundingStatus />
           <TopContributors :contributors="topContributorsList"></TopContributors>
           <YoutubeGuides></YoutubeGuides>
           <RegisterAd v-if="!user && authIsReady"></RegisterAd>
+          <FundingStatus />
         </div>
       </v-col>
 
       <!-- sidebar (duplicate of the mobile stack above, plus News — keep them in step) -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <News></News>
-        <FundingStatus />
         <TopContributors :contributors="topContributorsList"></TopContributors>
         <YoutubeGuides></YoutubeGuides>
         <RegisterAd class="mt-4" v-if="!user && authIsReady"></RegisterAd>
+        <FundingStatus />
       </v-col>
     </v-row>
   </v-container>
