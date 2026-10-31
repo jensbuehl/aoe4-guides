@@ -6,7 +6,27 @@
     eyebrow-icon="mdi-alert-decagram"
     :eyebrow="released ? 'New expansion · Available now' : 'New expansion · ' + RELEASE.dateLabel"
     :title="RELEASE.title"
+    v-model:expanded="expanded"
+    :compact="seen"
   >
+    <!-- The strip keeps the one thing a returning reader came back for: a way
+         to the new civs. Flags alone: at 360px the names would truncate the
+         title to a few letters, and a reader only ever gets the strip after
+         the full banner has named the flags for them. -->
+    <template #strip>
+      <v-btn
+        v-for="civ in civs"
+        :key="civ.code"
+        icon
+        variant="text"
+        size="44"
+        :aria-label="released ? civ.title + ' builds' : civ.title + ' on ageofempires.com'"
+        v-bind="civLink(civ)"
+      >
+        <img class="release-banner__strip-flag" :src="civ.flagSmall" alt="" width="32" height="18" />
+      </v-btn>
+    </template>
+
     <template #media>
       <div class="release-banner__flags">
         <img
@@ -79,11 +99,30 @@
 </template>
 
 <script>
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { RELEASE, isReleased, isReleaseLive } from "@/config/release";
 import { getCivById, civPageRoute } from "@/composables/filter/civDefaultProvider";
 import HomeBanner from "@/components/home/HomeBanner.vue";
 import CivFlag from "@/components/common/CivFlag.vue";
+
+// Which announcement this browser has already been shown in full. One key,
+// overwritten by each announcement, holding *which* one: the next DLC has a
+// new title, so it is unseen without anyone remembering to clear anything.
+// The release-day flip counts as a new announcement too — "pre-order" and
+// "available now, in the editor" are different news, and a reader who saw the
+// first should see the second once.
+const SEEN_KEY = "aoe4guides.releaseSeen";
+
+// Both decided once per page load, not per mount. Home remounts on every Back,
+// and the router restores the scroll position it saved for the old layout. A
+// banner that turned into the strip between those two mounts — because the
+// first mount just wrote the key — moved every civ tile up by ~370px, and Back
+// landed the reader half under the app bar. So the form chosen on a load's
+// first mount holds for the rest of that load, and the strip appears on the
+// next full load. `expanded` is kept the same way, so Back restores an opened
+// banner open.
+let seenThisLoad = null;
+const expanded = ref(false);
 
 export default {
   name: "ReleaseBanner",
@@ -102,11 +141,40 @@ export default {
         ? { to: civPageRoute(civ.code) }
         : { href: civ.page, target: "_blank", rel: "noopener" };
 
+    // Read in setup, before the first render, so the page paints in its final
+    // form — reading it after mount would paint the full banner and then fold
+    // it, the largest layout shift this page could produce. When storage is
+    // unavailable (private mode, blocked site data) nothing is ever "seen" and
+    // the banner shows in full, as it did before the strip existed.
+    const announcement = RELEASE.title + (released.value ? " · out" : " · pre-order");
+    if (seenThisLoad === null) {
+      seenThisLoad = false;
+      try {
+        seenThisLoad = localStorage.getItem(SEEN_KEY) === announcement;
+      } catch {
+        // Unreadable storage: show it in full.
+      }
+    }
+
+    // Shown, so seen — whichever form was on screen, and it takes effect on
+    // the next page load (see seenThisLoad). Writing on every mount keeps this
+    // one line: after the first, the value is already there.
+    onMounted(() => {
+      if (!isReleaseLive(now)) return;
+      try {
+        localStorage.setItem(SEEN_KEY, announcement);
+      } catch {
+        // Unwritable storage: the next visit shows it in full again.
+      }
+    });
+
     return {
       RELEASE,
       civs,
       released,
       civLink,
+      seen: seenThisLoad,
+      expanded,
       isOver: computed(() => !isReleaseLive(now)),
     };
   },
@@ -140,6 +208,14 @@ export default {
   bottom: 0;
   right: 0;
   transform: rotate(5deg);
+}
+
+/* The flag at its own 16:9, drawn small inside a 44px target. */
+.release-banner__strip-flag {
+  width: 32px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 3px;
 }
 
 /* Smaller media once HomeBanner stacks; the same container and width as its

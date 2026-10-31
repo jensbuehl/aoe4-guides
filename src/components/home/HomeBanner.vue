@@ -9,37 +9,58 @@
     class="home-banner mb-6"
     :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
-    <div class="home-banner__body">
-      <div class="home-banner__media"><slot name="media" /></div>
+    <!-- The strip, and when to show it, are HomeBannerFold's — shared with the
+         contributor spotlight, which takes the same slot. -->
+    <HomeBannerFold
+      :icon="eyebrowIcon"
+      :title="title"
+      :compact="compact"
+      :expanded="expanded"
+      @update:expanded="$emit('update:expanded', $event)"
+    >
+      <template #strip><slot name="strip" /></template>
 
-      <div class="home-banner__text">
-        <div class="home-banner__head">
-          <span class="home-banner__eyebrow">
-            <v-icon size="16">{{ eyebrowIcon }}</v-icon>
-            {{ eyebrow }}
-          </span>
+      <div class="home-banner__body">
+        <div class="home-banner__media"><slot name="media" /></div>
 
-          <h2 class="home-banner__title">{{ title }}</h2>
+        <div class="home-banner__text">
+          <div class="home-banner__head">
+            <span class="home-banner__eyebrow">
+              <v-icon size="16">{{ eyebrowIcon }}</v-icon>
+              {{ eyebrow }}
+            </span>
 
-          <p class="home-banner__lead"><slot name="lead" /></p>
+            <h2 class="home-banner__title">{{ title }}</h2>
+
+            <p class="home-banner__lead"><slot name="lead" /></p>
+          </div>
+
+          <div v-if="$slots.facts" class="home-banner__facts"><slot name="facts" /></div>
+
+          <div class="home-banner__actions"><slot name="actions" /></div>
         </div>
-
-        <div v-if="$slots.facts" class="home-banner__facts"><slot name="facts" /></div>
-
-        <div class="home-banner__actions"><slot name="actions" /></div>
       </div>
-    </div>
+    </HomeBannerFold>
   </v-card>
 </template>
 
 <script>
+import HomeBannerFold from "@/components/home/HomeBannerFold.vue";
+
 export default {
   name: "HomeBanner",
+  components: { HomeBannerFold },
   props: {
     eyebrow: { type: String, required: true },
     eyebrowIcon: { type: String, required: true },
     title: { type: String, required: true },
+    // Passed through to HomeBannerFold, which explains both: the one-line
+    // strip once the reader has seen this announcement (phones only), and
+    // whether it has been opened again, held by the caller (v-model).
+    compact: { type: Boolean, default: false },
+    expanded: { type: Boolean, default: false },
   },
+  emits: ["update:expanded"],
 };
 </script>
 
@@ -57,6 +78,13 @@ export default {
    announcement rather than as another sidebar card. Both stops are
    translucent, which lets the light and dark surfaces underneath show through
    unchanged — no second palette to keep in sync. */
+.home-banner__body,
+.home-banner :deep(.home-banner-fold__strip) {
+  background:
+    radial-gradient(120% 160% at 0% 50%, rgba(41, 71, 144, 0.16), transparent 62%),
+    radial-gradient(90% 140% at 100% 0%, rgba(185, 150, 47, 0.14), transparent 60%);
+}
+
 .home-banner__body {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
@@ -64,9 +92,6 @@ export default {
   align-items: center;
   column-gap: 22px;
   padding: 20px 24px;
-  background:
-    radial-gradient(120% 160% at 0% 50%, rgba(41, 71, 144, 0.16), transparent 62%),
-    radial-gradient(90% 140% at 100% 0%, rgba(185, 150, 47, 0.14), transparent 60%);
 }
 
 .home-banner__media {

@@ -11,36 +11,87 @@
     class="contributor-spotlight mb-6"
     :style="{ border: '1px solid ' + $vuetify.theme.current.colors.accent }"
   >
-    <div class="contributor-spotlight__body">
-      <ContributorIdentity :contributor="contributor ?? {}" :loading="loading" :avatar-size="92">
-        <template v-slot:eyebrow>
-          <!-- No "·" separator here, unlike the event banner. There it divides a
-               category from a changing state ("Registration open" → "Playing
-               now"); a contributor has no state, so the second half would be
-               filler pretending to be information. -->
-          <span class="contributor-spotlight__eyebrow">
-            <v-icon size="16">mdi-account-star</v-icon>
-            Contributor spotlight
-          </span>
-        </template>
+    <!-- Folds to one line on phones once this contributor has been seen, in
+         the same strip as the expansion banner it shares the slot with. -->
+    <HomeBannerFold
+      icon="mdi-account-star"
+      :title="contributor?.displayName || 'Contributor spotlight'"
+      :compact="compact"
+      v-model:expanded="expanded"
+    >
+      <!-- The face, not the star: a strip that says only a name has to say
+           whose. Decorative beside that name, hence the empty alt. -->
+      <template #strip-icon>
+        <UserAvatar
+          :size="26"
+          :src="contributor?.icon ?? null"
+          :name="contributor?.displayName ?? null"
+          :loading="!contributor"
+          alt=""
+          text-class="contributor-spotlight__strip-initials"
+        />
+      </template>
 
-        <template v-slot:actions>
-          <v-btn
-            :to="{ name: 'Builds', query: { author: contributor.id } }"
-            color="primary"
-            variant="flat"
-            size="small"
-          >
-            See all builds
-          </v-btn>
-        </template>
-      </ContributorIdentity>
-    </div>
+      <!-- The strip keeps what a returning reader came back for: the builds.
+           Absent while loading, for the reason ContributorIdentity gives — the
+           route needs `contributor.id`. -->
+      <template #strip>
+        <v-btn
+          v-if="contributor"
+          :to="{ name: 'Builds', query: { author: contributor.id } }"
+          class="text-none"
+          variant="text"
+          color="primary"
+          height="44"
+        >
+          See builds
+        </v-btn>
+      </template>
+
+      <div class="contributor-spotlight__body">
+        <ContributorIdentity :contributor="contributor ?? {}" :loading="loading" :avatar-size="92">
+          <template v-slot:eyebrow>
+            <!-- No "·" separator here, unlike the event banner. There it divides a
+                 category from a changing state ("Registration open" → "Playing
+                 now"); a contributor has no state, so the second half would be
+                 filler pretending to be information. -->
+            <span class="contributor-spotlight__eyebrow">
+              <v-icon size="16">mdi-account-star</v-icon>
+              Contributor spotlight
+            </span>
+          </template>
+
+          <template v-slot:actions>
+            <v-btn
+              :to="{ name: 'Builds', query: { author: contributor.id } }"
+              color="primary"
+              variant="flat"
+              size="small"
+            >
+              See all builds
+            </v-btn>
+          </template>
+        </ContributorIdentity>
+      </div>
+    </HomeBannerFold>
   </v-card>
 </template>
 
 <script>
+import { computed, ref, watch } from "vue";
 import ContributorIdentity from "@/components/page/ContributorIdentity.vue";
+import HomeBannerFold from "@/components/home/HomeBannerFold.vue";
+import UserAvatar from "@/components/common/UserAvatar.vue";
+
+// Which contributor this browser has already been shown in full — their uid,
+// so the next nominee is unseen without anyone clearing anything. The same
+// arrangement as ReleaseBanner's SEEN_KEY, and decided once per page load for
+// the same reason: Home remounts on every Back, and a card that folded between
+// two mounts moves everything under it, so the router's saved scroll position
+// lands the reader hundreds of pixels off. `expanded` is kept the same way.
+const SEEN_KEY = "aoe4guides.spotlightSeenId";
+let seenIdThisLoad = null;
+const expanded = ref(false);
 
 /**
  * One member of the community, introduced at the top of the home page.
@@ -56,7 +107,7 @@ import ContributorIdentity from "@/components/page/ContributorIdentity.vue";
  */
 export default {
   name: "ContributorSpotlight",
-  components: { ContributorIdentity },
+  components: { ContributorIdentity, HomeBannerFold, UserAvatar },
   props: {
     // The featuredContributor object from the home snapshot, or null when
     // nobody is nominated. Null renders nothing at all — no card, no
@@ -65,6 +116,42 @@ export default {
     // True while the home snapshot is still in flight. Home only sets this when
     // it has reason to believe a card is coming; see the note there.
     loading: { type: Boolean, default: false },
+  },
+  setup(props) {
+    // Unreadable storage means nobody is ever "seen": the card shows in full.
+    if (seenIdThisLoad === null) {
+      seenIdThisLoad = "";
+      try {
+        seenIdThisLoad = localStorage.getItem(SEEN_KEY) ?? "";
+      } catch {
+        // Show it in full.
+      }
+    }
+
+    // While the snapshot is in flight the contributor is unknown, so the
+    // placeholder takes the form the last visit ended with — wrong at most
+    // once, on the visit the nominee changes, like Home's spotlight memo.
+    const compact = computed(() =>
+      props.contributor
+        ? props.contributor.id === seenIdThisLoad
+        : props.loading && seenIdThisLoad !== "",
+    );
+
+    // Shown, so seen — takes effect on the next page load (see seenIdThisLoad).
+    watch(
+      () => props.contributor?.id,
+      (id) => {
+        if (!id) return;
+        try {
+          localStorage.setItem(SEEN_KEY, id);
+        } catch {
+          // Unwritable storage: the next visit shows it in full again.
+        }
+      },
+      { immediate: true },
+    );
+
+    return { compact, expanded };
   },
 };
 </script>
@@ -85,6 +172,10 @@ export default {
    moved. */
 .contributor-spotlight__body {
   padding: 20px 24px;
+}
+
+.contributor-spotlight__body,
+.contributor-spotlight :deep(.home-banner-fold__strip) {
   background:
     radial-gradient(110% 150% at 0% 50%, rgba(185, 150, 47, 0.16), transparent 62%),
     radial-gradient(90% 140% at 100% 0%, rgba(41, 71, 144, 0.12), transparent 60%);
@@ -106,5 +197,12 @@ export default {
   .contributor-spotlight__body {
     padding: 18px 16px;
   }
+}
+
+/* Deep: rendered inside UserAvatar. Two initials in a 26px circle. */
+.contributor-spotlight :deep(.contributor-spotlight__strip-initials) {
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
 }
 </style>

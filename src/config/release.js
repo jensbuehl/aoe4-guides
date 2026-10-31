@@ -26,9 +26,12 @@ export const RELEASE = {
   // ───────────────────────────────────────────────────────────────────────────
   dateLabel: "Out Oct 29, 2026",
   releases: new Date("2026-10-29T17:00:00Z"),
-  // Four weeks of "available now", then the spotlight takes the slot back with
-  // nothing to edit. Move this one date to end it early or run it longer.
-  ends: new Date("2026-11-26T00:00:00Z"),
+  // When the spotlight takes the slot back, with nothing else to edit. Move
+  // this one date to end it early or run it longer. Planned for four weeks
+  // (Nov 26), ended early on Oct 31: once out, the expansion is the News
+  // card's, which sits right under this slot on phones, and the two said the
+  // same thing back to back.
+  ends: new Date("2026-10-31T00:00:00Z"),
 
   links: {
     steam: "https://store.steampowered.com/app/4336170/Age_of_Empires_IV_Raiders_of_the_North/",

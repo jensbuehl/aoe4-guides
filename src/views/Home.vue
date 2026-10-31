@@ -14,6 +14,11 @@
           :contributor="featuredContributor"
           :loading="!snapshotLoaded"
         />
+        <!-- On phones the news follows the top slot rather than closing the
+             mobile stack below, where it sat under every build lane. It folds to its title once seen, so a returning reader pays one
+             row above the civ picker, not a trailer. The desktop sidebar keeps
+             its own instance, unfolded. -->
+        <News class="hidden-md-and-up" collapsible />
 
         <CivPicker
           :civs="civs"
@@ -31,9 +36,9 @@
              This stack is a DUPLICATE of the desktop one below, not a
              responsive variant of it, so anything added to one must be added to
              both. A card added to only one looks perfectly correct on whichever
-             width you happen to test. -->
+             width you happen to test. The one exception is News, which on
+             phones sits under the top banner instead (see above). -->
         <div class="hidden-md-and-up mt-4">
-          <News></News>
           <FundingStatus />
           <TopContributors :contributors="topContributorsList"></TopContributors>
           <YoutubeGuides></YoutubeGuides>
@@ -41,7 +46,7 @@
         </div>
       </v-col>
 
-      <!-- sidebar (duplicate of the mobile stack above — keep them in step) -->
+      <!-- sidebar (duplicate of the mobile stack above, plus News — keep them in step) -->
       <v-col cols="12" md="4" class="hidden-sm-and-down">
         <News></News>
         <FundingStatus />
