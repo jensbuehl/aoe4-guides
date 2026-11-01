@@ -58,7 +58,7 @@
         <v-icon size="12">mdi-message-outline</v-icon>{{ build.comments }}
       </span>
       <template v-if="build.season"><span class="bml-sep">·</span></template>
-      <v-tooltip v-if="build.season" location="top">
+      <v-tooltip v-if="build.season" location="top" :open-on-click="!canHover" :persistent="canHover">
         <SeasonToolTip :title="build.season" />
         <template #activator="{ props: tipProps }">
           <span v-bind="tipProps" class="d-inline-flex align-center">
@@ -102,6 +102,7 @@ export default {
     wrapperClass: { type: String, default: "" },
   },
   setup(props) {
+    const canHover = window.matchMedia("(hover: hover)").matches;
     const { timeSince, formatCount } = useTimeSince();
 
     const hasPeople = computed(() =>
@@ -119,7 +120,7 @@ export default {
       )
     );
 
-    return { timeSince, formatCount, hasPeople, hasStats };
+    return { timeSince, formatCount, hasPeople, hasStats, canHover };
   },
 };
 </script>

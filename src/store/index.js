@@ -67,6 +67,8 @@ export const store = createStore({
     ui: {
       authDialog: { visible: false, mode: "login", redirect: null },
       importDialog: { open: false },
+      // The new-build editor holds work an import would replace in place.
+      newBuildUnsaved: false,
     },
     //avatar
     //undefined = not fetched yet, null = user has no picture
@@ -191,6 +193,9 @@ export const store = createStore({
     },
     setImportDialog(state, open) {
       state.ui.importDialog.open = open;
+    },
+    setNewBuildUnsaved(state, unsaved) {
+      state.ui.newBuildUnsaved = unsaved;
     },
     //Avatar module
     setUserAvatar(state, payload) {

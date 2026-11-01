@@ -24,6 +24,12 @@ const KEY_PREFIX = "aoe4-guides-editor-draft";
 //in the editor flush early for the case that matters most.
 const WRITE_DELAY_MS = 800;
 
+//A draft is only offered when its own build is opened again, so one its author
+//walked away from would sit in storage for good. Two months is well past
+//"coming back to it", and its copy of the build is by then worth less than the
+//room it takes in a shared 5MB quota.
+const MAX_AGE_MS = 60 * 24 * 60 * 60 * 1000;
+
 /**
  * What the author edits, and so what a draft holds and a restore writes back.
  *
@@ -128,6 +134,32 @@ function remove(key) {
 }
 
 /**
+ * Drops a build's draft for good, for a build that has just been deleted: its
+ * editor can never open again, so nothing else would ever clear it.
+ *
+ * @param {string|undefined} uid - The signed-in user.
+ * @param {string} buildId - The deleted build.
+ */
+export function discardDraft(uid, buildId) {
+  remove(draftKey(uid, buildId));
+}
+
+//Every user's on this device: an abandoned draft is abandoned whoever wrote it.
+function pruneExpired() {
+  try {
+    const cutoff = Date.now() - MAX_AGE_MS;
+    const keys = Array.from({ length: localStorage.length }, (_, i) => localStorage.key(i));
+    for (const key of keys) {
+      if (!key?.startsWith(`${KEY_PREFIX}:`)) continue;
+      const savedAt = read(key)?.savedAt;
+      if (typeof savedAt !== "number" || savedAt < cutoff) remove(key);
+    }
+  } catch {
+    // Blocked storage has nothing to tidy.
+  }
+}
+
+/**
  * Decides whether a stored draft is worth offering against the build as loaded.
  *
  * Nothing is offered when the draft says nothing new: it matches what was
@@ -181,6 +213,8 @@ function assess(draft, loaded) {
  * @return {Object} The draft's operations.
  */
 export default function useEditorDraft({ key, build, unsaved }) {
+  pruneExpired();
+
   let timer = null;
   let baseHash = null;
 

@@ -61,8 +61,9 @@
               context="civ-locked"
               :civName="civDisplayName"
             ></FilterConfig>
+            <NoFilterResults v-if="unreadable" unreadable :retrying="retrying" @retry="retry" />
             <NoFilterResults
-              v-if="count !== null && count === 0"
+              v-else-if="count !== null && count === 0"
               :civ="civ"
               :civ-name="civDisplayName"
               @cleared="handleCleared"
@@ -105,6 +106,7 @@ import { useDisplay } from "vuetify";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildLaneTabs from "@/components/home/BuildLaneTabs.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
+import { useRetry } from "@/composables/useRetry";
 
 //Composables
 import { civs as allCivs, getCivBySlug } from "@/composables/filter/civDefaultProvider";
@@ -184,6 +186,8 @@ export default {
     // Monotonic token identifying the latest initData run, so responses from
     // a superseded run never overwrite the current one.
     let initDataRun = 0;
+    const unreadable = ref(false);
+    const { retrying, retry } = useRetry(() => initData());
 
     const initData = async () => {
       const runId = ++initDataRun;
@@ -245,9 +249,11 @@ export default {
       // and then comes back undefined. If the lanes were answered anyway, their
       // longest list stands in for it: enough to choose between the lanes and
       // the empty state, which is all the count decides here. If nothing could
-      // be read at all, it stays undefined and the skeletons stay up, rather
-      // than claiming the civ has no builds.
+      // be read at all, it stays undefined and the page says so, rather than
+      // claiming the civ has no builds. An offline empty list counts as nothing
+      // read: the persistent cache answers a query it holds nothing for with [].
       const answered = laneResults.filter(Array.isArray);
+      unreadable.value = countResult === undefined && !answered.some((builds) => builds.length);
       const count =
         countResult ?? (answered.length ? Math.max(...answered.map((builds) => builds.length)) : countResult);
 
@@ -262,6 +268,9 @@ export default {
       user,
       authIsReady: computed(() => store.state.authIsReady),
       count,
+      unreadable,
+      retrying,
+      retry,
       recentBuildsList,
       popularBuildsList,
       allTimeClassicsList,

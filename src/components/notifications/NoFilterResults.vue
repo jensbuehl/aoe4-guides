@@ -7,11 +7,13 @@
       <div class="nfr-text mb-3">No favorites yet. Heart a build order to keep it here.</div>
       <v-btn variant="text" color="primary" :to="{ name: 'Builds' }">Browse build orders</v-btn>
     </template>
-    <!-- The favorites could not be read (App Check, offline). Not "no
-         favorites": that would tell someone with thirty that they have none. -->
-    <template v-else-if="favorites === 'unreadable'">
+    <!-- The list could not be read (App Check, offline). Not "no results":
+         that would tell someone with thirty favorites that they have none. -->
+    <template v-else-if="favorites === 'unreadable' || unreadable">
       <v-icon size="48" class="nfr-icon mb-3">mdi-alert-circle-outline</v-icon>
-      <div class="nfr-text mb-1">Your favorites could not be loaded.</div>
+      <div class="nfr-text mb-1">
+        {{ favorites === "unreadable" ? "Your favorites could not be loaded." : "Build orders could not be loaded." }}
+      </div>
       <!-- The read swallows its error code, so both likely causes are named;
            the blocker wording is the save path's (collectionService's
            toUserMessage), since the same check refuses both. -->
@@ -75,6 +77,8 @@ export default {
     // Set by My Favorites when the list is empty before any filter applies:
     // "none" (nothing hearted) or "unreadable" (the read failed).
     favorites: { type: String, default: null },
+    // Set by the other lists when nothing could be read and nothing is cached.
+    unreadable: { type: Boolean, default: false },
     // While the read behind "Try again" is out, so a second failure reads as
     // a new attempt rather than a button that did nothing.
     retrying: { type: Boolean, default: false },

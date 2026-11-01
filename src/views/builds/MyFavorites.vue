@@ -53,6 +53,7 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
+import { useRetry } from "@/composables/useRetry";
 
 //Composables
 import { getMostRecentBuildsConfig } from "@/composables/filter/configDefaultProvider";
@@ -123,15 +124,7 @@ export default {
 
     // The empty state stays up while the read is out (initData sets
     // emptyReason only once it answers), so the button carries the spinner.
-    const retrying = ref(false);
-    const retry = async () => {
-      retrying.value = true;
-      try {
-        await initData();
-      } finally {
-        retrying.value = false;
-      }
-    };
+    const { retrying, retry } = useRetry(() => initData());
 
     const initData = async () => {
       // The user watch also fires on sign-out, before the route guard leaves.

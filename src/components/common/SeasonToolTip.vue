@@ -15,12 +15,9 @@
 import { computed } from "vue";
 import {
   getSeasonByTitle,
-  seasonEndDate,
+  seasonDateRange,
   isSeasonCurrent,
 } from "@/composables/filter/seasonDefaultProvider";
-
-const md = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-const mdy = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 
 /**
  * Season metadata for a tooltip: tagline, dates and the expansion released
@@ -31,16 +28,7 @@ export default {
   props: { title: { type: String, required: true } },
   setup(props) {
     const season = computed(() => getSeasonByTitle(props.title));
-    const dateRange = computed(() => {
-      const s = season.value;
-      if (!s) return "";
-      const end = seasonEndDate(s);
-      if (!end) return `Since ${mdy(s.startDate)}`;
-      // "May 7 – Aug 31, 2026", the year once when both ends share it
-      return s.startDate.getFullYear() === end.getFullYear()
-        ? `${md(s.startDate)} – ${mdy(end)}`
-        : `${mdy(s.startDate)} – ${mdy(end)}`;
-    });
+    const dateRange = computed(() => (season.value ? seasonDateRange(season.value) : ""));
     const current = computed(() => !!season.value && isSeasonCurrent(season.value));
     return { season, dateRange, current };
   },

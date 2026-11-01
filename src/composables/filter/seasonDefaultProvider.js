@@ -112,6 +112,24 @@ export function seasonEndDate(season) {
   return end;
 }
 
+const md = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+const mdy = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+/**
+ * A season's dates as one label: "May 7 – Aug 31, 2026", the year once when both
+ * ends share it, or "Since …" for a season with no end yet.
+ *
+ * @param {Object} season - An entry of `seasons`.
+ * @return {string}
+ */
+export function seasonDateRange(season) {
+  const end = seasonEndDate(season);
+  if (!end) return `Since ${mdy(season.startDate)}`;
+  return season.startDate.getFullYear() === end.getFullYear()
+    ? `${md(season.startDate)} – ${mdy(end)}`
+    : `${mdy(season.startDate)} – ${mdy(end)}`;
+}
+
 /**
  * Whether a season is running on the given day.
  *

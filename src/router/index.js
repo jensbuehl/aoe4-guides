@@ -329,6 +329,42 @@ function isFocusToggle(to, from) {
   );
 }
 
+/**
+ * Holds a scroll restore back until the page is tall enough to take it.
+ *
+ * A page that fetches its content on mount is one screen tall when the route
+ * resolves, so a saved position was clamped to whatever fit — Back to a build
+ * not in the store's cache landed at 290 instead of 900. Pages that render from
+ * cache are tall already and resolve on the first check.
+ *
+ * Gives up rather than move a reader who has started scrolling in the meantime,
+ * and after a few seconds restores what it can: a page that came back shorter
+ * than it was never gets there.
+ *
+ * @param {{ left: number, top: number }} position - The saved position.
+ * @return {Promise<{ left: number, top: number }|false>} What the router should do.
+ */
+function whenPageReaches(position) {
+  return new Promise((resolve) => {
+    const deadline = performance.now() + 3000;
+    const interrupt = ["wheel", "touchmove"];
+    let frame;
+    const finish = (result) => {
+      cancelAnimationFrame(frame);
+      interrupt.forEach((type) => window.removeEventListener(type, abandon));
+      resolve(result);
+    };
+    const abandon = () => finish(false);
+    const check = () => {
+      const tall = document.documentElement.scrollHeight >= position.top + window.innerHeight;
+      if (tall || performance.now() > deadline) return finish(position);
+      frame = requestAnimationFrame(check);
+    };
+    interrupt.forEach((type) => window.addEventListener(type, abandon, { passive: true }));
+    check();
+  });
+}
+
   const router = createRouter({
     history: createWebHistory(),
     routes,
@@ -340,7 +376,7 @@ function isFocusToggle(to, from) {
       if (isFocusToggle(to, from)) return false;
 
       if (savedPosition) {
-        return savedPosition
+        return whenPageReaches(savedPosition);
       } else {
         return { top: 0 }
       }

@@ -55,7 +55,7 @@
         ]"
         aria-live="polite"
       >
-        <template v-if="count !== null">
+        <template v-if="count != null">
           {{ count }} {{ count === 1 ? "build" : "builds" }}
         </template>
       </span>

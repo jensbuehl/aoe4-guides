@@ -395,7 +395,8 @@ export default {
       const at = new Date(draftOffer.value.savedAt);
       const time = at.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
       if (at.toDateString() === new Date().toDateString()) return `today at ${time}`;
-      return `${at.toLocaleDateString("en-US", { month: "short", day: "numeric" })} at ${time}`;
+      const year = at.getFullYear() === new Date().getFullYear() ? undefined : "numeric";
+      return `${at.toLocaleDateString("en-US", { month: "short", day: "numeric", year })} at ${time}`;
     });
 
     // A reload, or a phone bringing back a discarded tab, restores the scroll
@@ -490,16 +491,15 @@ export default {
       // An import started from this page. The dialog hands over through the
       // store and pushes BuildNew, which is a no-op here (router-view is keyed
       // by path), so the editor has to take the template up itself. Unsaved
-      // work is asked about, as the leave guard asks on any other route.
+      // work was warned about in the dialog, before a file was chosen: asking
+      // here came after that work, and a No threw the chosen file away too.
+      watch(hasUnsavedWork, (unsaved) => store.commit("setNewBuildUnsaved", unsaved), { immediate: true });
+      onBeforeUnmount(() => store.commit("setNewBuildUnsaved", false));
       watch(
         () => store.state.template,
         (template) => {
           if (!template) return;
           store.commit("setTemplate", null);
-          if (hasUnsavedWork.value && !window.confirm("Replace your unsaved changes with the imported build?")) {
-            store.dispatch("showSnackbar", { text: "Import cancelled — your changes are kept.", type: "info" });
-            return;
-          }
           isLoaded.value = false;
           migrateSectionNotes(template.steps);
           build.value = template;
@@ -593,7 +593,23 @@ export default {
     // draft: on a phone this confirm is one stray tap away, and a draft offered
     // once too often costs a tap on Discard, where one cleared too eagerly is
     // gone for good.
-    onBeforeRouteLeave(() => {
+    //Back with a menu or dialog open closes it (plan principle 2), and that is
+    //Vuetify's closeOnBack, a global beforeEach that runs after this guard: left
+    //alone, the prompt below came first and asked about leaving a page nobody
+    //was leaving. So the guard stands aside and lets closeOnBack cancel the
+    //navigation. Only for Back: a link tapped with a menu open is a real exit,
+    //and the prompt still has to catch it.
+    //
+    //The two are told apart by history.state, which a Back has already moved to
+    //the entry being returned to, and a push has not touched yet. A popstate
+    //listener cannot say: the event fires on window, where listeners run in
+    //registration order whatever their phase, so the router's own comes first
+    //and starts this guard before any listener of ours has seen it. Nor can the
+    //guard wait a tick for one, because closeOnBack's flag lapses on the next
+    //macrotask and the page would then be left with no prompt at all.
+    onBeforeRouteLeave((to, from) => {
+      const isBack = window.history.state?.current !== from.fullPath;
+      if (isBack && document.querySelector(".v-menu.v-overlay--active, .v-dialog.v-overlay--active")) return;
       if (hasUnsavedWork.value) {
         return window.confirm("You have unsaved changes — leave anyway?");
       }

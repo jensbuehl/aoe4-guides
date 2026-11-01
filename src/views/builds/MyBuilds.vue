@@ -20,7 +20,8 @@
             ></BuildListCard>
           </router-link>
         </div>
-        <div v-if="builds" v-for="item in builds">
+        <NoFilterResults v-if="unreadable" unreadable :retrying="retrying" @retry="retry"></NoFilterResults>
+        <div v-else-if="builds" v-for="item in builds">
           <router-link
             style="text-decoration: none"
             :to="{
@@ -68,6 +69,7 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
+import { useRetry } from "@/composables/useRetry";
 
 //Composables
 import { getMostRecentBuildsConfig } from "@/composables/filter/configDefaultProvider";
@@ -162,11 +164,10 @@ export default {
 
       drafts.value = userDrafts;
       store.commit("setResultsCount", size);
-      // A list that could not be read comes back undefined (buildService's
-      // cacheBuilds). The skeletons stay up, as on the Dashboard, rather than
-      // an empty list that would read as "no builds".
+      // See Builds.vue: no count and no list is "could not be read", not "no builds".
+      unreadable.value = size === undefined && !listRes?.length;
       if (Array.isArray(listRes)) {
-        if (!cachedList) store.commit("setMyBuildsList", listRes);
+        if (!cachedList && !unreadable.value) store.commit("setMyBuildsList", listRes);
         builds.value = listRes;
       }
 
@@ -177,6 +178,9 @@ export default {
 
       store.commit("setLoading", false);
     };
+
+    const unreadable = ref(false);
+    const { retrying, retry } = useRetry(() => initData());
 
     const nextPage = async () => {
       //reset cache
@@ -189,8 +193,8 @@ export default {
         filterConfig.value,
         paginationConfig.value.limit
       );
-      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
-      if (!Array.isArray(page)) return;
+      unreadable.value = !Array.isArray(page);
+      if (unreadable.value) return;
       builds.value = page;
 
       //set cache
@@ -211,8 +215,8 @@ export default {
         filterConfig.value,
         paginationConfig.value.limit
       );
-      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
-      if (!Array.isArray(page)) return;
+      unreadable.value = !Array.isArray(page);
+      if (unreadable.value) return;
       builds.value = page;
 
       //set cache
@@ -234,6 +238,9 @@ export default {
     return {
       builds,
       drafts,
+      unreadable,
+      retrying,
+      retry,
       user,
       count,
       loading,

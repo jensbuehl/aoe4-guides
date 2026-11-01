@@ -1,18 +1,12 @@
 <template>
   <v-container>
-    <div v-if="authIsReady" class="d-flex justify-center">
-      <v-row no-gutters class="fill-height" align="center" justify="center">
-        <v-col cols="12" sm="6" lg="4">
-          <v-card flat rounded="lg" class="d-flex align-center mb-4">
-            <v-row
-              no-gutters
-              class="fill-height"
-              align="center"
-              justify="center"
-            >
-              <v-col cols="12">
+    <v-row v-if="authIsReady" no-gutters justify="center">
+      <v-col cols="12" sm="6" lg="4">
+        <v-card flat rounded="lg" class="mb-4">
                 <v-form ref="form" @submit.prevent="saveNewPassword">
-                  <v-card-title>{{ title }}</v-card-title>
+                  <!-- Wraps: it carries an email address, which as a card title
+                       would not break and pushed the card past both screen edges. -->
+                  <v-card-title class="text-wrap">{{ title }}</v-card-title>
                   <v-card-text>{{ message }}</v-card-text>
 
                   <!-- The account the new password belongs to, for password
@@ -27,53 +21,57 @@
                     :value="mail"
                     hidden
                   />
-                  <v-text-field
-                    v-if="canSetPassword"
-                    name="new password"
-                    label="New password"
-                    type="password"
-                    autocomplete="new-password"
-                    enterkeyhint="done"
-                    :rules="passwordRules"
-                    v-model="newPassword"
-                    placeholder="Your new password"
-                    required
-                  ></v-text-field>
-                  <v-btn
-                    v-if="canSetPassword"
-                    color="primary"
-                    variant="text"
-                    :loading="saving"
-                    :disabled="saving"
-                    block
-                    type="submit"
-                    >Apply</v-btn
-                  >
-                  <v-btn
-                    v-if="newPassword && passwordSet && !error && (mode == 'resetPassword')"
-                    color="primary"
-                    :to="!user ? '../login' : '/'"
-                    variant="text"
-                    block
-                    type="submit"
-                    >Continue</v-btn
-                  >
-                  <v-btn
-                    v-if="!error && (mode == 'verifyEmail')"
-                    color="primary"
-                    :to="!user ? '../login' : '/'"
-                    variant="text"
-                    block
-                    type="submit"
-                    >Continue</v-btn
-                  >
+                  <!-- The login dialog's field and button, so the page that
+                       follows "Forgot password?" reads as the same form. -->
+                  <div class="px-4 pb-4">
+                    <v-text-field
+                      v-if="canSetPassword"
+                      name="new password"
+                      label="New password"
+                      prepend-inner-icon="mdi-lock-outline"
+                      :append-inner-icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+                      :type="showPassword ? 'text' : 'password'"
+                      variant="outlined"
+                      density="comfortable"
+                      class="mb-1"
+                      autocomplete="new-password"
+                      enterkeyhint="done"
+                      :rules="passwordRules"
+                      v-model="newPassword"
+                      required
+                      @click:append-inner="showPassword = !showPassword"
+                    ></v-text-field>
+                    <v-btn
+                      v-if="canSetPassword"
+                      color="primary"
+                      :loading="saving"
+                      :disabled="saving"
+                      block
+                      height="44"
+                      type="submit"
+                      >Set new password</v-btn
+                    >
+                    <v-btn
+                      v-if="newPassword && passwordSet && !error && (mode == 'resetPassword')"
+                      color="primary"
+                      :to="!user ? '../login' : '/'"
+                      block
+                      height="44"
+                      >Continue</v-btn
+                    >
+                    <v-btn
+                      v-if="!error && (mode == 'verifyEmail')"
+                      color="primary"
+                      :to="!user ? '../login' : '/'"
+                      block
+                      height="44"
+                      >Continue</v-btn
+                    >
+                  </div>
                 </v-form>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -109,6 +107,7 @@ export default {
     var passwordSet = ref(false);
     const form = ref(null);
     const saving = ref(false);
+    const showPassword = ref(false);
 
     // `error` is a dead link, the one failure nothing on this page can fix.
     // `mail` is known only once the link has checked out.
@@ -227,6 +226,7 @@ export default {
     return {
       form,
       saving,
+      showPassword,
       canSetPassword,
       passwordRules,
       mode,

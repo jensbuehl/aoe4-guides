@@ -1,5 +1,5 @@
 <template>
-  <v-card flat rounded="lg" class="mb-4">
+  <v-card v-if="!answered || videosIds" flat rounded="lg" class="mb-4">
     <v-card-title class="px-4 py-2 pb-2">
       <v-icon icon="mdi-youtube" size="small" class="mr-2 mb-1" color="primary"></v-icon>
       Video Guides
@@ -76,12 +76,17 @@ export default {
       if (previousId) pause(previousId);
     });
 
+    // Held open while the read is out, so the card does not arrive under the
+    // reader; a title over nothing is all there would be once it has failed.
+    const answered = ref(false);
     onMounted(async () => {
       videosIds.value = await getRecentYoutubeVideos();
+      answered.value = true;
     });
 
     return {
       videosIds,
+      answered,
       currentIndex,
       isHovered,
       isCycling,

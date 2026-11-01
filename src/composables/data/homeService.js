@@ -150,8 +150,14 @@ export async function getHomeSnapshot() {
   return loadSnapshot();
 }
 
+/**
+ * The latest videos, or null. A failed read is null too: the videos are an
+ * extra, and Home reports the same failure where it matters, over the lanes.
+ *
+ * @return {Promise<string[]|null>}
+ */
 export async function getRecentYoutubeVideos() {
-  const home = await loadSnapshot();
+  const home = await loadSnapshot().catch(() => null);
   return home?.recentVideos ?? null;
 }
 

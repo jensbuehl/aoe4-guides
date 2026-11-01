@@ -195,7 +195,8 @@
               :ref="el => registerNoteRef(el, index)"
               :data-edit-index="index"
               data-edit-field="gameplan"
-              @keyup="saveSelection($event)"
+              @input="showAutoCompleteMenu($event, index)"
+              @keyup="handleContentEditableKeyUp($event, index)"
               @click="saveSelection($event)"
               @paste="handlePaste"
               @focusout="updateStepNote($event, item)"
@@ -362,7 +363,8 @@
             <div
               :data-edit-index="index"
               data-edit-field="description"
-              @keyup="saveSelection($event)"
+              @input="showAutoCompleteMenu($event, index)"
+              @keyup="handleContentEditableKeyUp($event, index)"
               @click="saveSelection($event)"
               @paste="handlePaste"
               @focusout="updateStepDescription($event, item)"
@@ -1237,7 +1239,7 @@ import PickerDialog from "@/components/common/PickerDialog.vue";
 
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
-import { sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
+import { sanitizeCellValue, sanitizeStepDescription } from "@/composables/builds/buildOrderValidator.js";
 import {
   aggregateVillagers,
   hasResourceValue,
@@ -1462,6 +1464,7 @@ export default {
     const stepsTable = ref(null);
     //The phone's card list, so a card that has just moved can be followed.
     const stepsList = ref(null);
+    const cardFields = (card) => [...(card?.querySelectorAll('[contenteditable="true"]') ?? [])];
     const timestampRefs = ref([]);
     const stoneInputRefs = ref([]);
     //So a note can be focused the moment it is inserted, the way a new step
@@ -1745,12 +1748,15 @@ export default {
       return props.previousStep;
     }
 
+    const canHover = window.matchMedia("(hover: hover)").matches;
     const saveSelection = (event) => {
       //navigate to aoe4world if clicked on an image
+      //Not on touch: a finger placing the caret beside an icon lands on it often,
+      //and that threw the author into a new tab mid-sentence.
       //An SVG's className is an SVGAnimatedString, not a string — and the
       //picker button's glyph is an SVG, so a press landing on it threw here,
       //before the caret below was stored.
-      if (typeof event?.target.className === "string" && event.target.className.includes("icon-") && toolTipModel.value?.exploreUrl) {
+      if (canHover && typeof event?.target.className === "string" && event.target.className.includes("icon-") && toolTipModel.value?.exploreUrl) {
         window.open(toolTipModel.value.exploreUrl);
       }
 
@@ -1785,10 +1791,10 @@ export default {
      * both halves of that assumption break on the first note in a section.
      *
      * @param {number} index - Position of the step within this section.
-     * @return {Element|null} The contenteditable, or null on mobile.
+     * @return {Element|null} The contenteditable in the layout on screen.
      */
     const editableCell = (index) =>
-      stepsTable.value?.querySelector(`[data-edit-index="${index}"][data-edit-field]`) ?? null;
+      liveLayout()?.querySelector(`[data-edit-index="${index}"][data-edit-field]`) ?? null;
 
     const showAutoCompleteMenu = (event, index) => {
       var contentEditable = null;
@@ -2374,6 +2380,16 @@ export default {
       },
 
       /**
+       * Puts the caret back into a card after a keyboard move, which is what
+       * lets the next Alt+↑/↓ go on moving it, across sections as well.
+       */
+      focusField: (gap, slot, caret) => {
+        const card = stepsList.value?.querySelector(`[data-card-index="${gap}"]`);
+        const target = cardFields(card)[slot];
+        if (target) placeCaretAt(target, caret);
+      },
+
+      /**
        * The insert line nearest the pointer, and how far away it is.
        *
        * Measured on the `.ins-row-cell`, which is a zero-height cell sitting
@@ -2526,8 +2542,7 @@ export default {
       const field = document.activeElement;
       const typing = !!field?.isContentEditable && !!stepsList.value?.contains(field);
       const caret = typing ? caretOffset(field) : null;
-      const fieldsOf = (card) => [...(card?.querySelectorAll('[contenteditable="true"]') ?? [])];
-      const slot = typing ? fieldsOf(field.closest("[data-card-index]")).indexOf(field) : -1;
+      const slot = typing ? cardFields(field.closest("[data-card-index]")).indexOf(field) : -1;
 
       //Saved through the field's own handler first, while this section still
       //holds the entry. A card's time and resource cells save on focusout and
@@ -2542,14 +2557,12 @@ export default {
 
       //The same node when the card moved within its group of cards. A card
       //that crosses into or out of an alternatives bracket changes parent, so
-      //Vue mounts a new one; the field is then found again by the card's new
-      //position and its place among the card's fields. One that crosses into
-      //another section belongs to that section's list, and is left there.
-      let target = field.isConnected ? field : null;
-      if (!target && landed?.sectionIndex === props.sectionIndex) {
-        target = fieldsOf(stepsList.value?.querySelector(`[data-card-index="${landed.gapIndex}"]`))[slot];
-      }
-      if (target) placeCaretAt(target, caret);
+      //Vue mounts a new one, and one carried into another section belongs to
+      //that section's list; either way the field is found again by the card's
+      //new position and its place among the card's fields, by the section that
+      //now holds it.
+      if (field.isConnected) placeCaretAt(field, caret);
+      else if (landed) reorder.focusField(landed.sectionIndex, landed.gapIndex, slot, caret);
     };
 
     /** Whether a press in that direction would do anything. */
@@ -3484,7 +3497,10 @@ export default {
     const handlePaste = async (e) => {
       //Check html content first
       const dirty = e.clipboardData.getData("text/html");
-      const clean = sanitizeStepDescription(dirty, e.clipboardData.getData("text/plain"));
+      const plain = e.clipboardData.getData("text/plain");
+      //The fields holding one value, on both layouts: time and resources.
+      const isValueCell = e.currentTarget?.matches?.("input, .step-time-input, .slot-val-edit");
+      const clean = isValueCell ? sanitizeCellValue(dirty, plain) : sanitizeStepDescription(dirty, plain);
 
       // Every paste is ours, a refused age4builder one included (it comes
       // back empty): the sanitiser is pure and leaves the event to this handler.

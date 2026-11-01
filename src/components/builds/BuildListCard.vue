@@ -465,9 +465,10 @@ export default {
    by position) — views is the item a phone loses first. The separator is each
    item's own ::before, so it leaves with its item instead of dangling.
 
-   Every person shows. A name alone truncates only if it cannot fit the line by
-   itself; two names are capped at 45% each, or the second would be dropped
-   whole while the first kept its full width. Doubled class: .blc-meta below is written later
+   Every person shows. A name is capped at 60% of the line so the age always has
+   room beside it (a long one used to take the line and drop the age); two names
+   are capped at 45% each, or the second would be dropped whole while the first
+   kept its full width. Doubled class: .blc-meta below is written later
    and would win the tie, which silently defeated the rule this replaces. */
 .blc-meta.blc-meta--xs {
   display: flex;
@@ -497,6 +498,7 @@ export default {
 .blc-meta--xs > .blc-name {
   flex: 0 1 auto;
   min-width: 0;
+  max-width: 60%;
   overflow: hidden;
   text-overflow: ellipsis;
 }

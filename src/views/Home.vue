@@ -25,7 +25,15 @@
           :recent-civ-builds="recentCivBuilds"
         />
 
+        <NoFilterResults
+          v-if="unreadable"
+          class="mt-6"
+          unreadable
+          :retrying="retrying"
+          @retry="retry"
+        />
         <BuildLaneTabs
+          v-else
           class="mt-6"
           :popular-builds="popularBuildsList"
           :all-time-classics="allTimeClassicsList"
@@ -63,6 +71,7 @@ import { useStore } from "vuex";
 import { computed, onMounted, ref } from "vue";
 
 import RegisterAd from "@/components/notifications/RegisterAd.vue";
+import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 import News from "@/components/notifications/News.vue";
 import YoutubeGuides from "@/components/notifications/YoutubeGuides.vue";
 import TopContributors from "@/components/home/TopContributors.vue";
@@ -76,12 +85,14 @@ import FundingStatus from "@/components/common/FundingStatus.vue";
 import { isEventLive } from "@/config/event";
 import { isReleaseLive } from "@/config/release";
 import { getHomeSnapshot } from "@/composables/data/homeService";
+import { useRetry } from "@/composables/useRetry";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
 
 export default {
   name: "Home",
   components: {
+    NoFilterResults,
     RegisterAd,
     News,
     YoutubeGuides,
@@ -137,6 +148,9 @@ export default {
       initData();
     });
 
+    const unreadable = ref(false);
+    const { retrying, retry } = useRetry(() => initData());
+
     const initData = async () => {
       // Single read replaces 4 separate live queries (~23 reads → 1 read).
       // Data is pre-generated six-hourly by the updateHomeSnapshot Cloud
@@ -144,7 +158,21 @@ export default {
       // note that it is that TTL doing the work and NOT Firestore's IndexedDB
       // persistence, which this path has bypassed since f395d19. See the header
       // of homeService.js before changing either.
-      const snapshot = await getHomeSnapshot();
+      //
+      // A failed read leaves the lanes' skeletons to the card that says so, and
+      // the rest of the page settled: the civ picker needs no data at all.
+      let snapshot;
+      try {
+        snapshot = await getHomeSnapshot();
+        unreadable.value = false;
+      } catch (error) {
+        console.error("Home snapshot could not be read:", error.message);
+        unreadable.value = true;
+        snapshotLoaded.value = true;
+        spotlightPending.value = false;
+        store.commit("setTopContributorsList", []);
+        return;
+      }
       recentCivBuilds.value = snapshot?.recentCivBuilds ?? [];
       // Rides inside the snapshot rather than being fetched, which is what
       // keeps this page at one read even when the spotlighted contributor is
@@ -176,6 +204,9 @@ export default {
       spotlightPending,
       eventLive,
       releaseLive,
+      unreadable,
+      retrying,
+      retry,
       recentBuildsList,
       popularBuildsList,
       allTimeClassicsList,

@@ -57,6 +57,56 @@ function escapeHtml(text) {
 }
 
 /**
+ * Pastes from age4builder are refused outright: nothing is inserted.
+ *
+ * @param {string} dirty - The pasted `text/html`, possibly empty.
+ * @return {boolean}
+ */
+function isRefusedSource(dirty) {
+  return !!dirty && !!dirty.match("age4builder");
+}
+
+/**
+ * The path of one of the app's own icons, or null for anything else.
+ *
+ * Only icons belong in a step: an `<img>` is rendered for every reader of the
+ * build, so a remote `src` would have them all request a stranger's server.
+ * Absolute URLs have to survive when they are ours, because copying a step from
+ * a build page puts `https://aoe4guides.com/assets/…` on the clipboard; storing
+ * the path keeps a pasted icon working on every host the app runs on. The page's
+ * own origin stands in for localhost and the dev project.
+ *
+ * @param {string} src - The pasted `src`.
+ * @return {string|null}
+ */
+function ownIconPath(src) {
+  let url;
+  try {
+    url = new URL(src, "https://aoe4guides.com");
+  } catch {
+    return null;
+  }
+  const ours = url.origin === "https://aoe4guides.com" || url.origin === globalThis.location?.origin;
+  return ours && url.pathname.startsWith("/assets/") ? url.pathname : null;
+}
+
+/**
+ * Sanitizes a paste into a field that holds one value: a step's time or a
+ * resource. Unlike a description these have no line breaks and no icons, and a
+ * `<br>` would be stripped on save with the values either side of it fused
+ * ("1:30⏎2:00" stored as "1:302:00"), so the clipboard's plain text is used and
+ * its line breaks become spaces.
+ *
+ * @param {string} dirty - The pasted `text/html`, possibly empty.
+ * @param {string} [plain] - The pasted `text/plain`.
+ * @return {string} The value, safe to insert as HTML.
+ */
+export function sanitizeCellValue(dirty, plain = "") {
+  if (isRefusedSource(dirty)) return "";
+  return escapeHtml(plain.replace(/\s*\r?\n\s*/g, " ").trim());
+}
+
+/**
  * Sanitizes a step description by removing unwanted tags, classes, attributes, and styles.
  *
  * Pure: it returns the HTML to insert, and leaves the event to the caller, which
@@ -73,8 +123,7 @@ function escapeHtml(text) {
 export function sanitizeStepDescription(dirty, plain = "") {
   var clean = "";
 
-  //Pastes from age4builder are refused outright: nothing is inserted.
-  if (dirty && dirty.match("age4builder")) {
+  if (isRefusedSource(dirty)) {
     return clean;
   }
 
@@ -100,6 +149,13 @@ export function sanitizeStepDescription(dirty, plain = "") {
           "vertical-align": [/^middle$/],
         },
       },
+      transformTags: {
+        img: (tagName, attribs) => ({
+          tagName,
+          attribs: { ...attribs, src: ownIconPath(attribs.src ?? "") ?? "" },
+        }),
+      },
+      exclusiveFilter: (frame) => frame.tag === "img" && !frame.attribs.src,
     });
   } else {
     //Fallback to plain text otherwise

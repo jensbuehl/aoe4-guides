@@ -253,6 +253,10 @@ export function useStepReorder() {
     return destination;
   };
 
+  /** Hands a field back its caret in the section a card landed in. */
+  const focusField = (sectionIndex, gapIndex, slot, caret) =>
+    registry.get(sectionIndex)?.focusField(gapIndex, slot, caret);
+
   /** Whether that press would do anything. Drives a button's disabled state. */
   const canMove = (sectionIndex, draftIndex, delta) =>
     destinationFor(sectionIndex, draftIndex, delta) != null;
@@ -389,5 +393,6 @@ export function useStepReorder() {
     // ---- discrete moves ----
     moveBy,
     canMove,
+    focusField,
   };
 }

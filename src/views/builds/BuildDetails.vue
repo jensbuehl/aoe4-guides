@@ -55,6 +55,12 @@
             @voteUpRemoved="() => { build.upvotes--; }"
           ></Vote>
           <Favorite v-if="userData" v-model="userData" :buildId="build.id"></Favorite>
+          <BuildActionsFallback
+            v-if="actionsPending || actionsFailed"
+            :failed="actionsFailed"
+            :retrying="actionsRetrying"
+            @retry="retryActions"
+          />
         </div>
         <!-- Overflow menu: always visible (mobile slim header + desktop) -->
         <!-- No v-model here: BuildHeader renders this slot twice (mobile card and
@@ -205,9 +211,13 @@
           ></Vote>
           <Favorite v-model="userData" :buildId="build.id"></Favorite>
         </div>
-        <!-- The row's height while the buttons are on their way (actionsPending):
-             one icon button, measured. -->
-        <div v-else-if="actionsPending" class="d-md-none" style="height: 48px"></div>
+        <BuildActionsFallback
+          v-else-if="actionsPending || actionsFailed"
+          class="d-md-none"
+          :failed="actionsFailed"
+          :retrying="actionsRetrying"
+          @retry="retryActions"
+        />
       </template>
     </BuildHeader>
 
@@ -294,6 +304,9 @@ import { useRoute, useRouter } from "vue-router";
 import Favorite from "@/components/Favorite.vue";
 import FocusMode from "@/components/builds/FocusMode.vue";
 import Vote from "@/components/Vote.vue";
+import { discardDraft } from "@/composables/builds/useEditorDraft";
+import BuildActionsFallback from "@/components/builds/BuildActionsFallback.vue";
+import { useRetry } from "@/composables/useRetry";
 import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import AgeTimeline from "@/components/builds/AgeTimeline.vue";
 import Discussion from "@/components/Discussion.vue";
@@ -332,6 +345,7 @@ export default {
   components: {
     Favorite,
     Vote,
+    BuildActionsFallback,
     Discussion,
     BuildOrderEditor,
     AgeTimeline,
@@ -569,8 +583,8 @@ export default {
     //steps, and the favorites read lands just after the build. Arriving into
     //nothing, the row pushed the build down 48px under a reader who had
     //already started on it, so it is held open while the read is out
-    //(actionsPending). A read that fails lets it go, leaving the page as a
-    //signed-out reader sees it.
+    //(actionsPending), and stays open with a retry if the read fails
+    //(actionsFailed): a signed-in reader is owed their buttons, or a reason.
     //
     //Nothing is held before auth has answered, and nothing needs to be:
     //Firestore queues every read until auth has reported its first user, so
@@ -578,17 +592,23 @@ export default {
     //The /api fallback cannot beat it either: it runs only after a Firestore
     //read has failed, and that read waited for auth too.
     const actionsPending = ref(false);
+    const actionsFailed = ref(false);
+    const loadActions = async (uid) => {
+      const favorites = await getUserFavorites(uid);
+      //A sign-out made while this was in flight has already cleared it.
+      if (user.value?.uid !== uid) return;
+      userData.value = favorites;
+      actionsPending.value = false;
+      actionsFailed.value = !favorites;
+    };
+    const { retrying: actionsRetrying, retry: retryActions } = useRetry(() => loadActions(user.value?.uid));
     watch(
       () => user.value?.uid,
       async (uid) => {
         userData.value = null;
+        actionsFailed.value = false;
         actionsPending.value = !!uid;
-        if (!uid) return;
-        const favorites = await getUserFavorites(uid);
-        //A sign-out made while this was in flight has already cleared it.
-        if (user.value?.uid !== uid) return;
-        userData.value = favorites;
-        actionsPending.value = false;
+        if (uid) await loadActions(uid);
       },
       { immediate: true }
     );
@@ -717,6 +737,7 @@ export default {
       await deleteBuild(props.id);
 
       if (!error.value) {
+        discardDraft(user.value?.uid, props.id);
         store.dispatch("showSnackbar", {
           text: `Build order deleted!`,
           type: "success",
@@ -797,6 +818,9 @@ export default {
       user,
       userData,
       actionsPending,
+      actionsFailed,
+      actionsRetrying,
+      retryActions,
       loading,
       focusMode,
       timelineEl,

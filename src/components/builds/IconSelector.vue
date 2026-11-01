@@ -5,7 +5,30 @@
         <v-text-field :autofocus="autofocus" v-model="searchText" label="Search..." clearable enterkeyhint="search"></v-text-field>
       </v-col>
     </v-row>
-    <v-tabs center-active show-arrows class="mt-n4" v-model="tab" color="accent">
+    <!--The sheet shows every section at once: as tabs at 360px, two of the eight
+        fitted and the other six hid behind an arrow. Chips as in the filter
+        sheet, and a label that says what is in the section, since there is no
+        tooltip to add it.-->
+    <v-chip-group
+      v-if="sheet"
+      v-model="tab"
+      mandatory
+      :column="height >= 480"
+      class="icon-sections px-3 mt-n4"
+      aria-label="Icon sections"
+    >
+      <v-chip
+        v-for="section in sections"
+        :key="section.value"
+        :value="section.value"
+        :variant="tab === section.value ? 'flat' : 'outlined'"
+        :color="tab === section.value ? 'primary' : undefined"
+        class="icon-section"
+      >
+        {{ section.label }}
+      </v-chip>
+    </v-chip-group>
+    <v-tabs v-else center-active show-arrows class="mt-n4" v-model="tab" color="accent">
       <v-tooltip location="top">
         <span
           :style="{
@@ -118,9 +141,10 @@
               a caption — wrapped to up to three lines here rather than truncated
               to one, because unit and tech names run to twice the length of a
               civ's.-->
-          <v-row v-if="sheet" dense class="mt-1 mx-1">
-            <v-col cols="3" v-for="icon in pane.icons" :key="icon.imgSrc">
+          <div v-if="sheet" class="icon-tiles">
               <v-card
+                v-for="icon in pane.icons"
+                :key="icon.imgSrc"
                 variant="text"
                 rounded="lg"
                 class="pa-1 icon-tile"
@@ -129,8 +153,7 @@
                 <v-img :class="iconClass(icon)" class="mx-auto" style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
                 <p class="text-caption text-center mt-1 icon-tile-name">{{ icon.title }}</p>
               </v-card>
-            </v-col>
-          </v-row>
+          </div>
           <v-row v-else class="mt-2 mx-2 mx-sm-8" no-gutters align="center">
             <v-col class="mb-2" cols="2" v-for="icon in pane.icons" :key="icon.imgSrc">
               <v-container>
@@ -157,9 +180,10 @@
         </v-window-item>
       </v-window>
       <template v-if="searching">
-        <v-row v-if="sheet" dense class="mt-1 mx-1">
-          <v-col cols="3" v-for="icon in searchResults" :key="icon.imgSrc">
+        <div v-if="sheet" class="icon-tiles">
             <v-card
+              v-for="icon in searchResults"
+              :key="icon.imgSrc"
               variant="text"
               rounded="lg"
               class="pa-1 icon-tile"
@@ -168,8 +192,7 @@
               <v-img :class="iconClass(icon)" class="mx-auto" style="height: 48px; width: 48px" :src="icon.imgSrc"></v-img>
               <p class="text-caption text-center mt-1 icon-tile-name">{{ icon.title }}</p>
             </v-card>
-          </v-col>
-        </v-row>
+        </div>
         <v-row v-else class="mt-2 mx-2 mx-sm-8" no-gutters align="center">
           <v-col class="mb-2" cols="2" v-for="icon in searchResults" :key="icon.imgSrc">
             <v-container>
@@ -200,6 +223,7 @@
 
 <script>
 //External
+import { useDisplay } from "vuetify";
 import { ref, computed } from "vue";
 
 //Components
@@ -221,7 +245,8 @@ export default {
   setup(props, context) {
     const { getIcons } = iconService(props.civ);
     const searchText = ref("");
-    const tab = ref(null);
+    //Null on a menu: v-tabs picks its first tab. Chips pick nothing by themselves.
+    const tab = ref(props.sheet ? "general" : null);
 
     //Focusing the search on open suits a mouse, where the author picks by name.
     //On a touch screen focus is the on-screen keyboard, which comes up over the
@@ -295,6 +320,23 @@ export default {
       { value: "units_military", icons: militaryUnits },
     ];
 
+    //The sheet's sections, in the order of the tabs. A section with nothing in it
+    //for this civ is left out, as its tab is.
+    const sections = [
+      { value: "general", label: "Workers & resources" },
+      { value: "landmarks", label: "Landmarks" },
+      { value: "units_military", label: "Units" },
+      { value: "buildings_eco", label: "Eco buildings" },
+      { value: "buildings_military", label: "Military buildings" },
+      { value: "techEco", label: "Eco tech" },
+      { value: "techMilitary", label: "Military tech" },
+      { value: "abilities", label: "Abilities" },
+    ].filter((section) => section.value !== "abilities" || heroes.length);
+
+    //A phone on its side has no height to give rows of chips: below this they
+    //are one row that scrolls.
+    const { height } = useDisplay();
+
     const iconClass = (icon) => ({
       "icon-landmark-selector": icon.class == "landmark",
       "icon-tech-selector": icon.class == "tech",
@@ -312,6 +354,8 @@ export default {
     return {
       autofocus,
       panes,
+      sections,
+      height,
       iconClass,
       ecoBuildings,
       militaryBuildings,
@@ -404,6 +448,27 @@ export default {
 .icon-grid--sheet {
   flex: 1 1 0;
   min-height: 0;
+}
+/* Four columns at 360px, and as many as fit on a phone turned sideways. */
+.icon-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 4px;
+  margin: 4px 8px 0;
+}
+/* Drawn 32px with 8px between rows, so the rows' hit areas meet at 44px rather
+   than overlap. A chip clips its contents, so the overhang needs that lifted;
+   the label cannot overflow here, the chip sizes to it. */
+.icon-sections :deep(.v-slide-group__content) {
+  row-gap: 4px;
+}
+.icon-section {
+  overflow: visible;
+}
+.icon-section::before {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
 }
 /* Room for two lines on every tile, so most rows line up whatever the length
    of the names in them, and up to three: a clipped name is the one thing the

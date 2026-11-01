@@ -12,6 +12,11 @@
     </v-tabs>
 
     <v-card-text class="px-6 pt-4 pb-2" style="min-height: 200px">
+      <!-- Up front, not after the choice: on the new-build page an import
+           replaces what is in the editor, in place. -->
+      <v-alert v-if="replacesWork" type="warning" variant="tonal" density="compact" class="mb-3 text-body-2">
+        This replaces your unsaved changes in the editor.
+      </v-alert>
       <v-window v-model="activeTab">
 
         <!-- Upload file tab -->
@@ -104,7 +109,7 @@
         :disabled="!canImport"
         @click="doImport"
       >
-        Import build
+        {{ replacesWork ? "Replace and import" : "Import build" }}
       </v-btn>
     </template>
   </PickerDialog>
@@ -131,6 +136,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const { convert } = useImportOverlayFormat();
+    const replacesWork = computed(() => store.state.ui.newBuildUnsaved);
 
     const activeTab = ref("file");
 
@@ -269,6 +275,7 @@ export default {
     }
 
     return {
+      replacesWork,
       activeTab,
       fileChip, fileParsed,
       clipboardText, clipboardParsed, clipboardHint,

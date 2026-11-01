@@ -8,12 +8,39 @@
     <div class="build-card-section-header d-flex align-center px-4 ga-2">
       <v-icon color="accent" size="small">mdi-timer-sand</v-icon>
       <span class="text-caption text-uppercase font-weight-bold">Timeline</span>
+      <!--The chips carry one time each. What the desktop crest's tooltip holds
+          beside it, the click-up, both pops and how long the age-up took, has no
+          hover to live behind here, and is no use to a reader until asked for.-->
+      <v-btn
+        v-if="hasDetails"
+        class="age-details-toggle d-md-none ml-auto"
+        variant="text"
+        size="x-small"
+        color="primary"
+        :append-icon="detailsOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+        :aria-expanded="detailsOpen"
+        @click="detailsOpen = !detailsOpen"
+        >Details</v-btn
+      >
     </div>
 
     <!--xs falls back to the same chips the list card uses: there is no room for
         a track worth reading at that width-->
     <div class="px-4 pb-4 d-md-none">
       <AgeChips :timings="ages" size="small" />
+      <v-expand-transition>
+        <div v-if="detailsOpen">
+          <div class="age-details">
+            <AgeTimingDetail
+              v-for="age in ages"
+              :key="age.age"
+              :age="age"
+              :name="nameFor(age.age)"
+              :footnote="footnoteFor(age)"
+            />
+          </div>
+        </div>
+      </v-expand-transition>
     </div>
 
     <div class="px-4 pb-4 d-none d-md-block">
@@ -35,38 +62,21 @@
         ></span>
       </div>
       <div class="age-ticks">
-        <v-tooltip v-for="age in ages" :key="age.age" location="top">
-          <div class="agett" :style="{ color: $vuetify.theme.current.colors.primary }">
-            <div class="agett-title font-weight-bold">{{ nameFor(age.age) }}</div>
-            <!--Both pops are named here, beside the moment each belongs to. This
-                is the only place the two can be compared, and it is why the
-                marker below can afford to carry just one of them: a bare number
-                under a crest cannot say which instant it describes, while a
-                number sitting on the row that says "Clicked up" already has.-->
-            <template v-if="age.clickUp">
-              <span>Clicked up</span>
-              <b
-                >{{ age.clickUp.derived ? "~" : "" }}{{ formatAgeTime(age.clickUp.seconds)
-                }}<span v-if="age.clickUpVillagers" class="agett-pop">
-                  · {{ age.clickUpVillagers }} vils</span
-                ></b
-              >
-            </template>
-            <span>Reached</span>
-            <b
-              >{{ age.derived ? "~" : "" }}{{ formatAgeTime(age.seconds)
-              }}<span v-if="age.villagers" class="agett-pop">
-                · {{ age.villagers }} vils</span
-              ></b
-            >
-            <template v-if="age.clickUp">
-              <span>Age-up took</span>
-              <b>{{ formatAgeTime(age.clickUp.duration) }}</b>
-            </template>
-            <div v-if="age.derived || age.clickUp?.derived" class="agett-note text-caption">
-              {{ footnoteFor(age) }}
-            </div>
-          </div>
+        <!--Hover has nothing to offer a touch tablet, which gets these crests too,
+            so a tap opens the same tooltip there.-->
+        <v-tooltip
+          v-for="age in ages"
+          :key="age.age"
+          location="top"
+          :open-on-click="!canHover"
+          :persistent="canHover"
+        >
+          <AgeTimingDetail
+            :age="age"
+            :name="nameFor(age.age)"
+            :footnote="footnoteFor(age)"
+            :style="{ color: $vuetify.theme.current.colors.primary }"
+          />
           <template v-slot:activator="{ props }">
             <div v-bind="props" class="age-tick" :style="{ left: percent(age.seconds) }">
               <img :src="crestFor(age.age)" alt="" class="age-crest" />
@@ -155,6 +165,7 @@ import { computed, inject, ref } from "vue";
 
 //Components
 import AgeChips from "@/components/builds/AgeChips.vue";
+import AgeTimingDetail from "@/components/builds/AgeTimingDetail.vue";
 import EcoLines from "@/components/builds/EcoLines.vue";
 
 //Composables
@@ -242,7 +253,7 @@ function writeEcoOpen(open) {
 
 export default {
   name: "AgeTimeline",
-  components: { AgeChips, EcoLines },
+  components: { AgeChips, AgeTimingDetail, EcoLines },
   props: {
     /** A build's steps — sections array or legacy flat list */
     steps: { type: Array, default: () => [] },
@@ -399,8 +410,17 @@ export default {
       return "~ approximate, as the author wrote it";
     };
 
+    const canHover = window.matchMedia("(hover: hover)").matches;
+    const detailsOpen = ref(false);
+    const hasDetails = computed(() =>
+      ages.value.some((age) => age.clickUp || age.villagers || age.derived)
+    );
+
     return {
       ages,
+      canHover,
+      detailsOpen,
+      hasDetails,
       segments,
       axis,
       scaleSeconds,
@@ -425,38 +445,22 @@ export default {
   height: 36px;
 }
 
-/* Label left, time right — a two-column grid so the times line up under each
-   other rather than trailing whatever the label's width happens to be */
-.agett {
+/* 36px header, so the hit area overhangs rather than growing it. */
+.age-details-toggle {
+  margin-inline-end: -8px;
+}
+
+.age-details-toggle::before {
+  content: "";
+  position: absolute;
+  inset: -12px -4px;
+}
+
+.age-details {
   display: grid;
-  grid-template-columns: auto auto;
-  column-gap: 18px;
-  row-gap: 1px;
-  align-items: baseline;
-}
-
-.agett-title,
-.agett-note {
-  grid-column: 1 / -1;
-}
-
-.agett b {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.agett-note {
-  opacity: 0.7;
-  margin-top: 2px;
-}
-
-/* Rides on the time it belongs to rather than claiming a row of its own: the
-   pair is one fact — "at this moment, this many" — and splitting it across two
-   rows is how the crest below came to state a time and a count from two
-   different instants. Set back so the times still read as the column. */
-.agett-pop {
-  font-weight: 400;
-  opacity: 0.72;
+  gap: 10px;
+  padding-top: 12px;
+  font-size: 0.8125rem;
 }
 
 .age-track {

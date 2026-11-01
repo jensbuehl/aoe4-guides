@@ -1,4 +1,5 @@
 //Composables
+import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import iconService from "@/composables/builds/icons/iconService.js";
 
 export default function useImportOverlayFormat() {
@@ -16,7 +17,9 @@ export default function useImportOverlayFormat() {
       video: build.video || "",
       creatorId: null,
       creatorName: "",
-      season: build.season || null,
+      // The current season, as a new build starts with: the overlay format has
+      // no such field, and a build with none falls out of every season filter.
+      season: build.season || seasons.value[0].title,
       map: build.map || null,
       strategy: build.strategy || null,
       views: 0,
