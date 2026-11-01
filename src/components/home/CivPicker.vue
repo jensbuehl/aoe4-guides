@@ -6,9 +6,11 @@
         <v-icon size="small" class="mr-2" color="primary">mdi-flag-variant</v-icon>
         Pick Your Civilization
       </div>
+      <!-- "Search" alone: the heading beside it already says what is searched,
+           and the longer label was cut to "Search civi…" at phone width -->
       <v-text-field
         v-model="civFilter"
-        label="Search civilizations"
+        label="Search"
         prepend-inner-icon="mdi-magnify"
         clearable
         variant="outlined"
@@ -32,37 +34,39 @@
       No civilizations match "{{ civFilter }}".
     </v-alert>
 
-    <!-- tile grid — civs are static so always rendered immediately -->
+    <!-- A–Z list of rows, the name always beside its flag rather than on it.
+         Names were unreadable over busy flags, and hover-only on desktop, which
+         asked a reader to know every flag before they could pick a civ.
+         The flag fades into the card exactly as it does in BuildListCard, so
+         the civ list and the build lanes under it read as one design.
+         Civs are static, so the list always renders immediately. -->
     <div v-else class="civ-grid">
       <v-card
         v-for="civ in filteredCivs"
         :key="civ.shortName"
-        class="civ-tile"
+        class="civ-row"
         flat
+        rounded="lg"
         :to="civPageRoute(civ.shortName)"
-        :aria-label="civ.title"
       >
+        <!-- decorative: the name sits right next to it -->
         <v-img
-          class="civ-tile__img"
+          class="civ-row__flag"
           :src="civ.flagLarge"
           :lazy-src="civ.flagSmall"
+          :gradient="'to right, transparent 40%, ' + $vuetify.theme.current.colors.surface"
           cover
-          :alt="civ.title"
-        >
-          <template #placeholder>
-            <v-skeleton-loader type="image" height="100%" width="100%" />
-          </template>
-        </v-img>
-        <span class="civ-tile__overlay">
-          <span class="civ-tile__name">{{ civ.title }}</span>
-        </span>
+          alt=""
+        />
+        <span class="civ-row__name">{{ civ.title }}</span>
         <v-chip
           v-if="isNew(toDateSafe(recentCivBuilds.find((r) => r.civ === civ.shortName)?.timeCreated))"
           size="x-small"
           color="accent"
-          class="civ-tile__new"
+          variant="flat"
+          class="civ-row__new"
         >
-          <v-icon start size="x-small">mdi-alert-decagram</v-icon>NEW
+          NEW
         </v-chip>
       </v-card>
     </div>
@@ -111,118 +115,86 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
+  gap: 12px 18px;
   flex-wrap: wrap;
   padding: 0 0 12px;
 }
 
+/* the min-width makes the field wrap under the heading on narrow phones,
+   rather than shrinking beside it until its label reads "S…" */
 .civ-search {
   max-width: 320px;
+  min-width: 112px;
   flex: 1;
 }
 
-/* grid */
+/* grid — two columns at 360px, and as many as fit from there:
+   3 at md, 4 at lg, 5 at xl in the home page's 8/12 column */
 .civ-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
 }
 
-@media (max-width: 1080px) {
-  .civ-grid { grid-template-columns: repeat(4, 1fr); }
+@media (min-width: 600px) {
+  .civ-grid { gap: 8px; }
 }
 
-@media (max-width: 720px) {
-  .civ-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-/* tile */
-.civ-tile {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  border-radius: 12px !important;
+/* row — 44px is the touch-target floor; two lines of name fit inside it */
+.civ-row {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
   overflow: hidden;
-  display: block;
   text-decoration: none;
 }
 
-/* flag image fills tile absolutely — prevents v-img's own sizing from conflicting */
-.civ-tile__img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
+@media (min-width: 600px) {
+  .civ-row { min-height: 52px; }
 }
 
-/* focus ring */
-.civ-tile:focus-visible {
+.civ-row:focus-visible {
   outline: 3px solid rgb(var(--v-theme-primary));
   outline-offset: 2px;
 }
 
-/* name overlay
-   visibility:hidden is the primary guard — discrete property, never animates on initial render,
-   so the name never flickers visible when tiles first appear. */
-.civ-tile__overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  display: flex;
-  align-items: flex-end;
-  padding: 8px 10px;
-  visibility: hidden;
-  opacity: 0;
-  background: linear-gradient(
-    to top,
-    rgba(var(--v-theme-background), 0.92) 5%,
-    rgba(var(--v-theme-background), 0.25) 55%,
-    transparent 80%
-  );
-  pointer-events: none;
-  /* hide: fade out then snap visibility hidden after fade completes */
-  transition: opacity 0.15s, visibility 0s 0.15s;
+/* flag — a fixed width, so every name starts at the same x and the column
+   reads as a list; it stretches to the row's height through the flex */
+.civ-row__flag {
+  flex: 0 0 56px;
+  align-self: stretch;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .civ-tile__overlay { transition: none; }
+@media (min-width: 600px) {
+  .civ-row__flag { flex-basis: 72px; }
 }
 
-/* reveal: show visibility instantly, then fade opacity in */
-.civ-tile:hover .civ-tile__overlay,
-.civ-tile:focus-visible .civ-tile__overlay {
-  visibility: visible;
-  opacity: 1;
-  transition: opacity 0.15s, visibility 0s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .civ-tile:hover .civ-tile__overlay,
-  .civ-tile:focus-visible .civ-tile__overlay {
-    transition: none;
-  }
-}
-
-/* always visible on touch/small screens */
-@media (max-width: 720px) {
-  .civ-tile__overlay {
-    visibility: visible;
-    opacity: 1;
-    transition: none;
-  }
-}
-
-.civ-tile__name {
+/* name — the build cards' title colour and weight; at most two lines, which
+   every civ needs at 360px, and an ellipsis rather than a third */
+.civ-row__name {
+  flex: 1;
+  min-width: 0;
+  padding: 4px 8px 4px 6px;
   color: rgb(var(--v-theme-primary));
   font-weight: 700;
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-/* NEW badge */
-.civ-tile__new {
+@media (min-width: 600px) {
+  .civ-row__name { font-size: 14px; }
+}
+
+/* NEW badge — sits on the flag, where it costs the name no width */
+.civ-row__new {
   position: absolute;
-  top: 7px;
-  right: 7px;
-  z-index: 2;
+  top: 4px;
+  left: 4px;
+  z-index: 1;
+  pointer-events: none;
 }
 </style>
