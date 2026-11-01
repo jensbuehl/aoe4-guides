@@ -42,6 +42,9 @@ turn out to be wrong.
 `setup()`, which throws at render and blanks the component behind a green build.
 Run `npm run check:setup` after touching any `.vue` file, and say plainly what
 has *not* been verified — rendering, layout and interaction need a browser.
+For anything visual, the `ux-gate` skill has the browser rig and the
+self-review checklist; a 393px viewport without a phone user agent is not a
+phone here.
 
 **Every new `mdi-*` icon must be added to `src/plugins/mdiIcons.js`.** Icons are
 tree-shaken from `@mdi/js` through an explicit allowlist, so an icon that is not
