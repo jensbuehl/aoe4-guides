@@ -53,6 +53,15 @@ below are encoded there:
   account `ux-test-mobile@example.com` on `aoe4-guides-dev`. Its password is
   not in the repo — ask the owner, and say plainly when those pages went
   unverified.
+- **Home never reaches `networkidle` reliably** while the News card holds a
+  YouTube embed: its ad traffic keeps the network busy, so `open()` can time
+  out or a run can hang with the app perfectly fine. On Home, abort requests
+  matching `youtube|ytimg|doubleclick|googlevideo|googlesyndication`, load with
+  `domcontentloaded`, and wait. The trailer then draws as a grey box.
+- **Screenshots for publishing** need real content, and dev only holds test
+  builds. Fetch public builds from the API host in `buildService.js`, intercept
+  the page's `buildService.js`, and swap `getBuilds`, `getBuildsCount` and
+  `getBuild` for that data. Stub `incrementViews` too, or a read writes.
 
 ## 2. Measure, don't eyeball
 
