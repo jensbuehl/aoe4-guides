@@ -21,8 +21,16 @@
         </span>
       </v-card-title>
       <v-card-text :class="collapsible ? 'px-4 pt-0' : 'px-4'">
+        <div class="text-body-2 text-medium-emphasis mb-3">
+          <v-icon icon="mdi-cellphone-link" size="x-small" class="mr-1" color="accent"></v-icon>
+          <strong>Mobile update.</strong> The site now feels at home on your phone, with a new light
+          theme and a long list of fixes.
+          <router-link class="text-primary" to="/news">Read more</router-link>
+        </div>
+
         <div class="text-body-2 text-medium-emphasis">
-          Both civilizations from <strong>Raiders of the North</strong> are in the build order editor:
+          <v-icon icon="mdi-sword-cross" size="x-small" class="mr-1" color="accent"></v-icon>
+          <strong>Vikings &amp; Scots.</strong> Both civilizations from <strong>Raiders of the North</strong> are in the build order editor:
           every unit, building, technology, landmark and ability, with icons, costs and descriptions.
         </div>
 
@@ -41,12 +49,6 @@
         </div>
 
         <div class="text-body-2 text-medium-emphasis mt-3">
-          <v-icon icon="mdi-sword-cross" size="x-small" class="mr-1" color="accent"></v-icon>
-          <strong>Also new.</strong> The icon picker groups military units by kind, with siege and
-          ships last, civ menus show each flag, and hovering a season shows when it ran.
-        </div>
-
-        <div class="text-body-2 text-medium-emphasis mt-2">
           <v-icon icon="mdi-heart" size="x-small" class="mr-1" color="red"></v-icon>
           The game data comes from
           <a class="text-primary" href="https://aoe4world.com" target="_blank" rel="noopener">AoE4World</a>.
@@ -92,7 +94,7 @@ import { civPageRoute } from "@/composables/filter/civDefaultProvider";
 // The headline, and also which news this browser has seen: the next item has
 // a new title, so it shows in full again without anyone clearing anything —
 // the same arrangement as ReleaseBanner's SEEN_KEY.
-const TITLE = "Vikings & Scots";
+const TITLE = "New civs & a mobile update";
 const SEEN_KEY = "aoe4guides.newsSeen";
 
 // Decided once per page load, not per mount, for the reason ReleaseBanner

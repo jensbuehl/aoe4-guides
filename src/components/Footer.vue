@@ -26,6 +26,14 @@
             >Privacy Policy
           </v-btn>
           <v-btn
+            prepend-icon="mdi-alert-decagram"
+            class="mx-1"
+            variant="text"
+            color="primary"
+            to="/news"
+            >News
+          </v-btn>
+          <v-btn
             prepend-icon="mdi-information"
             class="mx-1"
             variant="text"

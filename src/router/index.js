@@ -27,6 +27,7 @@ const Home = () => import("@/views/Home.vue");
 const NotFound = () => import("@/views/NotFound.vue");
 const Privacy = () => import("@/views/Privacy.vue");
 const About = () => import("@/views/About.vue");
+const NewsPage = () => import("@/views/NewsPage.vue");
 const Brand = () => import("@/views/Brand.vue");
 
 const Admin = () => import("@/views/Admin.vue");
@@ -246,6 +247,14 @@ const routes = [
       component: About,
       meta: {
         title: "About AoE4 Guides"
+      }
+    },
+    {
+      path: "/news",
+      name: "NewsPage",
+      component: NewsPage,
+      meta: {
+        title: "News: The Mobile Update"
       }
     },
     {

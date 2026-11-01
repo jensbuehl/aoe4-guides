@@ -44,6 +44,11 @@
 /assets/resources/*
   Cache-Control: public, max-age=604800
 
+# News screenshots, one folder per post. A week, like the game art: the names
+# are stable, so a retaken shot has to be able to reach returning readers.
+/assets/news/*
+  Cache-Control: public, max-age=604800
+
 # Event art, one file per edition and the year is in the filename — a 2027
 # tournament gets a new URL rather than a replaced file, so this is as immutable
 # as the hashed bundles above.
