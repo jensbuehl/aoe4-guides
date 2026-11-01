@@ -1,5 +1,9 @@
 <template>
-  <div v-if="activeChips.length" ref="row" class="fl-chips-row mb-3">
+  <div
+    v-if="activeChips.length"
+    ref="row"
+    :class="['fl-chips-row', scroll ? 'fl-chips-row--scroll' : 'mb-3']"
+  >
     <!-- The whole chip removes its value, not just the small ✕, which stays as
          the cue for what a tap does. Removal only edits the draft, so a stray
          tap costs nothing until "Show N results" is pressed.
@@ -35,6 +39,9 @@ export default {
     dirtyFields: { type: Object, required: true },
     applied:     { type: Object, required: true },
     context:     { type: String, default: "default" },
+    // One line that scrolls sideways instead of wrapping, so the row keeps a
+    // single height whatever is selected (the phone's sticky toolbar).
+    scroll:      { type: Boolean, default: false },
   },
   setup(props, { emit }) {
     const civs = allCivs.value;
@@ -93,6 +100,25 @@ export default {
   gap: 18px 6px;
   align-items: center;
   min-height: 28px;
+}
+
+/* overflow-x clips the y axis too, so the 9px hit-area overhang above and below
+   each chip is padded into the row rather than drawn outside it. The inline
+   padding is the toolbar's gutter, inside the scroller so chips scroll to the
+   screen edge instead of being cut 16px short of it. */
+.fl-chips-row--scroll {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 9px 16px;
+}
+
+.fl-chips-row--scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.fl-chips-row--scroll .fl-chip {
+  flex-shrink: 0;
 }
 
 /* The chip is drawn 26px tall; its hit area is 44. v-chip clips its children

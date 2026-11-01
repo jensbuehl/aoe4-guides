@@ -1,11 +1,9 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" context="default" :countFn="myFavoritesCountFn" @configChanged="configChanged"> </FilterConfig>
-      </v-col>
-
       <v-col cols="12" md="8">
+        <!-- The phone's filter toolbar, sticky, so it lives in the list's column. -->
+        <FilterConfig class="hidden-md-and-up" context="default" :countFn="myFavoritesCountFn" @configChanged="configChanged"> </FilterConfig>
         <div v-if="builds" v-for="item in builds">
           <router-link
             style="text-decoration: none"

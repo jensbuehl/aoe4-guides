@@ -53,16 +53,14 @@
               </v-row>
             </v-card></v-col
           >
-          <v-col cols="12" class="hidden-md-and-up"
-            ><span
-              ><FilterConfig
-                @configChanged="configChanged"
-                context="civ-locked"
-                :civName="civDisplayName"
-              ></FilterConfig></span
-          ></v-col>
-
           <v-col cols="12">
+            <!-- The phone's filter toolbar, sticky, so it lives in the list's column. -->
+            <FilterConfig
+              class="hidden-md-and-up"
+              @configChanged="configChanged"
+              context="civ-locked"
+              :civName="civDisplayName"
+            ></FilterConfig>
             <NoFilterResults
               v-if="count !== null && count === 0"
               :civ="civ"

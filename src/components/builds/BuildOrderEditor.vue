@@ -793,7 +793,7 @@ export default {
 /* On a handheld Play is the one control the reader came for, so its hit area
    reaches 44px while the drawn button keeps its size and the layout its height.
    ::before, because a v-btn's ::after is its focus ring and has pointer events
-   turned off (AuthDialog's .auth-hit, FilterConfig's .fl-reset-touch).
+   turned off (AuthDialog's .auth-hit, FilterConfig's .fl-toolbar-btn).
 
    Only on the plain button: the split button is a v-btn-group, which clips its
    children to round the corners, and the desktop control stays as it was.

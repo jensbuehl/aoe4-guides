@@ -400,6 +400,13 @@ import UserAvatar from "@/components/common/UserAvatar.vue";
  */
 export const HIDE_AFTER = 150;
 
+/**
+ * Whether the phone's top bar has slid away. Module state rather than the
+ * Header's own, so a sticky element under the bar (FilterConfig's toolbar) can
+ * leave and return with it instead of hanging below an empty band.
+ */
+export const appBarHidden = ref(false);
+
 export default {
   name: "Header",
   components: { UserAvatar },
@@ -461,7 +468,7 @@ export default {
     // 60px under the reader's finger. The bar stays active and keeps its space
     // reserved at the top of the page; hiding it is only a transform, which our
     // style overrides because VAppBar applies props.style after its own.
-    const barHidden = ref(false);
+    const barHidden = appBarHidden;
     let lastScroll = 0;
     let lastScrollHeight = 0;
     const onScroll = () => {

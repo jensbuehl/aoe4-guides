@@ -224,6 +224,24 @@ Do not rebuild filtering. Escalate if a bottom sheet seems necessary.
 - With two filters set, a collapsed panel makes that visible without expanding it.
 - No regression on the civ page, `/builds` or desktop.
 
+### T18 · Filters as a toolbar and bottom sheet (owner escalation of T12, 01.11.2026)
+**Problem.** T12 made the collapsed panel legible, but the panel itself stayed the problem: opened,
+its five selects and the sort pushed every result off screen, sort hid behind "Filters" and needed
+an Apply, and each change cost expand → select → pick → scroll → apply.
+**Intended behaviour (phones only; desktop sidebar unchanged).**
+- A sticky toolbar first in the list column: Filters button with a count badge, the result count,
+  and a Sort menu that applies at once. Applied filters show as one horizontally scrolling chip row;
+  a chip tap removes that value and applies.
+- The toolbar leaves and returns with the handheld app bar (`appBarHidden` in `Header.vue`).
+- Filters open a bottom sheet holding the draft: Civ/Creator/Season as selects, Map and Strategy as
+  chip groups, footer "Clear all" (filters only, never the sort) and "Show N results". Closing any
+  other way drops the draft.
+- After any apply, a reader scrolled into the list is returned to where the results begin.
+
+**Acceptance.**
+- Toolbar ≤ 57px without chips; sticky under the bar; parked off screen while the bar is hidden.
+- No horizontal overflow at 360px; desktop renders the sidebar card exactly as before.
+
 ### T13 · Import is reachable on a phone (rating 2)
 **Problem.** Import exists only in the desktop menu. The phone has no entry point.
 **Intended behaviour.** Keep the FAB a one-tap Create, since it is the primary action. Add Import

@@ -1,11 +1,9 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="12" md="4" class="hidden-md-and-up">
-        <FilterConfig class="mb-2" context="default" :countFn="myBuildsCountFn" @configChanged="configChanged"> </FilterConfig>
-      </v-col>
-
       <v-col cols="12" md="8">
+        <!-- The phone's filter toolbar, sticky, so it lives in the list's column. -->
+        <FilterConfig class="hidden-md-and-up" context="default" :countFn="myBuildsCountFn" @configChanged="configChanged"> </FilterConfig>
         <div v-if="drafts?.length && paginationConfig.currentPage === 1" v-for="item in drafts">
           <router-link
             style="text-decoration: none"
