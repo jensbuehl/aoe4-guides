@@ -2,9 +2,10 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="8">
-        <!-- The phone's filter toolbar. In this column, not one of its own: it
-             is sticky, and can only travel as far as its parent reaches. -->
-        <FilterConfig class="hidden-md-and-up" @configChanged="configChanged"> </FilterConfig>
+        <!-- The phone's filter toolbar and, from md up, the list header with
+             Sort. In this column, not one of its own: it is sticky on phones,
+             and can only travel as far as its parent reaches. -->
+        <FilterConfig placement="list" @configChanged="configChanged"> </FilterConfig>
         <RegisterAd class="hidden-md-and-up mb-4" v-if="!user && authIsReady"></RegisterAd>
         <!-- Rendered as soon as an author filter is active, not once the
              record arrives: waiting would mean the header appears after the

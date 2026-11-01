@@ -13,11 +13,23 @@ export function useDraftFilterConfig() {
 
   const draft = ref({ ...store.state.filterConfig });
 
-  // Re-sync draft when applied config changes externally (route nav, page resets)
+  // Re-sync draft when applied config changes externally (route nav, page resets).
+  //
+  // A change of sort alone is the exception: the sort is applied from the list
+  // header while the sidebar card may hold filter edits not yet applied, and a
+  // full re-sync would throw those away. The getter copies, so `prev` is the
+  // config as it was rather than the same mutated object.
   watch(
-    () => store.state.filterConfig,
-    (applied) => {
-      draft.value = { ...applied };
+    () => ({ ...store.state.filterConfig }),
+    (applied, prev) => {
+      const sortOnly =
+        prev &&
+        applied.orderBy !== prev.orderBy &&
+        Object.keys({ ...applied, ...prev }).every(
+          (k) => k === "orderBy" || arraysEqual(applied[k], prev[k])
+        );
+      if (sortOnly) draft.value.orderBy = applied.orderBy;
+      else draft.value = { ...applied };
     },
     { deep: true }
   );

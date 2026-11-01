@@ -10,24 +10,32 @@
        Sticky, so the filters stay one tap away deep into a list. Its parent
        must be the column holding the list: a sticky element only travels
        inside its parent's box, which is why the pages render it first in the
-       list column rather than in a column of its own. -->
+       list column rather than in a column of its own.
+
+       From md up the same row is the list's header, count and sort only: the
+       fields stay in the sidebar card, but Sort sits where it does on a phone,
+       over the list it orders. -->
   <div
-    v-if="smAndDown"
+    v-if="smAndDown || placement === 'list'"
     ref="toolbar"
     v-bind="$attrs"
-    class="fl-toolbar"
+    :class="['fl-toolbar', { 'fl-toolbar--header': !smAndDown }]"
     :style="{ top: stickyTop }"
   >
     <div class="fl-toolbar-row">
       <v-btn
+        v-if="smAndDown"
         ref="filtersBtn"
-        variant="tonal"
-        color="primary"
+        variant="flat"
+        color="surface"
+        rounded="lg"
         class="fl-toolbar-btn"
         :aria-label="activeCount ? `Filters, ${activeCount} active` : 'Filters'"
         @click="openSheet"
       >
-        <template #prepend><v-icon>mdi-filter-variant</v-icon></template>
+        <!-- Drawn like Sort beside it and the cards below; when a filter is
+             set, the count badge is what makes this button stand out. -->
+        <template #prepend><v-icon color="primary">mdi-filter-variant</v-icon></template>
         Filters
         <v-badge
           v-if="activeCount"
@@ -38,7 +46,13 @@
         />
       </v-btn>
       <span
-        :class="['fl-toolbar-count', { 'fl-toolbar-count--end': context === 'civ-locked' }]"
+        :class="[
+          'fl-toolbar-count',
+          {
+            'fl-toolbar-count--end': context === 'civ-locked',
+            'fl-toolbar-count--start': !smAndDown,
+          },
+        ]"
         aria-live="polite"
       >
         <template v-if="count !== null">
@@ -46,12 +60,22 @@
         </template>
       </span>
       <!-- Sorting is not filtering: it applies at once, with no draft, and so
-           lives out here rather than in the sheet. -->
+           lives out here rather than in the sheet or the sidebar card.
+
+           Its box is drawn at rest, and that box is what sits on the list's
+           right edge. As a text button the ▾ stood 17px inside the edge behind
+           padding nobody could see; pulling the button out to put the ▾ on the
+           edge instead pushed the hover fill and the menu past it. Surface and
+           rounded="lg", the cards' own colour and corners: tonal derived a
+           grey that matched nothing around it, and the default 4px radius read
+           as a different kind of object beside 8px cards. -->
       <v-menu v-if="context !== 'civ-locked'" location="bottom end">
         <template #activator="{ props: menuProps }">
           <v-btn
             v-bind="menuProps"
-            variant="text"
+            variant="flat"
+            color="surface"
+            rounded="lg"
             class="fl-toolbar-btn"
             :aria-label="`Sort by ${sortTitle}`"
           >
@@ -75,6 +99,7 @@
     <!-- What is applied, not a draft: the sheet is closed whenever these are
          visible, so a tap removes the filter outright. -->
     <FilterChips
+      v-if="smAndDown"
       :draft="appliedConfig"
       :dirtyFields="noneDirty"
       :applied="appliedConfig"
@@ -85,6 +110,7 @@
     />
 
     <v-bottom-sheet
+      v-if="smAndDown"
       v-model="sheetOpen"
       scrollable
       :aria-labelledby="sheetTitleId"
@@ -313,16 +339,16 @@
           <span class="fl-dot" />
         </template>
       </v-autocomplete>
-      <FilterSortGroup
-        v-if="context !== 'civ-locked'"
-        v-model="draft.orderBy"
-        :dirty="dirtyFields.orderBy"
-        :sortOptions="sortOptions"
-      />
     </v-card-text>
 
+    <!-- The list header beside this card already says how many builds are
+         showing, so here the footer is only the apply button, and only while
+         there is something to apply. The civ page has no list header and keeps
+         its count line. -->
     <FilterApplyBar
+      v-if="isDirty || context === 'civ-locked'"
       ref="applyBar"
+      :showCount="context === 'civ-locked'"
       :isDirty="isDirty"
       :appliedCount="count"
       :previewCount="previewCount"
@@ -351,7 +377,6 @@ import { useFilterCountPreview } from "@/composables/filter/useFilterCountPrevie
 
 import FilterChips from "@/components/filter/FilterChips.vue";
 import FilterApplyBar from "@/components/filter/FilterApplyBar.vue";
-import FilterSortGroup from "@/components/filter/FilterSortGroup.vue";
 import CivFlag from "@/components/common/CivFlag.vue";
 import SeasonListItem from "@/components/common/SeasonListItem.vue";
 
@@ -359,9 +384,13 @@ export default {
   name: "FilterConfig",
   inheritAttrs: false,
   emits: ["configChanged"],
-  components: { FilterChips, FilterApplyBar, FilterSortGroup, CivFlag, SeasonListItem },
+  components: { FilterChips, FilterApplyBar, CivFlag, SeasonListItem },
   props: {
     context: { type: String, default: "default" },
+    // "list" for the instance at the top of the list column, which is the
+    // toolbar on phones and the list header from md up; "sidebar" for the
+    // card. The civ page has no sort, so its list instance stays phone-only.
+    placement: { type: String, default: "sidebar" },
     civName: { type: String, default: null },
     countFn: { type: Function, default: null },
   },
@@ -396,6 +425,9 @@ export default {
       await initQueryParameters();
     });
 
+    // Filters only, like the sheet's "Clear all": the sort is no longer in
+    // this card, and resetting something the reader cannot see here would be
+    // a surprise.
     const showReset = computed(() => {
       const cfg = store.state.filterConfig;
       const def = getDefaultConfig();
@@ -405,8 +437,7 @@ export default {
         cfg?.creator != def.creator ||
         JSON.stringify(cfg?.maps) !== JSON.stringify(def.maps) ||
         JSON.stringify(cfg?.strategies) !== JSON.stringify(def.strategies) ||
-        JSON.stringify(cfg?.seasons) !== JSON.stringify(def.seasons) ||
-        cfg?.orderBy !== def.orderBy
+        JSON.stringify(cfg?.seasons) !== JSON.stringify(def.seasons)
       );
     });
 
@@ -431,13 +462,11 @@ export default {
       draft.value.maps = def.maps;
       draft.value.strategies = def.strategies;
       draft.value.seasons = def.seasons;
-      draft.value.orderBy = def.orderBy;
 
       store.commit("setCreator", def.creator);
       store.commit("setMaps", def.maps);
       store.commit("setStrategies", def.strategies);
       store.commit("setSeasons", def.seasons);
-      store.commit("setOrderBy", def.orderBy);
 
       store.commit("setAllBuildsList", null);
       store.commit("setMyBuildsList", null);
@@ -728,6 +757,35 @@ export default {
 /* With no sort to sit between (the civ page), the count takes the end. */
 .fl-toolbar-count--end {
   text-align: end;
+}
+
+/* From md up: the list's header, not a toolbar. Nothing hides the app bar on
+   desktop and the fields are in the sidebar, so it neither sticks nor bleeds
+   to the edges; it lines up with the cards under it. With no Filters button
+   before it, the count opens the row. */
+.fl-toolbar--header {
+  position: static;
+  margin: 0 0 8px;
+  background: transparent;
+}
+
+/* No height of its own: the row is the button's height, so the Sort box's
+   top is the column's top, level with the sidebar card's. The gap to the
+   rule goes below. */
+.fl-toolbar--header .fl-toolbar-row {
+  min-height: 0;
+  padding: 0 0 8px;
+}
+
+.fl-toolbar-count--start {
+  text-align: start;
+}
+
+/* As a header it is the list's title, not a toolbar's aside: the size and
+   emphasis of the sidebar card's body text rather than a 12px caption. */
+.fl-toolbar--header .fl-toolbar-count {
+  font-size: 14px;
+  color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
 }
 
 .fl-sheet-header {

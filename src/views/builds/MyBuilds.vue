@@ -2,8 +2,9 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="8">
-        <!-- The phone's filter toolbar, sticky, so it lives in the list's column. -->
-        <FilterConfig class="hidden-md-and-up" context="default" :countFn="myBuildsCountFn" @configChanged="configChanged"> </FilterConfig>
+        <!-- The phone's filter toolbar and, from md up, the list header with
+             Sort. Sticky on phones, so it lives in the list's column. -->
+        <FilterConfig placement="list" context="default" :countFn="myBuildsCountFn" @configChanged="configChanged"> </FilterConfig>
         <div v-if="drafts?.length && paginationConfig.currentPage === 1" v-for="item in drafts">
           <router-link
             style="text-decoration: none"

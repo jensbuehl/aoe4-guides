@@ -6,7 +6,7 @@
       block
       color="primary"
       variant="flat"
-      class="mb-2"
+      :class="{ 'mb-2': showCount }"
       @click="$emit('apply')"
     >
       <template v-if="previewLoading">Counting…</template>
@@ -18,7 +18,7 @@
       </template>
       <template v-else>Apply filters</template>
     </v-btn>
-    <div class="fl-count-line">
+    <div v-if="showCount" class="fl-count-line">
       <span v-if="appliedCount !== null">
         {{ appliedCount }} {{ appliedCount === 1 ? "build" : "builds" }}
       </span>
@@ -35,6 +35,8 @@ export default {
     appliedCount:   { type: Number,  default: null },
     previewCount:   { type: Number,  default: null },
     previewLoading: { type: Boolean, default: false },
+    // Off where a list header already states the count beside this card.
+    showCount:      { type: Boolean, default: true },
   },
   methods: {
     // Focuses "Show N results" if it is showing; reports whether it was.
@@ -48,9 +50,11 @@ export default {
 </script>
 
 <style scoped>
+/* One more row in the field stack, not a footer of its own: the last
+   field's details area above gives the same gap the fields have between
+   them, so neither a rule nor top padding is needed. */
 .fl-footer {
-  padding: 12px 16px 16px;
-  border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+  padding: 0 16px 16px;
 }
 
 .fl-count-line {
