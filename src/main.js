@@ -29,7 +29,7 @@ const customDarkTheme = {
     //Skeleton placeholders. Do NOT fold this into another token: it equals
     //`surface-variant` here but `background` on the light theme, and matching
     //two *different* tokens is exactly what makes it its own. Collapsed into
-    //surface-variant, light-mode skeletons would come out #CCAA55 — gold, the
+    //surface-variant, light-mode skeletons would come out #E7C05E — gold, the
     //tooltip colour. Same shape of mistake as reading `age` off `accent`.
     //
     //The `#` was missing here and on the light theme's copy below until
@@ -56,15 +56,23 @@ const customDarkTheme = {
     //is about 1.3:1 — invisible. This is 4.8:1.
     alternative: "#8AA9E8",
     //Ages — the other half of that same rule, and it needs its own token for the
-    //mirror-image reason. `accent` is gold here but navy in the light palette
+    //mirror-image reason. `accent` is gold here but slate in the light palette
     //below, where it was changed for text contrast, so a rail read off `accent`
-    //came out navy in light mode — identical to `alternative`, and the age-up
+    //came out blue in light mode — next to `alternative`, and the age-up
     //phase and the alternatives phase became indistinguishable.
     //
     //Used for the age lane's rail and fills only, never for its text: this is
     //the "gold as a fill" half of the split, and gold text on the light surface
     //is what failed in the first place.
     age: "#e7c05e",
+    //The brand gold as a *fill*, identical in both themes — the floating
+    //create button, the filter dot. Exists because no other token is gold in
+    //both: `primary` and `accent` are slate on the light theme, `secondary` is
+    //navy on this one.
+    gold: "#e7c05e",
+    //Gold for *text*: author links and the like, where the dark theme writes in
+    //gold. Equal to the fill here; the light theme needs a darker one to read.
+    "gold-ink": "#e7c05e",
     "icon-background-highlight": "#646C79",
     "icon-background": "#4F5866",
     //success: '#e7c05e',
@@ -74,56 +82,77 @@ const customDarkTheme = {
   },
 };
 
+//Parchment, slate and gold — every value but the ground is taken from
+//ageofempires.com's own stylesheets, as the dark theme's already were. The
+//earlier light palette (#D8DCE0 grey, #294790 royal navy, #CCAA55 gold) shared
+//none of them: AoE's blues are a desaturated slate and a petrol teal, nothing
+//they ship leans violet, and their gold is #E7C067, which the dark theme's
+//#e7c05e already matches. The header and bottom navigation do not use this
+//theme at all — Header.vue renders them in the dark one, as the official site
+//keeps its chrome dark over light content.
+//
+//Contrast figures are against `surface` #FBF8F1.
 const customLightTheme = {
   dark: false,
   colors: {
-    //Navy, not the brand gold, and deliberately identical to primary.
+    //Slate, not the brand gold, and deliberately identical to primary.
     //
     //Accent is what the app colours *text and icons* with — 96 components and
     //42 stylesheets read it. On the dark theme that is gold on #1D2432 and
-    //reads fine, which is why this went unnoticed: accent and primary are the
-    //same gold there, so the two tokens are indistinguishable. On the light
-    //theme it was #CCAA55 on a #FAFAFA surface — a contrast ratio of 2.1:1,
-    //against the 4.5:1 normal text needs. Every gold label, icon and link in
-    //light mode was failing it. Navy on the same surface is 8.4:1.
+    //reads fine. Gold text on a light surface cannot: the gold here would be
+    //1.6:1 against the 4.5:1 normal text needs. Slate is 10.3:1.
     //
     //Set here rather than by rewriting the call sites: one token cannot drift,
-    //where 143 hand edits would have, and it leaves the accent/primary split
-    //intact for whenever the light palette wants a readable gold of its own.
-    //Gold keeps its place in light mode where it is a *fill* and contrast is
-    //computed against it — tooltips (surface-variant), info snackbars, and the
-    //secondary token — so the brand does not drain out of the theme.
-    accent: "#294790",
+    //where 143 hand edits would have. Gold keeps its place in light mode where
+    //it is a *fill* and contrast is computed against it — tooltips
+    //(surface-variant), info snackbars, `secondary`, `gold` — and as text only
+    //through `gold-ink`, a darker bronze made for it.
+    accent: "#2E3D55",
     //Equal to this theme's `background`, and to nothing on the dark theme —
     //see the note beside its dark counterpart for why it stays a token.
-    loading: "#D8DCE0",
-    background: '#D8DCE0',
-    surface: "#FAFAFA", //footer and header
-    "surface-variant": "#CCAA55", //tooltips
-    primary: "#294790",
-    "primary-darken-1": "#3D516B",
-    secondary: "#CCAA55",
-    "secondary-darken-1": "#8D7B4B",
-    //The brand navy itself here: 8.4:1 on this surface. Same role as the dark
-    //theme's lighter blue.
-    alternative: "#294790",
-    //The gold the ages keep in light mode, as a *fill*: the same #CCAA55 the
-    //tooltips, info snackbars and `secondary` use, where contrast is computed
-    //against it rather than for text sitting on it.
+    loading: "#ECE6DA",
+    //Warm stone rather than a cool grey: gold reads as gold only against
+    //something with a little warmth in it. 1.17:1 to the cards on it.
     //
-    //This exists because `accent` is navy here — see the note at the top — so an
-    //age rail read off `accent` came out the same navy as `alternative`, and the
-    //age-up phase and the alternatives phase looked identical. Their text is
-    //still navy in this theme and has to be; the rail and the fill are what tell
-    //the two phases apart, which is exactly the division the light palette
-    //already draws between gold and navy.
-    age: "#CCAA55",
-    "icon-background-highlight": "#DEDEDF",
-    "icon-background": "#C5C5C6",
+    //Must NOT equal the page frame outside the content column — #DDD4C2 in
+    //index.html, App.vue and base.css (--vt-c-white). Set equal, the column's
+    //edge disappears. The frame sits one step deeper, as #161A25 does behind
+    //the dark theme's #1D2432.
+    background: "#ECE6DA",
+    surface: "#FBF8F1", //cards, footer
+    "surface-variant": "#E7C05E", //tooltips; slate on it is 6.3:1
+    //AoE's own slate (#2E3D55 on their sheet), a lighter cousin of the dark
+    //theme's #1D2432 background, so the two themes share one blue.
+    primary: "#2E3D55",
+    //Hover and pressed: darker than primary, as a pressed state should be.
+    "primary-darken-1": "#1D2432",
+    secondary: "#E7C05E",
+    //The dark end of AoE's gold gradient (#B8862D → #FFDF91).
+    "secondary-darken-1": "#B8862D",
+    //AoE's petrol blue, 6.0:1. Not the slate: with primary slate, alternatives
+    //drawn in it would read as ordinary text. Still plainly blue, not gold.
+    alternative: "#16668B",
+    //The gold the ages keep in light mode, for rails and tints. The darker end
+    //of the gradient rather than #E7C05E, because the age rail is a non-text
+    //mark that has to reach 3:1 — this is 3.05:1, the fill gold only 1.6:1.
+    //
+    //This exists because `accent` is slate here — see the note at the top — so
+    //an age rail read off `accent` would come out the same blue as
+    //`alternative`, and the age-up phase and the alternatives phase would look
+    //identical. Their text is still slate in this theme and has to be; the rail
+    //and the fill are what tell the two phases apart.
+    age: "#B8862D",
+    //See the dark theme. The same gold as a fill in both themes.
+    gold: "#E7C05E",
+    //Bronze: the gold that passes as text here, 5.05:1. The site's own gold
+    //would be 1.6:1 and its gradient's dark end 3.05:1, both under 4.5:1.
+    "gold-ink": "#8A6420",
+    "icon-background-highlight": "#EDE7DA",
+    "icon-background": "#DDD5C4",
     //success: '#e7c05e',
     //warning: '#e7c05e',
     //error: '#e7c05e',
-    info: "#CCAA55",
+    info: "#E7C05E",
   },
 };
 

@@ -572,8 +572,10 @@ export default {
   margin: 0 6px;
 }
 
+/* Gold in both themes: the gold itself on dark, the bronze that reads as text
+   on light (5.05:1). Accent would be slate there, the same as the title. */
 .blc-link {
-  color: rgb(var(--v-theme-accent));
+  color: rgb(var(--v-theme-gold-ink));
 }
 
 .blc-link :deep(.v-icon) {

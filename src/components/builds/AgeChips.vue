@@ -9,9 +9,11 @@
     worked-out one drops to a quiet neutral fill and muted text. Same pair the
     build order's timestamp pills use directly below these on a phone.
 
-    The accent is the background, never the text. At #CCAA55 on this surface
-    gold type lands near 1.85:1, well under the 4.5:1 AA floor — as a tint
-    behind full-strength text it says the same thing and stays readable.
+    The tint is the age gold, never the text. Gold type on the light surface
+    lands near 1.6:1 to 3:1, well under the 4.5:1 AA floor — as a tint behind
+    full-strength text it says the same thing and stays readable. `age` rather
+    than `accent`, which is slate on the light theme and gave these chips a blue
+    wash there; on the dark theme the two are the same gold.
 
     This used to be outline-versus-fill, which did two unhelpful things at once:
     it read as "different" rather than as "less certain", and it set a stark
@@ -26,7 +28,7 @@
     label
     variant="tonal"
     :size="size"
-    :color="row.timing.derived ? undefined : 'accent'"
+    :color="row.timing.derived ? undefined : 'age'"
   >
     <img
       :src="row.crest"

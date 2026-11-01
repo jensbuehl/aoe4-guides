@@ -11,14 +11,13 @@
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         var isDark = saved === 'dark' || (!saved && prefersDark);
         document.documentElement.classList.add('no-transition');
-        document.documentElement.style.backgroundColor = isDark ? '#161A25' : '#E9EBEE';
-        // Colours the title bar of the installed app. Set here rather than as a
-        // static tag with a prefers-color-scheme media query, because the theme
-        // toggle can override the system preference and only this line knows
-        // the result. It goes stale if the user toggles without reloading.
+        document.documentElement.style.backgroundColor = isDark ? '#161A25' : '#DDD4C2';
+        // Colours the title bar of the installed app. Dark in both themes: the
+        // header right under it is drawn dark in both (Header.vue), so a light
+        // title bar would sit as a pale stripe above it.
         var themeColor = document.createElement('meta');
         themeColor.name = 'theme-color';
-        themeColor.content = isDark ? '#161A25' : '#E9EBEE';
+        themeColor.content = '#161A25';
         document.head.appendChild(themeColor);
       })();
     </script>

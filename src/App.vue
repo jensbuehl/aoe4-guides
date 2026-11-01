@@ -11,7 +11,7 @@
       v-if="route.meta.showFab"
       class="hidden-md-and-up"
       icon="mdi-plus"
-      color="primary"
+      color="gold"
       size="large"
       elevation="8"
       location="bottom end"
@@ -59,9 +59,9 @@ export default {
         root.style.setProperty('--color-background-soft', '#161A25');
         root.style.setProperty('--color-background-mute', '#161A25');
       } else {
-        root.style.setProperty('--color-background', '#E9EBEE');
-        root.style.setProperty('--color-background-soft', '#E9EBEE');
-        root.style.setProperty('--color-background-mute', '#E9EBEE');
+        root.style.setProperty('--color-background', '#DDD4C2');
+        root.style.setProperty('--color-background-soft', '#DDD4C2');
+        root.style.setProperty('--color-background-mute', '#DDD4C2');
       }
     };
 

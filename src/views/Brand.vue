@@ -149,8 +149,9 @@
         <p class="mt-6 text-body-2 text-medium-emphasis">
           Gold on the dark ground is the pairing people recognise; if you can only use one, use
           that. The gold is a fill and a highlight, never body text on a light ground — at
-          {{ goldOnLightRatio }}:1 against white it fails every legibility threshold there is,
-          which is why the light theme sets its text in the navy instead.
+          {{ goldOnLightRatio }}:1 against the light surface it fails every legibility threshold
+          there is. The light theme sets its text in the slate instead, and where it wants gold
+          type it uses a darker bronze made for it.
         </p>
 
         <h3 class="text-h6 mt-8">The rest of the palette</h3>
@@ -167,7 +168,7 @@
           density="comfortable"
         >
           Several tokens change meaning between the two themes, which is exactly why they exist
-          separately. <code>accent</code> is gold on dark and navy on light; <code>age</code> and
+          separately. <code>accent</code> is gold on dark and slate on light; <code>age</code> and
           <code>alternative</code> exist so the age-up phase and the alternatives phase stay
           distinguishable in both. Two tokens sharing a value in one theme are not necessarily the
           same thing — check both before treating either as an alias for the other.
@@ -356,15 +357,17 @@ const snippets = [
 // silently missing.
 const TOKEN_ROLES = {
   primary: "Wordmark, primary buttons, emphasis.",
-  accent: "Text and icon colour throughout the app. Gold on dark, navy on light.",
+  accent: "Text and icon colour throughout the app. Gold on dark, slate on light.",
   background: "The page behind every card.",
-  surface: "Cards, header and footer.",
+  surface: "Cards and footer, and the header and bottom bar, which use the dark theme's in both.",
   "surface-variant": "Tooltips.",
   secondary: "The second brand colour: navy on dark, gold on light.",
   "primary-darken-1": "Hover and pressed states for primary.",
   "secondary-darken-1": "Hover and pressed states for secondary.",
   alternative: "The alternatives phase of a build — which way you went.",
   age: "The age-up phase of a build — fills and rails only, never its text.",
+  gold: "The brand gold as a fill, the same in both themes: the create button, the filter dot.",
+  "gold-ink": "Gold for text, such as author links: the gold itself on dark, a bronze on light.",
 };
 
 // Tokens the table leaves out. Two groups, hidden for the same reason - they
@@ -399,9 +402,9 @@ const HIDDEN_TOKENS = [
 //
 // Which token to read is not obvious and is the point of the `token` field:
 // the brand gold is `primary` on the dark theme but `secondary` on the light
-// one, and the brand navy is the reverse. Reading either from `accent` - the
+// one, and the brand slate is the reverse. Reading either from `accent` - the
 // token that sounds like it means "the brand colour" - would give gold in one
-// theme and navy in the other. See the notes in main.js for why accent flips.
+// theme and slate in the other. See the notes in main.js for why accent flips.
 //
 // `shades` carry a label rather than just a swatch because the two colours'
 // extra values are not the same kind of thing: the gold's second value is the
@@ -414,17 +417,17 @@ const BRAND_COLOURS = [
     theme: "customDarkTheme",
     token: "primary",
     shades: [
-      { label: "Light theme, fills only", theme: "customLightTheme", token: "secondary" },
+      { label: "Light theme, as text", theme: "customLightTheme", token: "gold-ink" },
       { label: "Hover, pressed", theme: "customDarkTheme", token: "primary-darken-1" },
     ],
-    note: "The signature colour. The wordmark, highlights, and anything that should read as ours. The light theme runs the same gold about 12% darker and uses it only as a fill — tooltips, the age lane — because gold type on a light ground fails contrast.",
+    note: "The signature colour. The wordmark, highlights, and anything that should read as ours. The light theme uses the same gold as a fill — tooltips, the create button, the age chips — and writes gold text in a darker bronze, because the gold itself fails contrast as type on a light ground.",
   },
   {
-    name: "Navy",
+    name: "Slate",
     theme: "customLightTheme",
     token: "primary",
     shades: [{ label: "Hover, pressed", theme: "customLightTheme", token: "primary-darken-1" }],
-    note: "The counterweight, and the light theme's text colour. Unlike the gold it does not change between themes.",
+    note: "The counterweight, and the light theme's text colour. AoE's own slate, and a lighter cousin of the dark theme's background, so both themes share one blue.",
   },
   {
     name: "Surface (dark theme)",
@@ -436,7 +439,7 @@ const BRAND_COLOURS = [
     name: "Surface (light theme)",
     theme: "customLightTheme",
     token: "surface",
-    note: "The same on the light theme, where the navy rather than the gold carries the text.",
+    note: "Warm ivory on a parchment ground, where the slate rather than the gold carries the text. The header stays dark slate in both themes.",
   },
 ];
 
@@ -455,6 +458,8 @@ const TOKEN_ORDER = [
   "surface-variant",
   "alternative",
   "age",
+  "gold",
+  "gold-ink",
 ];
 
 /**
@@ -644,7 +649,7 @@ export default {
 }
 
 /* The bottom edge is load-bearing, not decoration: the light theme's surface
-   is #fafafa on a card that is very nearly the same white, so without a line
+   is #fbf8f1 on a card that is very nearly the same colour, so without a line
    the swatch reads as empty space rather than as the colour it is showing.
    Any swatch that can be near the card colour needs an edge. */
 .brand-colour-chip {

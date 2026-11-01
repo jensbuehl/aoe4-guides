@@ -1,10 +1,17 @@
 <template>
+  <!-- Both bars are drawn in the dark theme whatever the site's theme is, as
+       ageofempires.com keeps its chrome dark slate with a gold rule over light
+       content. The menus and tooltips they open inherit it, so the whole header
+       reads as one piece. Inline colours read `chrome`, never
+       $vuetify.theme.current: that is the global theme, and in light mode it
+       would write slate text on the dark bar. -->
   <v-app-bar
+    theme="customDarkTheme"
     flat
     app
     :height="compact ? 60 : 100"
     :style="{
-      borderBottom: '2px solid ' + $vuetify.theme.current.colors.accent,
+      borderBottom: '2px solid ' + chrome.accent,
       transform: barHidden ? 'translateY(-100%)' : undefined,
     }"
   >
@@ -20,14 +27,14 @@
           </template>
           <v-list v-if="authIsReady">
             <v-list-item
-              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              :style="'color: ' + chrome.primary"
               to="/builds"
             >
               <v-icon class="mr-4" color="accent">mdi-hammer</v-icon>
               All Builds
             </v-list-item>
             <v-list-item
-              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              :style="'color: ' + chrome.primary"
               v-if="user"
               to="/favorites"
             >
@@ -35,7 +42,7 @@
               Favorites
             </v-list-item>
             <v-list-item
-              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              :style="'color: ' + chrome.primary"
               v-if="user"
               to="/mybuilds"
             >
@@ -44,14 +51,14 @@
             </v-list-item>
             <v-divider></v-divider>
             <v-list-item
-              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              :style="'color: ' + chrome.primary"
               to="/builds/new"
             >
               <v-icon class="mr-4" color="accent">mdi-plus</v-icon>
               Create New Build Order
             </v-list-item>
             <v-list-item
-              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              :style="'color: ' + chrome.primary"
               @click="openImportDialog"
             >
               <v-icon class="mr-4" color="accent">mdi-tray-arrow-down</v-icon>
@@ -86,7 +93,7 @@
                    and beside a centred mark that shift put the text 2px low. -->
               <v-card-title
                 :style="{
-                  color: $vuetify.theme.current.colors.primary,
+                  color: chrome.primary,
                 }"
                 class="title my-0 py-0"
                 >{{ title }}</v-card-title
@@ -94,7 +101,7 @@
               <v-card-subtitle
                 v-if="!mobile && !(platform.android || platform.ios)"
                 :style="{
-                  color: $vuetify.theme.current.colors.primary,
+                  color: chrome.primary,
                 }"
                 class="subtitle mb-2"
                 >{{ subtitle }}</v-card-subtitle
@@ -112,7 +119,7 @@
         <v-tooltip location="top">
           <span
             :style="{
-              color: $vuetify.theme.current.colors.primary,
+              color: chrome.primary,
             }"
             >Browse and filter all build orders</span
           >
@@ -134,7 +141,7 @@
         <v-tooltip location="top">
           <span
             :style="{
-              color: $vuetify.theme.current.colors.primary,
+              color: chrome.primary,
             }"
             >Your favorites: Build orders that you have liked</span
           >
@@ -156,7 +163,7 @@
         <v-tooltip location="top">
           <span
             :style="{
-              color: $vuetify.theme.current.colors.primary,
+              color: chrome.primary,
             }"
             >Build orders that you have created</span
           >
@@ -194,13 +201,13 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.current.colors.primary,
+                  color: chrome.primary,
                 }"
                 >Create new build order from scratch</span
               >
               <template v-slot:activator="{ props }">
                 <v-list-item
-                  :style="'color: ' + $vuetify.theme.current.colors.primary"
+                  :style="'color: ' + chrome.primary"
                   to="/builds/new"
                   v-bind="props"
                 >
@@ -212,13 +219,13 @@
             <v-tooltip>
               <span
                 :style="{
-                  color: $vuetify.theme.current.colors.primary,
+                  color: chrome.primary,
                 }"
                 >Import a build order from file or clipboard</span
               >
               <template v-slot:activator="{ props }">
                 <v-list-item
-                  :style="'color: ' + $vuetify.theme.current.colors.primary"
+                  :style="'color: ' + chrome.primary"
                   v-bind="props"
                   @click="openImportDialog"
                 >
@@ -280,7 +287,7 @@
             </v-list-item>
             <VDivider></VDivider>
             <v-list-item
-              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              :style="'color: ' + chrome.primary"
               v-if="user"
               to="/account"
             >
@@ -288,7 +295,7 @@
               Your Profile
             </v-list-item>
             <v-list-item
-              :style="'color: ' + $vuetify.theme.current.colors.primary"
+              :style="'color: ' + chrome.primary"
               @click="logout"
             >
               <v-icon class="mr-4" color="accent">mdi-logout</v-icon>
@@ -319,18 +326,24 @@
     </v-container>
   </v-app-bar>
 
+  <!-- A provider rather than the `theme` prop, which VBottomNavigation declares
+       but ignores (Vuetify 3.8: it calls useTheme(), not provideTheme(props)),
+       so the bar came out in the light theme with gold labels on ivory. Without
+       `with-background` the provider renders no element of its own, so the
+       layout still sees the navigation directly. -->
+  <v-theme-provider theme="customDarkTheme">
   <v-bottom-navigation
     hide-on-scroll
     scroll-target="#main-content"
     :active="showBottomNavigation"
-    :style="'border-top: 2px solid ' + $vuetify.theme.current.colors.accent"
+    :style="'border-top: 2px solid ' + chrome.accent"
     v-if="mobile && (platform.android || platform.ios)"
   >
     <v-btn to="/" color="primary">
       <template v-slot:prepend>
         <v-icon color="accent">mdi-home</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
+      <span :style="'color: ' + chrome.primary"
         >Home</span
       >
     </v-btn>
@@ -339,7 +352,7 @@
       <template v-slot:prepend>
         <v-icon color="accent">mdi-hammer</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
+      <span :style="'color: ' + chrome.primary"
         >All Builds</span
       >
     </v-btn>
@@ -348,7 +361,7 @@
       <template v-slot:prepend>
         <v-icon color="accent">mdi-heart-outline</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
+      <span :style="'color: ' + chrome.primary"
         >Favorites</span
       >
     </v-btn>
@@ -357,11 +370,12 @@
       <template v-slot:prepend>
         <v-icon color="accent">mdi-playlist-edit</v-icon>
       </template>
-      <span :style="'color: ' + $vuetify.theme.current.colors.primary"
+      <span :style="'color: ' + chrome.primary"
         >My Builds</span
       >
     </v-btn>
   </v-bottom-navigation>
+  </v-theme-provider>
 </template>
 
 <script>
@@ -397,6 +411,8 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const theme = useTheme();
+    // The dark theme's colours, which both bars use in either theme
+    const chrome = computed(() => theme.themes.value.customDarkTheme.colors);
     const { mobile, platform } = useDisplay();
     // The 60px bar, as opposed to the 100px one; the mark shrinks with it.
     const compact = computed(() => platform.value.android || platform.value.ios || mobile.value);
@@ -496,6 +512,7 @@ export default {
     return {
       title,
       subtitle,
+      chrome,
       compact,
       barHidden,
       user,

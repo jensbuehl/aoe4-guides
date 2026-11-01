@@ -461,12 +461,13 @@ export default {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  /* Stated literally rather than read from accent, which used to be this gold
-     in the light theme and is now navy — accent carries text and icons, and
-     gold could not meet contrast there. A 7px dot is a fill nothing is read
-     against, so it keeps the gold: navy would sink into the navy controls
-     around it, which is exactly what this dot exists to stand out from. */
-  background: #ccaa55;
+  /* Gold, which accent is not on the light theme — there it carries text and
+     is slate, and a slate dot would sink into the slate controls around it,
+     which is exactly what this dot exists to stand out from. gold-ink rather
+     than the fill gold: the dot is the only sign a filter is active, so as a
+     non-text mark it needs 3:1, and the fill gold is 1.6:1 on the light
+     surface. */
+  background: rgb(var(--v-theme-gold-ink));
   flex-shrink: 0;
   align-self: center;
 }

@@ -54,14 +54,14 @@ import { ref, computed, watch } from "vue";
 import { useShare } from "@vueuse/core";
 import PickerDialog from "@/components/common/PickerDialog.vue";
 
-// Brand navy on white, fixed in both themes rather than following the theme.
+// Brand slate on white, fixed in both themes rather than following the theme.
 // Two constraints drive this and they are easy to break by eye:
 //   - Polarity: cameras expect dark modules on a light field. An inverted code
 //     looks deliberate and simply never scans.
-//   - Contrast: navy #294790 on white is 8.8:1. The gold accent (#CCAA55) is
-//     only 2.2:1 — it would look perfectly on-brand and silently fail to read.
+//   - Contrast: slate #2E3D55 on white is 11.0:1. The brand gold (#E7C05E) is
+//     only 1.7:1 — it would look perfectly on-brand and silently fail to read.
 // Anything substituted here needs its contrast checked, not just eyeballed.
-const QR_DARK = "#294790";
+const QR_DARK = "#2E3D55";
 const QR_LIGHT = "#FFFFFF";
 
 export default {

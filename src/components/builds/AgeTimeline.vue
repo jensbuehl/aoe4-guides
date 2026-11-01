@@ -523,12 +523,13 @@ export default {
    contrast, at which point it collided with Castle above and the last two ages
    of a build became one band. Stated literally like the three beside it: this is
    a decorative fill nothing is read against, so it keeps the brand gold the
-   ladder was designed around. */
+   ladder was designed around — the same gold as the dark theme, and Castle the
+   light theme's slate primary. */
 .v-theme--customLightTheme .age-track {
   --age-1: 169, 178, 194;
   --age-2: 109, 127, 166;
-  --age-3: 41, 71, 144;
-  --age-4: 204, 170, 85;
+  --age-3: 46, 61, 85;
+  --age-4: 231, 192, 94;
 }
 
 .age-seg-1 {
