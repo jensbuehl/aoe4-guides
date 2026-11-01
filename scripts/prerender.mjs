@@ -114,6 +114,19 @@ const CIV_PAGE_BUILDS = 10;
 const SITE_IMAGE = { url: `${SITE_ORIGIN}/og-image.png`, alt: "AoE4 Guides - Age of Empires IV build orders" };
 const CIV_IMAGE_DIR = join(DIST, "assets", "og", "civ");
 
+//The news page, which has no snapshot record to come from. Written here because
+//nothing may be imported from src/ (see the header). `title` must match the
+//route's meta.title in src/router/index.js, which sets it again at boot.
+const NEWS_PAGE = {
+  path: "/news",
+  title: "News: The Mobile Update",
+  description:
+    "AoE4 Guides now feels at home on your phone: thumb-friendly filters, Focus mode, " +
+    "writing builds on the go, and a new light theme.",
+  published: "2026-11-01",
+  image: { file: "assets/og/news-mobile-update.jpg", alt: "A build order in AoE4 Guides' new light theme" },
+};
+
 /**
  * @param {string} code - A civ short name such as "ABB".
  * @return {string} Its display name, or the code itself when unknown.
@@ -281,9 +294,18 @@ function stripShellTags(template) {
 function imageTags(code) {
   const slug = civPages[code]?.slug;
   const civCard = slug && SAFE_SLUG.test(slug) && existsSync(join(CIV_IMAGE_DIR, `${slug}.jpg`));
-  const image = civCard
-    ? { url: canonicalFor(`/assets/og/civ/${slug}.jpg`), alt: `${civName(code)} build orders on AoE4 Guides` }
-    : SITE_IMAGE;
+  return imageMeta(
+    civCard
+      ? { url: canonicalFor(`/assets/og/civ/${slug}.jpg`), alt: `${civName(code)} build orders on AoE4 Guides` }
+      : SITE_IMAGE
+  );
+}
+
+/**
+ * @param {{url: string, alt: string}} image - A 1200×630 card.
+ * @return {Array<string>} Lines for the head block.
+ */
+function imageMeta(image) {
   const url = escapeAttribute(image.url);
   const alt = escapeAttribute(image.alt);
 
@@ -517,6 +539,58 @@ function writeCivPages(template, records, dryRun) {
 
   console.log(`${LOG}   ${written.length} civ page${written.length === 1 ? "" : "s"} written`);
   return written;
+}
+
+/**
+ * Writes dist/news.html. Head only, like every page here: the body is the app.
+ *
+ * @param {string} template - The shell, page-level tags stripped.
+ * @param {boolean} dryRun
+ */
+function writeNewsPage(template, dryRun) {
+  const { path, title, description, published, image } = NEWS_PAGE;
+  const canonical = canonicalFor(path);
+  const fullTitle = `${title} | AOE4 GUIDES`;
+  const attr = { title: escapeAttribute(fullTitle), description: escapeAttribute(description), canonical: escapeAttribute(canonical) };
+  const card = existsSync(join(DIST, image.file)) ? { url: canonicalFor(`/${image.file}`), alt: image.alt } : SITE_IMAGE;
+
+  const structured = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: title,
+    description,
+    url: canonical,
+    datePublished: published,
+    image: card.url,
+    publisher: { "@type": "Organization", name: "AoE4 Guides", url: SITE_ORIGIN },
+  };
+
+  const block = [
+    `    <title>${attr.title}</title>`,
+    `    <meta name="description" content="${attr.description}">`,
+    `    <link rel="canonical" href="${attr.canonical}">`,
+    "",
+    `    <meta property="og:type" content="article">`,
+    `    <meta property="og:url" content="${attr.canonical}">`,
+    `    <meta property="og:title" content="${attr.title}">`,
+    `    <meta property="og:description" content="${attr.description}">`,
+    "",
+    `    <meta property="twitter:url" content="${attr.canonical}">`,
+    `    <meta name="twitter:title" content="${attr.title}">`,
+    `    <meta name="twitter:description" content="${attr.description}">`,
+    ...imageMeta(card),
+    "",
+    `    <script type="application/ld+json">${escapeJsonLd(structured)}</script>`,
+    "",
+  ].join("\n");
+
+  if (dryRun) {
+    console.log(`${LOG} dry run — would have written dist/news.html`);
+    return;
+  }
+  const page = template.replace(HEAD_CLOSE_INDENTED, (_match, indent) => `${block}${indent}${HEAD_CLOSE}`);
+  writeFileSync(join(DIST, "news.html"), page, "utf8");
+  console.log(`${LOG}   news page written`);
 }
 
 //────────────────────────────────────────────────────────────────────────────
@@ -926,6 +1000,13 @@ function main() {
     civEntries = writeCivPages(template, records, options.dryRun);
   } catch (error) {
     console.error(`${LOG}   civ pages failed, continuing without them — ${error?.message ?? error}`);
+  }
+
+  //On its own for the same reason.
+  try {
+    writeNewsPage(template, options.dryRun);
+  } catch (error) {
+    console.error(`${LOG}   news page failed, continuing without it — ${error?.message ?? error}`);
   }
 
   //Last, and only once the pages are in place: a sitemap advertising pages that
