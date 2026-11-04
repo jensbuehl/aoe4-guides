@@ -35,7 +35,7 @@
         size="x-small"
         class="build-header-badge mr-1"
       >
-        <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
+        <v-icon start icon="mdi-link-variant"></v-icon>Unlisted
       </v-chip>
       <v-chip
         v-if="createdDate && isNew(createdDate)"
@@ -94,7 +94,7 @@
           size="small"
           class="build-header-badge mr-2"
         >
-          <v-icon start icon="mdi-pencil-circle"></v-icon>Draft
+          <v-icon start icon="mdi-link-variant"></v-icon>Unlisted
         </v-chip>
         <v-chip
           v-if="createdDate && isNew(createdDate)"

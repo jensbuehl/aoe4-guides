@@ -34,12 +34,12 @@
               <v-list>
                 <v-tooltip>
                   <span :style="{ color: $vuetify.theme.current.colors.primary }"
-                    >Save your progress without publishing it</span
+                    >Save without listing it. It won't show up in lists or search, but anyone with the link can open it.</span
                   >
                   <template v-slot:activator="{ props }">
                     <v-list-item v-bind="props" @click="handleDraft">
                       <v-icon color="accent" class="mr-4">mdi-content-save-outline</v-icon>
-                      Save as draft
+                      Save as unlisted
                     </v-list-item>
                   </template>
                 </v-tooltip>
@@ -303,8 +303,10 @@ import {
   getBuild,
   updateBuild,
   getUserDraftsCount,
+  getUserBuildsCount,
   error as buildServiceError,
 } from "@/composables/data/buildService";
+import { unlistedAllowance, unlistedLimitMessage } from "@/composables/builds/unlistedAllowance";
 import {
   addContributor,
   getContributor,
@@ -766,13 +768,26 @@ export default {
       }
     };
 
+    //Saves the build as unlisted — "draft" in code, "unlisted" to users; see
+    //unlistedAllowance.js for why the stored field keeps the old name.
     const handleDraft = async () => {
-      if (props.mode === "new") {
-        const maxDrafts = 10;
-        const size = await getUserDraftsCount(user.value.uid);
-        if (size >= maxDrafts) {
+      //Checked whenever this save adds an unlisted build: a new one, and a
+      //published one being unlisted. The second was unchecked before, which
+      //made the cap two clicks to bypass (publish, then unlist). Re-saving a
+      //build that is already unlisted adds nothing and is never checked.
+      //originalBuild holds the stored state, refreshed after every save.
+      const addsUnlisted = props.mode === "new" || originalBuild.value?.isDraft === false;
+      if (addsUnlisted) {
+        const [unlisted, published] = await Promise.all([
+          getUserDraftsCount(user.value.uid),
+          getUserBuildsCount(user.value.uid),
+        ]);
+        //A failed count comes back undefined. An unknown unlisted count never
+        //blocks, as before; an unknown published count falls back to the base.
+        const allowance = unlistedAllowance(published);
+        if (typeof unlisted === "number" && unlisted >= allowance) {
           await store.dispatch("showSnackbar", {
-            text: "Oh, no! Villagers can only work on up to 10 drafts at a time. Please, don't forget to publish or delete your unfinished builds.",
+            text: unlistedLimitMessage(allowance),
             type: "error",
           });
           return;
