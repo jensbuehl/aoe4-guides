@@ -91,7 +91,7 @@
               </v-tooltip>
               <v-tooltip>
                 <span :style="{ color: $vuetify.theme.current.colors.primary }"
-                  >Make this draft public so other players can find it</span
+                  >List this build so other players can find it</span
                 >
                 <template v-slot:activator="{ props }">
                   <v-list-item v-show="user && build.isDraft" v-bind="props" @click="handlePublish">
@@ -694,6 +694,33 @@ export default {
     //A query-only change (?focus) stays on the page and keeps the reader's choice.
     onUnmounted(() => store.commit("setShowBottomNavigation", true));
 
+    //An unlisted build is reachable by link but must not turn up in search
+    //results, so its page asks crawlers not to index it. Built the same way as
+    //setCanonical in the router: one tag in document.head, owned here.
+    //
+    //A watch, not a mount-time check: Publish replaces the route with the same
+    //path, which reuses this view, so a just-published build would otherwise
+    //keep its noindex until the next reload. And removed on unmount, because
+    //document.head is shared — left behind, it would mark every page visited
+    //afterwards. Prerendered pages exist for published builds only; one that
+    //is unlisted later keeps its indexable static copy until the weekly
+    //snapshot refresh, and crawlers that render JS still see this tag.
+    const setNoIndex = (noindex) => {
+      let tag = document.querySelector('meta[name="robots"]');
+      if (!noindex) {
+        tag?.remove();
+        return;
+      }
+      if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute("name", "robots");
+        document.head.appendChild(tag);
+      }
+      tag.setAttribute("content", "noindex");
+    };
+    watch(() => build.value?.isDraft === true, setNoIndex, { immediate: true });
+    onUnmounted(() => setNoIndex(false));
+
     const handleRemix = async () => {
       if (!assertVerified()) return;
       var template = {
@@ -777,7 +804,7 @@ export default {
       //Navigate to new build order
       if (!error.value) {
         store.dispatch("showSnackbar", {
-          text: `Draft published successfully!`,
+          text: "Build published! Other players can find it now.",
           type: "success",
         });
         router.replace("/builds/" + props.id);

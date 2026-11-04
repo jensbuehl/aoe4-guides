@@ -76,7 +76,7 @@
         </v-tooltip>
         <div class="blc-chiprow">
           <v-chip class="mr-1 mt-1" v-if="build.isDraft" label color="error" size="x-small"
-            ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+            ><v-icon start icon="mdi-link-variant"></v-icon>Unlisted</v-chip
           >
           <v-chip
             class="mr-1 mt-1"
@@ -157,7 +157,7 @@
           <!--stats: passive, so one quiet line of glyph + value-->
           <div class="blc-meta">
             <v-chip v-if="build.isDraft" label color="error" size="x-small" class="mr-2"
-              ><v-icon start icon="mdi-pencil-circle"></v-icon>Draft</v-chip
+              ><v-icon start icon="mdi-link-variant"></v-icon>Unlisted</v-chip
             >
             <v-chip
               v-if="build.timeCreated && isNew(toDateSafe(build.timeCreated))"
