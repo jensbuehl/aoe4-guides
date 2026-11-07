@@ -34,17 +34,26 @@ const TREND_FLOOR = 0.1;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+/** A stored number, or 0 when it is missing or not a finite number. */
+function finite(value) {
+  return Number.isFinite(value) ? value : 0;
+}
+
 /**
  * The weighted activity of a build. The same weights the old score used;
  * spec 040 changes when activity counts, not how much each kind is worth.
- * Missing fields count as 0 (the old code let a missing `views` make NaN).
+ *
+ * Missing AND non-finite fields count as 0, not just missing ones: in
+ * November 2026, 20 builds held `upvotes: NaN`, written by some client under
+ * the old open rules, and one NaN made the build's every score NaN — which
+ * also breaks any sort that meets it.
  */
 function activityTotal(build) {
   return (
-    (build.views ?? 0) +
-    5 * (build.upvotes ?? 0) -
-    10 * (build.downvotes ?? 0) +
-    50 * (build.likes ?? 0)
+    finite(build.views) +
+    5 * finite(build.upvotes) -
+    10 * finite(build.downvotes) +
+    50 * finite(build.likes)
   );
 }
 
@@ -73,10 +82,12 @@ function toMillis(at) {
  * @return {{kind: string, trend: number, trendBase: number}}
  */
 function nextTrend(build, total, nowMs) {
-  const storedTrend = typeof build.trend === "number" ? build.trend : 0;
+  const storedTrend = finite(build.trend);
   const since = toMillis(build.trendAt);
 
-  if (typeof build.trendBase !== "number" || since === null) {
+  // A NaN base (seeded from a NaN total before activityTotal guarded against
+  // it) is as good as none: seed again.
+  if (!Number.isFinite(build.trendBase) || since === null) {
     return { kind: "seeded", trend: 0, trendBase: total };
   }
 

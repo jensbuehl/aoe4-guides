@@ -58,7 +58,10 @@ exports.updateBuildTrend = onSchedule(
       if (Object.keys(update).length) writes.push({ ref: doc.ref, update });
 
       if (build.isDraft !== true) {
-        listed.push({ id: doc.id, title: build.title ?? "", trend: result.trend, score: build.score ?? 0 });
+        // Not `?? 0`: the old weekly job stored NaN for builds without `views`,
+        // and one NaN makes the sort comparator meaningless for the whole list.
+        const score = Number.isFinite(build.score) ? build.score : 0;
+        listed.push({ id: doc.id, title: build.title ?? "", trend: result.trend, score });
       }
     }
 

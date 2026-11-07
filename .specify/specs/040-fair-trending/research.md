@@ -187,3 +187,22 @@ The owner's call; until then the rules are verified against `aoe4-guides-dev` by
 **Alternatives considered**: Testing against the deployed dev project with the client SDK (rejected
 as the *automated* check: needs App Check on dev, real accounts, and leaves test writes behind; kept
 as the manual fallback).
+
+## R10: Non-numeric counters in production (found after release, 2026-11-07)
+
+**Finding**: The first comparison log showed `score: None`. In production, **20 builds held
+`upvotes: NaN`**, written by some client under the old open rules (cause not traced; an old client
+doing arithmetic on a missing field is the likely one). One more build has no `views` at all. The old
+jobs turned both into `NaN` scores (21 builds, `score` and `scoreAllTime`), and the first seed copied
+the NaN into `trendBase`/`trend`. One NaN in a sort makes its comparator meaningless, so the whole
+comparison list was wrong.
+
+**Decision**: `activityTotal` counts missing *and* non-finite fields as 0; `nextTrend` re-seeds a
+non-finite base; the comparison log treats a non-finite stored score as 0; `updateBuildAllTimeScore`
+uses the shared `activityTotal`. All three jobs redeployed; the next trend run re-seeded exactly
+those 20 builds.
+
+**Still open**: the 20 stored `upvotes: NaN`. Under the new rules `NaN + 1` matches nothing, so those
+builds cannot be upvoted until the field is set to a number. A one-off repair (set to 0; the real count
+is lost either way) needs the owner's go, since it writes production data. `score` heals at the next
+Friday run, `scoreAllTime` on the 1st.

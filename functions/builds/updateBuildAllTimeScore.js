@@ -1,6 +1,7 @@
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { getFirestore } = require("firebase-admin/firestore");
 const logger = require("firebase-functions/logger");
+const { activityTotal } = require("./trend");
 
 const BATCH_SIZE = 500;
 
@@ -26,10 +27,7 @@ exports.updateBuildAllTimeScore = onSchedule(
 );
 
 const calculateAllTimeScore = (build) => {
-  let score = build.views;
-  score += 5  * (build.upvotes  ?? 0);
-  score -= 10 * (build.downvotes ?? 0);
-  score += 50 * (build.likes    ?? 0);
-
-  return Math.log(Math.max(score, 1));
+  // Shared with the trending jobs (spec 040). The hand-written sum here turned
+  // a missing `views` or a stored NaN counter into a NaN score.
+  return Math.log(Math.max(activityTotal(build), 1));
 };
