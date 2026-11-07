@@ -2,10 +2,25 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /builds/{build} {
-      // S1 fix: outer parens ensure auth check applies to both uid conditions
-      allow read, write: if request.auth != null &&
-        ((request.auth.uid == request.resource.data.authorUid) ||
-         (request.auth.uid == resource.data.authorUid));
+      // The author's own writes, split by operation because each must check a
+      // different document.
+      //
+      // On an update, `request.resource.data` is the document AFTER the write,
+      // so its authorUid is whatever the caller just sent. It must never be
+      // what grants the update: the rule this replaced accepted it, and any
+      // signed-in user could take over someone else's build by writing their
+      // own uid into authorUid in the same request. An update is granted by
+      // the EXISTING author (`resource.data`), and authorUid may not change.
+      //
+      // A create has no existing document, so there the incoming authorUid is
+      // the right thing to check: you may only create a build in your own name.
+      allow create: if request.auth != null
+                    && request.resource.data.authorUid == request.auth.uid;
+      allow update: if request.auth != null
+                    && resource.data.authorUid == request.auth.uid
+                    && request.resource.data.authorUid == resource.data.authorUid;
+      allow delete: if request.auth != null
+                    && resource.data.authorUid == request.auth.uid;
     }
     match /builds/{build} {
       allow read;
