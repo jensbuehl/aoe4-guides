@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/039-unlisted-builds/plan.md`.
+at `.specify/specs/040-fair-trending/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -79,6 +79,17 @@ next to a list of names, check the arithmetic: a total plus a count plus the
 names stops being an aggregate at small n, which is why `useFunding.js`
 withholds the supporter count below three. Verify against the built artefact,
 not the source — `grep` the emitted `dist/assets/*.js`.
+
+**Run `npm run test:rules` before deploying `firestore.rules`, and add the case
+first.** The rules are the only thing standing between a browser console and the
+database: App Check does not help, because the console runs inside an attested
+page. Every allowed and refused write is listed in
+`.specify/specs/040-fair-trending/contracts/firestore-rules.md` and tested in
+`tests/rules/`. A new case should fail against the deployed rules
+(`RULES_FILE=<copy>`) before it passes against the new ones: that is what shows it
+covers the hole. On an update, never grant on `request.resource.data.<owner>` —
+that is the value the caller just sent, and it let any user take over any build
+until 2026-11-07. The emulator needs Java; see the quickstart there.
 
 Run `npm run check:steps` after touching anything that reads a build. A
 section's `steps` holds ordinary steps, notes **and** alternatives blocks whose
