@@ -16,7 +16,8 @@
     "check:icons": "node scripts/check-icons.mjs",
     "check:plurals": "node scripts/check-plurals.mjs",
     "check:steps": "node scripts/check-steps.mjs",
-    "check:setup": "node scripts/check-setup.mjs"
+    "check:setup": "node scripts/check-setup.mjs",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-aoe4-guides \"node --test tests/rules/*.test.mjs\""
   },
   "dependencies": {
     "@firebase/app-check": "^0.8.13",
@@ -38,6 +39,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^3.0.4",
     "@vitejs/plugin-vue": "^5.2.3",
     "firebase-admin": "^13.6.0",
     "firebase-functions": "^6.0.0",

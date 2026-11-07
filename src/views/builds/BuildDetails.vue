@@ -317,15 +317,11 @@ import { HIDE_AFTER } from "@/components/Header.vue";
 
 //composables
 import { getUserFavorites } from "@/composables/data/favoriteService";
-import {
-  incrementViews as incrementContributorViews,
-  decrementBuilds,
-  decrementViews,
-} from "@/composables/data/contributorService";
+import { decrementBuilds, decrementViews } from "@/composables/data/contributorService";
 import {
   getBuild,
   deleteBuild,
-  incrementViews,
+  recordView,
   updateBuild,
   error,
 } from "@/composables/data/buildService";
@@ -620,10 +616,10 @@ export default {
       if (resBuild) {
         build.value = resBuild;
         document.title = build.value.title + " - " + document.title;
-        incrementViews(props.id);
-
-        //icrement contributor views
-        incrementContributorViews(build.value.authorUid);
+        //One view per browser per day, never the author's own; raises the
+        //author's total along with the build's (spec 040). The id comes from
+        //the route: a build served from the in-app cache need not carry one.
+        recordView({ id: props.id, authorUid: build.value.authorUid });
       }
       if (route.query) {
         focusMode.value = route.query.focus;
@@ -773,8 +769,13 @@ export default {
         //decrement build count of contributor object
         decrementBuilds(build.value.authorUid);
 
-        //icrement contributor views
-        decrementViews(build.value.authorUid, build.value.views + 1);
+        //Take the build's views off its author's total. Only the author can
+        //delete, and the rules let a contributor lower their own total, by any
+        //amount, for exactly this. There used to be a `+ 1` here for the
+        //deleting visit's own view; the author's visits are not counted any
+        //more. Views gained since this page opened stay on the total, an
+        //accepted drift (spec 040, research R4).
+        decrementViews(build.value.authorUid, build.value.views ?? 0);
 
         //Reset cache
         store.commit("setRecentBuildsList", null);

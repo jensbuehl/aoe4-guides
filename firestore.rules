@@ -2,6 +2,39 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /builds/{build} {
+      // Public numbers on every build. No client may SET one; a write may only
+      // step one of them by one (see the counter branch below). Before this,
+      // the rule checked which keys changed but never by how much, so a single
+      // console write could give a build a million views.
+      //
+      // These two lists mirror NON_EDITABLE_FIELDS in
+      // src/composables/data/buildService.js, which keeps the editor from
+      // sending them. Transcribed, because rules cannot import: change both.
+      function counters() {
+        return ['views', 'likes', 'upvotes', 'downvotes', 'comments'];
+      }
+      // Written only by the scheduled jobs (Admin SDK, which bypasses rules).
+      // `trend*` is the recency bookkeeping of updateBuildTrend.
+      function serverOwned() {
+        return ['score', 'scoreAllTime', 'trend', 'trendBase', 'trendAt'];
+      }
+      function changed() {
+        return request.resource.data.diff(resource.data).affectedKeys();
+      }
+      // `increment()` is resolved before rules run, so this sees the value the
+      // write produces. A field missing from an old build reads as 0, which is
+      // also what increment() starts it from.
+      function stepped(f, allowDown) {
+        let before = resource.data.get(f, 0);
+        let after = request.resource.data.get(f, 0);
+        return after == before + 1 || (allowDown && after == before - 1);
+      }
+      function startsAtZero(f) {
+        return !(f in request.resource.data) || request.resource.data[f] == 0;
+      }
+
+      allow read;
+
       // The author's own writes, split by operation because each must check a
       // different document.
       //
@@ -14,18 +47,38 @@ service cloud.firestore {
       //
       // A create has no existing document, so there the incoming authorUid is
       // the right thing to check: you may only create a build in your own name.
+      // A new build starts every counter and score at zero, and carries no
+      // trend bookkeeping at all: the job seeds that on its first sight of it.
       allow create: if request.auth != null
-                    && request.resource.data.authorUid == request.auth.uid;
+                    && request.resource.data.authorUid == request.auth.uid
+                    && startsAtZero('views') && startsAtZero('likes')
+                    && startsAtZero('upvotes') && startsAtZero('downvotes')
+                    && startsAtZero('comments')
+                    && startsAtZero('score') && startsAtZero('scoreAllTime')
+                    && !request.resource.data.keys().hasAny(['trend', 'trendBase', 'trendAt']);
+
+      // An author's edit leaves the numbers alone. Unchanged keys are not in
+      // changed(), so sending a counter at its current value is harmless; what
+      // is refused is a stale copy overwriting views gained meanwhile.
       allow update: if request.auth != null
                     && resource.data.authorUid == request.auth.uid
-                    && request.resource.data.authorUid == resource.data.authorUid;
+                    && request.resource.data.authorUid == resource.data.authorUid
+                    && !changed().hasAny(counters().concat(serverOwned()));
+
       allow delete: if request.auth != null
                     && resource.data.authorUid == request.auth.uid;
-    }
-    match /builds/{build} {
-      allow read;
-      allow update: if (request.resource.data.diff(resource.data).affectedKeys()
-        .hasOnly(['views', 'likes', 'upvotes', 'downvotes', 'comments']));
+
+      // Counter steps, from anyone the branch allows (the author included).
+      // Exactly one key per write — every client write is one already. A view
+      // is anonymous and only ever goes up; likes, votes and comments need an
+      // account, as the UI already does, and may be taken back.
+      allow update: if changed().size() == 1
+                    && ((changed().hasOnly(['views']) && stepped('views', false))
+                        || (request.auth != null
+                            && ((changed().hasOnly(['likes']) && stepped('likes', true))
+                                || (changed().hasOnly(['upvotes']) && stepped('upvotes', true))
+                                || (changed().hasOnly(['downvotes']) && stepped('downvotes', true))
+                                || (changed().hasOnly(['comments']) && stepped('comments', true)))));
     }
   }
   match /databases/{database}/documents {
@@ -99,11 +152,23 @@ service cloud.firestore {
       }
 
       allow read;
-      // Intentionally public: stat increments (boCount, viewCount) fire from
-      // client-side on build views — same pattern as builds/{build} stat fields.
-      // Field restriction is the security boundary here, not auth.
-      allow update: if request.resource.data.diff(resource.data).affectedKeys()
-                         .hasOnly(['boCount', 'viewCount']);
+      // The two totals, stepped like a build's counters (see builds/{build}).
+      //
+      // viewCount +1 is public because a build view raises its author's total
+      // too, and most views are anonymous. Only the contributor may LOWER it,
+      // by any amount: deleting a build removes that build's views in one write
+      // (BuildDetails handleDelete), and lowering your own total gains nothing.
+      //
+      // boCount moves only on the author's own create and delete, so only the
+      // contributor steps it, by one.
+      allow update: if request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewCount'])
+                    && (request.resource.data.get('viewCount', 0) == resource.data.get('viewCount', 0) + 1
+                        || (request.auth != null && request.auth.uid == contributor
+                            && request.resource.data.get('viewCount', 0) < resource.data.get('viewCount', 0)));
+      allow update: if request.auth != null && request.auth.uid == contributor
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['boCount'])
+                    && (request.resource.data.get('boCount', 0) == resource.data.get('boCount', 0) + 1
+                        || request.resource.data.get('boCount', 0) == resource.data.get('boCount', 0) - 1);
 
       // The owner's own presentation: avatar, introduction, channel.
       //

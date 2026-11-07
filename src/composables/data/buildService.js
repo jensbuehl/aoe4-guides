@@ -1,10 +1,12 @@
 //External
 import { store } from "@/store/index.js";
 import { computed } from "vue";
-import { Timestamp } from "@/firebase";
+import { Timestamp, auth } from "@/firebase";
 
 //Composables
 import collectionService from "@/composables/data/collectionService";
+import { incrementViews as incrementContributorViews } from "@/composables/data/contributorService";
+import { claim } from "@/composables/data/viewMemory";
 import {
   getQueryParametersFromConfig,
   getStartAfterQueryParam,
@@ -132,6 +134,35 @@ export async function decrementUpvotes(buildId) {
  */
 export async function incrementViews(buildId) {
   return incrementNumber(buildId, "views");
+}
+
+/**
+ * Counts a visit to a build, if it is one that should count: at most once per
+ * build per browser in 24 hours (viewMemory), and never the author's own.
+ * Raises the author's contributor total exactly when it raises the build's.
+ *
+ * Waits for Firebase Auth's first answer rather than the store's authIsReady:
+ * the store commits that flag one step BEFORE it commits the user, so "ready,
+ * then read store.state.user" would depend on the order of two commits. On a
+ * cold load that wait is already over by the time a build arrives — Firestore
+ * holds reads until auth has answered — but a build served from the in-app
+ * cache skips that read.
+ *
+ * Fire-and-forget, like the increments it replaces: a lost view is never worth
+ * telling anyone about.
+ *
+ * @param {{id: string, authorUid?: string}} build
+ */
+export async function recordView(build) {
+  try {
+    await auth.authStateReady();
+    if (auth.currentUser && auth.currentUser.uid === build.authorUid) return;
+    if (!claim(build.id)) return;
+    incrementViews(build.id);
+    if (build.authorUid) incrementContributorViews(build.authorUid);
+  } catch (err) {
+    console.warn("[build] view not recorded:", err?.message);
+  }
 }
 
 /**
@@ -737,8 +768,39 @@ export async function deleteBuild(buildId) {
  * @return {Promise} A promise that resolves with the updated build data.
  */
 export async function updateBuild(buildId, build, updateCreatedTimestamp = false) {
-  return update(buildId, saveable(withAgeTimings(build)), updateCreatedTimestamp);
+  //A copy, so the caller's build keeps its counters: the page and the store
+  //still display them.
+  const payload = { ...saveable(withAgeTimings(build)) };
+  for (const field of NON_EDITABLE_FIELDS) delete payload[field];
+  return update(buildId, payload, updateCreatedTimestamp);
 }
+
+/**
+ * Fields an edit never sends: the public counters, and what only the scheduled
+ * jobs write. updateDoc leaves absent keys alone, so leaving them out keeps the
+ * database's current values.
+ *
+ * Sending them was a bug before it was a rule: the editor and Publish both pass
+ * a build loaded earlier, so every view, like and vote that arrived in between
+ * was overwritten with the old number. firestore.rules now refuses an author's
+ * write that changes any of these, so a stale copy would also fail the save.
+ *
+ * Mirrored by counters() and serverOwned() in firestore.rules — transcribed,
+ * because rules cannot import, so the two change together. A new build still
+ * starts them at zero through addBuild, which the create rule allows.
+ */
+export const NON_EDITABLE_FIELDS = [
+  "views",
+  "likes",
+  "upvotes",
+  "downvotes",
+  "comments",
+  "score",
+  "scoreAllTime",
+  "trend",
+  "trendBase",
+  "trendAt",
+];
 
 /**
  * Retrieves recent builds based on the specified limit.

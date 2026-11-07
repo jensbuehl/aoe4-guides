@@ -1,12 +1,19 @@
 const { onSchedule } = require("firebase-functions/v2/scheduler");
 const { getFirestore } = require("firebase-admin/firestore");
 const logger = require("firebase-functions/logger");
+const { TRENDING_SOURCE, activityTotal } = require("./trend");
 
 const BATCH_SIZE = 500;
 
 exports.updateBuildScore = onSchedule(
   { schedule: "0 0 * * 5", timeoutSeconds: 1800 },
   async (event) => {
+    // Retired by the recency score (spec 040): once trend.js says "recency",
+    // updateBuildTrend writes `score` daily and this must not overwrite it.
+    if (TRENDING_SOURCE === "recency") {
+      logger.log("updateBuildScore: skipped, trending is recency-based");
+      return;
+    }
     logger.log("start updateBuildScore");
     const db = getFirestore();
     const snapshot = await db.collection("builds").get();
@@ -26,10 +33,8 @@ exports.updateBuildScore = onSchedule(
 );
 
 const calculateScore = (build) => {
-  let score = build.views;
-  score += 5  * (build.upvotes  ?? 0);
-  score -= 10 * (build.downvotes ?? 0);
-  score += 50 * (build.likes    ?? 0);
+  // Shared with updateBuildTrend. A build without `views` used to score NaN here.
+  const score = activityTotal(build);
 
   let baseScore = Math.log(Math.max(score, 1));
 

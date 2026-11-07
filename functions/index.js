@@ -25,6 +25,9 @@ exports.updateContributorDisplayName = updateContributorDisplayName.updateContri
 const updateBuildScore = require('./builds/updateBuildScore');
 exports.updateBuildScore = updateBuildScore.updateBuildScore;
 
+const updateBuildTrend = require('./builds/updateBuildTrend');
+exports.updateBuildTrend = updateBuildTrend.updateBuildTrend;
+
 const updateBuildAllTimeScore = require('./builds/updateBuildAllTimeScore');
 exports.updateBuildAllTimeScore = updateBuildAllTimeScore.updateBuildAllTimeScore;
 
