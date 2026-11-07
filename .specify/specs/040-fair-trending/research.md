@@ -202,7 +202,7 @@ non-finite base; the comparison log treats a non-finite stored score as 0; `upda
 uses the shared `activityTotal`. All three jobs redeployed; the next trend run re-seeded exactly
 those 20 builds.
 
-**Still open**: the 20 stored `upvotes: NaN`. Under the new rules `NaN + 1` matches nothing, so those
-builds cannot be upvoted until the field is set to a number. A one-off repair (set to 0; the real count
-is lost either way) needs the owner's go, since it writes production data. `score` heals at the next
-Friday run, `scoreAllTime` on the 1st.
+**Repaired (owner's go, 2026-11-07)**: the 20 stored `upvotes: NaN` were set to 0, only that field,
+via the Firestore REST API; an `IS_NAN` query on `upvotes` returns nothing afterwards. Under the new
+rules `NaN + 1` matches nothing, so until then those builds could not be upvoted at all. The real
+counts were unrecoverable. `score` heals at the next Friday run, `scoreAllTime` on the 1st.

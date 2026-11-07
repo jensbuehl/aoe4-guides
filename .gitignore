@@ -34,3 +34,6 @@ scripts/.build/
 *.sw?
 .env
 .env.development
+
+# Claude Code: personal, machine-local settings (the shared .claude/skills stay tracked)
+.claude/settings.local.json
