@@ -73,7 +73,8 @@ the top 8 by `score` (SC-005).
 2. Force-run `updateBuildTrend` → writes `score = ln(1 + trend)`.
 3. Force-run `updateHomeSnapshot` → the home lane shows the new order now, not at the next 6 h tick.
 4. Check: home Trending lane, build list sorted by Trending, one civ dashboard, and
-   `GET <api>/builds?orderBy=score&limit=8` all show the same order as the comparison log.
+   `GET <api>/builds?orderBy=score` all show the same order as the comparison log. (The API has
+   no `limit` parameter; it always returns 10, and an unknown parameter fails with `ValidateError`.)
 
 **Back out**: `"legacy"`, deploy, force-run `updateBuildScore`, then `updateHomeSnapshot`.
 

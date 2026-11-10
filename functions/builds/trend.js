@@ -25,7 +25,9 @@
  * turn it now is, and updateHomeSnapshot, from Cloud Scheduler. Full routine:
  * .specify/specs/040-fair-trending/quickstart.md §4.
  */
-const TRENDING_SOURCE = "legacy";
+// "recency" since 2026-11-10, after three days of shadow runs: a stable top 5,
+// originals ahead of their copies (spec 040, research R10 and the comparison logs).
+const TRENDING_SOURCE = "recency";
 
 const HALF_LIFE_DAYS = 7;
 
