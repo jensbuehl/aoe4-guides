@@ -21,39 +21,21 @@
         </span>
       </v-card-title>
       <v-card-text :class="collapsible ? 'px-4 pt-0' : 'px-4'">
+        <!-- Says what players get, not what was wrong: no word about inflated
+             counts or how they could be inflated (spec 040). "Per visitor"
+             rather than "per person", because that is what one browser is. -->
         <div class="text-body-2 text-medium-emphasis mb-3">
+          <v-icon icon="mdi-trending-up" size="x-small" class="mr-1" color="accent"></v-icon>
+          <strong>Trending shows what's popular now.</strong> Builds rank by how much they're used
+          these days, so new builds can show up within a day and classics people still play come
+          back. A view counts once per visitor per day, and authors' own visits don't count.
+        </div>
+
+        <div class="text-body-2 text-medium-emphasis">
           <v-icon icon="mdi-cellphone-link" size="x-small" class="mr-1" color="accent"></v-icon>
           <strong>Mobile update.</strong> The site now feels at home on your phone, with a new light
           theme and a long list of fixes.
           <router-link class="text-primary" to="/news">Read more</router-link>
-        </div>
-
-        <div class="text-body-2 text-medium-emphasis">
-          <v-icon icon="mdi-sword-cross" size="x-small" class="mr-1" color="accent"></v-icon>
-          <strong>Vikings &amp; Scots.</strong> Both civilizations from <strong>Raiders of the North</strong> are in the build order editor:
-          every unit, building, technology, landmark and ability, with icons, costs and descriptions.
-        </div>
-
-        <!-- The official trailer, 16:9 at column width. Lazy so the home page
-             does not pay for YouTube's player on every visit, and the no-cookie
-             host so watching it here does not follow anyone around. -->
-        <div class="news-video mt-3">
-          <iframe
-            src="https://www.youtube-nocookie.com/embed/7NPJPZX896Y"
-            title="Age of Empires IV: Raiders of the North trailer"
-            loading="lazy"
-            frameborder="0"
-            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen
-          ></iframe>
-        </div>
-
-        <div class="text-body-2 text-medium-emphasis mt-3">
-          <v-icon icon="mdi-heart" size="x-small" class="mr-1" color="red"></v-icon>
-          The game data comes from
-          <a class="text-primary" href="https://aoe4world.com" target="_blank" rel="noopener">AoE4World</a>.
-          Special thanks to <strong>CascadeFury</strong>, who went through the Vikings and Scots data
-          ahead of release.
         </div>
 
         <v-divider class="mt-3"></v-divider>
@@ -63,16 +45,17 @@
                card sits under the top banner instead), and a bare ask beside a
                specific "€85 of €240" line makes the specific one read as
                decoration. One ask per page, and it is the one with a number. -->
+          <!-- The same route as the Trending lane's "View all" on Home, and the
+               lane tab's label. "Trending builds" wrapped Discord onto a second
+               row in the 960px sidebar (~240px of content). -->
           <v-btn
-            v-for="civ in ['VIK', 'SCO']"
-            :key="civ"
             variant="text"
             size="small"
             color="primary"
-            :to="civPageRoute(civ)"
+            prepend-icon="mdi-trending-up"
+            :to="{ name: 'Builds', query: { orderBy: 'score' } }"
           >
-            <template #prepend><CivFlag :civ="civ" /></template>
-            {{ civ === "VIK" ? "Vikings" : "Scots" }}
+            Trending
           </v-btn>
           <a href="https://discord.gg/Nau9BN5E7J" target="_blank" style="text-decoration: none">
             <v-btn variant="text" size="small" color="primary" prepend-icon="mdi-chat">
@@ -87,14 +70,12 @@
 
 <script>
 import { onMounted, ref } from "vue";
-import CivFlag from "@/components/common/CivFlag.vue";
 import HomeBannerFold from "@/components/home/HomeBannerFold.vue";
-import { civPageRoute } from "@/composables/filter/civDefaultProvider";
 
 // The headline, and also which news this browser has seen: the next item has
 // a new title, so it shows in full again without anyone clearing anything —
 // the same arrangement as ReleaseBanner's SEEN_KEY.
-const TITLE = "New civs & a mobile update";
+const TITLE = "A fairer Trending list";
 const SEEN_KEY = "aoe4guides.newsSeen";
 
 // Decided once per page load, not per mount, for the reason ReleaseBanner
@@ -107,7 +88,7 @@ const expanded = ref(false);
 
 export default {
   name: "News",
-  components: { CivFlag, HomeBannerFold },
+  components: { HomeBannerFold },
   props: {
     // A strip header that opens and closes the card, open on the first visit
     // and folded once this news has been seen. Only the phone
@@ -141,23 +122,7 @@ export default {
       }
     });
 
-    return { TITLE, civPageRoute, expanded };
+    return { TITLE, expanded };
   },
 };
 </script>
-
-<style scoped>
-.news-video {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.news-video iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-</style>
