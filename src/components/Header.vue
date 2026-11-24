@@ -485,6 +485,14 @@ export const HIDE_AFTER = 150;
  */
 export const appBarHidden = ref(false);
 
+/**
+ * Lets another component open build search (spec 043), e.g. the Home news card.
+ * Module state for the same reason as appBarHidden: the Header owns the dialog
+ * and its history entry, so others ask rather than open one of their own.
+ */
+const searchRequests = ref(0);
+export const requestSearch = () => searchRequests.value++;
+
 export default {
   name: "Header",
   components: { UserAvatar, SearchDialog },
@@ -597,6 +605,7 @@ export default {
       searchMounted.value = true;
       openOverlay();
     };
+    watch(searchRequests, () => openSearch());
     // Navigate only after the dialog's history entry is gone; pushed sooner,
     // the asynchronous step back would undo the navigation.
     const openSearchResult = (to) => closeThen(() => router.push(to));
