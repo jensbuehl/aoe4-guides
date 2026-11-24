@@ -8,5 +8,19 @@ service firebase.storage {
                    && request.resource.size < 200 * 1024
                    && request.resource.contentType.matches('image/.*');
     }
+
+    // The build search index (spec 043), written nightly by updateBuildTrend
+    // through the Admin SDK, which bypasses these rules, so no client ever
+    // writes here.
+    //
+    // It must stay readable WITHOUT App Check. Storage enforcement is
+    // UNENFORCED (checked 2026-11-24; Firestore's is ENFORCED), and search
+    // relies on that: wherever reCAPTCHA cannot run, attestation fails, and
+    // switching enforcement on would break search for exactly the visitors
+    // Firestore already turns away, with nothing in the app to say why.
+    match /search/{file} {
+      allow read;
+      allow write: if false;
+    }
   }
 }

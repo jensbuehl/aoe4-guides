@@ -15,6 +15,7 @@ import {
   getLimitToLastQueryParam,
 } from "@/composables/data/queryParameterBuilder";
 import { getAgeTimings, toStoredAgeTimings } from "@/composables/builds/useAgeTimings.js";
+import { addHidden, removeHidden } from "@/composables/search/hiddenBuilds.js";
 import {
   getMostRecentBuildsConfig,
   getPopularBuildsConfig,
@@ -638,7 +639,8 @@ export async function addBuild(build, customId = null) {
  * @return {Promise} A promise that resolves when the build is successfully deleted.
  */
 export async function deleteBuild(buildId) {
-  return del(buildId);
+  await del(buildId);
+  if (!collectionServiceError.value) addHidden(buildId);
 }
 
 /**
@@ -654,7 +656,22 @@ export async function updateBuild(buildId, build, updateCreatedTimestamp = false
   //still display them.
   const payload = { ...saveable(withAgeTimings(build)) };
   for (const field of NON_EDITABLE_FIELDS) delete payload[field];
-  return update(buildId, payload, updateCreatedTimestamp);
+  await update(buildId, payload, updateCreatedTimestamp);
+  if (!collectionServiceError.value) updateSearchHiding(buildId, build);
+}
+
+/**
+ * Keeps this device's search in step with a save, ahead of the nightly index
+ * (spec 043, FR-009). Here rather than in the views because every path that
+ * unlists or deletes a build goes through updateBuild or deleteBuild: today the
+ * editor's "save as unlisted" and the details page's delete, and any later one.
+ *
+ * @param {string} buildId
+ * @param {Object} build
+ */
+function updateSearchHiding(buildId, build) {
+  if (build?.isDraft === true) addHidden(buildId);
+  else if (build?.isDraft === false) removeHidden(buildId);
 }
 
 /**
