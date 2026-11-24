@@ -31,4 +31,9 @@ jobs:
       # season or two, which would surface only on a season's first day.
       - run: npm run check:seasons
 
+      # Fails if the search index could contain an unlisted build (spec 039's
+      # promise), if an empty index could replace a good one, or if the matcher
+      # drifts from spec 043 (AND across title/author/civ, CJK, typo tolerance).
+      - run: npm run check:search
+
       - run: npm run build

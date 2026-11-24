@@ -6,6 +6,53 @@
   font-weight: normal;
 }
 
+/* One content width for the header and every page. Vuetify steps a container
+   through 900 / 1200 / 1800 / 2400 by breakpoint while the header held 1400,
+   so from md to lg the page sat up to 100px inside the logo and the avatar on
+   each side, and from xl up the 1440 frame above capped it a little wider
+   than the header. Fluid below 1400, like the header, then fixed: the edges
+   line up at every width. Two classes, to outrank Vuetify's single-class
+   breakpoint rules whatever order the sheets load in. A page that wants a
+   narrower column (Account, the prose pages' 1024px card) sets its own. */
+.v-container:not(.v-container--fluid) {
+  max-width: 1400px;
+}
+
+/* The list views' "2 / 3" between the pagination arrows. In place of
+   v-pagination's own page button, which with total-visible="1" was a lone
+   "1" that said nothing about how many pages follow. Plain text: the current
+   page is not a thing to click. Sized to the arrows' 40px row. */
+.list-page-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 40px;
+  padding: 0 8px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+}
+
+/* A sidebar that follows the list down the page, on the three list views.
+   Sticky travels only inside its parent, and the v-col it sits in stretches
+   to the row's height, i.e. the list's. Only when the viewport can show the
+   whole card: a sticky box taller than the screen hides its own bottom. The
+   desktop bar never slides away (Header.vue hides it on handhelds only), so
+   the layout top is a fixed offset here.
+
+   The offset is where the card already rests: 24px under the bar (v-main's
+   8px margin, then the container's and the column's padding, measured at
+   1024, 1280 and 1920). Any less and the card scrolls up by the difference
+   before it catches, which reads as a twitch; equal, it never moves at all.
+   Change those paddings and this has to follow. */
+@media (min-width: 960px) and (min-height: 640px) {
+  .sidebar-sticky {
+    position: sticky;
+    top: calc(var(--v-layout-top) + 24px);
+  }
+}
+
 /* Scrollbars: hidden on touch/mobile, thin + subtle on desktop */
 textarea,
 [contenteditable] {

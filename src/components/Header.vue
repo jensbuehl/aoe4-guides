@@ -28,6 +28,13 @@
           <v-list v-if="authIsReady">
             <v-list-item
               :style="'color: ' + chrome.primary"
+              @click="openSearch"
+            >
+              <v-icon class="mr-4" color="accent">mdi-magnify</v-icon>
+              Search
+            </v-list-item>
+            <v-list-item
+              :style="'color: ' + chrome.primary"
               to="/builds"
             >
               <v-icon class="mr-4" color="accent">mdi-hammer</v-icon>
@@ -116,6 +123,39 @@
            got tight, and at 375px and below the avatar wrapped onto a second
            line under the bar. The wordmark scales down instead. -->
       <span v-if="authIsReady" class="d-flex align-center flex-shrink-0">
+        <!-- Build search (spec 043). Where it lives depends on room, measured:
+             - lg and up: a field-like pill, "Search builds…" and the shortcut.
+             - md: a bare magnifier. The bar is full there when signed in (four
+               nav buttons and the avatar end exactly at the edge), which is
+               why Add Build turns into a "+" below lg.
+             - below md: not in this bar at all. At 360px production leaves
+               ~18px beside the wordmark, and this container wraps, so any
+               extra button drops the whole group onto a second line. Phones
+               get Search in the bottom navigation, narrow desktop windows in
+               the menu above. -->
+        <v-btn
+          variant="flat"
+          rounded="pill"
+          class="search-trigger mr-3 hidden-md-and-down"
+          aria-label="Search builds, authors and civilizations"
+          :aria-keyshortcuts="shortcutAria"
+          @click="openSearch"
+        >
+          <v-icon color="accent" class="mr-2">mdi-magnify</v-icon>
+          <span class="search-trigger-label" :style="{ color: chrome.primary }">Search builds…</span>
+          <span class="search-trigger-key ml-6" :style="{ color: chrome.primary }" aria-hidden="true">{{
+            shortcutLabel
+          }}</span>
+        </v-btn>
+        <v-btn
+          icon
+          color="accent"
+          class="mr-1 hidden-sm-and-down hidden-lg-and-up"
+          aria-label="Search builds, authors and civilizations"
+          @click="openSearch"
+        >
+          <v-icon>mdi-magnify</v-icon>
+        </v-btn>
         <v-tooltip location="top">
           <span
             :style="{
@@ -185,16 +225,20 @@
 
         <v-menu>
           <template v-slot:activator="{ props }">
+            <!-- Just "+ ▾" below lg: that frees the room the search icon
+                 needs at md when signed in. Same menu either way. -->
             <v-btn
               v-bind="props"
               color="primary"
               class="mr-2 hidden-sm-and-down"
               append-icon="mdi-menu-down"
+              :aria-label="lgAndUp ? undefined : 'Add build'"
+              :title="lgAndUp ? undefined : 'Add build'"
             >
               <template v-slot:prepend>
                 <v-icon color="accent">mdi-plus</v-icon>
               </template>
-              Add Build
+              <template v-if="lgAndUp">Add Build</template>
             </v-btn>
           </template>
           <v-list>
@@ -326,6 +370,10 @@
     </v-container>
   </v-app-bar>
 
+  <!-- Mounted on the first open only, so its chunk (and the index it loads)
+       stays out of every visit that never searches. -->
+  <SearchDialog v-if="searchMounted" v-model="searchOpen" @open="openSearchResult" />
+
   <!-- A provider rather than the `theme` prop, which VBottomNavigation declares
        but ignores (Vuetify 3.8: it calls useTheme(), not provideTheme(props)),
        so the bar came out in the light theme with gold labels on ivory. Without
@@ -334,6 +382,8 @@
   <v-theme-provider theme="customDarkTheme">
   <v-bottom-navigation
     hide-on-scroll
+    grow
+    class="phone-nav"
     scroll-target="#main-content"
     :active="showBottomNavigation"
     :style="'border-top: 2px solid ' + chrome.accent"
@@ -354,6 +404,17 @@
       </template>
       <span :style="'color: ' + chrome.primary"
         >All Builds</span
+      >
+    </v-btn>
+
+    <!-- Build search (spec 043): on phones it lives here, not in the top bar,
+         which has no room beside the wordmark. Not a route, so never active. -->
+    <v-btn color="primary" :active="false" @click="openSearch">
+      <template v-slot:prepend>
+        <v-icon color="accent">mdi-magnify</v-icon>
+      </template>
+      <span :style="'color: ' + chrome.primary"
+        >Search</span
       >
     </v-btn>
 
@@ -380,7 +441,7 @@
 
 <script>
 //External
-import { ref, computed, watch, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, watch, onMounted, onBeforeUnmount, defineAsyncComponent } from "vue";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 import { useDisplay, useTheme } from "vuetify";
@@ -392,6 +453,23 @@ import {
 } from "@/composables/useThemePreference";
 import { useAvatar } from "@/composables/auth/useAvatar";
 import UserAvatar from "@/components/common/UserAvatar.vue";
+import { useOverlayHistory } from "@/composables/useOverlayHistory.js";
+
+// Its own chunk: only a visit that opens search downloads it (spec 043, SC-006).
+const SearchDialog = defineAsyncComponent(() => import("@/components/search/SearchDialog.vue"));
+
+/**
+ * Whether a key press came from somewhere the reader is typing. The build editor
+ * is made of contenteditable step fields, and "/" is a character authors type,
+ * so the search shortcut must never fire there.
+ *
+ * @param {EventTarget|null} target
+ * @return {boolean}
+ */
+function isTyping(target) {
+  if (!(target instanceof HTMLElement)) return false;
+  return target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName);
+}
 
 /**
  * Scroll offset in px below which the phone's navigation is always shown: the
@@ -407,9 +485,17 @@ export const HIDE_AFTER = 150;
  */
 export const appBarHidden = ref(false);
 
+/**
+ * Lets another component open build search (spec 043), e.g. the Home news card.
+ * Module state for the same reason as appBarHidden: the Header owns the dialog
+ * and its history entry, so others ask rather than open one of their own.
+ */
+const searchRequests = ref(0);
+export const requestSearch = () => searchRequests.value++;
+
 export default {
   name: "Header",
-  components: { UserAvatar },
+  components: { UserAvatar, SearchDialog },
   setup() {
     const title = ref("AOE4 GUIDES");
     const subtitle = ref("Age of Empires IV Build Orders");
@@ -420,7 +506,7 @@ export default {
     const theme = useTheme();
     // The dark theme's colours, which both bars use in either theme
     const chrome = computed(() => theme.themes.value.customDarkTheme.colors);
-    const { mobile, platform } = useDisplay();
+    const { mobile, platform, lgAndUp } = useDisplay();
     // The 60px bar, as opposed to the 100px one; the mark shrinks with it.
     const compact = computed(() => platform.value.android || platform.value.ios || mobile.value);
     // Through the guarded helpers: blocked site data makes `localStorage`
@@ -510,6 +596,39 @@ export default {
     });
     onBeforeUnmount(() => window.removeEventListener("scroll", onScroll));
 
+    // Build search. The header owns its open state because the header is where
+    // it opens, and so it also owns the history entry that lets Back close it.
+    const searchOpen = ref(false);
+    const searchMounted = ref(false);
+    const { open: openOverlay, closeThen } = useOverlayHistory(searchOpen, "search");
+    const openSearch = () => {
+      searchMounted.value = true;
+      openOverlay();
+    };
+    watch(searchRequests, () => openSearch());
+    // Navigate only after the dialog's history entry is gone; pushed sooner,
+    // the asynchronous step back would undo the navigation.
+    const openSearchResult = (to) => closeThen(() => router.push(to));
+
+    // Ctrl+K (⌘K on a Mac) is the advertised shortcut: K is the same key on
+    // every layout. "/" also works but is not shown, because on a German
+    // keyboard it is Shift+7. Shift is therefore NOT a reason to ignore "/":
+    // `event.key` is already the character the layout produced, and an earlier
+    // version that ignored Shift made "/" unreachable on German keyboards.
+    const isMac = /Mac|iPhone|iPad/.test(navigator.userAgentData?.platform ?? navigator.platform ?? "");
+    const shortcutLabel = isMac ? "⌘K" : "Ctrl K";
+    const shortcutAria = isMac ? "Meta+K /" : "Control+K /";
+    const onSearchShortcut = (event) => {
+      if (searchOpen.value || isTyping(event.target) || event.altKey) return;
+      const slash = event.key === "/" && !event.ctrlKey && !event.metaKey;
+      const ctrlK = event.key.toLowerCase() === "k" && (event.ctrlKey || event.metaKey) && !event.shiftKey;
+      if (!slash && !ctrlK) return;
+      event.preventDefault();
+      openSearch();
+    };
+    onMounted(() => window.addEventListener("keydown", onSearchShortcut));
+    onBeforeUnmount(() => window.removeEventListener("keydown", onSearchShortcut));
+
     const openAuthDialog = () => store.dispatch("openAuthDialog", { mode: "login" });
     const openImportDialog = () => store.dispatch("openImportDialog");
 
@@ -533,15 +652,21 @@ export default {
       openImportDialog,
       avatarSrc,
       avatarLoading,
+      lgAndUp,
+      shortcutLabel,
+      shortcutAria,
+      searchOpen,
+      searchMounted,
+      openSearch,
+      openSearchResult,
     };
   },
 };
 </script>
 
 <style scoped>
-.v-container {
-  max-width: 1400px !important;
-}
+/* The bar's width is the site-wide container width (assets/main.css), so the
+   logo and the avatar stand on the same edges as every page's content. */
 /* The tile's navy is the dark bar's navy, so without the ring only the gold
    letters show and the mark reads as stray text. The radius follows the
    tile's own rounded corners.
@@ -558,6 +683,38 @@ export default {
    put the mark on the ink, with no nudge. */
 .header-brand {
   width: fit-content;
+}
+/* Five items signed in (with Search, spec 043). Vuetify gives each bar button
+   min-width 80px and 12px side padding, so five overflowed 360px on both sides;
+   four had filled it exactly. With `grow` they share the width, and the
+   narrower padding leaves "All Builds" room at 72px each. The selector mirrors
+   Vuetify's own min-width rule; written as plain `.v-btn` it tied on
+   specificity and lost to that rule's later position. */
+.phone-nav :deep(.v-bottom-navigation__content > .v-btn) {
+  min-width: 0;
+  padding: 0 4px;
+}
+/* Reads as a field in the dark bar, not as one more nav button: a pill like
+   the site's other search fields, a faint fill of the chrome's own text colour
+   instead of a gold outline, sentence case and normal tracking. */
+.search-trigger {
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 400;
+  background: rgba(255, 255, 255, 0.08) !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+.search-trigger:hover {
+  background: rgba(255, 255, 255, 0.13) !important;
+}
+.search-trigger-label {
+  opacity: 0.85;
+}
+/* The shortcut as quiet text, not a boxed key: boxed, a lone "/" read as an
+   empty checkbox. */
+.search-trigger-key {
+  font-size: 0.75rem;
+  opacity: 0.55;
 }
 /* 11.5px, not Vuetify's 16px: the tracking after the last letter and the
    glyph's side bearing add about 4.5px of their own, and this lands the drawn

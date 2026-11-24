@@ -20,9 +20,7 @@
       trailing insert row, which already carries that space — this is the one
       breakpoint that was missing it.-->
   <v-card rounded="lg" class="mt-4 pb-3 pb-sm-0" flat>
-    <div class="build-card-section-header d-flex align-center px-4 ga-2">
-      <v-icon size="16" color="accent">mdi-format-list-numbered</v-icon>
-      <span class="text-caption text-uppercase font-weight-bold">Build Order</span>
+    <SectionHeader icon="mdi-format-list-numbered" label="Build Order">
       <v-spacer></v-spacer>
       <!--The section header is 36px and stays 36px: the Build Order card lines
           up with Description and Timeline, and a taller button here breaks that
@@ -86,7 +84,7 @@
         @click="handlePlayDefault"
         >Play</v-btn
       >
-    </div>
+    </SectionHeader>
 
     <!--On a phone the header has no room for it, and a play control the player
         has to hunt for is the whole problem this replaced.
@@ -198,6 +196,7 @@ import { useDisplay } from "vuetify";
 
 //Components
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
+import SectionHeader from "@/components/common/SectionHeader.vue";
 import { convertSectionImagePaths } from "@/composables/builds/legacyImagePaths";
 
 //Composables
@@ -266,7 +265,7 @@ export default {
     "linkEnabled",
   ],
   emits: ["stepsChanged", "activateFocusMode"],
-  components: { BuildOrderSectionEditor },
+  components: { BuildOrderSectionEditor, SectionHeader },
   setup(props, context) {
     const sections = ref([]);
     const removeAgeConfirmationDialog = ref(false);
@@ -711,11 +710,6 @@ export default {
 </script>
 
 <style scoped>
-.build-card-section-header {
-  letter-spacing: 0.05em;
-  height: 36px;
-}
-
 /* 28px inside a 36px header, so the Build Order card keeps lining up with
    Description and Timeline. Sized explicitly rather than through a density prop
    because Vuetify's comfortable density lands at 40px, which grows the header. */

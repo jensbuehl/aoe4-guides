@@ -118,7 +118,7 @@
       </div>
 
         <!--desktop body: title + people line + stats line-->
-        <div class="blc-body hidden-sm-and-down" :class="{ 'blc-body--cols': ageTimings.length }">
+        <div class="blc-body blc-body--cols hidden-sm-and-down" :class="{ 'blc-body--desc': excerpt }">
           <!-- Full title on hover, for when it is clipped -->
           <v-tooltip
             location="top"
@@ -140,6 +140,9 @@
               </div>
             </template>
           </v-tooltip>
+          <!--what the build is about, in the author's words: one line, so the
+              reserved height holds; the full text is on the build's page-->
+          <div v-if="excerpt" class="blc-desc">{{ excerpt }}</div>
           <!--people: actionable, so accent-coloured with their own glyphs-->
           <div v-if="showPeopleLine" class="blc-meta blc-meta--who">
             <router-link
@@ -208,14 +211,20 @@
         </div>
 
       <!--
-        Age column, omitted entirely when the build has no derivable timings.
+        Age column, on every card: a build with no derivable timings gets a
+        muted note in it instead of no column, so the list keeps one right
+        edge rather than alternating full and hollow cards. Not three dashes:
+        a dash says the build never reaches that age, which is not what an
+        unknown time means.
         Deliberately a plain element rather than a v-col: the row uses
         no-gutters, whose ".v-row--no-gutters > [class*=v-col-] { padding: 0 }"
         outranks this component's own class and would strip the padding either
         side of the times. v-row is a flex container, so a plain div sits in it
         exactly the same way.
       -->
-      <div v-if="ageTimings.length" class="blc-ages hidden-sm-and-down">
+      <div class="blc-ages hidden-sm-and-down">
+        <div v-if="!ageTimings.length" class="blc-agenone">No age times</div>
+        <template v-else>
         <div
           v-for="row in ageRows"
           :key="row.age"
@@ -235,6 +244,7 @@
           <b v-else>{{ formatAgeTime(row.timing.seconds) }}</b>
           <span class="blc-sr">{{ row.label }}</span>
         </div>
+        </template>
       </div>
     </v-row>
   </v-card>
@@ -352,6 +362,14 @@ export default {
 
     const showPeopleLine = computed(() => showAuthor.value || showCreator.value);
 
+    //Descriptions are free text with paragraphs; on one ellipsised line a
+    //newline would only read as a missing space.
+    const excerpt = computed(() =>
+      typeof props.build?.description === "string"
+        ? props.build.description.replace(/\s+/g, " ").trim()
+        : ""
+    );
+
     // The card's height in both states: the skeleton is set to it exactly, and
     // the loaded row takes it as a `min-height`. Any value BELOW what the
     // content actually needs therefore shows up as layout shift the moment the
@@ -425,6 +443,7 @@ export default {
       mapLabel,
       showLikes,
       showPeopleLine,
+      excerpt,
       formatAgeTime,
       formatCount,
     };
@@ -542,6 +561,28 @@ export default {
   padding-right: 0;
 }
 
+/* Four lines instead of three. At md and lg the card is 112px, and four lines
+   at the three-line spacing need 112.7: tighter gaps and padding bring it to
+   108.7, so the reserved height still governs. Only on cards that have a
+   description, which keep the old spacing otherwise. */
+.blc-body--desc {
+  gap: 5px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+/* Quieter than the title, louder than the stats: it is the one line written
+   for a reader rather than counted. */
+.blc-desc {
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+
 /* Inline flow rather than flex: text-overflow only ellipsizes a block container's
    inline content, so as a flex row this clipped mid-word instead of truncating.
    Never wraps, so a long name cannot change the card's height. */
@@ -640,6 +681,14 @@ export default {
 .blc-agerow--derived b {
   font-weight: 500;
   color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+
+/* Disabled emphasis, like the dashes: a fact about the build, not an alert */
+.blc-agenone {
+  font-size: 11.5px;
+  line-height: 1.3;
+  text-align: center;
+  color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
 }
 
 .blc-agedash {

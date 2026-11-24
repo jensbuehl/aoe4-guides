@@ -21,14 +21,13 @@
         </span>
       </v-card-title>
       <v-card-text :class="collapsible ? 'px-4 pt-0' : 'px-4'">
-        <!-- Says what players get, not what was wrong: no word about inflated
-             counts or how they could be inflated (spec 040). "Per visitor"
-             rather than "per person", because that is what one browser is. -->
+        <!-- Spec 043. Where to find it in each layout, because it lives in a
+             different place on a phone (bottom bar) than on a desktop (header). -->
         <div class="text-body-2 text-medium-emphasis mb-3">
-          <v-icon icon="mdi-trending-up" size="x-small" class="mr-1" color="accent"></v-icon>
-          <strong>Trending shows what's popular now.</strong> Builds rank by how much they're used
-          these days, so new builds can show up within a day and classics people still play come
-          back. A view counts once per visitor per day, and authors' own visits don't count.
+          <v-icon icon="mdi-magnify" size="x-small" class="mr-1" color="accent"></v-icon>
+          <strong>Search is here.</strong> Find any build by title, author or civ from every page:
+          the search box at the top, Search in your phone's bottom bar, or Ctrl K. Results show
+          Feudal and Castle times.
         </div>
 
         <div class="text-body-2 text-medium-emphasis">
@@ -45,17 +44,11 @@
                card sits under the top banner instead), and a bare ask beside a
                specific "€85 of €240" line makes the specific one read as
                decoration. One ask per page, and it is the one with a number. -->
-          <!-- The same route as the Trending lane's "View all" on Home, and the
-               lane tab's label. "Trending builds" wrapped Discord onto a second
-               row in the 960px sidebar (~240px of content). -->
-          <v-btn
-            variant="text"
-            size="small"
-            color="primary"
-            prepend-icon="mdi-trending-up"
-            :to="{ name: 'Builds', query: { orderBy: 'score' } }"
-          >
-            Trending
+          <!-- Opens the header's search rather than a page of its own. One word:
+               a longer label wrapped Discord onto a second row in the 960px
+               sidebar (~240px of content), as "Trending builds" once did. -->
+          <v-btn variant="text" size="small" color="primary" prepend-icon="mdi-magnify" @click="requestSearch">
+            Search
           </v-btn>
           <a href="https://discord.gg/Nau9BN5E7J" target="_blank" style="text-decoration: none">
             <v-btn variant="text" size="small" color="primary" prepend-icon="mdi-chat">
@@ -71,11 +64,12 @@
 <script>
 import { onMounted, ref } from "vue";
 import HomeBannerFold from "@/components/home/HomeBannerFold.vue";
+import { requestSearch } from "@/components/Header.vue";
 
 // The headline, and also which news this browser has seen: the next item has
 // a new title, so it shows in full again without anyone clearing anything —
 // the same arrangement as ReleaseBanner's SEEN_KEY.
-const TITLE = "A fairer Trending list";
+const TITLE = "Search builds";
 const SEEN_KEY = "aoe4guides.newsSeen";
 
 // Decided once per page load, not per mount, for the reason ReleaseBanner
@@ -122,7 +116,7 @@ export default {
       }
     });
 
-    return { TITLE, expanded };
+    return { TITLE, expanded, requestSearch };
   },
 };
 </script>
