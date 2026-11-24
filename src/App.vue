@@ -1,7 +1,10 @@
 <template>
   <v-app id="inspire">
     <Header></Header>
-    <v-main class="mt-2 mx-md-2" id="main-content">
+    <!-- No side margin: the page's container has to be as wide as the
+         header's for their edges to meet (assets/main.css). An 8px margin here
+         set every page 8px inside the logo below 1416px. -->
+    <v-main class="mt-2" id="main-content">
       <Snackbar />
       <AuthDialog />
       <BuildImportDialog v-model="importOpen" />
