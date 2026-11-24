@@ -293,12 +293,14 @@ the sheet open closes it and stays on the page.
 ## Phase 8: Polish, rollout and harvest
 
 - [X] T032 Run `npm run check:search`, `npm run check:setup`, `npm run check:steps` (as a guard; nothing here reads steps) and `npm run build` in the worktree. All must be green. Run the self-review from the constitution's Development Workflow on the diff, looking for magic numbers: the 20, 3, 200, 0.5 and 300 KB limits should be named constants at the top of their modules.
-- [ ] T033 **(owner)** Prod rollout, per quickstart §5:
+- [X] T033 **(owner)** Prod rollout, per quickstart §5:
+  *Done 2026-11-24 with owner approval: storage rule, then `updateBuildTrend`, then one forced run (safe mid-day: trend decay uses the time actually elapsed). Prod index: 4,442 listed builds, 1,559 authors, **198 KB gzip** (above the 177 KB snapshot estimate: real titles and scores compress worse). Headers: gzip, `max-age=3600`, CORS `*`. Prod Firestore has 985 unlisted builds; **0 in the index**. Coverage: Feudal 2,211 (367 estimated), Castle 876 (214 estimated). **SC-004 is at risk**: 198 KB × 2 ≈ 397 KB against the 400 KB target. The job warns at 300 KB, so it will flag the trend well before then.*
   1. `firebase deploy --only storage --project prod`;
   2. `firebase deploy --only functions:updateBuildTrend --project prod`;
   3. force one run (quickstart §2 command with `--project aoe4-guides`);
   4. repeat the T009 header and unlisted-intersection checks against prod.
-- [ ] T034 **(owner)** Merge `043-build-search` to `main`. Rebase onto `origin/main` first: the Monday snapshot cron commits to `main` (memory: main gains weekly CI commits). Netlify then deploys the UI. Release as a `chore: X.Y.Z` commit if a version bump is wanted.
+- [X] T034 **(owner)** Merge `043-build-search` to `main`. Rebase onto `origin/main` first: the Monday snapshot cron commits to `main` (memory: main gains weekly CI commits). Netlify then deploys the UI. Release as a `chore: X.Y.Z` commit if a version bump is wanted.
+  *Done 2026-11-24: rebased onto 1.23.0 (042: `updateBuildTrend` read merged with its `trendWeights`), merged after 1.24.0 (046, which touched no functions or rules, so the earlier prod function deploy overwrote nothing), released as `chore: 1.25.0` (0768240).*
 - [ ] T035 **(owner)** The day after the rollout, confirm the 23:30 UTC run logged `search index written` and the object's `generated` moved. A month later, read SC-008 from Cloud Monitoring (`storage.googleapis.com/api/request_count`, method `ReadObject`, bucket `aoe4-guides.firebasestorage.app`) and record it here. In the same pass, read the month's Storage download volume and the GCP bill against SC-007 (≤ €1/month at 1,000 opens/day; expected €0 inside the 100 GB allowance) and record both.
 - [ ] T036 Harvest, per CLAUDE.md's "Harvest after every push":
   - add to `project-appcheck-blocks-reads` memory that Storage is UNENFORCED and the search index depends on it;
