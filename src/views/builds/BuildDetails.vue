@@ -300,6 +300,11 @@
       </div>
     </v-card>
 
+    <!-- Somewhere to go next (spec 046): the same civ, the same author. Fetched
+         only once it nears the viewport, so a reader following the build at the
+         top never pays for it. -->
+    <RelatedBuilds v-if="!loading" :build="build" :build-id="id" />
+
     <div class="mt-4">
       <Discussion :buildId="build.id"></Discussion>
     </div>
@@ -327,6 +332,7 @@ import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
 import BuildShareDialog from "@/components/builds/BuildShareDialog.vue";
 import SectionHeader from "@/components/common/SectionHeader.vue";
+import RelatedBuilds from "@/components/builds/RelatedBuilds.vue";
 import { HIDE_AFTER } from "@/components/Header.vue";
 
 //composables
@@ -364,6 +370,7 @@ export default {
     BuildHeader,
     BuildShareDialog,
     SectionHeader,
+    RelatedBuilds,
   },
   props: ["id"],
   setup(props) {
