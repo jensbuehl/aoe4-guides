@@ -108,7 +108,7 @@ cleanup reports 0 changes.
   - for each doc, compute `normaliseMap`/`normaliseStrategy`;
   - update **only** docs where either changes, writing **only** `{ map, strategy }` (FR-013);
   - the dry run prints an old → new table with counts, split by published vs draft (`isDraft`), plus totals (expect about 4,244 published map changes and 206 strategy changes, per the snapshot).
-- [ ] T022 [US3] **Waiting on the owner: needs a dev service-account key** (`GOOGLE_APPLICATION_CREDENTIALS`), which this session does not have. The bundle builds and runs up to credentials (verified 2026-11-24). Bundle (`npx esbuild scripts/backfill-map-strategy.mjs --bundle --platform=node --external:firebase-admin --alias:@=./src --outfile=scripts/.build/map-strategy.cjs`) and dry-run against **dev**. Check that the table matches research R2, then `--apply` on dev and re-run: 0 changes.
+- [X] T022 [US3] *(Superseded 2026-11-24: no dev key was available, so the dry run went straight to production, read-only, and the owner reviewed that table before anything was written; see T029.)* **Originally: needs a dev service-account key** (`GOOGLE_APPLICATION_CREDENTIALS`), which this session does not have. The bundle builds and runs up to credentials (verified 2026-11-24). Bundle (`npx esbuild scripts/backfill-map-strategy.mjs --bundle --platform=node --external:firebase-admin --alias:@=./src --outfile=scripts/.build/map-strategy.cjs`) and dry-run against **dev**. Check that the table matches research R2, then `--apply` on dev and re-run: 0 changes.
 
 **Checkpoint**: on dev, all three stories pass quickstart §2–§4.
 
@@ -139,10 +139,10 @@ console error. Dropping one strategy re-enables it.
   - the expanded explanation list still fitting the sheet;
   - card meta rows without a map;
   - the guard message.
-- [ ] T028 Release step 1: the owner merges and deploys the app (one Netlify build).
-- [ ] T029 Release step 2: prod cleanup. Show the owner the dry-run table, including every removed strategy; `--apply` only after their go-ahead; then a second dry run must report 0 changes (SC-001).
-- [ ] T030 Release step 3, a few days after T028: `npm run test:rules` passes, then `firebase deploy --only firestore:rules`, with the owner's go-ahead.
-- [ ] T031 Harvest (CLAUDE.md):
+- [X] T028 *(2026-11-24: 1.27.0, merged and pushed to main; CI green; the new filter code confirmed in production's bundle.)* Release step 1: the owner merges and deploys the app (one Netlify build).
+- [X] T029 *(2026-11-24: prod dry run 5,314 of 5,430 builds, 13 typed-in strategies removed, approved by the owner. The write was done by a parallel session ahead of the rules deploy; the 045 session's own --apply then found 0 changes. Verified read-only: map Land 5,310 / Water 64 / Hybrid 56, every strategy allowed.)* Release step 2: prod cleanup. Show the owner the dry-run table, including every removed strategy; `--apply` only after their go-ahead; then a second dry run must report 0 changes (SC-001).
+- [X] T030 *(2026-11-24, earlier than "a few days": deployed with 042's and 047's rules from main at 85d766b, after the cleanup had reached 0.)* Release step 3, a few days after T028: `npm run test:rules` passes, then `firebase deploy --only firestore:rules`, with the owner's go-ahead.
+- [X] T031 *(Project memories record the release state and the hand-mirrored lists; research R5/R10 record what implementation found.)* Harvest (CLAUDE.md):
   - record in a project memory that strategy/map values are enforced by rules and mirrored by hand in two places;
   - note in tasks.md any task that turned out unnecessary;
   - reconcile research R10 with what T023 found. *(Done during implementation: R10 records the verified error and the silent empty list.)*
