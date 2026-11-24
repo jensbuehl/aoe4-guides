@@ -181,7 +181,7 @@ A player landing on the home page browses the trending, classics and newest lane
 - **FR-019**: The metric of the active sort key MUST always be shown, and **views MUST always be shown** regardless of `orderBy`, removing today's `orderBy`-dependent guard.
 - **FR-020**: The author MUST be omitted when the list is author-scoped (`filterConfig.author` set, or `MyBuilds`).
 - **FR-021**: The video creator MUST be omitted when a creator filter is applied.
-- **FR-022**: The map MUST be shown when it distinguishes rows, replacing the current guard on the non-existent `filterConfig.map` with one on `filterConfig.maps`.
+- **FR-022**: The map MUST be shown when it distinguishes rows, replacing the current guard on the non-existent `filterConfig.map` with one on `filterConfig.maps`. *(Amended by 045 FR-004: Land is never shown; only Water and Hybrid are.)*
 - **FR-023**: The card MUST take its context from an explicit prop plus the applied `filterConfig`, and MUST NOT infer context from the route. Host lists that render the card indirectly MUST forward that context.
 - **FR-024**: On xs/sm the age chips MUST replace the season and map chips, not accompany them.
 

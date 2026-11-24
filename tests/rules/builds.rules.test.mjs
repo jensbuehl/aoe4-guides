@@ -43,6 +43,10 @@ const seedBuild = () => ({
   title: "Seeded build",
   steps: [],
   isDraft: false,
+  // An author's write must leave the document with allowed values (spec 045,
+  // facets.rules.test.mjs), as every build does after the cleanup.
+  map: "Land",
+  strategy: "",
   views: 40,
   likes: 3,
   upvotes: 5,

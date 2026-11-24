@@ -66,9 +66,9 @@
           </span>
         </template>
       </v-tooltip>
-      <template v-if="showSecondary && build.map"><span class="bml-sep">·</span></template>
-      <span v-if="showSecondary && build.map" class="d-inline-flex align-center">
-        <v-icon size="12">mdi-map</v-icon>{{ build.map }}
+      <template v-if="mapLabel"><span class="bml-sep">·</span></template>
+      <span v-if="mapLabel" class="d-inline-flex align-center">
+        <v-icon size="12">mdi-map</v-icon>{{ mapLabel }}
       </span>
       <template v-if="showSecondary && build.strategy"><span class="bml-sep">·</span></template>
       <span v-if="showSecondary && build.strategy" class="d-inline-flex align-center">
@@ -84,6 +84,7 @@ import { computed } from "vue";
 
 //Composables
 import useTimeSince from "@/composables/useTimeSince";
+import { DEFAULT_MAP, normaliseMap } from "@/composables/filter/mapDefaultProvider";
 import SeasonToolTip from "@/components/common/SeasonToolTip.vue";
 
 export default {
@@ -109,6 +110,15 @@ export default {
       Boolean(props.build?.author || props.build?.creatorId || props.build?.remixOf?.id)
     );
 
+    //Land is never shown (spec 045 FR-004): nearly every build is a land build,
+    //and a label on all of them stops saying anything. Normalised, so a legacy
+    //"Open" reads as the Land it will be stored as.
+    const mapLabel = computed(() => {
+      if (!props.showSecondary) return "";
+      const map = normaliseMap(props.build?.map);
+      return map === DEFAULT_MAP ? "" : map;
+    });
+
     const hasStats = computed(() =>
       Boolean(
         props.createdDate ||
@@ -116,11 +126,12 @@ export default {
           props.build?.upvotes ||
           props.build?.comments > 0 ||
           props.build?.season ||
-          (props.showSecondary && (props.build?.map || props.build?.strategy))
+          mapLabel.value ||
+          (props.showSecondary && props.build?.strategy)
       )
     );
 
-    return { timeSince, formatCount, hasPeople, hasStats, canHover };
+    return { timeSince, formatCount, hasPeople, hasStats, canHover, mapLabel };
   },
 };
 </script>
