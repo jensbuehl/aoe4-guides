@@ -1,9 +1,6 @@
 <template>
   <v-card rounded="lg" flat>
-    <div class="build-card-section-header d-flex align-center px-4 ga-2">
-      <v-icon size="16" color="accent">mdi-comment-outline</v-icon>
-      <span class="text-caption text-uppercase font-weight-bold">Comments</span>
-    </div>
+    <SectionHeader icon="mdi-comment-outline" label="Comments" />
     <v-row no-gutters align="center" class="ma-4">
       <v-col v-if="!user" align="center" class="pa-2 ma-2">
         <div>
@@ -65,6 +62,7 @@ import { ref, onMounted, computed } from "vue";
 
 //Components
 import Comment from "@/components/Comment.vue";
+import SectionHeader from "@/components/common/SectionHeader.vue";
 
 //Composables
 import { addComment, getComments } from "@/composables/data/commentService";
@@ -73,7 +71,7 @@ import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
 
 export default {
   name: "Discussion",
-  components: { Comment },
+  components: { Comment, SectionHeader },
   props: ["buildId"],
   setup(props) {
     const store = useStore();
@@ -117,9 +115,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.build-card-section-header {
-  letter-spacing: 0.05em;
-  height: 36px;
-}
-</style>

@@ -239,15 +239,19 @@
     <!-- Description card: collapsible on mobile, static on desktop -->
     <v-card v-if="build.description" flat rounded="lg" class="mt-4">
       <!-- Mobile: collapsible header -->
-      <div
-        class="d-md-none build-card-section-header d-flex align-center px-4 ga-2"
+      <SectionHeader
+        icon="mdi-text-box-outline"
+        label="Description"
+        class="d-md-none"
         style="cursor: pointer"
         @click="descriptionExpanded = !descriptionExpanded"
       >
-        <v-icon size="16" color="accent">mdi-text-box-outline</v-icon>
-        <span class="text-caption text-uppercase font-weight-bold flex-grow-1">Description</span>
-        <v-icon size="16" :icon="descriptionExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"></v-icon>
-      </div>
+        <v-icon
+          size="16"
+          class="ml-auto"
+          :icon="descriptionExpanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+        ></v-icon>
+      </SectionHeader>
       <v-expand-transition>
         <!-- wrapper with no padding so height can animate cleanly to 0 -->
         <div v-show="descriptionExpanded" class="d-md-none">
@@ -256,10 +260,7 @@
       </v-expand-transition>
 
       <!-- Desktop: always expanded -->
-      <div class="d-none d-md-flex build-card-section-header align-center px-4 ga-2">
-        <v-icon size="16" color="accent">mdi-text-box-outline</v-icon>
-        <span class="text-caption text-uppercase font-weight-bold">Description</span>
-      </div>
+      <SectionHeader icon="mdi-text-box-outline" label="Description" class="d-none d-md-flex" />
       <v-card-text class="d-none d-md-block" style="white-space: pre-line">{{ build.description }}</v-card-text>
     </v-card>
 
@@ -285,10 +286,7 @@
 
     <!-- Video card: always after build order -->
     <v-card flat v-if="build.video" rounded="lg" class="mt-4">
-      <div class="build-card-section-header d-flex align-center px-4 ga-2">
-        <v-icon size="16" color="accent">mdi-youtube</v-icon>
-        <span class="text-caption text-uppercase font-weight-bold">Video</span>
-      </div>
+      <SectionHeader icon="mdi-youtube" label="Video" />
       <div class="px-4 pb-4">
         <div style="border-radius: 8px; overflow: hidden; aspect-ratio: 16/9">
           <iframe
@@ -328,6 +326,7 @@ import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
 import BuildShareDialog from "@/components/builds/BuildShareDialog.vue";
+import SectionHeader from "@/components/common/SectionHeader.vue";
 import { HIDE_AFTER } from "@/components/Header.vue";
 
 //composables
@@ -364,6 +363,7 @@ export default {
     BuildNotFound,
     BuildHeader,
     BuildShareDialog,
+    SectionHeader,
   },
   props: ["id"],
   setup(props) {
@@ -891,12 +891,6 @@ export default {
 };
 </script>
 
-<style scoped>
-.build-card-section-header {
-  letter-spacing: 0.05em;
-  height: 36px;
-}
-</style>
 
 <!--Unscoped on purpose: the dialog teleports to the overlay container at body
     level, so it is not a descendant of this component and :deep() cannot reach
