@@ -46,11 +46,18 @@ const HALF_LIFE_DAYS = 7;
  *   would be worth a month of a trending build's views.
  * Downvotes count for nothing: downvoting was removed (151 ever, shown nowhere).
  *
+ * Version 3 (spec 044) adds remixes: 50 per distinct OTHER account with a build
+ * remixed from this one (`remixCredit`, derived nightly in lineage.js, never
+ * written by a client). Below a like and above an upvote: a remix is rarer and
+ * more effort than a like, but not purely an endorsement — many remix to change
+ * the build, or to study it privately. Code hosting draws the same line: a fork
+ * is counted and shown, but ranks below a star.
+ *
  * Changing these MUST bump WEIGHTS_VERSION: a build measured under other
  * weights is re-based once rather than credited the difference as activity.
  */
-const WEIGHTS = { views: 1, upvotes: 25, likes: 100 };
-const WEIGHTS_VERSION = 2;
+const WEIGHTS = { views: 1, upvotes: 25, likes: 100, remixes: 50 };
+const WEIGHTS_VERSION = 3;
 
 /** Below this a score is noise; it is set to 0 once and then left alone. */
 const TREND_FLOOR = 0.1;
@@ -75,7 +82,8 @@ function activityTotal(build) {
   return (
     WEIGHTS.views * finite(build.views) +
     WEIGHTS.upvotes * finite(build.upvotes) +
-    WEIGHTS.likes * finite(build.likes)
+    WEIGHTS.likes * finite(build.likes) +
+    WEIGHTS.remixes * finite(build.remixCredit)
   );
 }
 

@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from "vue-router";
 import { auth, onAuthStateChanged } from "@/firebase";
 import store from "@/store";
 import { civs, getCivById, getCivBySlug } from "@/composables/filter/civDefaultProvider";
+import { removeCanonical, setCanonicalPath } from "@/composables/canonical";
 
 // Views are lazy-loaded so each route ships as its own chunk — the initial
 // bundle only contains what the landing route needs, not every view (heavy
@@ -31,7 +32,6 @@ const Brand = () => import("@/views/Brand.vue");
 
 const Admin = () => import("@/views/Admin.vue");
 
-const SITE_ORIGIN = "https://aoe4guides.com";
 
 // Pages that must never claim to be canonical: auth screens, per-user pages,
 // and anything that isn't a real page. Kept in step with public/sitemap.xml —
@@ -67,23 +67,14 @@ const NON_CANONICAL_ROUTES = new Set([
  * @param {import("vue-router").RouteLocationNormalized} to - The route navigated to.
  */
 function setCanonical(to) {
-  let link = document.querySelector('link[rel="canonical"]');
-
   if (NON_CANONICAL_ROUTES.has(to.name)) {
-    link?.remove();
+    removeCanonical();
     return;
-  }
-
-  if (!link) {
-    link = document.createElement("link");
-    link.setAttribute("rel", "canonical");
-    document.head.appendChild(link);
   }
 
   // to.path, not to.fullPath: filter and redirect query strings are different
   // views of the same page, not pages in their own right.
-  const path = to.path.length > 1 ? to.path.replace(/\/+$/, "") : "";
-  link.setAttribute("href", `${SITE_ORIGIN}/${path.replace(/^\//, "")}`);
+  setCanonicalPath(to.path.length > 1 ? to.path.replace(/\/+$/, "") : "");
 }
 
 const routes = [

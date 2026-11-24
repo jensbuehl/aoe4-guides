@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/043-build-search/plan.md`.
+at `.specify/specs/044-remix-lineage/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -98,6 +98,20 @@ and misses everything inside. Seven of those shipped before the check existed.
 Go through `flattenSections`/`sectionOffsets` to read the build as one path, or
 `forEachStep` to visit every step in the document — sanitising, validating and
 counting all have to reach the paths nobody chose, because those are saved too.
+
+**A field that public lists filter on must exist on every build.** Firestore's
+`where(field, "==", null)` matches documents that *hold* null, never ones that
+lack the field, so a missing field silently drops a build from every list — no
+error, a green build, an empty page. Spec 044's `duplicateOf` is the case: it is
+seeded on all builds (`scripts/link-remixes.mjs`), written as `null` by
+`addBuild`, and back-filled nightly by `updateBuildTrend`. Ship a new filter only
+after that seed has run, and check every list shape for a missing index against
+a real project — the emulator enforces none, and the list read swallows the
+error. The REST probe in 044's quickstart §3 is the quick way.
+
+Who came first is decided by server time only. A build's `timeCreated` is
+written by the client and reset by Publish; precedence uses Firestore's
+`createTime` or a server-owned stamp (044's `stepsSince`).
 
 **A theme token in `src/main.js` has two call-site forms, and grepping for one
 misses the other.** Colours are read as CSS — `rgb(var(--v-theme-age))` — and as

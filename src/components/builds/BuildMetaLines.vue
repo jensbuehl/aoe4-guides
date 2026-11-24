@@ -38,6 +38,36 @@
           >{{ build.remixOf.title }}</router-link
         ><template v-if="build.remixOf.author"> by {{ build.remixOf.author }}</template>
       </span>
+      <!--
+        The other direction (spec 044): who built on this one. Written nightly by
+        updateBuildTrend from the remixes pointing here (published, by other
+        players), so it costs the page no read. A tap opens the list; nothing is
+        hover-only. Its · lives inside the item for the same reason as above.
+      -->
+      <span v-if="remixCount" class="d-inline-flex align-center">
+        <span v-if="build.author || build.creatorId || build.remixOf?.id" class="mr-2 bml-sep">·</span>
+        <v-menu location="bottom start">
+          <template #activator="{ props: menuProps }">
+            <button type="button" v-bind="menuProps" class="bml-link bml-remixed d-inline-flex align-center">
+              <v-icon size="12">mdi-source-fork</v-icon>Remixed {{ remixCount }}
+              {{ remixCount === 1 ? "time" : "times" }}
+            </button>
+          </template>
+          <v-list density="compact" rounded="lg" class="bml-remix-list">
+            <v-list-item
+              v-for="remix in remixItems"
+              :key="remix.id"
+              :to="{ name: 'BuildDetails', params: { id: remix.id } }"
+            >
+              <v-list-item-title :title="remix.title">{{ remix.title || "Untitled build" }}</v-list-item-title>
+              <v-list-item-subtitle v-if="remix.author">by {{ remix.author }}</v-list-item-subtitle>
+            </v-list-item>
+            <v-list-item v-if="remixMore" disabled>
+              <v-list-item-title>and {{ remixMore }} more</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </span>
     </div>
 
     <!--stats-->
@@ -102,8 +132,19 @@ export default {
     const canHover = window.matchMedia("(hover: hover)").matches;
     const { timeSince, formatCount } = useTimeSince();
 
+    const remixCount = computed(() => {
+      const count = props.build?.remixes?.count;
+      return Number.isFinite(count) && count > 0 ? count : 0;
+    });
+    const remixItems = computed(() =>
+      Array.isArray(props.build?.remixes?.items) ? props.build.remixes.items : []
+    );
+    const remixMore = computed(() => Math.max(0, remixCount.value - remixItems.value.length));
+
     const hasPeople = computed(() =>
-      Boolean(props.build?.author || props.build?.creatorId || props.build?.remixOf?.id)
+      Boolean(
+        props.build?.author || props.build?.creatorId || props.build?.remixOf?.id || remixCount.value
+      )
     );
 
     //Land is never shown (spec 045 FR-004): nearly every build is a land build,
@@ -126,7 +167,17 @@ export default {
       )
     );
 
-    return { timeSince, formatCount, hasPeople, hasStats, canHover, mapLabel };
+    return {
+      timeSince,
+      formatCount,
+      hasPeople,
+      hasStats,
+      canHover,
+      mapLabel,
+      remixCount,
+      remixItems,
+      remixMore,
+    };
   },
 };
 </script>
@@ -165,5 +216,20 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* A link-looking trigger inside a caption line: a v-btn would bring its own
+   height and padding and push the line taller. The menu is the drawn surface. */
+.bml-remixed {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bml-remix-list {
+  max-width: min(360px, calc(100vw - 32px));
 }
 </style>

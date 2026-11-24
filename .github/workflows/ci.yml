@@ -36,4 +36,9 @@ jobs:
       # drifts from spec 043 (AND across title/author/civ, CJK, typo tolerance).
       - run: npm run check:search
 
+      # Fails if build fingerprints drift from forEachStep (alternatives paths,
+      # icons kept, notes left out) or if duplicate, credit and remix-list rules
+      # drift from spec 044 (stepsSince decides who is first, never timeCreated).
+      - run: npm run check:lineage
+
       - run: npm run build

@@ -67,6 +67,17 @@ check("builder: an unlisted build is never written (FR-007, SC-005)", () => {
   equal(index.builds.map((row) => row[0]), ["listed"]);
 });
 
+check("builder: an exact duplicate is never written, its original is (spec 044)", () => {
+  const index = buildSearchIndex(
+    [
+      build({ id: "orig", duplicateOf: null }),
+      build({ id: "copy", duplicateOf: { id: "orig", title: "Title", author: "Kestrel" } }),
+    ],
+    GENERATED
+  );
+  equal(index.builds.map((row) => row[0]), ["orig"]);
+});
+
 check("builder: two builds by one uid share one author", () => {
   const index = buildSearchIndex([build({ id: "a" }), build({ id: "b" })], GENERATED);
   equal(index.authors, [["uid-k", "Kestrel"]]);

@@ -155,17 +155,21 @@ exports.updateHomeSnapshot = onSchedule(
     logger.log("updateHomeSnapshot: start");
     const db = getFirestore();
     const buildsRef = db.collection("builds");
-    const filter = ["isDraft", "==", false];
+    // Listed builds: published, and not an exact duplicate of another (spec 044).
+    // `== null`, which no missing field matches — every build carries
+    // duplicateOf since the 044 seed, and the nightly job fills any gap. Served
+    // by merging the isDraft and duplicateOf indexes with each sort field.
+    const listed = () => buildsRef.where("isDraft", "==", false).where("duplicateOf", "==", null);
 
     const homeRef = db.collection("home").doc("home");
 
     const [popularSnap, allTimeSnap, recentSnap, contributorsSnap, countSnap, previousSnap] =
       await Promise.all([
-        buildsRef.where(...filter).orderBy("score", "desc").limit(BUILDS_LIMIT).get(),
-        buildsRef.where(...filter).orderBy("scoreAllTime", "desc").limit(BUILDS_LIMIT).get(),
-        buildsRef.where(...filter).orderBy("timeCreated", "desc").limit(BUILDS_LIMIT).get(),
+        listed().orderBy("score", "desc").limit(BUILDS_LIMIT).get(),
+        listed().orderBy("scoreAllTime", "desc").limit(BUILDS_LIMIT).get(),
+        listed().orderBy("timeCreated", "desc").limit(BUILDS_LIMIT).get(),
         db.collection("contributors").orderBy("viewCount", "desc").limit(CONTRIBUTORS_LIMIT).get(),
-        buildsRef.where(...filter).count().get(),
+        listed().count().get(),
         // Read before it is overwritten: the outgoing top eight is the only
         // record of whose `rank` field has to be cleared this run.
         homeRef.get(),

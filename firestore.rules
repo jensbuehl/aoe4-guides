@@ -19,8 +19,16 @@ service cloud.firestore {
       // Written only by the scheduled jobs (Admin SDK, which bypasses rules).
       // `trend*` is the recency bookkeeping of updateBuildTrend; `trendWeights`
       // is the weighting version that bookkeeping was measured under (spec 042).
+      // The lineage fields (spec 044) decide what every visitor sees:
+      // `duplicateOf` hides a build from every public list, `stepsHash` and
+      // `stepsSince` decide which of two identical builds is the original, and
+      // `remixCredit` / `remixes` feed the scores and the remix list.
       function serverOwned() {
-        return ['score', 'scoreAllTime', 'trend', 'trendBase', 'trendAt', 'trendWeights'];
+        return ['score', 'scoreAllTime', 'trend', 'trendBase', 'trendAt', 'trendWeights']
+          .concat(lineage());
+      }
+      function lineage() {
+        return ['duplicateOf', 'stepsHash', 'stepsSince', 'remixCredit', 'remixes'];
       }
       function changed() {
         return request.resource.data.diff(resource.data).affectedKeys();
@@ -106,6 +114,10 @@ service cloud.firestore {
       // the right thing to check: you may only create a build in your own name.
       // A new build starts every counter and score at zero, and carries no
       // trend bookkeeping at all: the job seeds that on its first sight of it.
+      // Of the lineage fields it may carry only `duplicateOf: null`, which
+      // addBuild sends because public lists filter `duplicateOf == null` and a
+      // missing field never matches; an older cached app sends none, and the
+      // nightly job fills the gap.
       allow create: if request.auth != null
                     && request.resource.data.authorUid == request.auth.uid
                     && startsAtZero('views') && startsAtZero('likes')
@@ -113,6 +125,8 @@ service cloud.firestore {
                     && startsAtZero('comments')
                     && startsAtZero('score') && startsAtZero('scoreAllTime')
                     && !request.resource.data.keys().hasAny(['trend', 'trendBase', 'trendAt', 'trendWeights'])
+                    && !request.resource.data.keys().hasAny(['stepsHash', 'stepsSince', 'remixCredit', 'remixes'])
+                    && request.resource.data.get('duplicateOf', null) == null
                     && allowedFacets();
 
       // An author's edit leaves the numbers alone. Unchanged keys are not in
