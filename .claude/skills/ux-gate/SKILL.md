@@ -53,6 +53,19 @@ below are encoded there:
   account `ux-test-mobile@example.com` on `aoe4-guides-dev`. Its password is
   not in the repo — ask the owner, and say plainly when those pages went
   unverified.
+- **Or sign in a stand-in** when what matters is the UI's own logic (spec 042
+  did this for every like/upvote state): commit a user to the store
+  (`document.querySelector("#app").__vue_app__.config.globalProperties.$store
+  .commit("setUser", { uid, emailVerified: true })`) and swap the data modules
+  as Vite serves them — `page.setRequestInterception(true)` and `req.respond()`
+  with a stub module — so no read or write reaches either project. Routes with
+  `requiresAuth` check `auth.currentUser`, not the store: rewrite that one line
+  in the served `src/router/index.js`. **Match modules by suffix**: on Windows
+  Vite serves them as `/@fs/C:/…/src/…`, so a `pathname === "/src/…"` check
+  silently misses and the real module runs. And fetch anything you need via
+  `import()` from a page *without* the interception: a dynamic import there
+  loads a second, rewritten router that navigates mid-evaluate ("Promise was
+  collected").
 - **Home never reaches `networkidle` reliably** while the News card holds a
   YouTube embed: its ad traffic keeps the network busy, so `open()` can time
   out or a run can hang with the app perfectly fine. On Home, abort requests

@@ -17,7 +17,7 @@
     "check:plurals": "node scripts/check-plurals.mjs",
     "check:steps": "node scripts/check-steps.mjs",
     "check:setup": "node scripts/check-setup.mjs",
-    "test:rules": "firebase emulators:exec --only firestore --project demo-aoe4-guides \"node --test tests/rules/*.test.mjs\""
+    "test:rules": "firebase emulators:exec --only firestore --project demo-aoe4-guides \"node --test --test-concurrency=1 tests/rules/*.test.mjs\""
   },
   "dependencies": {
     "@firebase/app-check": "^0.8.13",

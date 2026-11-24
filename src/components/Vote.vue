@@ -4,71 +4,18 @@
             :style="{
                 color: $vuetify.theme.current.colors.primary,
             }"
-            >I like! This is a good one!</span
+            >{{ upVote ? "Remove your upvote" : "I like! This is a good one!" }}</span
         >
-        <template v-slot:activator="{ props }">
+        <template v-slot:activator="{ props: tooltipProps }">
             <v-btn
-                @click="handleAddVoteUp"
-                v-bind="props"
-                v-show="!upVote"
+                @click="toggle"
+                v-bind="tooltipProps"
+                :loading="pending"
+                :aria-pressed="upVote"
+                :aria-label="upVote ? 'Remove your upvote' : 'Upvote this build'"
                 color="accent"
                 variant="text"
-                icon="mdi-thumb-up-outline"
-            ></v-btn>
-        </template>
-    </v-tooltip>
-    <v-tooltip location="top">
-        <span
-            :style="{
-                color: $vuetify.theme.current.colors.primary,
-            }"
-            >Remove your like</span
-        >
-        <template v-slot:activator="{ props }">
-            <v-btn
-                class="ml-0"
-                @click="handleRemoveVoteUp"
-                v-show="upVote"
-                v-bind="props"
-                color="accent"
-                variant="text"
-                icon="mdi-thumb-up"
-            ></v-btn>
-        </template>
-    </v-tooltip>
-    <v-tooltip location="top">
-        <span
-            :style="{
-                color: $vuetify.theme.current.colors.primary,
-            }"
-            >Downvote! Villagers need to improve this build!</span
-        >
-        <template v-slot:activator="{ props }">
-            <v-btn
-                @click="handleAddVoteDown"
-                v-bind="props"
-                v-show="!downVote"
-                color="accent"
-                variant="text"
-                icon="mdi-thumb-down-outline"
-            ></v-btn>
-        </template>
-    </v-tooltip>
-    <v-tooltip location="top">
-        <span
-            :style="{
-                color: $vuetify.theme.current.colors.primary,
-            }"
-            >I changed my mind. This build is pretty neat!</span
-        >
-        <template v-slot:activator="{ props }">
-            <v-btn
-                @click="handleRemoveVoteDown"
-                v-show="downVote"
-                v-bind="props"
-                color="accent"
-                variant="text"
-                icon="mdi-thumb-down"
+                :icon="upVote ? 'mdi-thumb-up' : 'mdi-thumb-up-outline'"
             ></v-btn>
         </template>
     </v-tooltip>
@@ -76,94 +23,62 @@
 
 <script>
 //External
-import { onMounted, ref } from "vue";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
 //Composables
-import {
-    addUpvote,
-    removeUpvote,
-    addDownvote,
-    removeDownvote,
-} from "@/composables/data/favoriteService";
+import { setReaction } from "@/composables/data/reactionService";
 import { useVerificationGuard } from "@/composables/auth/useVerificationGuard";
-import {
-    incrementDownvotes,
-    decrementDownvotes,
-    incrementUpvotes,
-    decrementUpvotes,
-} from "@/composables/data/buildService";
+import { reactionErrorMessage } from "@/composables/data/reactionMessages";
 
+// Thumbs-up only. Downvoting was removed in spec 042: 151 downvotes in the
+// site's history, shown nowhere, yet each one weighed −10 in the trending
+// score — an invisible lever against a new build. The stored values are frozen.
 export default {
-    name: "Favorites",
-    props: ["buildId", "modelValue"],
+    name: "Vote",
+    // modelValue: the reader's lists document, shared with Favorite and with
+    // the other mounted copy of this button. count: the build's `upvotes`.
+    props: ["buildId", "modelValue", "count"],
     emits: ["voteUpAdded", "voteUpRemoved"],
     setup(props, context) {
-        const upVote = ref(false);
-        const downVote = ref(false);
-        const userId = ref(props.modelValue?.uid);
+        const store = useStore();
         const { assertVerified } = useVerificationGuard();
 
-        onMounted(async () => {
-            const user = props.modelValue;
-            userId.value = user?.id;
-            if (user.upvotes?.includes(props.buildId)) {
-                upVote.value = user.upvotes?.includes(props.buildId);
-            }
+        // Shared state, not a private ref: see Favorite.vue.
+        const upVote = computed(() => props.modelValue?.upvotes?.includes(props.buildId) ?? false);
+        const pending = ref(false);
 
-            if (user.downvotes?.includes(props.buildId)) {
-                downVote.value = user.downvotes?.includes(props.buildId);
-            }
-        });
-        const handleAddVoteUp = async () => {
-            if (!assertVerified()) return;
-            incrementUpvotes(props.buildId);
-            addUpvote(userId.value, props.buildId);
-            upVote.value = !upVote.value;
-            context.emit("voteUpAdded");
+        const toggle = async () => {
+            if (pending.value) return;
+            const on = !upVote.value;
+            if (on && !assertVerified()) return;
 
-            removeDownVote();
-        };
-        const handleRemoveVoteUp = async () => {
-            removeUpVote();
-        };
-        const handleAddVoteDown = async () => {
-            if (!assertVerified()) return;
-            incrementDownvotes(props.buildId);
-            addDownvote(userId.value, props.buildId);
-            downVote.value = !downVote.value;
-
-            removeUpVote();
-        };
-
-        const handleRemoveVoteDown = async () => {
-            removeDownVote();
-        };
-
-        const removeUpVote = () => {
-            if (upVote.value) {
-                decrementUpvotes(props.buildId);
-                removeUpvote(userId.value, props.buildId);
-                upVote.value = !upVote.value;
-                context.emit("voteUpRemoved");
-            }
-        };
-
-        const removeDownVote = () => {
-            if (downVote.value) {
-                decrementDownvotes(props.buildId);
-                removeDownvote(userId.value, props.buildId);
-                downVote.value = !downVote.value;
+            pending.value = true;
+            try {
+                await setReaction({
+                    uid: props.modelValue.id,
+                    buildId: props.buildId,
+                    list: "upvotes",
+                    on,
+                    currentCount: props.count,
+                });
+                if (!Array.isArray(props.modelValue.upvotes)) props.modelValue.upvotes = [];
+                const list = props.modelValue.upvotes;
+                if (on) list.push(props.buildId);
+                else list.splice(0, list.length, ...list.filter((id) => id !== props.buildId));
+                context.emit(on ? "voteUpAdded" : "voteUpRemoved");
+            } catch (err) {
+                console.error("Vote: upvote not recorded:", err?.code, err?.message);
+                store.dispatch("showSnackbar", { text: reactionErrorMessage(err), type: "error" });
+            } finally {
+                pending.value = false;
             }
         };
 
         return {
-            props,
-            downVote,
             upVote,
-            handleAddVoteUp,
-            handleRemoveVoteUp,
-            handleAddVoteDown,
-            handleRemoveVoteDown,
+            pending,
+            toggle,
         };
     },
 };

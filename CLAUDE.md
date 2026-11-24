@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/040-fair-trending/plan.md`.
+at `.specify/specs/042-vote-integrity/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -84,12 +84,20 @@ not the source — `grep` the emitted `dist/assets/*.js`.
 first.** The rules are the only thing standing between a browser console and the
 database: App Check does not help, because the console runs inside an attested
 page. Every allowed and refused write is listed in
-`.specify/specs/040-fair-trending/contracts/firestore-rules.md` and tested in
-`tests/rules/`. A new case should fail against the deployed rules
+`.specify/specs/040-fair-trending/contracts/firestore-rules.md` (likes, upvotes
+and the account's lists: `.specify/specs/042-vote-integrity/contracts/firestore-rules.md`)
+and tested in `tests/rules/`. A new case should fail against the deployed rules
 (`RULES_FILE=<copy>`) before it passes against the new ones: that is what shows it
 covers the hole. On an update, never grant on `request.resource.data.<owner>` —
 that is the value the caller just sent, and it let any user take over any build
 until 2026-11-07. The emulator needs Java; see the quickstart there.
+
+The test files share one emulator, so `test:rules` runs them one at a time
+(`--test-concurrency=1`). Run in parallel — `node --test`'s default — one file's
+`clearFirestore()` wipes another's seed mid-test, and cases that have nothing to
+do with the change fail at random. A rule that reads another document
+(`get`/`getAfter`) is tested with the whole batch the client sends, never one
+write of it: the other half is what the rule checks.
 
 Run `npm run check:steps` after touching anything that reads a build. A
 section's `steps` holds ordinary steps, notes **and** alternatives blocks whose

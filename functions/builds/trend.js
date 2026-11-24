@@ -31,6 +31,27 @@ const TRENDING_SOURCE = "recency";
 
 const HALF_LIFE_DAYS = 7;
 
+/**
+ * What each kind of activity is worth, in views (spec 042). Version 1 was
+ * views 1, upvotes 5, downvotes −10, likes 50.
+ *
+ * Measured 2026-11-24 over 4,442 published builds (4.34 M views, 7,440 likes,
+ * 2,429 upvotes, 134 downvotes): views were ~92% of every score, likes ~8%,
+ * upvotes 0.3%. Two rules set the new values, and the lower one binds:
+ * - rarity and intent — a like arrives once per ~580 views, an upvote once per
+ *   ~1,800, and a like is a save, the strongest signal — is the ceiling;
+ * - trust — since spec 042 a like or upvote is one per verified account, but
+ *   accounts are not free either, so one account's whole say on a build (like
+ *   + upvote) is capped at 125 views; near the ceiling, ten throwaway accounts
+ *   would be worth a month of a trending build's views.
+ * Downvotes count for nothing: downvoting was removed (151 ever, shown nowhere).
+ *
+ * Changing these MUST bump WEIGHTS_VERSION: a build measured under other
+ * weights is re-based once rather than credited the difference as activity.
+ */
+const WEIGHTS = { views: 1, upvotes: 25, likes: 100 };
+const WEIGHTS_VERSION = 2;
+
 /** Below this a score is noise; it is set to 0 once and then left alone. */
 const TREND_FLOOR = 0.1;
 
@@ -42,8 +63,8 @@ function finite(value) {
 }
 
 /**
- * The weighted activity of a build. The same weights the old score used;
- * spec 040 changes when activity counts, not how much each kind is worth.
+ * The weighted activity of a build (WEIGHTS). Both scores use it: the trend
+ * from its daily change, All-time from its total.
  *
  * Missing AND non-finite fields count as 0, not just missing ones: in
  * November 2026, 20 builds held `upvotes: NaN`, written by some client under
@@ -52,10 +73,9 @@ function finite(value) {
  */
 function activityTotal(build) {
   return (
-    finite(build.views) +
-    5 * finite(build.upvotes) -
-    10 * finite(build.downvotes) +
-    50 * finite(build.likes)
+    WEIGHTS.views * finite(build.views) +
+    WEIGHTS.upvotes * finite(build.upvotes) +
+    WEIGHTS.likes * finite(build.likes)
   );
 }
 
@@ -75,13 +95,22 @@ function toMillis(at) {
  *   publishing does not land them all at once; the score stays 0.
  * - updated: decayed by the time actually elapsed since the last write (exact
  *   after a missed or late run), plus what it gained since, never below 0.
+ * - rebased: last measured under other WEIGHTS (`trendWeights` absent = 1).
+ *   Its total jumped because the weights changed, not because anyone did
+ *   anything, so the trend only decays as on any day, no delta is added, and
+ *   the base is re-taken under the new weights. Without this, the first run
+ *   after the 042 switch would hand a build with 80 likes ~4,000 points of
+ *   "activity" overnight. Per build, so an interrupted run simply re-bases the
+ *   rest next time.
  * - unchanged: nothing to write. Lossless, because the stored base and
  *   timestamp are then still the right ones to measure from next time.
  *
- * @param {object} build - the stored fields: trend, trendBase, trendAt, isDraft
+ * Every result but "unchanged" carries `trendWeights` to store with it.
+ *
+ * @param {object} build - the stored fields: trend, trendBase, trendAt, trendWeights, isDraft
  * @param {number} total - activityTotal(build)
  * @param {number} nowMs
- * @return {{kind: string, trend: number, trendBase: number}}
+ * @return {{kind: string, trend: number, trendBase: number, trendWeights: number}}
  */
 function nextTrend(build, total, nowMs) {
   const storedTrend = finite(build.trend);
@@ -89,25 +118,35 @@ function nextTrend(build, total, nowMs) {
 
   // A NaN base (seeded from a NaN total before activityTotal guarded against
   // it) is as good as none: seed again.
+  const trendWeights = WEIGHTS_VERSION;
   if (!Number.isFinite(build.trendBase) || since === null) {
-    return { kind: "seeded", trend: 0, trendBase: total };
+    return { kind: "seeded", trend: 0, trendBase: total, trendWeights };
   }
 
+  const current = (build.trendWeights ?? 1) === WEIGHTS_VERSION;
+
   if (build.isDraft === true) {
-    const kind = storedTrend === 0 && build.trendBase === total ? "unchanged" : "held";
-    return { kind, trend: 0, trendBase: total };
+    const kind = current && storedTrend === 0 && build.trendBase === total ? "unchanged" : "held";
+    return { kind, trend: 0, trendBase: total, trendWeights };
+  }
+
+  const decay = Math.pow(0.5, Math.max(0, nowMs - since) / DAY_MS / HALF_LIFE_DAYS);
+
+  if (!current) {
+    let trend = Math.max(0, storedTrend * decay);
+    if (trend < TREND_FLOOR) trend = 0;
+    return { kind: "rebased", trend, trendBase: total, trendWeights };
   }
 
   const delta = total - build.trendBase;
   if (storedTrend === 0 && delta === 0) {
-    return { kind: "unchanged", trend: 0, trendBase: total };
+    return { kind: "unchanged", trend: 0, trendBase: total, trendWeights };
   }
 
-  const days = Math.max(0, nowMs - since) / DAY_MS;
-  let trend = Math.max(0, storedTrend * Math.pow(0.5, days / HALF_LIFE_DAYS) + delta);
+  let trend = Math.max(0, storedTrend * decay + delta);
   if (trend < TREND_FLOOR) trend = 0;
 
-  return { kind: "updated", trend, trendBase: total };
+  return { kind: "updated", trend, trendBase: total, trendWeights };
 }
 
 /** What `score` holds once the switch is on: same order as `trend`, and a number in the old score's range. */
@@ -118,6 +157,8 @@ function scoreFromTrend(trend) {
 module.exports = {
   TRENDING_SOURCE,
   HALF_LIFE_DAYS,
+  WEIGHTS,
+  WEIGHTS_VERSION,
   TREND_FLOOR,
   activityTotal,
   nextTrend,

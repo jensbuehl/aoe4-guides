@@ -17,7 +17,9 @@
 </template>
 
 <script>
-const icons = ["mdi-thumb-up-outline", "mdi-thumb-down-outline", "mdi-heart-outline"];
+// The same buttons Vote and Favorite draw, in order. Downvoting was removed in
+// spec 042, so there is no thumbs-down here either.
+const icons = ["mdi-thumb-up-outline", "mdi-heart-outline"];
 
 export default {
   name: "BuildActionsFallback",
