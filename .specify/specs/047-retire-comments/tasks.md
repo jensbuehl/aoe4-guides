@@ -43,9 +43,11 @@
 
 ## Phase 5: Release & harvest
 
-- [ ] T018 Merge to `main` and release (app step), with owner approval.
-- [ ] T019 Update memory `project-042-pending-deploys`: the rules and functions deploys now also ship 047 step 2, and step 3 follows them.
+- [x] T018 Merge to `main` and release (app step), with owner approval.
+  - *Done 2026-11-24*: released as **1.28.0** (merged over 045's 1.27.0; the merged tree passed build, checks and `test:rules` 89/89). Verified on production with a build holding 3 comments, at 393 and 1280: no Comments section, no comment text or icon, no Firestore request naming `comments`, and the page ends with the 046 rails. Step 2 is on `main` but not deployed.
+- [x] T019 Update memory `project-042-pending-deploys`: the rules and functions deploys now also ship 047 step 2, and step 3 follows them.
 
+  - *Done*: memory `project-042-pending-deploys` says the 042 rules and functions deploys now carry 047 step 2, what the functions CLI will ask, and that step 3 (T017) follows with the owner's go-ahead.
 ## Dependencies
 
 T002–T010 → T018 (app ships). T011 → T012. T012, T013 and T014 are on `main` with T018, but deploy only with 042. T015–T016 can happen any time. T017 waits for the 042 deploys and the owner.

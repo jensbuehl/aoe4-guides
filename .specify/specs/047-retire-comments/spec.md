@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-24
 
-**Status**: Draft. The app step is ready to build; the backend and data steps are gated (see Sequence).
+**Status**: Step 1 live (1.28.0). Step 2 on `main`, deploys with 042 (on or after 2026-12-01). Step 3 gated on step 2 and the owner.
 
 **Input**: Owner, 2026-11-24: "retire as you proposed (including deleting of the comments)."
 
