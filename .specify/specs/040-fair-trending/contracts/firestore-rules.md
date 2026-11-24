@@ -3,6 +3,11 @@
 The rules are the contract: what any client — ours, a script, the browser console — may write.
 Everything below is enforced by `firestore.rules`; the client merely complies.
 
+> **Superseded in part by spec 042** (2026-11-24): a `likes` or `upvotes` step is no longer a bare
+> ±1 — it is allowed only in the same batched write as the caller's own list change, adding needs a
+> verified address, and `downvotes` is frozen. Cases A2, A3 and A8 changed accordingly; see
+> [042's contract](../../042-vote-integrity/contracts/firestore-rules.md). `trendWeights` joined SERVER.
+
 ## `builds/{id}`
 
 ```
