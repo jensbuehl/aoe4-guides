@@ -53,10 +53,6 @@
       <span v-if="build.upvotes" class="d-inline-flex align-center">
         <v-icon size="12">mdi-thumb-up</v-icon>{{ formatCount(build.upvotes) }}
       </span>
-      <template v-if="build.comments > 0"><span class="bml-sep">·</span></template>
-      <span v-if="build.comments > 0" class="d-inline-flex align-center">
-        <v-icon size="12">mdi-message-outline</v-icon>{{ build.comments }}
-      </span>
       <template v-if="build.season"><span class="bml-sep">·</span></template>
       <v-tooltip v-if="build.season" location="top" :open-on-click="!canHover" :persistent="canHover">
         <SeasonToolTip :title="build.season" />
@@ -124,7 +120,6 @@ export default {
         props.createdDate ||
           props.build?.views ||
           props.build?.upvotes ||
-          props.build?.comments > 0 ||
           props.build?.season ||
           mapLabel.value ||
           (props.showSecondary && props.build?.strategy)

@@ -46,7 +46,6 @@ function pickBuildFields(data, id) {
     score: data.score ?? 0,
     scoreAllTime: data.scoreAllTime ?? 0,
     views: data.views ?? 0,
-    comments: data.comments ?? 0,
     timeCreated: data.timeCreated ?? null,
     isDraft: data.isDraft ?? false,
     // Copied through, never computed here: the derivation lives in the client's

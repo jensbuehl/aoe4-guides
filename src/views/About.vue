@@ -365,8 +365,8 @@ const features = [
   },
   {
     icon: "mdi-heart-outline",
-    title: "Save and discuss",
-    text: "Favorite the builds you practice, vote on what works, and leave comments for the author.",
+    title: "Save and vote",
+    text: "Favorite the builds you practice and vote on what works.",
   },
   {
     icon: "mdi-share-variant",

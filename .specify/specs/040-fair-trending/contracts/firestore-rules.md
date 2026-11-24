@@ -31,7 +31,7 @@ update (author edit):
 update (counter step) — exactly one key changes, and it is:
          views                               new == old + 1           anyone
          likes | upvotes | downvotes         new == old ± 1           signed in
-         comments                            new == old ± 1           signed in
+         comments                            new == old ± 1           signed in   ← retired by 047: no step allowed
          (old read as resource.data.get(f, 0))
 
 delete:  signed in ∧ existing authorUid == caller
@@ -66,7 +66,7 @@ alternatives, not one combined rule.
 | A1 | anonymous | `views: increment(1)` |
 | A2 | signed-in | `likes: increment(1)`, then `increment(-1)` |
 | A3 | signed-in | `upvotes`/`downvotes` ±1 |
-| A4 | signed-in | `comments` ±1 |
+| A4 | signed-in | ~~`comments` ±1~~ (047: comments retired; now refused, see `tests/rules/builds.rules.test.mjs` A4 and `comments.rules.test.mjs`) |
 | A5 | author | edit title, steps, `isDraft`, `timeCreated`, `timeUpdated` without counter keys |
 | A6 | signed-in | create with every counter and score at 0 (editor, remix and import payloads) |
 | A7 | author | delete |

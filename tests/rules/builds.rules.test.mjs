@@ -213,9 +213,10 @@ describe("builds: counters can only be stepped", () => {
     await assertSucceeds(react(verified("bob"), "bob", BUILD, "upvotes"));
   });
 
-  it("A4: a signed-in visitor's comment moves the count by one", async () => {
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { comments: increment(1) }));
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { comments: increment(-1) }));
+  it("A4 (047): comments are retired — no one steps the count any more", async () => {
+    await assertFails(updateDoc(doc(bob(), BUILD), { comments: increment(1) }));
+    await assertFails(updateDoc(doc(bob(), BUILD), { comments: increment(-1) }));
+    await assertFails(updateDoc(doc(alice(), BUILD), { comments: increment(1) }));
   });
 
   it("the author may like their own build like anyone else", async () => {
