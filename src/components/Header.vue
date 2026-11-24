@@ -656,9 +656,8 @@ export default {
 </script>
 
 <style scoped>
-.v-container {
-  max-width: 1400px !important;
-}
+/* The bar's width is the site-wide container width (assets/main.css), so the
+   logo and the avatar stand on the same edges as every page's content. */
 /* The tile's navy is the dark bar's navy, so without the ring only the gold
    letters show and the mark reads as stray text. The radius follows the
    tile's own rounded corners.

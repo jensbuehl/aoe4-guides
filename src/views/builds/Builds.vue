@@ -45,11 +45,19 @@
           :length="paginationConfig.totalPages"
           total-visible="1"
           rounded="lg"
-        ></v-pagination>
+        >
+          <!-- One page shown, as the cursor paging cannot jump; the total
+               beside it is what says how far the list goes. -->
+          <template #item="{ page }">
+            <span class="list-page-label" aria-current="page"
+              >{{ page }} / {{ paginationConfig.totalPages }}</span
+            >
+          </template>
+        </v-pagination>
       </v-col>
 
       <v-col cols="12" md="4" class="hidden-sm-and-down">
-        <FilterConfig @configChanged="configChanged"> </FilterConfig>
+        <div class="sidebar-sticky"><FilterConfig @configChanged="configChanged"> </FilterConfig></div>
       </v-col>
     </v-row>
   </v-container>
@@ -67,6 +75,7 @@ import NoFilterResults from "@/components/notifications/NoFilterResults.vue";
 import { useRetry } from "@/composables/useRetry";
 import FilterConfig from "@/components/filter/FilterConfig.vue";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
+import { listPageSize } from "@/composables/useListPageSize";
 import AuthorPageHeader from "@/components/page/AuthorPageHeader.vue";
 
 //Composables
@@ -101,7 +110,7 @@ export default {
       totalPages: null,
       pageStart: null,
       pageEnd: null,
-      limit: 10,
+      limit: listPageSize(),
     });
 
     const initQueryParameters = async () => {
