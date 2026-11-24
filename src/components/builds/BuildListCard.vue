@@ -204,7 +204,7 @@
             <template v-if="showMap">
               <span class="blc-sep">·</span>
               <span 
-                ><v-icon size="13" icon="mdi-map"></v-icon>{{ build.map }}</span
+                ><v-icon size="13" icon="mdi-map"></v-icon>{{ mapLabel }}</span
               >
             </template>
           </div>
@@ -261,6 +261,7 @@ import SeasonToolTip from "@/components/common/SeasonToolTip.vue";
 
 //Composables
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
+import { DEFAULT_MAP, normaliseMap } from "@/composables/filter/mapDefaultProvider";
 import useTimeSince, { toDateSafe } from "@/composables/useTimeSince";
 import { useCursorTooltip } from "@/composables/useCursorTooltip";
 import {
@@ -343,8 +344,13 @@ export default {
 
     //Replaces a guard on filterConfig.map, which does not exist — the field is
     //maps[] — so the map has never rendered at all.
+    //
+    //Land is never shown (spec 045 FR-004, amending 020 FR-022): nearly every
+    //build is a land build, and a label on all of them stops saying anything.
+    //Normalised, so a legacy "Open" reads as the Land it will be stored as.
+    const mapLabel = computed(() => normaliseMap(props.build?.map));
     const showMap = computed(
-      () => Boolean(props.build?.map) && props.filterConfig?.maps?.length !== 1
+      () => mapLabel.value !== DEFAULT_MAP && props.filterConfig?.maps?.length !== 1
     );
 
     //Views are shown regardless of sort key, so the row's content no longer
@@ -434,6 +440,7 @@ export default {
       showCreator,
       showSeason,
       showMap,
+      mapLabel,
       showLikes,
       showPeopleLine,
       excerpt,

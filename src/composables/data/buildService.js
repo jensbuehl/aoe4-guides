@@ -15,6 +15,8 @@ import {
   getLimitToLastQueryParam,
 } from "@/composables/data/queryParameterBuilder";
 import { getAgeTimings, toStoredAgeTimings } from "@/composables/builds/useAgeTimings.js";
+import { normaliseMap } from "@/composables/filter/mapDefaultProvider";
+import { normaliseStrategy } from "@/composables/filter/strategyDefaultProvider";
 import { addHidden, removeHidden } from "@/composables/search/hiddenBuilds.js";
 import {
   getMostRecentBuildsConfig,
@@ -537,6 +539,24 @@ export async function getCivBuilds(filterConfig, limit) {
 }
 
 /**
+ * Sets a build's map and strategy to the values the app offers (spec 045).
+ *
+ * Here for the same reason as withAgeTimings: create, edit and publish-draft
+ * all funnel through addBuild/updateBuild. It is also what keeps an author from
+ * meeting firestore.rules' allowedFacets() refusal over a value they never
+ * chose — a restored local draft holding "Open", an imported typed-in strategy,
+ * or a legacy document opened before the cleanup.
+ *
+ * @param {Object} build - The build about to be written.
+ * @return {Object} The same build, with map and strategy normalised.
+ */
+function withFacets(build) {
+  build.map = normaliseMap(build.map);
+  build.strategy = normaliseStrategy(build.strategy);
+  return build;
+}
+
+/**
  * Stamps a build with its derived age timings.
  *
  * Done here rather than in the views because all three write paths — create,
@@ -627,7 +647,7 @@ function saveable(build) {
  * @return {Promise<void>} - A promise that resolves when the build is added and operations are completed.
  */
 export async function addBuild(build, customId = null) {
-  withAgeTimings(build);
+  withFacets(withAgeTimings(build));
   store.commit("setBuild", build);
   return add(saveable(build), customId);
 }
@@ -654,7 +674,7 @@ export async function deleteBuild(buildId) {
 export async function updateBuild(buildId, build, updateCreatedTimestamp = false) {
   //A copy, so the caller's build keeps its counters: the page and the store
   //still display them.
-  const payload = { ...saveable(withAgeTimings(build)) };
+  const payload = { ...saveable(withFacets(withAgeTimings(build))) };
   for (const field of NON_EDITABLE_FIELDS) delete payload[field];
   await update(buildId, payload, updateCreatedTimestamp);
   if (!collectionServiceError.value) updateSearchHiding(buildId, build);

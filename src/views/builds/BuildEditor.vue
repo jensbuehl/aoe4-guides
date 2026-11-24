@@ -234,22 +234,28 @@
               </template>
             </v-select>
           </v-col>
-          <!-- Map and strategy are stored as "" when unset, but a v-select
-               reads any value other than null as a selection, even one that
-               matches no item: an empty field then showed its clear X and a
-               floated label. So the field sees null for "", and a clear (which
-               emits null) is written back as the "" a new build starts with. -->
+          <!-- Both fields show the normalised value: what a save will store
+               (buildService's withFacets), so a legacy "Open" or a typed-in
+               strategy reads as Land / no strategy before anyone saves. Only
+               the display is normalised. Writing it back on load would count
+               as an edit, since map and strategy are tracked draft fields.
+
+               Map is required, so it has no clear. Strategy is optional and
+               stored as "" when unset, but a v-select reads any value other
+               than null as a selection, even one that matches no item: an
+               empty field then showed its clear X and a floated label. So the
+               field sees null for "", and a clear (which emits null) is
+               written back as the "" a new build starts with. -->
           <v-col cols="12" sm="6" md="3">
             <v-select
               prepend-icon="mdi-map"
               label="Map"
               :items="maps"
-              :model-value="build.map || null"
-              @update:model-value="(value) => (build.map = value ?? '')"
+              :model-value="normaliseMap(build.map)"
+              @update:model-value="(value) => (build.map = value)"
               density="compact"
               item-value="title"
               item-title="title"
-              clearable
             ></v-select>
           </v-col>
           <v-col cols="12" sm="6" md="3">
@@ -257,7 +263,9 @@
               prepend-icon="mdi-strategy"
               label="Strategy"
               :items="strategies"
-              :model-value="build.strategy || null"
+              :item-props="strategyItemProps"
+              :menu-props="STRATEGY_MENU_PROPS"
+              :model-value="normaliseStrategy(build.strategy) || null"
               @update:model-value="(value) => (build.strategy = value ?? '')"
               density="compact"
               item-value="title"
@@ -311,8 +319,13 @@ import { validateBuild } from "@/composables/builds/buildOrderValidator";
 import youtubeService from "@/composables/builds/youtubeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
 import { seasons, currentSeason } from "@/composables/filter/seasonDefaultProvider";
-import { maps } from "@/composables/filter/mapDefaultProvider";
-import { strategies } from "@/composables/filter/strategyDefaultProvider";
+import { maps, DEFAULT_MAP, normaliseMap } from "@/composables/filter/mapDefaultProvider";
+import {
+  strategies,
+  normaliseStrategy,
+  strategyItemProps,
+  STRATEGY_MENU_PROPS,
+} from "@/composables/filter/strategyDefaultProvider";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
 import { selectionFromActive } from "@/composables/builds/alternativesDraft.js";
 import { forEachStep } from "@/composables/builds/useAgeTimings.js";
@@ -464,7 +477,7 @@ export default {
           // A civ page's "Create build order" passes its civ along; anything
           // that is not a civ's short name is ignored, not stored.
           civ: civs.some((c) => c.shortName === route.query.civ) ? route.query.civ : "",
-          map: "",
+          map: DEFAULT_MAP,
           season: currentSeason().title,
           strategy: "",
           views: 0,
@@ -939,6 +952,10 @@ export default {
       user,
       civs,
       maps,
+      normaliseMap,
+      normaliseStrategy,
+      strategyItemProps,
+      STRATEGY_MENU_PROPS,
       strategies,
       seasons,
       isLoaded,

@@ -211,14 +211,45 @@
                 {{ option.title }}
               </v-chip>
             </v-chip-group>
+            <!-- A chip cannot carry a subtitle, so the sheet keeps the
+                 explanations behind a toggle (spec 045 FR-006): collapsed, the
+                 sheet is as short as before. Same items the selects read. -->
+            <template v-if="facet.explain">
+              <button
+                type="button"
+                class="fl-explain-toggle"
+                :aria-expanded="String(explainOpen)"
+                :aria-controls="`${sheetTitleId}-${facet.field}-explain`"
+                @click="explainOpen = !explainOpen"
+              >
+                {{ explainOpen ? "Hide explanations" : "What do these mean?" }}
+              </button>
+              <dl
+                v-show="explainOpen"
+                :id="`${sheetTitleId}-${facet.field}-explain`"
+                class="fl-explain text-caption"
+              >
+                <div v-for="option in facet.items" :key="option.title">
+                  <dt>{{ option.title }}</dt>
+                  <dd>{{ option.subtitle }}</dd>
+                </div>
+              </dl>
+            </template>
           </div>
         </v-card-text>
+        <p v-if="tooManyCombinations" class="fl-guard" role="status">{{ combinationsReason }}</p>
         <div class="fl-sheet-footer">
           <v-btn variant="text" :disabled="!draftHasFilters" @click="clearDraft">
             Clear all
           </v-btn>
-          <v-btn color="primary" variant="flat" class="flex-grow-1" @click="applySheet">
-            {{ applyLabel }}
+          <v-btn
+            color="primary"
+            variant="flat"
+            class="flex-grow-1"
+            :disabled="tooManyCombinations"
+            @click="applySheet"
+          >
+            {{ tooManyCombinations ? "Show results" : applyLabel }}
           </v-btn>
         </div>
       </v-card>
@@ -330,6 +361,8 @@
         label="Strategy"
         density="compact"
         :items="strategies"
+        :item-props="strategyItemProps"
+        :menu-props="STRATEGY_MENU_PROPS"
         item-value="title"
         item-title="title"
         clearable
@@ -353,6 +386,7 @@
       :appliedCount="count"
       :previewCount="previewCount"
       :previewLoading="previewLoading"
+      :blockedReason="tooManyCombinations ? combinationsReason : ''"
       @apply="handleApply"
     />
   </v-card>
@@ -371,9 +405,14 @@ import { featuredCreators } from "@/composables/filter/featuredCreatorDefaultPro
 import { maps } from "@/composables/filter/mapDefaultProvider";
 import { seasons } from "@/composables/filter/seasonDefaultProvider";
 import { getDefaultConfig } from "@/composables/filter/configDefaultProvider";
-import { strategies } from "@/composables/filter/strategyDefaultProvider";
+import {
+  strategies,
+  strategyItemProps,
+  STRATEGY_MENU_PROPS,
+} from "@/composables/filter/strategyDefaultProvider";
 import { useDraftFilterConfig } from "@/composables/filter/useDraftFilterConfig";
 import { useFilterCountPreview } from "@/composables/filter/useFilterCountPreview";
+import { disjunctionCount, MAX_DISJUNCTIONS } from "@/composables/data/queryParameterBuilder";
 
 import FilterChips from "@/components/filter/FilterChips.vue";
 import FilterApplyBar from "@/components/filter/FilterApplyBar.vue";
@@ -407,12 +446,20 @@ export default {
     const { draft, dirtyFields, dirtyCount, isDirty, resetField, applyDraft } =
       useDraftFilterConfig();
 
+    // A draft Firestore would refuse (spec 045 FR-017): its multi-selects
+    // expand to more combinations than one query may have. The list's read
+    // swallows that error, so applying it would show an empty list as if
+    // nothing matched. Applying is blocked and the reason shown instead.
+    const tooManyCombinations = computed(() => disjunctionCount(draft.value) > MAX_DISJUNCTIONS);
+    const combinationsReason = "Too many combinations — remove a season, map or strategy.";
+
     // Only fetch the preview count while the draft differs from the applied
     // config — the apply bar (its only consumer) is hidden otherwise. This
     // also keeps store-driven draft re-syncs (mount, route navigation) from
-    // firing a redundant count aggregation per FilterConfig instance.
+    // firing a redundant count aggregation per FilterConfig instance. Never
+    // for a draft the database would refuse.
     const { previewCount, previewLoading } = useFilterCountPreview(draft, {
-      enabled: isDirty,
+      enabled: computed(() => isDirty.value && !tooManyCombinations.value),
       countFn: props.countFn,
     });
 
@@ -450,7 +497,12 @@ export default {
       { title: "Title", id: "sortTitle" },
     ]);
 
-    const handleApply = () => applyDraft(context.emit);
+    //Every apply path ends here — the apply bar, the sheet, a chip removal — so
+    //the guard lives here rather than on each button.
+    const handleApply = () => {
+      if (tooManyCombinations.value) return;
+      applyDraft(context.emit);
+    };
 
     const handleReset = () => {
       const def = getDefaultConfig();
@@ -507,8 +559,10 @@ export default {
 
     const chipFacets = [
       { field: "maps", label: "Map", icon: "mdi-map", items: maps.value },
-      { field: "strategies", label: "Strategy", icon: "mdi-strategy", items: strategies.value },
+      // `explain`: the sheet offers this facet's one-line explanations.
+      { field: "strategies", label: "Strategy", icon: "mdi-strategy", items: strategies.value, explain: true },
     ];
+    const explainOpen = ref(false);
 
     // One per chip, so the badge and the row under it always agree.
     const activeCount = computed(() => {
@@ -659,6 +713,11 @@ export default {
       sheetTitleId,
       noneDirty,
       chipFacets,
+      explainOpen,
+      strategyItemProps,
+      STRATEGY_MENU_PROPS,
+      tooManyCombinations,
+      combinationsReason,
       activeCount,
       sortTitle,
       stickyTop,
@@ -833,11 +892,60 @@ export default {
   overflow: hidden;
 }
 
+/* A link, not another control in the chip family: no box and no padding, so
+   its text starts on the chips' left edge without pulling anything outside
+   it. The height is the 44px hit area; there is no fill to cross an edge. */
+.fl-explain-toggle {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  color: rgb(var(--v-theme-primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+/* Title over its one line, in the label's muted tone: reference text, not
+   another set of controls. */
+.fl-explain {
+  margin: 4px 0 0;
+  color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+}
+
+.fl-explain > div + div {
+  margin-top: 6px;
+}
+
+.fl-explain dt {
+  font-weight: 600;
+  color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+}
+
+.fl-explain dd {
+  margin: 0;
+}
+
 /* Clear of the home indicator on phones without a button bar. */
 .fl-sheet-footer {
   display: flex;
   gap: 8px;
   padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
   border-top: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+}
+
+/* Why Apply is disabled (spec 045 FR-017): directly above the button it
+   explains, in the theme's error tone. Its text starts on the sheet body's
+   content edge (24px), where the fields and chips above it start — not on the
+   footer's 16px, which would set it apart from what it is about. */
+.fl-guard {
+  margin: 0;
+  padding: 8px 24px 0;
+  font-size: 12px;
+  color: rgb(var(--v-theme-error));
 }
 </style>

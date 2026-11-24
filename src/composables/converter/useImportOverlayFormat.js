@@ -1,5 +1,7 @@
 //Composables
 import { currentSeason } from "@/composables/filter/seasonDefaultProvider";
+import { normaliseMap } from "@/composables/filter/mapDefaultProvider";
+import { normaliseStrategy } from "@/composables/filter/strategyDefaultProvider";
 import iconService from "@/composables/builds/icons/iconService.js";
 
 export default function useImportOverlayFormat() {
@@ -20,8 +22,10 @@ export default function useImportOverlayFormat() {
       // The current season, as a new build starts with: the overlay format has
       // no such field, and a build with none falls out of every season filter.
       season: build.season || currentSeason().title,
-      map: build.map || null,
-      strategy: build.strategy || null,
+      // The overlay format takes any text here; a build stores only what the
+      // app offers (spec 045), so the editor shows what a save will keep.
+      map: normaliseMap(build.map),
+      strategy: normaliseStrategy(build.strategy),
       views: 0,
       likes: 0,
       upvotes: 0,

@@ -121,6 +121,7 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { civs } from "@/composables/filter/civDefaultProvider";
 import useImportOverlayFormat from "@/composables/converter/useImportOverlayFormat";
+import { normaliseStrategy } from "@/composables/filter/strategyDefaultProvider";
 import PickerDialog from "@/components/common/PickerDialog.vue";
 import FileDropZone from "@/components/common/FileDropZone.vue";
 import BuildPreviewCard from "@/components/builds/BuildPreviewCard.vue";
@@ -190,7 +191,8 @@ export default {
           civFlag: civ?.flagSmall ?? civs.value.find((c) => c.shortName === "ANY")?.flagSmall ?? "",
           civName: civ?.title ?? obj.civilization ?? "",
           steps: obj.build_order.length,
-          strategy: obj.strategy || null,
+          // What the import will store, not the file's raw text (spec 045).
+          strategy: normaliseStrategy(obj.strategy) || null,
           season: obj.season || null,
           hasVideo: !!obj.video,
         },

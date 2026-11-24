@@ -34,6 +34,25 @@ service cloud.firestore {
         return !(f in request.resource.data) || request.resource.data[f] == 0;
       }
 
+      // The only values a build may store in `map` and `strategy` (spec 045).
+      // Map is required; strategy is optional, and "" or a missing key means
+      // the author did not say. Exact, case-sensitive values: normalising an
+      // import or a legacy value is the client's job (normaliseMap and
+      // normaliseStrategy), so anything else reaching here is a bypass.
+      //
+      // Checked on the author's own writes only, never in the counter branch:
+      // a view or a like must not fail on a value its sender did not write.
+      //
+      // These lists mirror MAP_TYPES in src/composables/filter/mapDefaultProvider.js
+      // and STRATEGY_TITLES in strategyDefaultProvider.js. Transcribed, because
+      // rules cannot import: change both.
+      function allowedFacets() {
+        let d = request.resource.data;
+        return d.get('map', '') in ['Land', 'Water', 'Hybrid']
+            && d.get('strategy', '') in ['', 'Rush', 'Boom', 'Fast Castle',
+                                         'Fast Imperial', 'Timing Attack', 'Cheese'];
+      }
+
       // Likes and upvotes count once per account (spec 042). A step is allowed
       // only when the SAME batched write moves this build in or out of the
       // caller's own list on favorites/{uid} (`favorites` for likes, `upvotes`
@@ -90,15 +109,21 @@ service cloud.firestore {
                     && startsAtZero('upvotes') && startsAtZero('downvotes')
                     && startsAtZero('comments')
                     && startsAtZero('score') && startsAtZero('scoreAllTime')
-                    && !request.resource.data.keys().hasAny(['trend', 'trendBase', 'trendAt', 'trendWeights']);
+                    && !request.resource.data.keys().hasAny(['trend', 'trendBase', 'trendAt', 'trendWeights'])
+                    && allowedFacets();
 
       // An author's edit leaves the numbers alone. Unchanged keys are not in
       // changed(), so sending a counter at its current value is harmless; what
       // is refused is a stale copy overwriting views gained meanwhile.
+      //
+      // allowedFacets() checks the whole document, not just changed keys: after
+      // the spec 045 cleanup every build conforms, so it can only refuse a
+      // write that introduces a disallowed value.
       allow update: if request.auth != null
                     && resource.data.authorUid == request.auth.uid
                     && request.resource.data.authorUid == resource.data.authorUid
-                    && !changed().hasAny(counters().concat(serverOwned()));
+                    && !changed().hasAny(counters().concat(serverOwned()))
+                    && allowedFacets();
 
       allow delete: if request.auth != null
                     && resource.data.authorUid == request.auth.uid;

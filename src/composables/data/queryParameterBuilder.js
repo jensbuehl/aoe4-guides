@@ -151,6 +151,31 @@ export function getOrderByQueryParam(config, sortPropertyName, dir) {
 }
 
 /**
+ * The most combinations Firestore will answer for one query. Every `in` below
+ * is expanded into a disjunctive normal form, and a query whose expansion has
+ * more terms is refused with "Too many disjunctions after normalization"
+ * (verified on dev, spec 045 research R10) — which the list's read swallows, so
+ * the user would see an empty list as if nothing matched.
+ */
+export const MAX_DISJUNCTIONS = 30;
+
+/**
+ * How many combinations a filter config expands to: the product of its
+ * multi-select lists, each counted as 1 when empty. Civ, creator and author
+ * are single-value `in`s and always count 1. Kept beside getFilterQueryParams
+ * so a new multi-select filter is added to both (spec 045 FR-017).
+ *
+ * @param {Object} config - A filter configuration (applied or draft).
+ * @return {number} The number of disjunctions the query would have.
+ */
+export function disjunctionCount(config) {
+  return [config?.seasons, config?.maps, config?.strategies].reduce(
+    (product, list) => product * Math.max(1, list?.length ?? 0),
+    1
+  );
+}
+
+/**
  * Generates query parameters based on the provided configuration.
  *
  * @param {Object} config - The configuration object containing various filter options.
