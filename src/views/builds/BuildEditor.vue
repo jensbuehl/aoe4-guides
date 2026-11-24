@@ -154,10 +154,7 @@
 
     <!-- Build details card -->
     <v-card flat rounded="lg" class="mt-4">
-      <div class="build-card-section-header d-flex align-center px-4 ga-2">
-        <v-icon size="16" color="accent">mdi-text-box-outline</v-icon>
-        <span class="text-caption text-uppercase font-weight-bold">Build details</span>
-      </div>
+      <SectionHeader icon="mdi-text-box-outline" label="Build details" />
       <v-card-text class="pt-4 pb-2">
         <v-text-field
           label="Title"
@@ -199,10 +196,7 @@
 
     <!-- Classification card -->
     <v-card flat rounded="lg" class="mt-4">
-      <div class="build-card-section-header d-flex align-center px-4 ga-2">
-        <v-icon size="16" color="accent">mdi-tag-outline</v-icon>
-        <span class="text-caption text-uppercase font-weight-bold">Classification</span>
-      </div>
+      <SectionHeader icon="mdi-tag-outline" label="Classification" />
       <v-card-text class="pb-2">
         <v-row>
           <v-col cols="12" sm="6" md="3">
@@ -296,6 +290,7 @@ import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
 import CivFlag from "@/components/common/CivFlag.vue";
 import SeasonListItem from "@/components/common/SeasonListItem.vue";
+import SectionHeader from "@/components/common/SectionHeader.vue";
 
 import { getCreator, addCreator } from "@/composables/data/creatorService";
 import {
@@ -328,7 +323,7 @@ import useDownload from "@/composables/converter/useDownload";
 
 export default {
   name: "BuildEditor",
-  components: { BuildOrderEditor, BuildHeader, CivFlag, SeasonListItem },
+  components: { BuildOrderEditor, BuildHeader, CivFlag, SeasonListItem, SectionHeader },
   props: {
     mode: {
       type: String,
@@ -972,11 +967,6 @@ export default {
 </script>
 
 <style scoped>
-.build-card-section-header {
-  letter-spacing: 0.05em;
-  height: 36px;
-}
-
 .unsaved-indicator {
   display: flex;
   align-items: center;

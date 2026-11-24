@@ -64,31 +64,10 @@
             <BuildListCard :build="item" :context="context" />
           </router-link>
 
-          <!-- The exit sits after the list, not above it: it is the answer to
-               "I have seen these five", so offering it before the first card
-               asks the reader to decide something they cannot decide yet. Being
-               inside the panel also means it belongs to one lane and carries a
-               fixed route, instead of silently retargeting as the tab changes.
-
-               Full width only below md, the same split as the tab rail's `grow`:
-               a thumb needs the whole row as a target, a pointer does not, and a
-               block button on desktop hovers a slab far wider than the thing that
-               looks clickable. `rounded="lg"` matches BuildListCard, so the
-               hovered surface on mobile has the shape of the cards above it
-               rather than the button default. -->
-          <div class="d-flex justify-center mt-1">
-            <v-btn
-              variant="text"
-              color="primary"
-              :block="smAndDown"
-              rounded="lg"
-              height="38"
-              :to="viewAllRoute(lane.value)"
-              append-icon="mdi-chevron-right"
-            >
-              View all
-            </v-btn>
-          </div>
+          <!-- Inside the panel, so it belongs to one lane and carries a fixed
+               route instead of silently retargeting as the tab changes. Where it
+               sits and how wide it is: ViewAllButton. -->
+          <ViewAllButton :to="viewAllRoute(lane.value)" />
         </template>
       </v-window-item>
     </v-window>
@@ -100,6 +79,7 @@ import { ref, watch } from "vue";
 import { useDisplay } from "vuetify";
 import BuildListCard from "@/components/builds/BuildListCard.vue";
 import HeroBuild from "@/components/home/HeroBuild.vue";
+import ViewAllButton from "@/components/common/ViewAllButton.vue";
 import { civs } from "@/composables/filter/civDefaultProvider";
 
 const lanes = [
@@ -126,7 +106,7 @@ const activeTab = ref("trending");
 
 export default {
   name: "BuildLaneTabs",
-  components: { BuildListCard, HeroBuild },
+  components: { BuildListCard, HeroBuild, ViewAllButton },
   props: {
     popularBuilds:   { type: Array, required: true },
     allTimeClassics: { type: Array, required: true },

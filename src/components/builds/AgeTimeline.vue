@@ -5,9 +5,7 @@
     no ages are derivable — an empty card would be worse than no card.
   -->
   <v-card v-if="ages.length" flat rounded="lg" class="mt-4">
-    <div class="build-card-section-header d-flex align-center px-4 ga-2">
-      <v-icon color="accent" size="small">mdi-timer-sand</v-icon>
-      <span class="text-caption text-uppercase font-weight-bold">Timeline</span>
+    <SectionHeader icon="mdi-timer-sand" label="Timeline">
       <!--The chips carry one time each. What the desktop crest's tooltip holds
           beside it, the click-up, both pops and how long the age-up took, has no
           hover to live behind here, and is no use to a reader until asked for.-->
@@ -22,7 +20,7 @@
         @click="detailsOpen = !detailsOpen"
         >Details</v-btn
       >
-    </div>
+    </SectionHeader>
 
     <!--xs falls back to the same chips the list card uses: there is no room for
         a track worth reading at that width-->
@@ -167,6 +165,7 @@ import { computed, inject, ref } from "vue";
 import AgeChips from "@/components/builds/AgeChips.vue";
 import AgeTimingDetail from "@/components/builds/AgeTimingDetail.vue";
 import EcoLines from "@/components/builds/EcoLines.vue";
+import SectionHeader from "@/components/common/SectionHeader.vue";
 
 //Composables
 import {
@@ -253,7 +252,7 @@ function writeEcoOpen(open) {
 
 export default {
   name: "AgeTimeline",
-  components: { AgeChips, AgeTimingDetail, EcoLines },
+  components: { AgeChips, AgeTimingDetail, EcoLines, SectionHeader },
   props: {
     /** A build's steps — sections array or legacy flat list */
     steps: { type: Array, default: () => [] },
@@ -440,11 +439,6 @@ export default {
 </script>
 
 <style scoped>
-.build-card-section-header {
-  letter-spacing: 0.05em;
-  height: 36px;
-}
-
 /* 36px header, so the hit area overhangs rather than growing it. */
 .age-details-toggle {
   margin-inline-end: -8px;
