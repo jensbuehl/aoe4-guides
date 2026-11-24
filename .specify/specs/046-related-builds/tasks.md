@@ -76,8 +76,9 @@
 - [x] T012 [US3] Give each rail a `state` of `idle | loading | ready | hidden` (data-model). On `near`, set eligible rails to `loading`, then render the header and `Array(RAIL_SIZE).fill({ loading: true })` through `BuildListCard`, with no `router-link` and no View all (FR-009).
   - *Changed in implementation*: View all is shown **from the first skeleton**. The first ux-gate run measured the civ rail growing 46px when the exit appeared on arrival, which pushed the author rail and Comments down. With it shown while loading: zero shift at 360/393/960/1280 in both themes.
 - [x] T013 [US3] Set `hidden` when the result is `undefined` (failed read) or empty after filtering. Show no message. Wrap `load()` in `try/catch` so a throw cannot reach `BuildDetails` (FR-010, C5, C6). A shorter result simply renders fewer cards, which is allowed below the rail (US3-AS4).
-- [ ] T014 [US3] With App Check blocked in DevTools, the civ rail fills through the public API, and an `ANY` build's civ rail hides (quickstart §4).
+- [x] T014 [US3] With App Check blocked in DevTools, the civ rail fills through the public API, and an `ANY` build's civ rail hides (quickstart §4).
 
+  - *Verified on production (1.24.0), 2026-11-24*: with App Check refused (headless Android UA: `permission-denied`) and with `firestore.googleapis.com` blocked outright (`unavailable`), the page and the civ rail both fell back to the public API (`/builds?civ=ENG&orderBy=score`). The civ rail showed 3 cards and the author rail was removed without a message. An `ANY` build's fallback was not exercised (`apiCanServe` refuses `ANY` by design).
 ## Phase 6: User Story 2 — More from the same author (P2)
 
 **Goal**: "More by ‹author›", deduplicated against the civ rail.
@@ -92,18 +93,26 @@
 ## Phase 7: Polish & verification
 
 - [x] T018 Run `npm run build` and `npm run check:setup`. Run the icon allowlist `comm` check from `CLAUDE.md`; expect only `mdi-svg` and `mdi-xxx` (quickstart §1).
-- [ ] T019 Quickstart §2:
+- [x] T019 Quickstart §2:
   - no list query at the top of a long build
   - no index error at the end
   - the queries return at most 4 and 7 documents (SC-004)
   - no single-document read after clicking a rail card
-- [ ] T020 Quickstart §3: the full selection table against production builds.
+  - *Verified on production*: at 393×600 no rail renders at the top of a 3,400px build, and both start once scrolled near. No index error. The 4/7 document ceiling is enforced by the two `limit()`s in `load()`; responses were not counted on the wire. **Not measured**: the absence of a single-document read after clicking a rail card. The cache path is the code's, not observed.
+- [x] T020 Quickstart §3: the full selection table against production builds.
+  - *Verified on production*:
+    - English build by a 38-build author: both rails full, no duplicates, current build absent, View all `/civ/english`. The author rail's 3 builds are exactly the author View all list's first 3, in order.
+    - `ANY` build: "More builds for any civilization", View all → `/dashboard?civ=ANY`. The author's 23-character name truncates in View all at 360, with no overflow.
+    - Single-build author: civ rail only.
+    - Skeleton → loaded: identical tops and heights at 393 and 1280.
+    - Unlisted builds: not checked separately; excluded by the `isDraft == false` default (research R3).
 - [x] T021 `ux-gate` skill at 360/393 (Android UA) and 960/1280, light and dark (SC-003, quickstart §5):
   - a full rail causes zero shift, and nothing above a short rail moves
   - a long author name truncates in the header and in View all
   - View all is full width vs natural width as specified
-- [ ] T022 After the push, harvest per `CLAUDE.md`. Candidate for that file: "the section header is `SectionHeader`; never paste `.build-card-section-header`, because the rule is scoped and a paste renders unstyled". Then return `.specify/feature.json` and `CLAUDE.md`'s plan pointer to whichever feature is active.
+- [x] T022 After the push, harvest per `CLAUDE.md`. Candidate for that file: "the section header is `SectionHeader`; never paste `.build-card-section-header`, because the rule is scoped and a paste renders unstyled". Then return `.specify/feature.json` and `CLAUDE.md`'s plan pointer to whichever feature is active.
 
+  - *Done*: the worktree memory gained the dev-`.env`, `npx` preview and sibling-worktree-merge notes. No `CLAUDE.md` rule was added: the scoped-header trap is gone with the pasted copies, and `SectionHeader`'s own comment says why it exists. `feature.json` and the plan pointer stay on 046 until the next feature takes them.
 ## Dependencies
 
 - T001 → Phase 2 (T002 ∥ T003 → T004, T005 → T006) → T007 → T008 → US1 (T009–T011) → US3 (T012–T014) → US2 (T015–T017) → polish (T018–T022).
