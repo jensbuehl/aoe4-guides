@@ -315,7 +315,7 @@ import {
 import { validateBuild } from "@/composables/builds/buildOrderValidator";
 import youtubeService from "@/composables/builds/youtubeService";
 import { civs as allCivs } from "@/composables/filter/civDefaultProvider";
-import { seasons } from "@/composables/filter/seasonDefaultProvider";
+import { seasons, currentSeason } from "@/composables/filter/seasonDefaultProvider";
 import { maps } from "@/composables/filter/mapDefaultProvider";
 import { strategies } from "@/composables/filter/strategyDefaultProvider";
 import useExportOverlayFormat from "@/composables/converter/useExportOverlayFormat";
@@ -470,7 +470,7 @@ export default {
           // that is not a civ's short name is ignored, not stored.
           civ: civs.some((c) => c.shortName === route.query.civ) ? route.query.civ : "",
           map: "",
-          season: seasons.value[0].title,
+          season: currentSeason().title,
           strategy: "",
           views: 0,
           likes: 0,

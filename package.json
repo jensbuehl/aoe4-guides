@@ -1,6 +1,6 @@
 {
   "name": "aoe4-guides",
-  "version": "1.21.0",
+  "version": "1.22.0",
   "private": true,
   "packageManager": "npm@10.9.7",
   "engines": {
@@ -15,6 +15,7 @@
     "preview": "vite preview",
     "check:icons": "node scripts/check-icons.mjs",
     "check:plurals": "node scripts/check-plurals.mjs",
+    "check:seasons": "node scripts/check-seasons.mjs",
     "check:steps": "node scripts/check-steps.mjs",
     "check:setup": "node scripts/check-setup.mjs",
     "test:rules": "firebase emulators:exec --only firestore --project demo-aoe4-guides \"node --test tests/rules/*.test.mjs\""
