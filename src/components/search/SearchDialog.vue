@@ -18,6 +18,7 @@
     :max-width="smAndDown ? undefined : 640"
     :content-class="smAndDown ? 'search-dialog' : 'search-dialog search-dialog--top'"
     scrollable
+    @after-enter="selectQuery"
   >
     <!-- The app's dialog conventions (PickerDialog): 8px corners on desktop,
          square as a full-screen sheet, where rounded corners would show the
@@ -324,6 +325,19 @@ export default {
       { immediate: true }
     );
 
+    // The query outlives the dialog (this component stays mounted once
+    // loaded), so a reopen shows the last search. Selected, so typing replaces
+    // it and the arrow keys still keep it. On afterEnter, not on open: the
+    // dialog moves focus into its content while it transitions in, which
+    // would land after a select() made earlier and collapse it.
+    const field = ref(null);
+    const selectQuery = () => {
+      const input = field.value?.$el?.querySelector("input");
+      if (!input) return;
+      input.focus();
+      if (input.value) input.select();
+    };
+
     const openRow = (row) => emit("open", row.to);
 
     const scrollActiveIntoView = () =>
@@ -357,6 +371,8 @@ export default {
       activeIndex,
       openRow,
       onKeydown,
+      field,
+      selectQuery,
     };
   },
 };

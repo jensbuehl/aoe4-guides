@@ -137,8 +137,16 @@ export default {
   flex: 1;
 }
 
-/* grid — two columns at 360px, and as many as fit from there:
-   3 at md, 4 at lg, 5 at xl in the home page's 8/12 column */
+/* grid — two columns on phones, and from 600px as many as fit.
+   The column minimum is what a card needs, measured, not a round number:
+   the 72px flag, the name's 14px of side padding, and the widest name set in
+   two lines at 14px/700 — "Macedonian" / "Holy Roman" at 80.9px — is 167px.
+   172 leaves a little for fonts that render wider elsewhere, and is still
+   under the 174.4 that five columns get in the 1400px container. The old 150
+   was a guess that held only while Vuetify's stepped container kept the
+   column narrow; at the fluid 1400 (main.css) it gave 1024–1420px four and
+   five 153–158px cards, and the names broke mid-word ("Byzantine / s").
+   Re-measure when a civ with a longer word arrives. */
 .civ-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -146,7 +154,10 @@ export default {
 }
 
 @media (min-width: 600px) {
-  .civ-grid { gap: 8px; }
+  .civ-grid {
+    grid-template-columns: repeat(auto-fill, minmax(172px, 1fr));
+    gap: 8px;
+  }
 }
 
 /* row — 44px is the touch-target floor; two lines of name fit inside it */
@@ -179,11 +190,17 @@ export default {
 }
 
 /* name — the build cards' title colour and weight; at most two lines, which
-   every civ needs at 360px, and an ellipsis rather than a third */
+   every civ needs at 360px, and an ellipsis rather than a third.
+   The vertical space is margin, not padding: overflow clips at the padding
+   box, so a bottom padding showed the top of a clamped third line under the
+   ellipsis. overflow-wrap undoes v-card's break-word, which split a word too
+   long for its line rather than letting the clamp end it with an ellipsis. */
 .civ-row__name {
   flex: 1;
   min-width: 0;
-  padding: 4px 8px 4px 6px;
+  margin: 4px 0;
+  padding: 0 8px 0 6px;
+  overflow-wrap: normal;
   color: rgb(var(--v-theme-primary));
   font-weight: 700;
   font-size: 13px;
