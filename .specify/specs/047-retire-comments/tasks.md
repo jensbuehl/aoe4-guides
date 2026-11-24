@@ -39,8 +39,9 @@
 - [x] T015 [US3] Write `scripts/retire-comments.mjs` (plan D4): prints the project, counts, dry run by default, `--write` to delete with BulkWriter, idempotent.
 - [x] T016 [US3] Dry run against production with the owner's key (read-only), and report the counts.
   - *Done 2026-11-24*: project `aoe4-guides`: **353** comment documents, **5,287** builds with a `comments` counter (nearly every build was seeded with `comments: 0`, not only the 228 with comments) and **17** users with `notificationPreferences`. No function triggers on build or user writes, and sitemap dates come from `created`, so the 5,287 updates change nothing else.
-- [ ] T017 [US3] **Gated**: after step 2 is deployed and the owner gives an explicit go-ahead, run with `--write`, then run again to show 0/0/0 (SC-004).
+- [x] T017 [US3] **Gated**: after step 2 is deployed and the owner gives an explicit go-ahead, run with `--write`, then run again to show 0/0/0 (SC-004).
 
+  - *Done 2026-11-24*: the owner dropped the wait (042 rules went live the same day at `85d766b`, carrying step 2's rules). `--write` made 5,657 of 5,657 writes (353 comments deleted, `comments` removed from 5,287 builds, `notificationPreferences` from 17 users), and the rerun reports 0 / 0 / 0. The functions deploy the same evening deleted `notifyCommenters` and `processUnsubscribe`. Left to the owner: the Resend secret in Secret Manager.
 ## Phase 5: Release & harvest
 
 - [x] T018 Merge to `main` and release (app step), with owner approval.

@@ -4,7 +4,7 @@
 
 **Created**: 2026-11-24
 
-**Status**: Step 1 live (1.28.0). Step 2 on `main`, deploys with 042 (on or after 2026-12-01). Step 3 gated on step 2 and the owner.
+**Status**: Complete (2026-11-24). App 1.28.0; rules live with 042 at `85d766b`; functions deployed; data deleted (0 / 0 / 0).
 
 **Input**: Owner, 2026-11-24: "retire as you proposed (including deleting of the comments)."
 
