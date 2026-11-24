@@ -6,12 +6,21 @@
         <v-icon size="small" class="mr-2" color="primary">mdi-flag-variant</v-icon>
         Pick Your Civilization
       </div>
-      <!-- "Search" alone: the heading beside it already says what is searched,
-           and the longer label was cut to "Search civi…" at phone width -->
+      <!-- "Filter", not "Search": the header's search (spec 043) finds builds,
+           authors and civs across the site, and two fields both labelled
+           "Search" a glance apart invited "fast castle" here, where it matches
+           nothing. This one only narrows the tiles below, so it says so, with
+           the filter icon rather than the magnifier. One word because the
+           heading beside it already says what is filtered, and a longer label
+           was cut to "Search civi…" at phone width.
+           A pill, like the header search: the label and the filter icon are
+           what tell the two apart. Tried with 8px corners to differ in shape
+           too; side by side that read as an inconsistency, not a distinction
+           (owner review 2026-11-24). -->
       <v-text-field
         v-model="civFilter"
-        label="Search"
-        prepend-inner-icon="mdi-magnify"
+        label="Filter"
+        prepend-inner-icon="mdi-filter-variant"
         clearable
         variant="outlined"
         rounded="pill"

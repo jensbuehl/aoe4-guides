@@ -57,7 +57,7 @@
       table has a menu per row. A 350px menu under the card left the grid behind
       the keyboard and off the bottom of the screen; the sheet has the whole
       height, closes on ✕ and on Back, and closes itself once an icon is in.
-      Back is handled in setup rather than by closeOnBack — see iconSheetOpen.
+      Back is handled in setup rather than by closeOnBack — see useOverlayHistory.
       Keyed by civ because the selector reads its lists once, at setup.-->
   <PickerDialog
     v-if="!readonly"
@@ -1225,7 +1225,7 @@ import {
   onMounted,
   nextTick,
 } from "vue";
-import { useRouter } from "vue-router";
+import { useOverlayHistory } from "@/composables/useOverlayHistory.js";
 import scrollIntoView from "scroll-into-view-if-needed";
 
 //Components
@@ -1906,44 +1906,15 @@ export default {
     //button; the card is identified by the caret the button saved, not by a prop.
     const iconSheetOpen = ref(false);
 
-    //Back closes the sheet, and it cannot be Vuetify's closeOnBack that does it.
-    //That cancels the navigation from a global beforeEach, and the router runs
-    //the editor's own leave guard before any global one — so on a build with
-    //unsaved changes, which is every build being edited, Back asked "leave
-    //anyway?", and yes left the editor with the sheet still open over it.
-    //
-    //So the sheet pushes its own entry, for the same URL, through the router's
-    //history object rather than through router.push. Back then pops to the same
-    //route: the router still resolves it, but nothing is left, so no leave
-    //guard runs. Pushed this way the entry underneath keeps the scroll position
-    //from the moment before the sheet opened, which is what the router restores
-    //on that pop — read any later and it would be the 0 that Vuetify's scroll
-    //lock reports while the sheet is up, and the page would land at the top.
-    //✕ and a pick step back over the entry with the router's listeners off, so
-    //no entry is left behind and closing never becomes a navigation at all.
-    //Optional so a section rendered outside a router (none today) still mounts.
-    const routerHistory = useRouter()?.options.history;
-    let iconSheetEntry = false;
-    const onIconSheetPopstate = () => {
-      window.removeEventListener("popstate", onIconSheetPopstate);
-      iconSheetEntry = false;
-      iconSheetOpen.value = false;
-    };
-    const openIconSheet = () => {
-      if (routerHistory && !iconSheetEntry) {
-        routerHistory.push(routerHistory.location, { iconSheet: true });
-        iconSheetEntry = true;
-        window.addEventListener("popstate", onIconSheetPopstate);
-      }
-      iconSheetOpen.value = true;
-    };
+    //Back closes the sheet without leaving the editor. Why that needs its own
+    //history entry, and why not Vuetify's closeOnBack: useOverlayHistory.
+    const { open: openIconSheet } = useOverlayHistory(iconSheetOpen, "iconSheet");
     //Closing hands the author back to the text, caret after the icon (or where
     //it was, after ✕): left on <body>, the card's action row disappeared with
     //its focus, and the next icon took a tap on the text first. After the
     //flush, so the dialog has dropped its focus trap before the field asks.
     watch(iconSheetOpen, (open) => {
       if (open) return;
-      if (iconSheetEntry) routerHistory.go(-1, false);
       nextTick(() => {
         const field = fieldOfSelection();
         if (!field) return;
@@ -1951,8 +1922,6 @@ export default {
         restoreSelection();
       });
     });
-    onBeforeUnmount(() => window.removeEventListener("popstate", onIconSheetPopstate));
-
     /**
      * Puts the icon chosen on the phone's sheet at the caret and closes the
      * sheet — once. A second tap on a tile 90ms later, or a tap on the text

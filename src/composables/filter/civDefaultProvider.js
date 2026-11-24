@@ -13,9 +13,15 @@ export const civs = ref([
   // the same filenames, and public/_headers lets a browser reuse a flag for a
   // week without asking, so returning visitors kept the old images through
   // any reload. Bump it whenever a flag file is replaced in place.
+  //
+  // `aliases` are search vocabulary (spec 043): what players type for a civ
+  // that is neither its code nor the start of a word in its name, such as "ootd" or
+  // "jd". Lowercase. Add them when a civ is added (aoe4-civ-release skill);
+  // a civ without any is still found by code and by name.
   {
     title: "Abbasid Dynasty",
     shortName: "ABB",
+    aliases: ["abba"],
     slug: "abbasid-dynasty",
     tagLine: "Technology, Camels, City Planning",
     flagLarge: "/assets/flags/abb-large.webp",
@@ -54,6 +60,7 @@ export const civs = ref([
   {
     title: "Delhi Sultanate",
     shortName: "DEL",
+    aliases: ["delhi"],
     slug: "delhi-sultanate",
     tagLine: "Elephants, Research, Religion",
     flagLarge: "/assets/flags/del-large.webp",
@@ -78,6 +85,7 @@ export const civs = ref([
   {
     title: "Golden Horde",
     shortName: "GOH",
+    aliases: ["horde"],
     slug: "golden-horde",
     tagLine: "Influence, Mass Recruitment, Heroic Leadership",
     flagLarge: "/assets/flags/goh-large.webp",
@@ -86,6 +94,7 @@ export const civs = ref([
   {
     title: "Holy Roman Empire",
     shortName: "HRE",
+    aliases: ["hre"],
     slug: "holy-roman-empire",
     tagLine: "Infrantry, Religion, Defense",
     flagLarge: "/assets/flags/hre-large.webp",
@@ -94,6 +103,7 @@ export const civs = ref([
   {
     title: "House of Lancaster",
     shortName: "HOL",
+    aliases: ["lancaster"],
     slug: "house-of-lancaster",
     tagLine: "Manors, Economy, Versatility",
     flagLarge: "/assets/flags/hol-large.webp",
@@ -118,6 +128,7 @@ export const civs = ref([
   {
     title: "Jeanne d'Arc",
     shortName: "JDA",
+    aliases: ["jd", "jeanne", "joan"],
     slug: "jeanne-darc",
     tagLine: "Trade, Cavalry, Hero",
     flagLarge: "/assets/flags/jda-large.webp",
@@ -126,6 +137,7 @@ export const civs = ref([
   {
     title: "Knights Templar",
     shortName: "KTE",
+    aliases: ["templar", "templars", "kt"],
     slug: "knights-templar",
     tagLine: "Diplomacy, Fortification, Commanderies",
     flagLarge: "/assets/flags/kte-large.webp",
@@ -134,6 +146,7 @@ export const civs = ref([
   {
     title: "Macedonian Dynasty",
     shortName: "MAC",
+    aliases: ["macedonian"],
     slug: "macedonian-dynasty",
     tagLine: "Silver Economy, Reinforcements, Morality",
     flagLarge: "/assets/flags/mac-large.webp",
@@ -158,6 +171,7 @@ export const civs = ref([
   {
     title: "Order of the Dragon",
     shortName: "DRA",
+    aliases: ["ootd", "dragon"],
     slug: "order-of-the-dragon",
     tagLine: "Quality, Infantry, Defense",
     flagLarge: "/assets/flags/dra-large.webp",
@@ -166,6 +180,7 @@ export const civs = ref([
   {
     title: "Ottomans",
     shortName: "OTT",
+    aliases: ["otto"],
     slug: "ottomans",
     tagLine: "Imperial Council, Military Schools, Siege",
     flagLarge: "/assets/flags/ott-large.webp",
@@ -190,6 +205,7 @@ export const civs = ref([
   {
     title: "Sengoku Daimyo",
     shortName: "SEN",
+    aliases: ["sengoku"],
     slug: "sengoku-daimyo",
     tagLine: "Clans, Economic Scaling, Inspiration",
     flagLarge: "/assets/flags/sen-large.webp",
@@ -198,6 +214,7 @@ export const civs = ref([
   {
     title: "Tughlaq Dynasty",
     shortName: "TUG",
+    aliases: ["tughlaq"],
     slug: "tughlaq-dynasty",
     tagLine: "Mobile Economy, Elephants, Regional Control",
     flagLarge: "/assets/flags/tug-large.webp",
@@ -214,6 +231,7 @@ export const civs = ref([
   {
     title: "Zhu Xi's Legacy",
     shortName: "ZXL",
+    aliases: ["zxl", "zhu xi"],
     slug: "zhu-xis-legacy",
     tagLine: "Dynasties, Taxes, Technology",
     flagLarge: "/assets/flags/zxl-large.webp",
