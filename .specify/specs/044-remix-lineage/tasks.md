@@ -188,16 +188,15 @@ Placed before US2 because US2's list comes out of the same derivation and the sa
   Say plainly what was not verified.
 - [X] T033 [P] In `../aoe4-guides-api/src/controllers/BuildsController.ts`, add `.where("duplicateOf", "==", null)` to every list query (not to the by-id route, which RTS Overlay uses). Build that repo. The deploy is owner-gated; see T034 step 7.
   - *Done*: aoe4-guides-api: list query filters duplicateOf == null, by-id untouched; tsc clean. Not committed or deployed. That repo also has an unrelated pre-existing package-lock.json change, left alone.
-- [ ] T034 **(owner)** Release on production in the order of quickstart §4, each step with a go-ahead:
-  1. the rules;
-  2. the indexes, then wait until they are built;
-  3. `link-remixes.mjs --apply` (with `--approve`), then a dry run must report 0;
-  4. the functions, then force-run `updateBuildTrend` and `updateHomeSnapshot`;
-  5. merge to `main` and push the app (one Netlify build);
-  6. `link-remixes.mjs --apply` again;
-  7. the API deploy.
+- [X] T034 **(owner)** Release on production in the order of quickstart §4. *Done 2026-11-24 on the owner's go-ahead ("commit it and release, approve all 51 near matches"):*
+  1. the rules — test:rules 108/108, deployed;
+  2. the indexes — deployed (one index not in the file left in place, no --force); all 48 list shapes servable at 21:21 UTC (REST probe);
+  3. `link-remixes.mjs --apply --approve=<all 51>` — 5,431 builds seeded, 324 exact + 51 approved near matches linked; dry run then 0;
+  4. the functions — all deployed. **Not force-run**, as the owner declined forced runs for 042: the 23:30 UTC `updateBuildTrend` run is the first to set `duplicateOf` and remix credit, and `updateHomeSnapshot` follows it;
+  5. merged to `main` as 1.29.0 and pushed; live in Netlify's bundle;
+  6. re-seed dry run reported 0, so no second apply was needed;
+  7. the API (`aoe4-guides-api` b7c8fdd) deployed to Cloud Run from a clean worktree, revision 00026; list routes and the by-id route answer.
 
-  Tick off the steps here as each is done.
 - [ ] T035 **(owner)** The production checks from quickstart §5. Note SC-001 (no unlinked exact copy by another account) from a final dry run. SC-004 is checked in the next day's comparison log.
 - [ ] T036 Harvest per CLAUDE.md:
   - reconcile research R1 and the spec with the real counts;
