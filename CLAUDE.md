@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `.specify/specs/040-fair-trending/plan.md`.
+at `.specify/specs/041-season-rollover/plan.md`.
 <!-- SPECKIT END -->
 
 ## Working rules
@@ -134,7 +134,7 @@ Two consequences, and the second is the one that bites twice:
 
 - Check any script that runs *on a deploy* with
   `node --no-experimental-detect-module scripts/thing.mjs`, which reproduces
-  22.1.0's resolution. `refresh-snapshot.mjs` and `check-plurals.mjs` are exempt
+  22.1.0's resolution. `refresh-snapshot.mjs`, `check-plurals.mjs` and `check-seasons.mjs` are exempt
   — they run on GitHub Actions, never on Netlify — but `prerender.mjs` is not,
   which is why it imports **nothing but `node:` builtins** and takes what it
   needs from the snapshot instead.

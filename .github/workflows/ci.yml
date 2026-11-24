@@ -27,4 +27,8 @@ jobs:
       # rename orphans the exception and it lapses back to the regular rule.
       - run: npm run check:plurals
 
+      # Fails if the season list in seasonDefaultProvider.js leaves a day in no
+      # season or two, which would surface only on a season's first day.
+      - run: npm run check:seasons
+
       - run: npm run build
