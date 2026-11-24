@@ -56,8 +56,11 @@ function ageTime(ageTimings, age) {
  * 039 promises authors an unlisted build is "not shown in search", and the index
  * is the only thing search reads. check:search asserts it.
  *
+ * So are exact duplicates (`duplicateOf` set, spec 044): search shows each
+ * build order once, as the lists do — the original, which the copy credits.
+ *
  * @param {Array<Object>} builds - { id, title, author, authorUid, civ, season,
- *   isDraft, score, ageTimings } per build.
+ *   isDraft, duplicateOf, score, ageTimings } per build.
  * @param {string} generatedIso - When the job STARTED reading, not when it
  *   uploads: the app retires a build from its hide list once the index is newer
  *   than the unlist, and an unlist between the read and the upload must not
@@ -70,7 +73,7 @@ function buildSearchIndex(builds, generatedIso) {
   const rows = [];
 
   for (const build of builds) {
-    if (!build || build.isDraft === true) continue;
+    if (!build || build.isDraft === true || build.duplicateOf) continue;
 
     const name = typeof build.author === "string" ? build.author : "";
     const uid = typeof build.authorUid === "string" ? build.authorUid : "";

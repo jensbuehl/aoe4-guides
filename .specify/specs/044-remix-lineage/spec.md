@@ -5,7 +5,7 @@
 
 **Created**: 2026-11-24
 
-**Status**: Draft
+**Status**: Planned (plan.md, 2026-11-24)
 
 **Input**: Follow-up to spec 042. "Include 1–3 in a follow-up spec: (1) one-time backfill linking old
 copies to their original, (2) show remixes on the original, (3) hide exact duplicates from lists and
@@ -26,6 +26,7 @@ build gets no credit line.
 | Remixes carrying `remixOf` (since July) | 83 | 24 — only 1 with steps unchanged |
 | Titles marking a copy (" - copy", "(copy)", "副本"), no `remixOf` | 590 | 467 |
 | Steps *exactly* equal to an earlier build, no `remixOf` | 507 | 392 with the earlier one also published |
+| …of which same civilisation, earlier build by **another account** (≥5 steps) — the link's own definition, measured in planning | 329 | 271 |
 
 So the copy problem is the old, unlinked duplicates, not remixes. Examples: "2 TC ayyubid 'the beasty
 build'" (4,328 views) has a "- copy" (929) and a "- copy - copy" (1,471) by two other players, none
@@ -67,7 +68,7 @@ A player opens "2 TC ayyubid 'the beasty build' - copy" and sees, under its titl
 ayyubid 'the beasty build' by Patatasfritas", linking the original — exactly as a remix made today
 shows it. Nobody had to add a link.
 
-**Why this priority**: It fixes the attribution of ~390 published builds at once, needs no new
+**Why this priority**: It fixes the attribution of ~270 published builds (329 in all) at once, needs no new
 interface (the credit line exists), and every other story builds on knowing which build is the
 original.
 
@@ -129,7 +130,7 @@ accounts, two by the same fourth account, and one by its own author scores 4 × 
 3. **Given** a remix by the build's own author, **Then** it counts for nothing.
 4. **Given** a remix that is deleted, or whose link is removed, **Then** its credit is withdrawn at the
    next scoring run.
-5. **Given** the day remix credit is switched on (after Story 1 has linked ~500 old copies), **Then**
+5. **Given** the day remix credit is switched on (after Story 1 has linked ~300 old copies), **Then**
    no build's trend jumps: the baseline is re-taken as in spec 042's weight switch. All-time includes
    the credit straight away.
 
@@ -159,8 +160,8 @@ and shows "Remix of …".
    a duplicate and is listed again.
 4. **Given** the original is deleted or unlisted, **Then** at the next daily run the next one in line
    becomes the listed build.
-5. **Given** the author of a hidden copy, **Then** they can see in My Builds that it is hidden as a
-   duplicate of which build, and why.
+5. **Given** the author of a hidden copy, **Then** My Builds marks it as a duplicate, and its page
+   tells them which build it duplicates and why (a card has no room for the sentence; contracts/ui.md).
 
 ---
 
@@ -189,7 +190,7 @@ and shows "Remix of …".
 - **FR-002**: It MUST NOT change any other field, any build that already has a link, or any build
   whose match is by the same author.
 - **FR-003**: It MUST run first as a dry run that reports what it would link, and be safe to re-run.
-- **FR-004**: Partial matches (copy-marked title and a high share of identical steps, threshold set in
+- **FR-004**: Partial matches (copy-marked title and a high share of identical steps, threshold 0.8 of identical step rows — research R9 — set in
   planning) MUST be produced as a review list only; linking any of them is the owner's decision.
 
 **Remix list**
@@ -229,7 +230,7 @@ and shows "Remix of …".
 ### Measurable Outcomes
 
 - **SC-001**: After the link, no published build exactly equals an earlier build by another author
-  without crediting it (from 392 today).
+  without crediting it (from 271 today, by the link's definition; research R1).
 - **SC-002**: No browse list or ranking shows two builds with identical steps.
 - **SC-003**: Every build that has been remixed by another player says so on its page.
 - **SC-004**: On the day remix credit is switched on, no build's trend rises by more than its genuine
@@ -239,6 +240,10 @@ and shows "Remix of …".
 
 - "Exact copy" means the same steps in the same order — times, villager counts, resources and text —
   ignoring formatting. Measured that way, 507 builds match an earlier one.
+- "Earliest" is decided by times only the server sets, never the client-written `timeCreated`
+  (which a forger can back-date and which Publish resets): the document's creation time for the
+  one-time link, and the time the server first saw a build's current steps for hiding duplicates
+  (research R2).
 - The daily trending job already reads every build, so detecting duplicates there costs no extra reads,
   only the extra size of reading steps.
 - Remix credit uses spec 042's weighting and its baseline re-take, so 042 ships first.

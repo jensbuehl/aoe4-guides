@@ -258,7 +258,14 @@ async function main() {
 
   initializeApp({ credential: cert(serviceAccount) });
 
-  let query = getFirestore().collection("builds").where("isDraft", "==", false);
+  //Listed builds only. An exact duplicate (spec 044) gets no prerendered page and
+  //no sitemap entry: its page names the original as canonical, and a sitemap
+  //listing it would contradict that. `== null` never matches a missing field,
+  //which is why every build carries duplicateOf since the 044 seed.
+  let query = getFirestore()
+    .collection("builds")
+    .where("isDraft", "==", false)
+    .where("duplicateOf", "==", null);
   if (options.limit) query = query.limit(options.limit);
 
   const started = Date.now();

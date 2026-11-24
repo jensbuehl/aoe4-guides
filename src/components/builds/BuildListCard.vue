@@ -78,6 +78,14 @@
           <v-chip class="mr-1 mt-1" v-if="build.isDraft" label color="error" size="x-small"
             ><v-icon start icon="mdi-link-variant"></v-icon>Unlisted</v-chip
           >
+          <!--Only My Builds ever shows a duplicate (spec 044): public lists leave
+              them out. Published by definition, so it takes the Unlisted chip's
+              place. The row holds one line (.blc-chiprow), so an age chip drops
+              rather than the card growing. Why it is hidden is said on its page;
+              a card has no room for the sentence.-->
+          <v-chip class="mr-1 mt-1" v-if="build.duplicateOf?.id" label size="x-small"
+            ><v-icon start icon="mdi-content-copy"></v-icon>Duplicate</v-chip
+          >
           <v-chip
             class="mr-1 mt-1"
             v-if="isNew(toDateSafe(build.timeCreated))"
@@ -161,6 +169,9 @@
           <div class="blc-meta">
             <v-chip v-if="build.isDraft" label color="error" size="x-small" class="mr-2"
               ><v-icon start icon="mdi-link-variant"></v-icon>Unlisted</v-chip
+            >
+            <v-chip v-if="build.duplicateOf?.id" label size="x-small" class="mr-2"
+              ><v-icon start icon="mdi-content-copy"></v-icon>Duplicate</v-chip
             >
             <v-chip
               v-if="build.timeCreated && isNew(toDateSafe(build.timeCreated))"
@@ -466,11 +477,19 @@ export default {
   gap: 6px;
 }
 
+/* One row of chips, never two: the card's reserved height has room for one.
+   A status chip (Unlisted, Duplicate) beside three age chips is wider than a
+   phone card, and wrapping grew the card 96 → 119px at 393. So the row keeps
+   its one-row height (an x-small chip and its mt-1: 20 + 4 = 24px) and what
+   does not fit drops off whole, like .blc-meta--xs below. Status chips come
+   first in the markup, so it is always an age chip that drops. */
 .blc-chiprow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   margin-top: -4px;
+  max-height: 24px;
+  overflow: hidden;
 }
 
 /* The one mobile meta line, which must stay one line: the card's reserved height

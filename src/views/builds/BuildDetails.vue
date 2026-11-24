@@ -236,6 +236,28 @@
       </template>
     </BuildHeader>
 
+    <!-- Hidden as an exact duplicate (spec 044): only its author is told why,
+         and how to list it again. Everyone else just sees the credit line. -->
+    <!-- Drawn like the cards beside it (surface, 8px), not in the theme's info
+         colour, whose gold text on the light surface is hard to read. -->
+    <v-alert
+      v-if="build.duplicateOf?.id && user?.uid === build.authorUid"
+      color="surface"
+      variant="flat"
+      rounded="lg"
+      density="compact"
+      icon="mdi-information-outline"
+      class="mt-4 text-body-2 text-left"
+    >
+      Hidden from lists: its steps are identical to
+      <router-link
+        :to="{ name: 'BuildDetails', params: { id: build.duplicateOf.id } }"
+        class="text-accent text-decoration-none"
+        >{{ build.duplicateOf.title || "another build" }}</router-link
+      ><template v-if="build.duplicateOf.author"> by {{ build.duplicateOf.author }}</template>. Change the
+      steps to list it again.
+    </v-alert>
+
     <!-- Description card: collapsible on mobile, static on desktop -->
     <v-card v-if="build.description" flat rounded="lg" class="mt-4">
       <!-- Mobile: collapsible header -->
@@ -314,6 +336,7 @@ import { ref, onMounted, onUnmounted, computed, provide, watch } from "vue";
 import { useElementVisibility, useEventListener, useSwipe } from "@vueuse/core";
 import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
+import { setCanonicalPath } from "@/composables/canonical";
 
 //components
 import Favorite from "@/components/Favorite.vue";
@@ -733,6 +756,24 @@ export default {
     };
     watch(() => build.value?.isDraft === true, setNoIndex, { immediate: true });
     onUnmounted(() => setNoIndex(false));
+
+    //An exact duplicate (spec 044) names the build it duplicates as the
+    //canonical page, so search engines send readers to the original. The router
+    //owns the tag and points it at this path on every navigation; this only
+    //re-points it once the build is known, and back when the mark clears.
+    //
+    //No reset on unmount, unlike setNoIndex: the router's afterEach has already
+    //pointed the tag at the next page by the time this view unmounts, and a
+    //reset here would point it back. The props.id guard keeps a late load from
+    //touching the tag after the reader has moved on.
+    watch(
+      () => build.value?.duplicateOf?.id ?? null,
+      (originalId) => {
+        if (!build.value || build.value.id !== props.id || route.params.id !== props.id) return;
+        setCanonicalPath(originalId ? `/builds/${originalId}` : `/builds/${props.id}`);
+      },
+      { immediate: true }
+    );
 
     const handleRemix = async () => {
       if (!assertVerified()) return;

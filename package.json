@@ -14,6 +14,7 @@
     "prerender": "node scripts/prerender.mjs --force",
     "preview": "vite preview",
     "check:icons": "node scripts/check-icons.mjs",
+    "check:lineage": "node scripts/check-lineage.mjs",
     "check:plurals": "node scripts/check-plurals.mjs",
     "check:search": "node scripts/check-search.mjs",
     "check:seasons": "node scripts/check-seasons.mjs",

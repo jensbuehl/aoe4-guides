@@ -22,6 +22,13 @@ export function getQueryParametersFromConfig(config, pageLimit, userUid) {
     }
     if (userUid) {
       queryParams = queryParams.concat(getFilterAuthorQueryParam(userUid));
+    } else if (config) {
+      // Public lists show each build order once (spec 044): an exact duplicate
+      // of another build is left out, as unlisted builds are. My Builds passes
+      // userUid and keeps showing an author's own duplicates, marked (FR-010).
+      // `== null` never matches a missing field — every build carries
+      // duplicateOf since the 044 seed, and addBuild writes it.
+      queryParams = queryParams.concat(where("duplicateOf", "==", null));
     }
     return queryParams;
   } catch (err) {

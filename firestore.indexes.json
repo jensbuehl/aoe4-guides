@@ -1357,6 +1357,174 @@
           "order": "ASCENDING"
         }
       ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "likes",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "likes",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "score",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "score",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "scoreAllTime",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sortTitle",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sortTitle",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timeCreated",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "timeCreated",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "views",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "builds",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "duplicateOf",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "views",
+          "order": "DESCENDING"
+        }
+      ]
     }
   ],
   "fieldOverrides": []

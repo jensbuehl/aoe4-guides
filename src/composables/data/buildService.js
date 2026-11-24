@@ -629,7 +629,27 @@ function saveable(build) {
 export async function addBuild(build, customId = null) {
   withFacets(withAgeTimings(build));
   store.commit("setBuild", build);
-  return add(saveable(build), customId);
+  return add(newBuildPayload(build), customId);
+}
+
+/**
+ * What a new build is saved as. Its lineage starts empty whatever the template
+ * carried — a remix is built from another build, and the server-owned fields of
+ * that build must never travel with it (firestore.rules refuses them anyway).
+ *
+ * `duplicateOf: null` is written, not left out: every public list filters
+ * `duplicateOf == null`, and Firestore never matches a missing field, so a
+ * build saved without it would be missing from every list until the nightly
+ * job filled it in (spec 044, research R5).
+ *
+ * @param {Object} build
+ * @return {Object}
+ */
+function newBuildPayload(build) {
+  const payload = { ...saveable(build) };
+  for (const field of LINEAGE_FIELDS) delete payload[field];
+  payload.duplicateOf = null;
+  return payload;
 }
 
 /**
@@ -701,6 +721,15 @@ export const NON_EDITABLE_FIELDS = [
   "trendAt",
   "trendWeights",
 ];
+
+/**
+ * Written only by the nightly job (spec 044): which build a build duplicates,
+ * the step fingerprint and since when it has held, and its remix credit and
+ * list. Part of NON_EDITABLE_FIELDS; listed apart because addBuild clears them
+ * from a new build. Mirrored by lineage() in firestore.rules.
+ */
+export const LINEAGE_FIELDS = ["duplicateOf", "stepsHash", "stepsSince", "remixCredit", "remixes"];
+NON_EDITABLE_FIELDS.push(...LINEAGE_FIELDS);
 
 /**
  * Retrieves recent builds based on the specified limit.
