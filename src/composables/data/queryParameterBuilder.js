@@ -2,15 +2,14 @@
 import { where, orderBy, limit, endBefore, startAfter, limitToLast } from "@/firebase";
 
 /**
- * Generate query parameters based on the provided configuration, page limit, user ID, and favorites.
+ * Generate query parameters based on the provided configuration, page limit and user ID.
  *
  * @param {Object} config - The configuration object.
  * @param {number} pageLimit - The limit of items per page.
  * @param {string} userUid - The ID of the user.
- * @param {Array} favorites - The array of favorite items.
  * @return {Array} An array of query parameters.
  */
-export function getQueryParametersFromConfig(config, pageLimit, userUid, favorites) {
+export function getQueryParametersFromConfig(config, pageLimit, userUid) {
   try {
     var queryParams = [];
     if (pageLimit) {
@@ -18,7 +17,7 @@ export function getQueryParametersFromConfig(config, pageLimit, userUid, favorit
     }
     if (config) {
       queryParams = queryParams
-        .concat(getFilterQueryParams(config, favorites))
+        .concat(getFilterQueryParams(config))
         .concat(getOrderByQueryParam(config));
     }
     if (userUid) {
@@ -152,13 +151,12 @@ export function getOrderByQueryParam(config, sortPropertyName, dir) {
 }
 
 /**
- * Generates query parameters based on the provided configuration and favorites.
+ * Generates query parameters based on the provided configuration.
  *
  * @param {Object} config - The configuration object containing various filter options.
- * @param {Array} favorites - The list of favorite items to filter by.
  * @return {Array} An array of query parameters for filtering.
  */
-export function getFilterQueryParams(config, favorites) {
+export function getFilterQueryParams(config) {
   try {
     const queryParams = [];
 
@@ -198,11 +196,6 @@ export function getFilterQueryParams(config, favorites) {
     if (config?.strategies.length > 0) {
       const strategiesOp = where("strategy", "in", config.strategies);
       queryParams.push(strategiesOp);
-    }
-
-    if (favorites?.length > 0) {
-      const favoritesOp = where("id", "in", favorites);
-      queryParams.push(favoritesOp);
     }
 
     return queryParams;
@@ -249,3 +242,19 @@ export function getWhereNotEqualQueryParam(field, value) {
   }
 }
 
+
+/**
+ * A filter on a list of build ids, for loading builds by id (My Favorites).
+ *
+ * Deliberately never combined with the filters above: an `in` filter takes at
+ * most 30 values, and a query at most 30 disjunctions across all its `in`
+ * filters multiplied together — 20 favourites × 2 seasons is already refused.
+ * Callers pass at most 30 ids and filter the result in memory
+ * (applyListConfig, spec 042).
+ *
+ * @param {string[]} ids - At most 30 build ids.
+ * @return {Array} The query parameter.
+ */
+export function getIdsQueryParam(ids) {
+  return [where("id", "in", ids)];
+}

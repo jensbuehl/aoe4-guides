@@ -14,9 +14,10 @@ service cloud.firestore {
         return ['views', 'likes', 'upvotes', 'downvotes', 'comments'];
       }
       // Written only by the scheduled jobs (Admin SDK, which bypasses rules).
-      // `trend*` is the recency bookkeeping of updateBuildTrend.
+      // `trend*` is the recency bookkeeping of updateBuildTrend; `trendWeights`
+      // is the weighting version that bookkeeping was measured under (spec 042).
       function serverOwned() {
-        return ['score', 'scoreAllTime', 'trend', 'trendBase', 'trendAt'];
+        return ['score', 'scoreAllTime', 'trend', 'trendBase', 'trendAt', 'trendWeights'];
       }
       function changed() {
         return request.resource.data.diff(resource.data).affectedKeys();
@@ -31,6 +32,40 @@ service cloud.firestore {
       }
       function startsAtZero(f) {
         return !(f in request.resource.data) || request.resource.data[f] == 0;
+      }
+
+      // Likes and upvotes count once per account (spec 042). A step is allowed
+      // only when the SAME batched write moves this build in or out of the
+      // caller's own list on favorites/{uid} (`favorites` for likes, `upvotes`
+      // for upvotes): +1 when the list gains it, −1 when it loses it. Checking
+      // the count alone was not enough — 040 checked that a like moved by one,
+      // not who moved it or whether they had already, so one account could
+      // like the same build over and over. favorites/{uid} checks the other
+      // direction (a list may only change together with this step), so neither
+      // side can move without the other.
+      //
+      // Adding needs a verified address, as the app already asks; taking back
+      // does not, so an unverified account is never stuck with an old like.
+      function favoritesPath() {
+        return /databases/$(database)/documents/favorites/$(request.auth.uid);
+      }
+      function listBefore(list) {
+        return exists(favoritesPath()) ? get(favoritesPath()).data.get(list, []) : [];
+      }
+      function listAfter(list) {
+        return getAfter(favoritesPath()).data.get(list, []);
+      }
+      function listStep(list, f) {
+        let before = resource.data.get(f, 0);
+        let after = request.resource.data.get(f, 0);
+        return (after == before + 1
+                && request.auth.token.email_verified == true
+                && !listBefore(list).hasAny([build])
+                && listAfter(list).hasAny([build]))
+            || (after == before - 1
+                && after >= 0
+                && listBefore(list).hasAny([build])
+                && !listAfter(list).hasAny([build]));
       }
 
       allow read;
@@ -55,7 +90,7 @@ service cloud.firestore {
                     && startsAtZero('upvotes') && startsAtZero('downvotes')
                     && startsAtZero('comments')
                     && startsAtZero('score') && startsAtZero('scoreAllTime')
-                    && !request.resource.data.keys().hasAny(['trend', 'trendBase', 'trendAt']);
+                    && !request.resource.data.keys().hasAny(['trend', 'trendBase', 'trendAt', 'trendWeights']);
 
       // An author's edit leaves the numbers alone. Unchanged keys are not in
       // changed(), so sending a counter at its current value is harmless; what
@@ -70,14 +105,15 @@ service cloud.firestore {
 
       // Counter steps, from anyone the branch allows (the author included).
       // Exactly one key per write — every client write is one already. A view
-      // is anonymous and only ever goes up; likes, votes and comments need an
-      // account, as the UI already does, and may be taken back.
+      // is anonymous and only ever goes up; comments need an account and may
+      // be taken back; likes and upvotes are bound to the caller's own list
+      // (listStep above). `downvotes` is in no branch: downvoting was removed
+      // (spec 042) and the stored values are frozen.
       allow update: if changed().size() == 1
                     && ((changed().hasOnly(['views']) && stepped('views', false))
                         || (request.auth != null
-                            && ((changed().hasOnly(['likes']) && stepped('likes', true))
-                                || (changed().hasOnly(['upvotes']) && stepped('upvotes', true))
-                                || (changed().hasOnly(['downvotes']) && stepped('downvotes', true))
+                            && ((changed().hasOnly(['likes']) && listStep('favorites', 'likes'))
+                                || (changed().hasOnly(['upvotes']) && listStep('upvotes', 'upvotes'))
                                 || (changed().hasOnly(['comments']) && stepped('comments', true)))));
     }
   }
@@ -101,8 +137,87 @@ service cloud.firestore {
     }
   }
   match /databases/{database}/documents {
+    // An account's lists: the builds it has favourited (= liked) and upvoted,
+    // plus a frozen `downvotes` list (downvoting was removed in spec 042).
+    //
+    // Each list may change only together with the matching step on the build,
+    // in the same batched write — the other half of builds/{build} listStep().
+    // Without this side, an account could like a build (+1, list gains it),
+    // drop it from the list WITHOUT the −1, and like it again.
+    //
+    // `lastChange` names the one build a write adds or removes. The rules
+    // cannot find it on their own — a set cannot be indexed and arrayRemove
+    // removes from any position — so the client declares it and the set
+    // equalities below prove the declaration. Sets, not sizes: an old list can
+    // hold an id twice, and arrayRemove drops both copies.
+    //
+    // A removal needs no step when the build is gone, or when its count already
+    // stands at 0 or below (legacy drift) — there is nothing left to give back.
+    //
+    // No client delete: account deletion gives back one step per entry and then
+    // deletes this document on the Admin SDK (functions/users), which bypasses
+    // these rules. A client delete would drop the lists without the steps.
+    //
+    // No length limit: the old 30-favourite cap was a query limit of My
+    // Favorites, which no longer loads favourites through one query.
     match /favorites/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      function changedKeys() {
+        return resource == null
+          ? request.resource.data.keys()
+          : request.resource.data.diff(resource.data).affectedKeys();
+      }
+      function before(list) {
+        return resource == null ? [] : resource.data.get(list, []);
+      }
+      function after(list) {
+        return request.resource.data.get(list, []);
+      }
+      function listChanged(list) {
+        return before(list).toSet() != after(list).toSet();
+      }
+      function counterOf(list) {
+        return list == 'favorites' ? 'likes' : 'upvotes';
+      }
+      function changedId() {
+        return request.resource.data.lastChange.buildId;
+      }
+      function buildPath() {
+        return /databases/$(database)/documents/builds/$(changedId());
+      }
+      function countBefore(list) {
+        return get(buildPath()).data.get(counterOf(list), 0);
+      }
+      function countAfter(list) {
+        return getAfter(buildPath()).data.get(counterOf(list), 0);
+      }
+      function added(list) {
+        return after(list).toSet() == before(list).toSet().union([changedId()].toSet())
+               && !before(list).hasAny([changedId()])
+               && request.auth.token.email_verified == true
+               && exists(buildPath())
+               && countAfter(list) == countBefore(list) + 1;
+      }
+      function removed(list) {
+        return after(list).toSet() == before(list).toSet().difference([changedId()].toSet())
+               && before(list).hasAny([changedId()])
+               && (!exists(buildPath())
+                   || countAfter(list) == countBefore(list) - 1
+                   || (countBefore(list) <= 0 && countAfter(list) == countBefore(list)));
+      }
+      function listOk(list) {
+        return !listChanged(list)
+               || ('lastChange' in request.resource.data
+                   && request.resource.data.lastChange.list == list
+                   && (added(list) || removed(list)));
+      }
+
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow create, update: if request.auth != null
+                            && request.auth.uid == userId
+                            && changedKeys().hasOnly(['favorites', 'upvotes', 'lastChange'])
+                            && !(listChanged('favorites') && listChanged('upvotes'))
+                            && listOk('favorites')
+                            && listOk('upvotes');
     }
   }
   match /databases/{database}/documents {

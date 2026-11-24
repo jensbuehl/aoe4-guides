@@ -33,12 +33,12 @@ exports.updateBuildTrend = onSchedule(
     const db = getFirestore();
     const snapshot = await db
       .collection("builds")
-      .select("title", "views", "likes", "upvotes", "downvotes", "isDraft", "score", "trend", "trendBase", "trendAt")
+      .select("title", "views", "likes", "upvotes", "isDraft", "score", "trend", "trendBase", "trendAt", "trendWeights")
       .get();
 
     const now = Timestamp.now();
     const nowMs = now.toMillis();
-    const counts = { seeded: 0, held: 0, updated: 0, unchanged: 0 };
+    const counts = { seeded: 0, held: 0, rebased: 0, updated: 0, unchanged: 0 };
     const writes = [];
     const listed = [];
 
@@ -49,7 +49,12 @@ exports.updateBuildTrend = onSchedule(
 
       const update = {};
       if (result.kind !== "unchanged") {
-        Object.assign(update, { trend: result.trend, trendBase: result.trendBase, trendAt: now });
+        Object.assign(update, {
+          trend: result.trend,
+          trendBase: result.trendBase,
+          trendAt: now,
+          trendWeights: result.trendWeights,
+        });
       }
       if (TRENDING_SOURCE === "recency") {
         const score = scoreFromTrend(result.trend);

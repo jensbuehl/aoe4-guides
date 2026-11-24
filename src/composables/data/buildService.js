@@ -9,6 +9,7 @@ import { incrementViews as incrementContributorViews } from "@/composables/data/
 import { claim } from "@/composables/data/viewMemory";
 import {
   getQueryParametersFromConfig,
+  getIdsQueryParam,
   getStartAfterQueryParam,
   getEndBeforeQueryParam,
   getLimitToLastQueryParam,
@@ -65,66 +66,6 @@ function cacheBuilds(result) {
  * @return {Ref<string|null>} The error value, which is a reactive reference to a string or null.
  */
 export const error = computed(() => collectionServiceError).value;
-
-/**
- * Increments the number of likes for a build.
- *
- * @param {string} buildId - The ID of the build to increment the likes for.
- * @return {Promise} A promise that resolves when the number of likes has been incremented.
- */
-export async function incrementLikes(buildId) {
-  return incrementNumber(buildId, "likes");
-}
-
-/**
- * Decrements the number of likes for a specific build.
- *
- * @param {string} buildId - The ID of the build to decrement likes for
- * @return {Promise<void>} This function does not return anything
- */
-export async function decrementLikes(buildId) {
-  return decrementNumber(buildId, "likes");
-}
-
-/**
- * Increment downvotes for a specific build.
- *
- * @param {string} buildId - The ID of the build to update.
- * @return {Promise<void>} A Promise that resolves once the downvotes are incremented.
- */
-export async function incrementDownvotes(buildId) {
-  return incrementNumber(buildId, "downvotes");
-}
-
-/**
- * Decrements the count of downvotes for a specific build.
- *
- * @param {string} buildId - The identifier of the build to decrement downvotes for.
- * @return {Promise<void>} This function does not return anything.
- */
-export async function decrementDownvotes(buildId) {
-  return decrementNumber(buildId, "downvotes");
-}
-
-/**
- * Increment upvotes for a specific build.
- *
- * @param {string} buildId - The unique identifier of the build
- * @return {Promise<void>} This function does not return anything.
- */
-export async function incrementUpvotes(buildId) {
-  return incrementNumber(buildId, "upvotes");
-}
-
-/**
- * Decrements the upvotes count for a specific build.
- *
- * @param {string} buildId - The unique identifier of the build.
- * @return {Promise<void>} A promise that resolves when the upvotes count is decremented.
- */
-export async function decrementUpvotes(buildId) {
-  return decrementNumber(buildId, "upvotes");
-}
 
 /**
  * Increments the number of views for a given build.
@@ -222,22 +163,6 @@ export async function getUserBuildsCount(userId, filterConfig = getDefaultConfig
 }
 
 /**
- * Retrieves the count of user favorites based on the provided user ID, favorites array, and optional filter configuration.
- *
- * @param {string} userId - The ID of the user
- * @param {Array} favorites - The array of user favorites
- * @param {object} filterConfig - The optional filter configuration (default: getDefaultConfig())
- * @return {Promise<number>} The count of user favorites
- */
-export async function getUserFavoritesCount(favorites, filterConfig = getDefaultConfig()) {
-  const limit = null;
-  const userDraftsQuery = getQuery(
-    getQueryParametersFromConfig(filterConfig, limit, null, favorites)
-  );
-  return getSize(userDraftsQuery);
-}
-
-/**
  * Retrieves the user drafts from the server.
  *
  * @param {string} userId - The ID of the user.
@@ -264,24 +189,25 @@ export async function getUserBuilds(userId, filterConfig = getDefaultConfig(), l
 }
 
 /**
- * Retrieves the favorites for a specific user based on the provided user ID, favorites array, filter configuration, and optional limit.
+ * Loads builds by id, in as many queries as the ids need (30 per `in` filter),
+ * run in parallel. For My Favorites, which then filters, sorts and pages in
+ * memory (applyListConfig) — see getIdsQueryParam for why the two never meet in
+ * one query (spec 042).
  *
- * @param {string} userId - The ID of the user
- * @param {Array} favorites - Array of user's favorite items
- * @param {Object} filterConfig - Configuration object for filtering the favorites
- * @param {number} limit - Optional limit for the number of favorites to retrieve
- * @return {Promise<Array>} A promise that resolves to the retrieved favorites
+ * An id whose build no longer exists simply does not come back. Resolves to
+ * `undefined` if any query failed, as getAll does, so a caller can tell an
+ * unreadable list from an empty one.
+ *
+ * @param {string[]} ids - Build ids, duplicates allowed.
+ * @return {Promise<object[]|undefined>} The builds found, in no particular order.
  */
-export async function getUserFavorites(
-  favorites,
-  filterConfig = getDefaultConfig(),
-  limit = null
-) {
-  const userDraftsQuery = getQuery(
-    getQueryParametersFromConfig(filterConfig, limit, null, favorites)
-  );
-  const result = await getAll(userDraftsQuery);
-  return cacheBuilds(result);
+export async function getBuildsByIds(ids) {
+  const unique = [...new Set(ids)];
+  const chunks = [];
+  for (let i = 0; i < unique.length; i += 30) chunks.push(unique.slice(i, i + 30));
+  const results = await Promise.all(chunks.map((chunk) => getAll(getQuery(getIdsQueryParam(chunk)))));
+  if (results.some((r) => !Array.isArray(r))) return undefined;
+  return cacheBuilds(results.flat());
 }
 
 /**
@@ -316,33 +242,6 @@ export async function getUserBuildsUntil(
 
   const query = getQuery(
     getQueryParametersFromConfig(filterConfig, null, userId)
-      .concat(getLimitToLastQueryParam(limit))
-      .concat(getEndBeforeQueryParam(snapshot))
-  );
-  const res = await getAll(query);
-  return cacheBuilds(res);
-}
-
-/**
- * Retrieves user favorites until a specified build ID.
- *
- * @param {string} userId - The ID of the user
- * @param {number} endBuildId - The build ID to retrieve favorites until
- * @param {Array} favorites - List of favorites
- * @param {object} filterConfig - Filter configuration object (default is getDefaultConfig())
- * @param {number} limit - Maximum number of results to return
- * @return {Promise} Resolves with the retrieved favorites
- */
-export async function getUserFavoritesUntil(
-  endBuildId,
-  favorites,
-  filterConfig = getDefaultConfig(),
-  limit = null
-) {
-  const snapshot = await getSnapshot(endBuildId);
-
-  const query = getQuery(
-    getQueryParametersFromConfig(filterConfig, null, null, favorites)
       .concat(getLimitToLastQueryParam(limit))
       .concat(getEndBeforeQueryParam(snapshot))
   );
@@ -389,23 +288,6 @@ export async function getUserBuildsFrom(
 
   const query = getQuery(
     getQueryParametersFromConfig(filterConfig, limit, userId).concat(
-      getStartAfterQueryParam(snapshot)
-    )
-  );
-  const res = await getAll(query);
-  return cacheBuilds(res);
-}
-
-export async function getUserFavoritesFrom(
-  startBuildId,
-  favorites,
-  filterConfig = getDefaultConfig(),
-  limit = null
-) {
-  const snapshot = await getSnapshot(startBuildId);
-
-  const query = getQuery(
-    getQueryParametersFromConfig(filterConfig, limit, null, favorites).concat(
       getStartAfterQueryParam(snapshot)
     )
   );
@@ -800,6 +682,7 @@ export const NON_EDITABLE_FIELDS = [
   "trend",
   "trendBase",
   "trendAt",
+  "trendWeights",
 ];
 
 /**

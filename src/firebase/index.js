@@ -41,6 +41,7 @@ import {
   arrayUnion,
   arrayRemove,
   getCountFromServer,
+  writeBatch,
 } from "firebase/firestore";
 import { initializeAppCheck, ReCaptchaV3Provider, getToken } from "firebase/app-check";
 import { getFunctions } from "firebase/functions";
@@ -149,6 +150,7 @@ export {
   arrayUnion,
   arrayRemove,
   Timestamp,
+  writeBatch,
   //functions
   functions,
   //storage

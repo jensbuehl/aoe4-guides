@@ -68,7 +68,7 @@ function toUserMessage(err, fallback) {
  * @param {() => Promise<any>} op - The write operation to run (and possibly retry).
  * @return {Promise<any>} The result of the successful write.
  */
-async function writeWithTokenRetry(op) {
+export async function writeWithTokenRetry(op) {
   try {
     return await op();
   } catch (err) {
@@ -225,16 +225,15 @@ export function collectionService(col) {
    *
    * A merge rather than `updateDoc`, because the only caller is the per-user
    * favorites document, and not every account has one: a sign-up whose setup
-   * never finished, or an account older than the document. Such a user now gets
-   * the heart and vote buttons (favoriteService.getUserFavorites reads a
-   * missing document as an empty one), and their first click lands here.
-   * `updateDoc` fails on a missing document, and this function logs instead of
-   * throwing, so that click would be lost while the build's counter, written
-   * separately, still went up. A merge with `arrayUnion` never disturbs an
-   * existing list, so it cannot clobber one either.
+   * never finished, or an account older than the document. A merge with
+   * `arrayUnion` creates it where it is missing and never disturbs an existing
+   * list, so it cannot clobber one either.
    *
-   * With no elements it only makes sure the array exists, which is how
-   * `createUserFavorites` creates the document without a read-then-write race.
+   * Its one caller passes no elements: that only makes sure the array exists,
+   * which is how `createUserFavorites` creates the document without a
+   * read-then-write race. Hearts and upvotes no longer come here — since spec
+   * 042 they are one batched write with the build's count
+   * (reactionService.setReaction), which makes the same merge.
    *
    * @param {string} documentId - The ID of the document.
    * @param {string} arrayName - The name of the array field.

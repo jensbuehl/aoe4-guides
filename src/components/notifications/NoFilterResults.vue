@@ -8,7 +8,7 @@
       <v-btn variant="text" color="primary" :to="{ name: 'Builds' }">Browse build orders</v-btn>
     </template>
     <!-- The list could not be read (App Check, offline). Not "no results":
-         that would tell someone with thirty favorites that they have none. -->
+         that would tell someone with dozens of favorites that they have none. -->
     <template v-else-if="favorites === 'unreadable' || unreadable">
       <v-icon size="48" class="nfr-icon mb-3">mdi-alert-circle-outline</v-icon>
       <div class="nfr-text mb-1">

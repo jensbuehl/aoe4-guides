@@ -51,10 +51,18 @@
             v-if="userData"
             v-model="userData"
             :buildId="build.id"
+            :count="build.upvotes"
             @voteUpAdded="() => { build.upvotes++; }"
             @voteUpRemoved="() => { build.upvotes--; }"
           ></Vote>
-          <Favorite v-if="userData" v-model="userData" :buildId="build.id"></Favorite>
+          <Favorite
+            v-if="userData"
+            v-model="userData"
+            :buildId="build.id"
+            :count="build.likes"
+            @favoriteAdded="() => { build.likes++; }"
+            @favoriteRemoved="() => { build.likes--; }"
+          ></Favorite>
           <BuildActionsFallback
             v-if="actionsPending || actionsFailed"
             :failed="actionsFailed"
@@ -206,10 +214,17 @@
           <Vote
             v-model="userData"
             :buildId="build.id"
+            :count="build.upvotes"
             @voteUpAdded="() => { build.upvotes++; }"
             @voteUpRemoved="() => { build.upvotes--; }"
           ></Vote>
-          <Favorite v-model="userData" :buildId="build.id"></Favorite>
+          <Favorite
+            v-model="userData"
+            :buildId="build.id"
+            :count="build.likes"
+            @favoriteAdded="() => { build.likes++; }"
+            @favoriteRemoved="() => { build.likes--; }"
+          ></Favorite>
         </div>
         <BuildActionsFallback
           v-else-if="actionsPending || actionsFailed"

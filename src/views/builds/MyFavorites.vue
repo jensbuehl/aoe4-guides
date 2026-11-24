@@ -47,7 +47,7 @@
 <script>
 //External
 import { useStore } from "vuex";
-import { ref, computed, onMounted, onBeforeUnmount, watch } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 
 //Components
 import FilterConfig from "@/components/filter/FilterConfig.vue";
@@ -58,19 +58,23 @@ import { useRetry } from "@/composables/useRetry";
 //Composables
 import { getMostRecentBuildsConfig } from "@/composables/filter/configDefaultProvider";
 import { getUserFavorites as getUserFavoritesArray } from "@/composables/data/favoriteService";
-import {
-  getUserFavorites,
-  getUserFavoritesFrom,
-  getUserFavoritesUntil,
-  getUserFavoritesCount,
-} from "@/composables/data/buildService";
+import { getBuildsByIds } from "@/composables/data/buildService";
+import { applyListConfig } from "@/composables/data/applyListConfig";
 
+// My Favorites loads every favourited build by id, once per visit, and then
+// filters, sorts, counts and pages them in memory (spec 042). It used to ask
+// Firestore for "these ids AND these filters", one page at a time, which broke
+// on two Firestore limits: an `in` filter takes at most 30 values (hence the
+// old 30-favourite cap — and 5 accounts above it could not load this page at
+// all), and a query at most 30 disjunctions across its `in` filters
+// multiplied together (20 favourites × 2 seasons was refused). Lists are short
+// (median 2, max 58 in 2026-11), so this also reads less than a page + count.
 export default {
   name: "Builds",
   components: { FilterConfig, BuildListCard, NoFilterResults },
   setup() {
-    const builds = ref(null);
-    const favorites = ref(null);
+    // Every favourited build that could be loaded, or null before the read.
+    const all = ref(null);
     // Why the list is empty before any filter applies: "none" or "unreadable"
     // (see NoFilterResults). Null while unknown, so nothing claims "no
     // favorites" before the read has answered.
@@ -83,9 +87,17 @@ export default {
     const paginationConfig = ref({
       currentPage: 1,
       totalPages: null,
-      pageStart: null,
-      pageEnd: null,
       limit: 10,
+    });
+
+    const filtered = computed(() => (all.value ? applyListConfig(all.value, filterConfig.value) : null));
+
+    const skeleton = () => Array(paginationConfig.value.limit).fill({ loading: true });
+    const builds = computed(() => {
+      if (emptyReason.value) return null;
+      if (!filtered.value) return skeleton();
+      const from = (paginationConfig.value.currentPage - 1) * paginationConfig.value.limit;
+      return filtered.value.slice(from, from + paginationConfig.value.limit);
     });
 
     watch(
@@ -94,7 +106,7 @@ export default {
         if (!filterConfig.value) {
           store.commit("setFilterConfig", getMostRecentBuildsConfig());
         }
-        initData();
+        load();
       }
     );
 
@@ -102,31 +114,34 @@ export default {
       store.commit("setFilterConfig", getMostRecentBuildsConfig());
       store.commit("setMyFavoritesList", null);
       if (user.value) {
-        initData();
+        load();
       }
     });
 
-    onBeforeUnmount(() => {
-      if (paginationConfig.value.currentPage != 1) {
-        //reset cache
-        store.commit("setMyFavoritesList", null);
-      }
-    });
+    // The drawer's live count: in memory, so a filter preview costs no read.
+    const myFavoritesCountFn = (config) =>
+      Promise.resolve(all.value ? applyListConfig(all.value, config).length : 0);
 
-    const myFavoritesCountFn = (config) => {
-      if (!favorites.value?.length) return Promise.resolve(0);
-      return getUserFavoritesCount(favorites.value, config);
-    };
-
+    // A filter or sort change recomputes from the loaded builds: no read (FR-021).
     const configChanged = () => {
-      initData();
+      paginationConfig.value.currentPage = 1;
+      applyCounts();
     };
 
-    // The empty state stays up while the read is out (initData sets
-    // emptyReason only once it answers), so the button carries the spinner.
-    const { retrying, retry } = useRetry(() => initData());
+    const applyCounts = () => {
+      if (!filtered.value) return;
+      store.commit("setResultsCount", filtered.value.length);
+      paginationConfig.value.totalPages = Math.ceil(filtered.value.length / paginationConfig.value.limit);
+      if (paginationConfig.value.currentPage > Math.max(1, paginationConfig.value.totalPages)) {
+        paginationConfig.value.currentPage = 1;
+      }
+    };
 
-    const initData = async () => {
+    // The empty state stays up while the read is out (load sets emptyReason
+    // only once it answers), so the button carries the spinner.
+    const { retrying, retry } = useRetry(() => load());
+
+    const load = async () => {
       // The user watch also fires on sign-out, before the route guard leaves.
       if (!user.value) return;
 
@@ -138,109 +153,56 @@ export default {
       //reset author filter
       store.commit("setAuthor", null);
 
-      // Favorites array is needed by both the count and list queries, so it
-      // must be fetched first.
+      // Within a visit, the loaded builds are kept (a heart elsewhere clears
+      // this cache, so it never outlives a change to the list).
+      const cached = store.state.cache.myFavoritesList;
+      if (Array.isArray(cached)) {
+        all.value = cached;
+        emptyReason.value = null;
+        applyCounts();
+        store.commit("setLoading", false);
+        return;
+      }
+
       // A missing document already reads as an empty list; only a failed read
       // comes back undefined.
       const favoritesDoc = await getUserFavoritesArray(user.value.uid);
-      favorites.value = favoritesDoc?.favorites ?? [];
-      emptyReason.value = !favoritesDoc ? "unreadable" : favorites.value.length ? null : "none";
+      const ids = favoritesDoc?.favorites ?? [];
+      emptyReason.value = !favoritesDoc ? "unreadable" : ids.length ? null : "none";
       if (emptyReason.value) {
         // "0 builds" in the filter strip, as My Builds shows. Not for an
         // unreadable list: its count is unknown, not zero.
         if (emptyReason.value === "none") store.commit("setResultsCount", 0);
-        builds.value = null;
+        all.value = null;
         store.commit("setLoading", false);
         return;
       }
 
-      // On a cache hit we already have the list synchronously, so show it
-      // immediately instead of a skeleton (count still runs in parallel below).
-      const cachedList = store.state.cache.myFavoritesList;
-      builds.value = cachedList ?? Array(paginationConfig.value.limit).fill({ loading: true });
-
-      // Given the favorites array, count and list are independent — parallelize.
-      const [size, listRes] = await Promise.all([
-        getUserFavoritesCount(favorites.value, filterConfig.value),
-        cachedList
-          ? Promise.resolve(cachedList)
-          : getUserFavorites(favorites.value, filterConfig.value, paginationConfig.value.limit),
-      ]);
+      all.value = null; // skeletons while the builds load
+      const loaded = await getBuildsByIds(ids);
 
       // The favorites document was readable but the builds it names were not
-      // (buildService's cacheBuilds passes that back as undefined): the same
-      // honest state as an unreadable document, with its retry.
-      if (!Array.isArray(listRes)) {
+      // (getAll passes a refused read back as undefined): the same honest state
+      // as an unreadable document, with its retry.
+      if (!Array.isArray(loaded)) {
         emptyReason.value = "unreadable";
-        builds.value = null;
         store.commit("setLoading", false);
         return;
       }
 
-      store.commit("setResultsCount", size);
-      if (!cachedList) store.commit("setMyFavoritesList", listRes);
-      builds.value = listRes;
-
-      //init pagination config
-      paginationConfig.value.totalPages = Math.ceil(size / paginationConfig.value.limit);
+      // Ids whose build was deleted simply did not come back (FR-020); if none
+      // did, the filter strip says 0 and NoFilterResults offers to clear filters.
+      all.value = loaded;
+      store.commit("setMyFavoritesList", loaded);
       paginationConfig.value.currentPage = 1;
-      updatePageBoundaries();
-
+      applyCounts();
       store.commit("setLoading", false);
     };
 
-    const nextPage = async () => {
-      //reset cache
-      store.commit("setMyFavoritesList", null);
-      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
-
-      const page = await getUserFavoritesFrom(
-        paginationConfig.value.pageEnd,
-        favorites.value,
-        filterConfig.value,
-        paginationConfig.value.limit
-      );
-      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
-      if (!Array.isArray(page)) return;
-      builds.value = page;
-
-      //set cache
-      store.commit("setMyFavoritesList", builds.value);
-
-      updatePageBoundaries();
-      window.scrollTo(0, 0);
-    };
-
-    const previousPage = async () => {
-      //reset cache
-      store.commit("setMyFavoritesList", null);
-      builds.value = Array(paginationConfig.value.limit).fill({ loading: true });
-
-      const page = await getUserFavoritesUntil(
-        paginationConfig.value.pageStart,
-        favorites.value,
-        filterConfig.value,
-        paginationConfig.value.limit
-      );
-      // Unreadable: the skeletons stay up, as in initData, and nothing is cached.
-      if (!Array.isArray(page)) return;
-      builds.value = page;
-
-      //set cache
-      store.commit("setMyFavoritesList", builds.value);
-
-      updatePageBoundaries();
-      window.scrollTo(0, 0);
-    };
-
-    const updatePageBoundaries = () => {
-      var firstPageElement = builds.value[0];
-      var lastPageElement = builds.value[builds.value.length - 1];
-      if (builds.value.length) {
-        paginationConfig.value.pageStart = firstPageElement.id;
-        paginationConfig.value.pageEnd = lastPageElement.id;
-      }
-    };
+    // v-pagination has already moved currentPage; the page is a slice of the
+    // loaded builds, so paging reads nothing.
+    const nextPage = () => window.scrollTo(0, 0);
+    const previousPage = () => window.scrollTo(0, 0);
 
     return {
       builds,

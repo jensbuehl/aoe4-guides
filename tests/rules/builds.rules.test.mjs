@@ -4,6 +4,12 @@
 // .specify/specs/040-fair-trending/contracts/firestore-rules.md, which is the
 // list this file has to cover. Add a case there first, then here.
 //
+// Likes, upvotes and downvotes moved to spec 042: a like or upvote is one
+// batched write with the caller's own list, and downvotes are frozen. Those
+// cases live in votes.rules.test.mjs (contract:
+// .specify/specs/042-vote-integrity/contracts/firestore-rules.md); A2, A3 and
+// A8 here were changed to match it.
+//
 // Run with `npm run test:rules`. It starts the Firestore emulator under the
 // throwaway project id `demo-aoe4-guides`, so it cannot touch either real
 // project, and it needs a Java runtime for the emulator.
@@ -17,7 +23,16 @@ import {
   assertSucceeds,
   initializeTestEnvironment,
 } from "@firebase/rules-unit-testing";
-import { deleteDoc, doc, increment, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import {
+  arrayUnion,
+  deleteDoc,
+  doc,
+  increment,
+  setDoc,
+  Timestamp,
+  updateDoc,
+  writeBatch,
+} from "firebase/firestore";
 
 let testEnv;
 
@@ -80,6 +95,18 @@ beforeEach(async () => {
 const anon = () => testEnv.unauthenticatedContext().firestore();
 const alice = () => testEnv.authenticatedContext("alice").firestore(); // the author
 const bob = () => testEnv.authenticatedContext("bob").firestore(); // someone else
+// A like or upvote needs a verified address (spec 042).
+const verified = (uid) => testEnv.authenticatedContext(uid, { email_verified: true }).firestore();
+
+/** A like or upvote as the client sends it since spec 042: step + own list, one batch. */
+function react(db, uid, buildPath, counter) {
+  const list = counter === "likes" ? "favorites" : "upvotes";
+  const buildId = buildPath.split("/")[1];
+  const batch = writeBatch(db);
+  batch.update(doc(db, buildPath), { [counter]: increment(1) });
+  batch.set(doc(db, `favorites/${uid}`), { [list]: arrayUnion(buildId), lastChange: { list, buildId } }, { merge: true });
+  return batch.commit();
+}
 
 describe("builds: ownership (authorUid takeover hotfix)", () => {
   it("B8: another user cannot claim a build by writing their own uid into authorUid", async () => {
@@ -168,16 +195,18 @@ describe("builds: counters can only be stepped", () => {
     await assertSucceeds(updateDoc(doc(anon(), BUILD), { views: increment(1) }));
   });
 
-  it("A2: a signed-in visitor likes and unlikes", async () => {
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { likes: increment(1) }));
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { likes: increment(-1) }));
+  it("A2 (042): a bare like or unlike is refused — it comes with the caller's list (V1/V2)", async () => {
+    await assertFails(updateDoc(doc(verified("bob"), BUILD), { likes: increment(1) }));
+    await assertFails(updateDoc(doc(verified("bob"), BUILD), { likes: increment(-1) }));
+    await assertSucceeds(react(verified("bob"), "bob", BUILD, "likes"));
   });
 
-  it("A3: a signed-in visitor votes and withdraws the vote", async () => {
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { upvotes: increment(1) }));
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { upvotes: increment(-1) }));
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { downvotes: increment(1) }));
-    await assertSucceeds(updateDoc(doc(bob(), BUILD), { downvotes: increment(-1) }));
+  it("A3 (042): bare upvote steps are refused (V3); downvotes are frozen (X10)", async () => {
+    await assertFails(updateDoc(doc(verified("bob"), BUILD), { upvotes: increment(1) }));
+    await assertFails(updateDoc(doc(verified("bob"), BUILD), { upvotes: increment(-1) }));
+    await assertFails(updateDoc(doc(verified("bob"), BUILD), { downvotes: increment(1) }));
+    await assertFails(updateDoc(doc(verified("bob"), BUILD), { downvotes: increment(-1) }));
+    await assertSucceeds(react(verified("bob"), "bob", BUILD, "upvotes"));
   });
 
   it("A4: a signed-in visitor's comment moves the count by one", async () => {
@@ -185,11 +214,11 @@ describe("builds: counters can only be stepped", () => {
     await assertSucceeds(updateDoc(doc(bob(), BUILD), { comments: increment(-1) }));
   });
 
-  it("the author may step a counter like anyone else", async () => {
-    await assertSucceeds(updateDoc(doc(alice(), BUILD), { likes: increment(1) }));
+  it("the author may like their own build like anyone else", async () => {
+    await assertSucceeds(react(verified("alice"), "alice", BUILD, "likes"));
   });
 
-  it("A8: a missing counter reads as 0 — upvote needs sign-in, then succeeds", async () => {
+  it("A8: a missing counter reads as 0 — upvote needs sign-in, then succeeds as a batch with the list", async () => {
     await testEnv.withSecurityRulesDisabled(async (ctx) => {
       const legacy = seedBuild();
       delete legacy.upvotes;
@@ -197,7 +226,7 @@ describe("builds: counters can only be stepped", () => {
       await setDoc(doc(ctx.firestore(), "builds/legacy"), legacy);
     });
     await assertFails(updateDoc(doc(anon(), "builds/legacy"), { upvotes: increment(1) }));
-    await assertSucceeds(updateDoc(doc(bob(), "builds/legacy"), { upvotes: increment(1) }));
+    await assertSucceeds(react(verified("bob"), "bob", "builds/legacy", "upvotes"));
   });
 });
 
@@ -220,6 +249,10 @@ describe("builds: the author cannot touch counters or scores", () => {
     await assertFails(updateDoc(doc(alice(), BUILD), { trendAt: Timestamp.now() }));
   });
 
+  it("B15 (042): the author cannot set the weighting version", async () => {
+    await assertFails(updateDoc(doc(alice(), BUILD), { trendWeights: 2 }));
+  });
+
   it("an edit that sends counters unchanged still succeeds", async () => {
     // Unchanged keys are not in affectedKeys(), so a client that still sends
     // the loaded counters is refused only when one has moved meanwhile.
@@ -230,6 +263,10 @@ describe("builds: the author cannot touch counters or scores", () => {
 describe("builds: a new build starts at zero", () => {
   it("A6: the editor's new-build payload", async () => {
     await assertSucceeds(setDoc(doc(bob(), "builds/new"), newBuild("bob")));
+  });
+
+  it("B16 (042): a new build cannot carry the weighting version", async () => {
+    await assertFails(setDoc(doc(bob(), "builds/new"), { ...newBuild("bob"), trendWeights: 2 }));
   });
 
   it("A6: a remix payload (no upvotes/downvotes fields)", async () => {
