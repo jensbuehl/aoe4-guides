@@ -300,14 +300,11 @@
       </div>
     </v-card>
 
-    <!-- Somewhere to go next (spec 046): the same civ, the same author. Fetched
-         only once it nears the viewport, so a reader following the build at the
+    <!-- Somewhere to go next (spec 046), and the end of the page since comments
+         were retired (spec 047): the same civ, the same author. Fetched only once it nears the viewport, so a reader following the build at the
          top never pays for it. -->
     <RelatedBuilds v-if="!loading" :build="build" :build-id="id" />
 
-    <div class="mt-4">
-      <Discussion :buildId="build.id"></Discussion>
-    </div>
   </v-container>
 </template>
 
@@ -327,7 +324,6 @@ import BuildActionsFallback from "@/components/builds/BuildActionsFallback.vue";
 import { useRetry } from "@/composables/useRetry";
 import BuildOrderEditor from "@/components/builds/BuildOrderEditor.vue";
 import AgeTimeline from "@/components/builds/AgeTimeline.vue";
-import Discussion from "@/components/Discussion.vue";
 import BuildNotFound from "@/components/notifications/BuildNotFound.vue";
 import BuildHeader from "@/components/builds/BuildHeader.vue";
 import BuildShareDialog from "@/components/builds/BuildShareDialog.vue";
@@ -362,7 +358,6 @@ export default {
     Favorite,
     Vote,
     BuildActionsFallback,
-    Discussion,
     BuildOrderEditor,
     AgeTimeline,
     FocusMode,
@@ -768,7 +763,6 @@ export default {
         views: 0,
         likes: 0,
         score: 0,
-        comments: 0,
         scoreAllTime: 0,
         timeCreated: null,
         timeUpdated: null,

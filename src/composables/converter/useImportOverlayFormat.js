@@ -27,7 +27,6 @@ export default function useImportOverlayFormat() {
       upvotes: 0,
       downvotes: 0,
       score: 0,
-      comments: 0,
       scoreAllTime: 0,
       isDraft: false,
       timeCreated: null,

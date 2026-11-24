@@ -13,7 +13,6 @@ const Register = () => import("@/views/account/Register.vue");
 const Account = () => import("@/views/account/Account.vue");
 const AccountAction = () => import("@/views/account/AccountAction.vue");
 const ResetPassword = () => import("@/views/account/ResetPassword.vue");
-const Unsubscribe = () => import("@/views/account/Unsubscribe.vue");
 
 //builds
 const Builds = () => import("@/views/builds/Builds.vue");
@@ -48,7 +47,6 @@ const NON_CANONICAL_ROUTES = new Set([
   "ResetPassword",
   "Account",
   "AccountAction",
-  "Unsubscribe",
   "MyBuilds",
   "MyFavorites",
   "Admin",
@@ -200,14 +198,6 @@ const routes = [
       component: AccountAction,
       meta: {
         title: "Account"
-      }
-    },
-    {
-      path: "/account/unsubscribe",
-      name: "Unsubscribe",
-      component: Unsubscribe,
-      meta: {
-        title: "Unsubscribe"
       }
     },
     {

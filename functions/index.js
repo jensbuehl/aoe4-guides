@@ -40,10 +40,3 @@ exports.updateHomeSnapshot = updateHomeSnapshot.updateHomeSnapshot;
 //Youtube related functions
 const updateRecentYoutubeVideos = require('./youtube/updateRecentYoutubeVideos');
 exports.updateRecentYoutubeVideos = updateRecentYoutubeVideos.updateRecentYoutubeVideos;
-
-//Notification functions
-const notifyCommenters = require('./notifications/notifyCommenters');
-exports.notifyCommenters = notifyCommenters.notifyCommenters;
-
-const processUnsubscribe = require('./notifications/processUnsubscribe');
-exports.processUnsubscribe = processUnsubscribe.processUnsubscribe;

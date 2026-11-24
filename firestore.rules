@@ -7,6 +7,9 @@ service cloud.firestore {
       // the rule checked which keys changed but never by how much, so a single
       // console write could give a build a million views.
       //
+      // `comments` stays listed after its retirement (spec 047) so that no
+      // client can ever set it again, while no branch below lets it step.
+      //
       // These two lists mirror NON_EDITABLE_FIELDS in
       // src/composables/data/buildService.js, which keeps the editor from
       // sending them. Transcribed, because rules cannot import: change both.
@@ -105,16 +108,15 @@ service cloud.firestore {
 
       // Counter steps, from anyone the branch allows (the author included).
       // Exactly one key per write — every client write is one already. A view
-      // is anonymous and only ever goes up; comments need an account and may
-      // be taken back; likes and upvotes are bound to the caller's own list
-      // (listStep above). `downvotes` is in no branch: downvoting was removed
-      // (spec 042) and the stored values are frozen.
+      // is anonymous and only ever goes up; likes and upvotes are bound to the
+      // caller's own list (listStep above). `downvotes` and `comments` are in no
+      // branch: downvoting was removed (spec 042) and its stored values are
+      // frozen; comments were retired (spec 047) and the counter is deleted.
       allow update: if changed().size() == 1
                     && ((changed().hasOnly(['views']) && stepped('views', false))
                         || (request.auth != null
                             && ((changed().hasOnly(['likes']) && listStep('favorites', 'likes'))
-                                || (changed().hasOnly(['upvotes']) && listStep('upvotes', 'upvotes'))
-                                || (changed().hasOnly(['comments']) && stepped('comments', true)))));
+                                || (changed().hasOnly(['upvotes']) && listStep('upvotes', 'upvotes')))));
     }
   }
   match /databases/{database}/documents {
@@ -127,13 +129,12 @@ service cloud.firestore {
     }
   }
   match /databases/{database}/documents {
+    // Comments were retired (spec 047): no client may read, write or delete
+    // one, the author included. Written out rather than left to the default
+    // deny so that the next reader sees a decision, not a gap to fill: do not
+    // add a rule back here without reviving the feature on purpose.
     match /comments/{comment} {
-      // S3 fix: restrict writes to the comment author
-      allow read;
-      allow create: if request.auth != null
-                    && request.resource.data.authorId == request.auth.uid;
-      allow delete: if request.auth != null
-                    && resource.data.authorId == request.auth.uid;
+      allow read, write: if false;
     }
   }
   match /databases/{database}/documents {

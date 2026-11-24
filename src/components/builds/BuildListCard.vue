@@ -184,12 +184,6 @@
                 ><v-icon size="13" icon="mdi-heart"></v-icon>{{ formatCount(build.likes) }}</span
               >
             </template>
-            <template v-if="build.comments > 0">
-              <span class="blc-sep">·</span>
-              <span 
-                ><v-icon size="13" icon="mdi-message-outline"></v-icon>{{ build.comments }}</span
-              >
-            </template>
             <template v-if="showSeason">
               <span class="blc-sep">·</span>
               <v-tooltip location="top">
