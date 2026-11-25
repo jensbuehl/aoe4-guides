@@ -128,7 +128,8 @@ another task. Nothing is committed unless asked.
 ## Phase 8: Polish & Cross-Cutting
 
 - [X] T036 [P] `.specify/specs/040-fair-trending/contracts/firestore-rules.md`: mark the likes/upvotes/downvotes rows and cases A2/A3/A8 as superseded by the 042 contract, with a link. CLAUDE.md's `test:rules` paragraph names only the 040 contract — add the 042 one.
-- [ ] T037 [P] Delete `scripts/.scratch/weights.mjs`, `copies.mjs`, `remixes.mjs` only after spec 044 is planned (its numbers come from `remixes.mjs`); until then leave them.
+- [X] T037 [P] Delete `scripts/.scratch/weights.mjs`, `copies.mjs`, `remixes.mjs` only after spec 044 is planned (its numbers come from `remixes.mjs`); until then leave them.
+  - *Done* 2026-11-25, after 044 shipped in 1.29.0. `vote-gaps/` stays: T038 compares against its last snapshot.
 - [ ] T038 **(owner)** Check run 3, some days after T019 (quickstart §1): no growing gap (SC-003).
 - [ ] T039 **(owner, optional)** Announce unlimited favourites in the Home news card (one small card, project convention) — the owner decides whether it is worth a card.
 - [ ] T040 Harvest per CLAUDE.md after the push: what surprised (e.g. the two mounted button copies, the `in`/disjunction limits, `lastChange` as a declared-then-proved key) goes to a code comment or memory; reconcile this spec/plan with what shipped.

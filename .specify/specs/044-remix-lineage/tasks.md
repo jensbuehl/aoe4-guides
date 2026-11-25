@@ -201,7 +201,7 @@ Placed before US2 because US2's list comes out of the same derivation and the sa
 - [ ] T036 Harvest per CLAUDE.md:
   - reconcile research R1 and the spec with the real counts;
   - note in CLAUDE.md that every new build field which public lists filter on must exist on every document, because `== null` does not match a missing field;
-  - delete `scripts/.scratch/{copies,remixes,lineage}.mjs` from the main tree (042 T037).
+  - delete `scripts/.scratch/{copies,remixes,lineage}.mjs` from the main tree (042 T037). *Done* 2026-11-25. The 044 worktree is gone too, and `remix-review.md` with it; a read-only production dry run of `scripts/link-remixes.mjs` writes it again.
 
 ---
 
