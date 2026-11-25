@@ -34,7 +34,15 @@
                   :src="item.imgSrc"
                 ></v-img
               ></v-col>
-              <v-col>{{ item.title }}</v-col>
+              <v-col
+                >{{ item.title
+                }}<!--The shorthand, so the list teaches what to type next time. Only
+                    some icons have one; the rest are found by title.--><span
+                  v-if="item.shorthand"
+                  class="ac-shorthand"
+                  >{{ formatShorthand(item.shorthand) }}</span
+                ></v-col
+              >
             </v-row>
           </v-list-item>
         </template></v-virtual-scroll
@@ -53,6 +61,7 @@ import { useEventListener } from "@vueuse/core";
 
 //Composables
 import iconService from "@/composables/builds/icons/iconService.js";
+import { rankIcons, formatShorthand } from "@/composables/builds/contentEditableHelper.js";
 
 export default {
   name: "IconAutoCompleteMenu",
@@ -90,8 +99,21 @@ export default {
         });
         e.stopPropagation();
         e.preventDefault();
-      } else if (e.code === "Enter" && searchText.value) {
+      } else if (
+        (e.code === "Enter" || e.code === "Space") &&
+        searchText.value &&
+        !e.altKey &&
+        !e.isComposing
+      ) {
+        //Space accepts too, and takes the highlighted entry. It used to be left
+        //to the field's keyup, which picked its own best match, so an entry
+        //reached with the arrow keys was not the one Space inserted.
+        //A bare "::" is not a choice, though: Space there is just a space, and
+        //nothing goes in. Enter still takes the highlighted entry, as before.
+        if (e.code === "Space" && searchText.value == "::") return;
         var icon = searchResults.value[selectedItemIndex.value];
+        //No match: the keys do what they normally do.
+        if (!icon) return;
         context.emit("iconSelected", icon.imgSrc, icon.title, icon.class);
         e.stopPropagation();
         e.preventDefault();
@@ -120,25 +142,12 @@ export default {
 
     //filtered data
     const searchResults = computed(() => filter(allIcons));
+    //A bare "::" browses everything in list order. Anything typed after it is
+    //ranked exactly as Space ranks it; see rankIcons().
     const filter = (unfiltered) => {
-      return unfiltered.filter((item) => {
-        if (!searchText.value) return false;
-        if (searchText.value == "::") return true;
-        var elementFound = false;
-        //Search by shorthand first
-        if (Array.isArray(item.shorthand)) {
-          elementFound =
-            -1 != item.shorthand.findIndex((element) => element.startsWith(searchText.value));
-        } else {
-          elementFound = item.shorthand?.startsWith(searchText.value);
-        }
-        //Search by title second
-        if (!elementFound) {
-          var title = item.title.replace(/ +/g, "").toLowerCase();
-          elementFound = title.includes(searchText.value);
-        }
-        return elementFound;
-      });
+      if (!searchText.value) return [];
+      if (searchText.value == "::") return unfiltered;
+      return rankIcons(unfiltered, searchText.value);
     };
 
     const imageSelected = (imgSrc, title, imgClass) => {
@@ -164,11 +173,18 @@ export default {
       show,
       selectedItemIndex,
       absoluteLocationStrategy,
+      formatShorthand,
     };
   },
 };
 </script>
 <style>
+/* Unscoped like the rest of this block, so the name is prefixed. */
+.ac-shorthand {
+  margin-left: 8px;
+  font-size: 12px;
+  opacity: 0.6;
+}
 .icon {
   vertical-align: middle;
   height: auto;

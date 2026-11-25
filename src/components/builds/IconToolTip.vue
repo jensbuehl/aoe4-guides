@@ -62,21 +62,16 @@
 //Component
 
 //Composables
+import { formatShorthand } from "@/composables/builds/contentEditableHelper.js";
 
 export default {
   name: "IconToolTip",
   props: ["icon"],
   setup(props, context) {
+    //The same formatter the :: menu shows shorthands with.
     function getFormattedShorthand(shorthand) {
-      if (!shorthand) return "";
-      
-      if (Array.isArray(shorthand)) {
-        const withColon = shorthand.map((x) => "::" + x);
-        const joined = withColon.join(", ");
-        return " [" + joined+"]";
-      } else {
-        return " [::" + shorthand+"]";
-      }
+      const typed = formatShorthand(shorthand);
+      return typed ? " [" + typed + "]" : "";
     }
     return {
       getFormattedShorthand,

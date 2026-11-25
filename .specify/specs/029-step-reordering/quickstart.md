@@ -186,7 +186,7 @@ typing is the whole point of them.
      both handlers are firing.)*
 40h. Hover the grip: the tooltip names the shortcut. Start a drag: the tooltip does **not**
      appear and hang under the cursor for the whole gesture.
-40i. Hover the ✕: the tooltip names `Alt + Backspace`.
+40i. Hover the ✕: the tooltip names `Alt + Shift + Backspace` (Shift added 2026-11-25: on macOS, Option+Backspace deletes a word).
 40j. Open any insert line's menu: **Step** shows `Alt ↵` and **Note** shows `Alt N`,
      right-aligned and muted. **Alternatives** and **Advance** show no hint at all.
 

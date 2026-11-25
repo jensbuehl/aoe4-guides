@@ -606,7 +606,7 @@
     rounded="lg"
     :role="section.type === 'ageUp' ? 'group' : null"
     :aria-label="section.type === 'ageUp' && targetAgeName ? `Advancing to ${targetAgeName}` : null"
-    :class="['hidden-xs', (section.type === 'ageUp' || (section.type === 'age' && section.age > 1)) ? 'mt-0' : 'mt-4']"
+    :class="['hidden-xs', (section.type === 'ageUp' || (section.type === 'age' && section.age > 1)) ? 'mt-0' : 'mt-4', isLastSection && 'section--last']"
   >
     <!--The advance banner used to sit here, a full-width gold bar identical to
         the arrival plate below. It is a row in the table now: the advance is an
@@ -824,8 +824,10 @@
               :ref="el => registerNoteRef(el, index)"
               :data-edit-index="index"
               data-edit-field="gameplan"
-              @input="showAutoCompleteMenu($event, index)"
+              @input="dropLeavings($event); showAutoCompleteMenu($event, index)"
               @keyup="handleContentEditableKeyUp($event, index)"
+              @keydown.tab.exact="tabToNextRow($event, index)"
+              @keydown.shift.tab.exact="tabToPreviousRow($event, index)"
               @click="saveSelection($event)"
               @paste="handlePaste"
               @keydown.esc.prevent="releaseEditing($event)"
@@ -904,7 +906,7 @@
                 ><v-icon size="16">mdi-close</v-icon
                   ><v-tooltip activator="parent" location="top"
                     ><span :style="{ color: $vuetify.theme.current.colors.primary }"
-                      >Remove, or Alt + Backspace</span
+                      >Remove, or Alt + Shift + Backspace</span
                     ></v-tooltip
                   ></v-btn
                 >
@@ -949,6 +951,8 @@
                 :value="item.time"
                 @input="updateStep($event, item, 'time')"
                 @blur="handleTimeBlur($event, item)"
+                @keydown.enter="advanceOnEnter"
+                @keydown.shift.tab.exact="tabToPreviousRow($event, index)"
                 @paste="handlePaste"
                 :class="['ts-pill', !item.time && 'ts-ghost']"
               />
@@ -960,7 +964,7 @@
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.builders"
-                @input="updateStep($event, item, 'builders')" @paste="handlePaste"
+                @input="updateStep($event, item, 'builders')" @paste="handlePaste" @keydown.enter="advanceOnEnter"
                 :class="hasResourceValue(item.builders) ? ['rc-pill','rc-builders','rc-input', deltaClass('builders',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -969,7 +973,7 @@
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.food"
-                @input="updateStep($event, item, 'food')" @paste="handlePaste"
+                @input="updateStep($event, item, 'food')" @paste="handlePaste" @keydown.enter="advanceOnEnter"
                 :class="hasResourceValue(item.food) ? ['rc-pill','rc-food','rc-input', deltaClass('food',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -978,7 +982,7 @@
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.wood"
-                @input="updateStep($event, item, 'wood')" @paste="handlePaste"
+                @input="updateStep($event, item, 'wood')" @paste="handlePaste" @keydown.enter="advanceOnEnter"
                 :class="hasResourceValue(item.wood) ? ['rc-pill','rc-wood','rc-input', deltaClass('wood',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -987,7 +991,7 @@
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.gold"
-                @input="updateStep($event, item, 'gold')" @paste="handlePaste"
+                @input="updateStep($event, item, 'gold')" @paste="handlePaste" @keydown.enter="advanceOnEnter"
                 :class="hasResourceValue(item.gold) ? ['rc-pill','rc-gold','rc-input', deltaClass('gold',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td class="text-center py-1">
@@ -996,15 +1000,15 @@
                 <span v-else class="rc-empty">–</span>
               </template>
               <input v-else :ref="el => registerStoneInputRef(el, index)" type="text" inputmode="tel" enterkeyhint="next" maxlength="7" :value="item.stone"
-                @input="updateStep($event, item, 'stone')" @paste="handlePaste"
+                @input="updateStep($event, item, 'stone')" @paste="handlePaste" @keydown.enter="advanceOnEnter"
                 :class="hasResourceValue(item.stone) ? ['rc-pill','rc-stone','rc-input', deltaClass('stone',index)] : ['rc-pill','rc-ghost','rc-input']" />
             </td>
             <td
               :data-edit-index="!readonly ? index : null"
               :data-edit-field="!readonly ? 'description' : null"
-              @input="showAutoCompleteMenu($event, index)"
+              @input="dropLeavings($event); showAutoCompleteMenu($event, index)"
               @keyup="handleContentEditableKeyUp($event, index)"
-              @keydown.tab.exact.prevent="timestampRefs[index + 1]?.focus()"
+              @keydown.tab.exact="tabToNextRow($event, index)"
               @keydown.shift.tab.prevent="stoneInputRefs[index]?.focus()"
               @click="saveSelection"
               @paste="handlePaste"
@@ -1083,7 +1087,7 @@
                 ><v-icon size="16">mdi-close</v-icon
                   ><v-tooltip activator="parent" location="top"
                     ><span :style="{ color: $vuetify.theme.current.colors.primary }"
-                      >Remove, or Alt + Backspace</span
+                      >Remove, or Alt + Shift + Backspace</span
                     ></v-tooltip
                   ></v-btn
                 >
@@ -1807,7 +1811,7 @@ export default {
 
       if (event.data === ":") {
         //Show autocomplete menu
-        if (contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g)) {
+        if (contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9_])+)?/g)) {
           searchText.value = "::";
         } else {
         }
@@ -1966,10 +1970,12 @@ export default {
     };
 
     /**
-     * Enter in a single-line cell of a phone card moves to the card's next
-     * field, and from the last one into the description. Left to itself it
-     * writes a <br> into the cell, and updateStep() strips markup on save, so
-     * "130", Enter, "2" was saved as the time "1302".
+     * Enter in a single-line cell moves to the next field of the step, and from
+     * the last one into the description, on a phone card and a table row alike.
+     * On the card, left to itself it writes a <br> into the cell, and
+     * updateStep() strips markup on save, so "130", Enter, "2" was saved as the
+     * time "1302". In the table the cells are inputs and Enter did nothing, so
+     * the same key moved on in one layout and stood still in the other.
      *
      * Alt+Enter is let through untouched: it bubbles to the card's
      * handleRowShortcut, which inserts a step.
@@ -2007,10 +2013,108 @@ export default {
      * @return {void}
      */
     const advanceFrom = (field) => {
-      const fields = [...(field.closest(".step-card-xs")?.querySelectorAll('[contenteditable="true"]') ?? [])];
+      const step = field.closest(".step-card-xs, .step-row");
+      const fields = [...(step?.querySelectorAll('input, [contenteditable="true"]') ?? [])];
       const next = fields[fields.indexOf(field) + 1];
-      if (next) placeCaretAtEnd(next);
-      else field.blur();
+      if (!next) field.blur();
+      //An input is selected whole, as Tab leaves it, so a value is retyped
+      //rather than appended to.
+      else if (next.tagName === "INPUT") {
+        next.focus();
+        next.select();
+      }
+      else placeCaretAtEnd(next);
+    };
+
+    /**
+     * Tab from a description or a note goes to the start of the next entry: a
+     * step's time, or a note's text.
+     *
+     * It always went to the next row's time input, cancelling Tab first. When
+     * the next row was a note, or there was no next row, that input did not
+     * exist, so Tab did nothing and focus stayed in the field. Now, where there
+     * is no such target (the end of the section, or an alternatives block's
+     * tabs next), Tab is left alone and the browser moves on as usual. The merge
+     * line holds nothing to type into, so it is stepped over.
+     *
+     * Table only: the phone cards have no Tab key to speak of.
+     *
+     * @param {KeyboardEvent} event - The Tab keydown from the field.
+     * @param {number} index - The field's entry in the working list.
+     * @return {void}
+     */
+    const tabToNextRow = (event, index) => {
+      if (readonly) return;
+      for (let next = index + 1; next < steps.length; next++) {
+        const entry = steps[next];
+        if (isBlockEnd(entry)) continue;
+        if (isBlockStart(entry)) return;
+
+        const target = isNote(entry) ? editableCell(next) : timestampRefs.value[next];
+        if (!target?.isConnected) return;
+        event.preventDefault();
+        if (target.tagName === "INPUT") {
+          target.focus();
+          target.select();
+        }
+        else placeCaretAtEnd(target);
+        return;
+      }
+    };
+
+    /**
+     * Shift+Tab from the start of an entry (a step's time, a note's text) goes
+     * back to the end of the entry before it: that step's description, or that
+     * note's text. The mirror of tabToNextRow().
+     *
+     * Left to the browser, it went to the previous row's grip and remove
+     * buttons, which are invisible until hovered, so focus seemed to vanish.
+     * Where the entry before is a block's end or start, or there is none (the
+     * first entry of the section), Shift+Tab is left alone.
+     *
+     * @param {KeyboardEvent} event - The Shift+Tab keydown from the field.
+     * @param {number} index - The field's entry in the working list.
+     * @return {void}
+     */
+    const tabToPreviousRow = (event, index) => {
+      if (readonly || index < 1) return;
+      const entry = steps[index - 1];
+      if (!entry || isBlockEnd(entry) || isBlockStart(entry)) return;
+
+      const target = editableCell(index - 1);
+      if (!target?.isConnected) return;
+      event.preventDefault();
+      placeCaretAtEnd(target);
+    };
+
+    /**
+     * Empties a rich-text field that holds nothing but the browser's markup.
+     *
+     * When the last character goes, Chrome leaves a `<br>` (sometimes inside a
+     * block) to hold the caret. The field then no longer matches `:empty`, so
+     * the placeholder ("Step description", "Note text") vanished after the first
+     * clear and never came back. Emptying it brings the placeholder back, and
+     * the `:empty` padding rule then keeps the caret centred.
+     *
+     * Only markup with no text and no icon is removed. A typed space is text
+     * and stays. The caret is put back explicitly, because replacing the
+     * contents drops the selection and the next keystroke would go nowhere.
+     *
+     * @param {InputEvent} event - The input event from the field.
+     * @return {void}
+     */
+    const dropLeavings = (event) => {
+      const field = event.currentTarget;
+      if (readonly || !field || field.innerHTML === "") return;
+      if (/<img\b/i.test(field.innerHTML) || field.textContent !== "") return;
+
+      field.innerHTML = "";
+      const range = document.createRange();
+      range.setStart(field, 0);
+      range.collapse(true);
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
     };
 
     /**
@@ -2609,7 +2713,11 @@ export default {
         addNote(index);
         return;
       }
-      if (event.code === "Delete" || event.code === "Backspace") {
+      //Shift is required, because Alt+Backspace alone is a text-editing key. On
+      //macOS, Option+Backspace deletes the previous word and Option+Delete the
+      //next one. An author doing that in a description got this row's delete
+      //dialog, and Enter, the next key a writer tends to press, confirmed it.
+      if ((event.code === "Delete" || event.code === "Backspace") && event.shiftKey) {
         event.preventDefault();
         confirmRemoveStep(index);
       }
@@ -3506,6 +3614,9 @@ export default {
       handleTimeBlur,
       advanceOnEnter,
       advanceOnLineBreak,
+      tabToNextRow,
+      tabToPreviousRow,
+      dropLeavings,
       updateStepDescription,
       updateStepNote,
       isNote,
@@ -3733,6 +3844,23 @@ export default {
   padding-left: 16px !important;
   padding-right: 8px !important;
   line-height: 1.55;
+}
+/* An empty cell centres its line by padding instead of by `vertical-align`.
+   Chrome middle-aligns a table cell by adding padding it computes itself, and
+   it leaves that padding out when it draws the caret in an editable cell that
+   has no content at all. The placeholder is generated content, so it still sits
+   in the middle while the caret appears 10px above it, at the top padding.
+   Measured on a 55px row: middle alignment puts the line at
+   (54px − line) / 2 from the top of the cell, so this padding puts it in the
+   same place and the placeholder does not move. The caret drops by about 1px
+   on the first keystroke, at 14px and 16px type alike. It applies only to a
+   truly empty cell: once the author types and clears, Chrome leaves a <br>,
+   and that line box gets the caret right on its own. Note rows are .step-row
+   too, and the selector outranks their own middle-alignment rule. */
+.step-row td.contentEditable[contenteditable="true"]:empty,
+.alt-row--cond td.contentEditable[contenteditable="true"]:empty {
+  vertical-align: top !important;
+  padding-top: calc((54px - 1.55em) / 2) !important;
 }
 /* Edit mode: focus-only gold highlight fills entire cell */
 .step-row td.contentEditable[contenteditable="true"]:focus,
@@ -3994,6 +4122,18 @@ export default {
    break in two. z-index cannot tween, but it can be made to wait. */
 .hidden-xs {
   transition: z-index 0s 0.28s;
+}
+/* The lift above cannot help the last section: below it is not a neighbour to
+   paint over but the edge of the Build Order card, which clips (a v-card is
+   `overflow: hidden`, and that clip is what rounds its corners). So the button's
+   lower half was cut off on the most common path there is — new build, add a
+   step, point at the line under it. The last section makes room for it instead,
+   the same 12px the touch layout gives every section (`@media (hover: none)`).
+   Only while the insert line really is the last row: in an ageUp section the
+   arrival row follows it, and a shown section note does too, so the line sits
+   between rows and nothing at the foot needs room. */
+.hidden-xs.section--last:has(.ins-row--trailing:last-child) {
+  padding-bottom: 12px;
 }
 .ins-line {
   position: absolute;

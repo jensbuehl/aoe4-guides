@@ -1,4 +1,58 @@
 /**
+ * The icons a `::` search matches, best first.
+ *
+ * The one ranking both ways of finishing a search use: the menu lists in this
+ * order and highlights the first entry, and Space on a keyboard the menu
+ * cannot hear (Android IMEs send no usable keydown) inserts that same first
+ * entry. They used to rank separately (the menu in list order, Space by shortest
+ * title), so Space could insert an icon other than the one on screen.
+ *
+ * A shorthand someone typed in full beats one they are partway through, and both
+ * beat the title: a shorthand is a name chosen to be typed. A title that starts
+ * with the query beats one that only contains it. Ties go to the shorter title,
+ * which is what Space alone used to decide on, then to list order.
+ *
+ * An empty query matches nothing. It used to match everything, so `::` followed
+ * by a space inserted whichever icon had the shortest title.
+ *
+ * @param {Array} icons - The civ's icons, as iconService returns them.
+ * @param {string} query - What follows `::`, lower-case and trimmed.
+ * @return {Array} The matching icons, best first.
+ */
+export function rankIcons(icons, query) {
+  if (!query) return [];
+
+  const rank = (item) => {
+    const shorthands = [].concat(item.shorthand ?? []);
+    if (shorthands.includes(query)) return 0;
+    if (shorthands.some((s) => s.startsWith(query))) return 1;
+    const title = item.title.replace(/ +/g, "").toLowerCase();
+    if (title.startsWith(query)) return 2;
+    if (title.includes(query)) return 3;
+    return -1;
+  };
+
+  return icons
+    .map((item, order) => ({ item, order, rank: rank(item) }))
+    .filter((entry) => entry.rank >= 0)
+    .sort(
+      (a, b) =>
+        a.rank - b.rank || a.item.title.length - b.item.title.length || a.order - b.order
+    )
+    .map((entry) => entry.item);
+}
+
+/**
+ * An icon's shorthands as they are typed, e.g. "::rax, ::qs", or "" for none.
+ *
+ * @param {string|string[]|undefined} shorthand - The icon's `shorthand` field.
+ * @return {string}
+ */
+export function formatShorthand(shorthand) {
+  return [].concat(shorthand || []).filter(Boolean).map((s) => "::" + s).join(", ");
+}
+
+/**
  * Updates the search text based on the key code pressed.
  *
  * @param {HTMLElement} contentEditable - The content editable element based on which the search text is being updated.
@@ -36,7 +90,7 @@ export function updateSearchText(contentEditable, searchTextRef, keyCode, icons)
     searchTextRef.value = null;
   } else {
     //Show and hide autocomplete menu, set search text
-    const match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
+    const match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9_])+)?/g);
     if (!match) {
       //no match found
       searchTextRef.value = null;
@@ -73,31 +127,12 @@ export function addInlineIcon(contentEditable, icons) {
   });
 
   //parse and replace
-  const match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([ a-zA-Z0-9])+)?/g);
+  const match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([ a-zA-Z0-9_])+)?/g);
 
   if (match) {
     const shortHand = match[0].toLowerCase().trim().replace("::", "");
-    const filter = (unfiltered) => {
-      return unfiltered.filter((item) => {
-        var elementFound = false;
-        //Search by shorthand first
-        if (Array.isArray(item.shorthand)) {
-          elementFound = -1 != item.shorthand.findIndex((element) => element.startsWith(shortHand));
-        } else {
-          elementFound = item.shorthand?.startsWith(shortHand);
-        }
-        //Search by title second
-        if (!elementFound) {
-          var title = item.title.replace(/ +/g, "").toLowerCase();
-          elementFound = title.includes(shortHand);
-        }
-        return elementFound;
-      });
-    };
-    const filteredCivIcons = filter(icons).sort(function (a, b) {
-      return a.title.length - b.title.length;
-    });
-    const imageMetaData = filteredCivIcons[0];
+    //rankIcons() returns nothing for an empty query, so ":: " stays as typed.
+    const imageMetaData = rankIcons(icons, shortHand)[0];
 
     if (imageMetaData) {
       const iconClass = imageMetaData.class ? "icon-" + imageMetaData.class : "icon";
@@ -154,11 +189,11 @@ export function addAutocompleteIcon(contentEditable, iconPath, tooltipText, icon
   });
 
   //parse and replace
-  var match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g);
+  var match = contentEditable.innerHTML.match(/\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9_])+)?/g);
   if (match) {
     //Replace element
     contentEditable.innerHTML = contentEditable.innerHTML.replace(
-      /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9])+)?/g,
+      /\w*(?<![a-zA-Z0-9])::(([a-zA-Z0-9_])+)?/g,
       img
     );
 
