@@ -3,10 +3,12 @@
     Build search (spec 043, layout A). Opened from the header on every page;
     full screen on phones, a panel near the top on larger screens.
 
-    Everything here runs on the device: the index is downloaded once, when the
-    dialog first opens (useSearchIndex), and each keystroke is answered from it.
-    This component is loaded only on that first open, so a visit that never
-    searches pays for neither the index nor this code.
+    Everything here runs on the device: the index is downloaded once, when
+    someone first reaches for search (Header's prefetchSearchIndex) or at the
+    latest when the dialog opens (useSearchIndex), and each keystroke is
+    answered from it. The Header mounts this component closed once the page is
+    idle, so the first open is immediate; a visit that never searches pays for
+    this small chunk but never for the index.
 
     Back on a phone closes it without leaving the page; the header owns that
     (useOverlayHistory) because the header is where it opens.
@@ -210,6 +212,8 @@ export default {
     const { smAndDown } = useDisplay();
     const { index, status, load } = useSearchIndex();
     const query = ref("");
+    // Above the open watch, which runs immediately when the dialog mounts open.
+    let queryAtOpen = "";
     const hidden = ref(new Set());
     const activeIndex = ref(-1);
 
@@ -316,6 +320,7 @@ export default {
       () => props.modelValue,
       (open) => {
         if (!open) return;
+        queryAtOpen = query.value ?? "";
         load().then(() => {
           // Read on every open, not once: a build unlisted earlier in this
           // session must already be gone (FR-009).
@@ -330,12 +335,17 @@ export default {
     // it and the arrow keys still keep it. On afterEnter, not on open: the
     // dialog moves focus into its content while it transitions in, which
     // would land after a select() made earlier and collapse it.
+    //
+    // Only the query the dialog opened with is selected. The panel opens at
+    // once and the field takes keys during the transition, so on a fast typist
+    // "r" was already in the field at afterEnter, got selected, and "us"
+    // replaced it: "rus" arrived as "us".
     const field = ref(null);
     const selectQuery = () => {
       const input = field.value?.$el?.querySelector("input");
       if (!input) return;
       input.focus();
-      if (input.value) input.select();
+      if (input.value && input.value === queryAtOpen) input.select();
     };
 
     const openRow = (row) => emit("open", row.to);

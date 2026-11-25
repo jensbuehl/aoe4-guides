@@ -307,7 +307,7 @@ and confirm search closes without leaving the page.
   unlisted build (an automated check), and confirmed by a spot check at each rollout; a
   just-unlisted build is gone for other players within 24 hours and on the author's
   device immediately.
-- **SC-006**: Visits that never open search download zero extra bytes.
+- **SC-006**: Visits that never reach for search download no index. *(Narrowed 2026-11-25: the dialog's own ~7 KB chunk now loads at idle on every visit, because fetching it on the click held the panel back 190-510ms. The index, the part that costs, still waits for hover, focus or touch on a search button.)*
 - **SC-007**: The feature adds no more than €1 per month to the hosting bill at 1,000 search opens a
   day (see decision document §4 for the model).
 - **SC-008**: Within a month of launch, the index is downloaded on average at least 100 times a day

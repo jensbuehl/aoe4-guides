@@ -28,6 +28,8 @@
           <v-list v-if="authIsReady">
             <v-list-item
               :style="'color: ' + chrome.primary"
+              @pointerenter="prefetchSearch"
+              @focus="prefetchSearch"
               @click="openSearch"
             >
               <v-icon class="mr-4" color="accent">mdi-magnify</v-icon>
@@ -139,6 +141,8 @@
           class="search-trigger mr-3 hidden-md-and-down"
           aria-label="Search builds, authors and civilizations"
           :aria-keyshortcuts="shortcutAria"
+          @pointerenter="prefetchSearch"
+          @focus="prefetchSearch"
           @click="openSearch"
         >
           <v-icon color="accent" class="mr-2">mdi-magnify</v-icon>
@@ -152,6 +156,8 @@
           color="accent"
           class="mr-1 hidden-sm-and-down hidden-lg-and-up"
           aria-label="Search builds, authors and civilizations"
+          @pointerenter="prefetchSearch"
+          @focus="prefetchSearch"
           @click="openSearch"
         >
           <v-icon>mdi-magnify</v-icon>
@@ -370,8 +376,8 @@
     </v-container>
   </v-app-bar>
 
-  <!-- Mounted on the first open only, so its chunk (and the index it loads)
-       stays out of every visit that never searches. -->
+  <!-- Mounted closed once the page is idle, so the first open is immediate.
+       The index it searches is fetched only on intent (prefetchSearchIndex). -->
   <SearchDialog v-if="searchMounted" v-model="searchOpen" @open="openSearchResult" />
 
   <!-- A provider rather than the `theme` prop, which VBottomNavigation declares
@@ -409,7 +415,7 @@
 
     <!-- Build search (spec 043): on phones it lives here, not in the top bar,
          which has no room beside the wordmark. Not a route, so never active. -->
-    <v-btn color="primary" :active="false" @click="openSearch">
+    <v-btn color="primary" :active="false" @pointerdown="prefetchSearch" @click="openSearch">
       <template v-slot:prepend>
         <v-icon color="accent">mdi-magnify</v-icon>
       </template>
@@ -455,8 +461,23 @@ import { useAvatar } from "@/composables/auth/useAvatar";
 import UserAvatar from "@/components/common/UserAvatar.vue";
 import { useOverlayHistory } from "@/composables/useOverlayHistory.js";
 
-// Its own chunk: only a visit that opens search downloads it (spec 043, SC-006).
+// Its own chunk, kept out of the first paint; the Header mounts it once the
+// page is idle (see onMounted below).
 const SearchDialog = defineAsyncComponent(() => import("@/components/search/SearchDialog.vue"));
+
+/**
+ * Starts the index download as soon as someone reaches for search (hover,
+ * focus or touch on a search button), not on the click: that head start is
+ * the time the panel otherwise spends on skeletons. A visit that never
+ * reaches for search still downloads no index (spec 043, SC-006). The
+ * download is shared with the dialog's own load; a failure is left for the
+ * dialog's open to retry and report.
+ */
+function prefetchSearchIndex() {
+  import("@/composables/search/useSearchIndex.js")
+    .then(({ loadSearchIndex }) => loadSearchIndex())
+    .catch(() => {});
+}
 
 /**
  * Whether a key press came from somewhere the reader is typing. The build editor
@@ -602,10 +623,22 @@ export default {
     const searchMounted = ref(false);
     const { open: openOverlay, closeThen } = useOverlayHistory(searchOpen, "search");
     const openSearch = () => {
+      prefetchSearchIndex();
       searchMounted.value = true;
       openOverlay();
     };
     watch(searchRequests, () => openSearch());
+
+    // The dialog is mounted, closed, once the page is idle, so the first open
+    // shows the panel at once. Fetched on the click, its chunk alone held the
+    // panel back 190-510ms (measured on production, 2026-11-25) while the
+    // field could already have taken typing. The chunk is about 7 KB and cached
+    // by its hash; the index, the part that costs, still waits for intent.
+    onMounted(() => {
+      const mount = () => (searchMounted.value = true);
+      if ("requestIdleCallback" in window) window.requestIdleCallback(mount, { timeout: 4000 });
+      else setTimeout(mount, 2000);
+    });
     // Navigate only after the dialog's history entry is gone; pushed sooner,
     // the asynchronous step back would undo the navigation.
     const openSearchResult = (to) => closeThen(() => router.push(to));
@@ -658,6 +691,7 @@ export default {
       searchOpen,
       searchMounted,
       openSearch,
+      prefetchSearch: prefetchSearchIndex,
       openSearchResult,
     };
   },
