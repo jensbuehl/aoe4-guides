@@ -1,34 +1,7 @@
 ﻿<template>
-  <!--Common delete confirmation dialog-->
-  <v-dialog v-model="removeStepConfirmationDialog" width="auto" @keydown.enter="removeStep(delteRowIndex)">
-    <v-card rounded="lg" class="text-center primary" flat>
-      <v-card-title>Delete Step</v-card-title>
-      <v-card-text>
-        Do you really want to delete this build step?<br />
-        The action cannot be undone.
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="error" block @click="removeStep(delteRowIndex)">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
-  <!--Removing an alternative, or the whole block, asks first — the same courtesy
-      a step and an age-up already get, and these two destroy more than either.-->
-  <v-dialog v-model="altConfirm.open" width="auto" @keydown.enter="runAltConfirm()">
-    <v-card rounded="lg" class="text-center primary" flat>
-      <v-card-title>{{ altConfirmTitle }}</v-card-title>
-      <v-card-text>
-        {{ altConfirmText }}<br />
-        The action cannot be undone.
-      </v-card-text>
-      <v-card-actions class="justify-center ga-2">
-        <v-btn variant="text" @click="altConfirm.open = false">Cancel</v-btn>
-        <v-btn color="error" variant="tonal" @click="runAltConfirm()">Delete</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
-
+  <!--Removals no longer ask first: they happen at once and the Build Order
+      editor offers them back with Undo (useEditorUndo). Each one emits a
+      `checkpoint` before it changes anything.-->
   <v-tooltip
     v-model="showToolTip"
     :attach="'body'"
@@ -146,7 +119,7 @@
               size="x-small"
               variant="text"
               class="step-remove-xs"
-              @click.stop="confirmRemoveBlock(index)"
+              @click.stop="removeBlock(index)"
             ><v-icon size="14">mdi-close</v-icon></v-btn>
           </div>
           <AlternativePathTabs
@@ -187,7 +160,7 @@
               size="x-small"
               variant="text"
               class="step-remove-xs"
-              @click.stop="removeStepConfirmationDialog = true; delteRowIndex = index;"
+              @click.stop="removeStep(index)"
             ><v-icon size="14">mdi-close</v-icon></v-btn>
           </div>
           <div class="step-desc-col-xs">
@@ -271,7 +244,7 @@
               size="x-small"
               variant="text"
               class="step-remove-xs"
-              @click.stop="removeStepConfirmationDialog = true; delteRowIndex = index;"
+              @click.stop="removeStep(index)"
             ><v-icon size="14">mdi-close</v-icon></v-btn>
           </div>
           <!-- 5-slot grid (editable). A digit pad, because nine values in ten
@@ -751,7 +724,7 @@
               </td>
               <td v-if="!readonly" class="step-actions" style="width:90px">
                 <div class="step-actions-inner">
-                  <v-btn icon size="small" variant="text" class="row-x" @click="confirmRemoveBlock(index)"
+                  <v-btn icon size="small" variant="text" class="row-x" @click="removeBlock(index)"
                     ><v-icon size="16">mdi-close</v-icon></v-btn
                   >
                 </div>
@@ -902,7 +875,7 @@
                   size="small"
                   variant="text"
                   class="row-x"
-                  @click="confirmRemoveStep(index)"
+                  @click="removeStep(index)"
                 ><v-icon size="16">mdi-close</v-icon
                   ><v-tooltip activator="parent" location="top"
                     ><span :style="{ color: $vuetify.theme.current.colors.primary }"
@@ -1083,7 +1056,7 @@
                   size="small"
                   variant="text"
                   class="row-x"
-                  @click="confirmRemoveStep(index)"
+                  @click="removeStep(index)"
                 ><v-icon size="16">mdi-close</v-icon
                   ><v-tooltip activator="parent" location="top"
                     ><span :style="{ color: $vuetify.theme.current.colors.primary }"
@@ -1377,6 +1350,8 @@ export default {
     "ageDownRequested",
     "ageUpRequested",
     "stepHovered",
+    //Just before a removal, with what the undo message should say.
+    "checkpoint",
   ],
   components: {
     IconSelector,
@@ -1463,7 +1438,6 @@ export default {
     const readonly = props.readonly;
     const hoverRowIndex = ref(null);
     const selectedRowIndex = ref(null);
-    const delteRowIndex = ref(null);
     const selection = ref(null);
     const stepsTable = ref(null);
     //The phone's card list, so a card that has just moved can be followed.
@@ -1477,7 +1451,6 @@ export default {
     //The grip on each row, kept so focus can follow an entry that has just been
     //moved — otherwise a second arrow press moves whatever inherited the row.
     const dragHandleRefs = ref([]);
-    const removeStepConfirmationDialog = ref(false);
     const activeStepIndex = ref(null);
     const focusedDescIndex = ref(null);
     var civIconService = iconService(props.civ);
@@ -2655,12 +2628,6 @@ export default {
     const moveLabel = (item) =>
       `Move this ${isNote(item) ? "note" : "step"}. Use the arrow keys to move it one position.`;
 
-    /** Opens the delete confirmation for a row. */
-    const confirmRemoveStep = (index) => {
-      delteRowIndex.value = index;
-      removeStepConfirmationDialog.value = true;
-    };
-
     /**
      * Every Alt shortcut a row answers to, in one place.
      *
@@ -2703,9 +2670,13 @@ export default {
       //Everything past here inserts or removes, where a held key runs away.
       if (event.repeat) return;
 
+      //With Shift, the new step starts from this one's resources: most steps
+      //change one or two numbers, and retyping the other four is the busywork.
+      //Not Alt+D, the obvious letter: that is the address bar in every Windows
+      //browser and a page cannot reliably take it back.
       if (event.code === "Enter" || event.code === "NumpadEnter") {
         event.preventDefault();
-        addStep(index);
+        addStep(index, event.shiftKey ? resourcesAt(index) : {});
         return;
       }
       if (event.code === "KeyN") {
@@ -2719,7 +2690,7 @@ export default {
       //dialog, and Enter, the next key a writer tends to press, confirmed it.
       if ((event.code === "Delete" || event.code === "Backspace") && event.shiftKey) {
         event.preventDefault();
-        confirmRemoveStep(index);
+        removeStep(index);
       }
     };
 
@@ -2871,14 +2842,39 @@ export default {
       _id: id,
     });
 
-    const addStep = async (index) => {
+    /** The fields Alt+Shift+Enter carries into the new step. */
+    const RESOURCE_FIELDS = ["builders", "food", "wood", "gold", "stone"];
+
+    /**
+     * The resources of the step at or above a position, for a new step to start
+     * from. From a note, the step it follows; markers are passed over.
+     * Read from the copy, which holds what was last typed.
+     *
+     * @param {number} index - Where the caret is.
+     * @return {Object} Field values, or an empty object when no step is above.
+     */
+    const resourcesAt = (index) => {
+      syncEditedFields();
+      for (let i = index; i >= 0; i--) {
+        const entry = stepsCopy[i];
+        if (!entry || isMarker(steps[i]) || isNote(entry)) continue;
+        return Object.fromEntries(RESOURCE_FIELDS.map((field) => [field, entry[field] ?? ""]));
+      }
+      return {};
+    };
+
+    /**
+     * @param {number} index - Insert after this position; -1 prepends.
+     * @param {Object} [carry] - Values the new step starts with.
+     */
+    const addStep = async (index, carry = {}) => {
       syncEditedFields();
 
       //Add row
       const addIndex = index + 1;
       const newId = ++_nextStepId;
-      stepsCopy.splice(addIndex, 0, blankStep(newId));
-      steps.splice(addIndex, 0, blankStep(newId));
+      stepsCopy.splice(addIndex, 0, { ...blankStep(newId), ...carry });
+      steps.splice(addIndex, 0, { ...blankStep(newId), ...carry });
 
       emitSteps();
       await nextTick();
@@ -3146,7 +3142,7 @@ export default {
      */
     const removePathAt = (markerIndex, pathIndex) => {
       if (Number.isInteger(pathIndex)) switchPath(markerIndex, pathIndex);
-      confirmRemovePath(markerIndex);
+      removePath(markerIndex);
     };
 
     const finishRename = (markerIndex) => {
@@ -3180,51 +3176,27 @@ export default {
     };
 
     /**
-     * What the confirmation dialog is currently asking about.
+     * Records the build just before a removal, so the Build Order editor can
+     * offer it back (see useEditorUndo).
      *
-     * One dialog for both, because the two acts differ only in what survives —
-     * and that difference is exactly what the wording has to make clear before
-     * the author says yes.
+     * Fields are synced and emitted first: a removal made by keyboard leaves the
+     * caret where it was, so the description being typed has not reached the
+     * build yet, and the snapshot would otherwise restore it without that text.
+     *
+     * The label is the whole explanation now that nothing asks first, so it says
+     * what survived when that is not obvious, the way the confirmation used to.
+     *
+     * @param {string} label - What the undo message says.
+     * @return {void}
      */
-    const altConfirm = ref({ open: false, mode: null, index: null });
+    const beforeRemoval = (label) => {
+      syncEditedFields();
+      emitSteps();
+      context.emit("checkpoint", label);
+    };
 
     /** Whether removing this path takes the block with it — it does at two. */
     const lastPathOfBlock = (index) => (steps[index]?.paths?.length ?? 0) <= 2;
-
-    const altConfirmTitle = computed(() => {
-      const { mode, index } = altConfirm.value;
-      if (mode === "path" && !lastPathOfBlock(index)) return "Delete alternative";
-      return "Remove alternatives";
-    });
-
-    const altConfirmText = computed(() => {
-      const { mode, index } = altConfirm.value;
-      if (mode === "path" && !lastPathOfBlock(index)) {
-        return "This alternative and the steps inside it are deleted. The other alternatives stay.";
-      }
-      if (mode === "path") {
-        return "This alternative and its steps are deleted, and with one path left there is no choice to offer — the other alternative becomes part of the build.";
-      }
-      //Both the block's own ✕ and deleting the last remaining path land here, and
-      //they do the same thing: the bracket goes, the steps stay.
-      return "The alternatives are removed and every step inside them is kept, back on the main line.";
-    });
-
-    const confirmRemovePath = (index) => {
-      altConfirm.value = { open: true, mode: "path", index };
-    };
-
-    const confirmRemoveBlock = (index) => {
-      altConfirm.value = { open: true, mode: "block", index };
-    };
-
-    const runAltConfirm = () => {
-      const { mode, index } = altConfirm.value;
-      altConfirm.value = { open: false, mode: null, index: null };
-
-      if (mode === "path") removePath(index);
-      else if (mode === "block") removeBlock(index);
-    };
 
     /**
      * Removes the path on screen, and its steps with it.
@@ -3246,6 +3218,12 @@ export default {
     const removePath = (markerIndex) => {
       const marker = steps[markerIndex];
       if (!marker?.paths) return;
+
+      beforeRemoval(
+        lastPathOfBlock(markerIndex)
+          ? "Alternative deleted, the other one is now part of the build"
+          : "Alternative deleted"
+      );
 
       //Down to one path there is no longer a choice to offer, so the block goes
       //and the survivor becomes ordinary steps on the main line. Deleting one of
@@ -3301,7 +3279,6 @@ export default {
       stepsCopy.splice(range.start, count, ...lifted.map((step) => ({ ...step })));
 
       emitSteps();
-      removeStepConfirmationDialog.value = false;
     };
 
     /**
@@ -3320,6 +3297,7 @@ export default {
       const range = blockRanges(steps).find(
         (entry) => entry.start === markerIndex || entry.end === markerIndex
       );
+      if (range) beforeRemoval("Alternatives removed, their steps are kept");
       if (!range) return;
 
       const marker = steps[range.start];
@@ -3335,7 +3313,6 @@ export default {
       stepsCopy.splice(range.start, count, ...lifted.map((step) => ({ ...step })));
 
       emitSteps();
-      removeStepConfirmationDialog.value = false;
     };
 
     /**
@@ -3408,14 +3385,14 @@ export default {
     };
 
     const removeStep = (currentIndex) => {
-      syncEditedFields();
+      if (readonly || !steps[currentIndex]) return;
+      beforeRemoval(isNote(steps[currentIndex]) ? "Note deleted" : "Step deleted");
 
       //remove row
       stepsCopy.splice(currentIndex, 1);
       steps.splice(currentIndex, 1);
 
       emitSteps();
-      removeStepConfirmationDialog.value = false;
     };
 
     const selectStep = (index) => {
@@ -3599,8 +3576,6 @@ export default {
       selectedRowIndex,
       handleResourceInput,
       selection,
-      delteRowIndex,
-      removeStepConfirmationDialog,
       mergeProps,
       handlePaste,
       handleContentEditableKeyUp,
@@ -3639,12 +3614,6 @@ export default {
       finishRename,
       removePath,
       removeBlock,
-      altConfirm,
-      altConfirmTitle,
-      altConfirmText,
-      confirmRemovePath,
-      confirmRemoveBlock,
-      runAltConfirm,
       removeStep,
       addStep,
       addNote,
@@ -3673,7 +3642,6 @@ export default {
       releaseEditing,
       //Every Alt shortcut a row answers to, and the ✕ they share a target with
       handleRowShortcut,
-      confirmRemoveStep,
       saveSelection,
       restoreSelection,
       handleIconSelectorIconSelected,

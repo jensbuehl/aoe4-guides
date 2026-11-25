@@ -1,18 +1,24 @@
 <template>
-  <!--Common delete confirmation dialog-->
-  <v-dialog v-model="removeAgeConfirmationDialog" width="auto" @keydown.enter="ageDown()">
-    <v-card rounded="lg" class="text-center primary" flat>
-      <v-card-title>Return to {{ getPreviousAgeName() }}?</v-card-title>
-      <v-card-text>
-        This removes the advance and all steps that follow.<br />
-        The action cannot be undone.
-      </v-card-text>
-      <v-card-actions class="justify-center ga-2">
-        <v-btn variant="text" @click="removeAgeConfirmationDialog = false">Cancel</v-btn>
-        <v-btn color="error" variant="tonal" @click="ageDown()">Return</v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <!--Removals happen at once and are offered back here, rather than asked about
+      first (see useEditorUndo). Dressed as the app's own info Snackbar, which
+      has no action slot to offer Undo from.
+      `color="info"` is not decoration. Left uncoloured, a snackbar is filled
+      with `surface-variant` and lettered with `on-surface-variant`, and Vuetify
+      does not compute the second: it is a fixed #EEEEEE on light themes. Our
+      light `surface-variant` is gold, so the text came out near-white on gold.
+      For `info`, Vuetify works out the ink from the fill.-->
+  <v-snackbar
+    v-if="!readonly"
+    v-model="undoNotice.open"
+    :timeout="6000"
+    location="bottom"
+    color="info"
+  >
+    {{ undoNotice.text }}
+    <template v-slot:actions>
+      <v-btn @click="undo()">Undo</v-btn>
+    </template>
+  </v-snackbar>
   <!--`pb-3 pb-sm-0`: on a phone the step list is cards in a flex column with
       16px at the sides and nothing at the foot, so the last card sat flush on
       the card's own border. 12px closes it, mirroring the space under the Play
@@ -84,7 +90,24 @@
         @click="handlePlayDefault"
         >Play</v-btn
       >
+      <!--Where the reader's Play sits, the author gets the key list. Only with a
+          pointer that hovers: that is the device that has a keyboard to speak
+          of, and a phone has no use for a list of Alt combinations. Sized like
+          Play, so the 36px header holds.-->
+      <v-btn
+        v-else-if="!readonly && canHover"
+        class="play-solo"
+        variant="text"
+        prepend-icon="mdi-keyboard-outline"
+        @click="shortcutsOpen = true"
+        >Shortcuts<v-tooltip activator="parent" location="top"
+          ><span :style="{ color: $vuetify.theme.current.colors.primary }"
+            >Keyboard shortcuts, or ?</span
+          ></v-tooltip
+        ></v-btn
+      >
     </SectionHeader>
+    <EditorShortcuts v-if="!readonly" v-model="shortcutsOpen" />
 
     <!--On a phone the header has no room for it, and a play control the player
         has to hunt for is the whole problem this replaced.
@@ -152,7 +175,11 @@
 
     <v-row no-gutters align="center" justify="center">
       <v-col cols="12"
-        ><div v-for="(section, index) in sections">
+        ><!--Keyed on the undo generation so an undo remounts every section: a
+            section builds its working list once, from its prop, and never
+            re-reads it (see useStepReorder), so a restored build would
+            otherwise not be drawn.-->
+        <div v-for="(section, index) in sections" :key="`${undoGeneration}-${index}`">
           <BuildOrderSectionEditor
             v-if="section.steps"
             :ref="el => registerSectionEditor(el, index)"
@@ -163,7 +190,8 @@
             "
             @stepsChanged="(steps) => handleStepsChanged(steps, index)"
             @gameplanChanged="(gameplan) => handleGameplanChanged(gameplan, index)"
-            @ageDownRequested="removeAgeConfirmationDialog = true"
+            @ageDownRequested="ageDown()"
+            @checkpoint="(label) => undoHistory.checkpoint(label)"
             @ageUpRequested="ageUp()"
             @stepHovered="handleStepHovered"
             :section="section"
@@ -197,6 +225,7 @@ import { useDisplay } from "vuetify";
 //Components
 import BuildOrderSectionEditor from "@/components/builds/BuildOrderSectionEditor.vue";
 import SectionHeader from "@/components/common/SectionHeader.vue";
+import EditorShortcuts from "@/components/builds/EditorShortcuts.vue";
 import { convertSectionImagePaths } from "@/composables/builds/legacyImagePaths";
 
 //Composables
@@ -206,6 +235,7 @@ import { isDocumentPiPSupported } from "@/composables/builds/useStepPiP.js";
 import { STEP_HIGHLIGHT } from "@/composables/builds/useStepHighlight.js";
 import { ACTIVE_PATH } from "@/composables/builds/useActivePath.js";
 import { STEP_REORDER, useStepReorder } from "@/composables/builds/useStepReorder.js";
+import { useEditorUndo } from "@/composables/builds/useEditorUndo.js";
 import {
   getSavedPlayTarget,
   isHandheld,
@@ -265,10 +295,9 @@ export default {
     "linkEnabled",
   ],
   emits: ["stepsChanged", "activateFocusMode"],
-  components: { BuildOrderSectionEditor, SectionHeader },
+  components: { BuildOrderSectionEditor, SectionHeader, EditorShortcuts },
   setup(props, context) {
     const sections = ref([]);
-    const removeAgeConfirmationDialog = ref(false);
     const readonly = props.readonly;
     const sectionFocus = ref(null);
     const sectionEditorRefs = ref([]);
@@ -506,13 +535,74 @@ export default {
      * @param {number} index - the index of the section
      */
     function handleStepsChanged(steps, index) {
+      //A field of a section that has just been removed can still report on its
+      //way out (its focusout runs as the age-up is unmounted). The section is
+      //no longer in the build, so there is nothing to write.
+      if (!sections.value[index]) return;
       sections.value[index].steps = steps;
       context.emit("stepsChanged", sections.value);
+      undoHistory.changed();
     }
 
     function handleGameplanChanged(gameplan, index) {
+      if (!sections.value[index]) return;
       sections.value[index].gameplan = gameplan;
       context.emit("stepsChanged", sections.value);
+      undoHistory.changed();
+    }
+
+    /**
+     * Undo for removals, across the whole build: an age-down takes two sections
+     * with it, which no single section could put back.
+     */
+    const undoGeneration = ref(0);
+    const undoHistory = useEditorUndo({
+      read: () => sections.value,
+      restore: (restored) => {
+        sections.value = restored;
+        undoGeneration.value++;
+        context.emit("stepsChanged", sections.value);
+      },
+    });
+    const undoNotice = undoHistory.notice;
+    const undo = () => undoHistory.undo();
+
+    /**
+     * Ctrl+Z (Cmd+Z) outside a field takes back the latest removal. Inside a
+     * field the key is left alone: there it is the browser's text undo, and
+     * the author is undoing typing, not a removal.
+     *
+     * Outside a field it is cancelled even when there is nothing to undo.
+     * Chrome keeps one text-undo history for the whole page, so Ctrl+Z with
+     * focus on nothing reverts the last typing in whichever field had it. That
+     * field is not focused, so no focusout follows and the change never
+     * reaches the build: the screen shows the old text and the saved build
+     * keeps the new one.
+     *
+     * `?` outside a field opens the shortcut list, the convention most web
+     * editors share. Matched on `event.key`, because `?` sits on a different
+     * physical key in every layout.
+     */
+    const shortcutsOpen = ref(false);
+    const editorShortcut = (event) => {
+      if (event.target?.closest?.('input, textarea, [contenteditable="true"]')) return;
+
+      if (event.key === "?" && !event.ctrlKey && !event.metaKey && !event.altKey) {
+        //Not over another dialog: `?` there may well be the author's to type.
+        if (document.querySelector(".v-overlay--active .v-dialog")) return;
+        event.preventDefault();
+        shortcutsOpen.value = true;
+        return;
+      }
+
+      if (!(event.ctrlKey || event.metaKey) || event.shiftKey || event.altKey) return;
+      if (event.code !== "KeyZ") return;
+      event.preventDefault();
+      undoHistory.undo();
+    };
+    if (!readonly) {
+      onMounted(() => window.addEventListener("keydown", editorShortcut));
+      onBeforeUnmount(() => window.removeEventListener("keydown", editorShortcut));
     }
 
     /**
@@ -563,6 +653,7 @@ export default {
      * Age down to the previous age.
      **/
     function ageDown() {
+      undoHistory.checkpoint(`Back to ${getPreviousAgeName()}`);
       if (getCurrentAge() == 1 && sections.value[0]?.age > 0) {
         sections.value[0].age = 0;
       } else {
@@ -571,7 +662,6 @@ export default {
       }
 
       context.emit("stepsChanged", sections.value);
-      removeAgeConfirmationDialog.value = false;
     }
 
     /**
@@ -700,7 +790,11 @@ export default {
       handleStepsChanged,
       handleGameplanChanged,
       sectionFocus,
-      removeAgeConfirmationDialog,
+      shortcutsOpen,
+      undoGeneration,
+      undoHistory,
+      undoNotice,
+      undo,
       registerSectionEditor,
       offsets,
       handleStepHovered,

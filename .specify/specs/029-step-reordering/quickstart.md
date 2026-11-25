@@ -178,7 +178,10 @@ typing is the whole point of them.
 40c. `Alt` + `Enter` adds a step below; **hold** it and exactly one step is added, not forty.
 40d. `Alt` + `N` adds a note below. **On macOS especially** — Option+N is a dead key there,
      so confirm a note appears and **no `˜` is typed into the description**.
-40e. `Alt` + `Backspace` opens the remove confirmation. `Alt` + `Delete` does the same.
+40e. `Alt` + `Shift` + `Backspace` removes the row at once and shows "Step deleted" with
+     **Undo**; `Alt` + `Shift` + `Delete` does the same. `Alt` + `Backspace` alone deletes
+     a word and removes nothing. (2026-11-25: Shift added, and the confirmation dialog
+     replaced by Undo, see `useEditorUndo.js`.)
 40f. On a **note** row, `Alt` + `Enter` adds a step. (It did nothing before this feature —
      notes could be deleted by keyboard but not followed.)
 40g. With the grip focused, a **bare** `↑` moves the row and `Alt` + `↑` moves it exactly
